@@ -27,6 +27,16 @@ current data. The current data is your job.
    sources and access dates. An uncited roster claim is a defect.
 5. If web access is unavailable, **stop and say so**. A draft kit built from stale
    memory is worse than no kit.
+6. **These rules bind every claims-bearing artifact, not just the final report.**
+   Any file in this repo that asserts a player-team pairing (the projections CSV,
+   generated boards, capsules) is subject to §0.1-4 at the moment it is written —
+   "this is only the baseline/an interim file" is not an exemption. Mechanically:
+   every row of `report/projections-2026-27.csv` must have a matching, sourced,
+   dated row in `report/roster-provenance.csv`, and `report/check_provenance.py`
+   must pass before the artifact is committed. `rank_engine.py` enforces this and
+   refuses to build a board that fails it. This gate exists because the July 2026
+   CSV shipped 39 stale team values sourced from memory — see
+   `report/postmortem-2026-07-13-roster-audit.md`.
 
 ## 1. Inputs
 
@@ -215,6 +225,10 @@ file an index that links the rest). Required sections, in order:
 
 - [ ] Every top-150 player's team affiliation verified against a source dated within
       14 days; injuries within 7.
+- [ ] `python3 report/check_provenance.py --max-age-days 14` passes: every CSV row's
+      team has a sourced provenance entry verified within 14 days of the run, zero
+      mismatches. (Not just the top 150 — all 220+; the cheap tail rows are where
+      memory-sourced teams hide. See §0.6 and the 2026-07-13 postmortem.)
 - [ ] Zero uncited roster or injury claims; every claim tagged per §0.3.
 - [ ] Every ±20% projection swing has its mechanism sentence (§4.4).
 - [ ] Punt tables recomputed, not eyeballed — spot-check three players by hand.
@@ -254,6 +268,10 @@ Use these as priors, not conclusions; current-season research overrides all of t
   already exists**: `report/rank_engine.py` over `report/projections-2026-27.csv`
   (220 players, July 2026 baseline projections). Update the CSV rows your research
   changes — teams, GP, per-game lines, new signings like the July unsigned FAs — and
-  re-run it; do not rebuild from scratch or hand-edit the generated board.
+  update `report/roster-provenance.csv` in the same edit (player, team, source URL,
+  source date, verified_on). The engine runs `check_provenance.py` first and refuses
+  to build a board whose teams lack matching provenance; do not use `--allow-stale`
+  for a deliverable board, do not rebuild from scratch, and do not hand-edit the
+  generated board.
 - Expect the full run to be long. Complete phases in order and write artifacts to
   `report/` as you go, so an interrupted session can resume from the last artifact.

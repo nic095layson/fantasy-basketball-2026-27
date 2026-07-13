@@ -8,7 +8,10 @@ writes top-200-2026-27.md. Update the CSV, re-run, done.
 import csv
 import math
 import os
+import sys
 from datetime import date
+
+from check_provenance import check as check_provenance
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 COUNTING = ["tpm", "pts", "reb", "ast", "stl", "blk"]
@@ -65,6 +68,30 @@ def total(z):
 
 
 def main():
+    # Provenance gate (PROMPT.md §0.6): refuse to build a board whose team
+    # labels lack a matching, sourced row in roster-provenance.csv. The 39
+    # stale teams shipped on 2026-07-12 entered through exactly this gap
+    # (postmortem-2026-07-13-roster-audit.md). --allow-stale skips the hard
+    # stop but stamps the defect into the board header.
+    problems, newest, oldest = check_provenance()
+    if problems and "--allow-stale" not in sys.argv:
+        print(f"PROVENANCE GATE: FAIL ({len(problems)} problem(s)) — board not generated")
+        for p in problems:
+            print(" -", p)
+        print("Fix roster-provenance.csv (or rerun with --allow-stale to "
+              "generate a board stamped as unverified).")
+        sys.exit(1)
+    if oldest is None:
+        verification_note = "**TEAM LABELS UNVERIFIED — no provenance dates.**"
+    elif problems:
+        verification_note = (f"**TEAM LABELS UNVERIFIED — generated with "
+                             f"--allow-stale over {len(problems)} provenance "
+                             f"problem(s). Do not draft off this board.**")
+    else:
+        span = oldest.isoformat() if oldest == newest else f"{oldest} – {newest}"
+        verification_note = (f"Team labels verified against sourced provenance "
+                             f"(`roster-provenance.csv`), verification dated {span}.")
+
     rows = load(os.path.join(HERE, "projections-2026-27.csv"))
 
     # Pass 1: pool = everyone; Pass 2: pool = top 180 by pass-1 value (per spec §4.2)
@@ -107,10 +134,10 @@ def main():
         "",
         "**Basis and caveats (read before drafting off this):**",
         "",
-        "- Projections are the analyst's own per-player estimates: 2025-26 statistical",
-        "  profiles adjusted for every verified 2026 offseason move (see",
-        "  `baseline-2026-07.md`), age curve, and role change — not scraped rankings.",
-        "  Consensus boards were consulted only as a sanity reference.",
+        "- Projections are the analyst's own per-player estimates (2025-26 statistical",
+        "  profiles + offseason ledger + age curve — see `baseline-2026-07.md`), not",
+        "  scraped rankings. Consensus boards were consulted only as a sanity reference.",
+        f"- {verification_note}",
         "- **This is a balanced board.** Where it diverges from market ADP, that is the",
         "  method speaking, not a bug: STL-scarce profiles rank high (Dyson Daniels'",
         "  steals are worth more z than the market pays), and FT%-broken stars rank low",
