@@ -42,10 +42,9 @@ at the bottom enumerates every open item.
 | **Wembanyama: 5yr/$252M rookie max extension** `[CONFIRMED]` | — | No fantasy impact; he isn't going anywhere. |
 | **Coaching:** Taylor Jenkins → MIL, Dusty May → DAL, Tiago Splitter → CHI, Jamahl Mosley → NOP, Sean Sweeney → ORL (six changes total, sixth **[VERIFY]**) `[CONFIRMED]` | — | May's pace suits Flagg; Splitter is a new-system wildcard for Buzelis/Giddey; Jenkins inherits a young-minutes goldmine. |
 
-**2026 Draft top of board:** #1 AJ Dybantsa (WAS, F, BYU), #2 Darryn Peterson (UTA, G,
-Kansas), #3 Cameron Boozer (MEM, F, Duke — 22.5/10.2/4.1 with 55.6 FG%/39.1 3P% as the
-national POY), #4 CHI **[VERIFY pick identity]**, #10 Brayden Burries (MIL), #13 Nate
-Ament (MIL via MIA), OKC added Aday Mara (C) + Bennett Stirtz (G). `[CONFIRMED except noted]`
+**2026 Draft top of board:** #1 AJ Dybantsa (WAS), #2 Darryn Peterson (UTA), #3
+Cameron Boozer (MEM), #4 Caleb Wilson (CHI). Full first-round fantasy breakdown in
+§5. `[CONFIRMED]`
 
 ## 3. Early 9-cat board — tiers as of July
 
@@ -99,7 +98,76 @@ after the tier-2/3 bigs is Kessler/Ware/Edey-class specialists; do not leave rou
 | **Matas Buzelis (CHI, F)** | Year-3 leap candidate under a new coach | `[SPECULATIVE]` |
 | **Kasparas Jakučionis (MIL, G)** | Deep-league/dynasty: rebuilding team's PG of the future | `[SPECULATIVE]` |
 
-## 5. Fades and risk flags
+## 5. Rookie class report — fit and statistical opportunity
+
+Billed as the product of the greatest freshman class in college history. The 9-cat
+rookie rules from PROMPT.md §4.1 apply: most rookies drag FG% and TOV, and the
+exceptions are elite-defense bigs and high-usage players on bad teams. This class has
+unusually many exceptions. Summer League is running as of this writing (July 9-12
+games included below) — treat SL as a *usage* signal, never an efficiency signal.
+
+**Redraft-relevant tier (draftable in 12-team leagues):**
+
+1. **Cameron Boozer (MEM, #3)** — the best 9-cat rookie bet, and it isn't close.
+   22.5/10.2/4.1 on 56/39/79 at Duke; comps run Kevin Love-with-better-handles to
+   Sabonis-with-a-three. The profile (REB + AST + stocks + *positive* %s) is exactly
+   what rookies never provide, on a rebuilding team that just cleared Ja and JJJ out
+   of the usage queue. `[LIKELY]`
+2. **AJ Dybantsa (WAS, #1)** — NCAA scoring champ (25.5 PPG, 6.8 REB, 1.4 stocks,
+   51 FG%); opened Summer League with 27 and 7 in 26 minutes, tying Blake Griffin's
+   record for a #1 pick's Vegas debut. Banchero-shaped rookie line is the projection;
+   points/threes/boards with FG% risk. The AD + Middleton veteran layer is the only
+   thing between him and a top-60 redraft season — watch Washington's minutes talk in
+   camp. `[LIKELY]`
+3. **Darius Acuff (SAC, #7)** — the class's most polished offensive guard (48/44/81
+   splits at Arkansas) and the sneaky redraft riser: analysts see a clear runway to
+   primary-guard minutes if Westbrook departs in free agency **[VERIFY]**. PTS/3PM/AST
+   with rookie-guard TOV. `[SPECULATIVE]`
+4. **Caleb Wilson (CHI, #4)** — elite vertical athlete, help-side shot-blocker, no
+   entrenched veteran ahead of him on a Splitter-rebuilt depth chart; 30+ minutes
+   plausible. Stocks + REB profile, 3PT inconsistency caps the ceiling. `[LIKELY]`
+5. **Yaxel Lendeborg (GSW, #11)** — 23-year-old ready-now forward; with Butler and
+   Moody sidelined **[VERIFY statuses]** he may open with real minutes. RotoWire's
+   line — "rare rookie whose real-life and fantasy timelines align early" — matches
+   the profile: good %s, low TOV, defensive stats, no category damage. Quiet top-100
+   category target. `[LIKELY]`
+6. **Darryn Peterson (UTA, #2)** — the best guard prospect in years, but redraft
+   analysts flag a crowded Utah rotation; middle-rounds price, not early. Summer
+   League says the talent is loud anyway: 26.5 PPG / 7 APG in Salt Lake City, then
+   24 and 25/12/2stl in Vegas. If camp hands him the keys, he jumps a full tier —
+   October's job to check. `[SPECULATIVE]`
+
+**Deep-league / watchlist tier:** Hannes Steinbach (CHA, #14 — 18.5/11.8 college
+rebounder, thin bench ahead); Labaron Philon (PHI, #22 — 50/40/80 profile, and his
+runway *improved* when Oubre left for Indiana in July `[LIKELY]`); Dailyn Swain (CHI,
+#15 — two-way wing, same open Bulls minutes); Allen Graves (TOR, #19 — 41% from
+three with steal+block rates; classic 9-cat specialist if minutes appear); Zuby
+Ejiofor (ATL, #23 — Big East POY, 2.1 BPG motor big); Alex Karaban (SAC, #29 —
+volume 3PM specialist, role-dependent).
+
+**Stash / dynasty-only tier:** Aday Mara (OKC, #12 — blocks-and-FG% specialist whose
+56% FT is a category wound; buried on the league's deepest roster); Nate Ament and
+Brayden Burries (MIL, #13/#10 — crowded *today*, but Milwaukee is the roster most
+likely to churn further; re-check in October); Bennett Stirtz (OKC, #16); Ebuka
+Okorie (DET, #17 — microwave scorer behind Cade); Christian Anderson (CHA, #18);
+Jayden Quaintance (SAS, #20 — torn ACL/meniscus, no redraft value); Karim Lopez
+(MEM, #21); Keaton Wagler (LAC, #5 — shooter whose rookie year hostage to the Kawhi
+resolution); Cameron Carr (LAL, #24); Morez Johnson (DAL, #9 — third big behind
+Lively/Gafford); Sergio de Larrea (DAL, #25 — likely stays in Spain **[VERIFY]**);
+Tarris Reed (SAS, #26); Chris Cenac (BOS, #27); Joshua Jefferson (BKN, #28 —
+all-around forward on a rebuild, quiet category floor if minutes come); Koa Peat
+(PHX, #30). Second round: Bruce Thornton (HOU, #31) the name to know. `[LIKELY]`
+
+**Full first round for reference:** 1 Dybantsa (WAS) · 2 Peterson (UTA) · 3 Boozer
+(MEM) · 4 Wilson (CHI) · 5 Wagler (LAC) · 6 Mikel Brown (BKN) · 7 Acuff (SAC) ·
+8 Kingston Flemings (ATL) · 9 Morez Johnson (DAL) · 10 Burries (MIL) · 11 Lendeborg
+(GSW) · 12 Mara (OKC) · 13 Ament (MIL) · 14 Steinbach (CHA) · 15 Swain (CHI) ·
+16 Stirtz (OKC) · 17 Okorie (DET) · 18 Anderson (CHA) · 19 Graves (TOR) ·
+20 Quaintance (SAS) · 21 Lopez (MEM) · 22 Philon (PHI) · 23 Ejiofor (ATL) · 24 Carr
+(LAL) · 25 de Larrea (DAL) · 26 Reed (SAS) · 27 Cenac (BOS) · 28 Jefferson (BKN) ·
+29 Karaban (SAC) · 30 Peat (PHX). `[CONFIRMED]`
+
+## 6. Fades and risk flags
 
 - **Kawhi Leonard** — trade on hold, league investigation open, perennial availability
   risk. Off the board entirely until October clarity. `[CONFIRMED status]`
@@ -121,7 +189,7 @@ after the tier-2/3 bigs is Kessler/Ware/Edey-class specialists; do not leave rou
   history. `[SPECULATIVE]`
 - **Zion** — the flag flies itself; new coach Mosley is the only new information. `[LIKELY]`
 
-## 6. Team-by-team capsules (30 teams, July snapshot)
+## 7. Team-by-team capsules (30 teams, July snapshot)
 
 *Format: projected fantasy-relevant core → opportunity note. All rotations
 `[SPECULATIVE]` until October depth charts; player-team facts tagged individually.*
@@ -135,9 +203,11 @@ after the tier-2/3 bigs is Kessler/Ware/Edey-class specialists; do not leave rou
 - **BKN** — Michael Porter Jr. usage feast, Demin + the 2025 five-rookie class year 2.
   Deep-league volume farm.
 - **CHA** — LaMelo (market round 1 — fade at that price), Brandon Miller, Knueppel,
-  Mark Williams **[VERIFY roster]**. CHA pieces moved in the AD three-teamer **[VERIFY who]**.
-- **CHI** — Simons (new), Giddey, Buzelis, Vučević GONE (to BOS), #4 pick **[VERIFY]**,
-  Splitter system. Minutes available everywhere — sleeper factory.
+  Steinbach (#14 — thin bench ahead of him), Mark Williams **[VERIFY roster]**. CHA
+  pieces moved in the AD three-teamer **[VERIFY who]**.
+- **CHI** — Simons (new), Giddey, Buzelis, Caleb Wilson (#4), Swain (#15), Vučević
+  GONE (to BOS); Splitter system. Minutes available everywhere — sleeper factory,
+  now with two rookies in it.
 - **CLE** — Mitchell, Harden (new), Mobley, Allen, no more Garland. Mobley is the one
   who profits if Harden declines.
 - **DET** — Cade round-1, Duren, Ivey, Thompson twins' stocks. Ascending, stable.
@@ -162,16 +232,17 @@ after the tier-2/3 bigs is Kessler/Ware/Edey-class specialists; do not leave rou
 - **DAL** — Flagg, Kyrie **[VERIFY health/roster — ACL Mar 2025]**, Lively/Gafford,
   post-AD. Dusty May pace bump helps everyone.
 - **DEN** — Jokić, Murray, Cam Johnson `[LIKELY]`, Braun. Stable; Jokić is the system.
-- **GSW** — Curry (38), KP, Butler **[VERIFY]**, Melton; LeBron rumor pending. Age
-  risk everywhere; %s still elite.
+- **GSW** — Curry (38), KP, Butler and Moody sidelined **[VERIFY injuries]**, Melton,
+  Lendeborg (#11 — early minutes likely); LeBron rumor pending. Age risk everywhere;
+  %s still elite.
 - **HOU** — KD `[LIKELY — acq. June 2025, VERIFY still rostered]`, Şengün, Amen,
   Sheppard. Şengün + Amen are the 9-cat meat.
 - **LAC** — Garland's team now (Harden, Kawhi, Zubac all gone). Bounce-back central;
   everything else deep-league.
 - **LAL** — Luka mega-usage post-LeBron, Kessler, Reaves (usage bump too). Three
   clear winners from one departure.
-- **MEM** — Boozer, Edey, GG Jackson **[VERIFY]**, Ja return pieces **[VERIFY]**.
-  Full rebuild = fantasy minutes for the young.
+- **MEM** — Boozer, Edey, GG Jackson **[VERIFY]**, Karim Lopez (#21), Ja return
+  pieces **[VERIFY]**. Full rebuild = fantasy minutes for the young.
 - **MIN** — Ant (healthy `[CONFIRMED]`), Gobert (aging), Randle **[VERIFY]**, McDaniels;
   DiVincenzo out. Ant usage could hit a career high.
 - **NOP** — Zion, Trey Murphy, Dejounte Murray (18 months post-Achilles), Fears,
@@ -183,13 +254,15 @@ after the tier-2/3 bigs is Kessler/Ware/Edey-class specialists; do not leave rou
 - **POR** — Ja (new), Dame (rehabbed, 36), Scoot (squeezed), Camara stocks, Clingan
   BLK. Crowded backcourt resolves in camp **[VERIFY]**.
 - **SAC** — Sabonis, DeRozan, LaVine **[VERIFY all — deadline "disappointment" note
-  suggests turnover]**. Highest roster uncertainty in the league right now.
+  suggests turnover]**, Acuff (#7) + Karaban (#29); Westbrook's free agency gates
+  Acuff's runway **[VERIFY]**. Highest roster uncertainty in the league right now.
 - **SAS** — Wemby, Fox, Castle, Harper year 2, Keldon 6MOY. Finals core, ascending;
   Castle's year-3 usage is the value play.
-- **UTA** — Peterson (#2 pick, immediate guard usage), Markkanen **[VERIFY]**,
-  Filipowski (Kessler's vacated C minutes — sneaky). Rebuild minutes to farm.
+- **UTA** — Peterson (#2 — talent obvious, but analysts flag a crowded guard
+  rotation; camp decides his tier), Markkanen **[VERIFY]**, Filipowski (Kessler's
+  vacated C minutes — sneaky). Rebuild minutes to farm.
 
-## 7. Early punt-build sketches (to be finalized with a draft slot)
+## 8. Early punt-build sketches (to be finalized with a draft slot)
 
 - **From Wemby (T1):** punt-AST — Wemby + wings/bigs; STL/BLK/%s fortress. Kessler,
   Ware, Camara, Edey types complete it late.
@@ -213,7 +286,9 @@ The run-order for Pass A-F, highest leverage first:
    more picks? Determines Ware/Herro ceilings.
 5. **Memphis's Ja return package** + JJJ's deadline destination.
 6. **The full 9-player AD deal** — every WAS/DAL/CHA piece.
-7. **CHI #4 pick identity** and the sixth coaching change.
+7. **Westbrook's free-agency decision** (gates Acuff), **GSW Butler/Moody injury
+   statuses** (gates Lendeborg), **de Larrea stash-or-stateside**, and the sixth
+   coaching change.
 8. **Injury re-audit** — Tatum's camp reports, Haliburton's ramp, Kyrie, Dame,
    Embiid, Zion, Ja, DiVincenzo timeline.
 9. **SAC and PHX rosters** — highest churn-risk capsules above.
@@ -231,3 +306,5 @@ The run-order for Pass A-F, highest leverage first:
 - [NBA.com — Edwards injury update](https://www.nba.com/news/anthony-edwards-out-knee-injury) · [Yahoo — Edwards MRI](https://sports.yahoo.com/articles/timberwolves-anthony-edwards-gets-official-182414827.html)
 - [NBA.com — LeBron to leave Lakers](https://www.nba.com/news/lebron-james-free-agency-2026) · [ESPN — FA intel week 1](https://www.espn.com/nba/story/_/id/49287883/2026-free-agency-intel-lebron-giannis-lakers-rockets-knicks-free-agents-superlatives)
 - [NBA.com — early 2026-27 fantasy first-round rankings](https://www.nba.com/news/nba-fantasy-2026-27-early-first-round-rankings) · [SI — way-too-early top 50](https://www.si.com/onsi/fantasy/rankings/fantasy-basketball-rankings-way-too-early-nba-2026-2027)
+- [Hoops Rumors — full 2026 draft results](https://www.hoopsrumors.com/2026/06/2026-nba-draft-results.html) · [RotoWire — first-round fantasy outlooks](https://www.rotowire.com/basketball/article/2026-nba-draft-full-first-round-breakdown-with-fantasy-outlooks-119604) · [NBC Sports — dynasty rookie rankings](https://www.nbcsports.com/fantasy/basketball/news/2026-nba-draft-dynasty-rookie-rankings-cameron-boozer-darryn-peterson-hold-top-spots) · [FantasyPros — rookie rankings](https://www.fantasypros.com/2026/06/fantasy-basketball-rookie-rankings-2026/)
+- [Yahoo — Dybantsa 27 in SL debut](https://sports.yahoo.com/nba/live/aj-dybantsa-scores-27-points-in-summer-league-debut-darryn-peterson-gets-24-in-matchup-of-nbas-top-draft-picks-000000201.html) · [NBA.com — Dybantsa outduels Peterson](https://www.nba.com/news/aj-dybantsa-outduels-darryn-peterson-in-2026-las-vegas-summer-league-debut)
