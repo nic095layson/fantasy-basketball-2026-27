@@ -51,6 +51,12 @@ Cameron Boozer (MEM), #4 Caleb Wilson (CHI). Full first-round fantasy breakdown 
 Per-game 9-cat lens, availability-adjusted. Market consensus (NBA.com, Yahoo, SI
 way-too-early boards) has the same top three; ordering within tiers is mine.
 
+> **The full numeric board lives in [top-200-2026-27.md](top-200-2026-27.md)** —
+> 200 players ranked by the z-score engine (`rank_engine.py`) over my own projections
+> (`projections-2026-27.csv`), with per-player punt fits. The tiers below are the
+> narrative layer; the board is the math. Where they disagree at the margins, the
+> board wins.
+
 **Tier 1 — the anchors (picks 1-3):**
 1. **Wembanyama (SAS, C)** — my 9-cat #1 over the market's Jokić-first consensus:
    3+ BPG is the single largest z-score concentration in the game, and he now adds

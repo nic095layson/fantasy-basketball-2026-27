@@ -250,7 +250,10 @@ Use these as priors, not conclusions; current-season research overrides all of t
   teams each) if the Agent tool is available; merge their artifacts before Phase 2.
 - Use WebSearch liberally; prefer sources with visible publication dates. Box scores
   and stat baselines: Basketball-Reference; ADP: the client's platform + an aggregator.
-- Build the z-score tables in a scratch script (Python) rather than by mental math;
-  commit the script to `report/` alongside the kit for reproducibility.
+- Build the z-score tables in a script rather than by mental math. **A working engine
+  already exists**: `report/rank_engine.py` over `report/projections-2026-27.csv`
+  (220 players, July 2026 baseline projections). Update the CSV rows your research
+  changes — teams, GP, per-game lines, new signings like the July unsigned FAs — and
+  re-run it; do not rebuild from scratch or hand-edit the generated board.
 - Expect the full run to be long. Complete phases in order and write artifacts to
   `report/` as you go, so an interrupted session can resume from the last artifact.
