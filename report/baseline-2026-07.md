@@ -78,8 +78,10 @@ Karl-Anthony Towns (NYK). `[LIKELY]`
 outside top-12 otherwise), Sabonis **[VERIFY SAC roster context]**, Booker (PHX),
 Maxey (PHI — mild haircut post-Brown), Mitchell (CLE — Harden overlap noted), Bam
 Adebayo (MIA — Ware's departure returns him to full-time C), Mobley (CLE), Scottie
-Barnes (TOR), Brunson (NYK), Fox (SAS), Trae Young (ATL), LaMelo Ball (CHA — market
-is pushing him into round 1 on health optimism; let someone else pay that),
+Barnes (TOR), Brunson (NYK), Fox (SAS), Trae Young (WAS — traded Jan 2026 for
+McCollum/Kispert; corrected 2026-07-13), LaMelo Ball (MIN — traded 2026-07-10,
+corrected 2026-07-13; market is pushing him into round 1 on health optimism; let
+someone else pay that),
 Herro (MIL — see breakouts), Jaylen Brown (PHI), Cooper Flagg (DAL — year-2 leap
 priced in fast; he'll be gone by round 2). `[SPECULATIVE ordering]`
 
@@ -99,7 +101,7 @@ after the tier-2/3 bigs is Kessler/Ware/Edey-class specialists; do not leave rou
 | **Cooper Flagg (DAL, F)** | Year-2 leap window + Dusty May's pace; the market knows — pay one round early rather than miss | `[CONFIRMED trajectory]` |
 | **AJ Dybantsa (WAS, F)** | #1 pick usage on a rebuild — but the AD/Middleton veteran layer caps the ceiling that Boozer doesn't have | `[SPECULATIVE]` |
 | **Amen Thompson (HOU)** | Ascending stocks monster; mechanism is age curve + defensive role, not news | `[LIKELY]` |
-| **Anfernee Simons (CHI, G)** | Deadline move + Splitter's new system; volume scoring + 3PM on a team with minutes to give | `[SPECULATIVE]` |
+| **Anfernee Simons (PHI, G)** | *(corrected 2026-07-13: signed 2yr with PHI in July — the CHI open-minutes mechanism below is void; re-evaluate in October)* ~~Deadline move + Splitter's new system; volume scoring + 3PM on a team with minutes to give~~ | `[SPECULATIVE]` |
 | **Zach Edey (MEM, C)** | Rebuild minutes; REB/FG%/BLK accumulator with nobody left to take them | `[LIKELY]` |
 | **Matas Buzelis (CHI, F)** | Year-3 leap candidate under a new coach | `[SPECULATIVE]` |
 | **Kasparas Jakučionis (MIL, G)** | Deep-league/dynasty: rebuilding team's PG of the future | `[SPECULATIVE]` |
@@ -202,32 +204,42 @@ all-around forward on a rebuild, quiet category floor if minutes come); Koa Peat
 
 **East**
 
-- **ATL** — Trae, Jalen Johnson, Risacher, Onyeka, NAW (reigning MIP). Stable; Jalen
-  Johnson's health is the swing.
-- **BOS** — Tatum (back), Paul George (new), Vučević (expiring), White, Pritchard.
-  Post-Achilles Tatum at a discount is the draft-day decision; Vooch's minutes **[VERIFY]**.
+- **ATL** — Jalen Johnson, McCollum, Dyson Daniels, Risacher, Onyeka, NAW (reigning
+  MIP). Trae GONE — traded to WAS Jan 2026 for McCollum/Kispert (corrected
+  2026-07-13). Jalen Johnson's health is the swing.
+- **BOS** — Tatum (back), Paul George (new), Mitchell Robinson (new — 3yr/$47.4M,
+  7/6), White, Pritchard. Vučević GONE — signed 1yr with ORL 2026-07-01 (corrected
+  2026-07-13). Post-Achilles Tatum at a discount is the draft-day decision.
 - **BKN** — Michael Porter Jr. usage feast, Demin + the 2025 five-rookie class year 2.
   Deep-league volume farm.
-- **CHA** — LaMelo (market round 1 — fade at that price), Brandon Miller, Knueppel,
-  Steinbach (#14 — thin bench ahead of him), Mark Williams **[VERIFY roster]**. CHA
-  pieces moved in the AD three-teamer **[VERIFY who]**.
-- **CHI** — Simons (new), Giddey, Buzelis, Caleb Wilson (#4), Swain (#15), Vučević
-  GONE (to BOS); Splitter system. Minutes available everywhere — sleeper factory,
+- **CHA** — Brandon Miller, Knueppel, Coby White (new — deadline arrival, re-signed
+  3yr, now the lead guard), Naz Reid (new — 7/10), Steinbach (#14 — thin bench ahead
+  of him), Mark Williams **[VERIFY roster]**. LaMelo GONE — traded to MIN 2026-07-10
+  (corrected 2026-07-13). CHA pieces moved in the AD three-teamer **[VERIFY who]**.
+- **CHI** — Giddey, Buzelis, Caleb Wilson (#4), Swain (#15), Norman Powell (new —
+  July FA), Claxton (new — 7/10), Dillingham (new — deadline); Vučević GONE (to BOS
+  at the deadline, now ORL); Simons GONE — signed with PHI July 2026 (corrected
+  2026-07-13); Splitter system. Minutes available everywhere — sleeper factory,
   now with two rookies in it.
 - **CLE** — Mitchell, Harden (new), Mobley, Allen, no more Garland. Mobley is the one
   who profits if Harden declines.
-- **DET** — Cade round-1, Duren, Ivey, Thompson twins' stocks. Ascending, stable.
-- **IND** — Haliburton's ramp, Zubac (new anchor C), Siakam, Mathurin (post-breakout
-  role **[VERIFY 25-26 numbers]**), Oubre. Everything reprices once Hali's minutes are known.
-- **MIA** — Giannis + Bam + Powell `[LIKELY]`. Thin behind them; Giannis punt-FT%
+- **DET** — Cade round-1, Duren, John Collins (new — S&T, 7/1), Thompson twins'
+  stocks. Ivey GONE — traded Feb 2026, later waived by CHI, unsigned FA (corrected
+  2026-07-13). Ascending.
+- **IND** — Haliburton's ramp, Zubac (new anchor C), Siakam, Oubre. Mathurin GONE —
+  to LAC in the Feb Zubac deal, now an unsigned LAC RFA (corrected 2026-07-13).
+  Everything reprices once Hali's minutes are known.
+- **MIA** — Giannis + Bam + Wiggins. Powell GONE — signed 2yr/$45M with CHI
+  2026-07-01 (corrected 2026-07-13); even thinner behind the stars. Giannis punt-FT%
   cornerstone; Bam back to full-time C is a quiet win.
 - **MIL** — The opportunity motherlode: Herro, Ware, Jakučionis, Burries, Ament,
   Kuzma, Turner **[VERIFY]**, Porter **[VERIFY]**. Jenkins rebuilds; draft the minutes.
 - **NYK** — Champions: Brunson, KAT, Bridges, OG, Hart. Known quantities, pay retail.
 - **ORL** — Banchero, Franz, Bane `[LIKELY — acq. June 2025]`, Suggs; new coach
   Sweeney. Bane's %s + Banchero usage; someone's counting stats give way.
-- **PHI** — Maxey, Jaylen Brown (new), Embiid (eternal `[VERIFY]` flag), McCain,
-  VJ Edgecombe. Three-star math: everyone eats a little less.
+- **PHI** — Maxey, Jaylen Brown (new), Embiid (eternal `[VERIFY]` flag), Simons
+  (new — July FA), VJ Edgecombe. McCain GONE — traded to OKC at the Feb deadline
+  (corrected 2026-07-13). Three-star math: everyone eats a little less.
 - **TOR** — Barnes, Ingram, Barrett, Quickley + Kawhi pending. Too many wings; wait
   for October resolution before drafting any of them at cost.
 - **WAS** — AD, Dybantsa, Sarr, Middleton, Coulibaly, Carrington. Fascinating and
@@ -249,18 +261,22 @@ all-around forward on a rebuild, quiet category floor if minutes come); Koa Peat
   clear winners from one departure.
 - **MEM** — Boozer, Edey, GG Jackson **[VERIFY]**, Karim Lopez (#21), Ja return
   pieces **[VERIFY]**. Full rebuild = fantasy minutes for the young.
-- **MIN** — Ant (healthy `[CONFIRMED]`), Gobert (aging), Randle **[VERIFY]**, McDaniels;
-  DiVincenzo out. Ant usage could hit a career high.
+- **MIN** — Ant (healthy `[CONFIRMED]`), LaMelo (new — arrived 2026-07-10), Gobert
+  (aging), McDaniels, Dosunmu (new — deadline, re-signed 5yr); DiVincenzo out. Randle
+  and Naz Reid GONE — both out in the four-team LaMelo deal (corrected 2026-07-13).
+  Ant usage could hit a career high.
 - **NOP** — Zion, Trey Murphy, Dejounte Murray (18 months post-Achilles), Fears,
   Missi; Mosley arrives. Murphy is the safe one.
 - **OKC** — SGA, Chet, JDub, Mara/Stirtz stashed. Title-core depth suppresses
   everyone's counting stats except SGA's.
-- **PHX** — Booker mega-usage, Brooks/O'Neale role guys **[VERIFY roster]**. Booker
+- **PHX** — Booker mega-usage, Brooks, Miles Bridges (new). O'Neale and Grayson
+  Allen GONE — traded to CHA for Bridges 2026-06-26 (corrected 2026-07-13). Booker
   as a one-man fantasy team.
 - **POR** — Ja (new), Dame (rehabbed, 36), Scoot (squeezed), Camara stocks, Clingan
   BLK. Crowded backcourt resolves in camp **[VERIFY]**.
-- **SAC** — Sabonis, DeRozan, LaVine **[VERIFY all — deadline "disappointment" note
-  suggests turnover]**, Acuff (#7) + Karaban (#29); Westbrook's free agency gates
+- **SAC** — Sabonis, LaVine (option exercised), De'Andre Hunter (new — Feb deadline,
+  returning from eye surgery), Acuff (#7) + Karaban (#29); DeRozan GONE — waived
+  2026-07-06, unsigned FA (corrected 2026-07-13); Westbrook's free agency gates
   Acuff's runway **[VERIFY]**. Highest roster uncertainty in the league right now.
 - **SAS** — Wemby, Fox, Castle, Harper year 2, Keldon 6MOY. Finals core, ascending;
   Castle's year-3 usage is the value play.
