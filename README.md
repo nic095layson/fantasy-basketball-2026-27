@@ -10,7 +10,8 @@ slot is known.
 |---|---|
 | [PROMPT.md](PROMPT.md) | The master analysis prompt — research protocol, 9-cat z-score valuation, punt-build math, draft-slot playbook, full deliverables spec. Methodology only; contains no player data that can go stale. |
 | [INPUTS.md](INPUTS.md) | Fill-in template. Four ⭐ fields are the only things the prompt can't research itself: injury/news notes, final-roster caveats, **your draft slot**, and league team names. Everything else has defaults. |
-| `report/` | Output lands here. The run also writes intermediate research artifacts here, so an interrupted session can resume. |
+| [report/baseline-2026-07.md](report/baseline-2026-07.md) | **The July 2026 baseline analysis** — offseason ledger (Giannis→MIA, Brown→PHI, Ja→POR, the record deadline), early 9-cat tiers, breakouts/fades with mechanisms, all-30-team capsules, punt sketches, and the October verification list. The October run reads this as priors and patches what changed. |
+| `report/` | Final kit lands here. The run also writes intermediate research artifacts here, so an interrupted session can resume. |
 
 ## How to run it in October
 

@@ -35,6 +35,12 @@ platform, league size, scoring format, roster slots, draft type, **the client's 
 slot**, league team names, keeper rules, injury notes the client already knows, and
 risk preferences.
 
+Then read `report/baseline-2026-07.md` — the July 2026 baseline analysis. Treat it as
+priors, not truth: its "October verification list" is your Pass A-F starting agenda,
+its `[VERIFY]` tags are mandatory checks, and its `[CONFIRMED]` facts still get
+re-dated if they anchor a top-50 valuation. Where your research contradicts the
+baseline, your research wins; note the correction in the report's front matter.
+
 If a field is blank, use its stated default, proceed, and list every defaulted
 assumption in the report's front matter as `A1, A2, …` so the client can correct them.
 Do not stall on missing inputs.
