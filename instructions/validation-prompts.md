@@ -49,7 +49,9 @@ surface whose capabilities genuinely differ (below).
   **G4** (governor integrity) and **F1** (freshness card) in Cowork first. If
   neither fires, the brief and skills aren't wired into Cowork — **that** is the
   finding to fix first; the rest of the Cowork column is moot until the
-  procedures are actually loaded there.
+  procedures are actually loaded there. (Run the configuration-parity pre-flight
+  below before the behavioral tests — it catches a *missing or divergent* install
+  before you spend time diagnosing behavior.)
 - **Grounding is behavior-based, not answer-based.** Pass criteria check whether
   Claude *verified, cited, flagged, or refused* — never whether it got a specific
   roster fact right. That keeps the suite from rotting as rosters change and keeps
@@ -91,6 +93,54 @@ Claude *searches* rather than asserting from memory.
 **Cadence.** Run the 60-second smoke test (**S1–S2**) any day before you lean on
 the system. Run the full four-cell suite after any edit to the instruction box
 or skill uploads, after a repo "Sync now," and once more the week of the draft.
+
+---
+
+## Pre-flight — is it installed, and is it the same everywhere?
+
+The behavioral tests below check that the procedures *fire*. This pre-flight
+checks the layer underneath: that the instructions and skill uploads are actually
+**present and identical** in each place you run. That's the "clear and
+established" half — it's a **configuration** question, separate from behavior. Do
+it once per surface before the behavioral suite, and again after any edit.
+
+**What "model" changes vs what "surface" changes.** Sonnet and Opus read the
+**same** surface configuration — there is no per-model instruction store. So a
+Sonnet-vs-Opus difference is always *adherence* (did the model follow what's
+there), never *configuration* (what's there). That's exactly why the matrix diffs
+**behavior across models** but **configuration across surfaces**. The two surfaces
+keep their config in different places:
+
+- **claude.ai** — Settings → Personalization (the general custom
+  instructions / governors) **+** the fantasy-basketball Project → Project
+  instructions box (the co-GM brief) **+** any uploaded skill files. Canonical
+  copies of record: [`instructions/claude-ai-project-instructions.md`](claude-ai-project-instructions.md)
+  (this repo) and the
+  [`claude-core-skills`](https://raw.githubusercontent.com/nic095layson/claude-core-skills/main/README.md)
+  instructions.
+- **Cowork** — its own instructions / skill configuration. The surface most
+  likely to differ, because it does **not** inherit the claude.ai Project box
+  automatically.
+
+**Parity checklist — per surface:**
+- [ ] Governors present match the live `claude-core-skills` list — **3 active**
+      (plan-gate, adversarial-verify, scope-fence), **2 retired** — no extras, no
+      stale copies. *(G4 confirms this behaviorally.)*
+- [ ] The co-GM brief in the instructions box matches
+      `instructions/claude-ai-project-instructions.md` **verbatim** — the repo's
+      drift law says the box and the file must never disagree. Diff them; if they
+      differ, re-paste from the file.
+- [ ] The uploaded skills are the **current** versions (check against the repo,
+      not a months-old export).
+- [ ] claude.ai and Cowork point at the **same** canonical source, so a future
+      edit updates both. If they carry divergent copies, *that divergence* — not
+      model behavior — is your first finding.
+
+**The rule:** parity check = "the words are there and identical across all four
+contexts"; the behavioral suite = "the words actually fire." You need **both** to
+call it *clear and established*. If the parity check fails, fix the config before
+running the suite — behavioral failures stacked on a config mismatch send you
+chasing the wrong bug.
 
 ---
 
