@@ -2,8 +2,9 @@
 """9-cat z-score ranking engine — implements PROMPT.md §4.2.
 
 Reads projections-2026-27.csv (per-game projections + GP), computes impact-weighted
-z-scores over an iterated top-180 draft pool, availability-adjusts by GP/82, and
-writes top-200-2026-27.md. Update the CSV, re-run, done.
+z-scores over an iterated top-180 draft pool, availability-adjusts with a
+streaming-credit model (GP/82 plus 0.20 credit on missed games; negatives never
+shrunk by absence), and writes top-200-2026-27.md. Update the CSV, re-run, done.
 """
 import csv
 import math
@@ -17,6 +18,22 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 COUNTING = ["tpm", "pts", "reb", "ast", "stl", "blk"]
 PUNTS = ["fgp", "ftp", "tpm", "pts", "ast", "tov"]  # the six common punt builds
 POOL_SIZE = 180
+# Streaming credit (method change 2026-07-27): in weekly H2H with open roster
+# moves, a missed game is partly replaceable, so availability-adjusted value
+# uses GP/82 + (1-GP/82)*STREAM_R for positive-value players. STREAM_R is
+# anchored to the deck plane's arena-calibrated 0.78 risk multiplier (solve
+# a + (1-a)*r = 0.78 at the risk-class GP centroid a~=0.72), the law whose
+# own rationale is that missed games are partly replaceable via streaming.
+# Negative per-game values are NEVER shrunk by absence (matches
+# scripts/hoops.py adj_value: a 15-GP rehab season must not outrank playable
+# players — the linear model had DiVincenzo #93 on exactly that artifact).
+# Derivation + full board diff: report/method-change-2026-07-27-availability.md
+STREAM_R = 0.20
+
+
+def avail(gp):
+    a = gp / 82.0
+    return a + (1 - a) * STREAM_R
 
 
 def load(path):
@@ -103,7 +120,8 @@ def main():
     for r in rows:
         z = z2[r["name"]]
         r["z_total"] = total(z)
-        r["z_adj"] = r["z_total"] * (r["gp"] / 82.0)
+        av = avail(r["gp"])
+        r["z_adj"] = r["z_total"] * av if r["z_total"] > 0 else r["z_total"]
         # punt fits: rank shift if a category's z is dropped from everyone's sum
         r["punt_totals"] = {p: r["z_total"] - z[p] for p in PUNTS}
 
@@ -111,7 +129,9 @@ def main():
 
     # punt best/worst by rank improvement under each punt
     for p in PUNTS:
-        order = sorted(rows, key=lambda r: -(r["punt_totals"][p] * r["gp"] / 82.0))
+        order = sorted(rows, key=lambda r: -(r["punt_totals"][p] * avail(r["gp"])
+                                             if r["punt_totals"][p] > 0
+                                             else r["punt_totals"][p]))
         pr = {r["name"]: i for i, r in enumerate(order)}
         base = {r["name"]: i for i, r in enumerate(sorted(rows, key=lambda r: -r["z_adj"]))}
         for r in rows:
@@ -129,7 +149,9 @@ def main():
         f"*Generated {date.today().isoformat()} by `rank_engine.py` from "
         "`projections-2026-27.csv`. Method: PROMPT.md §4.2 — per-game z-scores over an "
         "iterated top-180 pool, FG%/FT% impact-weighted by volume, TOV negative, ranked "
-        "by availability-adjusted value (z-total × GP/82). Punt column: build where the "
+        "by availability-adjusted value: z-total × (GP/82 + (1−GP/82)×0.20) — the "
+        "streaming-credit availability model; negatives never shrunk by absence. "
+        "Punt column: build where the "
         "player gains the most ranks / loses the most.*",
         "",
         "**Basis and caveats (read before drafting off this):**",
@@ -153,6 +175,13 @@ def main():
         "- Kawhi Leonard carries a 35-GP projection while his Toronto trade sits in",
         "  league-investigation limbo (probe fact-finding done, NBA reviewing as of",
         "  2026-07-24; suspension/void scenarios still live); his row is a placeholder.",
+        "- **Availability model changed 2026-07-27**: missed games are partly",
+        "  replaceable in weekly H2H, so the GP discount carries a 0.20 streaming",
+        "  credit (anchored to the deck plane's arena-calibrated 0.78 risk law),",
+        "  and negative per-game values are never shrunk by absence. Injury-",
+        "  discounted stars rise a tier (Kawhi, Embiid); rehab-season rows fall",
+        "  to the tail where they belong. Derivation and full diff:",
+        "  report/method-change-2026-07-27-availability.md.",
         "- October's job: update rows in the CSV as news lands, re-run this script,",
         "  and the board regenerates. Do not hand-edit the table below.",
         "",

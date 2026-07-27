@@ -135,8 +135,11 @@ z-score against all ~530 rostered players; that inflates everyone):
 - FG%/FT%: impact-weighted as defined in §2 before z-scoring.
 - TOV: negative z.
 - Total value = sum of nine z-scores. Also report **availability-adjusted value** =
-  per-game value × (projected GP / 82), using Pass C risk classes. Rank the big board
-  by availability-adjusted value but show both numbers.
+  per-game value × (GP/82 + (1 − GP/82) × 0.20) for positive values — the streaming
+  credit reflects that missed games are partly replaceable in weekly H2H (anchored
+  2026-07-27 to the deck plane's arena-calibrated 0.78 risk law); negative per-game
+  values are never shrunk by absence. Uses Pass C risk classes for GP. Rank the big
+  board by availability-adjusted value but show both numbers.
 
 **4.3 Punt re-valuation.** Recompute every player's total under each of the six
 common punt builds (drop the punted category's z from the sum): punt FT%, punt FG%,
