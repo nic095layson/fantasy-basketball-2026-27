@@ -147,7 +147,7 @@ its window and staleness becomes invisible again.
 ## 7. Deck sync + republish (the other data plane)
 
 The published **Draft Deck** artifact renders from `yahoo-fantasy-basketball`'s
-`data/players.csv` (the 227-row deck pool, `scripts/hoops.py` math), NOT from
+`data/players.csv` (the deck pool, `scripts/hoops.py` math), NOT from
 this repo's CSVs. The two planes share news, not files — a pull that updates
 only this repo leaves the deck lying about freshness. After §6:
 

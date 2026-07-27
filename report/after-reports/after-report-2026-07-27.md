@@ -7,7 +7,7 @@
 📋 Freshness Check — 2026-07-27
 ✓ Verified: all 5 team changes, 2 pool removals, 2 pool additions, 9 FA statuses,
   16 targeted injury checks, Kawhi trade status — every claim below carries a dated source
-⚠ Changes since 7/13: 10 rows edited/added/removed in projections CSV (detail below)
+⚠ Changes since 7/13: 8 rows edited/added/removed in projections CSV (detail below; banner corrected during 7/27 validation — originally overstated as 10)
 ✗ Cannot verify: Mark Williams' current foot status; Trey Alexander SL injury severity;
   Kuminga's GSW-vs-ATL rights discrepancy (single source)
 ```
