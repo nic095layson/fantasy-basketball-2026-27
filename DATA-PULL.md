@@ -24,6 +24,14 @@ A pull is complete only when ALL of the following are true:
    and is in the same push.
 3. `report/pull-log.md` has a new row for this pull (same push).
 4. `python3 report/check_provenance.py` exits 0.
+5. The Draft Deck data plane (`yahoo-fantasy-basketball` → `data/players.csv`)
+   received the same window's news under its own laws (role-reprice,
+   pool-completeness, roster validation lock), landed on a pushed branch/PR.
+6. The Draft Deck artifact was rebuilt and **republished to its existing URL**
+   with `built` = today (§7) — or the after-report states exactly why not.
+   On 2026-07-27 the owner found the deck serving a 3-day-old pool because a
+   pull treated the repo push as the whole job. The artifact is a delivery
+   surface of this system; a pull that leaves it stale is not done.
 
 If the push fails, say so explicitly and stop — do not report the pull as done.
 
@@ -136,7 +144,30 @@ your final message. Quiet days still commit — the pull-log row and after-repor
 ARE the record that the check happened; without them the next pull cannot date
 its window and staleness becomes invisible again.
 
-## 7. Failure modes
+## 7. Deck sync + republish (the other data plane)
+
+The published **Draft Deck** artifact renders from `yahoo-fantasy-basketball`'s
+`data/players.csv` (the 227-row deck pool, `scripts/hoops.py` math), NOT from
+this repo's CSVs. The two planes share news, not files — a pull that updates
+only this repo leaves the deck lying about freshness. After §6:
+
+1. In `yahoo-fantasy-basketball`: apply the window's news to
+   `data/players.csv` under its laws — role-reprice for new-team roles,
+   pool-completeness (`MUST_HAVE`), availability tags (`out-*` / `recovery` /
+   `risk`), players who leave the NBA leave the pool. Update the
+   `data/rosters_official.json` evidence entries for every placement you
+   changed (dated sources).
+2. `python3 scripts/verify_rosters.py` — zero mismatches, dated today.
+3. `python3 scripts/hoops.py freshness --stamp --note "<window summary>"`.
+4. Re-author the deck's `JUDGMENT` layer (in `docs/draft-deck.html`) from this
+   window's research — date it today; stale rationales are defects.
+5. `python3 scripts/build_deck.py` — all gates must pass; never hand-edit the
+   injection anchors.
+6. Republish `docs/draft-deck.html` to the **existing** artifact URL (do not
+   mint a new one) and confirm the page header reads "fresh today".
+7. Commit and push (that repo's branch/PR rules apply).
+
+## 8. Failure modes
 
 - Web access unavailable → stop and say so. No pull from memory.
 - A source conflicts with the repo → the fresher sourced fact wins; flag the
