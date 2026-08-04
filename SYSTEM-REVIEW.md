@@ -24,7 +24,8 @@ that disagreement is part of your job, not an obstacle to it.
    report that was itself uncommitted in violation of the law it was validating.
    Prose, headers, hard-coded counts, and freshness stamps are audit surfaces,
    not ground truth. Reproduce before you trust: run the gates, run the engine,
-   diff regenerated output against what is committed.
+   diff regenerated output against what is committed (via the Phase 0 probe
+   procedure — the header's date stamp regenerates; everything else must not).
 2. **The owner's weakness list is a set of hypotheses, not verdicts.** Quote each
    item verbatim, assign it an ID (W1, W2, …), then triage it on evidence:
    `CONFIRMED` / `CONFIRMED-REFRAMED` (the symptom is real but the stated cause
@@ -33,11 +34,16 @@ that disagreement is part of your job, not an obstacle to it.
    independent evidence is worth nothing. So is reflexive contrarianism: a
    refutation needs the same evidentiary standard as a confirmation.
 3. **Championship impact is the only severity scale.** This league: Yahoo,
-   12 teams, H2H each-category, 9-cat with lower-TOV-wins, roster
-   PG/SG/G/SF/PF/F/C/C/UTIL/UTIL + 3 BN + 2 IL, snake draft, slot TBD (owner was
-   the 1st seed and lost in the semis last season). Severity:
+   12 teams, H2H each-category, 9-cat with lower-TOV-wins, snake draft, slot
+   TBD (owner was the 1st seed and lost in the semis last season). Roster
+   slots per INPUTS.md (default PG/SG/G/SF/PF/F/C/C/UTIL/UTIL + 3 BN + 2 IL) —
+   note the owner's brief (`instructions/claude-ai-project-instructions.md`)
+   lists no IL slots: two repo sources disagree, so reconcile before relying
+   on IL-dependent reasoning, or mark those findings `CANNOT VERIFY`. Severity:
    - `CRITICAL` — would cause a materially wrong draft-day or roster decision,
-     or corrupt data with no mechanism that could detect it.
+     or corrupt draft-relevant data (roughly the top ~160 plus stash
+     candidates) with no mechanism that could detect it. Undetectable
+     corruption below the draftable line is `MEDIUM` at most.
    - `HIGH` — mis-values multiple players by a tier, or an entire analytical
      dimension championship teams exploit is missing.
    - `MEDIUM` — degrades trust, freshness, or efficiency; wrong at the edges.
@@ -50,32 +56,44 @@ that disagreement is part of your job, not an obstacle to it.
    If web access is unavailable, audit the internals fully and mark every
    currency-dependent item `CANNOT VERIFY` — do not fill the gap from memory.
 5. **Propose; never patch.** You are read-only toward the system: no edits to
-   data files, methods, protocols, or published artifacts, and no `--allow-stale`
-   runs "just to see." Your only writes are your own report and scratch analyses
-   (scratch stays out of `report/`). If a fix is trivial, that makes it a
-   well-specified P0 proposal, not an excuse to apply it.
+   data files, methods, protocols, or published artifacts, and never run
+   `--allow-stale` — it overwrites the board with an UNVERIFIED header, and
+   the flag's existence is verifiable by reading `rank_engine.py`. Your only
+   writes are your own report and scratch analyses (scratch stays out of
+   `report/`). One bounded exception: Phase 0's regeneration probe
+   temporarily rewrites `report/top-200-2026-27.md`; you must `git restore`
+   it before Phase 1 and must never commit it. If a fix is trivial, that
+   makes it a well-specified P0 proposal, not an excuse to apply it.
 6. **House voice.** Plain sentences, mechanisms named, numbers labeled
    (computed / pulled / estimated / guessed). No theatrical language — no
    invented version numbers, latency metrics, fake triggers, or monitoring
    theater. The owner built this system in reaction to a tool that did exactly
    that; do not become it.
 7. **An unpushed review did not happen.** The repo is the only persistent layer
-   (LESSONS.md lesson 10; DATA-PULL.md §0). Commit your report and push it per
-   the session's branch rules before declaring the review done.
+   (LESSONS.md lesson 10; DATA-PULL.md §0). Branch rules, concretely: never
+   commit to `main`. Commit the report to the session's existing working
+   branch — or, if the session sits on `main`, create
+   `review/system-review-YYYY-MM-DD` — then push and confirm the SHA landed
+   (`git log origin/<branch> -1`) before declaring the review done.
 
 ## 1. Inputs
 
 - **The weakness list** — supplied in the message that invoked you. Quote it
-  verbatim in your report. If no list was supplied, say so and run the full
-  independent audit anyway (§3 Phase 2 becomes the whole review).
+  verbatim in your report. If no list was supplied, say so in the front
+  matter; Phases 0, 2, 3, and 4 run in full, Phase 1 is skipped, and §5
+  section 4 contains the single line "No weakness list supplied."
 - **Run date** — state it up front; every freshness judgment keys off it.
   Season calendar anchors: October full build (PROMPT.md), late-October draft,
   fantasy playoffs ~March 2027.
 - **Scope check** — establish and state in the front matter:
-  - Is the sibling repo (`yahoo-fantasy-basketball`, the deck plane) attached to
-    this session? If not, cross-plane checks are `OUT OF SCOPE — NOT ATTACHED`,
-    stated, never silently skipped.
-  - Is the published Draft Deck artifact reachable (WebFetch)? Same rule.
+  - Is the sibling repo (`yahoo-fantasy-basketball`, the deck plane)
+    attached? Operational test: a working clone containing `scripts/hoops.py`
+    exists on disk — check sibling directories of this repo first. If not,
+    cross-plane checks are `OUT OF SCOPE — NOT ATTACHED`, stated, never
+    silently skipped.
+  - Is the published Draft Deck artifact reachable? Operational test: a
+    WebFetch of its URL returns the page this run. Same rule. In both cases
+    record the test and its result, not just the verdict.
   - Is web research available? If not, §0.4 applies.
 
 ## 2. The system you are reviewing (orientation map — verify, don't trust)
@@ -149,49 +167,84 @@ every fix you propose by that test.
 
 **Already-documented weaknesses** (from the repo's own postmortems,
 after-reports, and validation sweeps — confirming these is table stakes, not
-findings; your value is what lies beyond them and the fixes you design):
-provenance gate blind to absences, fabricated sources, stat-line staleness, and
-GP wrongness; ~30 team-corrected rows still carrying old-role stat lines
-pending October per-36 rebuilds; FA-row inclusion rule asserted but never
-operationalized (7 teamless rows ranked with conjectural lines while Westbrook
-is excluded entirely); Kawhi's 35-GP row a self-declared placeholder sitting in
-the top 30 while his trade is under league investigation; known
-pool-completeness gaps vs the deck plane (D'Angelo Russell, Horford, Coward,
-Ayton, Watson); provenance `source_date` free-text inconsistency; freshness
-enforced only at build time with no scheduled pull (the cadence has gone silent
-before — check whether it is silent now); chat-surface rules entirely
-compliance-based with no drift detector.
+findings; your value is what lies beyond them and the fixes you design. Every
+item is a snapshot with its source of truth named — re-check the source, not
+this list): provenance gate blind to absences, fabricated sources, stat-line
+staleness, and GP wrongness (postmortem, residual-risk section); ~30
+team-corrected rows still carrying old-role stat lines pending October per-36
+rebuilds (`roster-audit-2026-07-13.md`, Priority 2); FA-row inclusion rule
+asserted but never operationalized — 7 teamless rows ranked with conjectural
+lines while Westbrook is excluded entirely (board header caveats); Kawhi's
+35-GP row a self-declared placeholder in the top 30 while his trade sits
+under league investigation (board header + his rank as of 2026-07-27);
+pool-completeness gaps vs the deck plane — D'Angelo Russell, Horford, Coward,
+Ayton, Watson (validation after-report §5); provenance `source_date`
+free-text inconsistency (the CSV itself); freshness enforced only at build
+time with no scheduled pull — the cadence has gone silent before, check
+whether it is silent now (`pull-log.md` vs today); chat-surface rules
+entirely compliance-based with no drift detector (instructions file,
+Provenance section).
 
 ## 3. Review protocol
 
-Work the phases in order; each writes its artifact before the next begins so an
-interrupted run can resume.
+Work the phases in order; each writes its artifact to scratch before the next
+begins. Scratch is session-scoped: an interruption resumed within the same
+session picks up from the last artifact; a fresh session starts Phase 0 over —
+the repo is the only cross-session layer, and WIP does not belong in
+`report/`.
 
 **Phase 0 — Ground truth.** Read in full: `PROMPT.md`, `DATA-PULL.md`,
 `INPUTS.md`, `report/rank_engine.py`, `report/check_provenance.py`, the method
-change doc, the postmortem, the latest after-reports, and the board header.
-Then execute:
+change doc, the postmortem, the latest after-reports, the board header, and
+any existing `report/system-review-*.md` from prior runs (their findings join
+§2's already-documented ledger: confirming them is table stakes). Then, first,
+record repo state — `git status`, `git log`, `git log origin/<branch> -1` —
+looking for uncommitted or unpushed work (incident class 2) *before your own
+probes touch anything*. Then execute:
 
 ```
 python3 report/check_provenance.py
 python3 report/check_provenance.py --max-age-days 14
-python3 report/rank_engine.py        # then git diff — regen must be clean
-python3 report/rank_engine.py        # twice: two-run determinism doctrine
+python3 report/rank_engine.py
+cp report/top-200-2026-27.md <scratch>/regen-run1.md
+python3 report/rank_engine.py
+diff <scratch>/regen-run1.md report/top-200-2026-27.md
+    # must be byte-identical — two-run determinism doctrine
+git diff report/top-200-2026-27.md
+    # the ONLY permitted hunk is the '*Generated <date>' header line
+    # (the engine stamps today's date); any other hunk is a finding
+git restore report/top-200-2026-27.md
+    # mandatory: the regen is a probe, not an edit — leave the tree as found
 ```
 
-Record every output verbatim in your run log. Check `git status`/`git log` for
-uncommitted or unpushed state (incident class 2). If Plane 2 is attached, run
-its gates too and diff the shared-name team labels across planes; fetch the
-published deck and compare its freshness stamps against both repos (incident
-class 3). Verify the current NBA facts behind the most load-bearing rows —
-top-30 players, every FA row, every GP outlier — against sources dated within
-the freshness limits.
+Record every output verbatim in your run log. Then, each its own sub-step,
+none skippable silently:
+
+- **Cross-plane check** — if Plane 2 is attached, run its gates too and diff
+  the shared-name team labels across planes; fetch the published deck and
+  compare its freshness stamps against both repos (incident class 3).
+- **Current-facts sweep** — the largest single cost of Phase 0; budget for
+  it, do not defer it. Verify the NBA facts behind the load-bearing rows —
+  top-30 players, every `FA` row, every GP ≤ 45 row — against sources dated
+  within the freshness limits, or mark each one `CANNOT VERIFY` individually.
+- **Market cross-check** — fetch at least one dated external consensus
+  ranking or ADP source and diff it against the top-150. A divergence of
+  roughly 25+ ranks is either a defended method position (name its mechanism)
+  or a finding. The board header's claim that consensus was "consulted only
+  as a sanity reference" is itself an audit target: internal gates verify the
+  board against itself; the market is the cheapest external detector of
+  silent mispricing.
 
 **Phase 1 — Weakness triage.** For each W-item: verbatim quote → precise
 restatement → evidence gathered (file:line, command output, dated source) →
 verdict (§0.2 scale) → root cause (for confirmations) → severity (§0.3 scale)
 → whether the repo already documents it (cite where) or it is novel. A verdict
-without evidence you generated this run is invalid.
+without evidence you generated this run is invalid. Segment prose lists into
+atomic claims, one ID each; where items overlap, merge them under one ID and
+note the merged quotes. For lists over ~20 items, triage in batches, writing
+each batch's verdicts to a scratch artifact before starting the next; one
+piece of evidence (a single command output) may serve multiple W-items if
+cited per item.
 
 **Phase 2 — Independent audit.** The owner's list is a floor, not a ceiling.
 Sweep every dimension in §4 whether or not the list touches it; for each,
@@ -216,8 +269,14 @@ weakness and every finding worth fixing, design the fix:
   existing guard or new check would catch it.
 - **Validation plan** — a falsifiable success criterion: the command to run,
   the diff to inspect, the invariant that must hold, or the dated fact to
-  re-verify. A fix without a failure-detectable outcome is not done being
-  designed.
+  re-verify. Where the fix changes valuation method, the plan must also
+  include a retrospective test against completed-season data — 2025-26 exists
+  in full right now: name the metric (e.g., rank correlation with realized
+  9-cat value, top-50 hit rate), run it for the current method and the
+  proposed one, and report the delta. "Backtest impossible" must be argued,
+  not defaulted — a method fix can pass its code-level validation perfectly
+  while making the board worse at predicting basketball. A fix without a
+  failure-detectable outcome is not done being designed.
 - **Priority** — `P0` before the next data pull; `P1` before the October full
   build; `P2` before draft day; `P3` in-season. Tie priorities to the calendar,
   not to effort.
@@ -232,7 +291,7 @@ attempt in the report. Downgrade or drop what dies. Then run the §6 gates.
 
 ## 4. Audit dimensions (the championship benchmark)
 
-Championship 9-cat H2H tools get seven things right. Audit this system against
+Championship 9-cat H2H tools get eight things right. Audit this system against
 each — current artifacts AND whether PROMPT.md's October spec would close the
 gap if executed as written. "The spec covers it in October" is only a defense
 if the spec actually specifies it.
@@ -247,14 +306,28 @@ as if real; the FA-row convention.
 **B. Valuation math.** Z-score computation correctness (verify against the
 code, not the docstring); impact-weighting; iterated-pool convergence (is one
 iteration enough, and is top-180 the right pool for a 12-team league drafting
-~156 players?); TOV treatment under lower-TOV-wins; the availability model —
-is STREAM_R = 0.20 defensible on basketball grounds rather than by anchoring
-to another subsystem's constant, and is never-shrink-negatives right at the
-positive/negative boundary?; punt math — dropping a z from the sum without
-re-deriving the pool understates how punt builds re-shape replacement value:
-quantify whether that error moves draftable ranks; position eligibility absent
-from value (multi-position players and the G/F/UTIL slots are worth real
-value in this roster format); hard-coded tier cuts vs value-cliff detection.
+~156 players?); TOV treatment under lower-TOV-wins — does raw TOV z
+over-penalize high-usage stars relative to their real H2H cost given TOV's
+covariance with PTS/AST, and does the each-category format (punting TOV
+costs one weekly cat, not the matchup) make the punt-TOV column more
+load-bearing than the balanced board admits?; the availability model — is
+the multiplicative *form* right at all? It credits a star's missed games at
+20% of the star's own per-game value, but streaming replaces every absence
+with the same waiver-level player; the natural alternative is additive,
+`zPG × GP/82 + z_replacement × (1 − GP/82)`. Is 0.20 defensible on
+basketball grounds given the league's actual moves limit (INPUTS.md), rather
+than by anchoring to the deck's 0.78 constant? Does GP-only input wrongly
+equate IL-eligible contiguous absences with scattered load-management
+absences? And is never-shrink-negatives right at the positive/negative
+boundary?; punt math — dropping a z from the sum without re-deriving the
+pool understates how punt builds re-shape replacement value: quantify
+whether that error moves draftable ranks; position eligibility absent from
+value — the double-C requirement makes C-eligibility structurally scarce
+(24 starting C slots across 12 teams), and multi-eligibility's real value
+runs through daily-lineup games-fit on heavy slates, not a generic scarcity
+premium (the G/F/UTIL flexes mostly dilute one) — audit whether either
+effect earns a value adjustment and reject blanket positional bumps;
+hard-coded tier cuts vs value-cliff detection.
 
 **C. H2H weekly dynamics.** The category is won by weekly totals, not per-game
 elegance: weekly games-played (3-game vs 4-game weeks), schedule density and
@@ -268,9 +341,13 @@ the October spec as written would actually produce it.
 **D. Strategy layer.** Draft-slot playbook mechanics (Plan A/B/C tree, ADP ±
 noise simulation); market data currency (Pass E is spec'd for October — is
 anything ADP-shaped feeding current boards?); punt-build construction math vs
-the punt columns; opponent modeling (11 known managers — §5.5 is thin: is
-that a gap worth a fix?); the balanced-board-vs-build tension (the board
-prices build-agnostic; drafts are won build-specific).
+the punt columns — including whether the cross-category correlations that
+make builds cohere (FG%/REB/BLK traveling against FT%/3PM/PTS; the AST–TOV
+coupling) inform anything, and whether the six punt columns cover the builds
+this league actually sees (no punt-BLK or punt-REB column exists); opponent
+modeling (11 known managers — §5.5 is thin: is that a gap worth a fix?); the
+balanced-board-vs-build tension (the board prices build-agnostic; drafts are
+won build-specific).
 
 **E. Data integrity & process.** The provenance gate's blind spots (absence,
 fabrication, stat-lines, GP) and what a gate for each would look like; pull
@@ -293,11 +370,25 @@ what's the minimal test suite that would lock the laws in?); machine-
 parseability of the ledgers; hard-coded counts in docs (a recorded defect
 class); silent failure modes.
 
+**H. In-season operations.** The title is mostly won after draft night — the
+owner was the 1-seed and lost in the semis, in-season. Does any surface
+support: waiver and streaming economics (droppability, stream-slot count,
+schedule-grid stream targets, weekly games-count optimization); trade
+evaluation in build context (summing z is wrong for a punt team); IL-slot
+strategy (stash valuation, IL-eligible vs load-managed absences — first
+reconciling whether this league has IL slots at all, per §0.3); and
+intra-week lineup decisions (when burning a bench spot on a Sunday streamer
+swings a category)? Audit Plane 3's co-GM brief for decision quality here,
+not just rule compliance. If in-season tooling is genuinely out of the draft
+kit's scope, the review must say so explicitly and price what that scope
+decision costs in March.
+
 ## 5. Deliverable
 
-Write `report/system-review-YYYY-MM-DD.md` (run date). If any single file
-would exceed ~1,500 lines, split into `report/system-review-YYYY-MM-DD-*.md`
-with the main file as index. Required sections, in order:
+Write `report/system-review-YYYY-MM-DD.md` (run date; if that dated path
+already exists from an earlier run, suffix `-r2`, `-r3`, …). If any single
+file would exceed ~1,500 lines, split into
+`report/system-review-YYYY-MM-DD-*.md` with the main file as index. Required sections, in order:
 
 1. **Front matter** — run date; scope statement (§1: what was attached,
    reachable, executed); method summary (what you ran vs read vs fetched);
@@ -317,8 +408,10 @@ with the main file as index. Required sections, in order:
    churn. A review that only criticizes is as untrustworthy as one that only
    praises.
 8. **Validation & backtest plan** — how the owner knows the fixes worked:
-   commands, invariants, board-diff expectations, and any backtests worth
-   running when 2026-27 actuals begin to exist.
+   commands, invariants, board-diff expectations, the retrospective 2025-26
+   backtests required by Phase 3 (completed-season data exists now — use
+   it), and any forward tests worth running once 2026-27 actuals begin to
+   exist.
 9. **Sources** — every dated URL fetched this run.
 10. **Run log appendix** — commands executed with outputs (condensed but
     honest, including the ones that failed).
@@ -336,7 +429,13 @@ labeled computed / pulled / estimated / guessed.
 - [ ] Every §4 dimension either has findings or an explicit "checked, sound,
       here's what was checked" — no silent skips.
 - [ ] Engine and gates actually executed this run; outputs in the run log; no
-      claim about code behavior made without running or reading that code.
+      claim about code behavior made without running or reading that code;
+      the regenerated board `git restore`d — `git status` clean of probe
+      residue before the review commit.
+- [ ] Current-facts sweep done: top-30, every `FA` row, and every GP ≤ 45 row
+      verified against dated sources this run or individually marked
+      `CANNOT VERIFY`; market cross-check run and every ~25+-rank divergence
+      dispositioned.
 - [ ] Every fix has a mechanism, a class, an effort/risk call, a priority tied
       to the calendar, and a falsifiable validation plan.
 - [ ] Adversarial pass recorded for the top ten findings/fixes, including
@@ -351,11 +450,12 @@ labeled computed / pulled / estimated / guessed.
 
 ## 7. Out of scope — refuse even if asked nicely by intermediate results
 
-Editing projections, provenance, methods, protocols, or published artifacts;
-running `--allow-stale` for anything other than observing that the flag
-exists; committing to `main` outside the session's branch rules; republishing
-the deck; inventing NBA facts to fill verification gaps; softening a verdict
-because the system's documentation is charming. If the review surfaces an
+Editing projections, provenance, methods, protocols, or published artifacts
+(the Phase 0 regen probe with mandatory restore is the sole exception);
+running `--allow-stale` at all — it overwrites the board with an UNVERIFIED
+header, and its existence is verifiable by reading the code; committing to
+`main`; republishing the deck; inventing NBA facts to fill verification
+gaps; softening a verdict because the system's documentation is charming. If the review surfaces an
 urgent live defect (e.g., the board is stale beyond its own limits **today**),
 say so at the top of the executive verdict as a P0 — do not fix it in-line.
 
@@ -365,7 +465,10 @@ Each takes minutes and has caught real defects here or is implied by the laws:
 
 - `zAdj == zPG` exactly for every negative-zPG row; `zAdj < zPG` for every
   positive-zPG row with GP < 82.
-- Two consecutive engine runs → byte-identical board (determinism doctrine).
+- Two consecutive engine runs → byte-identical outputs *compared to each
+  other* (snapshot run 1 before run 2 — the tracked-file diff always shows
+  the regenerated `Generated <date>` header line, and that hunk alone is not
+  a finding).
 - `projections` and `provenance` row sets match 1:1; no duplicates; no orphans.
 - Board header claims (exclusions, placeholders, dates) vs the actual CSV —
   headers have contradicted boards here before.
@@ -382,10 +485,16 @@ Each takes minutes and has caught real defects here or is implied by the laws:
   If the Agent tool is available, fan out — the house pattern that worked is
   parallel auditors per dimension plus per-finding adversarial refuters
   (the 2026-07-27 validation used 5 auditors + refuters on 11 findings).
-  Merge into one report; you own the verdicts.
+  Merge into one report; you own the verdicts. Under the `system-critic`
+  registration the Agent tool is NOT available — the serial path is the
+  expected mode there, not a scope violation; state in the front matter that
+  fan-out was unavailable. For the full multi-agent audit, execute this file
+  from a top-level session.
 - Read the long artifacts (baseline, board) in full before judging them;
   chunked reads are fine, sampling is not.
-- Write Phase artifacts to your scratch directory as you go so an interrupted
-  session can resume; only the final report lands in `report/`.
+- Write Phase artifacts to your scratch directory as you go; within one
+  session they let an interrupted run resume from the last artifact (across
+  sessions they are gone — a fresh session restarts Phase 0, per §3). Only
+  the final report lands in `report/`.
 - Expect the full run to be long. That is the design, not a problem to
   optimize away.
