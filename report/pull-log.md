@@ -10,3 +10,4 @@ A pull that is not pushed to main did not happen — see DATA-PULL.md §0.
 | 2026-07-27 | 07-13 → 07-27 | 4 | 2 | 2 | after-reports/after-report-2026-07-27.md |
 | 2026-07-27 | validation sweep (post-pull) | 1 | 0 | 0 | after-reports/after-report-2026-07-27-validation.md |
 | 2026-08-04 | 07-27 → 08-04 | 2 | 0 | 0 | after-reports/after-report-2026-08-04.md |
+| 2026-08-05 | 08-04 → 08-05 | 0 | 0 | 0 | after-reports/after-report-2026-08-05.md |
