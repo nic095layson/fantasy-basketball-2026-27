@@ -7,8 +7,18 @@ hashtagbasketball AND basketball-reference all return 200 (verified by the §0
 curl check, not assumed). Both feeds are landed under `report/market/`,
 `report/market_join.py` produces the Pass E + §5.3 output at
 `report/market-2026-27.md`, and the §3 unmatched-name gate is implemented and
-caught 19 real defects. **Steps 1-4 of §3 are done; step 5 (`marketRanks`) is
-deliberately NOT started** — it is the next session's job, driven red first.
+caught 19 real defects. **Steps 1-5 of §3 are DONE.** Step 5 executed 2026-08-21 (third session) —
+see `report/after-reports/after-report-2026-08-21-marketranks.md`. marketRanks
+(deck JS) and arena.market_ranks now lead with real Hashtag ADP
+(data/market_adp.json, 172 players), proxy fallback for the rest; circularity
+ρ vs our val board fell 0.886→0.777. A FINDING corrected the plan: the work
+order's premise that check_parity locked marketRanks was wrong — it did not
+cover it at all — so the harness was extended first and the change driven
+red-first through it (224-diff red, then green). Landed on branch
+claude/pull-rankings-3tc18h in the deck repo (PR #13). Live artifact NOT
+republished: engine change under review. Open follow-ups: re-fit survivalP's
+9/11-2/11 weights against the new signal; optionally add draft_state_44 as a
+committed parity fixture; optionally keep arena tournaments on pure proxy.
 **D1 is moot, not answered:** basketball-reference is reachable again, so pool
 additions no longer need deck-plane projections as a base rate; four of the five
 carried names were added from B-Ref lines fetched during the run.
