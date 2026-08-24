@@ -11,3 +11,5 @@ A pull that is not pushed to main did not happen — see DATA-PULL.md §0.
 | 2026-07-27 | validation sweep (post-pull) | 1 | 0 | 0 | after-reports/after-report-2026-07-27-validation.md |
 | 2026-08-13 | 07-27 → 08-13 (17d) | 2 | 0 | 0 | after-reports/after-report-2026-08-13.md |
 | 2026-08-18 | 08-13 → 08-18 (5d) | 0 (kit) / 3 (deck) | 0 | 0 | after-reports/after-report-2026-08-18.md |
+| 2026-08-20 | 08-18 → 08-20 (2d) | 2 (kit) / 3 (deck) | 0 | 0 | after-reports/after-report-2026-08-20.md |
+| 2026-08-21 | 08-20 → 08-21 (1d) | 2 (kit) / 1 (deck) | 0 | 0 | after-reports/after-report-2026-08-21.md |
