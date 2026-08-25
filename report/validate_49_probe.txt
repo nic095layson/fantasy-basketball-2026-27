@@ -1,0 +1,17 @@
+Resolver probe 2026-08-25: draft-night engine (427d19a) vs current (4b8d375)
+"Day'Ron Sharpe"         OLD: -> Day'Ron Sharpe                NEW: -> Day'Ron Sharpe
+'Dayron Sharpe'          OLD: NO MATCH -> UNKNOWN              NEW: NO MATCH -> UNKNOWN
+'DayRon Sharpe'          OLD: NO MATCH -> UNKNOWN              NEW: NO MATCH -> UNKNOWN
+'Day-Ron Sharpe'         OLD: NO MATCH -> UNKNOWN              NEW: NO MATCH -> UNKNOWN
+'Day Ron Sharpe'         OLD: NO MATCH -> UNKNOWN              NEW: NO MATCH -> UNKNOWN
+'Sharpe'                 OLD: AMBIG: Day'Ron Sharpe/Shaedon Sharpe NEW: AMBIG: Day'Ron Sharpe/Shaedon Sharpe
+'D Sharpe'               OLD: -> Day'Ron Sharpe                NEW: -> Day'Ron Sharpe
+"Sharpe, Day'Ron"        OLD: NO MATCH -> UNKNOWN              NEW: -> Day'Ron Sharpe
+'dayron'                 OLD: NO MATCH -> UNKNOWN              NEW: NO MATCH -> UNKNOWN
+"Day'Ron"                OLD: -> Day'Ron Sharpe                NEW: -> Day'Ron Sharpe
+'Tim Hardaway Jr.'       OLD: NO MATCH -> UNKNOWN              NEW: NO MATCH -> UNKNOWN
+'Hardaway'               OLD: NO MATCH -> UNKNOWN              NEW: NO MATCH -> UNKNOWN
+'Jimmy Butler III'       OLD: NO MATCH -> UNKNOWN              NEW: NO MATCH -> UNKNOWN
+
+turn-level: 'Sharpe' on current engine -> assumed Shaedon Sharpe
+  (availability 0, knee-recovery) over draftable Day'Ron -- see F4
