@@ -1,7 +1,7 @@
 # After-report — data pull 2026-08-26
 
 **Pull window: 2026-08-25 → 2026-08-26** (1 day — the design case).
-**Gate status:** `PROVENANCE GATE: PASS — all rows sourced; verified 2026-07-13 .. 2026-08-25` (exit 0).
+**Gate status:** `PROVENANCE GATE: PASS — all rows sourced; verified 2026-07-13 .. 2026-08-26` (exit 0, re-run after the Mathurin pairing).
 **Orphan check (carried process item from the 8/25 report): CLEAN.** The live
 artifact manifest was fetched *before* any edit and matched git `HEAD`
 (`1452b5e`) exactly — `built: 2026-08-25`, pool `f6dc8c089335…`, 255 rows. The
@@ -18,7 +18,44 @@ article bodies. Stated, not swallowed.
 
 ## 2. NBA Roster Changes
 
-**No roster changes in window — zero placements moved on either plane.**
+> **AMENDED — the first sweep of this pull MISSED a transaction.** The owner
+> asked "What about Bennedict Mathurin?" after the report was first written.
+> He had signed with New Orleans **on 8/26 — inside this window**. The sweep's
+> two general transaction searches surfaced Brandon Williams but never
+> returned Mathurin, and the RFA standoff carried in the JUDGMENT layer was
+> not given a targeted search of its own. The change is applied below in the
+> same pull; §2's "no roster changes" finding is **corrected, not preserved**,
+> and the process defect is recorded in §4 and §7 rather than quietly fixed.
+
+**One roster change in window (found on owner challenge):**
+
+| player | change | date | sources | applied |
+|---|---|---|---|---|
+| **Bennedict Mathurin** | **LAC → NOP** — two years / $16M with a player option | 2026-08-26 | ESPN (Shams), NBA.com, HoopsRumors, Fox8, Bleacher Report — **[CONFIRMED]**, five independent | **Yes**, both planes |
+
+Mechanism detail: his representatives asked the Clippers to **withdraw the
+$8.8M qualifying offer** so he could sign outright rather than through an offer
+sheet or sign-and-trade. Jake Fischer reports LAC has *not formally withdrawn
+it yet* but "will indeed work with" him to facilitate the move — applied under
+the standing "agreed to terms is final for team labels" rule (A1), same as
+DeRozan 8/21, Klay 8/25, Harden 8/21, Beal 8/13.
+
+**Line HELD, not repriced.** §3 permits a projection change only with a *named,
+sourced* mechanism, and no source yet describes his New Orleans role or
+minutes. The bearish read is real but it is inference: $8M AAV sits far below
+the $20–25M he sought, and New Orleans is not an open runway — Trey Murphy III,
+Zion, Herbert Jones and Saddiq Bey hold the wing with Poole, Hawkins, Dejounte
+Murray and Fears in the backcourt. That read is carried in the JUDGMENT adj
+(rebased, §3) rather than smuggled into the stat line, and he is the **first
+reprice candidate once camp reporting lands**.
+
+Sweep also confirmed, requiring no action: **Caris LeVert** (named in an 8/26
+DET→MIL trade summary) is *already* at MIL on both planes from a prior pull;
+Georges Niang, Taurean Prince, Gary Harris and Jordan McLaughlin are on no row
+in either plane.
+
+**Everything below was the original §2 finding and still holds for the rest of
+the pool — zero other placements moved.**
 Sweep ran; feeds/searches checked: Spotrac NBA transactions, ESPN transactions
 + 2026 offseason trade tracker, NBA.com offseason trade tracker, HoopsRumors,
 RotoWire injury report, CBS/Yahoo/SI injury feeds, plus targeted searches for
@@ -40,12 +77,13 @@ correctly tagged `out-retired`.
 
 ## 3. Significant Fantasy Analysis Changes
 
-**Kit board unchanged (diff ran clean).** `rank_engine.py` regenerated; a
-scripted diff against the pre-pull snapshot returned **0 entries, 0 exits, 0
-moves ≥3 ranks**, and the file is byte-identical apart from its generation-date
-line (verified by `diff`; the one changed line is quoted in §7). No projection
-edits: no row had in-window news bearing on minutes, role, health, age, or
-system.
+**Kit board unchanged (diff ran clean), before and after the Mathurin
+correction.** `rank_engine.py` regenerated twice; both scripted diffs against
+the pre-pull snapshot returned **0 entries, 0 exits, 0 moves ≥3 ranks**, and the
+file differs from the snapshot by its generation-date line alone (verified by
+`diff`; the one changed line is quoted in §7). **No projection edits.** One row
+carried in-window news — Mathurin — but it was a *team* change with the line
+held (§2), and a team label does not enter the kit's stat-based value math.
 
 **The pull's real finding is a data-integrity defect, not a transaction.**
 
@@ -72,6 +110,16 @@ system.
   cell containing a comma. The guard is field-count based, so it covers the
   class, not just this row.
 
+**Mathurin's JUDGMENT adj REBASED, not carried (−0.15 held).** The discount was
+originally priced for RFA *route* uncertainty — re-sign, QO, or trade all landing
+differently. That uncertainty is now resolved, so carrying the same rationale
+would have been stale reasoning wearing a correct number. What replaces it:
+rotation-role risk, evidenced by the AAV gap and the crowded New Orleans wing.
+The magnitude only holds because one risk replaced another; direction LIKELY,
+magnitude SPECULATIVE. Kit board re-diffed after the change: **0 entries, 0
+exits, 0 moves ≥3**, Mathurin holds rank 141 — a team label with a held line
+does not move stat-based value, which is the expected result.
+
 **JUDGMENT layer re-authored and re-dated 2026-08-26** (stale rationales are
 defects, §7.4): Kawhi **fifth consecutive hold** — nothing in-window, freshest
 reporting still predates it (8/10: resolution expected within six weeks, likely
@@ -87,6 +135,10 @@ availability multiplier — re-verified this run). Lonzo held.
 
 ## 4. Watchlist / open items
 
+- **Bennedict Mathurin (NOP) — NEW, first reprice candidate.** Line held at
+  16.5 ppg / 31 mpg / 70 GP on a rotation-money contract into a crowded wing.
+  Re-check at camp: if reporting names him a starter or a sixth man, the line
+  moves and the −0.15 adj rebases again.
 - **Brandon Williams (GSW, signed 8/25) — NEW.** Not in either pool by design
   (above). Re-check if camp reporting gives him rotation minutes; Golden State's
   guard depth is thinner than usual with Moody out.
@@ -172,6 +224,24 @@ memory; Moody's timeline marked consistent-but-not-in-window and held. · C5
 deck gates green, verification dated today: **PASS** (255/255, parity EXACT,
 gates 12/12, draft 53/53). · C6 republished to the **existing** URL at
 `built: 2026-08-26`: **PASS**. · C7 both repos pushed: **PASS** (§5, §8).
+
+**C1 is AMENDED to a partial pass.** The sweep was window-bounded and
+multi-source, but it **missed a same-day transaction** (Mathurin → NOP) that the
+owner caught. Root cause, stated plainly: the two general transaction searches
+were phrased around dates ("NBA transactions August 26 2026") and returned only
+what those indexes surfaced, while the **carried RFA standoffs in the JUDGMENT
+layer — Mathurin and Duren — never got targeted searches of their own.** §2 of
+the protocol requires re-checking "open items from the last after-report"; the
+named watchlist items were each searched, but unresolved situations living only
+in the JUDGMENT layer were not treated as open items. **Process fix for the next
+pull: every JUDGMENT entry whose text describes an unresolved situation (RFA
+standoff, league hold, camp deal, pending trade) gets its own targeted search,
+enumerated from the file rather than from memory.** Jalen Duren is the
+outstanding one and **was re-checked as part of this correction**: still
+unsigned, both sides still dug in (he is seeking a five-year ~$287M rookie max,
+Detroit has not offered it, the ~$9.6M qualifying offer is still live). That is
+exactly what the board already carries, so his −0.15 is **held with no change** —
+the re-check confirmed the label rather than moving it.
 
 **Refutation — attacks that found something.**
 - **Checking what the tags actually resolve to, rather than trusting the note
