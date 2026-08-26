@@ -200,6 +200,33 @@ effects; September ADP recalibration (feature-frozen until then).
 | NICE TO HAVE | Deck nudge when an UNKNOWN persists ≥ 12 picks ("pick 81 still UNKNOWN — fix with 81- Name"), so phantom-availability windows stay short. | — |
 | HOUSEKEEPING | If draft_state_49 feeds any later analysis, repair it first: `fix 58 "Franz Wagner"`, `fix 59 "Desmond Bane"`, `fix 60 "Nickeil Alexander-Walker"`, `fix 81 "Day'Ron Sharpe"` (148 needs THJ in the pool first). | — |
 
+## 4a. Execution addendum (2026-08-25, post-approval)
+
+The owner approved all four decision-sheet items ("1. Yes / 2. Can you have
+it so typing in 'Dayron' will read? / 3. Yes / 4. Yes"). Executed, with
+evidence, in `yahoo-fantasy-basketball` PR #21 (`claude/dayron-thj-resolver`):
+
+- **THJ added** — pool 254 → 255; `rosters_official.json` MIA entry; roster
+  verification re-authored: 255/255 checked, 0 unmatched. Projection is an
+  authored estimate from in-pool comps (Klay Thompson, Gary Trent Jr.,
+  Duncan Robinson) — owner may reprice.
+- **Apostrophe-insensitive fold** — `Dayron Sharpe` AND bare `Dayron` now
+  resolve to Day'Ron Sharpe (the owner's named acceptance test). Hyphens
+  deliberately untouched: stripping them would make bare `Alexander`
+  ambiguous (SGA vs Alexander-Walker).
+- **Injury-aware namesake tiebreak** — bare `Sharpe` → Day'Ron, with
+  `(Shaedon Sharpe skipped: injury-excluded)` printed.
+- **Suffix retry** — `Jimmy Butler III` → Jimmy Butler.
+- **Deck stale-UNKNOWN nudge** — strip names picks unfixed ≥ 12 picks.
+- Validation at ship: test_draft **53/53** (5 new red-first cases),
+  test_gates **10/10**, parity **EXACT** (64 fixtures), build safe-to-publish
+  with a `--pool-changes` stamp, live deck republished.
+- **`draft_state_49_fixed.json`** committed beside this report: picks 58–60
+  de-rotated (JSON reorder — the CLI's double-log guard correctly refuses a
+  3-cycle of already-logged names), 81 → Day'Ron Sharpe and 148 → Tim
+  Hardaway Jr. via `draft fix`. Final: 156 picks, 0 UNKNOWN, 0 duplicates,
+  all 5 repairs verified against the Yahoo recap.
+
 ## 5. Provenance
 
 Produced 2026-08-25 by the Claude Code session working
