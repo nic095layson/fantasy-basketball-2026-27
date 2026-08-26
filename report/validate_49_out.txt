@@ -1,0 +1,85 @@
+== A. Yahoo-name -> pool resolver pass (156 recap names) ==
+resolved 1:1 : 154/156
+  pick 136  'Jimmy Butler III'         no match in pool
+  pick 148  'Tim Hardaway Jr.'         no match in pool
+
+== B. draft_state_49 vs Yahoo recap, all 156 picks ==
+picks compared        : 156
+name matches          : 151
+UNKNOWN in state      : 2
+  pick  81 (seat 9 Yizan): recap says "Day'Ron Sharpe"
+  pick 148 (seat 4 Andy): recap says 'Tim Hardaway Jr.'
+seat/name mismatches  : 3
+  pick  58: NAME: state 'Desmond Bane' vs recap 'Franz Wagner'
+  pick  59: NAME: state 'Nickeil Alexander-Walker' vs recap 'Desmond Bane'
+  pick  60: NAME: state 'Franz Wagner' vs recap 'Nickeil Alexander-Walker'
+
+== C. roster z-analysis (ground truth = recap; pool players only) ==
+players excluded from totals (not in pool): Jimmy Butler III (seat 9 Yizan), Tim Hardaway Jr. (seat 4 Andy)
+
+9-cat composite (sum of category z-totals), ranked:
+   1. seat 8  David     +25.76  <-- DAVID
+   2. seat 12 Peter      +1.46
+   3. seat 1  Brandon    +1.37
+   4. seat 4  Andy       +1.20
+   5. seat 3  Team 3     +0.22
+   6. seat 11 Jay C.     -1.03
+   7. seat 10 John       -2.25
+   8. seat 2  Ethan      -2.79
+   9. seat 7  Chase      -7.73
+  10. seat 9  Yizan      -8.62
+  11. seat 5  Scott     -19.01
+  12. seat 6  ??        -28.39
+
+punt-AST composite (8 cats, AST removed for ALL teams), ranked:
+   1. seat 8  David     +29.17  <-- DAVID
+   2. seat 4  Andy       +5.50
+   3. seat 12 Peter      +3.11
+   4. seat 3  Team 3     -1.55
+   5. seat 1  Brandon    -1.60
+   6. seat 10 John       -2.42
+   7. seat 9  Yizan      -4.27
+   8. seat 11 Jay C.     -6.29
+   9. seat 2  Ethan      -7.05
+  10. seat 7  Chase      -7.58
+  11. seat 5  Scott     -22.70
+  12. seat 6  ??        -23.88
+
+David's category ranks (of 12):
+  FG%   total  +5.32  rank  2
+  FT%   total  +0.60  rank  7
+  3PTM  total  +1.01  rank  3
+  PTS   total  +2.61  rank  3
+  REB   total  +2.27  rank  3
+  AST   total  -3.42  rank  9   (declared punt)
+  ST    total  +9.59  rank  1
+  BLK   total  +4.39  rank  1
+  TO    total  +3.39  rank  3
+
+H2H: categories David leads vs each opponent (of 9 / of 8 ex-AST):
+  vs seat 1  Brandon  6/9   6/8
+  vs seat 2  Ethan    7/9   7/8
+  vs seat 3  Team 3   7/9   7/8
+  vs seat 4  Andy     7/9   6/8
+  vs seat 5  Scott    7/9   7/8
+  vs seat 6  ??       9/9   8/8
+  vs seat 7  Chase    7/9   7/8
+  vs seat 9  Yizan    7/9   6/8
+  vs seat 10 John     5/9   5/8
+  vs seat 11 Jay C.   8/9   8/8
+  vs seat 12 Peter    6/9   6/8
+
+== D. David's picks vs board rank (composite adj_value order) ==
+  R 1 pick   8: Karl-Anthony Towns         board #6  fair
+  R 2 pick  17: Anthony Davis              board #5  fair
+  R 3 pick  32: Kyrie Irving               board #16  VALUE (+16)
+  R 4 pick  41: Jalen Williams             board #17  VALUE (+24)
+  R 5 pick  56: Jaren Jackson Jr.          board #22  VALUE (+34)
+  R 6 pick  65: Dyson Daniels              board #10  VALUE (+55)
+  R 7 pick  80: Payton Pritchard           board #37  VALUE (+43)
+  R 8 pick  89: Reed Sheppard              board #55  VALUE (+34)
+  R 9 pick 104: Jakob Poeltl               board #49  VALUE (+55)
+  R10 pick 113: Cameron Johnson            board #48  VALUE (+65)
+  R11 pick 128: Brook Lopez                board #59  VALUE (+69)
+  R12 pick 137: Christian Braun            board #54  VALUE (+83)
+  R13 pick 152: Tari Eason                 board #44  VALUE (+108)
