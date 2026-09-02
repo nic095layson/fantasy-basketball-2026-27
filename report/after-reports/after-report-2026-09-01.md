@@ -24,8 +24,23 @@ scheduled Routine fires on 2026-09-01 and executes this file top to bottom."
 The account's 30 most recent triggers (newest-first, spanning 8/12 → 9/1 —
 a 9/1 one-shot would sit at the top) are **all PR check-ins**; no September
 Routine is among them. Bound: only 30 were listed. The owner prompting
-manually today *is* the trigger, and it worked — but October's §6 Routine
-(~10/12) should be created explicitly rather than assumed.
+manually today *is* the trigger, and it worked.
+
+**CORRECTION (same day, post-report).** That 30-trigger bound bit. Widening
+the query to *enabled* triggers of any age surfaces
+`trig_0146xxp4wAt4uHQypXLxjNZ1` — **"October pre-draft final refresh
+(one-shot)"**, created 2026-08-04, **enabled**, armed for **2026-10-12
+14:00Z**, notifications on. Its stored prompt is §6 verbatim (real ADP
+replacing synthetic market geometry as an artifact-bound gate, E18 re-arm,
+E19, gates + parity, republish, cross-plane sync). So **October's automation
+already exists and does not need recreating**; the September one still does
+not. One caveat, and it is the live risk: that Routine was **force-run on
+2026-09-01 21:57Z as a test and the run FAILED** — aborted mid-turn after
+~2 minutes (`stop_reason=tool_use`), session `cse_011RnVYpZEoGCgzXtSsfdQPY`.
+Checked and clean: it left **no branch on either remote** and did **not**
+consume the one-shot (`next_run_at` still 2026-10-12 14:00Z). But an armed
+Routine whose only observed firing aborted is not yet a Routine you can
+count on.
 
 **§1 — Data refresh (the precondition for everything else):**
 
@@ -156,7 +171,7 @@ and 9/1 is the seventh re-check.
 | **D-S1** | **Upload the third-party projection/ranking datasets** (§1.2b, your Q14 directive) — 2026-27 *projections*, not 2025-26 results | do it; this is the input the whole plan waits on | §1.2b synthesis → new `players.csv` |
 | **D-S2** | **September consensus ADP** (§1.2): either paste a table, or allow one ADP domain through the egress policy | either works; a paste is enough | §1.2 market swap, then §1.4 + E2/E13 |
 | **D-S3** | Run §1.4 + the ADP-*independent* experiments (E1, E4–E6, E8, E10, E24) **now**, on the current pool, accepting a re-run after ADP | **No.** The plan's own rule says the numbers go stale the moment the pool changes; running twice doubles arena compute and risks a re-scope on bars that are append-only. Wait for D-S1/D-S2. | — |
-| **D-S4** | Recreate the **October Routine** (§6, ~2026-10-12) explicitly | yes — the September one never existed; October should not depend on a manual prompt | October refresh fires on its own |
+| **D-S4** | **October Routine — do NOT recreate it; de-risk it.** It exists and is armed: `trig_0146xxp4wAt4uHQypXLxjNZ1`, 2026-10-12 14:00Z, §6 verbatim. Its one forced test run (9/1 21:57Z) aborted mid-turn. | keep the Routine; a second creation would double-fire the refresh. Decide instead between (a) leave it and hold a manual prompt in reserve for 10/12, or (b) let me force one more test run at a harmless moment to see whether the abort reproduces | a §6 refresh that actually fires |
 | **D-S5** | Promote the JUDGMENT scan to `scripts/judgment_open_items.py` with the unresolved-marker refinement (§5 C1) | yes — it has now found one transaction the general sweep missed and refuted two garbled ones | every future pull |
 
 ## 7. Gates
