@@ -65,7 +65,7 @@ days and counting.**
 | **Ben Simmons → SAC** *(CORRECTED — original said LAC off one garbled summary)*, 1yr/~$3.5M, announced 9/4 (AP, NBA.com, ABC, Kings Herald); sat out all of 2025-26 (back/leg) | 9/4 | **Watchlisted, NOT added.** On no row in either plane, no consensus-top-120 or live-room draft evidence, and no 2025-26 statistical base |
 | **Paul Reed** (DET) money fully guaranteed, $5.6M | *date not stated by source* | Already a DET row. Same team, no *sourced* role mechanism → no projection edit (§3) |
 | Tacko Fall → PHI | 9/1 — **pre-window** (window opened 9/2) | no row |
-| John Butler Jr. → MIL · Kobe Stewart → CHA (Exhibit 10) · Grant Nelson → BKN (two-way) | 9/4 | no rows |
+| John Butler Jr. → MIL · Kobe Stewart → CHA (Exhibit 10) · Grant Nelson → BKN (two-way) `[SINGLE-SOURCE]` | 9/4 | no rows |
 
 ### Injury / camp sweep — CORRECTED in the amendment
 
@@ -287,6 +287,28 @@ needed hand-editing), which is the standing argument for **D-S6**.
 - Carried: Cam Thomas / Ivey / Lonzo unsigned · Sarr/Sharpe cross-plane severity
   mismatches · four deck-draftable names missing from the kit pool + decision D1
   · PHI logjam · Brunson wrist (informational).
+
+## Open-item receipts (fix F1 — one row per flagged name)
+
+The scripted enumeration (`scripts/judgment_open_items.py`, deck plane)
+flagged **8** open items against the 2026-09-08 JUDGMENT layer. Receipts —
+note the honest history: three of these searches were run only during the
+same-day integrity amendment, not the original pull, which is the gap fix F1
+exists to close.
+
+| player | query run | dated finding |
+|---|---|---|
+| Kawhi Leonard | "Kawhi Leonard Raptors trade officially completed September 2026" + execution-hunt queries (amendment) | still not formally executed; HoopsRumors not-yet-finalized list; "next couple of days" phrasing carried since 9/3 — HELD, 2nd pull |
+| Jalen Duren | "Jalen Duren Pistons contract agreement September 2026 extension signed" | no agreement; ~$5M/yr apart (HoopsHype 9/1, NBC Sports 9/1); Oct 1 QO deadline 23 days out — HELD |
+| Cam Thomas | "remaining NBA free agents unsigned September 2026 …" | still unsigned; absent from HoopsRumors' September top-remaining list — HELD |
+| Jaden Ivey | same remaining-FA sweep | still unsigned; 3/30 CHI waiver stands — HELD |
+| Lonzo Ball | same remaining-FA sweep | still unsigned — HELD |
+| Bennedict Mathurin | *(original pull: NO dedicated query — the miss)* amendment: "Grizzlies Pelicans trade September 2026" | **9/8 four-player NOP–MEM trade completes his signing** (HoopsRumors, ESPN La Crosse 9/8, Daily Memphian, BVM 9/8) — narrowed −0.15 → −0.10 |
+| Jeremy Sochan | *(original pull: no dedicated query)* amendment: "Jeremy Sochan Trail Blazers camp deal news September 2026" | no in-window event; POR 1yr non-guaranteed stands (KGW, NBC Sports, Yahoo — early-Aug coverage) — HELD |
+| Jalen Brunson | *(original pull: no dedicated query)* amendment: "Jalen Brunson wrist recovery training camp September 2026" | on-timeline: 6–8wk from 7/7 surgery, expected ready for camp/preseason (Yahoo, CBS, NY Post via Yahoo) — HELD, informational tag only |
+
+Team watch set implied by these items (fix F3, next pull): CHI, DET, LAC,
+MEM, NOP, NYK, POR.
 
 ## 5. Verification (adversarial pass)
 

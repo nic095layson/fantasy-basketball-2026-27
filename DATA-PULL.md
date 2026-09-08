@@ -24,6 +24,12 @@ A pull is complete only when ALL of the following are true:
    and is in the same push.
 3. `report/pull-log.md` has a new row for this pull (same push).
 4. `python3 report/check_provenance.py` exits 0.
+4b. `python3 report/check_report.py` exits 0 (fix F2, 2026-09-08 — the
+   publication gate: structure, single-source labeling, pull-log row), AND
+   the deck plane's `python3 scripts/judgment_open_items.py --check-report
+   <after-report>` passes (fix F1 — every flagged open item carries a
+   receipts row). Born from Ben Simmons shipping as a Clipper and a NOP–MEM
+   trade shipping unswept in the same report.
 5. The Draft Deck data plane (`yahoo-fantasy-basketball` → `data/players.csv`)
    received the same window's news under its own laws (role-reprice,
    pool-completeness, roster validation lock), landed on a pushed branch/PR.
@@ -65,7 +71,28 @@ Web research only — training-data memory is expired for everything here (PROMP
 - **Open items from the last after-report:** read the previous after-report's
   "watchlist / cannot verify / open" section and re-check each item. This is how
   multi-day stories (e.g. the Kawhi trade investigation) stay tracked without
-  re-deriving them.
+  re-deriving them. **Mechanized 2026-09-08 (fix F1):** run the deck plane's
+  `python3 scripts/judgment_open_items.py` — every flagged name gets a
+  DEDICATED search and one row in the after-report's "Open-item receipts"
+  table (§5). A flagged name with no receipt means the pull is incomplete;
+  the 8/26 Mathurin miss recurred on 9/8 on the same player precisely because
+  the hand-run checklist was skippable and nothing audited execution.
+- **Team-shadow sweep (fix F3, 2026-09-08):** the script also prints the TEAM
+  WATCH SET the open items imply (each flagged player's team plus
+  counterparties named in their rationales). Run one team-shaped news query
+  per team. A trade about a flagged player's cap room or depth chart may
+  never name the player — the 9/8 four-player NOP–MEM deal existed to
+  complete Mathurin's signing and no player-name query could catch it.
+- **Zero-trade anomaly rule (fix F5, 2026-09-08):** a multi-day window in
+  which the sweep finds zero league-wide trades is a sweep-failure signal,
+  not a finding. Run one ledger-shaped query (RealGM month/season
+  transactions page, HoopsRumors trades index) and cite it before writing
+  "no trades in window."
+- **Returner-vs-tag diff (fix F6, 2026-09-08):** the injury sweep diffs
+  "returning player" coverage against `judgment_open_items.py --tags` BOTH
+  directions — tagged-but-now-cleared AND returning-but-untagged. Grading
+  the headline instead of the row is how Jamal Murray (ruptured Achilles,
+  untagged, availability 1.0) shipped certified as "already correct.".
 - **FA rows:** any row with team `FA` gets a quick status check (signed? overseas?
   retired?).
 
@@ -74,6 +101,17 @@ this run; **two independent sources for anything that moves a player a tier or
 more** (team change, major injury, role change); tag claims `[CONFIRMED]` /
 `[LIKELY]` / `[SPECULATIVE]`. If you cannot verify something, write CANNOT VERIFY
 and move on — never guess, never fill from memory.
+
+**Publication gate (fix F2, 2026-09-08): row impact no longer scopes
+verification.** Any named transaction/team/injury fact that enters the
+after-report, the deck colophon, or a PR body needs two independent sources
+— or an explicit `[SINGLE-SOURCE]` label so the reader can apply their own
+discount. `report/check_report.py` enforces the checkable core of this on
+the after-report's tables. Ben Simmons shipped as a Clipper (he signed with
+Sacramento) because he wasn't a pool row and nothing gated what got
+*published*; it was the fifth documented search-summary garble. Also treat a
+summarizer's "as of <date>" framing as the summarizer's date, not the
+article's, unless the article's own date is visible.
 
 ## 3. Apply the delta — edit rows, never rebuild
 
@@ -126,6 +164,10 @@ sections (a quiet day yields a ~10-line file; that is a valid report):
 4. **Watchlist / open items** — flagged-not-edited situations, CANNOT VERIFY
    items, and unresolved stories to re-check next pull. The next pull reads this
    section (§2).
+5. **Open-item receipts** (fix F1, 2026-09-08) — one table row per name the
+   deck plane's `judgment_open_items.py` flags: player → query run → dated
+   finding. `judgment_open_items.py --check-report` must pass against this
+   file. A quiet finding is a valid receipt; a missing row is not.
 
 ## 6. Log, commit, push
 
@@ -161,6 +203,15 @@ only this repo leaves the deck lying about freshness. After §6:
 3. `python3 scripts/hoops.py freshness --stamp --note "<window summary>"`.
 4. Re-author the deck's `JUDGMENT` layer (in `docs/draft-deck.html`) from this
    window's research — date it today; stale rationales are defects.
+   **Authoring contract (2026-09-08):** a card describing an OPEN situation
+   must include at least one marker phrase from `judgment_open_items.py`'s
+   lexicon — the enumerator is lexicon-based, and on its first run the
+   freshly re-authored Kawhi and Mathurin cards both silently dropped off
+   the flagged list because their new phrasing evaded it. Re-run the script
+   after re-authoring and confirm every still-open situation is flagged.
+   Also rewrite the colophon's "Data." paragraph for this window —
+   `build_deck.py` gate 6 (fix F4/D-S6) refuses a build whose colophon
+   contradicts the pool count or narrates the wrong pull.
 5. `python3 scripts/build_deck.py` — all gates must pass; never hand-edit the
    injection anchors.
 6. Republish `docs/draft-deck.html` to the **existing** artifact URL (do not
