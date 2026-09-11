@@ -10,8 +10,8 @@ Gate: `check_provenance.py` exit 0 (verified 2026-07-13 .. 2026-09-02).
 > extended period with **no timetable** — he is now excluded from all boards
 > under the recovery ruling. Second headline: **the Kawhi trade is unexecuted
 > a THIRD straight pull**, and the delay finally has a sourced cause.
-> Per owner instruction this report is delivered **before** the artifact
-> republish; the deck is built and gate-green locally, publish held for your go.
+> Per owner instruction this report was delivered **before** the artifact
+> republish; the publish followed on the owner's go, same day (version 21).
 
 ## 1. NBA roster changes
 
@@ -130,5 +130,6 @@ returner-class story in window was Williams — inbound, not returning.
 rewritten paragraph) · `check_parity` **EXACT MATCH** · `test_gates` **15/15**
 · `test_draft` **53/53** (fixture repair above) · `check_report.py` PASS ·
 `judgment_open_items --check-report` PASS (8/8 receipts) · kit board diff:
-Mathurin 141→188, no entries/exits · **artifact republish HELD at owner
-instruction** — deck is built and safe-to-publish; will publish on your go.
+Mathurin 141→188, no entries/exits · **artifact republished on
+owner go** (same day) — version 21 at the standing URL, `built: 2026-09-11`,
+pool `cfe14ff9ab26`, after the report was reviewed per instruction.
