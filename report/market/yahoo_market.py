@@ -162,17 +162,17 @@ _ACCEPTED_ABSENT_YH = [
     "Obi Toppin", "Rob Dillingham", "Kasparas Jakucionis", "Khris Middleton",
     "Nikola Jovic", "Gradey Dick", "Liam McNeeley", "Dalton Knecht",
     "Kris Murray", "Dailyn Swain", "Zuby Ejiofor", "Labaron Philon",
-    "Keaton Wallace", "Jeremy Sochan", "Cam Whitmore", "Ebuka Okorie",
+    "Jeremy Sochan", "Cam Whitmore", "Ebuka Okorie",
     "Jalen Wilson",
+    # Keaton Wallace removed 2026-09-16: his pool row was deleted on the
+    # owner-approved integration (two-year Maccabi Tel Aviv deal — see
+    # after-report-2026-09-16-gap-research.md §3).
 ]
 _ABSENT_NOTES = {
     "Gradey Dick": "absent despite the executed 9/14 trade to LAC — Yahoo's list "
                    "does not carry him at all; watch his camp role next pull",
     "Jeremy Sochan": "absent — consistent with the standing cut-watch flag",
     "Cam Whitmore": "absent — consistent with the waive-and-stretch watch item",
-    "Keaton Wallace": "NAME-COLLISION FLAG: Yahoo instead lists 'Keaton Wagler' "
-                      "(LAC, SG, ADP 121.5). Different surname, same team — NOT "
-                      "aliased (verification rule); resolve identity next pull",
 }
 
 

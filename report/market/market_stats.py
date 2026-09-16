@@ -91,4 +91,7 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except BrokenPipeError:  # `| head` closing the pipe is not an error
+        sys.stderr.close()
