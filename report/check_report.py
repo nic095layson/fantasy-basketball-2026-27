@@ -45,6 +45,7 @@ OUTLETS = [
     "globe and mail", "cnn", "deseret", "sportico", "heavy", "yardbarker",
     "daily memphian", "bvm", "kings herald", "ap", "associated press",
     "abc", "tsn", "fischer", "clutchpoints", "rotoballer", "espn la crosse",
+    "cbc", "sporting tribune", "forbes", "last word",
 ]
 TRIGGERS = re.compile(
     r"→|->|\b(sign(?:ed|s|ing)?|trade[ds]?|waive[ds]?|acquire[ds]?|"
