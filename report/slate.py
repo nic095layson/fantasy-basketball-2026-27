@@ -46,26 +46,29 @@ def phi(x):
 players = [p for p in hoops.zscores(hoops.load_players()) if hoops.availability(p) > 0]
 board = sorted(players, key=lambda p: -hoops.adj_value(p))
 rank = {p["player"]: i + 1 for i, p in enumerate(board)}
+# price per player: Yahoo ADP first (the room's price), Yahoo XRank next
+# (Yahoo's own rank), the consensus average last — each LABELED, because the
+# 9/15 file carries an ADP for 181 of the deck's 264 rows and an XRank for 222
 adp = {}
 with open(ADP_FILE, encoding="utf-8") as f:
     for r in csv.DictReader(f):
-        try:
-            adp[norm(r["player"])] = float(r["yahoo_adp"])
-        except (TypeError, ValueError):
+        for col, label in (("yahoo_adp", "ADP"), ("yahoo_xrank", "XR"), ("consensus_avg", "cons")):
             try:
-                adp[norm(r["player"])] = float(r["consensus_avg"])
+                adp[norm(r["player"])] = (float(r[col]), label)
+                break
             except (TypeError, ValueError):
-                pass
+                continue
 
 
 def adp_of(p):
+    """(price, label) or None."""
     k = norm(p["player"])
     return adp.get(ALIASES.get(k, k))
 
 
 def p_avail(p, n):
     a = adp_of(p)
-    return phi(((a if a is not None else NO_ADP) - n) / SIGMA)
+    return phi(((a[0] if a is not None else NO_ADP) - n) / SIGMA)
 
 
 def plus_cats(p):
@@ -74,9 +77,8 @@ def plus_cats(p):
 
 def tag(p):
     a = adp_of(p)
-    return (f"{p['player']}{'▲' if hoops.availability(p) < 1 else ''} "
-            f"(#{rank[p['player']]}, ADP {a:.0f}" if a is not None else
-            f"{p['player']}{'▲' if hoops.availability(p) < 1 else ''} (#{rank[p['player']]}, no ADP") + ")"
+    price = f"{a[1]} {a[0]:.0f}" if a is not None else "no price"
+    return f"{p['player']}{'▲' if hoops.availability(p) < 1 else ''} (#{rank[p['player']]}, {price})"
 
 
 picks = [n + 1 for n in range(TEAMS * ROUNDS) if hoops.team_of_pick(n, TEAMS) == SLOT]
@@ -85,9 +87,10 @@ out = []
 out.append(f"# Seat-10 slate — {'EXAMPLE, ' if 'consensus-2026-09-15' in ADP_FILE else ''}"
            f"board {datetime.date.today().isoformat()} · Yahoo ADP {adp_date.group(1) if adp_date else '?'}")
 out.append("")
-out.append(f"Who = the deck's 9-cat board (#rank; ▲ = injury multiplier ×0.78). When = Yahoo ADP turned into "
+out.append(f"Who = the deck's 9-cat board (#rank; ▲ = injury multiplier ×0.78). When = the room's price turned into "
            f"now/next = chance he is still there at this pick / at your following pick (σ {SIGMA} picks, the "
-           f"mock-51 fit). A high NEXT number means you can wait on him; a low one means it is now or never. "
+           f"mock-51 fit). Price = Yahoo ADP where Yahoo lists one, else XR = Yahoo XRank, else cons = consensus average. "
+           f"A high NEXT number means you can wait on him; a low one means it is now or never. "
            f"Three bands per pick: likely (≥60%), coin flip (35–60%), if he falls (<35%). The live card decides on the night.")
 out.append("")
 out.append("## Identity and rules")
@@ -130,7 +133,9 @@ out.append("## Two reminders from mock 51")
 out.append("- #82 Sheppard over Turner cost ~7 points of title odds; Turner was still there at #87 and went #102.")
 out.append("- The 13th pick is a real pick: a center who starts beat a wing who never did by ~8 points.")
 missing = [p["player"] for p in board[:120] if adp_of(p) is None]
-if missing:
-    out.append("")
-    out.append(f"_No Yahoo ADP for {len(missing)} of the top-120 board (treated as deep tail): {', '.join(missing)}._")
+xr = [p["player"] for p in board[:120] if adp_of(p) is not None and adp_of(p)[1] != "ADP"]
+out.append("")
+out.append(f"_Price source, top-120 board: Yahoo ADP for {120 - len(xr) - len(missing)}; XRank/consensus fallback for {len(xr)}"
+           + (f" ({', '.join(xr[:12])}{'…' if len(xr) > 12 else ''})" if xr else "")
+           + (f"; no price for {len(missing)} ({', '.join(missing)})" if missing else "") + "._")
 print("\n".join(out))
