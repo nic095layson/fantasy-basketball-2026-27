@@ -34,8 +34,10 @@ kit adds (245 rows), four deck lines synced, the resolver now logs
 not-in-pool opponent picks verbatim (S1), the annotation defect fixed (S5),
 draft_state_51 stored canonically (parity harness ingested it as its 8th
 state, EXACT MATCH), and one latent build bug the tune-up data exposed was
-fixed with a red-first test. Artifact republish and all merges are held for
-the owner.
+fixed with a red-first test. Artifact republish and all merges were held for
+the owner and executed on the owner's go the same day (kit #23/#24 and deck
+#32 merged; artifact version 23 at the standing URL, built 2026-09-21, pool
+c1f87ac1db09).
 
 ---
 
@@ -159,8 +161,8 @@ Bey extension item to verify; Kuzma tendon watch.
 
 ## 9. Bounds
 
-**Out of scope by design:** artifact republish (held for the owner's go — the
-built deck is ready); merges; S4 and the avail-curve; the 65 deep un-researched
+**Out of scope by design:** artifact republish and merges (held for the
+owner's go at writing; executed same day — see headline); S4 and the avail-curve; the 65 deep un-researched
 Yahoo tail names; opponent-intel from mock-51 (random public room).
 **In scope and unverified:** deck verification stays PARTIAL by egress
 policy; all stats summary-relayed (cross-outlet mitigation); Kawhi extension
@@ -170,11 +172,11 @@ the preseason pass.
 
 ## 10. Decision sheet (owner disposes)
 
-- **Republish the artifact** (built 2026-09-21, pool c1f87ac1db09, safe to
-  publish) — your go, since more live mocks are imminent and the resolver fix
-  only reaches the tool on publish.
-- **Merge** kit `claude/pull-2026-09-21-sync` and deck
-  `claude/pull-2026-09-21-tuneup` (plus PR #23's three reports).
+- ~~Republish the artifact~~ — DONE on owner go 2026-09-21: version 23 at the
+  standing URL (built 2026-09-21, pool c1f87ac1db09); the pre-republish orphan
+  check read the live page as v22 (pool e3e17e279ea5), as expected.
+- ~~Merge~~ — DONE on owner go 2026-09-21: kit #23 (db8b872), #24 (ae03d3a),
+  deck #32 (65d1626); each head verified an ancestor of `main`.
 - **S3 as F7** (cross-plane consistency gate, prototype proven)?
 - **S4** punt-advisor hysteresis? **Avail-curve** keep or harshen?
 - Optional adds still available: Hardaway (kit), Riley/Pippen on watch.
