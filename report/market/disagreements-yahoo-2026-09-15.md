@@ -56,7 +56,7 @@ Yahoo is a single outlet: per fix F2, nothing here changes a pool row. Team mism
 | +54 | Dyson Daniels | 9 | 63 | +STL, +TOV / -PTS, -FT% |
 | +53 | Myles Turner | 42 | 95 | +BLK, +TOV / -STL, -AST |
 | +52 | Jimmy Butler | 68 | 120 | +FT%, +STL / -BLK, -3PM |
-| +47 | Zach LaVine | 73 | 120 | +3PM, +FT% / -BLK, -REB |
+| +47 | Zach LaVine | 73 | 120 | +3PM, +PTS / -BLK, -REB |
 | +47 | Cam Johnson | 61 | 108 | +3PM, +FT% / -BLK, -REB |
 | +45 | Ty Jerome | 51 | 96 | +STL, +FT% / -BLK, -REB |
 | +45 | Fred VanVleet | 76 | 121 | +STL, +AST / -REB, -FG% |
@@ -67,12 +67,12 @@ Yahoo is a single outlet: per fix F2, nothing here changes a pool row. Team mism
 | +36 | Kel'el Ware | 39 | 76 | +BLK, +REB / -STL, -AST |
 | +36 | Christian Braun | 83 | 118 | +TOV, +FG% / -AST, -BLK |
 | +35 | Darius Garland | 23 | 58 | +AST, +3PM / -REB, -TOV |
-| +33 | Toumani Camara | 86 | 119 | +STL, +TOV / -AST, -PTS |
+| +34 | Toumani Camara | 85 | 119 | +STL, +TOV / -AST, -PTS |
 | +33 | Nic Claxton | 62 | 95 | +BLK, +FG% / -3PM, -FT% |
-| +33 | Anfernee Simons | 84 | 117 | +FT%, +3PM / -FG%, -REB |
+| +33 | Anfernee Simons | 84 | 117 | +3PM, +FT% / -FG%, -REB |
 | +33 | Kyrie Irving | 16 | 49 | +FT%, +3PM / -BLK, -REB |
-| +30 | Sandro Mamukelashvili | 85 | 115 | +TOV, +FG% / -PTS, -AST |
 | +30 | Paul George | 50 | 80 | +STL, +3PM / -TOV, -FG% |
+| +29 | Sandro Mamukelashvili | 86 | 115 | +TOV, +FG% / -PTS, -AST |
 | +29 | Jalen Suggs | 79 | 108 | +STL, +3PM / -FG%, -REB |
 | +28 | De'Aaron Fox | 54 | 82 | +STL, +AST / -FT%, -TOV |
 | +26 | Collin Murray-Boyles | 95 | 121 | +FG%, +BLK / -FT%, -3PM |
@@ -82,31 +82,31 @@ Yahoo is a single outlet: per fix F2, nothing here changes a pool row. Team mism
 
 | gap | player | our # | ADP | our z-lean |
 |---|---|---|---|---|
-| -145 | Adem Bona | 230 | 85 | +TOV, +BLK / -3PM, -PTS |
-| -144 | AJ Green | 217 | 73 | +TOV, +3PM / -REB, -STL |
-| -126 | Allen Graves | 224 | 98 | +TOV, +FT% / -AST, -PTS |
-| -115 | Jusuf Nurkic | 233 | 118 | +TOV, +FG% / -3PM, -PTS |
-| -114 | Neemias Queta | 219 | 105 | +FG%, +TOV / -PTS, -3PM |
-| -114 | Morez Johnson Jr. | 237 | 123 | +TOV, +FG% / -PTS, -STL |
-| -113 | Mikel Brown | 235 | 122 | +AST, +TOV / -PTS, -REB |
-| -109 | Jaime Jaquez Jr | 214 | 105 | +TOV, +FG% / -PTS, -3PM |
-| -102 | Sam Hauser | 212 | 110 | +TOV, +3PM / -PTS, -STL |
+| -150 | Adem Bona | 235 | 85 | +TOV, +BLK / -3PM, -PTS |
+| -148 | AJ Green | 221 | 73 | +TOV, +3PM / -REB, -STL |
+| -130 | Allen Graves | 228 | 98 | +TOV, +FT% / -AST, -PTS |
+| -120 | Jusuf Nurkic | 238 | 118 | +TOV, +FG% / -3PM, -PTS |
+| -119 | Morez Johnson Jr. | 242 | 123 | +TOV, +FG% / -PTS, -STL |
+| -118 | Neemias Queta | 223 | 105 | +FG%, +TOV / -PTS, -3PM |
+| -118 | Mikel Brown | 240 | 122 | +AST, +TOV / -PTS, -REB |
+| -113 | Jaime Jaquez Jr | 218 | 105 | +TOV, +FG% / -PTS, -3PM |
+| -106 | Sam Hauser | 216 | 110 | +TOV, +3PM / -PTS, -STL |
+| -103 | Jonathan Kuminga | 220 | 117 | +TOV, +REB / -STL, -FT% |
 | -101 | Jaylen Brown | 133 | 32 | +PTS, +3PM / -TOV, -FT% |
+| -100 | Davion Mitchell | 211 | 111 | +AST, +TOV / -PTS, -REB |
 | -99 | LeBron James | 140 | 41 | +AST, +FG% / -FT%, -TOV |
-| -99 | Jonathan Kuminga | 216 | 117 | +TOV, +REB / -STL, -FT% |
-| -96 | Ryan Rollins | 170 | 74 | +TOV, +STL / -PTS, -REB |
-| -96 | Davion Mitchell | 207 | 111 | +AST, +TOV / -PTS, -REB |
-| -94 | Kevin Porter Jr | 211 | 116 | +TOV, +FT% / -REB, -PTS |
-| -94 | Darius Acuff | 205 | 110 | +AST, +FT% / -FG%, -REB |
+| -98 | Kevin Porter Jr | 215 | 116 | +TOV, +FT% / -REB, -PTS |
+| -98 | Darius Acuff | 208 | 110 | +AST, +FT% / -FG%, -REB |
+| -97 | Ryan Rollins | 171 | 74 | +TOV, +STL / -PTS, -REB |
+| -94 | Kyle Kuzma | 214 | 120 | +TOV, +REB / -FT%, -STL |
+| -93 | AJ Dybantsa | 169 | 76 | +PTS, +REB / -TOV, -FG% |
 | -92 | Paolo Banchero | 130 | 38 | +PTS, +REB / -FT%, -TOV |
-| -92 | AJ Dybantsa | 168 | 76 | +PTS, +REB / -TOV, -FG% |
-| -90 | Kyle Kuzma | 210 | 120 | +TOV, +REB / -FT%, -STL |
-| -88 | Duncan Robinson | 184 | 96 | +3PM, +TOV / -REB, -STL |
-| -87 | RJ Barrett | 198 | 111 | +PTS, +AST / -STL, -FT% |
-| -86 | Dylan Harper | 165 | 79 | +AST, +STL / -BLK, -REB |
-| -84 | Dillon Brooks | 199 | 116 | +TOV, +3PM / -FG%, -REB |
-| -83 | Maxime Raynaud | 204 | 121 | +TOV, +FG% / -3PM, -STL |
-| -81 | Derik Queen | 162 | 81 | +REB, +FG% / -PTS, -3PM |
+| -90 | RJ Barrett | 201 | 111 | +PTS, +AST / -STL, -FT% |
+| -90 | Duncan Robinson | 186 | 96 | +3PM, +TOV / -REB, -STL |
+| -87 | Dylan Harper | 166 | 79 | +AST, +STL / -BLK, -REB |
+| -86 | Dillon Brooks | 202 | 116 | +TOV, +3PM / -AST, -REB |
+| -86 | Maxime Raynaud | 207 | 121 | +TOV, +FG% / -3PM, -STL |
+| -82 | Derik Queen | 163 | 81 | +REB, +FG% / -PTS, -3PM |
 
 ---
 
@@ -122,14 +122,14 @@ Yahoo is a single outlet: per fix F2, nothing here changes a pool row. Team mism
 | our # | player | our GP | XRank | ADP |
 |---|---|---|---|---|
 | 25 | Kawhi Leonard | 35 | 18 | 20.0 |
-| 125 | Mark Williams | 15 | 96 | 102.7 |
+| 126 | Mark Williams | 15 | 96 | 102.7 |
 | 136 | Shaedon Sharpe | 18 | 146 | 114.2 |
 | 68 | Jimmy Butler | 20 | 129 | 120.5 |
-| 172 | Donte DiVincenzo | 15 | 251 | — |
+| 173 | Donte DiVincenzo | 15 | 251 | — |
 
 ---
 
-## E. Coverage gaps — Yahoo names not in our pool (80; 7 carry an ADP inside 140)
+## E. Coverage gaps — Yahoo names not in our pool (75; 7 carry an ADP inside 140)
 Names the room is drafting that our database cannot price. Owner decides which enter the pool (each needs a sourced projection row).
 
 | player | team | pos | XRank | ADP |
@@ -141,9 +141,6 @@ Names the room is drafting that our database cannot price. Owner decides which e
 | Aday Mara | OKC | C | 209 | 91.5 |
 | T.J. McConnell | IND | PG | 247 | 93.5 |
 | Johni Broome | LAC | C | 668 | 105.4 |
-| Jay Huff | IND | C | 165 | — |
-| Joan Beringer | MIN | PF,C | 169 | — |
-| Tre Jones | CHI | PG,SG | 173 | — |
 | Scotty Pippen Jr. | MEM | PG | 176 | — |
 | Will Riley | WAS | SF,PF | 178 | — |
 | Brayden Burries | MIL | SG | 180 | — |
@@ -156,11 +153,9 @@ Names the room is drafting that our database cannot price. Owner decides which e
 | Precious Achiuwa | SAC | PF,C | 198 | — |
 | Gui Santos | GSW | SF,PF | 200 | — |
 | Pelle Larsson | MIA | SG,SF | 201 | — |
-| Naji Marshall | DAL | SG,SF,PF | 203 | — |
 | Dylan Cardwell | SAC | PF,C | 206 | — |
 | Cam Spencer | MEM | PG,SG | 208 | — |
 | Baylor Scheierman | BOS | SG,SF | 210 | — |
-| Isaiah Joe | DET | SG,SF | 213 | — |
 | Nique Clifford | SAC | SG,SF | 214 | — |
 | Nate Ament | MIL | SF | 216 | — |
 | Jalen Smith | CHI | PF,C | 217 | — |
