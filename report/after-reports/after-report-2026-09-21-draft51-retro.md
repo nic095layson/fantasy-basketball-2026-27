@@ -381,9 +381,10 @@ surface.
 - **The Lopez pattern.** A center the card ranked in its top five at seven
   consecutive turns went undrafted by a 12-team human room. Either the
   room-wide price on late-career bigs is lower than every model here assumes
-  (ADP 111.9 — the room passed him at that price too), or the line is high.
-  Worth a look at his row before October; if the line holds, he is the
-  round-12/13 target the seat-10 slate should name explicitly.
+  (Yahoo ADP 77.9, XRank 139 — a price the room then ignored completely), or the line is high.
+  Worth a look at his row before October; if the line holds he would be the round-12/13
+  target — but the owner faded him on 2026-09-21 (age, LAC situation) unless
+  clearly the best left, and the slate carries that.
 - **Survival recalibration needs more live rooms.** n = 1 room, 48 rows. The
   ADP-model Brier of 0.26 is a single-room estimate; two or three more live
   mocks at slot 10 give a fit set.
