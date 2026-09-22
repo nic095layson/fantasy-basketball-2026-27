@@ -34,6 +34,8 @@ def spearman(pairs):
         return r
     a, b = ranks([p[0] for p in pairs]), ranks([p[1] for p in pairs])
     n = len(a)
+    if n < 2:
+        return float("nan")  # a file with no ADP column (the 9/22 rankings paste)
     ma, mb = sum(a) / n, sum(b) / n
     cov = sum((x - ma) * (y - mb) for x, y in zip(a, b))
     sa = (sum((x - ma) ** 2 for x in a)) ** 0.5
@@ -53,12 +55,17 @@ def main():
     print(f"matched w/ XRank: {len(with_x)} | rho(our, XRank) = {spearman(px):.4f}")
     print(f"matched w/ ADP  : {len(with_a)} | rho(our, ADP)   = {spearman(pa):.4f}")
     print(f"median |our-XRank| = {st.median(abs(a - b) for a, b in px):.0f} | "
-          f"median |our-ADP| = {st.median(abs(a - b) for a, b in pa):.0f}")
+          + (f"median |our-ADP| = {st.median(abs(a - b) for a, b in pa):.0f}" if pa
+             else "no ADP in this file — band analysis below uses XRank as the price"))
 
-    band = [r for r in with_a if float(r["our_rank"]) <= BAND]
-    gb = [abs(float(r["our_rank"]) - float(r["yahoo_adp"])) for r in band]
-    print(f"band (our_rank<={BAND}, ADP present): {len(band)} players | "
-          f"median |our-ADP| = {st.median(gb):.0f} | gap>=25: "
+    # Price = ADP where the file has one (the 9/15 paste), else XRank (the 9/22
+    # rankings paste carries no ADP).
+    pcol, plabel = ("yahoo_adp", "ADP") if with_a else ("yahoo_xrank", "XRank")
+    priced = with_a or with_x
+    band = [r for r in priced if float(r["our_rank"]) <= BAND]
+    gb = [abs(float(r["our_rank"]) - float(r[pcol])) for r in band]
+    print(f"band (our_rank<={BAND}, {plabel} present): {len(band)} players | "
+          f"median |our-{plabel}| = {st.median(gb):.0f} | gap>=25: "
           f"{sum(1 for g in gb if g >= 25)}")
 
     # band-limited values/fades and their 9-cat z lean on OUR board
@@ -68,8 +75,8 @@ def main():
     pool = sorted(rows, key=lambda r: -RE.total(z1[r["name"]]))[:RE.POOL_SIZE]
     Z = RE.zscores(rows, pool)
     cats = ["fgp", "ftp", "tpm", "pts", "reb", "ast", "stl", "blk", "tov"]
-    val = [r for r in band if float(r["our_rank"]) + GAP <= float(r["yahoo_adp"])]
-    fad = [r for r in band if float(r["yahoo_adp"]) + GAP <= float(r["our_rank"])]
+    val = [r for r in band if float(r["our_rank"]) + GAP <= float(r[pcol])]
+    fad = [r for r in band if float(r[pcol]) + GAP <= float(r["our_rank"])]
 
     def lean(rs):
         zz = [Z[r["player"]] for r in rs if r["player"] in Z]
@@ -82,6 +89,9 @@ def main():
               f"diff {lv[c] - lf[c]:+.2f}")
 
     # room vs Yahoo's own experts (most negative ADP - capped XRank)
+    if not with_a:
+        print("\nroom vs experts: needs ADP — not in this file")
+        return
     split = sorted((float(r["adp"]) - min(float(r["xrank"]), XRANK_CAP),
                     r["player"], r["xrank"], r["adp"], r["team"])
                    for r in yah if r["adp"])
