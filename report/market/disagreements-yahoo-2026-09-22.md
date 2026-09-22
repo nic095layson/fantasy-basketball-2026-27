@@ -46,7 +46,7 @@ Yahoo is a single outlet: per fix F2, nothing here changes a pool row. Team mism
 ## B. Market arbitrage vs fresh Yahoo ADP (§5.3 / Pass E)
 **Values** = our rank 15+ picks ahead of ADP; **Fades** = the reverse. z-lean = the two categories our board leans on most/least — the structural 'why', for the owner to accept or reject.
 
-**Read the deep fades with care:** Yahoo publishes ADP only for its top 193 rows (max 122.0), so a player we rank well below that shows a mechanical 15+ 'fade' merely by having an ADP at all. The real adjudication items are the fades among players we rank inside ~140; below that, read a fade as 'the room drafts him at all', not as a precise gap.
+**Read the deep fades with care:** Yahoo publishes ADP only for its top 193 rows (max 122.0), so a player we rank ≥ ~140 shows a mechanical 15+ 'fade' merely by having an ADP at all. The real adjudication items are the fades among players we rank inside ~140; below that, read a fade as 'the room drafts him at all', not as a precise gap.
 
 ### Values (44) — we're higher than the room
 

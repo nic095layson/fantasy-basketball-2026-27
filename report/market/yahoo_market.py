@@ -516,9 +516,9 @@ def _write_disagreements(d, matched, cons, yahoo_only, rows, fmt="block", prev=N
               f"**Read the deep fades with care:** Yahoo publishes ADP only for its top "
               f"{sum(1 for r in rows if r['adp'] is not None)} rows (max "
               f"{max((r['adp'] for r in rows if r['adp'] is not None), default=0):.1f}), so a player we "
-              "rank well below that shows a mechanical 15+ 'fade' merely by having an ADP at all. "
-              "The real adjudication items are the fades among players we rank inside ~140; below "
-              "that, read a fade as 'the room drafts him at all', not as a precise gap.", ""]
+              "rank ≥ ~140 shows a mechanical 15+ 'fade' merely by having an ADP at all. The real "
+              "adjudication items are the fades among players we rank inside ~140; below that, read "
+              "a fade as 'the room drafts him at all', not as a precise gap.", ""]
     L += [f"### Values ({len(val)}) — we're higher than the room", "",
           f"| gap | player | our # | {plabel} | our z-lean |", "|---|---|---|---|---|"]
     for gap, name, r, adp, prof in val[:25]:
