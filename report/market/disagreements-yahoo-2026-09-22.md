@@ -46,7 +46,7 @@ Yahoo is a single outlet: per fix F2, nothing here changes a pool row. Team mism
 ## B. Market arbitrage vs fresh Yahoo ADP (§5.3 / Pass E)
 **Values** = our rank 15+ picks ahead of ADP; **Fades** = the reverse. z-lean = the two categories our board leans on most/least — the structural 'why', for the owner to accept or reject.
 
-**Read the deep fades with care:** Yahoo publishes ADP only for its top 189 rows (max 125.2), so a player we rank ≥ ~140 shows a mechanical 15+ 'fade' merely by having an ADP at all. The real adjudication items are the fades among players we rank inside ~140; below that, read a fade as 'the room drafts him at all', not as a precise gap.
+**Read the deep fades with care:** Yahoo publishes ADP only for its top 193 rows (max 122.0), so a player we rank well below that shows a mechanical 15+ 'fade' merely by having an ADP at all. The real adjudication items are the fades among players we rank inside ~140; below that, read a fade as 'the room drafts him at all', not as a precise gap.
 
 ### Values (44) — we're higher than the room
 
@@ -216,57 +216,57 @@ Names the room is drafting that our database cannot price. Owner decides which e
 ---
 
 ## F. What Yahoo changed since `yahoo-2026-09-15.csv`
-Same-outlet comparison (287 names in both files, 286 expert-ranked in both). Moves are XRank vs XRank — the previous file's ADP is shown for reference only, because this paste carries none. A rank move is Yahoo re-pricing a player; a team change here is Yahoo's own roster data moving between the two pastes — still ONE outlet, so it flags a transaction to verify at the next pull, never a row edit.
+Same-outlet comparison (287 names in both files, 286 expert-ranked in both). Moves are XRank vs XRank; ADP before and after are shown beside them. A rank move is Yahoo re-pricing a player; a team change here is Yahoo's own roster data moving between the two pastes — still ONE outlet, so it flags a transaction to verify at the next pull, never a row edit.
 
 ### Risers (20 shown; XRank move ≥ 10 places, inside 150 on either side)
 
-| move | player | XRank before | XRank after | ADP before |
-|---|---|---|---|---|
-| +53 | Khaman Maluach | 168 | 115 | 121 |
-| +52 | Aaron Nesmith | 199 | 147 | 75 |
-| +44 | Tre Jones | 173 | 129 | — |
-| +39 | Devin Vassell | 161 | 122 | 117 |
-| +37 | Aaron Gordon | 156 | 119 | 112 |
-| +35 | Tobias Harris | 183 | 148 | — |
-| +32 | Moussa Diabaté | 177 | 145 | 99 |
-| +30 | Nikola Vučević | 174 | 144 | 112 |
-| +30 | Herbert Jones | 179 | 149 | — |
-| +29 | Zach LaVine | 125 | 96 | 120 |
-| +28 | Davion Mitchell | 137 | 109 | 111 |
-| +28 | Cason Wallace | 154 | 126 | 114 |
-| +27 | Cedric Coward | 108 | 81 | 100 |
-| +25 | Andrew Nembhard | 130 | 105 | 121 |
-| +24 | Christian Braun | 167 | 143 | 118 |
-| +22 | Jakob Poeltl | 136 | 114 | 122 |
-| +22 | Brandon Ingram | 77 | 55 | 75 |
-| +21 | Reed Sheppard | 138 | 117 | 116 |
-| +19 | Toumani Camara | 120 | 101 | 119 |
-| +19 | Tari Eason | 158 | 139 | — |
+| move | player | XRank before | XRank after | ADP before | ADP after |
+|---|---|---|---|---|---|
+| +53 | Khaman Maluach | 168 | 115 | 121 | 120 |
+| +52 | Aaron Nesmith | 199 | 147 | 75 | 104 |
+| +44 | Tre Jones | 173 | 129 | — | — |
+| +39 | Devin Vassell | 161 | 122 | 117 | 117 |
+| +37 | Aaron Gordon | 156 | 119 | 112 | 113 |
+| +35 | Tobias Harris | 183 | 148 | — | 115 |
+| +32 | Moussa Diabaté | 177 | 145 | 99 | 110 |
+| +30 | Nikola Vučević | 174 | 144 | 112 | 115 |
+| +30 | Herbert Jones | 179 | 149 | — | — |
+| +29 | Zach LaVine | 125 | 96 | 120 | 106 |
+| +28 | Davion Mitchell | 137 | 109 | 111 | 119 |
+| +28 | Cason Wallace | 154 | 126 | 114 | 118 |
+| +27 | Cedric Coward | 108 | 81 | 100 | 91 |
+| +25 | Andrew Nembhard | 130 | 105 | 121 | 116 |
+| +24 | Christian Braun | 167 | 143 | 118 | 121 |
+| +22 | Jakob Poeltl | 136 | 114 | 122 | 122 |
+| +22 | Brandon Ingram | 77 | 55 | 75 | 65 |
+| +21 | Reed Sheppard | 138 | 117 | 116 | 120 |
+| +19 | Toumani Camara | 120 | 101 | 119 | 112 |
+| +19 | Tari Eason | 158 | 139 | — | 121 |
 
 ### Fallers (20 shown)
 
-| move | player | XRank before | XRank after | ADP before |
-|---|---|---|---|---|
-| -156 | Mark Williams | 96 | 252 | 103 |
-| -129 | DeMar DeRozan | 122 | 251 | 117 |
-| -67 | Shaedon Sharpe | 146 | 213 | 114 |
-| -57 | Keaton Wagler | 149 | 206 | 122 |
-| -46 | Ty Jerome | 87 | 133 | 96 |
-| -40 | Darius Acuff Jr. | 116 | 156 | 110 |
-| -38 | Wendell Carter Jr. | 103 | 141 | 110 |
-| -36 | Daniel Gafford | 134 | 170 | 98 |
-| -29 | Egor Dëmin | 135 | 164 | 121 |
-| -26 | Brook Lopez | 139 | 165 | 78 |
-| -24 | Cameron Johnson | 148 | 172 | 108 |
-| -23 | Anthony Davis | 21 | 44 | 25 |
-| -20 | Darryn Peterson | 93 | 113 | 93 |
-| -20 | Saddiq Bey | 126 | 146 | 123 |
-| -18 | Neemias Queta | 100 | 118 | 105 |
-| -18 | Quentin Grimes | 140 | 158 | 122 |
-| -17 | Fred VanVleet | 119 | 136 | 121 |
-| -15 | Jaden McDaniels | 74 | 89 | 78 |
-| -15 | Kawhi Leonard | 18 | 33 | 20 |
-| -14 | Ja Morant | 89 | 103 | 91 |
+| move | player | XRank before | XRank after | ADP before | ADP after |
+|---|---|---|---|---|---|
+| -156 | Mark Williams | 96 | 252 | 103 | 106 |
+| -129 | DeMar DeRozan | 122 | 251 | 117 | 117 |
+| -67 | Shaedon Sharpe | 146 | 213 | 114 | 118 |
+| -57 | Keaton Wagler | 149 | 206 | 122 | 119 |
+| -46 | Ty Jerome | 87 | 133 | 96 | 107 |
+| -40 | Darius Acuff Jr. | 116 | 156 | 110 | 110 |
+| -38 | Wendell Carter Jr. | 103 | 141 | 110 | 112 |
+| -36 | Daniel Gafford | 134 | 170 | 98 | 107 |
+| -29 | Egor Dëmin | 135 | 164 | 121 | 120 |
+| -26 | Brook Lopez | 139 | 165 | 78 | 101 |
+| -24 | Cameron Johnson | 148 | 172 | 108 | 113 |
+| -23 | Anthony Davis | 21 | 44 | 25 | 37 |
+| -20 | Darryn Peterson | 93 | 113 | 93 | 98 |
+| -20 | Saddiq Bey | 126 | 146 | 123 | 122 |
+| -18 | Neemias Queta | 100 | 118 | 105 | 113 |
+| -18 | Quentin Grimes | 140 | 158 | 122 | 122 |
+| -17 | Fred VanVleet | 119 | 136 | 121 | 120 |
+| -15 | Jaden McDaniels | 74 | 89 | 78 | 87 |
+| -15 | Kawhi Leonard | 18 | 33 | 20 | 27 |
+| -14 | Ja Morant | 89 | 103 | 91 | 92 |
 
 ### Newly expert-ranked (1) — placeholder tier before, ranked now
 

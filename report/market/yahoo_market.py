@@ -513,11 +513,12 @@ def _write_disagreements(d, matched, cons, yahoo_only, rows, fmt="block", prev=N
               "**Values** = our rank 15+ picks ahead of ADP; **Fades** = the reverse. "
               "z-lean = the two categories our board leans on most/least — the structural "
               "'why', for the owner to accept or reject.", "",
-              "**Read the deep fades with care:** Yahoo publishes ADP only for its top "
-              "189 rows (max 125.2), so a player we rank ≥ ~140 shows a mechanical 15+ "
-              "'fade' merely by having an ADP at all. The real adjudication items are "
-              "the fades among players we rank inside ~140; below that, read a fade as "
-              "'the room drafts him at all', not as a precise gap.", ""]
+              f"**Read the deep fades with care:** Yahoo publishes ADP only for its top "
+              f"{sum(1 for r in rows if r['adp'] is not None)} rows (max "
+              f"{max((r['adp'] for r in rows if r['adp'] is not None), default=0):.1f}), so a player we "
+              "rank well below that shows a mechanical 15+ 'fade' merely by having an ADP at all. "
+              "The real adjudication items are the fades among players we rank inside ~140; below "
+              "that, read a fade as 'the room drafts him at all', not as a precise gap.", ""]
     L += [f"### Values ({len(val)}) — we're higher than the room", "",
           f"| gap | player | our # | {plabel} | our z-lean |", "|---|---|---|---|---|"]
     for gap, name, r, adp, prof in val[:25]:
@@ -611,7 +612,8 @@ def _moves_section(rows, prev, prev_name, alias_index):
     both = [k for k in nmap if k in pmap]
     ranked_before = [k for k in both if pmap[k]["xrank"] <= XRANK_CAP]
     moves = [(pmap[k]["xrank"] - nmap[k]["xrank"], nmap[k]["player"], pmap[k]["xrank"],
-              nmap[k]["xrank"], pmap[k]["adp"]) for k in ranked_before]
+              nmap[k]["xrank"], pmap[k]["adp"], nmap[k]["adp"]) for k in ranked_before]
+    has_adp = any(r["adp"] is not None for r in rows)
     inside = [m for m in moves if min(m[2], m[3]) <= 150]
     risers = sorted([m for m in inside if m[0] >= 10], reverse=True)[:20]
     fallers = sorted([m for m in inside if m[0] <= -10])[:20]
@@ -624,22 +626,23 @@ def _moves_section(rows, prev, prev_name, alias_index):
     left = sorted((r["xrank"], r["player"], r["team"], r["adp"]) for k, r in pmap.items()
                   if k not in nmap and r["xrank"] <= DRAFTABLE)
     fmt_adp = lambda a: f"{a:.0f}" if a is not None else "—"
+    adp_note = ("ADP before and after are shown beside them." if has_adp else
+                "the previous file's ADP is shown for reference only, because this paste carries none.")
     L = ["", "---", "",
          f"## F. What Yahoo changed since `{prev_name}`",
          f"Same-outlet comparison ({len(both)} names in both files, {len(ranked_before)} "
-         "expert-ranked in both). Moves are XRank vs XRank — the previous file's ADP is "
-         "shown for reference only, because this paste carries none. A rank move is Yahoo "
+         f"expert-ranked in both). Moves are XRank vs XRank; {adp_note} A rank move is Yahoo "
          "re-pricing a player; a team change here is Yahoo's own roster data moving between "
          "the two pastes — still ONE outlet, so it flags a transaction to verify at the next "
          "pull, never a row edit.", "",
          f"### Risers ({len(risers)} shown; XRank move ≥ 10 places, inside 150 on either side)", "",
-         "| move | player | XRank before | XRank after | ADP before |", "|---|---|---|---|---|"]
-    for mv, n, a, b, adp in risers:
-        L.append(f"| +{mv} | {n} | {a} | {b} | {fmt_adp(adp)} |")
+         "| move | player | XRank before | XRank after | ADP before | ADP after |", "|---|---|---|---|---|---|"]
+    for mv, n, a, b, adp, adp2 in risers:
+        L.append(f"| +{mv} | {n} | {a} | {b} | {fmt_adp(adp)} | {fmt_adp(adp2)} |")
     L += ["", f"### Fallers ({len(fallers)} shown)", "",
-          "| move | player | XRank before | XRank after | ADP before |", "|---|---|---|---|---|"]
-    for mv, n, a, b, adp in fallers:
-        L.append(f"| {mv} | {n} | {a} | {b} | {fmt_adp(adp)} |")
+          "| move | player | XRank before | XRank after | ADP before | ADP after |", "|---|---|---|---|---|---|"]
+    for mv, n, a, b, adp, adp2 in fallers:
+        L.append(f"| {mv} | {n} | {a} | {b} | {fmt_adp(adp)} | {fmt_adp(adp2)} |")
     L += ["", f"### Newly expert-ranked ({len(newly)}) — placeholder tier before, ranked now", "",
           "| XRank now | player | ADP before |", "|---|---|---|"]
     for xr, n, adp in newly:
