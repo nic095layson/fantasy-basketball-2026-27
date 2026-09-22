@@ -38,6 +38,17 @@ Transcription invariants (any failure = exit 2, fix the raw file first):
      1..299 plus one placeholder-tier 668)
   I5 no duplicate players
 
+Second raw format (2026-09-22 paste — Yahoo's 9-cat RANKINGS page, rank only,
+no ADP): three lines per player, "N" / name / "POS<tab>TEAM", with Yahoo's own
+site codes (NOR, PHO, UTH — mapped to the pool's NOP, PHX, UTA). Detected by the
+first non-empty line being a bare integer. Invariants: I1 (pos/team), I4 (unique
+XRank, no gaps in 1..N), I5 (no duplicate players), I6 (rank N sits at position
+N — the list is contiguous). XRank = the rank; ADP empty. For this format the
+absence gate is MECHANICAL: an unmatched pool player is accepted only when no
+Yahoo-only name shares (surname, first three letters) with him — otherwise the
+pair is a possible spelling variant and trips the gate until an alias or an
+accepted absence is recorded.
+
 Usage: python3 report/market/yahoo_market.py [YYYY-MM-DD]   (default 2026-09-15)
 """
 import csv
@@ -53,6 +64,9 @@ TEAMS = {"ATL", "BOS", "BKN", "CHA", "CHI", "CLE", "DAL", "DEN", "DET", "GSW",
          "HOU", "IND", "LAC", "LAL", "MEM", "MIA", "MIL", "MIN", "NOP", "NYK",
          "OKC", "ORL", "PHI", "PHX", "POR", "SAC", "SAS", "TOR", "UTA", "WAS"}
 POS = {"PG", "SG", "SF", "PF", "C"}
+YAHOO_TEAM = {"NOR": "NOP", "PHO": "PHX", "UTH": "UTA"}  # Yahoo site codes -> pool codes
+DRAFTABLE = 156          # 12 teams x 13 rounds: the universe the room drafts
+PASTED_ON = {"2026-09-15": "2026-09-16"}  # paste date when it differs from the list date
 XRANK_CAP = 300  # 668 is Yahoo's placeholder tier for expert-unranked names;
                  # capped at 300 (list depth + 1) when averaging, stored raw.
 
@@ -65,9 +79,14 @@ ALIASES.update({
 
 
 def parse_raw(path):
+    """Returns (rows, problems, fmt) with fmt in {"block", "rank"}."""
+    lines = [l.strip() for l in open(path, encoding="utf-8")]
+    nonblank = [l for l in lines if l]
+    if nonblank and re.fullmatch(r"\d+", nonblank[0]):
+        rows, problems = _parse_rank_list(nonblank)
+        return rows, problems, "rank"
     blocks, cur = [], []
-    for line in open(path, encoding="utf-8"):
-        line = line.strip()
+    for line in lines:
         if line:
             cur.append(line)
         elif cur:
@@ -75,7 +94,35 @@ def parse_raw(path):
             cur = []
     if cur:
         blocks.append(cur)
+    rows, problems = _parse_blocks(blocks)
+    return rows, problems, "block"
 
+
+def _parse_rank_list(lines):
+    rows, problems = [], []
+    if len(lines) % 3:
+        problems.append(f"rank-list: {len(lines)} non-blank lines is not a multiple of 3")
+    for i in range(0, len(lines) - len(lines) % 3, 3):
+        rk, name, posteam = lines[i], lines[i + 1], lines[i + 2]
+        if not re.fullmatch(r"\d+", rk):
+            problems.append(f"entry {i // 3 + 1}: rank line {rk!r} is not an integer")
+            continue
+        toks = posteam.split()
+        if len(toks) != 2:
+            problems.append(f"entry {rk} ({name!r}): expected 'POS<tab>TEAM', got {posteam!r}")
+            continue
+        pos, team = toks
+        team = YAHOO_TEAM.get(team, team)
+        if not _is_pos(pos):
+            problems.append(f"entry {rk} ({name!r}): bad positions {pos!r}")
+        if team not in TEAMS:
+            problems.append(f"entry {rk} ({name!r}): bad team {team!r}")
+        rows.append({"player": name, "team": team, "pos": pos.replace(" ", ""),
+                     "xrank": int(rk), "adp": None})
+    return rows, problems
+
+
+def _parse_blocks(blocks):
     rows, problems = [], []
     for i, b in enumerate(blocks, 1):
         name = b[0]
@@ -116,8 +163,13 @@ def _is_pos(s):
     return all(p.strip() in POS for p in s.split(","))
 
 
-def check_invariants(rows):
+def check_invariants(rows, fmt="block"):
     problems = []
+    depth = 299 if fmt == "block" else len(rows)
+    if fmt == "rank":
+        for i, r in enumerate(rows, 1):
+            if r["xrank"] != i:
+                problems.append(f"I6: rank {r['xrank']} ({r['player']}) sits at position {i}")
     # I2: ADP prefix, non-decreasing
     seen_no_adp = False
     prev_adp = 0.0
@@ -142,8 +194,8 @@ def check_invariants(rows):
     dups = {x for x in xrs if xrs.count(x) > 1}
     if dups:
         problems.append(f"I4: duplicate XRank values {sorted(dups)}")
-    in_range = {x for x in xrs if x <= 299}
-    gaps = sorted(set(range(1, 300)) - in_range)
+    in_range = {x for x in xrs if x <= depth}
+    gaps = sorted(set(range(1, depth + 1)) - in_range)
     # I5: duplicate players
     names = [r["player"] for r in rows]
     pdups = {n for n in names if names.count(n) > 1}
@@ -176,15 +228,42 @@ _ABSENT_NOTES = {
 }
 
 
+def _key3(name):
+    """(surname, first three letters) — the deck plane's drift key (F8)."""
+    t = BM.norm(name).split()
+    return (t[-1], t[0][:3]) if t else (name, "")
+
+
+def _previous_file(d):
+    """The newest yahoo-YYYY-MM-DD.csv dated before d, or None."""
+    cands = sorted(f for f in os.listdir(HERE)
+                   if re.fullmatch(r"yahoo-\d{4}-\d{2}-\d{2}\.csv", f) and f[6:16] < d)
+    return os.path.join(HERE, cands[-1]) if cands else None
+
+
+def _load_csv(path):
+    out = []
+    for r in csv.DictReader(open(path, encoding="utf-8")):
+        r["xrank"] = int(r["xrank"])
+        r["adp"] = float(r["adp"]) if r.get("adp") not in (None, "") else None
+        out.append(r)
+    return out
+
+
+def _price(r):
+    return r["adp"] if r["adp"] is not None else r["xrank"]
+
+
 def main():
     d = sys.argv[1] if len(sys.argv) > 1 else "2026-09-15"
     raw_path = os.path.join(HERE, f"yahoo-raw-{d}.txt")
-    rows, problems = parse_raw(raw_path)
-    inv, gaps = check_invariants(rows)
+    rows, problems, fmt = parse_raw(raw_path)
+    inv, gaps = check_invariants(rows, fmt)
     problems += inv
     n_adp = sum(1 for r in rows if r["adp"] is not None)
-    print(f"parsed {len(rows)} players ({n_adp} with ADP, {len(rows) - n_adp} "
-          f"XRank-only); XRank gaps in 1..299: {gaps if gaps else 'NONE'}")
+    depth = 299 if fmt == "block" else len(rows)
+    print(f"format {fmt}: parsed {len(rows)} players ({n_adp} with ADP, {len(rows) - n_adp} "
+          f"XRank-only); XRank gaps in 1..{depth}: {gaps if gaps else 'NONE'}")
     if problems:
         print(f"TRANSCRIPTION GATE: FAIL — {len(problems)} problem(s)")
         for p in problems:
@@ -194,7 +273,7 @@ def main():
         print("TRANSCRIPTION GATE: FAIL — XRank coverage has gaps; re-check the "
               "raw transcription at those ranks before proceeding")
         sys.exit(2)
-    print("TRANSCRIPTION GATE: PASS (I1-I5)")
+    print("TRANSCRIPTION GATE: PASS (I1-I5" + (", I6)" if fmt == "rank" else ")"))
 
     BM._write_csv(os.path.join(HERE, f"yahoo-{d}.csv"),
                   ["player", "team", "pos", "xrank", "adp"], rows)
@@ -223,17 +302,45 @@ def main():
                   if alias_index.get(BM.norm(r["player"]), BM.norm(r["player"]))
                   not in pool_keys]
 
-    trips = [n for _, n, _ in unmatched if n not in set(_ACCEPTED_ABSENT_YH)]
-    print(f"JOIN: {len(board)} pool players | matched to yahoo="
-          f"{len(board) - len(unmatched)} | unmatched={len(unmatched)} "
-          f"(unexplained {len(trips)}) | yahoo-only names={len(yahoo_only)}")
-    if trips:
-        print("HARD GATE TRIP — unexplained unmatched pool players (add a verified "
-              "alias or record as a genuine absence):")
+    reasons = None
+    if fmt == "rank":
+        # Mechanical absence check: a Yahoo-only name sharing (surname, first 3)
+        # with an unmatched pool player is a possible spelling variant.
+        spare = {}
+        for r in yahoo_only:
+            spare.setdefault(_key3(r["player"]), r["player"])
+        reasons, trips = {}, []
         for rk, n, t in unmatched:
-            if n in trips:
-                print(f"  #{rk:<4} {n} ({t})")
-        sys.exit(3)
+            hit = spare.get(_key3(n))
+            if hit and n not in set(_ACCEPTED_ABSENT_YH):
+                trips.append((rk, n, t, hit))
+            elif t == "FA":
+                reasons[n] = "unsigned FA — Yahoo's list carries no free agents"
+            else:
+                reasons[n] = _ABSENT_NOTES.get(
+                    n, f"outside Yahoo's top {len(rows)} — surname absent from the raw "
+                       "(mechanical check: no Yahoo-only name shares surname + first 3 letters)")
+        print(f"JOIN: {len(board)} pool players | matched to yahoo="
+              f"{len(board) - len(unmatched)} | unmatched={len(unmatched)} "
+              f"(possible spelling variants {len(trips)}) | yahoo-only names={len(yahoo_only)}")
+        if trips:
+            print("HARD GATE TRIP — unmatched pool players that look like a Yahoo spelling "
+                  "(add a verified alias, or record the absence with a reason):")
+            for rk, n, t, hit in trips:
+                print(f"  #{rk:<4} {n} ({t})  ~  {hit} (Yahoo)")
+            sys.exit(3)
+    else:
+        trips = [n for _, n, _ in unmatched if n not in set(_ACCEPTED_ABSENT_YH)]
+        print(f"JOIN: {len(board)} pool players | matched to yahoo="
+              f"{len(board) - len(unmatched)} | unmatched={len(unmatched)} "
+              f"(unexplained {len(trips)}) | yahoo-only names={len(yahoo_only)}")
+        if trips:
+            print("HARD GATE TRIP — unexplained unmatched pool players (add a verified "
+                  "alias or record as a genuine absence):")
+            for rk, n, t in unmatched:
+                if n in trips:
+                    print(f"  #{rk:<4} {n} ({t})")
+            sys.exit(3)
 
     # ---- consensus: the averaged consolidation (owner ask 2026-09-16) --------
     cons = []
@@ -260,15 +367,18 @@ def main():
                    "our_rank", "yahoo_xrank", "yahoo_adp", "n_signals", "z_adj"],
                   cons)
 
-    _write_unmatched(d, unmatched, board, len(rows))
-    _write_disagreements(d, matched, cons, yahoo_only, rows)
-    _refresh_provenance(d, len(rows), n_adp)
+    prev_path = _previous_file(d)
+    prev = _load_csv(prev_path) if prev_path else None
+    _write_unmatched(d, unmatched, board, len(rows), reasons)
+    _write_disagreements(d, matched, cons, yahoo_only, rows, fmt, prev,
+                         os.path.basename(prev_path) if prev_path else None, alias_index)
+    _refresh_provenance(d, len(rows), n_adp, fmt)
     print(f"wrote yahoo-{d}.csv, consensus-{d}.csv, unmatched-yahoo-{d}.md, "
           f"disagreements-yahoo-{d}.md, provenance.csv")
     print("GATE PASS — every pool player matched or recorded as a genuine absence.")
 
 
-def _write_unmatched(d, unmatched, board, n_yahoo):
+def _write_unmatched(d, unmatched, board, n_yahoo, reasons=None):
     lines = [f"# Unmatched-name report vs Yahoo — {d} (HARD GATE, work order §3.3)", "",
              f"Pool players: {len(board)}; Yahoo list: {n_yahoo}. Every pool player "
              "below did NOT join to Yahoo after normalization and documented aliases; "
@@ -277,21 +387,27 @@ def _write_unmatched(d, unmatched, board, n_yahoo):
              f"## Not matched to Yahoo ({len(unmatched)}) — all accepted absences", "",
              "| our board # | player | team | reason |", "|---|---|---|---|"]
     for rk, n, t in unmatched:
-        reason = _ABSENT_NOTES.get(
-            n, "unsigned FA — Yahoo's list carries no free agents" if t == "FA"
-            else "outside Yahoo's published list (deep tail / not rostered by Yahoo)")
+        if reasons is not None:
+            reason = reasons[n]
+        else:
+            reason = _ABSENT_NOTES.get(
+                n, "unsigned FA — Yahoo's list carries no free agents" if t == "FA"
+                else "outside Yahoo's published list (deep tail / not rostered by Yahoo)")
         lines.append(f"| {rk} | {n} | {t} | {reason} |")
     lines.append("")
     open(os.path.join(HERE, f"unmatched-yahoo-{d}.md"), "w").write("\n".join(lines) + "\n")
 
 
-def _write_disagreements(d, matched, cons, yahoo_only, rows):
+def _write_disagreements(d, matched, cons, yahoo_only, rows, fmt="block", prev=None,
+                         prev_name=None, alias_index=None):
+    xr_only = fmt == "rank"
+    plabel = "XRank" if xr_only else "ADP"
     val, fad = [], []
     for m in matched:
         y = m["yh"]
-        if not y or y["adp"] is None:
+        if not y or (not xr_only and y["adp"] is None):
             continue
-        r, adp = m["board"]["rank"], y["adp"]
+        r, adp = m["board"]["rank"], _price(y)
         if r + 15 <= adp:
             val.append((adp - r, m["name"], r, adp, BM._zprofile(m)))
         elif adp + 15 <= r:
@@ -311,41 +427,70 @@ def _write_disagreements(d, matched, cons, yahoo_only, rows):
             avail.append((m["board"]["rank"], m["name"], gp, y["xrank"], y["adp"]))
     avail.sort(key=lambda x: (x[4] if x[4] is not None else x[3]))
 
-    gaps_deep = [r for r in yahoo_only if r["adp"] is not None and r["adp"] < 140]
+    if xr_only:
+        gaps_deep = [r for r in yahoo_only if r["xrank"] <= DRAFTABLE]
+    else:
+        gaps_deep = [r for r in yahoo_only if r["adp"] is not None and r["adp"] < 140]
 
-    L = [f"# Yahoo market consolidation — {d}", "",
-         "Owner ask (2026-09-16): consolidate and average Yahoo's rankings into the "
-         "internal database. Consolidated per the standing work order: Yahoo lands as "
-         f"reference data (`yahoo-{d}.csv`) and the average lands as the market-lens "
-         f"consensus board (`consensus-{d}.csv`) — mean of the available rank signals "
-         "(our board rank, Yahoo XRank capped at 300, Yahoo ADP), re-ranked over all "
-         "pool players. The first-principles board itself is UNCHANGED (owner decision "
-         "2026-08-21: reference, not a blend; replacing marketRanks with real market "
-         "data remains the work order's gated step 5).", "",
-         "Yahoo is a single outlet: per fix F2, nothing here changes a pool row. Team "
-         "mismatches and coverage gaps below are flags for the next pull's watchlist.", "",
-         "---", "",
+    if xr_only:
+        intro = [f"# Yahoo market consolidation — {d}", "",
+                 f"Owner paste ({PASTED_ON.get(d, d)}): Yahoo's current 9-cat RANKINGS as of "
+                 f"{d} — rank order only, no ADP column. Landed per the standing work order: "
+                 f"Yahoo lands as reference data (`yahoo-{d}.csv`, XRank = the rank, ADP "
+                 f"empty) and the average lands as the market-lens consensus board "
+                 f"(`consensus-{d}.csv`) — mean of our board rank and Yahoo XRank, re-ranked "
+                 "over all pool players. The first-principles board itself is UNCHANGED "
+                 "(owner decision 2026-08-21: reference, not a blend). Downstream, the deck's "
+                 "F8 price loader (yahoo-fantasy-basketball PR #36) prices by ADP where "
+                 "Yahoo lists one, else XRank — this file prices every matched player by "
+                 "XRank, labelled XR.", "",
+                 "Yahoo is a single outlet: per fix F2, nothing here changes a pool row. Team "
+                 "mismatches, Yahoo's own team changes since the previous paste, and coverage "
+                 "gaps below are flags for the next pull's watchlist.", ""]
+    else:
+        intro = [f"# Yahoo market consolidation — {d}", "",
+                 "Owner ask (2026-09-16): consolidate and average Yahoo's rankings into the "
+                 "internal database. Consolidated per the standing work order: Yahoo lands as "
+                 f"reference data (`yahoo-{d}.csv`) and the average lands as the market-lens "
+                 f"consensus board (`consensus-{d}.csv`) — mean of the available rank signals "
+                 "(our board rank, Yahoo XRank capped at 300, Yahoo ADP), re-ranked over all "
+                 "pool players. The first-principles board itself is UNCHANGED (owner decision "
+                 "2026-08-21: reference, not a blend; replacing marketRanks with real market "
+                 "data remains the work order's gated step 5).", "",
+                 "Yahoo is a single outlet: per fix F2, nothing here changes a pool row. Team "
+                 "mismatches and coverage gaps below are flags for the next pull's watchlist.", ""]
+    L = intro + ["---", "",
          f"## A. Consensus board top 30 (full file: consensus-{d}.csv)", "",
          "| cons # | player | avg | our # | XRank | ADP |", "|---|---|---|---|---|---|"]
     for r in cons[:30]:
         L.append(f"| {r['consensus_rank']} | {r['player']} | {r['consensus_avg']} | "
                  f"{r['our_rank']} | {r['yahoo_xrank']} | {r['yahoo_adp']} |")
-    L += ["", "---", "",
-          "## B. Market arbitrage vs fresh Yahoo ADP (§5.3 / Pass E)",
-          "**Values** = our rank 15+ picks ahead of ADP; **Fades** = the reverse. "
-          "z-lean = the two categories our board leans on most/least — the structural "
-          "'why', for the owner to accept or reject.", "",
-          "**Read the deep fades with care:** Yahoo publishes ADP only for its top "
-          "189 rows (max 125.2), so a player we rank ≥ ~140 shows a mechanical 15+ "
-          "'fade' merely by having an ADP at all. The real adjudication items are "
-          "the fades among players we rank inside ~140; below that, read a fade as "
-          "'the room drafts him at all', not as a precise gap.", "",
-          f"### Values ({len(val)}) — we're higher than the room", "",
-          "| gap | player | our # | ADP | our z-lean |", "|---|---|---|---|---|"]
+    if xr_only:
+        L += ["", "---", "",
+              "## B. Market arbitrage vs Yahoo XRank (§5.3 / Pass E)",
+              "**Values** = our rank 15+ picks ahead of Yahoo's rank; **Fades** = the reverse. "
+              "z-lean = the two categories our board leans on most/least — the structural "
+              "'why', for the owner to accept or reject.", "",
+              f"**Read with care:** this paste is Yahoo's expert RANK, not the room's ADP. It "
+              f"covers {len(rows)} names, so a player we rank inside {len(rows)} but absent "
+              "from it appears in section E (coverage), not here.", ""]
+    else:
+        L += ["", "---", "",
+              "## B. Market arbitrage vs fresh Yahoo ADP (§5.3 / Pass E)",
+              "**Values** = our rank 15+ picks ahead of ADP; **Fades** = the reverse. "
+              "z-lean = the two categories our board leans on most/least — the structural "
+              "'why', for the owner to accept or reject.", "",
+              "**Read the deep fades with care:** Yahoo publishes ADP only for its top "
+              "189 rows (max 125.2), so a player we rank ≥ ~140 shows a mechanical 15+ "
+              "'fade' merely by having an ADP at all. The real adjudication items are "
+              "the fades among players we rank inside ~140; below that, read a fade as "
+              "'the room drafts him at all', not as a precise gap.", ""]
+    L += [f"### Values ({len(val)}) — we're higher than the room", "",
+          f"| gap | player | our # | {plabel} | our z-lean |", "|---|---|---|---|---|"]
     for gap, name, r, adp, prof in val[:25]:
         L.append(f"| +{gap:.0f} | {name} | {r} | {adp:.0f} | {prof} |")
     L += ["", f"### Fades ({len(fad)}) — the room is higher than us", "",
-          "| gap | player | our # | ADP | our z-lean |", "|---|---|---|---|---|"]
+          f"| gap | player | our # | {plabel} | our z-lean |", "|---|---|---|---|---|"]
     for gap, name, r, adp, prof in fad[:25]:
         L.append(f"| -{gap:.0f} | {name} | {r} | {adp:.0f} | {prof} |")
     L += ["", "---", "",
@@ -361,7 +506,8 @@ def _write_disagreements(d, matched, cons, yahoo_only, rows):
         L.append(f"| {rk} | {n} | {gp:.0f} | {xr} | {adp if adp is not None else '—'} |")
     L += ["", "---", "",
           f"## E. Coverage gaps — Yahoo names not in our pool ({len(yahoo_only)}; "
-          f"{len(gaps_deep)} carry an ADP inside 140)",
+          + (f"{len(gaps_deep)} ranked inside the draftable {DRAFTABLE})" if xr_only
+             else f"{len(gaps_deep)} carry an ADP inside 140)"),
           "Names the room is drafting that our database cannot price. Owner decides "
           "which enter the pool (each needs a sourced projection row).", "",
           "| player | team | pos | XRank | ADP |", "|---|---|---|---|---|"]
@@ -370,27 +516,94 @@ def _write_disagreements(d, matched, cons, yahoo_only, rows):
                                                else r["xrank"])):
         L.append(f"| {r['player']} | {r['team']} | {r['pos']} | {r['xrank']} | "
                  f"{r['adp'] if r['adp'] is not None else '—'} |")
+    if prev is not None:
+        L += _moves_section(rows, prev, prev_name, alias_index or {})
     L.append("")
     open(os.path.join(HERE, f"disagreements-yahoo-{d}.md"), "w").write("\n".join(L) + "\n")
 
 
-def _refresh_provenance(d, n, n_adp):
+def _moves_section(rows, prev, prev_name, alias_index):
+    """Section F: what Yahoo itself changed between the previous paste and this one —
+    XRank moves (XRank on BOTH sides; a previous placeholder-tier XRank > XRANK_CAP
+    means Yahoo's experts had not ranked him, listed separately with his old ADP),
+    team changes in Yahoo's own data, and names that entered or left the draftable
+    range of the expert list."""
+    canon = lambda n: alias_index.get(BM.norm(n), BM.norm(n))
+    pmap = {canon(r["player"]): r for r in prev}
+    nmap = {canon(r["player"]): r for r in rows}
+    both = [k for k in nmap if k in pmap]
+    ranked_before = [k for k in both if pmap[k]["xrank"] <= XRANK_CAP]
+    moves = [(pmap[k]["xrank"] - nmap[k]["xrank"], nmap[k]["player"], pmap[k]["xrank"],
+              nmap[k]["xrank"], pmap[k]["adp"]) for k in ranked_before]
+    inside = [m for m in moves if min(m[2], m[3]) <= 150]
+    risers = sorted([m for m in inside if m[0] >= 10], reverse=True)[:20]
+    fallers = sorted([m for m in inside if m[0] <= -10])[:20]
+    newly = sorted((nmap[k]["xrank"], nmap[k]["player"], pmap[k]["adp"])
+                   for k in both if pmap[k]["xrank"] > XRANK_CAP)
+    teams = sorted((nmap[k]["xrank"], nmap[k]["player"], pmap[k]["team"], nmap[k]["team"])
+                   for k in both if pmap[k]["team"] != nmap[k]["team"])
+    entered = sorted((r["xrank"], r["player"], r["team"]) for k, r in nmap.items()
+                     if k not in pmap and r["xrank"] <= DRAFTABLE)
+    left = sorted((r["xrank"], r["player"], r["team"], r["adp"]) for k, r in pmap.items()
+                  if k not in nmap and r["xrank"] <= DRAFTABLE)
+    fmt_adp = lambda a: f"{a:.0f}" if a is not None else "—"
+    L = ["", "---", "",
+         f"## F. What Yahoo changed since `{prev_name}`",
+         f"Same-outlet comparison ({len(both)} names in both files, {len(ranked_before)} "
+         "expert-ranked in both). Moves are XRank vs XRank — the previous file's ADP is "
+         "shown for reference only, because this paste carries none. A rank move is Yahoo "
+         "re-pricing a player; a team change here is Yahoo's own roster data moving between "
+         "the two pastes — still ONE outlet, so it flags a transaction to verify at the next "
+         "pull, never a row edit.", "",
+         f"### Risers ({len(risers)} shown; XRank move ≥ 10 places, inside 150 on either side)", "",
+         "| move | player | XRank before | XRank after | ADP before |", "|---|---|---|---|---|"]
+    for mv, n, a, b, adp in risers:
+        L.append(f"| +{mv} | {n} | {a} | {b} | {fmt_adp(adp)} |")
+    L += ["", f"### Fallers ({len(fallers)} shown)", "",
+          "| move | player | XRank before | XRank after | ADP before |", "|---|---|---|---|---|"]
+    for mv, n, a, b, adp in fallers:
+        L.append(f"| {mv} | {n} | {a} | {b} | {fmt_adp(adp)} |")
+    L += ["", f"### Newly expert-ranked ({len(newly)}) — placeholder tier before, ranked now", "",
+          "| XRank now | player | ADP before |", "|---|---|---|"]
+    for xr, n, adp in newly:
+        L.append(f"| {xr} | {n} | {fmt_adp(adp)} |")
+    L += ["", f"### Yahoo team changes ({len(teams)}) — transaction flags for the next pull", "",
+          "| XRank | player | before | after |", "|---|---|---|---|"]
+    for xr, n, a, b in teams:
+        L.append(f"| {xr} | {n} | {a} | {b} |")
+    L += ["", f"### Entered Yahoo's list inside the draftable {DRAFTABLE} ({len(entered)})", "",
+          "| XRank | player | team |", "|---|---|---|"]
+    for xr, n, t in entered:
+        L.append(f"| {xr} | {n} | {t} |")
+    L += ["", f"### Left Yahoo's list from inside the draftable {DRAFTABLE} ({len(left)})", "",
+          "| XRank before | player | team | ADP before |", "|---|---|---|---|"]
+    for xr, n, t, adp in left:
+        L.append(f"| {xr} | {n} | {t} | {fmt_adp(adp)} |")
+    return L
+
+
+def _refresh_provenance(d, n, n_adp, fmt="block"):
     path = os.path.join(HERE, "provenance.csv")
     rows = list(csv.DictReader(open(path, encoding="utf-8")))
-    rows = [r for r in rows if r["source"] != "yahoo"]
-    rows.append({
-        "source": "yahoo",
-        "url": "(owner paste — no direct fetch; sports egress blocked)",
-        "fetched_on": "2026-09-16",
-        "rows": n,
-        "notes": f"Yahoo player rankings as of {d} per the owner, pasted into chat "
-                 f"2026-09-16 and transcribed verbatim to yahoo-raw-{d}.txt (duplicate "
+    rows = [r for r in rows if not (r["source"] == "yahoo" and f"as of {d} " in r["notes"])]
+    pasted = PASTED_ON.get(d, d)
+    if fmt == "rank":
+        notes = (f"Yahoo 9-cat player RANKINGS as of {d} per the owner, pasted into chat "
+                 f"{pasted} and transcribed verbatim to yahoo-raw-{d}.txt (rank / name / "
+                 f"pos+team, Yahoo site codes NOR/PHO/UTH mapped to NOP/PHX/UTA). XRank = the "
+                 f"rank (1..{n}, contiguous); NO ADP in this paste. Parsed under invariants "
+                 f"I1, I4-I6 by yahoo_market.py; absence gate mechanical (surname + first 3).")
+    else:
+        notes = (f"Yahoo player rankings as of {d} per the owner, pasted into chat "
+                 f"{pasted} and transcribed verbatim to yahoo-raw-{d}.txt (duplicate "
                  f"name lines are a copy artifact, used as a transcription check). "
                  f"XRank = Yahoo expert rank (668 = placeholder tier, capped at 300 "
                  f"for averaging); ADP on the top {n_adp} rows only, non-decreasing "
                  f"(list ordered best-to-worst per owner). Parsed under invariants "
-                 f"I1-I5 by yahoo_market.py.",
-    })
+                 f"I1-I5 by yahoo_market.py.")
+    rows.append({"source": "yahoo",
+                 "url": "(owner paste — no direct fetch; sports egress blocked)",
+                 "fetched_on": pasted, "rows": n, "notes": notes})
     BM._write_csv(path, ["source", "url", "fetched_on", "rows", "notes"], rows)
 
 
