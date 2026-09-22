@@ -93,6 +93,34 @@ Web research only — training-data memory is expired for everything here (PROMP
   directions — tagged-but-now-cleared AND returning-but-untagged. Grading
   the headline instead of the row is how Jamal Murray (ruptured Achilles,
   untagged, availability 1.0) shipped certified as "already correct.".
+- **Cross-plane consistency gate (fix F7, 2026-09-21 — mock 51 retro T7;
+  owner: refuse):** the deck build's gate 7 runs the deck's
+  `scripts/check_planes.py` against this repo's `report/projections-2026-27.csv`
+  and REFUSES to publish when a player both planes carry disagrees on team,
+  on exclusion class (deck out/recovery tag vs kit GP ≤ 25), on spelling (a
+  one-plane name matching another one-plane name on surname + first three
+  letters), or when a line moved on one plane since the last build without
+  moving on the other — the Sheppard case: the 9/16 bench downgrade lived on
+  the kit only and the owner drafted him off a stale deck row in mock 51.
+  Lines and positions otherwise differ between the planes by design (235
+  shared names, 201 differing lines on 2026-09-21) and are not equalized.
+  Waive by name with `--planes-waive "Name: reason"`; a missing kit checkout
+  refuses unless `--no-plane-check REASON` is given — both are recorded in the
+  build manifest. The kit side of "since the last build" is the deck's
+  `data/kit-snapshot.csv`, rewritten after every passing build. Run it
+  standalone from here: `python3 ../yahoo-fantasy-basketball/scripts/check_planes.py --kit .`
+- **Yahoo price into the deck's Mkt rank (fix F8, 2026-09-22 — owner: "use
+  Yahoo Mkt price"; the 8/21 work order's step 5):** the deck build reads this
+  repo's newest `report/market/yahoo-YYYY-MM-DD.csv` (the owner's dated paste,
+  normalized by `report/market/yahoo_market.py`) and bakes ADP-else-XRank into
+  every deck row; the internal points-volume model orders only the unpriced
+  tail. So a Yahoo paste is the way the Mkt column, the TARGET shelf counts
+  and the mock-room personas get the room's real price — paste one in early
+  October and again right before the draft. The build warns when the newest
+  paste is more than 14 days old and refuses when a paste's spelling strands
+  a top-120 board name (add the alias in `check_planes.py`). No paste at all:
+  the build falls back to the model, loudly, and the manifest records
+  `"market": null`.
 - **FA rows:** any row with team `FA` gets a quick status check (signed? overseas?
   retired?).
 
