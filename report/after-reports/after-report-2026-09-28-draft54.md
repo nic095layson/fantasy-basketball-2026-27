@@ -172,9 +172,26 @@ the base rate out of sample, and the pooled margin stands at 0.006
 
 | id | question | default if silent |
 |---|---|---|
-| D54-1 | Late-round card-off picks (#82, #135) cost ~11 points of championship vs following the card; keep drafting on feel late, or commit to the 🎯 from round 8 on? | keep; record again next room |
-| D54-2 | After an UNKNOWN line the next feed is logged as a new pick; should the tool prompt "fix #N?" when the previous pick is UNKNOWN and the new name resolves? | build it before 10/14 (small, deck app only) |
-| D54-3 | AST advised at nine straight turns across mocks 53–54; run the declared-AST-punt arm in the arena before the real draft? | run it |
+| D54-1 | Late-round card-off picks (#82, #135) cost ~11 points of championship vs following the card; keep drafting on feel late, or commit to the 🎯 from round 8 on? | **disposed 9/28: rule adopted (round 9 on) + card-gap echo built — §9** |
+| D54-2 | After an UNKNOWN line the next feed is logged as a new pick; should the tool prompt "fix #N?" when the previous pick is UNKNOWN and the new name resolves? | **disposed 9/28: built (auto-fix on a text match, warning otherwise, open-UNKNOWN badge) — §9** |
+| D54-3 | AST advised at nine straight turns across mocks 53–54; run the declared-AST-punt arm in the arena before the real draft? | **disposed 9/28: run — steered −6.8 / −9.0 pts, advisor stays advice-only; trap sentence built — §9** |
+
+## 9. Decisions taken (owner, 2026-09-28 evening: "Build them")
+
+The owner asked for the three decisions in plain language, a logical case,
+and fixes; then approved all three. What was built, and what the numbers
+said [EVIDENCE: deck branch `claude/d54-fixes`, `arena/results/d54_dom_check_2026-09-28.json`,
+`arena/results/m54_punt_arms.json`, `arena/results/m54_punt_arms_veto.json`].
+
+| decision | outcome | evidence |
+|---|---|---|
+| D54-1 late-round card-off picks | **Rule adopted: from round 9 on, take the 🎯.** Basis: across the four live rooms, 36 card-off picks with a measured swap arm — rounds 1–4: 8 of 9 would have gained (mean +2.6 pts); rounds 5–8: 7 of 11 (+2.0, the only stretch where the owner's read sometimes wins); rounds 9–13: 15 of 16 (+2.7, best +8.4). Built: a `my:` pick that is not the 🎯 shows "off the card: Name ranks #k (gap behind 🎯 X)" under the feed as you type and on the log line, with a round-9+ suffix naming the rule | Chromium at mock 54 #135: hint "off the card: Ajay Mitchell ranks #33 (0.176 behind 🎯 Christian Braun) — round-9+ rule (D54-1): take the 🎯"; log line present; arms table in `m5x_arms.json` |
+| D54-2 UNKNOWN then a fresh feed | **Built, three parts.** The feed parser keeps an UNKNOWN's raw text; the next un-numbered name that matches it (3-letter token prefix or containment) fixes the UNKNOWN in place with an echo line; a non-matching name logs as usual plus "still UNKNOWN" warning; gap placeholders never auto-fix; the strip names every open UNKNOWN with the fix syntax, draft complete included. Python parser mirrored | the mock-54 tool log replayed through the real page: 13 drifted positions → 1 (the never-fixed #97 "LavineWiggins"), one auto-fix ("mamy" → Mamukelashvili), warning fired, strip reads "1 UNKNOWN open: #97"; red-first: 5 engine cases + 3 CLI cases failed on the unchanged deck, then passed |
+| D54-3 the AST advice | **Measured, then made actionable without steering.** Paired arms on the mock-54 room, bar registered first (steered must beat unsteered by ≥2 pts on 2 of 3 seeds): as drafted 49.36%; follow the card from #63, 59.27%; follow a punt-STEERED card from #63, 52.49% — −6.8 pts, 0 of 3 seeds. With the veto applied to the owner's candidates: 56.93% vs 47.98%, −9.0 pts, 0 of 3. The advisor stays advice-only. Built: when a category is advised, the read appends the trap in front of you — "AST is dead — don't reach: X (best AST left, card #k) does not beat 🎯 Y; the card already prices AST" | `m54_punt_arms.json`, `m54_punt_arms_veto.json`; Chromium at #135 renders the sentence (best AST left was Isaiah Collier, card #84) |
+
+Not verified here: how the rule and the echo change the owner's behaviour in a
+live room. The next mock is the test; its debrief will count round-9+
+deviations against this room's five.
 
 ## Provenance
 
