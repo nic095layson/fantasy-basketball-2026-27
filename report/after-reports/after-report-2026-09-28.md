@@ -150,7 +150,7 @@ Porzingis's card and note, Knueppel's and Lively's notes.
 | deck `verify_rosters.py` | 330/330 checked, 0 unmatched, 0 mismatches, evidence dated 2026-09-28 (fallback-partial; ESPN API still egress-blocked) |
 | deck `hoops.py freshness --stamp` | stamped 2026-09-28, pool_changes asserted |
 | deck build gates 1–7 + F8 | green — planes 308 shared / 0 team / 0 exclusion / 0 drift / 0 propagation / 4 named exemptions recorded in the manifest; market 296/330, 6 days old; injection round-trip OK; "safe to publish" |
-| deck `test_gates` / `test_card` / `test_draft` / `check_parity` | 34/34 · 35/35 · 57/57 · PARITY_RESULT |
+| deck `test_gates` / `test_card` / `test_draft` / `check_parity` | 34/34 · 35/35 · 57/57 · EXACT (cell filled 2026-09-28 by a re-run on deck main b150541 after the Cowork session left it as a placeholder: 330 rows, 2970 z cells, 130 owner turns across 10 committed states, survival probs bit-identical, clock reads field-identical) |
 
 ## 7. Watchlist / open items
 
@@ -178,6 +178,38 @@ Porzingis's card and note, Knueppel's and Lively's notes.
   already reads TOR. Needs a text rewrite; out of this pull's scope.
 - **Owner decisions carried:** survival chips (D53-2), Tatum at #10 (D53-3),
   resolver dot-folding (D53-4).
+
+## 9. Owner decision (2026-09-28) — Porziņģis DO NOT DRAFT
+
+**Decision (owner, verbatim):** "Porzingis is on the DO NOT DRAFT list. Keep
+him in database for other team to draft (and still include in their
+calculations) but he has been a terrible fantasy asset and I will not be
+considering drafting him."
+
+**Options put to the owner, with the data:** across the three recorded live
+rooms he reached the owner's top-5 on 1–3 turns each (mock 51: picks 63, 82,
+87, best rank 3rd; mock 52: 82, 87; mock 53: 87, 5th), never as the 🎯 #1; the
+rooms took him at #87 (mock 51 — the owner), #105, #99, and today's mock 54 at
+#101. Option 1 was a manual skip (zero code; a card slot lost on those turns).
+Option 2 was a contained veto in the JUDGMENT layer. **Owner chose option 2.**
+
+**Implementation (deck PR #45, branch `claude/veto-porzingis`):**
+`JUDGMENT.doNotDraft` names players the card never recommends for our seat;
+the app builds our candidates from `availablePool` minus the list at the
+decision card and the TARGET read; the Best-available table keeps his row
+marked ⛔ DO NOT DRAFT; a `my:` pick of him logs a warning, not a refusal.
+`hoops.py` reads the same list from the deck for `draft best` / `draft turn`;
+the retro harnesses apply it where the replayed deck carries it. No engine
+function changed, parity EXACT; opponents' rosters, the matrix, category
+ranks, mock AI picks and the resolver are untouched. Red-first: 9 card cases
+and 2 CLI cases failed on the unchanged deck, then passed; a Chromium check on
+mock 51 at #63 shows the card as Pritchard / Lillard / C. Johnson / Turner /
+Coby White with the marker, warning and Undo observed and zero page errors.
+
+**Kit side:** the board header now carries the veto bullet; his row (rank 52,
+GP 54) stays for opponents' coverage and the projection is unchanged.
+
+**Revert:** set `doNotDraft: []` (REVERT-MAP row, deck).
 
 ## 8. Open-item receipts
 
