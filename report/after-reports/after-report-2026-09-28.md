@@ -133,7 +133,7 @@ unchanged; no other value moved. Pool hash 4d0f202f → 9d11cb45.
 
 | build | what | record |
 |---|---|---|
-| v28 | this pull: 4 placements, Murray retag, 6 notes, JUDGMENT re-authored and dated 2026-09-28 (10 open items, +Porzingis, +Russell), colophon rewritten for this window; Yahoo 9/22 prices re-baked (296 of 330, 6 days old) | published to the standing artifact URL as Version 28 (read back: manifest built 2026-09-28, pool 9d11cb45, host wrapper the only diff from the committed file); deck PR below |
+| v28 | this pull: 4 placements, Murray retag, 6 notes, JUDGMENT re-authored and dated 2026-09-28 (10 open items, +Porzingis, +Russell), colophon rewritten for this window; Yahoo 9/22 prices re-baked (296 of 330, 6 days old) | published to the standing artifact URL as Version 28 (read back: manifest built 2026-09-28, pool 9d11cb45, host wrapper the only diff from the committed file). No PRs: the GitHub connector still returns 403 on PR creation (LESSONS #9), so both branches were merged to main by git push over the session grant — deck b150541, kit 22a40ab |
 
 Gate 7 refused the first build on four propagation items — the kit GP edits
 for Murray, Porzingis, Knueppel and Lively have no deck stat column to land
