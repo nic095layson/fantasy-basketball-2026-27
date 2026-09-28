@@ -46,6 +46,8 @@ OUTLETS = [
     "daily memphian", "bvm", "kings herald", "ap", "associated press",
     "abc", "tsn", "fischer", "clutchpoints", "rotoballer", "espn la crosse",
     "cbc", "sporting tribune", "forbes", "last word",
+    # 2026-09-28: primary game-log / season-stat pages (Jamal Murray correction)
+    "landofbasketball", "wikipedia",
 ]
 TRIGGERS = re.compile(
     r"→|->|\b(sign(?:ed|s|ing)?|trade[ds]?|waive[ds]?|acquire[ds]?|"
