@@ -345,6 +345,13 @@ day, mechanically.
   breaks them by ΔECW: at #106 the port lists Eason first and the deck
   showed Turner 🎯 (the tool log carries no off-card note there); the
   table in §3 follows the deck.
+- Addendum (2026-09-29, later the same day): the #130 leg of the follow-the-
+  card arm (Poole for Sheppard, +3.7 points) and hindsight's "Poole +0.101"
+  rest on the kit's Poole line (19.5 points as a starter), which RotoBaller
+  (rank 230), Yahoo (211) and a projected top 150 (absent) all reject —
+  `after-report-2026-09-29-market.md` §6–§7. Treat that leg as unproven
+  until the line is re-derived (D-M4); the White and Pritchard legs stand
+  on lines every source agrees with.
 - Which of v31/v32 the owner had open is not recorded; both carry the same
   pool and engine, and the tool log replays identically on both (§4).
 
