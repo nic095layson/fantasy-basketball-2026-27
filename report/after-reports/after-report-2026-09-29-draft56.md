@@ -66,7 +66,7 @@ the card's mechanism and a real question in three projection lines (§7).
 | board rank (kept-total z-sum) | 1 (+21.52; next +3.83) | debrief |
 | category ranks, weekly model | FG% 2 · **FT% 1** · 3PTM 4 · PTS 5 · REB 6 · **AST 10** · ST 3 · **BLK 1** · **TO 1** | `m56_final.json` |
 | championship rate, as drafted | **54.94%**, playoff 99.95%, rank 1 | `m56_arms.json` |
-| follow-card arm | 62.56% (swaps #39 Derrick White, #63 Payton Pritchard, #130 Jordan Poole) | `m56_arms.json` |
+| follow-card arm | 62.56% (swaps #39 Derrick White, #63 Payton Pritchard, #130 Jordan Poole); ECW 5.942 | `m56_arms.json`, `m56_followcard_grade.json` |
 | best single swap | #15 Tyrese Maxey for Haliburton, 59.96%; then #130 Jordan Poole 58.59%, #39 Desmond Bane 58.01%, #63 Tyler Herro 57.71% | `m56_arms.json` |
 
 ## 3. Pick by pick — card vs owner vs hindsight
@@ -107,6 +107,30 @@ card: Reed Sheppard ranks #16 (0.076 behind 🎯 Christian Braun) — round-9+
 rule (D54-1): take the 🎯" and the owner took Sheppard anyway; the arm
 prices that turn at 3.65 points of championship (54.94 as drafted, 58.59
 with Poole).
+
+**Follow the card — how much better (owner question, 2026-09-29).** The
+same weekly model and 18,000-season arms as the as-drafted grade, swaps
+pairwise (the displaced man goes to the seat that took the alternative);
+as drafted reproduced at 54.94% on the re-run [EVIDENCE:
+`m56_followcard_grade.json`]:
+
+| arm | ECW | championship | category ranks that move |
+|---|---|---|---|
+| as drafted | 5.760 | 54.94% | — |
+| card at #39 (White for Kyrie) | 5.806 (+0.046) | 57.67% (+2.7) | PTS 5 to 8, 3PTM 4 to 3, AST 10 to 9 |
+| card at #63 (Pritchard for Lillard) | 5.787 (+0.027) | 57.01% (+2.1) | FT% 1 to 2, FG% 2 to 1, 3PTM 4 to 2 |
+| card at #130 (Poole for Sheppard) | 5.861 (+0.101) | 58.59% (+3.7) | 3PTM 4 to 3, PTS 5 to 4, AST 10 to 9 |
+| both point-guard turns (#39 and #63) | 5.826 (+0.066) | 59.73% (+4.8) | FT% 1 to 2, 3PTM 4 to 1, PTS 5 to 8 |
+| all three (self-consistent follow-card) | 5.942 (+0.182) | 62.56% (+7.6) | FT% 1 to 2, 3PTM 4 to 1, PTS 5 to 4, AST 10 to 9 |
+
+Rank 1 and 11 of 11 favored in every arm. The bar the arena registers for a
+real difference is two points on two of three seeds (the D54-3 test); the
+full follow-card clears it by nearly four times, and the single biggest
+item is the #130 turn the round-9+ rule flagged. At #130 the follow-card
+arm takes Poole rather than Braun because, with White and Pritchard on the
+roster, the card re-ranks and Braun still arrives at #135. The roster's
+identity survives every arm: the FT% column drops one place, the threes
+column rises to first, assists stay ninth or tenth.
 
 ## 4. Tool-state integrity — the deck's board vs the recap
 
