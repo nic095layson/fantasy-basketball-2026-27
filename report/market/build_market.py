@@ -17,10 +17,17 @@ Name matching (§3.3) reuses the same normalization idea as the deck plane's hoo
 accent-fold, drop punctuation, strip generational suffixes. Because that primitive lives in
 the *deck* repo (out of this session's scope), an equivalent norm() is defined here.
 
-Usage: python3 report/market/build_market.py [YYYY-MM-DD]
+Usage: python3 report/market/build_market.py [YYYY-MM-DD] [--as-of DATE|COMMIT | --live] [--out-dir DIR]
 Exit 0 = built and every pool player accounted for. Exit 3 = unmatched pool players remain
 that are not explained by a documented alias or a recorded genuine absence (hard gate trip).
+
+Drift fix D4 (2026-09-29): the join reads the pool, so a rebuild of a past date against
+today's pool rewrote the dated unmatched/disagreements files, and the provenance writer
+overwrote the shared ledger (the three Yahoo paste rows vanished). Without --as-of the
+script pins to the commit stamped in unmatched-<date>.md; provenance.csv is now MERGED by
+(source, fetched_on); the .md outputs end with the input stamp (report/derived.py).
 """
+import argparse
 import csv
 import json
 import os
@@ -31,9 +38,11 @@ from datetime import date
 from html.parser import HTMLParser
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+OUT = HERE  # where outputs land; --out-dir redirects (the gate writes to a temp dir)
 REPORT = os.path.dirname(HERE)
 PROJECTIONS = os.path.join(REPORT, "projections-2026-27.csv")
 sys.path.insert(0, REPORT)  # so we can reuse rank_engine's exact board math
+import derived  # noqa: E402  (input stamp + as-of pinning, drift fix D4)
 
 
 # --------------------------------------------------------------------------- norm
@@ -343,16 +352,17 @@ STATDUNK_COLS = ["player", "team", "pos", "rank", "value",            # §4 sche
 
 
 # --------------------------------------------------------------------------- our board
-def our_board():
+def our_board(path=PROJECTIONS):
     """Our value board exactly as rank_engine.py builds it: z-scores over the iterated
     top-180 pool, ranked by availability-adjusted value. Returns
-    {name: {rank, z_total, z_adj, row}} for all 220 pool players."""
+    {name: {rank, z_total, z_adj, row}} for every pool player in `path`."""
     import rank_engine as RE
-    rows = RE.load(PROJECTIONS)
+    rows = RE.load(path)
     z1 = RE.zscores(rows, rows)
     ranked1 = sorted(rows, key=lambda r: -RE.total(z1[r["name"]]))
     pool = ranked1[:RE.POOL_SIZE]
     z2 = RE.zscores(rows, pool)
+    globals()["_ZCACHE"] = z2  # _zprofile reads the SAME pool the board was built from (D4)
     for r in rows:
         z = z2[r["name"]]
         r["z_total"] = RE.total(z)
@@ -372,19 +382,45 @@ def _write_csv(path, cols, rows):
             w.writerow(r)
 
 
+def _merge_provenance(new_rows):
+    """Write provenance.csv with `new_rows` merged in by (source, fetched_on): a re-run
+    replaces its own rows in place and keeps every other row (the 2026-09-29 validation
+    found the previous overwrite dropping the three Yahoo paste rows)."""
+    path = os.path.join(HERE, "provenance.csv")
+    old = list(csv.DictReader(open(path, encoding="utf-8"))) if os.path.exists(path) else []
+    fresh = {(r["source"], str(r["fetched_on"])): r for r in new_rows}
+    merged, used = [], set()
+    for r in old:
+        k = (r["source"], r["fetched_on"])
+        if k in fresh:
+            merged.append(fresh[k]); used.add(k)
+        else:
+            merged.append(r)
+    merged += [r for k, r in fresh.items() if k not in used]
+    _write_csv(os.path.join(OUT, "provenance.csv"),
+               ["source", "url", "fetched_on", "rows", "notes"], merged)
+
+
 def main():
-    d = sys.argv[1] if len(sys.argv) > 1 else date.today().isoformat()
-    ht_raw = open(os.path.join(HERE, f"hashtag-raw-{d}.html"), encoding="utf-8").read()
-    sd_v2_raw = open(os.path.join(HERE, f"statdunk-v2-raw-{d}.json"), encoding="utf-8").read()
-    sd_base_raw = open(os.path.join(HERE, f"statdunk-raw-{d}.json"), encoding="utf-8").read()
+    global OUT
+    ap = derived.add_args(argparse.ArgumentParser(description="offline builder for the market-data work order"))
+    ap.add_argument("date", nargs="?", default=date.today().isoformat())
+    ap.add_argument("--out-dir", default=HERE, help="where outputs land (default: report/market)")
+    args = ap.parse_args()
+    d = args.date
+    OUT = args.out_dir
+    inp = derived.inputs_for(args, os.path.join(HERE, f"unmatched-{d}.md"))
+    ht_raw = open(inp.path(f"report/market/hashtag-raw-{d}.html"), encoding="utf-8").read()
+    sd_v2_raw = open(inp.path(f"report/market/statdunk-v2-raw-{d}.json"), encoding="utf-8").read()
+    sd_base_raw = open(inp.path(f"report/market/statdunk-raw-{d}.json"), encoding="utf-8").read()
 
     hashtag = parse_hashtag(ht_raw)
     statdunk, sd_pub, (sd_rho, sd_n) = parse_statdunk(sd_v2_raw, sd_base_raw)
     print(f"parsed: hashtag={len(hashtag)} rows, statdunk={len(statdunk)} rows "
           f"(method validated vs BASE published: Spearman {sd_rho:.4f} over {sd_n})")
 
-    _write_csv(os.path.join(HERE, f"hashtag-{d}.csv"), HASHTAG_COLS, hashtag)
-    _write_csv(os.path.join(HERE, f"statdunk-{d}.csv"), STATDUNK_COLS, statdunk)
+    _write_csv(os.path.join(OUT, f"hashtag-{d}.csv"), HASHTAG_COLS, hashtag)
+    _write_csv(os.path.join(OUT, f"statdunk-{d}.csv"), STATDUNK_COLS, statdunk)
 
     # provenance
     prov = [
@@ -404,12 +440,11 @@ def main():
                   f"{sd_n} players). rank/value=totals(season); rank_avg/value_avg=averages(per-game); "
                   f"z_*=totals. base(8/11 provisional) & v3(lock-in) also landed raw."},
     ]
-    _write_csv(os.path.join(HERE, "provenance.csv"),
-               ["source", "url", "fetched_on", "rows", "notes"], prov)
-    print(f"wrote hashtag-{d}.csv, statdunk-{d}.csv, provenance.csv")
+    _merge_provenance(prov)
+    print(f"wrote hashtag-{d}.csv, statdunk-{d}.csv, provenance.csv (merged by source+fetched_on)")
 
     # ---- join + hard unmatched gate ------------------------------------------------
-    board = our_board()
+    board = our_board(inp.path("report/projections-2026-27.csv"))
     alias_index = {}
     for canonical, variants in ALIASES.items():
         for v in variants:
@@ -435,8 +470,8 @@ def main():
 
     unmatched_ht.sort()
     unmatched_sd.sort()
-    _write_unmatched(d, unmatched_ht, unmatched_sd, board)
-    _write_disagreements(d, matched, sd_pub)
+    _write_unmatched(d, unmatched_ht, unmatched_sd, board, inp.stamp())
+    _write_disagreements(d, matched, sd_pub, inp.stamp())
 
     # GENUINE ABSENCES recorded as accepted (players a source legitimately does not carry).
     # Anything here is treated as explained; everything else trips the gate.
@@ -495,7 +530,7 @@ def _reason(name, team, source):
     return "absent from Hashtag's full 429-row projection set"
 
 
-def _write_unmatched(d, unmatched_ht, unmatched_sd, board):
+def _write_unmatched(d, unmatched_ht, unmatched_sd, board, stamp=None):
     n_pool = len(board)
     lines = [f"# Unmatched-name report — {d} (HARD GATE, work order §3.3)", "",
              f"Pool players: {n_pool}. This file is the gate: every pool player below is a "
@@ -513,10 +548,12 @@ def _write_unmatched(d, unmatched_ht, unmatched_sd, board):
             team = board[n]["row"]["team"]
             lines.append(f"| {rk} | {n} | {team} | {_reason(n, team, src)} |")
         lines.append("")
-    open(os.path.join(HERE, f"unmatched-{d}.md"), "w").write("\n".join(lines) + "\n")
+    if stamp:
+        lines.append(stamp)
+    open(os.path.join(OUT, f"unmatched-{d}.md"), "w").write("\n".join(lines) + "\n")
 
 
-def _write_disagreements(d, matched, sd_pub):
+def _write_disagreements(d, matched, sd_pub, stamp=None):
     # thresholds for "material" per-game line divergence vs Hashtag
     THR = {"pts": 3.0, "reb": 1.5, "ast": 1.5, "stl": 0.4, "blk": 0.4, "tpm": 0.6,
            "gp": 8, "fg_pct": 0.030, "ft_pct": 0.040, "tov": 0.8}
@@ -624,7 +661,9 @@ def _write_disagreements(d, matched, sd_pub):
     for gap, name, r, adp, prof in fad[:30]:
         L.append(f"| -{gap:.0f} | {name} | {r} | {adp:.0f} | {prof} |")
     L.append("")
-    open(os.path.join(HERE, f"disagreements-{d}.md"), "w").write("\n".join(L) + "\n")
+    if stamp:
+        L.append(stamp)
+    open(os.path.join(OUT, f"disagreements-{d}.md"), "w").write("\n".join(L) + "\n")
 
 
 def _zprofile(m):
@@ -634,7 +673,7 @@ def _zprofile(m):
     # cheap: reuse the z-scores already implied by the board row is not stored per-cat, so
     # recompute this player's per-cat z against the same pool once (cached).
     global _ZCACHE
-    if "_ZCACHE" not in globals():
+    if "_ZCACHE" not in globals():  # no board built in this process: the working tree
         rows = RE.load(PROJECTIONS)
         z1 = RE.zscores(rows, rows)
         pool = sorted(rows, key=lambda r: -RE.total(z1[r["name"]]))[:RE.POOL_SIZE]

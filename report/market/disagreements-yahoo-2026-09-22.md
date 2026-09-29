@@ -298,3 +298,4 @@ Same-outlet comparison (287 names in both files, 286 expert-ranked in both). Mov
 | 52.1 | 37 | Kyrie Irving | 16 |
 | 117.1 | 102 | John Collins | 77 |
 
+_Inputs: yahoo-raw-2026-09-22.txt sha256 e370bc9b744dff50 2485 lines · projections-2026-27.csv sha256 f9bd43a796daab8e 318 rows · yahoo-2026-09-15.csv sha256 ca2f7f5dece8390d 300 rows · yahoo-9cat-rankings-2026-09-22.csv sha256 9a2e836ac67b3ce1 250 rows · as of commit 97446a9 (2026-09-22) · by yahoo_market.py_

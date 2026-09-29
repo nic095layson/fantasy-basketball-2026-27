@@ -67,3 +67,5 @@
 | Emils | 7-2 | **W** | PTS,STL,BLK,3PM,FG%,FT%,TOV |
 | Alex | 7-2 | **W** | PTS,REB,STL,BLK,3PM,FG%,TOV |
 | jacespedes | 6-3 | **W** | REB,STL,BLK,FG%,FT%,TOV |
+
+_Inputs: projections-2026-27.csv sha256 de755894437bf3f8 234 rows · mock-draft-2026-08-24-results.csv sha256 0cda60026d3a9daa 156 rows · as of commit 3d24d0a (2026-08-24) · by mock_draft_league_projection.py_

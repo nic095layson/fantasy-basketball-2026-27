@@ -20,6 +20,7 @@ hoops.DATA_PATH = os.path.join(DECK, "data", "players.csv")
 # owner decision D3 — the literal 9/15 default had the slate lagging the 9/22
 # paste by a week). ADP_FILE still overrides.
 import glob as _glob
+import derived  # input stamp (drift fix D4, 2026-09-29): the slate is live-only, regenerated every pull
 _NEWEST = (sorted(_glob.glob(os.path.join(KIT, "report", "market", "consensus-????-??-??.csv"))) or
            [os.path.join(KIT, "report", "market", "consensus-2026-09-15.csv")])[-1]
 ADP_FILE = os.environ.get("ADP_FILE", _NEWEST)
@@ -49,6 +50,10 @@ def phi(x):
     return 0.5 * (1 + math.erf(x / math.sqrt(2)))
 
 
+INP = derived.Inputs(None, script="slate.py")
+INP.external(hoops.DATA_PATH, "yahoo-fantasy-basketball/data/players.csv")
+(INP.path(os.path.relpath(ADP_FILE, KIT)) if os.path.abspath(ADP_FILE).startswith(KIT + os.sep)
+ else INP.external(ADP_FILE, os.path.basename(ADP_FILE)))
 players = [p for p in hoops.zscores(hoops.load_players()) if hoops.availability(p) > 0]
 board = sorted(players, key=lambda p: -hoops.adj_value(p))
 rank = {p["player"]: i + 1 for i, p in enumerate(board)}
@@ -144,4 +149,5 @@ out.append("")
 out.append(f"_Price source, top-120 board: Yahoo ADP for {120 - len(xr) - len(missing)}; XRank/consensus fallback for {len(xr)}"
            + (f" ({', '.join(xr[:12])}{'…' if len(xr) > 12 else ''})" if xr else "")
            + (f"; no price for {len(missing)} ({', '.join(missing)})" if missing else "") + "._")
+out += ["", INP.stamp()]
 print("\n".join(out))

@@ -34,3 +34,5 @@ Who = the deck's 9-cat board (#rank; ▲ = injury multiplier ×0.78). When = the
 - The 13th pick is a real pick: a center who starts beat a wing who never did by ~8 points.
 
 _Price source, top-120 board: Yahoo ADP for 116; XRank/consensus fallback for 4 (Jordan Poole, Herbert Jones, Jordan Goodwin, Malik Monk)._
+
+_Inputs: yahoo-fantasy-basketball/data/players.csv sha256 c0bf82bf4d392bb1 330 rows · consensus-2026-09-22.csv sha256 b7c7a3352b637e17 318 rows · working tree, generated 2026-09-29 · by slate.py_

@@ -180,3 +180,4 @@ Designed-but-never-populated Pass E output. **Values** = our rank 15+ picks ahea
 | -57 | Caleb Wilson | 137 | 80 | +BLK, +REB / -FT%, -3PM |
 | -57 | Egor Demin | 178 | 121 | +AST, +STL / -PTS, -FG% |
 
+_Inputs: hashtag-raw-2026-08-24.html sha256 df8130467b865877 29982 lines · statdunk-v2-raw-2026-08-24.json sha256 bd5e872e6caec8c2 1 lines · statdunk-raw-2026-08-24.json sha256 b0c98c5f99f08608 1 lines · projections-2026-27.csv sha256 f4c4980c949e47f3 220 rows (at d545ade) · as of commit 3d24d0a (2026-08-24) · by build_market.py_

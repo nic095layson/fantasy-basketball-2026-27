@@ -34,3 +34,4 @@ Pool players: 245; Yahoo list: 250. Every pool player below did NOT join to Yaho
 | 244 | Ebuka Okorie | DET | outside Yahoo's top 250 — surname absent from the raw (mechanical check: no Yahoo-only name shares surname + first 3 letters) |
 | 245 | Jalen Wilson | ATL | outside Yahoo's top 250 — surname absent from the raw (mechanical check: no Yahoo-only name shares surname + first 3 letters) |
 
+_Inputs: yahoo-9cat-rankings-raw-2026-09-22.txt sha256 77bf4a7ddb99528d 750 lines · projections-2026-27.csv sha256 9da19936c7cc68d5 245 rows · yahoo-2026-09-15.csv sha256 ca2f7f5dece8390d 300 rows · as of commit 3039295 (2026-09-22) · by yahoo_market.py_
