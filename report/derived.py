@@ -57,14 +57,36 @@ def _git(repo, *args):
     return r.stdout
 
 
+def _deepen(repo, why):
+    """A session clone can be shallow (the default clone depth is 50 commits) while
+    the pins reach back to August; fetch the full history once, and say so."""
+    if _git(repo, "rev-parse", "--is-shallow-repository").strip() != "true":
+        return False
+    print(f"derived: {why} is beyond this shallow clone — fetching the full history", file=sys.stderr)
+    r = subprocess.run(["git", "-C", repo, "fetch", "--unshallow", "origin"], capture_output=True, text=True)
+    if r.returncode != 0:
+        subprocess.run(["git", "-C", repo, "fetch", "--deepen=1000", "origin"], capture_output=True, text=True)
+    return True
+
+
 def resolve(spec, repo=KIT):
-    """Full commit sha for a date (end of that day, UTC) or a commit-ish."""
-    if _DATE_RE.match(spec):
-        sha = _git(repo, "rev-list", "-1", f"--until={spec} 23:59:59 +0000", "HEAD").strip()
-        if not sha:
-            raise SystemExit(f"derived: no commit on or before {spec}")
-        return sha
-    return _git(repo, "rev-parse", "--verify", f"{spec}^{{commit}}").strip()
+    """Full commit sha for a date (end of that day, UTC) or a commit-ish. A shallow
+    clone that lacks the commit is deepened once before giving up."""
+    for attempt in (1, 2):
+        if _DATE_RE.match(spec):
+            sha = _git(repo, "rev-list", "-1", f"--until={spec} 23:59:59 +0000", "HEAD").strip()
+            if sha:
+                return sha
+        else:
+            r = subprocess.run(["git", "-C", repo, "rev-parse", "--verify", "-q", f"{spec}^{{commit}}"],
+                               capture_output=True, text=True)
+            if r.returncode == 0:
+                return r.stdout.strip()
+        if attempt == 1 and _deepen(repo, f"commit {spec}"):
+            continue
+        raise SystemExit(f"derived: {spec} is not in this clone"
+                         + (" (shallow: run `git fetch --unshallow origin` and retry)"
+                            if _git(repo, "rev-parse", "--is-shallow-repository").strip() == "true" else ""))
 
 
 def commit_date(sha, repo=KIT):
