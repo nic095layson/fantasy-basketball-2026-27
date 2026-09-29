@@ -91,7 +91,7 @@ TEAMS = {"ATL", "BOS", "BKN", "CHA", "CHI", "CLE", "DAL", "DEN", "DET", "GSW",
 POS = {"PG", "SG", "SF", "PF", "C"}
 YAHOO_TEAM = {"NOR": "NOP", "PHO": "PHX", "UTH": "UTA"}  # Yahoo site codes -> pool codes
 DRAFTABLE = 156          # 12 teams x 13 rounds: the universe the room drafts
-PASTED_ON = {"2026-09-15": "2026-09-16"}  # paste date when it differs from the list date
+PASTED_ON = {"2026-09-15": "2026-09-16", "2026-09-28": "2026-09-29"}  # paste date when it differs from the list date
 MECHANICAL_FROM = "2026-09-22"  # absence gate mechanical (surname + first 3) from this list date on
 XRANK_CAP = 300  # 668 is Yahoo's placeholder tier for expert-unranked names;
                  # capped at 300 (list depth + 1) when averaging, stored raw.
