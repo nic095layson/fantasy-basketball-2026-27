@@ -177,9 +177,15 @@ under step 5b of §7.
 - **Owner decisions carried:** D-P1 Ingram exclusion vs risk (this pull chose
   the risk tier on the Lively precedent and the Nov–Dec reporting; the
   owner may prefer the exclusion class given the Achilles); survival chips
-  (D53-2), Tatum at #10 (D53-3), resolver dot-folding (D53-4); the five
-  stale pre-session draft PRs. D4, the drift fix, was executed later the
-  same day on the owner's word (§9).
+  (D53-2), Tatum at #10 (D53-3). Executed later the same day on the
+  owner's word ("act on that"): D4, the drift fix (§9); D53-4, resolver
+  dot-folding (§9, deck v32); two of the five stale pre-session draft PRs
+  closed as superseded (kit #8, deck #13 — both targeted a branch already
+  merged into main and their content was re-done there). Kit #3
+  (validation-prompt suite), kit #4 (SYSTEM-REVIEW.md and the 8/4 review)
+  and deck #5 (a parallel line of mocks numbered 49–53 from 8/10–8/11, 258
+  files) hold content that is NOT on main — the owner decides whether any
+  of it is still wanted.
 
 
 ## 8. Open-item receipts
@@ -269,6 +275,23 @@ from 245 to 240 rows and changed the "moves" section of the 9/22
 disagreements report, which reads that file as its previous list. Pinning to
 the producing commit reproduces every committed byte; a deliberate re-scope
 is a `--live` run committed with its new stamp.
+
+### Deck, same day — D53-4 executed (resolver dot-folding, v32)
+
+The mock-53 ask carried since 9/22. The deck pool spells `PJ Washington`
+and `T.J. McConnell`; Yahoo pastes `P.J. Washington` and rooms type `TJ
+McConnell`, and `fold()` kept dots, so both crossings failed every resolver
+stage and logged UNKNOWN. `fold()` in the engine block and `hoops.fold` now
+strip `.` with the apostrophes and diacritics. Red-first: two D53-4 cases in
+`scripts/test_card.py` fail on v31 (2 of 59) and pass after (59/59);
+`test_draft` 62/62; `test_gates` 34/34; parity EXACT. Same-day rebuild
+through `build_deck.py` (330 rows, evidence dated 2026-09-29, pool sha
+unchanged, freshness restamped with no pool changes, "safe to publish");
+`arena/results/full_dom_check_2026-09-29_v32.json` 127/127 with 0 page
+errors on two completed runs (a first attempt died at the browser launch
+before any assertion ran). Published as Version 32 (version id
+1790699086-08f8) to the existing artifact URL; served page byte-identical
+to deck `be24302` (see the verification line in the session's delivery).
 
 ## Provenance and bounds
 
