@@ -30,6 +30,11 @@ A pull is complete only when ALL of the following are true:
    <after-report>` passes (fix F1 — every flagged open item carries a
    receipts row). Born from Ben Simmons shipping as a Clipper and a NOP–MEM
    trade shipping unswept in the same report.
+4c. `python3 report/check_derived.py` exits 0 (drift fix D4, 2026-09-29 — every
+   dated analysis in `report/` reproduces byte-for-byte from the inputs its
+   own `_Inputs:` stamp names; re-scoping a dated artifact to today's pool is
+   a deliberate `<script> --live` run, committed with its new stamp, never a
+   side effect of a re-run).
 5. The Draft Deck data plane (`yahoo-fantasy-basketball` → `data/players.csv`)
    received the same window's news under its own laws (role-reprice,
    pool-completeness, roster validation lock), landed on a pushed branch/PR.

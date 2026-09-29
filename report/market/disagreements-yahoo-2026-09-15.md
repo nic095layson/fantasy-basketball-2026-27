@@ -210,3 +210,4 @@ Names the room is drafting that our database cannot price. Owner decides which e
 | Luka Garza | BOS | C | 298 | — |
 | Jordan Walsh | BOS | SF,PF | 299 | — |
 
+_Inputs: yahoo-raw-2026-09-15.txt sha256 05f34db5d6f05155 2476 lines · projections-2026-27.csv sha256 9da19936c7cc68d5 245 rows · as of commit 7926b20 (2026-09-21) · by yahoo_market.py_

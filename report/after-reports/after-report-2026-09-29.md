@@ -176,9 +176,11 @@ under step 5b of §7.
   re-prices the Mkt column before the 10/14 draft.
 - **Owner decisions carried:** D-P1 Ingram exclusion vs risk (this pull chose
   the risk tier on the Lively precedent and the Nov–Dec reporting; the
-  owner may prefer the exclusion class given the Achilles); D4 drift fix
-  (§9); survival chips (D53-2), Tatum at #10 (D53-3), resolver dot-folding
-  (D53-4); the five stale pre-session draft PRs.
+  owner may prefer the exclusion class given the Achilles); survival chips
+  (D53-2), Tatum at #10 (D53-3), resolver dot-folding (D53-4); the five
+  stale pre-session draft PRs. D4, the drift fix, was executed later the
+  same day on the owner's word (§9).
+
 
 ## 8. Open-item receipts
 
@@ -203,7 +205,7 @@ under step 5b of §7.
 | (Johni Broome) | Johni Broome signs September 2026 free agent | unsigned — RotoWire, CBS, Hoops Wire |
 | (CHI/DET/GSW/LAC/NOP/NYK/POR/SAC) | team-shaped camp-news queries, one each | §3 |
 
-## 9. The drift fix — proposal (owner question, not executed)
+## 9. The drift fix — proposed, then executed the same day (D4)
 
 The 9/29 validation found four derived kit artifacts that read the *current*
 pool when re-run, so their numbers change as the pool grows, and one script
@@ -232,6 +234,41 @@ that overwrites a shared ledger. Proposed fix, in three parts:
 
 Nothing in the proposal touches a projection, a board or the deck; the
 slate was already regenerated on 9/29 and points at the newest paste.
+
+### Executed (owner, 2026-09-29: "What are your recommended steps to proceed? Act on that")
+
+Landed on the kit's designated branch the same day. No number in any
+committed artifact changed: every regenerated file differs from its previous
+commit by the appended stamp line alone (`git diff --stat` on the nine
+stamped files: 11 insertions, 0 deletions).
+
+| part | what landed | evidence (the command's own output) |
+|---|---|---|
+| 1 — stamp inputs | `report/derived.py` (shared helper, ~150 lines). `slate.py`, `mock_draft_league_projection.py`, `market/market_stats.py`, `market/yahoo_market.py` and `market/build_market.py` end their Markdown/text outputs with one `_Inputs: …_` line: each input file, the first 16 hex of its sha256, its row count, and the commit the inputs came from (or the generation date for a live run). CSV outputs carry no stamp — a comment line would break their readers, and the deck build reads `yahoo-*.csv` — so the sibling `.md` carries it. | each stamped file `+1 −0` against HEAD; `check_derived.py` reads every pin back from the stamp it wrote |
+| 2 — as-of mode plus the gate | `--as-of <date or commit>` reads the inputs from git (a date is the end of that day in UTC; commit times in this repo mix +0000 and −0700). Without a flag a dated script pins to the commit in its own committed stamp; `--live` re-scopes to the working tree on purpose; `--out-dir` (or `--out`) lets the gate write elsewhere. New `report/check_derived.py` re-runs six registered artifacts at their pins into a temp dir and compares byte-for-byte. DATA-PULL §0 gained item 4c. | `DERIVED: all 6 dated artifacts reproduce byte-for-byte from their pinned inputs` on two consecutive runs; `market_stats.py 2026-09-15 --as-of 30e76ae` prints `matched w/ XRank: 214, rho 0.7618` and `matched w/ ADP: 176, rho 0.7009` — the 9/16 report's figures — now committed as `market/market_stats-2026-09-15.txt` |
+| 3 — merge, never overwrite | `build_market.py` merges `provenance.csv` by (source, fetched_on) and `yahoo_market.py` refreshes its own row in place (it used to drop and re-append it, reordering the ledger). `yahoo_market.py 2026-09-15` reads the pool snapshot its committed intake was built from (commit 7926b20, 245 rows), so it passes its own gate again. | `build_market.py 2026-08-24` re-run: five provenance rows, file byte-identical; `yahoo_market.py 2026-09-15` re-run: `GATE PASS`, exit 0, no file changed; `--live` still trips (10 unexplained against 318 rows), now labelled as the deliberate re-scope it is |
+
+Two things the execution found that the proposal did not know:
+
+- **The 8/24 market build straddles a commit.** Its unmatched and
+  disagreements files were made against the 220-row pool; the same commit
+  (3d24d0a) then completed the pool to 234 and ran the league projection.
+  No single commit holds those inputs, so a stamp may pin one file to a
+  different commit (`--pin projections-2026-27.csv=3d24d0a^`, shown as
+  `(at d545ade)`), and the build reproduces exactly.
+- **The z-lean column read the working tree.** `build_market._zprofile`
+  recomputed per-category z-scores from the live projections through a
+  module-level cache, so a pinned rebuild carried today's z-lean into a
+  dated table (Reed Sheppard's read moved from `+STL, +3PM` to `+TOV, +3PM`;
+  the 9/15 table had two such rows). It now reuses the z-scores of the
+  board it was built from.
+
+Scoping the 9/15 intake to its paste date (end of 9/16, 240 rows) was
+considered and rejected: it would have rewritten `consensus-2026-09-15.csv`
+from 245 to 240 rows and changed the "moves" section of the 9/22
+disagreements report, which reads that file as its previous list. Pinning to
+the producing commit reproduces every committed byte; a deliberate re-scope
+is a `--live` run committed with its new stamp.
 
 ## Provenance and bounds
 

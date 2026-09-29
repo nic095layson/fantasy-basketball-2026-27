@@ -7,8 +7,17 @@ rank correlations, gap medians, the band-limited value/fade category lean, and
 the room-vs-experts split inside Yahoo's own data. Deterministic; rerun to
 re-verify the report's §2/§3/§7 figures.
 
-Usage: python3 report/market/market_stats.py [YYYY-MM-DD]   (default 2026-09-15)
+Usage: python3 report/market/market_stats.py [YYYY-MM-DD] [--as-of DATE|COMMIT | --live]
+       (default 2026-09-15)
+
+Drift fix D4 (2026-09-29): the numbers the 9/16 after-report quotes came from
+the 235-row pool of that morning; re-run against today's pool they move
+(n=214 became n=225). Without --as-of the script pins to the commit stamped
+in market_stats-YYYY-MM-DD.txt (the committed stdout of the dated run, which
+report/check_derived.py reproduces byte-for-byte); --live reads the working
+tree. The last line is the input stamp (report/derived.py).
 """
+import argparse
 import csv
 import os
 import statistics as st
@@ -18,6 +27,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPORT = os.path.dirname(HERE)
 sys.path.insert(0, REPORT)
 sys.path.insert(0, HERE)
+import derived  # noqa: E402
 
 BAND = 140          # our-rank depth where Yahoo ADP (max ~125) can disagree
                     # meaningfully; deeper "fades" are ADP-truncation artifacts
@@ -44,9 +54,13 @@ def spearman(pairs):
 
 
 def main():
-    d = sys.argv[1] if len(sys.argv) > 1 else "2026-09-15"
-    cons = list(csv.DictReader(open(os.path.join(HERE, f"consensus-{d}.csv"))))
-    yah = list(csv.DictReader(open(os.path.join(HERE, f"yahoo-{d}.csv"))))
+    ap = derived.add_args(argparse.ArgumentParser(description="Yahoo-vs-board divergence statistics"))
+    ap.add_argument("date", nargs="?", default="2026-09-15")
+    args = ap.parse_args()
+    d = args.date
+    inp = derived.inputs_for(args, os.path.join(HERE, f"market_stats-{d}.txt"))
+    cons = list(csv.DictReader(open(inp.path(f"report/market/consensus-{d}.csv"))))
+    yah = list(csv.DictReader(open(inp.path(f"report/market/yahoo-{d}.csv"))))
 
     with_x = [r for r in cons if r["yahoo_xrank"]]
     with_a = [r for r in cons if r["yahoo_adp"]]
@@ -70,7 +84,7 @@ def main():
 
     # band-limited values/fades and their 9-cat z lean on OUR board
     import rank_engine as RE
-    rows = RE.load(os.path.join(REPORT, "projections-2026-27.csv"))
+    rows = RE.load(inp.path("report/projections-2026-27.csv"))
     z1 = RE.zscores(rows, rows)
     pool = sorted(rows, key=lambda r: -RE.total(z1[r["name"]]))[:RE.POOL_SIZE]
     Z = RE.zscores(rows, pool)
@@ -91,13 +105,14 @@ def main():
     # room vs Yahoo's own experts (most negative ADP - capped XRank)
     if not with_a:
         print("\nroom vs experts: needs ADP — not in this file")
-        return
-    split = sorted((float(r["adp"]) - min(float(r["xrank"]), XRANK_CAP),
-                    r["player"], r["xrank"], r["adp"], r["team"])
-                   for r in yah if r["adp"])
-    print("\nroom vs experts, 12 biggest room reaches (ADP minus capped XRank):")
-    for dd, p, x, a, t in split[:12]:
-        print(f"  {dd:+7.1f}  {p} ({t})  XRank {x} / ADP {a}")
+    else:
+        split = sorted((float(r["adp"]) - min(float(r["xrank"]), XRANK_CAP),
+                        r["player"], r["xrank"], r["adp"], r["team"])
+                       for r in yah if r["adp"])
+        print("\nroom vs experts, 12 biggest room reaches (ADP minus capped XRank):")
+        for dd, p, x, a, t in split[:12]:
+            print(f"  {dd:+7.1f}  {p} ({t})  XRank {x} / ADP {a}")
+    print("\n" + inp.stamp())
 
 
 if __name__ == "__main__":

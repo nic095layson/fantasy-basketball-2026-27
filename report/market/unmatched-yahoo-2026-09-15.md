@@ -27,3 +27,4 @@ Pool players: 245; Yahoo list: 300. Every pool player below did NOT join to Yaho
 | 244 | Ebuka Okorie | DET | outside Yahoo's published list (deep tail / not rostered by Yahoo) |
 | 245 | Jalen Wilson | ATL | outside Yahoo's published list (deep tail / not rostered by Yahoo) |
 
+_Inputs: yahoo-raw-2026-09-15.txt sha256 05f34db5d6f05155 2476 lines · projections-2026-27.csv sha256 9da19936c7cc68d5 245 rows · as of commit 7926b20 (2026-09-21) · by yahoo_market.py_

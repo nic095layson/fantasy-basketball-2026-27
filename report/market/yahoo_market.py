@@ -61,15 +61,29 @@ From 2026-09-22 (MECHANICAL_FROM) the absence gate is mechanical for every
 format; the 2026-09-15 run keeps its hand-verified list so it reproduces.
 
 Usage: python3 report/market/yahoo_market.py [YYYY-MM-DD] [rankings]
+           [--as-of DATE|COMMIT | --live] [--out-dir DIR]
+
+Drift fix D4 (2026-09-29): the join reads the pool, and the pool grows, so a
+re-run of a past list date used to re-scope that intake to today's pool (the
+9/15 run tripped its own gate against 318 rows it never saw). Without --as-of
+the script pins to the commit stamped in unmatched-<stem>-<date>.md — the pool
+snapshot the committed intake was built from — so the re-run reproduces the
+committed files; --as-of pins explicitly; --live re-scopes to the working tree
+on purpose. The .md outputs end with the input stamp (report/derived.py);
+report/check_derived.py reproduces every committed intake at its pin.
 """
+import argparse
 import csv
 import os
 import re
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+OUT = HERE  # where outputs land; --out-dir redirects (the gate writes to a temp dir)
 sys.path.insert(0, HERE)
+sys.path.insert(0, os.path.dirname(HERE))
 import build_market as BM  # norm(), ALIASES, our_board(), _write_csv
+import derived  # noqa: E402
 
 TEAMS = {"ATL", "BOS", "BKN", "CHA", "CHI", "CLE", "DAL", "DEN", "DET", "GSW",
          "HOU", "IND", "LAC", "LAL", "MEM", "MIA", "MIL", "MIN", "NOP", "NYK",
@@ -256,11 +270,12 @@ def _key3(name):
     return (t[-1], t[0][:3]) if t else (name, "")
 
 
-def _previous_file(d):
-    """The newest yahoo-YYYY-MM-DD.csv dated before d, or None."""
-    cands = sorted(f for f in os.listdir(HERE)
+def _previous_file(d, inp):
+    """The newest yahoo-YYYY-MM-DD.csv dated before d (working tree or the pinned
+    commit's tree), or None."""
+    cands = sorted(f for f in inp.listdir("report/market")
                    if re.fullmatch(r"yahoo-\d{4}-\d{2}-\d{2}\.csv", f) and f[6:16] < d)
-    return os.path.join(HERE, cands[-1]) if cands else None
+    return inp.path(f"report/market/{cands[-1]}") if cands else None
 
 
 def _load_csv(path):
@@ -277,10 +292,18 @@ def _price(r):
 
 
 def main():
-    d = sys.argv[1] if len(sys.argv) > 1 else "2026-09-15"
-    rankings = "rankings" in sys.argv[2:]
+    global OUT
+    ap = derived.add_args(argparse.ArgumentParser(description="Yahoo paste intake under the hard unmatched gate"))
+    ap.add_argument("date", nargs="?", default="2026-09-15", help="list date (default 2026-09-15)")
+    ap.add_argument("mode", nargs="?", choices=["rankings"], help="'rankings' = the 9-cat rankings page")
+    ap.add_argument("--out-dir", default=HERE, help="where outputs land (default: report/market)")
+    args = ap.parse_args()
+    d = args.date
+    rankings = args.mode == "rankings"
     stem = "yahoo-9cat-rankings" if rankings else "yahoo"
-    raw_path = os.path.join(HERE, f"{stem}-raw-{d}.txt")
+    OUT = args.out_dir
+    inp = derived.inputs_for(args, os.path.join(HERE, f"unmatched-{stem}-{d}.md"))
+    raw_path = inp.path(f"report/market/{stem}-raw-{d}.txt")
     rows, problems, fmt = parse_raw(raw_path)
     inv, gaps = check_invariants(rows, fmt)
     problems += inv
@@ -299,11 +322,15 @@ def main():
         sys.exit(2)
     print("TRANSCRIPTION GATE: PASS (I1-I5" + (", I6)" if fmt == "rank" else ")"))
 
-    BM._write_csv(os.path.join(HERE, f"{stem}-{d}.csv"),
+    BM._write_csv(os.path.join(OUT, f"{stem}-{d}.csv"),
                   ["player", "team", "pos", "xrank", "adp"], rows)
 
     # ---- join under the hard gate --------------------------------------------
-    board = BM.our_board()
+    board = BM.our_board(inp.path("report/projections-2026-27.csv"))
+    # the other committed inputs, resolved now so every stamp below lists them
+    prev_path = _previous_file(d, inp)
+    rk_name = f"yahoo-9cat-rankings-{d}.csv"
+    rk_path = inp.path(f"report/market/{rk_name}") if (not rankings and rk_name in inp.listdir("report/market")) else None
     alias_index = {}
     for canonical, variants in ALIASES.items():
         for v in variants:
@@ -367,7 +394,7 @@ def main():
             sys.exit(3)
 
     if rankings:
-        _write_unmatched(d, unmatched, board, len(rows), reasons, stem)
+        _write_unmatched(d, unmatched, board, len(rows), reasons, stem, inp.stamp())
         _refresh_provenance(d, len(rows), n_adp, fmt, stem)
         print(f"wrote {stem}-{d}.csv, unmatched-{stem}-{d}.md, provenance.csv (reference page: no consensus)")
         print("GATE PASS — every pool player matched or recorded as a genuine absence.")
@@ -393,25 +420,24 @@ def main():
     cons.sort(key=lambda r: (r["consensus_avg"], r["our_rank"]))
     for i, r in enumerate(cons, 1):
         r["consensus_rank"] = i
-    BM._write_csv(os.path.join(HERE, f"consensus-{d}.csv"),
+    BM._write_csv(os.path.join(OUT, f"consensus-{d}.csv"),
                   ["consensus_rank", "player", "team", "pos", "consensus_avg",
                    "our_rank", "yahoo_xrank", "yahoo_adp", "n_signals", "z_adj"],
                   cons)
 
-    prev_path = _previous_file(d)
     prev = _load_csv(prev_path) if prev_path else None
-    _write_unmatched(d, unmatched, board, len(rows), reasons, stem)
-    rk_path = os.path.join(HERE, f"yahoo-9cat-rankings-{d}.csv")
-    rk = _load_csv(rk_path) if os.path.exists(rk_path) else None
+    _write_unmatched(d, unmatched, board, len(rows), reasons, stem, inp.stamp())
+    rk = _load_csv(rk_path) if rk_path else None
     _write_disagreements(d, matched, cons, yahoo_only, rows, fmt, prev,
-                         os.path.basename(prev_path) if prev_path else None, alias_index, rk)
+                         os.path.basename(prev_path) if prev_path else None, alias_index, rk,
+                         inp.stamp())
     _refresh_provenance(d, len(rows), n_adp, fmt, stem)
     print(f"wrote yahoo-{d}.csv, consensus-{d}.csv, unmatched-yahoo-{d}.md, "
           f"disagreements-yahoo-{d}.md, provenance.csv")
     print("GATE PASS — every pool player matched or recorded as a genuine absence.")
 
 
-def _write_unmatched(d, unmatched, board, n_yahoo, reasons=None, stem="yahoo"):
+def _write_unmatched(d, unmatched, board, n_yahoo, reasons=None, stem="yahoo", stamp=None):
     lines = [f"# Unmatched-name report vs Yahoo — {d} (HARD GATE, work order §3.3)", "",
              f"Pool players: {len(board)}; Yahoo list: {n_yahoo}. Every pool player "
              "below did NOT join to Yahoo after normalization and documented aliases; "
@@ -428,11 +454,13 @@ def _write_unmatched(d, unmatched, board, n_yahoo, reasons=None, stem="yahoo"):
                 else "outside Yahoo's published list (deep tail / not rostered by Yahoo)")
         lines.append(f"| {rk} | {n} | {t} | {reason} |")
     lines.append("")
-    open(os.path.join(HERE, f"unmatched-{stem}-{d}.md"), "w").write("\n".join(lines) + "\n")
+    if stamp:
+        lines.append(stamp)
+    open(os.path.join(OUT, f"unmatched-{stem}-{d}.md"), "w").write("\n".join(lines) + "\n")
 
 
 def _write_disagreements(d, matched, cons, yahoo_only, rows, fmt="block", prev=None,
-                         prev_name=None, alias_index=None, rankings_page=None):
+                         prev_name=None, alias_index=None, rankings_page=None, stamp=None):
     xr_only = fmt == "rank"
     plabel = "XRank" if xr_only else "ADP"
     val, fad = [], []
@@ -555,7 +583,9 @@ def _write_disagreements(d, matched, cons, yahoo_only, rows, fmt="block", prev=N
     if rankings_page is not None:
         L += _cross_page_section(d, rows, rankings_page, matched, alias_index or {})
     L.append("")
-    open(os.path.join(HERE, f"disagreements-yahoo-{d}.md"), "w").write("\n".join(L) + "\n")
+    if stamp:
+        L.append(stamp)
+    open(os.path.join(OUT, f"disagreements-yahoo-{d}.md"), "w").write("\n".join(L) + "\n")
 
 
 def _cross_page_section(d, rows, rk, matched, alias_index):
@@ -663,9 +693,9 @@ def _moves_section(rows, prev, prev_name, alias_index):
 
 
 def _refresh_provenance(d, n, n_adp, fmt="block", stem="yahoo"):
+    # the ledger is always read from the working tree and written to OUT
     path = os.path.join(HERE, "provenance.csv")
     rows = list(csv.DictReader(open(path, encoding="utf-8")))
-    rows = [r for r in rows if not (r["source"] == stem and f"as of {d} " in r["notes"])]
     pasted = PASTED_ON.get(d, d)
     if fmt == "rank":
         notes = (f"Yahoo 9-cat player RANKINGS page as of {d} per the owner, pasted into chat "
@@ -681,10 +711,16 @@ def _refresh_provenance(d, n, n_adp, fmt="block", stem="yahoo"):
                  f"for averaging); ADP on the top {n_adp} rows only, non-decreasing "
                  f"(list ordered best-to-worst per owner). Parsed under invariants "
                  f"I1-I5 by yahoo_market.py.")
-    rows.append({"source": stem,
-                 "url": "(owner paste — no direct fetch; sports egress blocked)",
-                 "fetched_on": pasted, "rows": n, "notes": notes})
-    BM._write_csv(path, ["source", "url", "fetched_on", "rows", "notes"], rows)
+    row = {"source": stem, "url": "(owner paste — no direct fetch; sports egress blocked)",
+           "fetched_on": pasted, "rows": n, "notes": notes}
+    at = [i for i, r in enumerate(rows) if r["source"] == stem and f"as of {d} " in r["notes"]]
+    if at:  # replace in place so a re-run leaves the ledger's order alone (D4)
+        rows[at[0]] = row
+        rows = [r for i, r in enumerate(rows) if i == at[0] or i not in at]
+    else:
+        rows.append(row)
+    BM._write_csv(os.path.join(OUT, "provenance.csv"),
+                  ["source", "url", "fetched_on", "rows", "notes"], rows)
 
 
 if __name__ == "__main__":

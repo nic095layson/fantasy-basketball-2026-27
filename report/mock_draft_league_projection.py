@@ -14,8 +14,15 @@ TOV is lower-is-better. The power ranking's Σz uses availability-adjusted value
 category matrix uses raw per-game production. Projections are the kit's own; 14 deep
 players carry [ESTIMATED] Hashtag-sourced lines (see the board header).
 
-Usage: python3 report/mock_draft_league_projection.py
+Usage: python3 report/mock_draft_league_projection.py [--as-of DATE|COMMIT | --live] [--out PATH]
+
+Drift fix D4 (2026-09-29): without --as-of the script re-reads the pin stamped
+into the committed analysis (commit 3d24d0a, the 234-row pool the 8/24 room was
+valued against) so a re-run reproduces the committed numbers; --live values the
+same rosters against today's pool (a different, dated question). The stamp on
+the last line names every input, its sha256 and row count (report/derived.py).
 """
+import argparse
 import csv
 import os
 import sys
@@ -25,6 +32,9 @@ sys.path.insert(0, HERE)
 sys.path.insert(0, os.path.join(HERE, "market"))
 import rank_engine as RE  # noqa: E402
 import build_market as bm  # noqa: E402 (reuse norm + aliases)
+import derived  # noqa: E402 (input stamp + as-of pinning, drift fix D4)
+
+ANALYSIS = os.path.join(HERE, "mock-draft-2026-08-24-analysis.md")
 
 norm = bm.norm
 ALIAS = {norm(v): norm(k) for k, vs in bm.ALIASES.items() for v in vs}
@@ -36,8 +46,8 @@ LAB = {"pts": "PTS", "reb": "REB", "ast": "AST", "stl": "STL", "blk": "BLK",
        "tpm": "3PM", "fgp": "FG%", "ftp": "FT%", "tov": "TOV"}
 
 
-def player_values():
-    rows = RE.load(os.path.join(HERE, "projections-2026-27.csv"))
+def player_values(inp):
+    rows = RE.load(inp.path("report/projections-2026-27.csv"))
     z1 = RE.zscores(rows, rows)
     pool = sorted(rows, key=lambda r: -RE.total(z1[r["name"]]))[:RE.POOL_SIZE]
     z2 = RE.zscores(rows, pool)
@@ -70,8 +80,12 @@ def team_cats(keys, P):
 
 
 def main():
-    P = player_values()
-    drafted = list(csv.DictReader(open(os.path.join(HERE, "mock-draft-2026-08-24-results.csv"))))
+    ap = derived.add_args(argparse.ArgumentParser(description="league projection for the 2026-08-24 mock"))
+    ap.add_argument("--out", default=ANALYSIS, help="where to write the analysis (default: the committed file)")
+    args = ap.parse_args()
+    inp = derived.inputs_for(args, ANALYSIS)
+    P = player_values(inp)
+    drafted = list(csv.DictReader(open(inp.path("report/mock-draft-2026-08-24-results.csv"))))
     TEAMS, SLOT = {}, {}
     for d in drafted:
         TEAMS.setdefault(d["drafted_by"], []).append(canon(norm(d["player"])))
@@ -145,7 +159,8 @@ def main():
         won = ",".join(LAB[c] for c in CATS if better("David", b, c))
         L.append(f"| {b} | {wa}-{9 - wa} | {res} | {won} |")
 
-    out = os.path.join(HERE, "mock-draft-2026-08-24-analysis.md")
+    L += ["", inp.stamp()]
+    out = args.out
     open(out, "w").write("\n".join(L) + "\n")
     print("wrote", out)
     print(f"David finish: #{standings.index('David') + 1}; record {rec['David']}; "
