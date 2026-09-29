@@ -242,6 +242,13 @@ only this repo leaves the deck lying about freshness. After §6:
    contradicts the pool count or narrates the wrong pull.
 5. `python3 scripts/build_deck.py` — all gates must pass; never hand-edit the
    injection anchors.
+5b. Drive the built page end to end before it goes anywhere (owner decision
+   D6, 2026-09-29):
+   `node arena/mocks/full_dom_check.mjs docs/draft-deck.html arena/data/states/draft_state_54.json arena/results/full_dom_check_<today>.json`
+   — every control, every displayed number against the engine, a full LIVE
+   replay, a punt room and a full MOCK room; ~6 minutes; exit 0 and
+   `"pass":true` in the result, or the build does not publish. Commit the
+   result file. The build gates prove the data; this proves the page.
 6. Republish `docs/draft-deck.html` to the **existing** artifact URL (do not
    mint a new one) and confirm the page header reads "fresh today".
 7. Commit and push (that repo's branch/PR rules apply).

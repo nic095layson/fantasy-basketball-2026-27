@@ -16,7 +16,13 @@ DECK = os.environ.get("DECK_REPO", os.path.join(KIT, "..", "yahoo-fantasy-basket
 sys.path.insert(0, os.path.join(DECK, "scripts"))
 import hoops  # noqa: E402
 hoops.DATA_PATH = os.path.join(DECK, "data", "players.csv")
-ADP_FILE = os.environ.get("ADP_FILE", os.path.join(KIT, "report", "market", "consensus-2026-09-15.csv"))
+# Default: the NEWEST dated consensus file in the kit (validation 2026-09-29,
+# owner decision D3 — the literal 9/15 default had the slate lagging the 9/22
+# paste by a week). ADP_FILE still overrides.
+import glob as _glob
+_NEWEST = (sorted(_glob.glob(os.path.join(KIT, "report", "market", "consensus-????-??-??.csv"))) or
+           [os.path.join(KIT, "report", "market", "consensus-2026-09-15.csv")])[-1]
+ADP_FILE = os.environ.get("ADP_FILE", _NEWEST)
 
 SLOT, TEAMS, ROUNDS = 10, 12, 13
 SIGMA = 16.6            # sd of (actual pick − Yahoo ADP), mock 51, n=145
