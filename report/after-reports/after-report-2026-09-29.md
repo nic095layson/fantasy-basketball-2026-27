@@ -146,12 +146,14 @@ under step 5b of §7.
 | gate | result (evidence: the command's own output line) |
 |---|---|
 | kit `check_provenance.py` | PASS — all rows sourced; verified 2026-07-13 .. 2026-09-29 |
-| kit `check_report.py` on this file | see the commit: run after this file was written |
-| deck `judgment_open_items.py --check-report` on this file | see the commit: 11 flagged names, one receipts row each |
+| kit `check_report.py` on this file | REPORT GATE: PASS (structure, publication rule, pull-log row) |
+| deck `judgment_open_items.py --check-report` on this file | receipts check PASS — all 11 flagged names carry a receipts row |
 | deck `verify_rosters.py` | 330/330, 0 mismatches, evidence dated 2026-09-29 |
 | deck `check_planes.py` | 308 shared · team 0 · exclusion 0 · drift 0 · propagation 0 (2 waived) |
 | deck `build_deck.py` | all gates pass; safe to publish |
-| deck `check_parity.py`, `test_card.py`, `test_draft.py`, step-5b `full_dom_check.mjs` | recorded in the commit message and §Provenance below |
+| deck `check_parity.py` on the built page | PARITY: EXACT MATCH — df_hash 72 bit-identical, survival 12, clock 12, card orderings 156 owner turns across 12 committed states, market ranks 321 |
+| deck `test_card.py` / `test_draft.py` | all 56 cases passed / all 62 cases passed |
+| deck step-5b `full_dom_check.mjs` on the built page | 127 assertions, 0 failed, 0 page errors, exit 0 — first run was 126/127 on the harness's own hard-coded 9/28 date in the sweep-panel check; the assertion now reads the build date from the page manifest, re-run green (`arena/results/full_dom_check_2026-09-29_v31.json`) |
 
 ## 7. Watchlist / open items
 
