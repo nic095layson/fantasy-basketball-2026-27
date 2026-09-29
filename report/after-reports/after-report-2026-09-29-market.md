@@ -1,19 +1,29 @@
-# After-Report — 2026-09-29 market intake: expert consensus top 50 and Yahoo's 9/28 top-250 with official position eligibility
+# After-Report — 2026-09-29 market intake: four sources in one day — the expert consensus top 50, Yahoo's 9/28 top 250 with official position eligibility, a projected top 150 with last season's lines, and RotoBaller's 250 projected lines
 
 **Owner requests (2026-09-29, verbatim):** "Here is a TOP 50 Consensus
 combination of experts' individual rankings. Please aggregate into your
 memory" (a CSV upload), then: "This is dated 9/28, Yahoo's Top 250 Cat
-players and OFFICIAL POSITION ELIGIBILITY" (a paste of the rankings page).
-"Memory" here is the repo — a chat memory is invisible to the next session
+players and OFFICIAL POSITION ELIGIBILITY" (a paste of the rankings page);
+then "Here is more data for you to aggregate, research, consider and
+synthesize. Please note this is a little outdated from 9/26/26, however, you
+can still utilize the player context that it provides for your real life
+synthesizing" (a pasted article: "Projected Top 150 for 2026-27", with each
+player's 2025-26 line, a VALUE score, Yahoo ADP and pre-rank snapshots and
+role notes); then "One final 250 player database for you to analyze and
+consider for today. This is from Rotoballer" (a CSV of projected 9-cat
+lines). "Memory" here is the repo — a chat memory is invisible to the next session
 (DATA-PULL §0) — so both land in the kit's market layer under the work
 order's rules: raw kept verbatim, every name joined to the pool under the
 hard gate, a provenance row, a comparison against the board, and no board
 row changed by either (owner decision 2026-08-21; fix F2).
 
-**Method:** `report/market/experts_market.py` (new, on the Yahoo-intake
-pattern) and `report/market/yahoo_market.py 2026-09-28 rankings`; both
-stamped with their inputs and registered in `report/check_derived.py`, which
-reproduces every dated artifact byte-for-byte (8 of 8). Every number below is
+**Method:** `report/market/third_party_market.py` (new, one intake for the
+three third-party ranking files: parse, join under the hard gate, agreement,
+disagreements, team mismatches, and — where the file carries a per-game line —
+the kit's projection against it, row by row) and `report/market/yahoo_market.py
+2026-09-28 rankings`; all stamped with their inputs and registered in
+`report/check_derived.py`, which reproduces every dated artifact byte-for-byte
+(10 of 10). Every number below is
 read from the generated files; the position diff was computed in this
 session against the committed pool and the deck's `data/players.csv`
 (sha `c0bf82bf4d39`). Verification: this file passes `report/check_report.py`.
@@ -21,16 +31,25 @@ session against the committed pool and the deck's `data/players.csv`
 Pull window: 2026-09-29 → 2026-09-29 (a market intake, not a roster pull;
 the 9/29 pull-log rows cover the window).
 
-**Headline.** The experts agree with the board more than Yahoo's room does
-(Spearman 0.620 vs 0.515 over the same 50 names), 43 of their top 50 sit in
-ours, and the disagreements run in both directions along the board's known
-fault lines (FT%/TO drags on Giannis and Sengun; steals and free throws on
-Daniels and Kyrie). Yahoo's 9/28 list joined 244 of 318 pool rows with zero
-spelling-variant trips and names **six players inside its top 250 the pool
-does not carry**. Its official eligibility gives **82 of 244 players at
-least one position the pool does not list, never fewer** — 40 of them in
-the draftable top 156 — which is a change the deck's positional reads
-should carry before the draft (D-M1).
+**Headline.** Four external views of the same pool landed today and the
+board sits inside the pack, not outside it: rank agreement with the kit runs
+0.62 (experts, 50 names), 0.76 (the projected 150), 0.82 (RotoBaller, 242
+names) and 0.83 (Yahoo's 9/28 list). The projected 150 agrees with the
+kit's roster ledger on every one of its 150 teams; RotoBaller disagrees on
+one (Claxton, whom the kit and the article both have in Chicago). Yahoo's
+official eligibility gives **82 of 244 players at least one position the
+pool does not list, never fewer** — 40 of them in the draftable top 156 —
+a change the deck's positional reads should carry before the draft (D-M1).
+Against RotoBaller's projected lines the kit runs high on volume across the
+league (points +0.85, rebounds +0.50, assists +0.21 per player on average;
+percentages, threes and stocks neutral), but against last season's actual
+lines it does not (points −0.42): RotoBaller projects a regression the kit
+does not, and a league-wide tilt cancels in a relative board. What does
+not cancel is the handful of rows where the kit is high on its own —
+**Poole, Turner, Ware, Ingram, Trae Young, Herro, Cameron Johnson, Braun,
+Eason** — and Mobley's free-throw assumption. Those are the re-derivation
+list (D-M4), and one of them, Poole, sits under the draft-56 report's
+follow-the-card arm (§7).
 
 ---
 
@@ -40,8 +59,10 @@ should carry before the draft (D-M1).
 |---|---|---|---|---|
 | expert consensus (owner upload) | `report/market/experts-raw-2026-09-29.csv` (verbatim, UTF-8 BOM tolerated) → `experts-2026-09-29.csv`, `unmatched-experts-2026-09-29.md`, `disagreements-experts-2026-09-29.md` | 50 | 50 of 50, no alias needed | PASS |
 | Yahoo 9-cat rankings page, 9/28 (pasted 9/29) | `report/market/yahoo-9cat-rankings-raw-2026-09-28.txt` (verbatim) → `yahoo-9cat-rankings-2026-09-28.csv`, `unmatched-yahoo-9cat-rankings-2026-09-28.md` | 250 | 244 pool rows matched; 74 pool rows beyond Yahoo's 250, accepted by the mechanical absence check (0 possible spelling variants); 6 Yahoo names not in the pool | PASS (I1, I4–I6; no XRank gaps) |
-| provenance | `report/market/provenance.csv` | +2 rows (7 total), merged by (source, fetched_on) | — |
-| derived gate | `report/check_derived.py` | 2 new entries, 8 of 8 reproduce | PASS |
+| projected top 150 (owner paste, dated 9/26) | `report/market/projected150-raw-2026-09-26.csv` (the structured fields transcribed under invariants: ranks contiguous, stats in range; the prose read in-session, not stored) → `projected150-2026-09-26.csv`, `unmatched-…`, `disagreements-…` | 150 | 150 of 150; 3 rows with no 2025-26 games (Haliburton, Kyrie, Lillard) | PASS |
+| RotoBaller overall 9-cat projected rankings (owner upload) | `report/market/rotoballer-raw-2026-09-29.csv` (verbatim) → `rotoballer-2026-09-29.csv`, `unmatched-…`, `disagreements-…` | 250 | 242 of 250; 8 names without a pool row (Clifford, Ament, De Larrea, Riley, Cissé, González, Bryant, Wolf), 0 spelling variants | PASS |
+| provenance | `report/market/provenance.csv` | +4 rows (9 total), merged by (source, fetched_on) | — |
+| derived gate | `report/check_derived.py` | 4 new entries, 10 of 10 reproduce | PASS |
 
 ## 2. The expert consensus against the board
 
@@ -185,6 +206,104 @@ positional need all read this column.
 | 288 | Oso Ighodaro | C | **C,PF** | 165 |
 | 302 | Morez Johnson Jr. | PF | **C,PF** | 204 |
 
+## 5. The projected top 150 (9/26) — last season as the baseline
+
+Rank agreement with the kit 0.756; 124 of its 150 inside our top 150; team
+notes match the kit's verified ledger on all 150 (Kawhi to Toronto for
+Ingram, LeBron and Brown to Philadelphia, George to Boston, Giannis to Miami
+with Herro, Ware and Jaquez to Milwaukee, Harden to Cleveland for Garland,
+Randle and Claxton in the four-team deal, Trae Young to Washington, Zubac
+to Indiana, Kessler to the Lakers, Porziņģis to Golden State — every one
+already in `roster-provenance.csv`). The article's value is its 2025-26
+actual lines: the kit's 2026-27 projection against them, over 147 rows, is
+neutral on points (−0.42 per player), threes, assists and stocks, slightly
+above on rebounds (+0.30) and slightly below on free throws (−0.52). Seventy-
+five rows cross a category threshold, as a projection should where the role
+changed; the ones that matter to this owner's picks are in §7. The three
+guards the owner built around have no 2025-26 games; the article discounts
+them to 21 (Haliburton), 65 (Kyrie) and 99 (Lillard) [EVIDENCE:
+`disagreements-projected150-2026-09-26.md` §A, §D, §E].
+
+## 6. RotoBaller — projection against projection
+
+The closest external ranking to the board (0.815; 218 of its 250 inside our
+top 250) and, with Yahoo, the source the market itself follows most (0.941
+against Yahoo XRank). Its projected per-game lines let the kit's be compared
+like for like over 241 players [EVIDENCE: `disagreements-rotoballer-2026-09-29.md`
+§E; `report/validation-2026-09-29/`-style direction table computed in-session]:
+
+| category | kit minus RotoBaller, mean per player | rows kit higher : lower |
+|---|---|---|
+| PTS | +0.85 | 159 : 71 |
+| REB | +0.50 | 177 : 51 |
+| AST | +0.21 | 153 : 71 |
+| TOV | +0.11 | 151 : 62 |
+| 3PM, STL, BLK, FG% | within ±0.3 | near even |
+| FT% | −0.35 | 105 : 131 |
+
+Read with §5: the kit sits close to last season's actual volume while
+RotoBaller projects a regression from it, so the tilt is RotoBaller's
+conservatism as much as the kit's optimism, and a tilt every row shares
+cancels in a relative board (the rank agreement is the highest of the four
+sources). The rows that do not cancel — where the kit is high on its own —
+are the ones to re-derive. Seventy-nine rows cross a threshold; the ones
+that touch this owner's card:
+
+| player | kit # / RotoBaller # / Yahoo # | kit line vs RotoBaller line (per game) | reading |
+|---|---|---|---|
+| Jordan Poole | 81 / 230 / 211 | 19.5 pts, 3.0 threes, 4.5 ast, 1.2 stl vs 10.1 / 1.8 / 2.3 / 0.5 | the kit projects a starter, both sources a bench role — the largest disagreement of any name that reached the owner's card (§7) |
+| Myles Turner | 40 / 104 / 108 | 15.0 pts, 7.0 reb, 2.0 blk vs 12.7 / 5.4 / 1.6 (last season 11.9 / 5.3 / 1.6) | the kit projects a bounce with Giannis gone; both sources and last season say no |
+| Kel'el Ware | 39 / 65 / 77 | 14.5 / 10.5 / 1.8 blk vs 9.5 / 7.5 / 1.0 | a Milwaukee role the kit assumes and RotoBaller does not |
+| Brandon Ingram | 88 / 202 / 67 | 20.0 pts, 4.5 ast vs 15.0 / 2.0 | the Achilles absence sits in the kit's GP, not its line; RotoBaller cut the line |
+| Cameron Johnson | 61 / 105 / 158 | 17.0 / 2.7 threes vs 14.2 / 2.1 | below the row threshold but the same direction as every source (D56-1) |
+| Christian Braun | 83 / 168 / 173 | 15.0 / 5.0 reb / 2.8 ast / 1.1 stl vs 12.0 / 4.5 / 2.4 / 0.7 | the kit is high across the whole line (D56-1) |
+| Tari Eason | 67 / 140 / 150 | 12.0 pts, 1.6 stl, 0.8 blk, FG% 48 vs 9.6 / 1.2 / 0.5 / 44.1; last season 10.4 / 1.2 / 0.5 / 41.6 | the FG% assumption is 6 points above both; the stocks +0.4 (D56-1) |
+| Evan Mobley | 19 / 24 / 29 | FT% 74 vs 70; last season 60.6 | the free-throw assumption is the owner's #1 FT% column's soft spot |
+| Karl-Anthony Towns | 6 / 15 / 16 | 24.0 pts vs 20.9; last season 20.1 | a New York usage bet |
+| Tyrese Haliburton | 27 / 12 / 9 | 18.5 pts, 8.5 ast, GP 60 vs 17.4 / 9.3 | the kit is the most cautious source on him |
+| Kyrie Irving | 16 / 43 / 36 | 23.0 / 5.0 ast, GP 60 vs 21.8 / 4.4 | lines agree; the kit's availability discount is the lightest of the four |
+| Damian Lillard | 91 / 84 / 57 | 17.0 / 5.5, GP 45 vs 16.6 / 5.0 | agreement |
+| OG Anunoby | 44 / 44 / 52 | 16.5 / 2.1 / 1.4 stl vs 17.0 / 2.3 / 1.5 | agreement — the deck's #27 is its standardization, not the line |
+| Brook Lopez | 96 / 144 / 156 | 12.0 / 1.8 blk / FG 51 vs 9.9 / 1.4 / 46.2 | the kit is high on the Clippers role |
+| Jakob Poeltl | 128 / 160 / 123 | 11.5 / 9.0 reb vs 11.8 / 7.7 | agreement on the line; the deck's #47 is its standardization (D56-2) |
+
+Team mismatch: one — RotoBaller lists Claxton in Brooklyn; the kit's
+ledger and the article have the July trade to Chicago. Eight RotoBaller
+names have no pool row; two (Clifford, Riley) are also inside Yahoo's 250.
+
+## 7. What it means for the draft — the synthesis
+
+- **The board is not an outlier.** Four sources, four agreements between
+  0.62 and 0.83, and the highest with the one that carries full projected
+  lines. The first-principles engine and the market read the same league.
+- **The point-guard trio, read against the world.** Haliburton: every
+  source ranks him higher than the kit (Yahoo 9, experts 10, RotoBaller 12,
+  the article 21, the kit 27) — the kit's GP 60 is the most cautious
+  Achilles read on the table. Lillard: agreement everywhere (kit 91,
+  RotoBaller 84, the article 99). Kyrie: the kit's #16 is the outlier
+  (RotoBaller 43, experts 41, Yahoo 36, the article 65) — not on the line,
+  which every source writes the same, but on the availability discount;
+  the card had White over him at #39 anyway. Net: the plan's risk is
+  concentrated in Kyrie's games played, not in the guards' production.
+- **The #130 counterfactual needs a caveat.** The draft-56 report priced
+  following the card at #130 (Poole for Sheppard) at +3.7 points of
+  championship and hindsight named Poole the best alternative there. Both
+  rest on the kit's Poole line — 19.5 points as a starter — which
+  RotoBaller (230), Yahoo (211) and the projected 150 (absent from its 150)
+  all reject. Until that line is re-derived, treat the #130 leg as
+  unproven; the other two legs (White, Pritchard) stand on lines every
+  source agrees with. A bounds note now says so in the draft-56 report.
+- **The repeat-name audit, completed.** The draft-56 report found the
+  card's late-round set warranted by the arithmetic and questioned three
+  projection rows. Two more sources now say the same about the same three
+  rows (Cameron Johnson, Braun, Eason), and add Poole, Turner, Ware and
+  Ingram. That is the re-derivation list, ranked by how often the card
+  reaches them: Turner and Eason (card #1 at #106 and #111 in mock 56),
+  Cameron Johnson (#87), Braun (#130/#135), Lopez (#154), Poole (the
+  hindsight alternative), then Ware and Ingram.
+- **Positions.** Unchanged from §4: the platform's eligibility is the
+  league's rule; 40 draftable players are under-counted on the deck.
+
 ## Watchlist
 
 - D-M1 position sync: until it lands, the deck under-counts roster
@@ -192,8 +311,11 @@ positional need all read this column.
   among them).
 - Pool completeness: five Yahoo-top-250 names without a kit row (Clifford,
   Simmons, Riley, Flemings, Collins) — next pull, sourced rows.
-- Clingan (ours 119, experts 44, Yahoo 54): the largest disagreement in the
-  file; re-read the Portland role at the next pull.
+- Clingan (ours 119, experts 44, Yahoo 54, RotoBaller 61): the largest
+  disagreement in the expert file; re-read the Portland role at the next pull.
+- Poole (ours 81, RotoBaller 230, Yahoo 211): the largest disagreement that
+  touched the owner's analysis; first on the re-derivation list with Turner
+  and Eason.
 - Yahoo market paste: the 9/22 ADP file still prices the deck; a fresh
   draft-analysis paste in early October re-prices it.
 
@@ -210,6 +332,11 @@ positional need all read this column.
   population from Yahoo's.
 - The rankings page carries no ADP; agreement with the room's price is
   measured on the 9/22 draft-analysis paste.
+- The kit-vs-source line comparison uses the kit's projection row as
+  committed on 2026-09-29 and each source's file as uploaded; RotoBaller's
+  file carries no games-played column, so its availability view is only in
+  its rank. The direction table in §6 was computed in-session from the
+  joined CSVs, not by a committed script.
 - The position diff treats order as irrelevant (`PG,SG` equals `SG,PG`) and
   the deck's `p` column as the deck's truth; the deck-vs-Yahoo count (103)
   was computed in this session, not by a committed script.
@@ -221,6 +348,8 @@ positional need all read this column.
 | D-M1 | Sync position eligibility to Yahoo's official list on both planes (82 kit rows, 103 deck rows), rebuild and republish the deck? | sync before the next mock: the platform's eligibility is the league's rule |
 | D-M2 | Add the five missing Yahoo-top-250 names to the pool at the next pull (sourced rows, two outlets each)? | add at the next pull |
 | D-M3 | Should the expert average enter the consensus column the Yahoo intake averages (our rank, XRank, ADP)? | no — reference only, as the work order's gated step 5 stands |
+| D-M4 | Re-derive the projection lines the kit holds high on its own — Poole, Turner, Eason, Cameron Johnson, Braun, Lopez, Ware, Ingram, and Mobley's FT% — from current role research before the next mock (the 9/16 ritual; two outlets per line)? Supersedes D56-1. | re-derive before the next mock, Poole / Turner / Eason first |
+| D-M5 | Add the eight RotoBaller names without a pool row with the five from Yahoo (D-M2)? Clifford and Riley are on both lists. | add the two shared names at the next pull; the six rookies only if Yahoo's list carries them |
 
 ## Provenance
 
