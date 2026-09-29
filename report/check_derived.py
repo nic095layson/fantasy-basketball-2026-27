@@ -63,10 +63,20 @@ REGISTRY = [
      "outputs": ["market/yahoo-9cat-rankings-2026-09-28.csv",
                  "market/unmatched-yahoo-9cat-rankings-2026-09-28.md"]},
     {"label": "2026-09-29 expert consensus intake (owner upload, top 50)",
-     "cmd": ["market/experts_market.py", "2026-09-29"], "out": "--out-dir",
+     "cmd": ["market/third_party_market.py", "experts", "2026-09-29"], "out": "--out-dir",
      "pin": "market/unmatched-experts-2026-09-29.md",
      "outputs": ["market/experts-2026-09-29.csv", "market/unmatched-experts-2026-09-29.md",
                  "market/disagreements-experts-2026-09-29.md"]},
+    {"label": "2026-09-26 projected top 150 (owner paste; 2025-26 actual lines)",
+     "cmd": ["market/third_party_market.py", "projected150", "2026-09-26"], "out": "--out-dir",
+     "pin": "market/unmatched-projected150-2026-09-26.md",
+     "outputs": ["market/projected150-2026-09-26.csv", "market/unmatched-projected150-2026-09-26.md",
+                 "market/disagreements-projected150-2026-09-26.md"]},
+    {"label": "2026-09-29 RotoBaller overall 9-cat projected rankings (owner upload, 250)",
+     "cmd": ["market/third_party_market.py", "rotoballer", "2026-09-29"], "out": "--out-dir",
+     "pin": "market/unmatched-rotoballer-2026-09-29.md",
+     "outputs": ["market/rotoballer-2026-09-29.csv", "market/unmatched-rotoballer-2026-09-29.md",
+                 "market/disagreements-rotoballer-2026-09-29.md"]},
 ]
 
 
