@@ -249,7 +249,7 @@ sources). The rows that do not cancel — where the kit is high on its own —
 are the ones to re-derive. Seventy-nine rows cross a threshold; the ones
 that touch this owner's card:
 
-| player | kit # / RotoBaller # / Yahoo # | kit line vs RotoBaller line (per game) | reading |
+| player | kit # / RotoBaller # / Yahoo # | kit line vs RotoBaller line (per game) | reading (evidence: `disagreements-rotoballer-2026-09-29.md` §E/§F, `yahoo-9cat-rankings-2026-09-28.csv`) |
 |---|---|---|---|
 | Jordan Poole | 81 / 230 / 211 | 19.5 pts, 3.0 threes, 4.5 ast, 1.2 stl vs 10.1 / 1.8 / 2.3 / 0.5 | the kit projects a starter, both sources a bench role — the largest disagreement of any name that reached the owner's card (§7) |
 | Myles Turner | 40 / 104 / 108 | 15.0 pts, 7.0 reb, 2.0 blk vs 12.7 / 5.4 / 1.6 (last season 11.9 / 5.3 / 1.6) | the kit projects a bounce with Giannis gone; both sources and last season say no |
