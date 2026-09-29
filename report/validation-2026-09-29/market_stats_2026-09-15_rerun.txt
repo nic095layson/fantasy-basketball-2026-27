@@ -1,0 +1,29 @@
+matched w/ XRank: 225 | rho(our, XRank) = 0.7842
+matched w/ ADP  : 182 | rho(our, ADP)   = 0.7124
+median |our-XRank| = 29 | median |our-ADP| = 29
+band (our_rank<=140, ADP present): 131 players | median |our-ADP| = 20 | gap>=25: 46
+
+band values n=45 / fades n=40 — mean z per cat:
+  stl  value +0.41  fade -0.43  diff +0.84
+  ftp  value +0.14  fade -0.39  diff +0.53
+  tov  value +0.11  fade -0.30  diff +0.42
+  tpm  value +0.09  fade -0.13  diff +0.22
+  blk  value +0.04  fade -0.03  diff +0.07
+  fgp  value +0.05  fade +0.07  diff -0.02
+  ast  value -0.04  fade +0.10  diff -0.14
+  reb  value -0.01  fade +0.17  diff -0.19
+  pts  value +0.04  fade +0.24  diff -0.20
+
+room vs experts, 12 biggest room reaches (ADP minus capped XRank):
+   -194.6  Johni Broome (LAC)  XRank 668 / ADP 105.4
+   -189.1  Alex Caruso (OKC)  XRank 282 / ADP 92.9
+   -186.7  AJ Green (MIL)  XRank 260 / ADP 73.3
+   -182.6  Aaron Wiggins (ATL)  XRank 271 / ADP 88.4
+   -167.5  Luke Kennard (PHX)  XRank 255 / ADP 87.5
+   -163.3  Klay Thompson (MIA)  XRank 273 / ADP 109.7
+   -161.4  Al Horford (GSW)  XRank 248 / ADP 86.6
+   -153.5  T.J. McConnell (IND)  XRank 247 / ADP 93.5
+   -151.6  Allen Graves (TOR)  XRank 250 / ADP 98.4
+   -136.4  Sam Hauser (BOS)  XRank 246 / ADP 109.6
+   -132.5  Luke Kornet (SAS)  XRank 220 / ADP 87.5
+   -123.7  Aaron Nesmith (IND)  XRank 199 / ADP 75.3
