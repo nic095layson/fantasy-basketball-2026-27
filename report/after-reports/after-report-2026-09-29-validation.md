@@ -378,6 +378,43 @@ and its raw artifacts were added to the kit under
 `report/validation-2026-09-29/`; a pull-log row for 2026-09-29 was added.
 No pool, engine, page or board file was changed.
 
+## 8. Decisions executed (owner, 2026-09-29: "Fix 1 and 2, and spend intention and logic in building strength and confidence with 4 and 5")
+
+Executed the same day, on deck branch `claude/d1-d2-third` and the kit's
+designated branch; nothing below was applied before the owner's word. Raw
+artifacts joined `report/validation-2026-09-29/`.
+
+| decision | outcome | evidence |
+|---|---|---|
+| D1 — empty-input Insert-at-# and Resync | FIXED, red-first. Both guards now call `save(); renderMirror();` before returning. | `scripts/test_card.py` gained three static cases: on the v30 page "3 of 56 cases FAILED"; on the fixed page "all 56 cases passed"; the harness assertions `S2.insert-empty-warns` and `S2.resync-empty-refused` went from FAIL (run 3, this morning) to PASS; harness on the fixed, committed page: 127 assertions, 0 failed, 0 page errors, exit 0 (`full_dom_check_2026-09-29_fixed.json`) |
+| D2 — "246 placements" literal | FIXED. The sweep panel reads `PLAYERS.length`. | harness note `sweepPanelPlacementsSentence` now "re-verifies all 330 placements,"; test_card case V-D2 green |
+| D3 (item 2) — seat-10 slate | REGENERATED on the 2026-09-29 board and the 2026-09-22 Yahoo consensus; `slate.py` now defaults to the newest `consensus-*.csv`. | `report/seat-10-slate.md` header "board 2026-09-29 · Yahoo ADP 2026-09-22"; kit commit 18ba99e. The October paste still makes the draft-night copy. |
+| D5 (item 4) — third implementation of the weekly category-win model | DONE and PASSING. `arena/mocks/decw_third.py` (from the specification; imports neither `arena.py` nor `hoops.py`, never runs the page) vs `arena/mocks/decw_reference.mjs` (the engine's own numbers). With the engine's polynomial Φ: hash 72 of 72 vectors bit-identical; the owner's weekly model (mean and variance, all nine categories) identical to 0.0 on all 144 rosters; daily-fill start rates 0 mismatches; card ordering identical at 156 of 156 owner turns across 12 committed states, top to bottom of the list; max ΔECW difference 2.7e-15, blend difference 0.0. With the exact Φ (math.erf): top-5 identical at 156 of 156, full ordering identical at 155 of 156 — the one difference is at list position 142 of ~260 at mock-54 pick 63, where the engine's polynomial (stated error 1.5e-7) moves one deep percentile rank; max ΔECW difference 3.1e-7. | `decw_third_2026-09-29_approx.json`, `decw_third_2026-09-29_exact.json` (kit copies here; deck `arena/results/`); each run 53 s |
+| D6 (item 5) — harness as a standing gate | DONE. `full_dom_check.mjs` exits 1 on any failed assertion or page error; DATA-PULL.md §7 gained step 5b (run it on every built page before republishing; exit 0 and pass:true or no publish); the arena README says so. Exercised once on the committed fixed page: 127 of 127, exit 0. | `full_dom_check_2026-09-29_fixed_stdout.txt`; DATA-PULL.md §7 step 5b |
+| D4 (item 3) — pin derived kit reports | NOT EXECUTED — not chosen by the owner; stays open. | — |
+
+What the third implementation establishes, stated carefully (INFERENCE):
+the JavaScript engine implements the written specification of the weekly
+model exactly — the hash, the daily-fill start rates, the compound-sum
+variances, the percentage floors, the category-win probabilities, the
+percentile blend and the card sort all reproduce from the text alone,
+with no reference to either existing port. It does not establish that the
+specification is the right model of a fantasy week; that is what the
+arena's measurements are for. The one exact-Φ divergence is a property of
+the engine's approximation, not of the model, and it sits far below the
+card.
+
+Parity on the fixed page: PARITY: EXACT MATCH — 156 owner turns across 12
+committed states (mock 55, graded by another session on 2026-09-28,
+joined the set while this work was in flight; its state was not touched).
+
+**Not published.** Version 31 is not live. The page fix is on deck main once
+the PR merges, but a republish requires today's roster evidence (build gates
+1 and 2 refuse a build whose verification is not dated today), and that
+evidence is authored only by the daily pull. The fix rides the next pull's
+build; say "pull" and the 9/28 to 9/29 sweep runs, builds v31 through the
+gates including step 5b, and republishes.
+
 ## Provenance
 
 Produced 2026-09-29 by the Claude Code session
