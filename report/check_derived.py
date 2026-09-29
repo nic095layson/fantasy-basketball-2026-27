@@ -57,6 +57,11 @@ REGISTRY = [
      "pin": "market/unmatched-yahoo-2026-09-22.md",
      "outputs": ["market/yahoo-2026-09-22.csv", "market/consensus-2026-09-22.csv",
                  "market/unmatched-yahoo-2026-09-22.md", "market/disagreements-yahoo-2026-09-22.md"]},
+    {"label": "2026-09-29 expert consensus intake (owner upload, top 50)",
+     "cmd": ["market/experts_market.py", "2026-09-29"], "out": "--out-dir",
+     "pin": "market/unmatched-experts-2026-09-29.md",
+     "outputs": ["market/experts-2026-09-29.csv", "market/unmatched-experts-2026-09-29.md",
+                 "market/disagreements-experts-2026-09-29.md"]},
 ]
 
 
