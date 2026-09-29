@@ -77,6 +77,11 @@ REGISTRY = [
      "pin": "market/unmatched-rotoballer-2026-09-29.md",
      "outputs": ["market/rotoballer-2026-09-29.csv", "market/unmatched-rotoballer-2026-09-29.md",
                  "market/disagreements-rotoballer-2026-09-29.md"]},
+    {"label": "2026-09-29 unnamed-outlet 9-cat top 144 with profiles + sleepers/breakouts/busts (owner paste)",
+     "cmd": ["market/third_party_market.py", "profiles", "2026-09-29"], "out": "--out-dir",
+     "pin": "market/unmatched-profiles-2026-09-29.md",
+     "outputs": ["market/profiles-2026-09-29.csv", "market/profiles-tags-2026-09-29.csv",
+                 "market/unmatched-profiles-2026-09-29.md", "market/disagreements-profiles-2026-09-29.md"]},
 ]
 
 

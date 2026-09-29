@@ -79,6 +79,24 @@ SOURCES = {
                              "rotoballer-raw-{d}.csv (Rank, Player, Pos, Team, P-Rank, projected PTS/REB/AST/STL/BLK/3PM/FG%/FT%/TO, "
                              "Tier). Joined under the hard gate by third_party_market.py ({m} matched, {u} without a pool row); "
                              "reference only — no board row changes (fix F2)."),
+    "profiles": dict(default_date="2026-09-29", raw="profiles-raw-{d}.csv", gap=20,
+                     cols=dict(rank="Rank", player="Player", team="Team", pos="Pos"),
+                     extra={"printed_rank": "Printed", "profile": "Profile", "claim": "Claim"}, stats=None,
+                     tags="profiles-tags-raw-{d}.csv",
+                     team_map={"Nuggets": "DEN", "Denver": "DEN", "Spurs": "SAS", "Thunder": "OKC", "Lakers": "LAL", "Pistons": "DET",
+                               "Timberwolves": "MIN", "Celtics": "BOS", "Hawks": "ATL", "Clippers": "LAC", "Heat": "MIA", "Raptors": "TOR",
+                               "Pacers": "IND", "76ers": "PHI", "Mavericks": "DAL", "Cavaliers": "CLE", "Rockets": "HOU", "Knicks": "NYK",
+                               "Bulls": "CHI", "Wizards": "WAS", "Warriors": "GSW", "Pelicans": "NOP", "Pelican": "NOP", "Suns": "PHX",
+                               "Trail Blazers": "POR", "Blazers": "POR", "Jazz": "UTA", "Kings": "SAC", "Magic": "ORL", "Hornets": "CHA",
+                               "Bucks": "MIL", "Grizzlies": "MEM", "Nets": "BKN"},
+                     title="an unnamed outlet's 9-cat top 144 with profiles (owner paste, 2026-09-29)",
+                     url="(owner paste of an article — outlet not named; a 9-cat top 144 with prose profiles on the top 50, and its companion sleepers / breakouts / busts piece)",
+                     notes="A 9-cat top 144 pasted by the owner on {d} (outlet not named; teams given as nicknames, mapped to codes; "
+                           "the list numbers 126 twice, so Rank is the list position 1..145 and Printed keeps the article's number) "
+                           "transcribed to profiles-raw-{d}.csv with a Profile flag and a short Claim in the analyst's own words for the "
+                           "50 profiled players; the companion sleepers / breakouts / busts lists transcribed to profiles-tags-raw-{d}.csv "
+                           "(38 rows). The prose was read in-session and not stored. Joined under the hard gate by third_party_market.py "
+                           "({m} matched, {u} without a pool row); reference only — no board row changes (fix F2; a single unnamed outlet)."),
 }
 # Source names verified absent from the pool (a reason each). Anything else without a pool
 # row is listed as a pool-completeness item; a possible spelling variant trips the gate.
@@ -144,7 +162,29 @@ def main():
             for k, c in S["stats"]["map"].items():
                 row[f"src_{k}"] = r.get(c, "")
         rows.append(row)
-    print(f"JOIN ({src} {d}): {len(raw)} source rows | matched to pool={len(rows)} | no pool row={len(absent)} | possible spelling variants={len(trips)}")
+    # Companion tag lists (sleepers / breakouts / busts) — joined under the same gate; a tag name
+    # outside the ranking keeps an empty source rank.
+    tag_rows, tag_absent = [], []
+    if S.get("tags"):
+        traw = list(csv.DictReader(open(inp.path(f"report/market/{S['tags'].format(d=d)}"), encoding="utf-8-sig")))
+        srank = {r["player"]: r["src_rank"] for r in rows}
+        for r in traw:
+            name = r["Player"].strip()
+            hit = by_key.get(key(name))
+            team_src = tmap.get(r.get("Team", ""), r.get("Team", ""))
+            if hit is None:
+                if pool3.get(_key3(name)):
+                    trips.append((0, name, team_src, pool3[_key3(name)]))
+                else:
+                    tag_absent.append((r["Section"], name, team_src, "no pool row (pool-completeness item; verify the name against the raw before adding a sourced row)"))
+                continue
+            n, b = hit
+            y, a = xr.get(BM.norm(n), {}), adp.get(BM.norm(n), {})
+            tag_rows.append({"section": r["Section"], "tier": r["Tier"], "player": n, "team_src": team_src, "team_kit": b["row"]["team"],
+                             "our_rank": b["rank"], "z_adj": round(b["z_adj"], 3), "src_rank": srank.get(n, ""),
+                             "yahoo_xrank": y.get("xrank", ""), "yahoo_adp": a.get("yahoo_adp", ""), "claim": r.get("Claim", ""), "src_name": name})
+    print(f"JOIN ({src} {d}): {len(raw)} source rows | matched to pool={len(rows)} | no pool row={len(absent)} | possible spelling variants={len(trips)}"
+          + (f" | tag rows {len(tag_rows)} matched, {len(tag_absent)} without a pool row" if S.get("tags") else ""))
     if trips:
         print("HARD GATE TRIP — source names that look like a pool spelling (add a verified alias, or record the absence with a reason):")
         for rk, n, t, hits in trips:
@@ -154,6 +194,9 @@ def main():
     cols = ["src_rank", "player", "team_src", "team_kit", "our_rank", "z_adj", "yahoo_xrank", "yahoo_adp"] + list(S["extra"]) + \
            ([f"src_{k}" for k in S["stats"]["map"]] if S["stats"] else []) + ["src_name"]
     BM._write_csv(os.path.join(OUT, f"{src}-{d}.csv"), cols, rows)
+    if S.get("tags"):
+        BM._write_csv(os.path.join(OUT, f"{src}-tags-{d}.csv"),
+                      ["section", "tier", "player", "team_src", "team_kit", "our_rank", "z_adj", "src_rank", "yahoo_xrank", "yahoo_adp", "claim", "src_name"], tag_rows)
     stamp = inp.stamp()
     n_src, n_pool = len(raw), len(board)
 
@@ -166,6 +209,11 @@ def main():
          "| source # | name | team | reason |", "|---|---|---|---|"]
     for rk, n, t, why in absent:
         L.append(f"| {rk} | {n} | {t} | {why} |")
+    if S.get("tags"):
+        L += ["", f"## Tag-list names without a pool row ({len(tag_absent)})", "",
+              "| section | name | team | reason |", "|---|---|---|---|"]
+        for sec, n, t, why in tag_absent:
+            L.append(f"| {sec} | {n} | {t} | {why} |")
     L += ["", stamp]
     open(os.path.join(OUT, f"unmatched-{src}-{d}.md"), "w", encoding="utf-8").write("\n".join(L) + "\n")
 
@@ -240,6 +288,13 @@ def main():
     for r in rows:
         D.append(f"| {r['src_rank']} | {r['player']} | {r['team_src'] or '—'} | {r['our_rank']} | {fmt(r['yahoo_xrank'])} / {fmt(r['yahoo_adp'])} | "
                  + " | ".join(fmt(r[k]) for k in S["extra"]) + " |")
+    if S.get("tags"):
+        D += ["", f"## G. The source's sleepers / breakouts / busts against the board ({len(tag_rows)} names)", "",
+              "Our # is the board's first-principles rank; the source # is the same article's ranking (empty when the name sits "
+              "outside its top 144). The board z-lean is the row's own profile, not a reaction to the tag.", "",
+              "| section | tier | player | our # | source # | Yahoo XRank / ADP | our board z-lean | the source's reason |", "|---|---|---|---|---|---|---|---|"]
+        for r in tag_rows:
+            D.append(f"| {r['section']} | {r['tier']} | {r['player']} | {r['our_rank']} | {fmt(r['src_rank'])} | {fmt(r['yahoo_xrank'])} / {fmt(r['yahoo_adp'])} | {prof(r['player'])} | {r['claim']} |")
     D += ["", stamp]
     open(os.path.join(OUT, f"disagreements-{src}-{d}.md"), "w", encoding="utf-8").write("\n".join(D) + "\n")
     BM._merge_provenance([{"source": src, "url": S["url"], "fetched_on": d, "rows": n_src,

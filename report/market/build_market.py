@@ -74,6 +74,7 @@ ALIASES = {
     "Cam Johnson": {"Cameron Johnson"},      # hashtag & statdunk
     "Nic Claxton": {"Nicolas Claxton"},      # hashtag
     "Alex Sarr": {"Alexandre Sarr"},         # hashtag
+    "Egor Demin": {"Egor Dёmin"},            # 2026-09-29 owner paste: Cyrillic ё, which NFKD does not fold
 }
 
 
