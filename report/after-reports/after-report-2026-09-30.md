@@ -235,8 +235,8 @@ the standing artifact URL as version 35; served bytes read back and matched.
 | deck `check_planes.py` (in the build) | 314 shared · team 0 · exclusion 0 · drift 0 · propagation 0 (3 waived by name) |
 | deck `build_deck.py` | all gates pass; safe to publish (pool `3db2c63af0c3`) |
 | deck `check_parity.py` on the built page | PARITY: EXACT MATCH (market ranks 324) |
-| deck `test_gates.py` / `test_draft.py` / `test_card.py` | pending at this commit — the three suites were still running when the kit plane was committed; the follow-up commit carries their output lines |
-| deck step-5b `full_dom_check.mjs` on the built page | pending at this commit — same background run; filled by the follow-up commit |
+| deck `test_gates.py` / `test_draft.py` / `test_card.py` | all 34 cases passed / all 62 cases passed / CARD: all 61 cases passed |
+| deck step-5b `full_dom_check.mjs` on the built page | 128 assertions, 0 failed, 0 page errors, exit 0 (`arena/results/full_dom_check_2026-09-30_v35.json`) |
 
 ## 8. Watchlist / open items
 
