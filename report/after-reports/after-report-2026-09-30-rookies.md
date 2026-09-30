@@ -136,9 +136,9 @@ player Wilson displaces. Nothing in the article moved a placement.
   carried it); pool sha `bdb40833a6ac`; injection round-trip OK; safe to
   publish. Parity: EXACT MATCH.
 - Colophon: one sentence added to the Data paragraph describing this pass.
-- Suites: test_draft 62 of 62, test_card 61 of 61, test_gates PENDING_GATES.
-- DOM drive (full_dom_check, state 54): PENDING_DOM.
-- Publish: PENDING_PUBLISH.
+- Suites on the final page (after the owner-approved D-R5 wording change, applied the same evening as a code-only rebuild with a `--no-pool-changes` stamp; no waiver needed since the pool was unchanged): test_draft 62 of 62, test_card 68 of 68 (seven new D-R5 cases, red on the old page), test_gates 34 of 34.
+- DOM drive (full_dom_check, state 54) on the final page: 128 of 128 assertions, 0 page errors, pass.
+- Publish: artifact Version 36, id 1790797084-8422, after a fresh read of v35; served 362,992 bytes = the 362,622-byte page plus the 370-byte wrapper, exact.
 
 ## 7. Gates (2026-09-30)
 
@@ -192,7 +192,7 @@ player Wilson displaces. Nothing in the article moved a placement.
 | D-R1 | Dybantsa's planes carry different lines (deck 20.5 / 5.5 / 3.0, kit 18.0 / 6.0 / 2.8) with no dated derivation on either. Unify to one line at the next pull, and which? | unify to the kit's line at the next pull (the kit is the report card; the deck is its twin) unless a dated outlet supports the higher scoring number |
 | D-R2 | Steinbach: if he starts the preseason opener over Diabaté, re-derive to 27 minutes on both planes? | yes, on the first preseason start, two outlets |
 | D-R3 | Lendeborg at 28 minutes rests on Porziņģis' absence; if Porziņģis is cleared before Oct 14, return him to 26? | yes, with the clearance report |
-| D-R5 | Card wording (owner-reported 2026-09-30, mid-intake): the advice line quotes the ΔECW gap between the 🎯 and the #2 as the reason for the pick, so when the 🎯 wins on value and trails on ΔECW it reads "Take Chet Holmgren — −0.017 expected categories per week over Jalen Williams". Change the sentence, when the gap is negative, to name the real reason: "Take Chet Holmgren — the best value left (Mkt 25); Jalen Williams fits this week's roster slightly better (+0.034 cats/wk) but ranks lower on value; only ~6% chance Chet survives to your next turn." Ordering unchanged; red-first case in test_card.py; separate deck PR. | yes, next deck build |
+| D-R5 | Card wording (owner-reported 2026-09-30, mid-intake): the advice line quoted the ΔECW gap between the 🎯 and the #2 as the reason for the pick, so when the 🎯 won on value and trailed on ΔECW it read "Take Chet Holmgren — −0.017 expected categories per week over Jalen Williams". **APPLIED the same evening on the owner's "apply wording and merge"**: a new engine-block `adviceText` keeps the measured-margin sentence for a non-negative gap and, for a negative one, reads "Take X — the best value left (Mkt N); Y fits this week's roster slightly better (+0.034 cats/wk) but ranks lower on value"; ordering unchanged; seven red-first cases in test_card.py (68 of 68 after); deck v36. | done |
 | D-R4 | The rookie translation itself (per-minute rates from the July baseline) has now been scaled three times without a re-check; audit the five re-derived rookies' per-minute lines against their college per-36 before the final pre-draft build? | yes, at the final pre-draft refresh, as a report before any edit |
 
 ## Provenance
