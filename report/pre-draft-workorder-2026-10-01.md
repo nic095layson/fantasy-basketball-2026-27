@@ -245,6 +245,22 @@ the report: the deck is the board and the ledger; `hoops.py draft init
 the fuller name; an UNKNOWN is fixed by the next pick typed; from round 9
 take the 🎯; the positions the room shows win over the pool's.
 
+**Owner confirmation (2026-10-01, verbatim):** "after several days of
+preseason games will be completed by then - we will conduct a FINAL pull of
+data, player ADP, stat projections, player roles, the morning of 10/14, to
+lock in the final calibrations ahead of the draft that night at 7PM." So the
+10/14 morning pull is the lock, in four legs, all four required: (1) data —
+the daily sweep plus the overnight box scores of 10/13; (2) ADP — Yahoo is
+egress-blocked, so ask the owner for the fresh paste first thing and build
+on it (rule F8); (3) stat projections — the last re-derivation pass on every
+row whose preseason role or minutes moved since WO-5, both planes, one
+script; (4) roles — the final depth-chart read for every battle still open.
+Then build, suites, DOM, publish, the seven-room replay, and the runbook.
+Budget the morning: today's full ritual took about three hours of session
+time; start by 9:00 AM owner-local so the paste, the build and the replay
+all land before the afternoon. The 10/13 final check carries the heavy
+validation so the morning is pull-only.
+
 ## 5. Definition of done for this work order
 
 Each WO has its own after-report and PR, merged, with the branch
