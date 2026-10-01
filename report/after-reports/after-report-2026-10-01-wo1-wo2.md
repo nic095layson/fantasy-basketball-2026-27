@@ -48,7 +48,7 @@ mechanism that let Vincent ride on Atlanta for three months is closed.
 |---|---|---|
 | deck | `check_planes.py`: stat-line comparison on shared rows (11 columns, exact); `lines N` warning with the first eight rows; `--lines-strict` counts them as mismatches; `--lines-report PATH` writes the full JSON list; `pool_sha256` in the result | real-repo run: `lines 184: shared row(s) carry a differing stat line (WARNING; --lines-strict refuses)`, exit 0; strict run exit 1 |
 | deck | `build_deck.py`: `--planes-lines-strict` flag; manifest `planes.lines` and `planes.lines_strict` | suite cases below |
-| deck | `test_gates.py`: three WO-1 cases (warning reported and the build passes; the manifest count; strict refuses by name); prime walks the `--allow-unmatched` path when a verify run shows unmatched rows and zero mismatches; the R4-F05 case asserts the unmatched row by name, not by count | red run 3 of 37 FAIL; green run PENDING at commit time — the suite's green run was still executing (32 of 37 cases passed, 0 failed at the stop hook); the follow-up commit fills this line |
+| deck | `test_gates.py`: three WO-1 cases (warning reported and the build passes; the manifest count; strict refuses by name); prime walks the `--allow-unmatched` path when a verify run shows unmatched rows and zero mismatches; the R4-F05 case asserts the unmatched row by name, not by count | red run 3 of 37 FAIL; green run all 37 cases passed (the three WO-1 cases green; the prime's exemption path and the R4-F05 by-name assertion hold) |
 | deck | `verify_rosters.py`: `norm()` drops II / III / IV / Jr / Sr and applies the planes gate's aliases; direct mode writes the feed's teams, today's date and a `reauthored` block into `data/rosters_official.json`, the `source` narrative untouched | scratch RED → PASS on both checks; real run 333/334, 0 mismatches, unmatched Tony Bradley only; evidence 605 names, `reauthored` 2026-10-01 |
 | deck | `arena/results/planes_lines_2026-10-01.json` — the first run's list: date, kit sha `2a0ace719ab1`, pool sha `09fe6d433264`, 314 shared, 184 rows with every differing column and both values | committed |
 | kit | nothing but this report and the pull-log row | — |
@@ -92,14 +92,14 @@ WO-5 if the owner wants (D-WO1-1).
 | gate | result (evidence: the command's own output line) |
 |---|---|
 | deck `test_gates.py` (red, before the change) | 3 of 37 cases FAILED — the three new WO-1 cases; `BUILD REFUSED — unknown argument '--planes-lines-strict'` |
-| deck `test_gates.py` (green, after) | PENDING at commit time — the suite's green run was still executing (32 of 37 cases passed, 0 failed at the stop hook); the follow-up commit fills this line |
+| deck `test_gates.py` (green, after) | all 37 cases passed (the three WO-1 cases green; the prime's exemption path and the R4-F05 by-name assertion hold) |
 | deck `test_draft.py` / `test_card.py` | all 62 cases passed / CARD: all 68 cases passed |
-| deck `check_parity.py` (page unchanged) | PENDING at commit time (page unchanged; the follow-up commit fills this line) |
+| deck `check_parity.py` (page unchanged) | PARITY: EXACT MATCH |
 | deck `check_planes.py --kit <kit>` | planes 314 shared · team 0 · exclusion 0 · drift 0 · propagation 0; lines 184 (warning), exit 0 |
 | deck `check_planes.py --lines-strict` | same counts; `REFUSED by --lines-strict`, exit 1 |
 | deck `verify_rosters.py` (direct) | 333/334, 0 mismatches, UNMATCHED (1): Tony Bradley; re-run `--allow-unmatched` for the artifact |
 | scratch `red_reauthor.py` | before: unmatched ['Ron Holland', 'Jimmy Butler'], evidence unchanged (RED); after: unmatched [], evidence teams = the feed, date today (PASS) |
-| kit `check_provenance.py` / `check_derived.py` / `check_report.py` on this file / `judgment_open_items.py --check-report` | check_provenance PASS; check_report PASS; receipts PASS; check_derived PENDING at commit time (filled by the follow-up commit) |
+| kit `check_provenance.py` / `check_derived.py` / `check_report.py` on this file / `judgment_open_items.py --check-report` | PROVENANCE GATE: PASS; DERIVED: all 11 dated artifacts reproduce byte-for-byte; REPORT GATE: PASS; receipts check PASS |
 
 The page was not rebuilt: no pool row changed and the scripts are not
 embedded in it, so `main` and the live artifact (Version 37) stay
