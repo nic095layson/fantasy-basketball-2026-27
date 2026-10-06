@@ -92,6 +92,16 @@ REGISTRY = [
      "pin": "market/unmatched-profiles-2026-09-29.md",
      "outputs": ["market/profiles-2026-09-29.csv", "market/profiles-tags-2026-09-29.csv",
                  "market/unmatched-profiles-2026-09-29.md", "market/disagreements-profiles-2026-09-29.md"]},
+    {"label": "2026-10-05 Rotoworld draft kit v2 (owner PDF, read with pdfplumber): sheets + profiles parse",
+     "cmd": ["market/rotoworld_pdf_market.py", "2026-10-05"], "out": "--out-dir",
+     "pin": "market/rotoworld-parse-2026-10-05.md",
+     "outputs": ["market/rotoworld-sheets-2026-10-05.csv", "market/rotoworld-profiles-2026-10-05.csv",
+                 "market/rotoworld-9cat-2026-10-05.csv", "market/rotoworld-parse-2026-10-05.md"]},
+    {"label": "2026-10-05 Rotoworld 9-cat cheat sheet vs the board (third-party intake)",
+     "cmd": ["market/third_party_market.py", "rotoworld", "2026-10-05"], "out": "--out-dir",
+     "pin": "market/unmatched-rotoworld-2026-10-05.md",
+     "outputs": ["market/rotoworld-2026-10-05.csv", "market/unmatched-rotoworld-2026-10-05.md",
+                 "market/disagreements-rotoworld-2026-10-05.md"]},
 ]
 
 

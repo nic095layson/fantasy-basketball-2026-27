@@ -68,6 +68,18 @@ SOURCES = {
                                "and per-game line, VALUE, Yahoo ADP and pre-rank) transcribed to projected150-raw-{d}.csv under "
                                "invariants (ranks contiguous, stats in range); the prose was read in-session and not stored. Joined "
                                "under the hard gate by third_party_market.py ({m} matched, {u} without a pool row); reference only."),
+    "rotoworld": dict(default_date="2026-10-05", raw="rotoworld-9cat-{d}.csv", gap=20,
+                      cols=dict(rank="Rank", player="Player", team="Team", pos="Pos"),
+                      extra={"points_rank": "Points_Rank", "cat8_rank": "Cat8_Rank", "dynasty_rank": "Dynasty_Rank", "profile": "Profile", "age": "Age"},
+                      stats=dict(kind="actual 2025-26 line (the kit's profile table; blank where the name has no profile or sat the season)",
+                                 map={"pts": "PTS", "tpm": "3PM", "reb": "REB", "ast": "AST", "stl": "STL", "blk": "BLK", "tov": "TO", "fg_pct": "FG%", "ft_pct": "FT%"}),
+                      team_map={"NOR": "NOP"},
+                      title="Rotoworld's 2026-27 draft kit v2, the 9-category cheat sheet (200)",
+                      url="(owner upload — Rotoworld / NBC Sports 2026-27 Fantasy Basketball Draft Kit v2, PDF modified 2026-10-05, read with pdfplumber by rotoworld_pdf_market.py)",
+                      notes="Rotoworld draft kit v2 (PDF modified {d}, uploaded by the owner on 2026-10-06): the 9-category cheat sheet, {n} rows, "
+                            "parsed from the raw text layer by rotoworld_pdf_market.py into rotoworld-9cat-{d}.csv with the points, 8-cat and "
+                            "dynasty ranks, the profile rank and the profile's 2025-26 line (actuals, not projections). Joined under the hard gate "
+                            "by third_party_market.py ({m} matched, {u} without a pool row); reference layer only — no board row changes (fix F2)."),
     "rotoballer": dict(default_date="2026-09-29", raw="rotoballer-raw-{d}.csv", gap=20,
                        cols=dict(rank="Rank", player="Player", team="Team", pos="Pos"),
                        extra={"pos_rank": "P-Rank", "tier": "Tier"},
