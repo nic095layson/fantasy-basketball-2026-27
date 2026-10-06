@@ -60,6 +60,24 @@ report carries a cross-page section (G) when both exist for the date.
 From 2026-09-22 (MECHANICAL_FROM) the absence gate is mechanical for every
 format; the 2026-09-15 run keeps its hand-verified list so it reproduces.
 
+Third raw format (2026-10-06 paste — Yahoo's player list with the PROJECTED
+STATS view): a tab-separated header "Player XRank Rank ADP GP FG% FT% 3PTM PTS
+REB AST ST BLK TO", then per player an ABBREVIATED name ("N. Jokić", twice —
+the copy artifact, used as the transcription check), an optional game-status
+letter (Q / O / P / D), the positions, the team, and a tab-separated numeric
+line: XRank, Rank (Yahoo's own rank of the projected line), ADP ("-" where
+Yahoo lists none), GP and nine projected SEASON TOTALS. Detected by the header.
+Invariants: I1 (pos/team, numeric line parses), I4 (XRank unique, rank N at
+position N), I5 (no duplicate player+team+positions), I7 (every abbreviated
+name resolves to exactly one pool row by initial + surname, with team and then
+positions as the tie-breakers, or is recorded as a Yahoo-only name; a tie that
+survives both tie-breakers fails). The canonical yahoo-<date>.csv carries the
+RESOLVED full pool names (the deck's F8 price join needs them); the projected
+line lands beside it as yahoo-proj-<date>.csv (per game = total / GP, one
+decimal; the totals kept too) — a third projection outlet for the D-WO1-1
+three-source rule, reference only (fix F2). For this format the mechanical
+absence key is (surname, first initial).
+
 Usage: python3 report/market/yahoo_market.py [YYYY-MM-DD] [rankings]
            [--as-of DATE|COMMIT | --live] [--out-dir DIR]
 
@@ -108,6 +126,9 @@ def parse_raw(path):
     """Returns (rows, problems, fmt) with fmt in {"block", "rank"}."""
     lines = [l.strip() for l in open(path, encoding="utf-8")]
     nonblank = [l for l in lines if l]
+    if nonblank and nonblank[0].startswith("Player\tXRank\tRank\tADP\tGP"):
+        rows, problems = _parse_table(nonblank[1:])
+        return rows, problems, "table"
     if nonblank and re.fullmatch(r"\d+", nonblank[0]):
         rows, problems = _parse_rank_list(nonblank)
         return rows, problems, "rank"
@@ -122,6 +143,94 @@ def parse_raw(path):
         blocks.append(cur)
     rows, problems = _parse_blocks(blocks)
     return rows, problems, "block"
+
+
+STATUS = {"Q", "O", "P", "D", "GTD", "OUT"}
+TOTALS = ["tpm", "pts", "reb", "ast", "stl", "blk", "tov"]
+
+
+def _parse_table(lines):
+    """The projected-stats page: name / name / [status] / pos / team / numeric line."""
+    rows, problems, i, n = [], [], 0, 0
+    while i < len(lines):
+        name = lines[i]
+        n += 1
+        if i + 1 >= len(lines) or lines[i + 1] != name:
+            problems.append(f"entry {n} ({name!r}): second line is not the duplicate name")
+            i += 1
+            continue
+        j = i + 2
+        status = ""
+        if j < len(lines) and lines[j] in STATUS:
+            status = lines[j]
+            j += 1
+        if j + 2 >= len(lines):
+            problems.append(f"entry {n} ({name!r}): truncated block")
+            break
+        pos, team, nums = lines[j], lines[j + 1], lines[j + 2]
+        team = YAHOO_TEAM.get(team, team)
+        if not _is_pos(pos):
+            problems.append(f"entry {n} ({name!r}): bad positions {pos!r}")
+        if team not in TEAMS:
+            problems.append(f"entry {n} ({name!r}): bad team {team!r}")
+        f = nums.split("\t")
+        if len(f) != 13:
+            problems.append(f"entry {n} ({name!r}): numeric line has {len(f)} fields, not 13")
+            i = j + 3
+            continue
+        try:
+            xr, yr = int(f[0]), int(f[1])
+            adp = None if f[2] == "-" else float(f[2])
+            gp = int(f[3])
+            fgp, ftp = float(f[4]), float(f[5])
+            tot = [int(x) for x in f[6:13]]
+        except ValueError as e:
+            problems.append(f"entry {n} ({name!r}): numeric line does not parse ({e})")
+            i = j + 3
+            continue
+        row = {"player": name, "src_name": name, "team": team, "pos": pos.replace(" ", ""),
+               "xrank": xr, "adp": adp, "yrank": yr, "status": status, "gp": gp,
+               "fg_pct": fgp, "ft_pct": ftp}
+        for k, v in zip(TOTALS, tot):
+            row[k + "_tot"] = v
+            row[k] = round(v / gp, 1) if gp else None
+        rows.append(row)
+        i = j + 3
+    return rows, problems
+
+
+def _keyi(name):
+    """(surname, first initial) — the abbreviated-name key of the table format."""
+    t = BM.norm(name).split()
+    return (t[-1], t[0][:1]) if t else (name, "")
+
+
+def resolve_table_names(rows, board):
+    """I7: map each abbreviated Yahoo name to one pool row. Candidates share the
+    first initial and the whole surname (after the planes normalisation);
+    ties broken by team, then by the positions string. Returns the problems."""
+    idx = {}
+    for name, b in board.items():
+        t = BM.norm(name).split()
+        if not t:
+            continue
+        idx.setdefault((t[0][:1], " ".join(t[1:])), []).append((name, b["row"]))
+    problems = []
+    for r in rows:
+        t = BM.norm(r["src_name"]).split()
+        cands = idx.get((t[0][:1], " ".join(t[1:])), []) if t else []
+        if len(cands) > 1:
+            by_team = [c for c in cands if c[1]["team"] == r["team"]]
+            cands = by_team or cands
+        if len(cands) > 1:
+            by_pos = [c for c in cands if c[1].get("pos", "").replace(" ", "") == r["pos"]]
+            cands = by_pos or cands
+        if len(cands) > 1:
+            problems.append(f"I7: {r['src_name']} ({r['team']}, {r['pos']}) matches "
+                            f"{len(cands)} pool rows: {', '.join(c[0] for c in cands)}")
+        elif cands:
+            r["player"] = cands[0][0]
+    return problems
 
 
 def _parse_rank_list(lines):
@@ -192,10 +301,16 @@ def _is_pos(s):
 def check_invariants(rows, fmt="block"):
     problems = []
     depth = list_depth(rows, fmt)
-    if fmt == "rank":
+    if fmt in ("rank", "table"):
         for i, r in enumerate(rows, 1):
             if r["xrank"] != i:
                 problems.append(f"I6: rank {r['xrank']} ({r['player']}) sits at position {i}")
+    if fmt == "table":
+        keys = [(r["src_name"], r["team"], r["pos"]) for r in rows]
+        tdups = {k for k in keys if keys.count(k) > 1}
+        if tdups:
+            problems.append(f"I5: duplicate player+team+positions {sorted(tdups)}")
+        return problems, []
     # I2: ADP prefix, non-decreasing
     seen_no_adp = False
     prev_adp = 0.0
@@ -258,7 +373,7 @@ def list_depth(rows, fmt):
     """Coverage depth the gap check runs against: the list length for the
     rank-list page; the largest in-range XRank for the block page (299 on
     9/15, 296 on 9/22 — placeholder-tier ranks above XRANK_CAP do not count)."""
-    if fmt == "rank":
+    if fmt in ("rank", "table"):
         return len(rows)
     inr = [r["xrank"] for r in rows if r["xrank"] <= XRANK_CAP]
     return max(inr) if inr else 0
@@ -320,13 +435,27 @@ def main():
         print("TRANSCRIPTION GATE: FAIL — XRank coverage has gaps; re-check the "
               "raw transcription at those ranks before proceeding")
         sys.exit(2)
-    print("TRANSCRIPTION GATE: PASS (I1-I5" + (", I6)" if fmt == "rank" else ")"))
+    print("TRANSCRIPTION GATE: PASS (I1-I5" + (", I6)" if fmt == "rank" else (", I6, I7 pending)" if fmt == "table" else ")")))
+
+    board = BM.our_board(inp.path("report/projections-2026-27.csv"))
+    if fmt == "table":
+        i7 = resolve_table_names(rows, board)
+        if i7:
+            print(f"TRANSCRIPTION GATE: FAIL — {len(i7)} unresolved abbreviated name(s)")
+            for p in i7:
+                print(" ", p)
+            sys.exit(2)
+        n_res = sum(1 for r in rows if r["player"] != r["src_name"])
+        print(f"I7: {n_res} of {len(rows)} abbreviated names resolved to a pool row; "
+              f"{len(rows) - n_res} Yahoo-only")
+        BM._write_csv(os.path.join(OUT, f"{stem}-proj-{d}.csv"),
+                      ["player", "src_name", "team", "pos", "status", "xrank", "yrank", "adp", "gp",
+                       "fg_pct", "ft_pct"] + TOTALS + [k + "_tot" for k in TOTALS], rows)
 
     BM._write_csv(os.path.join(OUT, f"{stem}-{d}.csv"),
                   ["player", "team", "pos", "xrank", "adp"], rows)
 
     # ---- join under the hard gate --------------------------------------------
-    board = BM.our_board(inp.path("report/projections-2026-27.csv"))
     # the other committed inputs, resolved now so every stamp below lists them
     prev_path = _previous_file(d, inp)
     rk_name = f"yahoo-9cat-rankings-{d}.csv"
@@ -357,12 +486,13 @@ def main():
     if d >= MECHANICAL_FROM:
         # Mechanical absence check: a Yahoo-only name sharing (surname, first 3)
         # with an unmatched pool player is a possible spelling variant.
+        keyf = _keyi if fmt == "table" else _key3
         spare = {}
         for r in yahoo_only:
-            spare.setdefault(_key3(r["player"]), r["player"])
+            spare.setdefault(keyf(r["player"]), r["player"])
         reasons, trips = {}, []
         for rk, n, t in unmatched:
-            hit = spare.get(_key3(n))
+            hit = spare.get(keyf(n))
             if hit and n not in set(_ACCEPTED_ABSENT_YH):
                 trips.append((rk, n, t, hit))
             elif t == "FA":
@@ -370,7 +500,8 @@ def main():
             else:
                 reasons[n] = _ABSENT_NOTES.get(
                     n, f"outside Yahoo's top {len(rows)} — surname absent from the raw "
-                       "(mechanical check: no Yahoo-only name shares surname + first 3 letters)")
+                       + ("(mechanical check: no Yahoo-only name shares surname + first initial)" if fmt == "table"
+                          else "(mechanical check: no Yahoo-only name shares surname + first 3 letters)"))
         print(f"JOIN: {len(board)} pool players | matched to yahoo="
               f"{len(board) - len(unmatched)} | unmatched={len(unmatched)} "
               f"(possible spelling variants {len(trips)}) | yahoo-only names={len(yahoo_only)}")
@@ -432,8 +563,8 @@ def main():
                          os.path.basename(prev_path) if prev_path else None, alias_index, rk,
                          inp.stamp())
     _refresh_provenance(d, len(rows), n_adp, fmt, stem)
-    print(f"wrote yahoo-{d}.csv, consensus-{d}.csv, unmatched-yahoo-{d}.md, "
-          f"disagreements-yahoo-{d}.md, provenance.csv")
+    print(f"wrote yahoo-{d}.csv, " + (f"yahoo-proj-{d}.csv, " if fmt == "table" else "")
+          + f"consensus-{d}.csv, unmatched-yahoo-{d}.md, disagreements-yahoo-{d}.md, provenance.csv")
     print("GATE PASS — every pool player matched or recorded as a genuine absence.")
 
 
@@ -508,6 +639,20 @@ def _write_disagreements(d, matched, cons, yahoo_only, rows, fmt="block", prev=N
                  "Yahoo is a single outlet: per fix F2, nothing here changes a pool row. Team "
                  "mismatches, Yahoo's own team changes since the previous paste, and coverage "
                  "gaps below are flags for the next pull's watchlist.", ""]
+    elif fmt == "table":
+        n_adp = sum(1 for r in rows if r["adp"] is not None)
+        intro = [f"# Yahoo market consolidation — {d}", "",
+                 f"Owner paste ({PASTED_ON.get(d, d)}): Yahoo's player list in its PROJECTED STATS view as of "
+                 f"{d} — {len(rows)} rows with XRank, Yahoo's own Rank of the projected line, ADP on "
+                 f"{n_adp} of them, games played and nine projected season totals. Landed per the "
+                 f"standing work order: the resolved names, XRank and ADP as the price file "
+                 f"`yahoo-{d}.csv` (the deck's F8 source: ADP where listed, else XRank), the projected "
+                 f"line as `yahoo-proj-{d}.csv` (per game = total / GP; reference only, a third "
+                 f"projection outlet), and the average as the market-lens consensus board "
+                 f"(`consensus-{d}.csv`). The first-principles board itself is UNCHANGED (owner "
+                 "decision 2026-08-21: reference, not a blend).", "",
+                 "Yahoo is a single outlet: per fix F2, nothing here changes a pool row. Team "
+                 "mismatches and coverage gaps below are flags for the next pull's watchlist.", ""]
     else:
         intro = [f"# Yahoo market consolidation — {d}", "",
                  "Owner ask (2026-09-16): consolidate and average Yahoo's rankings into the "
@@ -703,6 +848,14 @@ def _refresh_provenance(d, n, n_adp, fmt="block", stem="yahoo"):
                  f"pos+team, Yahoo site codes NOR/PHO/UTH mapped to NOP/PHX/UTA). XRank = the "
                  f"rank (1..{n}, contiguous); NO ADP in this paste. Parsed under invariants "
                  f"I1, I4-I6 by yahoo_market.py; absence gate mechanical (surname + first 3).")
+    elif fmt == "table":
+        notes = (f"Yahoo player list, PROJECTED STATS view, as of {d} per the owner, pasted into chat "
+                 f"{pasted} and transcribed verbatim to {stem}-raw-{d}.txt (abbreviated names, duplicated "
+                 f"as the transcription check; game-status letters; XRank 1..{n} contiguous; Yahoo's own "
+                 f"Rank of the projected line; ADP on {n_adp} rows, '-' elsewhere; GP and nine projected "
+                 f"season totals). Names resolved to pool rows by initial + surname with team and positions "
+                 f"as tie-breakers (I7); per-game line = total / GP in {stem}-proj-{d}.csv. Parsed under "
+                 f"invariants I1, I4-I7 by yahoo_market.py; absence gate mechanical (surname + initial).")
     else:
         notes = (f"Yahoo player rankings as of {d} per the owner, pasted into chat "
                  f"{pasted} and transcribed verbatim to {stem}-raw-{d}.txt (duplicate "
