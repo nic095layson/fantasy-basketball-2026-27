@@ -110,6 +110,14 @@ def main():
                              f"(`roster-provenance.csv`), verification dated {span}.")
 
     rows = load(os.path.join(HERE, "projections-2026-27.csv"))
+    # D-CAST-1 (owner decision 2026-10-07, after three MOCK rooms drafted Cam Thomas at
+    # #154 on a 2024-25 line): an unsigned free agent after camp opened stays in the CSV
+    # at the exclusion class (GP 25, the planes-gate twin of the deck's out-unsigned tag,
+    # availability 0) and is held OFF the board and out of the z-score pool until two
+    # independent outlets report a signing. The caveat below had stated the rule since
+    # Westbrook; the engine now enforces it instead of pricing the row at GP/82.
+    unsigned = sorted(r["name"] for r in rows if r["team"] == "FA")
+    rows = [r for r in rows if r["team"] != "FA"]
 
     # Pass 1: pool = everyone; Pass 2: pool = top 180 by pass-1 value (per spec §4.2)
     z1 = zscores(rows, rows)
@@ -179,7 +187,10 @@ def main():
         "  His row stays on this board and in both pools so opponents' picks of him",
         "  are covered and counted; the Draft Deck's card never recommends him",
         "  (`JUDGMENT.doNotDraft`). Owner's call — \"a terrible fantasy asset\".",
-        "- **Unsigned free agents without a team are excluded.** Russell Westbrook",
+        "- **Unsigned free agents without a team are excluded** — held in the CSV at the",
+        "  exclusion class (GP 25) and off this board and the z-score pool until two",
+        "  independent outlets report a signing (D-CAST-1, owner 2026-10-07, enforced by",
+        f"  the engine from this build; held now: {', '.join(unsigned) or 'none'}). Russell Westbrook",
         "  announced his retirement 2026-08-12 after 18 seasons and is out of the",
         "  pool for good. LeBron James was added 2026-07-24 after signing with PHI;",
         "  Draymond Green (GSW, agreed 7/28) and Jeremy Sochan (POR, non-guaranteed",
@@ -253,7 +264,8 @@ def main():
     out = os.path.join(HERE, "top-200-2026-27.md")
     with open(out, "w") as f:
         f.write("\n".join(lines) + "\n")
-    print(f"wrote {out}: {len(board)} players from {len(rows)} projected")
+    print(f"wrote {out}: {len(board)} players from {len(rows)} projected "
+          f"({len(unsigned)} unsigned held off the board: {', '.join(unsigned) or 'none'})")
     print("top 12:", ", ".join(r["name"] for r in board[:12]))
 
 
