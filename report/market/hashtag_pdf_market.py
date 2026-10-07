@@ -157,7 +157,11 @@ def main():
     d, out = args.date, args.out_dir
     inp = derived.inputs_for(args, os.path.join(HERE, f"unmatched-hashtag-{d}.md"))
     proj_raw = inp.path(f"report/market/hashtag-raw-{d}.txt")
-    adp_raw = inp.path(f"report/market/hashtag-adp-raw-{d}.txt")
+    # 2026-10-07: the ADP page is optional — the 10/6 upload was the projections page alone.
+    # The existence test goes through the Inputs object so it holds in both modes (the
+    # working tree and a pinned commit, where a missing file is a SystemExit, not an OSError).
+    adp_raw = (inp.path(f"report/market/hashtag-adp-raw-{d}.txt")
+               if f"hashtag-adp-raw-{d}.txt" in inp.listdir("report/market") else None)
     pool_path = inp.path("report/projections-2026-27.csv")
     yfiles = sorted(f for f in inp.listdir("report/market") if re.fullmatch(r"yahoo-\d{4}-\d{2}-\d{2}\.csv", f))
     ypath = inp.path(f"report/market/{yfiles[-1]}") if yfiles else None
@@ -169,7 +173,7 @@ def main():
     yahoo_adp = {k: float(v["adp"]) for k, v in yahoo.items() if v.get("adp")}
 
     proj, p1 = parse_projections(proj_raw)
-    adp, p2, ambiguous = parse_adp(adp_raw, yahoo_adp)
+    adp, p2, ambiguous = parse_adp(adp_raw, yahoo_adp) if adp_raw else ([], [], [])
     problems = p1 + p2
     print(f"projections: {len(proj)} rows ({sum(1 for r in proj if r['adp'])} with ADP, "
           f"{sum(1 for r in proj if r['flag'])} injury-flagged); ADP page: {len(adp)} rows "
@@ -183,7 +187,8 @@ def main():
         sys.exit(2)
     print("TRANSCRIPTION GATE: PASS")
     BM._write_csv(os.path.join(out, f"hashtag-{d}.csv"), PROJ_COLS, proj)
-    BM._write_csv(os.path.join(out, f"hashtag-adp-{d}.csv"), ADP_COLS, adp)
+    if adp_raw:
+        BM._write_csv(os.path.join(out, f"hashtag-adp-{d}.csv"), ADP_COLS, adp)
 
     # ---- join the projection rows to the pool (names only; the lines are evidence, not edits)
     alias_index = {}
@@ -216,7 +221,7 @@ def main():
             b = ",".join(sorted(yahoo[k]["pos"].replace(" ", "").split(",")))
             if a != b:
                 posdiff.append((r["player"], yahoo[k]["pos"], r["yahoo_pos"]))
-    L = [f"# Hashtag PDF pages — {d}: projections (top {len(proj)}) and ADP ({len(adp)} rows)", "",
+    L = [f"# Hashtag PDF pages — {d}: projections (top {len(proj)}) and ADP ({len(adp) if adp_raw else 'page not supplied'}{' rows' if adp_raw else ''})", "",
          f"Projection rows joined to the pool by name: {len(matched)} of {len(proj)} have a pool row; "
          f"{len(hashtag_only)} Hashtag-only; {len(pool_only)} pool rows are outside Hashtag's top {len(proj)} "
          "(a top-200 page carries no absence gate — the count is informational).", "",
@@ -238,7 +243,7 @@ def main():
     L += ["", inp.stamp()]
     with open(os.path.join(out, f"unmatched-hashtag-{d}.md"), "w", encoding="utf-8") as f:
         f.write("\n".join(L) + "\n")
-    print(f"wrote hashtag-{d}.csv, hashtag-adp-{d}.csv, unmatched-hashtag-{d}.md")
+    print(f"wrote hashtag-{d}.csv, {'hashtag-adp-' + d + '.csv, ' if adp_raw else ''}unmatched-hashtag-{d}.md")
     if variants:
         print(f"GATE FAIL — {len(variants)} Hashtag-only name(s) look like spelling variants of pool-only names: "
               + ", ".join(r["player"] for r in variants))
