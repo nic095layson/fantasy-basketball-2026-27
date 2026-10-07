@@ -158,10 +158,10 @@ def main():
     inp = derived.inputs_for(args, os.path.join(HERE, f"unmatched-hashtag-{d}.md"))
     proj_raw = inp.path(f"report/market/hashtag-raw-{d}.txt")
     # 2026-10-07: the ADP page is optional — the 10/6 upload was the projections page alone.
-    try:
-        adp_raw = inp.path(f"report/market/hashtag-adp-raw-{d}.txt")
-    except FileNotFoundError:
-        adp_raw = None
+    # The existence test goes through the Inputs object so it holds in both modes (the
+    # working tree and a pinned commit, where a missing file is a SystemExit, not an OSError).
+    adp_raw = (inp.path(f"report/market/hashtag-adp-raw-{d}.txt")
+               if f"hashtag-adp-raw-{d}.txt" in inp.listdir("report/market") else None)
     pool_path = inp.path("report/projections-2026-27.csv")
     yfiles = sorted(f for f in inp.listdir("report/market") if re.fullmatch(r"yahoo-\d{4}-\d{2}-\d{2}\.csv", f))
     ypath = inp.path(f"report/market/{yfiles[-1]}") if yfiles else None
