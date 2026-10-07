@@ -60,6 +60,8 @@ Own-room grades (the card's roster against the eleven bots of its room, 18,000 s
 - The injury-risk tag's price (0.78) kept Kawhi off every card roster and he finished #5; the same tag is on Lillard this season (D61-1, D67-1). One season, one man — logged, not a rule.
 - The card's Vučević habit on a stale line is the argument for WO-5 (the preseason refresh) before the 14th.
 - The what-if harness (`arena/mocks/whatif/`) can be re-run on any season's draft paste; it is a standing instrument now.
+- **Availability tiers against what happened (D-WI-2).** Among the 156 men drafted in the real 2025-26 room, the 13 with a risk tag played 49 percent of games on average (median 46; Kawhi 79 and Fox 88 the exceptions), against the arena's 0.75 games rate and the deck's 0.78 value price; the 132 untagged men played 74 percent (median 80) against the model's 0.88 baseline. The tag earned its keep on average; the healthy baseline is the optimistic one, and it is the likeliest reason the model's expected wins for your real roster (6.07 a week) sit above the 5.72 observed.
+- **Line age on the card's repeat names (D-WI-3).** Vučević in 28 of 30 rooms on a 2024-25 line is the shape of a stale-line miss; the repeat-names audit can carry each repeat name's line date and source, so a card favorite riding an untouched line is visible before the 14th.
 
 ## Open-item receipts
 
@@ -81,7 +83,9 @@ Own-room grades (the card's roster against the eleven bots of its room, 18,000 s
 | id | question | default if silent |
 |---|---|---|
 | D-WI-1 | Keep the what-if harness as a standing instrument and re-run it on this season's lines after WO-5 (the preseason refresh), so the card's middle-round habits are checked on fresh lines before the 14th? | yes |
-| D67-1, D61-1 | the injury-risk tag's price, with last season's Kawhi as a data point | carried |
+| D-WI-2 | Refit the two availability tiers from the realized 2025-26 games rates (untagged 0.88 against 0.74 realized; risk 0.75 and 0.78 against 0.49 realized), pre-registered and red-first on both planes, with the graded rooms re-run as the regression check. Before the 14th, or after? | measure now and put the numbers on the sheet this week; ship only on your yes, since every card moves with it |
+| D-WI-3 | Carry each repeat name's line date and source in the repeat-names audit and on the card's hover, so a stale line is visible before it is drafted on. | yes, next deck build, display only |
+| D67-1, D61-1 | the injury-risk tag's price, with last season's Kawhi as the exception and the thirteen tagged men as the rule | carried |
 
 ## Provenance
 
