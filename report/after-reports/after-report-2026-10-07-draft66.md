@@ -25,7 +25,7 @@ None — a MOCK room; no pull, no row moved on either plane.
 | 🎯 at #63: Zach LaVine for Paolo Banchero (card #13; Zach LaVine went #67) | 4.949 (rank 1; next 4.898) | 9 of 11 | 18.35% (rank 1) |
 | 🎯 at #82: Coby White for VJ Edgecombe (card #19; Coby White went #87) | 5.013 (rank 1; next 4.887) | 11 of 11 | 20.16% (rank 1) |
 | 🎯 at #106: PJ Washington for Jalen Green (card #16; PJ Washington went #111) | 5.013 (rank 1; next 4.887) | 11 of 11 | 20.16% (rank 1) |
-| 🎯 at #135: Daniel Gafford for Fred VanVleet (card #24; Daniel Gafford went #154) | 5.013 (rank 1; next 4.887) | 11 of 11 | 20.16% (rank 1) |
+| 🎯 at #135: Daniel Gafford for Fred VanVleet (card #19; Daniel Gafford went #154) | 5.013 (rank 1; next 4.887) | 11 of 11 | 20.16% (rank 1) |
 | advice at #34: Derrick White for Dyson Daniels (the 'now' man; Derrick White went #35) | 5.236 (rank 1; next 4.893) | 11 of 11 | 26.63% (rank 1) |
 | advice at #39: Onyeka Okongwu for OG Anunoby (the 'now' man; Onyeka Okongwu went #43) | 5.041 (rank 1; next 4.894) | 11 of 11 | 20.03% (rank 1) |
 | advice at #63: Kel'el Ware for Zach LaVine (the 'now' man; Kel'el Ware went #81) | 4.995 (rank 1; next 4.882) | 11 of 11 | 18.87% (rank 1) |
@@ -58,8 +58,8 @@ Category ranks (weekly model): FG% 11 · FT% 12 · 3PTM 3 · PTS 1 · REB 7 · A
 | #106 | PJ Washington (PJ Washington, Sandro Mamukelashvili, Daniel Gafford, Yaxel Lendeborg, Saddiq Bey) | Jalen Green | #16 · +0.075 | Sandro Mamukelashvili +0.047 |
 | #111 | PJ Washington (PJ Washington, Yaxel Lendeborg, Daniel Gafford, Sandro Mamukelashvili, Aaron Gordon) | PJ Washington | #1 · +0.000 | none positive (the pick was hindsight-best) |
 | #130 | Yaxel Lendeborg (Yaxel Lendeborg, Daniel Gafford, Sandro Mamukelashvili, Devin Vassell, Saddiq Bey) | Yaxel Lendeborg | #1 · +0.000 | Sandro Mamukelashvili +0.008 |
-| #135 | Daniel Gafford (Daniel Gafford, Sandro Mamukelashvili, Saddiq Bey, Kyle Filipowski, Devin Vassell) | Fred VanVleet | #24 · +0.165 | Sandro Mamukelashvili +0.142 |
-| #154 | Daniel Gafford (Daniel Gafford, Nikola Vucevic, Kyle Filipowski, Saddiq Bey, Jerami Grant) | Daniel Gafford | #1 · +0.000 | none positive (the pick was hindsight-best) |
+| #135 | Daniel Gafford (Daniel Gafford, Sandro Mamukelashvili, Kyle Filipowski, Saddiq Bey, Nikola Vucevic) | Fred VanVleet | #19 · +0.165 | Sandro Mamukelashvili +0.142 |
+| #154 | Daniel Gafford (Daniel Gafford, Kyle Filipowski, Nikola Vucevic, Saddiq Bey, Herbert Jones) | Daniel Gafford | #1 · +0.000 | none positive (the pick was hindsight-best) |
 
 Advice line (page reading): fired at #34 (Derrick White now, Desmond Bane next turn (81% to survive): +0.143 cats/wk over the pair); #39 (Onyeka Okongwu now, Payton Pritchard next turn (83% to survive): +0.021 cats/wk over the pair); #63 (Kel'el Ware now, Zach LaVine next turn (74% to survive): +0.064 cats/wk over the pair).
 
@@ -80,7 +80,7 @@ Late card: 0 unpriced rows across the owner's three turns in rounds 11–13 (the
 
 ## 5. Survival chips and the cast
 
-Survival (`m66_survival.json`): this room 55 rows, predicted 0.551 vs realized 0.673, Brier 0.205; BUY NOW 2 of 6 survived, TOSS-UP 7 of 11, quiet 28 of 38. Pooled 51–66: 807 rows, Brier 0.250.
+Survival (`m66_survival.json`): this room 55 rows, predicted 0.551 vs realized 0.691, Brier 0.218; BUY NOW 3 of 6 survived, TOSS-UP 7 of 11, quiet 28 of 38. Pooled 51–66: 807 rows, Brier 0.251. (Corrected 2026-10-07 with the deck-card replayer's cardPool fix found grading mock 67 — the first write-up read 0.673 / 0.205 / 2 of 6 and card #24 at #135; see after-report-2026-10-07-draft67.md §10.)
 
 | seat | manager | profile lean (market / value) | mean market rank minus pick | mean value rank minus pick | guards / centers | loyalty names on the board | taken by them |
 |---|---|---|---|---|---|---|---|
