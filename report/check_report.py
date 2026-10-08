@@ -16,7 +16,12 @@ Checks, for a given report (default: the newest report/after-reports/*.md):
      (## 1.), a watchlist section, and an "Open-item receipts" section
      (fix F1 — the deck plane's judgment_open_items.py --check-report
      verifies the receipts CONTENT against the flagged list; this gate only
-     requires the section to exist on the kit plane).
+     requires the section to exist on the kit plane), and a "Repeat-name
+     market check" section (D-RN-1, owner 2026-10-08 — the deck plane's
+     repeat_market_check.py --check-report verifies its rows against the
+     names the card makes its 🎯 in 5+ mocks while 25+ places from the
+     market). Like every check here it gates the report being published;
+     reports written before the rule (2026-10-08) are not re-gated.
   2. Publication rule: every TABLE ROW that asserts a transaction (contains
      a transaction trigger word) must either name at least TWO distinct
      outlets from the lexicon below, or carry an explicit [SINGLE-SOURCE]
@@ -94,6 +99,11 @@ def check(path):
         ("Open-item receipts", "'Open-item receipts' section (fix F1 — "
          "also run the deck's judgment_open_items.py --check-report "
          "against this file)"),
+        ("Repeat-name market check", "'Repeat-name market check' section "
+         "(D-RN-1, owner 2026-10-08 — paste the deck's "
+         "repeat_market_check.py output on a refresh and run its "
+         "--check-report against this file; otherwise point to the day's "
+         "refresh report)"),
     ):
         if anchor not in text:
             problems.append(f"missing {why}")

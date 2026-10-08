@@ -29,7 +29,11 @@ A pull is complete only when ALL of the following are true:
    the deck plane's `python3 scripts/judgment_open_items.py --check-report
    <after-report>` passes (fix F1 — every flagged open item carries a
    receipts row). Born from Ben Simmons shipping as a Clipper and a NOP–MEM
-   trade shipping unswept in the same report.
+   trade shipping unswept in the same report. AND, on any pull that rebuilds
+   the deck, the deck plane's `python3 scripts/repeat_market_check.py
+   --check-report <after-report>` passes (D-RN-1, owner 2026-10-08 — every
+   name the card makes its 🎯 in 5+ graded mocks while sitting 25+ places
+   from the market carries an outside-source row; §2, §5 item 6).
 4c. `python3 report/check_derived.py` exits 0 (drift fix D4, 2026-09-29 — every
    dated analysis in `report/` reproduces byte-for-byte from the inputs its
    own `_Inputs:` stamp names; re-scoping a dated artifact to today's pool is
@@ -98,6 +102,20 @@ Web research only — training-data memory is expired for everything here (PROMP
   directions — tagged-but-now-cleared AND returning-but-untagged. Grading
   the headline instead of the row is how Jamal Murray (ruptured Achilles,
   untagged, availability 1.0) shipped certified as "already correct.".
+- **Repeat-name market check (D-RN-1, owner 2026-10-08):** after the deck
+  build, run the deck plane's `python3 scripts/repeat_market_check.py` (about
+  a minute: every graded mock replayed on the new page). It flags every player
+  the card makes its 🎯 in 5+ mocks while his value rank and market rank sit
+  25+ places apart (or who has no Yahoo price), and prints a ready-to-paste
+  section with his outside ranks, the cells of his line outside all three
+  outside per-game projections, and a verdict. Paste it as the report's
+  "Repeat-name market check" section (§5 item 6). LINE QUESTIONED puts the
+  line on the next projection pass (WO-5, the 10/14 lock) under the
+  two-outlet rule; SOURCES SPLIT holds it. The mocks cannot catch a line that
+  flatters a player — they are graded on the same lines — so this outside
+  check is the only guard against the card recommending the same wrong name
+  draft after draft. A report that is not a refresh may point to the day's
+  refresh report instead of re-running it (the receipts convention).
 - **Cross-plane consistency gate (fix F7, 2026-09-21 — mock 51 retro T7;
   owner: refuse):** the deck build's gate 7 runs the deck's
   `scripts/check_planes.py` against this repo's `report/projections-2026-27.csv`
@@ -201,6 +219,13 @@ sections (a quiet day yields a ~10-line file; that is a valid report):
    deck plane's `judgment_open_items.py` flags: player → query run → dated
    finding. `judgment_open_items.py --check-report` must pass against this
    file. A quiet finding is a valid receipt; a missing row is not.
+6. **Repeat-name market check** (D-RN-1, owner 2026-10-08) — the section the
+   deck plane's `repeat_market_check.py` prints for the page this pull built:
+   one row per flagged name with its outside ranks, the cells of its line
+   outside every outside projection, and the verdict (§2).
+   `repeat_market_check.py --check-report` must pass against this file; the
+   kit's `check_report.py` requires the heading in every after-report (a
+   report that is not a refresh may point to the day's refresh report).
 
 ## 6. Log, commit, push
 

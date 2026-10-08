@@ -217,6 +217,27 @@ EXACT, suites green, DOM pass, published, and the top 60 of both boards
 reviewed name by name against the five market files in `report/market/`
 with every divergence of 25+ places explained in one line each.
 
+**Queue additions (owner, 2026-10-08 — D-RN-1, D-RN-2; evidence in
+`report/after-reports/after-report-2026-10-08-standing-checks.md`).**
+(1) Cooper Flagg (D-RN-2). His line has been identical on both planes since
+D-WO1-1(d), but it sits outside every outside per-game projection on file in
+four cells — FT% .780 against .827–.840 (Yahoo 10/06 .840, Hashtag 10/06
+.836, RotoBaller 9/29 .828, his own 2025-26 .827), threes 1.7 against
+1.0–1.3, rebounds 8.5 against 6.5–7.7, blocks 1.2 against 0.9–1.0 — while
+his points (21.0) sit at the bottom of the 21.0–24.0 range. Re-derive him by
+the method above, with the Dallas box scores for the role (minutes, usage
+beside Irving); state the mechanism for every cell that stays outside the
+outside range; report his rank on both boards after the merge. The
+kit-14 / deck-22 gap is not his line: all 9 players who rank above him on
+the deck but below him on the kit carry a richer deck line than kit line
+(+0.5 to +2.8 in the deck's z-sum), so the one-line merge of the top 150 is
+what settles it (the games-based availability rule alone moves him one
+place). (2) Every name the standing repeat-name check
+(D-RN-1, the deck plane's `scripts/repeat_market_check.py`) marks LINE
+QUESTIONED on the refresh page joins this pass. (3) Acceptance adds: the
+WO-5 report carries that check's section for the new page and passes its
+`--check-report`.
+
 ### WO-6: the card features the owner asked for (after WO-5)
 D58-4 first (smallest): escalate the NBA-team stack line to a ⚠ at three or
 more men from one team, display-only, red-first in `test_card.py` and the
@@ -236,7 +257,9 @@ from the kit, red-first, parity, with the arena re-run.
 On 10/13 run the full system validation as on 2026-09-29: every gate and
 suite, an independent re-derivation of the deck's z/value/availability and
 the kit's top 200 from the CSVs, the 127-plus-assertion browser drive, the
-seven-room replay on the final page, the artifact byte-identical to `main`.
+seven-room replay on the final page, the artifact byte-identical to `main`,
+and the repeat-name market check (D-RN-1) on the final page — every LINE
+QUESTIONED name settled or carried by name into the 10/14 lock.
 Record every result in `after-report-2026-10-13-final-check.md`. On the
 morning of 10/14 run one more daily pull (overnight injuries, final cuts
 were due 10/13), rebuild, republish, and write the draft-night runbook into
