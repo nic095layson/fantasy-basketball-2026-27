@@ -113,9 +113,13 @@ The lines beat the market's ranking at every depth, most in the early rounds, an
 |---|---|---|
 | D-RN-1 | Standing repeat-name market check at every refresh (rule: 🎯 in 5+ mocks, 25+ places from the market or no Yahoo price; outside-source verdict per name) | applied 2026-10-08 (owner yes) |
 | D-RN-2 | Flagg on the WO-5 queue with the line comparison and the two-board diagnosis above | applied 2026-10-08 (owner yes) |
-| D-RN-3 | At WO-5, require a one-line mechanism with two dated outlets for every re-derived cell outside all four references (Yahoo, Hashtag, RotoBaller, own 2025-26), or pull it inside the range; a script lists the cells and the WO-5 report gate checks the rows | recommended — yes |
-| D-RN-4 | Build the fairer off-card grade (replay the card from the swapped turn on) for post-draft retros | after the draft |
+| D-RN-3 | At WO-5, require a one-line mechanism with two dated outlets for every re-derived cell outside all four references (Yahoo, Hashtag, RotoBaller, own 2025-26), or pull it inside the range; a script lists the cells and the WO-5 report gate checks the rows | applied 2026-10-08 (owner yes, same evening; see the addendum) |
+| D-RN-4 | Build the fairer off-card grade (replay the card from the swapped turn on) for post-draft retros | after the draft (owner ok, 2026-10-08) |
 | D-RN-5 | Mirror check (never-shown, market a round+ ahead) as a standing rule | no — 98 names today; covered by D-RN-3 |
+
+## Addendum — D-RN-3 applied (owner, 2026-10-08, same evening)
+
+The owner said yes to D-RN-3 and to the schedule (WO-5 on 10/11 and 10/13, the final check on 10/13, the 10/14 lock with a fresh Yahoo paste). Built: the deck plane's `scripts/range_check.py` — the arithmetic of §5 C as a standing tool for projection passes. On today's lines it lists 131 players and 436 cells (145 of the top 150 checkable), cell for cell the same as `tuning_tests.json`; two runs wrote identical records. Its `--check-report` refuses a WO-5 report unless every listed player has a row in a "Range check" section whose text names two outlets, counted with this kit's own lexicon (`report/check_report.py`, which gains "basketball-reference", the WO-5 method's source). Red-first: five new `test_gates.py` cases failed with the script absent and pass with it. Wired into WO-5's acceptance and the 10/14 lock's projection leg (`pre-draft-workorder-2026-10-01.md`) and `DATA-PULL.md` §2; daily pulls that move no line skip it. Flagg's four cells (rebounds 8.5 against 6.5–7.7, blocks 1.2 against 0.9–1.0, threes 1.7 against 1.0–1.3, FT% .780 against .827–.840) are on the list, so WO-5 must either explain them with two dated outlets or bring them inside.
 
 ## Provenance
 

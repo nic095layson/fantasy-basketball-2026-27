@@ -116,6 +116,15 @@ Web research only — training-data memory is expired for everything here (PROMP
   check is the only guard against the card recommending the same wrong name
   draft after draft. A report that is not a refresh may point to the day's
   refresh report instead of re-running it (the receipts convention).
+- **Range check on projection passes (D-RN-3, owner 2026-10-08):** a pull
+  that re-derives projection lines (WO-5, the 10/14 lock's projection leg)
+  runs the deck plane's `python3 scripts/range_check.py` on the new lines. It
+  lists every top-150 cell outside ALL its references (the newest Yahoo,
+  Hashtag and RotoBaller lines and the player's own 2025-26 line); each comes
+  back inside the range or its player's row in the report's "Range check"
+  section names the mechanism and two dated outlets, and
+  `range_check.py --check-report <after-report>` must pass. Daily pulls that
+  move no line skip it.
 - **Cross-plane consistency gate (fix F7, 2026-09-21 — mock 51 retro T7;
   owner: refuse):** the deck build's gate 7 runs the deck's
   `scripts/check_planes.py` against this repo's `report/projections-2026-27.csv`
