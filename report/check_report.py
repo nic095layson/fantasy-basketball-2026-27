@@ -53,6 +53,9 @@ OUTLETS = [
     "cbc", "sporting tribune", "forbes", "last word",
     # 2026-09-28: primary game-log / season-stat pages (Jamal Murray correction)
     "landofbasketball", "wikipedia",
+    # 2026-10-08 (D-RN-3): the WO-5 method's box-score and per-36 source; the
+    # deck's range_check.py counts a mechanism's outlets with this lexicon
+    "basketball-reference",
 ]
 TRIGGERS = re.compile(
     r"→|->|\b(sign(?:ed|s|ing)?|trade[ds]?|waive[ds]?|acquire[ds]?|"

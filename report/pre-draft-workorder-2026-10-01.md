@@ -236,7 +236,15 @@ place). (2) Every name the standing repeat-name check
 (D-RN-1, the deck plane's `scripts/repeat_market_check.py`) marks LINE
 QUESTIONED on the refresh page joins this pass. (3) Acceptance adds: the
 WO-5 report carries that check's section for the new page and passes its
-`--check-report`.
+`--check-report`. (4) Range check (D-RN-3, owner yes 2026-10-08): after the
+re-derived lines are written, run the deck plane's `python3
+scripts/range_check.py` — it lists every top-150 cell still outside ALL its
+references (the newest Yahoo, Hashtag and RotoBaller lines and the player's
+own 2025-26 line); 131 players and 436 cells on the 10/08 lines. Each listed
+cell either comes back inside the range or its player's row in the report's
+"Range check" section carries a one-line mechanism naming two dated outlets;
+the WO-5 report passes `range_check.py --check-report`. A cell pulled inside
+is a line edit like any other (both planes, one script, two outlets).
 
 ### WO-6: the card features the owner asked for (after WO-5)
 D58-4 first (smallest): escalate the NBA-team stack line to a ⚠ at three or
@@ -277,7 +285,7 @@ the daily sweep plus the overnight box scores of 10/13; (2) ADP — Yahoo is
 egress-blocked, so ask the owner for the fresh paste first thing and build
 on it (rule F8); (3) stat projections — the last re-derivation pass on every
 row whose preseason role or minutes moved since WO-5, both planes, one
-script; (4) roles — the final depth-chart read for every battle still open.
+script, then `range_check.py` again with its `--check-report` (D-RN-3); (4) roles — the final depth-chart read for every battle still open.
 Then build, suites, DOM, publish, the seven-room replay, and the runbook.
 Budget the morning: today's full ritual took about three hours of session
 time; start by 9:00 AM owner-local so the paste, the build and the replay
