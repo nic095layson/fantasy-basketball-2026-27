@@ -234,6 +234,11 @@ July depth chart, Last Word's 9/29 Ingram piece.
 | D-1009-12 | Gafford: the panel's starting-center lead is contradicted by one box; (a) hold the line to Sunday with both Macao boxes (the repeat-name check already questions it); (b) re-derive him now on one game | (a) |
 | D-1009-13 | Durant: a rest plan exists with no number; (a) keep 62 GP; (b) the owner names a lower number | (a) |
 
+**Owner disposition (2026-10-09, later the same evening, verbatim: "Keep three defaults and finish the chain"):**
+D-1009-11 (a), D-1009-12 (a), D-1009-13 (a). Holmgren's line and 30-mpg assumption, Gafford's line and Durant's 62 GP
+all hold to Sunday's WO-5 pass. No row changes on either plane, so the deck stays at v54 and no rebuild follows; the
+kit's record is this note, the WO-5 item (9) paragraph and the pull-log row.
+
 ## Provenance and bounds
 
 - Inputs: the owner's message (verbatim above); ESPN's summary feed for the 24 games (ids in `sweep.tsv`); the 30

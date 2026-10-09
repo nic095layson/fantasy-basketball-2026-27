@@ -323,7 +323,7 @@ number (sits 10/11 as a precaution — CBS, RotoWire, Houston Chronicle; 62 GP a
 pass takes Isaiah Jackson, Hachimura, Lopez (after the 10/10 game), Gafford and Morez Johnson Jr. (after the 10/11
 rematch), Maluach / Ighodaro (two games each, Ighodaro starting), DeRozan (bench 10 and 11 min, no October outlet on
 the role), Mara / Jaylin Williams (Mara's two starts came with Holmgren, Hartenstein and Jaylin Williams out), and
-Daniels' steals (one in 39 preseason minutes) to the anchor of item (8). No line or tag moved on this pass.
+Daniels' steals (one in 39 preseason minutes) to the anchor of item (8). No line or tag moved on this pass. Owner, the same evening: D-1009-11..13 kept at their defaults (Holmgren, Gafford and Durant hold to Sunday).
 
 ### WO-6: the card features the owner asked for (after WO-5)
 D58-4 first (smallest): escalate the NBA-team stack line to a ⚠ at three or
