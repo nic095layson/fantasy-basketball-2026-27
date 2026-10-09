@@ -111,6 +111,14 @@ REGISTRY = [
      "pin": "market/unmatched-rotoworld-2026-10-05.md",
      "outputs": ["market/rotoworld-2026-10-05.csv", "market/unmatched-rotoworld-2026-10-05.md",
                  "market/disagreements-rotoworld-2026-10-05.md"]},
+    {"label": "2026-10-09 Hashtag projections page with the Yahoo ADP column (owner PDF Hashtag_ADP_10.9.26, read with pdfplumber)",
+     "cmd": ["market/hashtag_pdf_market.py", "2026-10-09"], "out": "--out-dir",
+     "pin": "market/unmatched-hashtag-2026-10-09.md",
+     "outputs": ["market/hashtag-2026-10-09.csv", "market/unmatched-hashtag-2026-10-09.md"]},
+    {"label": "2026-10-09 ADP refresh (the WO-4 price file): the 10/6 Yahoo paste re-priced from the 10/9 page's Yahoo ADP",
+     "cmd": ["market/adp_refresh.py", "2026-10-09"], "out": "--out-dir",
+     "pin": "market/adp-refresh-2026-10-09.md",
+     "outputs": ["market/yahoo-2026-10-09.csv", "market/adp-refresh-2026-10-09.md"]},
 ]
 
 
