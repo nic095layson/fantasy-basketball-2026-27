@@ -246,6 +246,61 @@ cell either comes back inside the range or its player's row in the report's
 the WO-5 report passes `range_check.py --check-report`. A cell pulled inside
 is a line edit like any other (both planes, one script, two outlets).
 
+**Queue additions (owner, 2026-10-09 — D-1009-3, D-1009-4; evidence in
+`report/after-reports/after-report-2026-10-09.md` §8 and the deck's
+`arena/results/fix_backtest_2026-10-09.json`).** (5) Order of work
+(D-1009-4): the 10/11 pass starts with the category audit's largest
+departures from the outside lines, steals and blocks first — last season our
+departures of 0.5+ z from the prior season held in 9 of 12 points cells, 6 of
+7 rebounds and 7 of 9 assists, but only 13 of 24 steals and 2 of 4 blocks, so
+a steal or block number no outside source supports is a coin flip, not an
+edge. Steals (ours vs the outside median; 2025-26 actual): Dyson Daniels 3.0
+(2.2; 2.0 — +2.28 z, the largest cell in the audit; pulling him to 2.2 moves
+him 11 → 36 on the deck and 73 others by three or more, because he stretches
+the category's scale), Fred VanVleet 1.6 (1.2), Jalen Williams 1.7 (1.4;
+1.2), Jamal Murray 1.3 (1.0; 0.9), James Harden 1.4 (1.1; 1.1), De'Aaron Fox
+1.6 (1.3; 1.2), and on the low side Ausar Thompson 1.7 (2.1; 2.0) and
+Okongwu 0.8 (1.1; 1.1). Blocks: Wembanyama 4.0 (3.2; 3.1), Gafford 1.7 (1.2;
+1.3), Jalen Johnson 1.0 (0.6; 0.4), Amen Thompson 1.3 (0.9; 0.6), Davis 2.1
+(1.8), Holmgren 2.4 (2.1; 1.9), Porziņģis 1.5 (1.2; 1.2), and low Buzelis 1.1
+(1.6; 1.5). Then Okongwu FG% .560 (.481; .480), Gobert FT% .680 (.596; .526),
+Fox PTS 24.0 (18.9; 18.6), Duren PTS 12.5 (17.7; 19.5), Filipowski PTS 15.0
+(10.0; 11.4) and REB 8.5 (6.3; 7.2). Each to a two-source number by the
+method above; a departure no outlet supports comes back inside the range.
+(6) Points identity (D-1009-3): the fifteen lines whose points do not follow
+from their own shooting (2·FGM + 3PM + FTM) — deck: Embiid 24.0 vs 21.1
+implied, Irving 24.7 vs 22.2, Towns 24.8 vs 22.5, Haliburton 18.6 vs 20.4,
+Okongwu 15.0 vs 16.8, Duren 12.5 vs 14.0, Giddey 16.5 vs 18.0, Edey 12.5 vs
+13.6, Nembhard 12.5 vs 13.6; kit: Amen Thompson 16.5 vs 18.3, Adebayo 17.5 vs
+19.3, Kessler 11.5 vs 13.1, Gobert 11.0 vs 12.5, Duren 13.5 vs 15.0, Gafford
+9.5 vs 10.7 — plus every further line the check lists at its 1.0 threshold,
+are reconciled by evidence with either side moving: on the 2025-26 entering
+pool the formula fix (points set to the implied value) cut the flagged lines'
+points error from 2.42 to 1.98 and improved 20 of 30, but made Embiid's worse
+(−2.9 → −5.8) because his shooting line was the wrong half. (7) Acceptance
+adds: after the re-derived lines are written, run the deck plane's `python3
+scripts/identity_check.py` — it lists every top-200 line on either plane more
+than 1.0 point from its own shooting; each comes back inside or its player's
+row in the report's "Points identity" section carries a one-line mechanism
+naming two dated outlets, and the WO-5 report passes `identity_check.py
+--check-report`. (8) The anchor for steals and blocks (owner data request
+2026-10-09; evidence in `report/after-reports/after-report-2026-10-09-market.md`
+§4 and the deck's `arena/results/actuals_2026-10-09/`): four seasons of actual
+lines were pulled from two outlets (Basketball-Reference and ESPN) and
+cross-checked row by row. Steals are the least stable counting category in
+each of the three season-to-season transitions (ρ .803, .765, .681 — blocks
+.834, .828, .793; points .868, .882, .795), and on the 2025-26 entering pool
+the three-season games-weighted line (5/4/3 over the three prior seasons)
+beat our entering lines only in FT%, steals and blocks; where our steals
+departed from a player's history by half a category SD the history was
+closer 24 times of 39 (blocks 9 of 13), while in points our departures were
+right 13 of 20. So on Sunday a steals or blocks number is anchored to the
+player's three-season line (`baseline3_2026-27.csv` in that record; the
+`pool_*` columns carry today's line beside it) and departs from it only
+with two dated outlets on the departing side; FG%, FT%, 3PM, points,
+rebounds, assists and turnovers keep the method above (D-1009-6 on the
+market report's sheet).
+
 ### WO-6: the card features the owner asked for (after WO-5)
 D58-4 first (smallest): escalate the NBA-team stack line to a ⚠ at three or
 more men from one team, display-only, red-first in `test_card.py` and the
@@ -291,6 +346,24 @@ Budget the morning: today's full ritual took about three hours of session
 time; start by 9:00 AM owner-local so the paste, the build and the replay
 all land before the afternoon. The 10/13 final check carries the heavy
 validation so the morning is pull-only.
+
+**After the draft (owner yes 2026-10-09; not before it).** (a) D-RN-4, the
+fairer off-card grade. (b) D-1009-2, the availability model: the flat 0.78
+multiplier applies only above the z-sum's zero, which is the pool's mean,
+not replacement — so a risk-tagged row below the draftable average carries
+no discount (19 of the 29 risk rows in the deck's top 200 on 10/09). On the
+2025-26 entering pool, moving the anchor to replacement did not improve the
+ranking (ρ .604 against .639 at the top 120) and the tag itself barely moved
+it; what leaked was the flatness — the 20 risk rows finished 6.3 places worse
+than forecast under every anchor (Davis forecast #5, 20 games; Curry #9, 43;
+Porziņģis #36, 32; Fox #54, 72 — all at the same 0.78). Replace the flat
+multiplier with a per-player expected-games estimate on both planes, re-fit
+the 0.78 calibration it replaces, then review where the haircut's zero sits
+(deck `arena/results/fix_backtest_2026-10-09.json`, T1). The games record
+for that model is on file since 2026-10-09: three seasons of verified
+games played for every current pool row (`arena/results/actuals_2026-10-09/
+gp_history_2026-27.csv` — 252 of 335 rows carry all three seasons, their mean
+fraction of 82 is .738, and 108 of them average under 60 games).
 
 ## 5. Definition of done for this work order
 
