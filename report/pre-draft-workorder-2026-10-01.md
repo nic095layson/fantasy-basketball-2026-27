@@ -331,6 +331,39 @@ the report: the deck is the board and the ledger; `hoops.py draft init
 the fuller name; an UNKNOWN is fixed by the next pick typed; from round 9
 take the 🎯; the positions the room shows win over the pool's.
 
+**Owner notes for the 10/13 assessment and the 10/14 morning (2026-10-09
+evening, after the gap explanation; his words, kept for the two passes).**
+The tool prices the nine columns; these are the things he weighs beside
+them, each with what the Sunday and 10/13 pulls check on the record (two
+dated outlets, as always):
+- *Davis and Irving* — "AD can win your season, but it fully depends on his
+  health"; monitor the news and the preseason results through the lock.
+  Irving self-reports fully healthy (confirm on two outlets). Check: each
+  man's preseason minutes and any status note, every pull.
+- *Flagg with Irving* — his view that a healthy Irving lifts Flagg's output
+  (less defensive attention). The engine does not model teammate effects;
+  carry it as context on Flagg's review (D-RN-2), not as a line change.
+- *Daniels* — agrees on the steals; concerned that Alexander-Walker and Dort
+  take usage and opportunities. Check: Daniels' minutes, shots and steals in
+  the Hawks' preseason box scores beside those two; his line is first on the
+  WO-5 steals anchor (item (8)).
+- *Holmgren* — fears regression: "did not improve physically from last
+  season (please read into his 2 lb weight gain)" and Aday Mara eating into
+  his minutes. Check on Sunday: the reported weight (two outlets), Mara's
+  preseason minutes and Holmgren's, any role note.
+- *Jackson Jr.* — loves the line, fears a late-season shutdown on a losing
+  Jazz team (or a boom). Check: nothing projectable before the draft; carry
+  as a playoff-weeks risk note on his card.
+- *Porziņģis* — "a fantasy grenade"; already on `JUDGMENT.doNotDraft` by his
+  2026-09-28 veto; the card never shows him. Unchanged.
+- *Bane, Herro, LaVine* — trusts the arithmetic, does not trust the players
+  (LaVine health and age; Herro alone in Milwaukee's attention; Bane read as
+  a scorer without peripherals). Carry as owner leans; the 10/13 assessment
+  states each man's nine-column case once more beside his preseason line,
+  and he decides at the lock whether any becomes a judgment entry.
+- *The exercise itself* — repeat the biggest-gap explanation (our rank vs the
+  room's ADP, by category) on the morning of 10/14 on the final build.
+
 **Owner confirmation (2026-10-01, verbatim):** "after several days of
 preseason games will be completed by then - we will conduct a FINAL pull of
 data, player ADP, stat projections, player roles, the morning of 10/14, to
