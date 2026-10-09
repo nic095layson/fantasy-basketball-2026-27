@@ -109,6 +109,16 @@ SOURCES = {
                            "50 profiled players; the companion sleepers / breakouts / busts lists transcribed to profiles-tags-raw-{d}.csv "
                            "(38 rows). The prose was read in-session and not stored. Joined under the hard gate by third_party_market.py "
                            "({m} matched, {u} without a pool row); reference only — no board row changes (fix F2; a single unnamed outlet)."),
+    "rotowire": dict(default_date="2026-10-09", raw="rotowire-raw-{d}.csv", gap=20,
+                     cols=dict(rank="Rank", player="Player", team="Team", pos="Pos"),
+                     extra={"round": "Round", "flag": "Flag", "claim": "Claim"}, stats=None,
+                     title="RotoWire's expert-panel 9-cat rankings with role and health notes (150)",
+                     url="(owner paste of the RotoWire panel article dated 2026-10-09; kept verbatim as rotowire-raw-2026-10-09.txt, transcribed by rotowire_text.py)",
+                     notes="RotoWire expert-panel 9-cat rankings (article dated {d}, pasted by the owner on {d}): {n} rows with the "
+                           "panel's note per player kept verbatim (Claim) and its health / role words named (Flag) by rotowire_text.py "
+                           "into rotowire-raw-{d}.csv; teams mapped to kit codes; no stat line. Joined under the hard gate by "
+                           "third_party_market.py ({m} matched, {u} without a pool row); reference only — no board row changes (fix F2); "
+                           "every health or role note is a lead for the next pull's two-outlet verification."),
 }
 # Source names verified absent from the pool (a reason each). Anything else without a pool
 # row is listed as a pool-completeness item; a possible spelling variant trips the gate.
