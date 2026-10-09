@@ -125,6 +125,25 @@ Web research only — training-data memory is expired for everything here (PROMP
   section names the mechanism and two dated outlets, and
   `range_check.py --check-report <after-report>` must pass. Daily pulls that
   move no line skip it.
+- **Points identity on projection passes (D-1009-3, owner 2026-10-09):** the
+  same pass runs the deck plane's `python3 scripts/identity_check.py`. It
+  lists every top-200 line on either plane whose points sit more than 1.0
+  from its own shooting (2·FGM + 3PM + FTM); each comes back inside by
+  evidence — either side may be the wrong half, so the fix is never the
+  formula alone — or its player's row in the report's "Points identity"
+  section names a mechanism with two dated outlets, and
+  `identity_check.py --check-report <after-report>` must pass. Daily pulls
+  that move no line skip it.
+- **Actual lines are read from the verified record, never from one outlet
+  (owner 2026-10-09):** `arena/results/actuals_2026-10-09/actuals_<season>.csv`
+  in the deck repo holds 2022-23 to 2025-26 per-game lines where
+  Basketball-Reference and ESPN agree within rounding (a `noted` row names the
+  cell that differs by 0.1 or less; conflicts and unmatched names sit beside
+  it), with the raw pages pinned by sha256 in `raw_manifest.tsv`. A projection
+  pass that cites a player's past season cites this record; the steals and
+  blocks anchor is its three-season line (`baseline3_2026-27.csv`, WO-5 item
+  (8)). Re-pull with `arena/mocks/actuals_1009/fetch_all.sh` into a fresh
+  directory and re-derive with `python3 -I` when a season closes.
 - **Cross-plane consistency gate (fix F7, 2026-09-21 — mock 51 retro T7;
   owner: refuse):** the deck build's gate 7 runs the deck's
   `scripts/check_planes.py` against this repo's `report/projections-2026-27.csv`
