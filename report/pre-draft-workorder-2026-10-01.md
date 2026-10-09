@@ -299,7 +299,20 @@ player's three-season line (`baseline3_2026-27.csv` in that record; the
 `pool_*` columns carry today's line beside it) and departs from it only
 with two dated outlets on the departing side; FG%, FT%, 3PM, points,
 rebounds, assists and turnovers keep the method above (D-1009-6 on the
-market report's sheet).
+market report's sheet). (9) RotoWire's expert-panel notes (owner paste
+2026-10-09; `report/market/rotowire-parse-2026-10-09.md` lists the 36 rows
+with a health word and the 35 with a role word; evidence in
+`after-report-2026-10-09-rotowire.md`): every note is a lead, verified on
+two dated outlets before any tag or line moves. Already carried on the rows
+with receipts: Knueppel's and Claxton's hamstrings, Coby White's calf,
+Porziņģis out pre-camp, Ingram's Achilles, Mikel Brown's ankle, Maluach's
+minutes, Isaiah Jackson's camp role, the Achilles-return tags. New leads the
+Sunday pull checks: Garland's "recent injury issues"; Poeltl's back (46
+games last season) against his 66; Gafford as Dallas's starting center with
+Lively out (our line 10.5 / 7.5 / 1.7); Hachimura as the Clippers' second
+option with Ingram out; Durant's rest days against his 62. The panel's
+ranks join the repeat-name check's outside sources only by owner decision
+(D-1009-10).
 
 ### WO-6: the card features the owner asked for (after WO-5)
 D58-4 first (smallest): escalate the NBA-team stack line to a ⚠ at three or
