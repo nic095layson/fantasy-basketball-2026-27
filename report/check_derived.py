@@ -119,6 +119,15 @@ REGISTRY = [
      "cmd": ["market/adp_refresh.py", "2026-10-09"], "out": "--out-dir",
      "pin": "market/adp-refresh-2026-10-09.md",
      "outputs": ["market/yahoo-2026-10-09.csv", "market/adp-refresh-2026-10-09.md"]},
+    {"label": "2026-10-09 RotoWire expert-panel 9-cat rankings with notes (owner paste): transcription",
+     "cmd": ["market/rotowire_text.py", "2026-10-09"], "out": "--out-dir",
+     "pin": "market/rotowire-parse-2026-10-09.md",
+     "outputs": ["market/rotowire-raw-2026-10-09.csv", "market/rotowire-parse-2026-10-09.md"]},
+    {"label": "2026-10-09 RotoWire expert-panel rankings vs the board (third-party intake)",
+     "cmd": ["market/third_party_market.py", "rotowire", "2026-10-09"], "out": "--out-dir",
+     "pin": "market/unmatched-rotowire-2026-10-09.md",
+     "outputs": ["market/rotowire-2026-10-09.csv", "market/unmatched-rotowire-2026-10-09.md",
+                 "market/disagreements-rotowire-2026-10-09.md"]},
 ]
 
 
