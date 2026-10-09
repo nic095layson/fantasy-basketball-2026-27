@@ -313,6 +313,17 @@ Lively out (our line 10.5 / 7.5 / 1.7); Hachimura as the Clippers' second
 option with Ingram out; Durant's rest days against his 62. The panel's
 ranks join the repeat-name check's outside sources only by owner decision
 (D-1009-10).
+**Research pass (owner, 2026-10-09 evening — `after-report-2026-10-09-research.md`).** The five leads were
+checked against October-2026 outlets (two or three per item) and the 24 preseason box scores of 10/3–10/9:
+Garland ANSWERED (toe 100 percent, started the opener — Basketnews/Andscape 10/5, Fox), Poeltl ANSWERED (healthy,
+started 10/3 — NBC Sports, Yahoo), Gafford CONTRADICTED by the Macao box (bench, 8 min; Morez Johnson Jr. started —
+CBS, SI Mavericks; Lively not back for 10/21 — SI, Smoking Cuban), Hachimura CONFIRMED on one game (21 in 15 — CBS,
+Yardbarker, Yahoo; Ingram out for the opener — Basketnews, CBS), Durant CONFIRMED that a rest plan exists with no
+number (sits 10/11 as a precaution — CBS, RotoWire, Houston Chronicle; 62 GP already prices it, closed). Sunday's
+pass takes Isaiah Jackson, Hachimura, Lopez (after the 10/10 game), Gafford and Morez Johnson Jr. (after the 10/11
+rematch), Maluach / Ighodaro (two games each, Ighodaro starting), DeRozan (bench 10 and 11 min, no October outlet on
+the role), Mara / Jaylin Williams (Mara's two starts came with Holmgren, Hartenstein and Jaylin Williams out), and
+Daniels' steals (one in 39 preseason minutes) to the anchor of item (8). No line or tag moved on this pass.
 
 ### WO-6: the card features the owner asked for (after WO-5)
 D58-4 first (smallest): escalate the NBA-team stack line to a ⚠ at three or
@@ -376,6 +387,14 @@ dated outlets, as always):
   and he decides at the lock whether any becomes a judgment entry.
 - *The exercise itself* — repeat the biggest-gap explanation (our rank vs the
   room's ADP, by category) on the morning of 10/14 on the final build.
+- *Checked 2026-10-09 evening* (`after-report-2026-10-09-research.md` §2–§3,
+  October-2026 outlets, two or three per item): Irving cleared for Sunday's
+  Macao game with no restrictions (his first beside Flagg); Davis healthy, 16
+  in 17 minutes; Daniels starting with one steal in 39 preseason minutes and
+  Dort yet to play (knee contusion); Holmgren's two absences precautionary
+  and Mara's two starts came with all three Thunder centers out; Jackson Jr.
+  a starter lock; Porziņģis out indefinitely. No line or tag moved; the
+  10/13 pass re-reads each beside the lines of 10/11 and 10/12.
 
 **Owner confirmation (2026-10-01, verbatim):** "after several days of
 preseason games will be completed by then - we will conduct a FINAL pull of
