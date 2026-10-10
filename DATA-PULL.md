@@ -114,7 +114,11 @@ Web research only — training-data memory is expired for everything here (PROMP
   two-outlet rule; SOURCES SPLIT holds it. The mocks cannot catch a line that
   flatters a player — they are graded on the same lines — so this outside
   check is the only guard against the card recommending the same wrong name
-  draft after draft. A report that is not a refresh may point to the day's
+  draft after draft. Since 2026-10-10 (D-RN-6) the check resolves spellings
+  through the kit's alias table (`report/market/build_market.py` ALIASES —
+  Herb/Herbert Jones, Cam/Cameron Johnson, Nic/Nicolas Claxton), so a name a
+  file spells differently is found, not reported absent; add a new alias
+  there, never in the deck script. A report that is not a refresh may point to the day's
   refresh report instead of re-running it (the receipts convention).
 - **Range check on projection passes (D-RN-3, owner 2026-10-08):** a pull
   that re-derives projection lines (WO-5, the 10/14 lock's projection leg)
