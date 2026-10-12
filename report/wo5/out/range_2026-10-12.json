@@ -1,0 +1,509 @@
+{
+ "damian lillard": {
+  "player": "Damian Lillard",
+  "cells_seen": [
+   "ast 7.1 vs 5-5.3",
+   "pts 24.8 vs 16.6-19.1",
+   "tov 2.8 vs 2.1-2.4",
+   "tpm 3.4 vs 2.5-3.1"
+  ],
+  "factor": 0.77,
+  "minutes": 27.8,
+  "rookie": false,
+  "mechanisms": {
+   "minutes": "R1 minutes to the outside lines' range (Hashtag, RotoBaller, Yahoo)"
+  }
+ },
+ "anthony davis": {
+  "player": "Anthony Davis",
+  "cells_seen": [
+   "ast 3.5 vs 2.8-3.1",
+   "blk 2.1 vs 1.7-1.9",
+   "pts 24.8 vs 19.8-22",
+   "reb 11.6 vs 9.8-10.6"
+  ],
+  "factor": 0.885,
+  "minutes": 29.6,
+  "rookie": false,
+  "mechanisms": {
+   "minutes": "R1 minutes to the outside lines' range (Hashtag, RotoBaller, Yahoo)"
+  }
+ },
+ "zach edey": {
+  "player": "Zach Edey",
+  "cells_seen": [
+   "ast 1 vs 1.2-1.3",
+   "blk 1.3 vs 1.5-2.2",
+   "fg_pct .583 vs .602-.619",
+   "ft_pct .714 vs .739-.775",
+   "pts 9.3 vs 11.4-15.3",
+   "reb 8.3 vs 10.3-11.4",
+   "tov 1.3 vs 1.8-2.5"
+  ],
+  "factor": 1.241,
+  "minutes": 26.6,
+  "pct": {
+   "fg_pct": 0.602,
+   "ft_pct": 0.739
+  },
+  "rookie": false,
+  "mechanisms": {
+   "minutes": "R1 minutes to the outside lines' range (Hashtag, RotoBaller, Yahoo)",
+   "fg_pct": "R3 to the range (2024-25 base)",
+   "ft_pct": "R3 to the range (2024-25 base)",
+   "tov": "R2 keep: 2024-25 per-36 rates (Basketball-Reference; ESPN)"
+  }
+ },
+ "ty jerome": {
+  "player": "Ty Jerome",
+  "cells_seen": [
+   "ast 3.8 vs 5-6.2",
+   "ft_pct .866 vs .874-.876",
+   "pts 13.9 vs 16.4-17.5",
+   "reb 2.8 vs 3-3.5",
+   "tov 1.5 vs 1.7-2",
+   "tpm 1.8 vs 2.2-2.6"
+  ],
+  "factor": 1.223,
+  "minutes": 27.6,
+  "pct": {
+   "ft_pct": 0.874
+  },
+  "rookie": false,
+  "mechanisms": {
+   "minutes": "R1 minutes to the outside lines' range (Hashtag, RotoBaller, Yahoo)",
+   "ft_pct": "R3 to the range (2024-25 base)",
+   "ast": "R2 keep: 2024-25 per-36 rates (Basketball-Reference; ESPN)"
+  }
+ },
+ "kyrie irving": {
+  "player": "Kyrie Irving",
+  "cells_seen": [
+   "pts 24.7 vs 20.7-21.8",
+   "reb 4.8 vs 4-4.2",
+   "stl 1.3 vs 1.1-1.1",
+   "tov 2.2 vs 1.7-1.9"
+  ],
+  "factor": 0.863,
+  "minutes": 31.1,
+  "rookie": false,
+  "mechanisms": {
+   "minutes": "R1 minutes to the outside lines' range (Hashtag, RotoBaller, Yahoo)"
+  }
+ },
+ "fred vanvleet": {
+  "player": "Fred VanVleet",
+  "cells_seen": [
+   "ast 5.5 vs 4.6-5.2",
+   "pts 14.3 vs 11.7-12.6",
+   "reb 3.7 vs 3.1-3.3",
+   "tpm 2.6 vs 2.2-2.4"
+  ],
+  "factor": 0.881,
+  "minutes": 31.0,
+  "rookie": false,
+  "mechanisms": {
+   "minutes": "R1 minutes to the outside lines' range (Hashtag, RotoBaller, Yahoo)"
+  }
+ },
+ "ja morant": {
+  "player": "Ja Morant",
+  "cells_seen": [
+   "ast 7.3 vs 5.7-6.7",
+   "ft_pct .807 vs .845-.857",
+   "pts 23.2 vs 16.9-19.5",
+   "reb 4.1 vs 3.2-3.7",
+   "tpm 1.8 vs 1.2-1.4"
+  ],
+  "factor": 0.84,
+  "minutes": 25.5,
+  "pct": {
+   "ft_pct": 0.845
+  },
+  "rookie": false,
+  "mechanisms": {
+   "minutes": "R1 minutes to the outside lines' range (Hashtag, RotoBaller, Yahoo)",
+   "ft_pct": "R3 to the range (2024-25 base)",
+   "tpm": "R2 keep: 2024-25 per-36 rates (Basketball-Reference; ESPN)"
+  }
+ },
+ "ryan rollins": {
+  "player": "Ryan Rollins",
+  "cells_seen": [
+   "stl 1.7 vs 1.3-1.5"
+  ],
+  "rookie": false,
+  "mechanisms": {
+   "stl": "R2 keep: item-8 three-season anchor (Basketball-Reference; ESPN)"
+  }
+ },
+ "ausar thompson": {
+  "player": "Ausar Thompson",
+  "cells_seen": [
+   "stl 1.8 vs 2-2.2"
+  ],
+  "rookie": false,
+  "mechanisms": {
+   "stl": "R2 keep: item-8 three-season anchor (Basketball-Reference; ESPN)"
+  }
+ },
+ "trae young": {
+  "player": "Trae Young",
+  "cells_seen": [
+   "ast 11.6 vs 8.4-10.8",
+   "ft_pct .874 vs .858-.868",
+   "pts 24.5 vs 19.1-22.9",
+   "reb 3.1 vs 2.6-2.9",
+   "tov 4.7 vs 3.8-4.3",
+   "tpm 2.9 vs 2.1-2.7"
+  ],
+  "factor": 0.914,
+  "minutes": 32.9,
+  "pct": {
+   "ft_pct": 0.868
+  },
+  "rookie": false,
+  "mechanisms": {
+   "minutes": "R1 minutes to the outside lines' range (Hashtag, RotoBaller, Yahoo)",
+   "ft_pct": "R3 to the range (2024-25 base)"
+  }
+ },
+ "darryn peterson": {
+  "player": "Darryn Peterson",
+  "cells_seen": [
+   "pts 18.2 vs 14.3-16.9",
+   "tov 2.6 vs 1.8-2"
+  ],
+  "cnt": {
+   "pts": 16.9,
+   "tov": 2.0
+  },
+  "rookie": true,
+  "mechanisms": {
+   "pts": "R1b rookie cell to the range",
+   "tov": "R1b rookie cell to the range"
+  }
+ },
+ "joel embiid": {
+  "player": "Joel Embiid",
+  "cells_seen": [
+   "ft_pct .846 vs .854-.867",
+   "stl 0.8 vs 0.5-0.6"
+  ],
+  "rookie": false,
+  "mechanisms": {
+   "ft_pct": "R3 keep: one-third shrink to career (Basketball-Reference; ESPN)",
+   "stl": "R2 keep: item-8 three-season anchor (Basketball-Reference; ESPN)"
+  }
+ },
+ "tyrese haliburton": {
+  "player": "Tyrese Haliburton",
+  "cells_seen": [
+   "pts 18.7 vs 17.3-17.6",
+   "tov 1.5 vs 1.7-1.7",
+   "tpm 3 vs 2.6-2.8"
+  ],
+  "factor": 0.933,
+  "minutes": 31.3,
+  "rookie": false,
+  "mechanisms": {
+   "minutes": "R1 minutes to the outside lines' range (Hashtag, RotoBaller, Yahoo)",
+   "tov": "R2 keep: 2024-25 per-36 rates (Basketball-Reference; ESPN)"
+  }
+ },
+ "daniel gafford": {
+  "player": "Daniel Gafford",
+  "cells_seen": [
+   "blk 1.6 vs 1.2-1.4"
+  ],
+  "rookie": false,
+  "mechanisms": {
+   "blk": "R2 keep: item-8 three-season anchor (Basketball-Reference; ESPN)"
+  }
+ },
+ "michael porter": {
+  "player": "Michael Porter Jr.",
+  "cells_seen": [
+   "stl 0.7 vs 0.8-1.1"
+  ],
+  "rookie": false,
+  "mechanisms": {
+   "stl": "R2 keep: item-8 three-season anchor (Basketball-Reference; ESPN)"
+  }
+ },
+ "jalen duren": {
+  "player": "Jalen Duren",
+  "cells_seen": [
+   "stl 0.7 vs 0.8-0.8"
+  ],
+  "rookie": false,
+  "mechanisms": {
+   "stl": "R2 keep: item-8 three-season anchor (Basketball-Reference; ESPN)"
+  }
+ },
+ "luka doncic": {
+  "player": "Luka Doncic",
+  "cells_seen": [
+   "ft_pct .772 vs .780-.782"
+  ],
+  "rookie": false,
+  "mechanisms": {
+   "ft_pct": "R3 keep: one-third shrink to career (Basketball-Reference; ESPN)"
+  }
+ },
+ "walker kessler": {
+  "player": "Walker Kessler",
+  "cells_seen": [
+   "ft_pct .528 vs .559-.631"
+  ],
+  "pct": {
+   "ft_pct": 0.559
+  },
+  "rookie": false,
+  "mechanisms": {
+   "ft_pct": "R3 to the range (2024-25 base)"
+  }
+ },
+ "naz reid": {
+  "player": "Naz Reid",
+  "cells_seen": [
+   "tov 1.9 vs 1.6-1.7"
+  ],
+  "rookie": false,
+  "mechanisms": {
+   "tov": "R2 keep: 2025-26 per-36 rates (Basketball-Reference; ESPN)"
+  }
+ },
+ "giannis antetokounmpo": {
+  "player": "Giannis Antetokounmpo",
+  "cells_seen": [
+   "fg_pct .600 vs .608-.624",
+   "ft_pct .664 vs .628-.650"
+  ],
+  "rookie": false,
+  "mechanisms": {
+   "fg_pct": "R3 keep: one-third shrink to career (Basketball-Reference; ESPN)",
+   "ft_pct": "R3 keep: one-third shrink to career (Basketball-Reference; ESPN)"
+  }
+ },
+ "domantas sabonis": {
+  "player": "Domantas Sabonis",
+  "cells_seen": [
+   "tpm 0.9 vs 0.6-0.7"
+  ],
+  "rookie": false,
+  "mechanisms": {
+   "tpm": "R2 keep: 2024-25 per-36 rates (Basketball-Reference; ESPN)"
+  }
+ },
+ "cade cunningham": {
+  "player": "Cade Cunningham",
+  "cells_seen": [
+   "blk 0.7 vs 0.8-0.8"
+  ],
+  "rookie": false,
+  "mechanisms": {
+   "blk": "R2 keep: item-8 three-season anchor (Basketball-Reference; ESPN)"
+  }
+ },
+ "luke kornet": {
+  "player": "Luke Kornet",
+  "cells_seen": [
+   "fg_pct .613 vs .643-.657"
+  ],
+  "rookie": false,
+  "mechanisms": {
+   "fg_pct": "R3 keep: one-third shrink to career (Basketball-Reference; ESPN)"
+  }
+ },
+ "keegan murray": {
+  "player": "Keegan Murray",
+  "cells_seen": [
+   "pts 12.4 vs 13.3-16.1"
+  ],
+  "rookie": false,
+  "mechanisms": {
+   "pts": "R2 keep: 2024-25 per-36 rates (Basketball-Reference; ESPN)"
+  }
+ },
+ "aaron gordon": {
+  "player": "Aaron Gordon",
+  "cells_seen": [
+   "ft_pct .744 vs .753-.789"
+  ],
+  "rookie": false,
+  "mechanisms": {
+   "ft_pct": "R3 keep: one-third shrink to career (Basketball-Reference; ESPN)"
+  }
+ },
+ "brandon ingram": {
+  "player": "Brandon Ingram",
+  "cells_seen": [
+   "ft_pct .811 vs .819-.826"
+  ],
+  "rookie": false,
+  "mechanisms": {
+   "ft_pct": "R3 keep: one-third shrink to career (Basketball-Reference; ESPN)"
+  }
+ },
+ "jrue holiday": {
+  "player": "Jrue Holiday",
+  "cells_seen": [
+   "ft_pct .822 vs .838-.867"
+  ],
+  "rookie": false,
+  "mechanisms": {
+   "ft_pct": "R3 keep: one-third shrink to career (Basketball-Reference; ESPN)"
+  }
+ },
+ "jakob poeltl": {
+  "player": "Jakob Poeltl",
+  "cells_seen": [
+   "ft_pct .588 vs .602-.642"
+  ],
+  "rookie": false,
+  "mechanisms": {
+   "ft_pct": "R3 keep: one-third shrink to career (Basketball-Reference; ESPN)"
+  }
+ },
+ "jalen suggs": {
+  "player": "Jalen Suggs",
+  "cells_seen": [
+   "ft_pct .834 vs .846-.866"
+  ],
+  "rookie": false,
+  "mechanisms": {
+   "ft_pct": "R3 keep: one-third shrink to career (Basketball-Reference; ESPN)"
+  }
+ },
+ "yaxel lendeborg": {
+  "player": "Yaxel Lendeborg",
+  "cells_seen": [
+   "fg_pct .520 vs .447-.498",
+   "ft_pct .740 vs .765-.828",
+   "reb 7.5 vs 5.5-6.9",
+   "tpm 0.9 vs 1.2-1.3"
+  ],
+  "pct": {
+   "fg_pct": 0.498,
+   "ft_pct": 0.765
+  },
+  "cnt": {
+   "reb": 6.9,
+   "tpm": 1.2
+  },
+  "rookie": true,
+  "mechanisms": {
+   "fg_pct": "R3 to the range (rookie translation)",
+   "ft_pct": "R3 to the range (rookie translation)",
+   "reb": "R1b rookie cell to the range",
+   "tpm": "R1b rookie cell to the range"
+  }
+ },
+ "cj mccollum": {
+  "player": "CJ McCollum",
+  "cells_seen": [
+   "ft_pct .780 vs .749-.772"
+  ],
+  "rookie": false,
+  "mechanisms": {
+   "ft_pct": "R3 keep: one-third shrink to career (Basketball-Reference; ESPN)"
+  }
+ },
+ "christian braun": {
+  "player": "Christian Braun",
+  "cells_seen": [
+   "ft_pct .774 vs .782-.815"
+  ],
+  "rookie": false,
+  "mechanisms": {
+   "ft_pct": "R3 keep: one-third shrink to career (Basketball-Reference; ESPN)"
+  }
+ },
+ "caleb wilson": {
+  "player": "Caleb Wilson",
+  "cells_seen": [
+   "blk 1.4 vs 1-1.1",
+   "ft_pct .700 vs .720-.728",
+   "tpm 0.6 vs 1-1.5"
+  ],
+  "pct": {
+   "ft_pct": 0.72
+  },
+  "cnt": {
+   "tpm": 1.0,
+   "blk": 1.1
+  },
+  "rookie": true,
+  "mechanisms": {
+   "ft_pct": "R3 to the range (rookie translation)",
+   "tpm": "R1b rookie cell to the range",
+   "blk": "R1b rookie cell to the range"
+  }
+ },
+ "tobias harris": {
+  "player": "Tobias Harris",
+  "cells_seen": [
+   "ft_pct .857 vs .863-.869"
+  ],
+  "rookie": false,
+  "mechanisms": {
+   "ft_pct": "R3 keep: one-third shrink to career (Basketball-Reference; ESPN)"
+  }
+ },
+ "dejounte murray": {
+  "player": "Dejounte Murray",
+  "cells_seen": [
+   "ast 7.4 vs 6.1-6.6",
+   "fg_pct .413 vs .432-.456",
+   "ft_pct .813 vs .820-.837",
+   "pts 18.1 vs 15.6-17.2",
+   "stl 1.4 vs 1.6-1.7"
+  ],
+  "factor": 0.891,
+  "minutes": 29.1,
+  "pct": {
+   "fg_pct": 0.432,
+   "ft_pct": 0.82
+  },
+  "rookie": false,
+  "mechanisms": {
+   "minutes": "R1 minutes to the outside lines' range (Hashtag, RotoBaller, Yahoo)",
+   "fg_pct": "R3 to the range (2024-25 base)",
+   "ft_pct": "R3 to the range (2024-25 base)",
+   "stl": "R2 keep: item-8 three-season anchor (Basketball-Reference; ESPN)"
+  }
+ },
+ "jerami grant": {
+  "player": "Jerami Grant",
+  "cells_seen": [
+   "ft_pct .795 vs .814-.825"
+  ],
+  "rookie": false,
+  "mechanisms": {
+   "ft_pct": "R3 keep: one-third shrink to career (Basketball-Reference; ESPN)"
+  }
+ },
+ "aj dybantsa": {
+  "player": "AJ Dybantsa",
+  "rookie": true,
+  "base_plane": "kit",
+  "cnt": {
+   "pts": 18.0
+  },
+  "mechanisms": {
+   "planes": "D-R1 default (2026-09-30 sheet): the deck takes the kit's line",
+   "pts": "identity (D-1009-3): points kept at 18.0, inside the outside lines' reach (Yahoo 10/6 17.4 + tolerance; RotoBaller 9/29 13.5); shot volume scaled so the shooting line implies them"
+  }
+ },
+ "cameron boozer": {
+  "player": "Cameron Boozer",
+  "rookie": true,
+  "cnt": {
+   "pts": 18.5
+  },
+  "mechanisms": {
+   "pts": "identity (D-1009-3): points kept at 18.5, inside the outside lines' tolerance band (Yahoo 10/6 17.3, Hashtag 10/12 17.2, RotoBaller 9/29 18.1); shot volume scaled so the shooting line implies them"
+  }
+ }
+}
