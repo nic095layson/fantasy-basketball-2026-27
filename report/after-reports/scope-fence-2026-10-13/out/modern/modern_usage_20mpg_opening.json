@@ -1,0 +1,440 @@
+{
+ "source": "/home/user/fantasy-basketball-2026-27/report/wo5/data/bref_totals_2004-2026.csv",
+ "targets": "2019-20..2025-26",
+ "min_prior_mpg": 20.0,
+ "records": 1523,
+ "choose": 873,
+ "judge": 650,
+ "alpha_grid_choose_pts_mae": {
+  "0": 2.0619,
+  "0.25": 2.0321,
+  "0.5": 2.0118,
+  "0.75": 1.9987,
+  "1.0": 1.9954,
+  "1.25": 1.999,
+  "1.5": 2.0108
+ },
+ "alpha_chosen": 1.0,
+ "alpha_leave_one_season_out": {
+  "2019-20": 1.0,
+  "2020-21": 1.0,
+  "2021-22": 1.25,
+  "2022-23": 1.0,
+  "2023-24": 1.25,
+  "2024-25": 1.0,
+  "2025-26": 1.0
+ },
+ "k_spread_2025_26": [
+  0.955,
+  1.076
+ ],
+ "judged": {
+  "all": {
+   "n": 650,
+   "players": 311,
+   "pts": {
+    "old_team_rates": 2.1504,
+    "usage_fitted": 2.0566,
+    "change_pct": -4.36
+   },
+   "fga": {
+    "old_team_rates": 1.5276,
+    "usage_fitted": 1.4246,
+    "change_pct": -6.74
+   },
+   "fta": {
+    "old_team_rates": 0.8036,
+    "usage_fitted": 0.7838,
+    "change_pct": -2.46
+   },
+   "tpm": {
+    "old_team_rates": 0.3768,
+    "usage_fitted": 0.3745,
+    "change_pct": -0.62
+   },
+   "tov": {
+    "old_team_rates": 0.3576,
+    "usage_fitted": 0.3466,
+    "change_pct": -3.07
+   },
+   "pts_change_ci95": [
+    -0.1399,
+    -0.0432
+   ]
+  },
+  "stayers": {
+   "n": 477,
+   "players": 265,
+   "pts": {
+    "old_team_rates": 2.0393,
+    "usage_fitted": 1.9364,
+    "change_pct": -5.05
+   },
+   "fga": {
+    "old_team_rates": 1.4279,
+    "usage_fitted": 1.3316,
+    "change_pct": -6.74
+   },
+   "fta": {
+    "old_team_rates": 0.7997,
+    "usage_fitted": 0.7746,
+    "change_pct": -3.14
+   },
+   "tpm": {
+    "old_team_rates": 0.369,
+    "usage_fitted": 0.3661,
+    "change_pct": -0.81
+   },
+   "tov": {
+    "old_team_rates": 0.3323,
+    "usage_fitted": 0.3219,
+    "change_pct": -3.12
+   },
+   "pts_change_ci95": [
+    -0.1626,
+    -0.0492
+   ]
+  },
+  "movers": {
+   "n": 173,
+   "players": 139,
+   "pts": {
+    "old_team_rates": 2.4568,
+    "usage_fitted": 2.3883,
+    "change_pct": -2.79
+   },
+   "fga": {
+    "old_team_rates": 1.8023,
+    "usage_fitted": 1.681,
+    "change_pct": -6.73
+   },
+   "fta": {
+    "old_team_rates": 0.8143,
+    "usage_fitted": 0.8092,
+    "change_pct": -0.63
+   },
+   "tpm": {
+    "old_team_rates": 0.3982,
+    "usage_fitted": 0.3976,
+    "change_pct": -0.15
+   },
+   "tov": {
+    "old_team_rates": 0.4273,
+    "usage_fitted": 0.4147,
+    "change_pct": -2.96
+   },
+   "pts_change_ci95": [
+    -0.1719,
+    0.0394
+   ]
+  },
+  "movers to a crowded team (k<0.95)": {
+   "n": 5,
+   "players": 5,
+   "pts": {
+    "old_team_rates": 4.4354,
+    "usage_fitted": 2.5052,
+    "change_pct": -43.52
+   },
+   "fga": {
+    "old_team_rates": 3.6904,
+    "usage_fitted": 2.0383,
+    "change_pct": -44.77
+   },
+   "fta": {
+    "old_team_rates": 1.1746,
+    "usage_fitted": 0.7501,
+    "change_pct": -36.14
+   },
+   "tpm": {
+    "old_team_rates": 0.4918,
+    "usage_fitted": 0.3607,
+    "change_pct": -26.65
+   },
+   "tov": {
+    "old_team_rates": 0.8365,
+    "usage_fitted": 0.5872,
+    "change_pct": -29.8
+   },
+   "pts_change_ci95": [
+    -2.7079,
+    -1.0755
+   ]
+  },
+  "movers to a thin team (k>1.05)": {
+   "n": 18,
+   "players": 18,
+   "pts": {
+    "old_team_rates": 2.2766,
+    "usage_fitted": 2.3508,
+    "change_pct": 3.26
+   },
+   "fga": {
+    "old_team_rates": 2.1344,
+    "usage_fitted": 1.9972,
+    "change_pct": -6.43
+   },
+   "fta": {
+    "old_team_rates": 0.6373,
+    "usage_fitted": 0.7237,
+    "change_pct": 13.55
+   },
+   "tpm": {
+    "old_team_rates": 0.4556,
+    "usage_fitted": 0.4375,
+    "change_pct": -3.98
+   },
+   "tov": {
+    "old_team_rates": 0.4635,
+    "usage_fitted": 0.4661,
+    "change_pct": 0.56
+   },
+   "pts_change_ci95": [
+    -0.403,
+    0.5516
+   ]
+  },
+  "career years 2-8": {
+   "n": 433,
+   "players": 232,
+   "pts": {
+    "old_team_rates": 2.1327,
+    "usage_fitted": 2.0424,
+    "change_pct": -4.23
+   },
+   "fga": {
+    "old_team_rates": 1.5027,
+    "usage_fitted": 1.3949,
+    "change_pct": -7.17
+   },
+   "fta": {
+    "old_team_rates": 0.797,
+    "usage_fitted": 0.7814,
+    "change_pct": -1.96
+   },
+   "tpm": {
+    "old_team_rates": 0.3705,
+    "usage_fitted": 0.3674,
+    "change_pct": -0.82
+   },
+   "tov": {
+    "old_team_rates": 0.3531,
+    "usage_fitted": 0.3417,
+    "change_pct": -3.23
+   },
+   "pts_change_ci95": [
+    -0.1491,
+    -0.0326
+   ]
+  },
+  "career years 9+": {
+   "n": 217,
+   "players": 106,
+   "pts": {
+    "old_team_rates": 2.1858,
+    "usage_fitted": 2.0851,
+    "change_pct": -4.61
+   },
+   "fga": {
+    "old_team_rates": 1.5772,
+    "usage_fitted": 1.4838,
+    "change_pct": -5.92
+   },
+   "fta": {
+    "old_team_rates": 0.8169,
+    "usage_fitted": 0.7888,
+    "change_pct": -3.44
+   },
+   "tpm": {
+    "old_team_rates": 0.3894,
+    "usage_fitted": 0.3885,
+    "change_pct": -0.25
+   },
+   "tov": {
+    "old_team_rates": 0.3666,
+    "usage_fitted": 0.3565,
+    "change_pct": -2.75
+   },
+   "pts_change_ci95": [
+    -0.2025,
+    0.003
+   ]
+  },
+  "movers, career years 2-8": {
+   "n": 92,
+   "players": 82,
+   "pts": {
+    "old_team_rates": 2.3608,
+    "usage_fitted": 2.3771,
+    "change_pct": 0.69
+   },
+   "fga": {
+    "old_team_rates": 1.7426,
+    "usage_fitted": 1.6192,
+    "change_pct": -7.09
+   },
+   "fta": {
+    "old_team_rates": 0.7757,
+    "usage_fitted": 0.7891,
+    "change_pct": 1.74
+   },
+   "tpm": {
+    "old_team_rates": 0.3962,
+    "usage_fitted": 0.3942,
+    "change_pct": -0.51
+   },
+   "tov": {
+    "old_team_rates": 0.4298,
+    "usage_fitted": 0.4216,
+    "change_pct": -1.91
+   },
+   "pts_change_ci95": [
+    -0.1114,
+    0.1385
+   ]
+  },
+  "movers, career years 9+": {
+   "n": 81,
+   "players": 64,
+   "pts": {
+    "old_team_rates": 2.5658,
+    "usage_fitted": 2.401,
+    "change_pct": -6.42
+   },
+   "fga": {
+    "old_team_rates": 1.8701,
+    "usage_fitted": 1.7511,
+    "change_pct": -6.36
+   },
+   "fta": {
+    "old_team_rates": 0.8582,
+    "usage_fitted": 0.832,
+    "change_pct": -3.05
+   },
+   "tpm": {
+    "old_team_rates": 0.4004,
+    "usage_fitted": 0.4014,
+    "change_pct": 0.26
+   },
+   "tov": {
+    "old_team_rates": 0.4245,
+    "usage_fitted": 0.4068,
+    "change_pct": -4.17
+   },
+   "pts_change_ci95": [
+    -0.3304,
+    -0.0138
+   ]
+  }
+ },
+ "loso_all_seasons": {
+  "all": {
+   "n": 1523,
+   "pts": -3.49,
+   "fga": -4.79,
+   "fta": -2.42,
+   "tpm": 0.04,
+   "tov": -2.16,
+   "pts_change_ci95": [
+    -0.1069,
+    -0.0405
+   ]
+  },
+  "stayers": {
+   "n": 1071,
+   "pts": -3.73,
+   "fga": -4.36,
+   "fta": -2.97,
+   "tpm": 0.14,
+   "tov": -1.85,
+   "pts_change_ci95": [
+    -0.1154,
+    -0.0341
+   ]
+  },
+  "movers": {
+   "n": 452,
+   "pts": -3.04,
+   "fga": -5.57,
+   "fta": -1.17,
+   "tpm": -0.19,
+   "tov": -2.78,
+   "pts_change_ci95": [
+    -0.1343,
+    -0.0078
+   ]
+  },
+  "movers to a crowded team (k<0.95)": {
+   "n": 25,
+   "pts": -33.85,
+   "fga": -39.01,
+   "fta": -24.14,
+   "tpm": -5.27,
+   "tov": -21.83,
+   "pts_change_ci95": [
+    -1.4084,
+    -0.5906
+   ]
+  },
+  "movers to a thin team (k>1.05)": {
+   "n": 50,
+   "pts": 6.71,
+   "fga": -2.65,
+   "fta": 10.54,
+   "tpm": -2.74,
+   "tov": 0.93,
+   "pts_change_ci95": [
+    -0.1818,
+    0.4628
+   ]
+  },
+  "career years 2-8": {
+   "n": 1014,
+   "pts": -4.2,
+   "fga": -5.65,
+   "fta": -2.29,
+   "tpm": -0.2,
+   "tov": -2.16,
+   "pts_change_ci95": [
+    -0.1243,
+    -0.0445
+   ]
+  },
+  "career years 9+": {
+   "n": 509,
+   "pts": -2.16,
+   "fga": -3.13,
+   "fta": -2.67,
+   "tpm": 0.5,
+   "tov": -2.18,
+   "pts_change_ci95": [
+    -0.1062,
+    0.0181
+   ]
+  },
+  "movers, career years 2-8": {
+   "n": 238,
+   "pts": -1.82,
+   "fga": -6.18,
+   "fta": 0.37,
+   "tpm": -0.46,
+   "tov": -2.77,
+   "pts_change_ci95": [
+    -0.1289,
+    0.0344
+   ]
+  },
+  "movers, career years 9+": {
+   "n": 214,
+   "pts": -4.38,
+   "fga": -4.89,
+   "fta": -2.81,
+   "tpm": 0.13,
+   "tov": -2.79,
+   "pts_change_ci95": [
+    -0.2068,
+    -0.0014
+   ]
+  }
+ }
+}

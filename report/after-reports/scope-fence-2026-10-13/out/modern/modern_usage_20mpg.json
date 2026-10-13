@@ -1,0 +1,440 @@
+{
+ "source": "/home/user/fantasy-basketball-2026-27/report/wo5/data/bref_totals_2004-2026.csv",
+ "targets": "2019-20..2025-26",
+ "min_prior_mpg": 20.0,
+ "records": 1523,
+ "choose": 873,
+ "judge": 650,
+ "alpha_grid_choose_pts_mae": {
+  "0": 2.0619,
+  "0.25": 2.0303,
+  "0.5": 2.0092,
+  "0.75": 1.9972,
+  "1.0": 1.995,
+  "1.25": 1.9991,
+  "1.5": 2.0137
+ },
+ "alpha_chosen": 1.0,
+ "alpha_leave_one_season_out": {
+  "2019-20": 1.0,
+  "2020-21": 1.0,
+  "2021-22": 1.25,
+  "2022-23": 1.0,
+  "2023-24": 1.0,
+  "2024-25": 1.0,
+  "2025-26": 1.0
+ },
+ "k_spread_2025_26": [
+  0.947,
+  1.092
+ ],
+ "judged": {
+  "all": {
+   "n": 650,
+   "players": 311,
+   "pts": {
+    "old_team_rates": 2.1504,
+    "usage_fitted": 2.0824,
+    "change_pct": -3.16
+   },
+   "fga": {
+    "old_team_rates": 1.5276,
+    "usage_fitted": 1.4431,
+    "change_pct": -5.53
+   },
+   "fta": {
+    "old_team_rates": 0.8036,
+    "usage_fitted": 0.787,
+    "change_pct": -2.07
+   },
+   "tpm": {
+    "old_team_rates": 0.3768,
+    "usage_fitted": 0.3769,
+    "change_pct": 0.02
+   },
+   "tov": {
+    "old_team_rates": 0.3576,
+    "usage_fitted": 0.3453,
+    "change_pct": -3.43
+   },
+   "pts_change_ci95": [
+    -0.1131,
+    -0.0216
+   ]
+  },
+  "stayers": {
+   "n": 504,
+   "players": 270,
+   "pts": {
+    "old_team_rates": 2.0322,
+    "usage_fitted": 1.9707,
+    "change_pct": -3.02
+   },
+   "fga": {
+    "old_team_rates": 1.4052,
+    "usage_fitted": 1.3281,
+    "change_pct": -5.49
+   },
+   "fta": {
+    "old_team_rates": 0.8035,
+    "usage_fitted": 0.7836,
+    "change_pct": -2.49
+   },
+   "tpm": {
+    "old_team_rates": 0.368,
+    "usage_fitted": 0.3674,
+    "change_pct": -0.15
+   },
+   "tov": {
+    "old_team_rates": 0.3336,
+    "usage_fitted": 0.322,
+    "change_pct": -3.46
+   },
+   "pts_change_ci95": [
+    -0.1176,
+    -0.0032
+   ]
+  },
+  "movers": {
+   "n": 146,
+   "players": 121,
+   "pts": {
+    "old_team_rates": 2.5586,
+    "usage_fitted": 2.4679,
+    "change_pct": -3.54
+   },
+   "fga": {
+    "old_team_rates": 1.9499,
+    "usage_fitted": 1.8404,
+    "change_pct": -5.62
+   },
+   "fta": {
+    "old_team_rates": 0.8039,
+    "usage_fitted": 0.7988,
+    "change_pct": -0.64
+   },
+   "tpm": {
+    "old_team_rates": 0.4073,
+    "usage_fitted": 0.4095,
+    "change_pct": 0.55
+   },
+   "tov": {
+    "old_team_rates": 0.4405,
+    "usage_fitted": 0.4258,
+    "change_pct": -3.34
+   },
+   "pts_change_ci95": [
+    -0.1947,
+    0.0086
+   ]
+  },
+  "movers to a crowded team (k<0.95)": {
+   "n": 8,
+   "players": 8,
+   "pts": {
+    "old_team_rates": 3.9472,
+    "usage_fitted": 2.8397,
+    "change_pct": -28.06
+   },
+   "fga": {
+    "old_team_rates": 2.8583,
+    "usage_fitted": 1.7317,
+    "change_pct": -39.41
+   },
+   "fta": {
+    "old_team_rates": 1.2912,
+    "usage_fitted": 1.0695,
+    "change_pct": -17.17
+   },
+   "tpm": {
+    "old_team_rates": 0.5086,
+    "usage_fitted": 0.3611,
+    "change_pct": -29.0
+   },
+   "tov": {
+    "old_team_rates": 0.6063,
+    "usage_fitted": 0.4755,
+    "change_pct": -21.58
+   },
+   "pts_change_ci95": [
+    -1.8372,
+    -0.3683
+   ]
+  },
+  "movers to a thin team (k>1.05)": {
+   "n": 18,
+   "players": 18,
+   "pts": {
+    "old_team_rates": 2.8237,
+    "usage_fitted": 2.605,
+    "change_pct": -7.74
+   },
+   "fga": {
+    "old_team_rates": 2.6982,
+    "usage_fitted": 2.5081,
+    "change_pct": -7.05
+   },
+   "fta": {
+    "old_team_rates": 0.7399,
+    "usage_fitted": 0.8014,
+    "change_pct": 8.33
+   },
+   "tpm": {
+    "old_team_rates": 0.4148,
+    "usage_fitted": 0.4418,
+    "change_pct": 6.5
+   },
+   "tov": {
+    "old_team_rates": 0.5252,
+    "usage_fitted": 0.4871,
+    "change_pct": -7.27
+   },
+   "pts_change_ci95": [
+    -0.6927,
+    0.2845
+   ]
+  },
+  "career years 2-8": {
+   "n": 433,
+   "players": 232,
+   "pts": {
+    "old_team_rates": 2.1327,
+    "usage_fitted": 2.0716,
+    "change_pct": -2.86
+   },
+   "fga": {
+    "old_team_rates": 1.5027,
+    "usage_fitted": 1.4211,
+    "change_pct": -5.43
+   },
+   "fta": {
+    "old_team_rates": 0.797,
+    "usage_fitted": 0.7828,
+    "change_pct": -1.78
+   },
+   "tpm": {
+    "old_team_rates": 0.3705,
+    "usage_fitted": 0.3716,
+    "change_pct": 0.3
+   },
+   "tov": {
+    "old_team_rates": 0.3531,
+    "usage_fitted": 0.34,
+    "change_pct": -3.69
+   },
+   "pts_change_ci95": [
+    -0.1173,
+    -0.007
+   ]
+  },
+  "career years 9+": {
+   "n": 217,
+   "players": 106,
+   "pts": {
+    "old_team_rates": 2.1858,
+    "usage_fitted": 2.104,
+    "change_pct": -3.74
+   },
+   "fga": {
+    "old_team_rates": 1.5772,
+    "usage_fitted": 1.4872,
+    "change_pct": -5.71
+   },
+   "fta": {
+    "old_team_rates": 0.8169,
+    "usage_fitted": 0.7952,
+    "change_pct": -2.65
+   },
+   "tpm": {
+    "old_team_rates": 0.3894,
+    "usage_fitted": 0.3875,
+    "change_pct": -0.5
+   },
+   "tov": {
+    "old_team_rates": 0.3666,
+    "usage_fitted": 0.3559,
+    "change_pct": -2.93
+   },
+   "pts_change_ci95": [
+    -0.1735,
+    0.0079
+   ]
+  },
+  "movers, career years 2-8": {
+   "n": 79,
+   "players": 72,
+   "pts": {
+    "old_team_rates": 2.5429,
+    "usage_fitted": 2.5418,
+    "change_pct": -0.04
+   },
+   "fga": {
+    "old_team_rates": 1.9395,
+    "usage_fitted": 1.8637,
+    "change_pct": -3.91
+   },
+   "fta": {
+    "old_team_rates": 0.7977,
+    "usage_fitted": 0.8051,
+    "change_pct": 0.93
+   },
+   "tpm": {
+    "old_team_rates": 0.3863,
+    "usage_fitted": 0.3932,
+    "change_pct": 1.77
+   },
+   "tov": {
+    "old_team_rates": 0.4535,
+    "usage_fitted": 0.4393,
+    "change_pct": -3.14
+   },
+   "pts_change_ci95": [
+    -0.1511,
+    0.1346
+   ]
+  },
+  "movers, career years 9+": {
+   "n": 67,
+   "players": 54,
+   "pts": {
+    "old_team_rates": 2.577,
+    "usage_fitted": 2.3807,
+    "change_pct": -7.62
+   },
+   "fga": {
+    "old_team_rates": 1.9622,
+    "usage_fitted": 1.8129,
+    "change_pct": -7.61
+   },
+   "fta": {
+    "old_team_rates": 0.8112,
+    "usage_fitted": 0.7912,
+    "change_pct": -2.46
+   },
+   "tpm": {
+    "old_team_rates": 0.432,
+    "usage_fitted": 0.4289,
+    "change_pct": -0.73
+   },
+   "tov": {
+    "old_team_rates": 0.4253,
+    "usage_fitted": 0.41,
+    "change_pct": -3.6
+   },
+   "pts_change_ci95": [
+    -0.3392,
+    -0.0638
+   ]
+  }
+ },
+ "loso_all_seasons": {
+  "all": {
+   "n": 1523,
+   "pts": -3.06,
+   "fga": -4.49,
+   "fta": -2.22,
+   "tpm": 0.47,
+   "tov": -2.21,
+   "pts_change_ci95": [
+    -0.0953,
+    -0.033
+   ]
+  },
+  "stayers": {
+   "n": 1144,
+   "pts": -2.85,
+   "fga": -4.09,
+   "fta": -2.41,
+   "tpm": 0.47,
+   "tov": -1.9,
+   "pts_change_ci95": [
+    -0.0927,
+    -0.0212
+   ]
+  },
+  "movers": {
+   "n": 379,
+   "pts": -3.56,
+   "fga": -5.37,
+   "fta": -1.67,
+   "tpm": 0.47,
+   "tov": -2.97,
+   "pts_change_ci95": [
+    -0.1517,
+    -0.0251
+   ]
+  },
+  "movers to a crowded team (k<0.95)": {
+   "n": 20,
+   "pts": -26.49,
+   "fga": -31.28,
+   "fta": -16.26,
+   "tpm": -13.81,
+   "tov": -7.27,
+   "pts_change_ci95": [
+    -1.2233,
+    -0.4333
+   ]
+  },
+  "movers to a thin team (k>1.05)": {
+   "n": 46,
+   "pts": -2.61,
+   "fga": -5.96,
+   "fta": 7.37,
+   "tpm": 2.83,
+   "tov": -5.93,
+   "pts_change_ci95": [
+    -0.3968,
+    0.2541
+   ]
+  },
+  "career years 2-8": {
+   "n": 1014,
+   "pts": -3.53,
+   "fga": -5.19,
+   "fta": -2.16,
+   "tpm": 0.32,
+   "tov": -2.14,
+   "pts_change_ci95": [
+    -0.1072,
+    -0.0331
+   ]
+  },
+  "career years 9+": {
+   "n": 509,
+   "pts": -2.16,
+   "fga": -3.12,
+   "fta": -2.32,
+   "tpm": 0.76,
+   "tov": -2.36,
+   "pts_change_ci95": [
+    -0.1015,
+    0.0111
+   ]
+  },
+  "movers, career years 2-8": {
+   "n": 198,
+   "pts": -2.48,
+   "fga": -5.48,
+   "fta": -0.9,
+   "tpm": 0.89,
+   "tov": -3.42,
+   "pts_change_ci95": [
+    -0.1459,
+    0.0316
+   ]
+  },
+  "movers, career years 9+": {
+   "n": 181,
+   "pts": -4.71,
+   "fga": -5.26,
+   "fta": -2.48,
+   "tpm": -0.0,
+   "tov": -2.44,
+   "pts_change_ci95": [
+    -0.2112,
+    -0.0272
+   ]
+  }
+ }
+}
