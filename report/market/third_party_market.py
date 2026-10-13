@@ -119,6 +119,36 @@ SOURCES = {
                            "into rotowire-raw-{d}.csv; teams mapped to kit codes; no stat line. Joined under the hard gate by "
                            "third_party_market.py ({m} matched, {u} without a pool row); reference only — no board row changes (fix F2); "
                            "every health or role note is a lead for the next pull's two-outlet verification."),
+    "fantasypros": dict(default_date="2026-10-13", raw="fantasypros-raw-{d}.csv", gap=20, norank=True,
+                        cols=dict(rank="", player="Player", team="Team", pos="Positions"),
+                        extra={"gp": "GP", "mpg": "MIN", "positions": "Positions"},
+                        stats=dict(kind="FantasyPros rest-of-season 2026-27 projection", pct_scale=100.0,
+                                   map={"pts": "PTS", "tpm": "3PM", "reb": "REB", "ast": "AST", "stl": "STL", "blk": "BLK", "tov": "TO", "fg_pct": "FG%", "ft_pct": "FT%"}),
+                        skip=("GP", "0"),
+                        team_map={"NOR": "NOP", "PHO": "PHX", "UTH": "UTA"},
+                        title="FantasyPros rest-of-season projections (full-stat line with games and minutes)",
+                        url="(owner upload — FantasyPros 'Rest of Season NBA Projections' CSV export)",
+                        notes="FantasyPros rest-of-season projections, {n} rows, uploaded by the owner on {d} and kept verbatim as "
+                              "fantasypros-raw-{d}.csv (Player, Team, Positions with injury tags, PTS/REB/AST/BLK/STL/FG%/FT%/3PM, GP, MIN, TO). "
+                              "No value rank: src_rank is the file's list position (sorted by projected points) and the rank-agreement "
+                              "sections are skipped; rows with GP 0 (no projection) are listed and left out of the join. Percentages are "
+                              "written on the 0-100 scale like the RotoBaller file. Joined under the hard gate by third_party_market.py "
+                              "({m} matched, {u} without a pool row); reference only — no board row changes (fix F2)."),
+    "cards": dict(default_date="2026-10-13", raw="cards-raw-{d}.csv", gap=20, norank=True,
+                  cols=dict(rank="Pos_in_list", player="Player", team="Team", pos="Pos"),
+                  extra={"gp": "GP", "mpg": "MIN", "status": "Status", "ato": "A/TO"},
+                  stats=dict(kind="2026-27 projection from the owner's 10/13 card paste", pct_scale=100.0,
+                             map={"pts": "PTS", "tpm": "3PM", "reb": "REB", "ast": "AST", "stl": "STL", "blk": "BLK", "tov": "TO", "fg_pct": "FG%", "ft_pct": "FT%"}),
+                  skip=("PTS", ""),
+                  title="the owner's 10/13 player-card paste (2027 projections with games and minutes)",
+                  url="(owner paste 2026-10-13, given with the URL basketballmonster.com/projections.aspx, which this container cannot reach (DNS ENOTFOUND, proxy 403); the card layout — Headshot, Day-To-Day/Out tags, '2026 STATISTICS / 2027 PROJECTIONS / 2027 Outlook' — matches ESPN's player pages; origin recorded as the owner gave it)",
+                  notes="Player-card projections pasted by the owner on {d} ({n} cards; the 2027 PROJECTIONS row of each transcribed to "
+                        "cards-raw-{d}.csv with GP, MIN, FG%, FT%, 3PM, REB, AST, A/TO, STL, BLK, TO, PTS; team nicknames mapped to kit codes; "
+                        "the 2026 statistics rows and the Outlook prose were read in-session and not stored; cards with no 2027 line left blank). "
+                        "Transcription check: assists over turnovers reproduces the pasted A/TO within 0.06 on every projected row. No value "
+                        "rank: src_rank is the list position in the paste and the rank-agreement sections are skipped. Percentages written on "
+                        "the 0-100 scale. Joined under the hard gate by third_party_market.py ({m} matched, {u} without a pool row); reference "
+                        "only — no board row changes (fix F2)."),
 }
 # Source names verified absent from the pool (a reason each). Anything else without a pool
 # row is listed as a pool-completeness item; a possible spelling variant trips the gate.
@@ -144,8 +174,16 @@ def main():
     inp = derived.inputs_for(args, os.path.join(HERE, f"unmatched-{src}-{d}.md"))
     raw = list(csv.DictReader(open(inp.path(f"report/market/{S['raw'].format(d=d)}"), encoding="utf-8-sig")))
     C = S["cols"]
-    if not raw or C["player"] not in raw[0] or C["rank"] not in raw[0]:
+    if not raw or C["player"] not in raw[0] or (C["rank"] and C["rank"] not in raw[0]):
         sys.exit(f"third_party_market: unexpected columns in {S['raw'].format(d=d)}: {list(raw[0].keys()) if raw else 'empty'}")
+    raw = [r for r in raw if (r.get(C["player"]) or "").strip()]
+    for i, r in enumerate(raw, 1):
+        r["_pos"] = int(r[C["rank"]]) if C["rank"] else i   # a value rank, or the list position when the source has none
+    skipped = []
+    if S.get("skip"):
+        col, val = S["skip"]
+        skipped = [r for r in raw if (r.get(col) or "").strip() == val]
+        raw = [r for r in raw if (r.get(col) or "").strip() != val]
     board = BM.our_board(inp.path("report/projections-2026-27.csv"))
     files = inp.listdir("report/market")
     yr = sorted(f for f in files if re.fullmatch(r"yahoo-9cat-rankings-\d{4}-\d{2}-\d{2}\.csv", f))
@@ -167,22 +205,24 @@ def main():
         team_src = tmap.get(r.get(C.get("team", ""), ""), r.get(C.get("team", ""), "")) if C.get("team") else ""
         if hit is None:
             if name in _ACCEPTED_ABSENT:
-                absent.append((int(r[C["rank"]]), name, team_src, _ACCEPTED_ABSENT[name]))
+                absent.append((r["_pos"], name, team_src, _ACCEPTED_ABSENT[name]))
             elif pool3.get(_key3(name)):
-                trips.append((int(r[C["rank"]]), name, team_src, pool3[_key3(name)]))
+                trips.append((r["_pos"], name, team_src, pool3[_key3(name)]))
             else:
-                absent.append((int(r[C["rank"]]), name, team_src, "no pool row (pool-completeness item; verify the name against the raw before adding a sourced row)"))
+                absent.append((r["_pos"], name, team_src, "no pool row (pool-completeness item; verify the name against the raw before adding a sourced row)"))
             continue
         n, b = hit
         y, a = xr.get(BM.norm(n), {}), adp.get(BM.norm(n), {})
-        row = {"src_rank": int(r[C["rank"]]), "player": n, "team_src": team_src, "team_kit": b["row"]["team"],
+        row = {"src_rank": r["_pos"], "player": n, "team_src": team_src, "team_kit": b["row"]["team"],
                "our_rank": b["rank"], "z_adj": round(b["z_adj"], 3),
                "yahoo_xrank": y.get("xrank", ""), "yahoo_adp": a.get("yahoo_adp", ""), "src_name": name}
         for k, c in S["extra"].items():
             row[k] = r.get(c, "")
         if S["stats"]:
+            sc = S["stats"].get("pct_scale", 1.0)
             for k, c in S["stats"]["map"].items():
-                row[f"src_{k}"] = r.get(c, "")
+                v = (r.get(c, "") or "").strip()
+                row[f"src_{k}"] = f"{float(v) * sc:.1f}" if (v and k.endswith("_pct") and sc != 1.0) else v
         rows.append(row)
     # Companion tag lists (sleepers / breakouts / busts) — joined under the same gate; a tag name
     # outside the ranking keeps an empty source rank.
@@ -206,6 +246,7 @@ def main():
                              "our_rank": b["rank"], "z_adj": round(b["z_adj"], 3), "src_rank": srank.get(n, ""),
                              "yahoo_xrank": y.get("xrank", ""), "yahoo_adp": a.get("yahoo_adp", ""), "claim": r.get("Claim", ""), "src_name": name})
     print(f"JOIN ({src} {d}): {len(raw)} source rows | matched to pool={len(rows)} | no pool row={len(absent)} | possible spelling variants={len(trips)}"
+          + (f" | {len(skipped)} rows without a projection skipped" if skipped else "")
           + (f" | tag rows {len(tag_rows)} matched, {len(tag_absent)} without a pool row" if S.get("tags") else ""))
     if trips:
         print("HARD GATE TRIP — source names that look like a pool spelling (add a verified alias, or record the absence with a reason):")
@@ -236,6 +277,9 @@ def main():
               "| section | name | team | reason |", "|---|---|---|---|"]
         for sec, n, t, why in tag_absent:
             L.append(f"| {sec} | {n} | {t} | {why} |")
+    if skipped:
+        L += ["", f"## Source rows without a projection, left out of the join ({len(skipped)})", "",
+              ", ".join(r[C["player"]].strip() for r in skipped)]
     L += ["", stamp]
     open(os.path.join(OUT, f"unmatched-{src}-{d}.md"), "w", encoding="utf-8").write("\n".join(L) + "\n")
 
@@ -260,8 +304,13 @@ def main():
     prof = lambda name: BM._zprofile({"name": name})
     D = [f"# {S['title'][0].upper() + S['title'][1:]} vs the board — {d}", "",
          f"Source: {S['url']}; raw kept verbatim as `{S['raw'].format(d=d)}`. Reference layer only: the board is first-principles "
-         "and no row changes because of this file (owner decision 2026-08-21; fix F2).", "",
-         "## A. Agreement", "",
+         "and no row changes because of this file (owner decision 2026-08-21; fix F2).", ""]
+    if S.get("norank"):
+        D += ["## A. Agreement", "", "This source carries no value rank: `src_rank` is its list position, so the rank-agreement "
+              f"measures and the two disagreement tables are not computed. Source rows joined: {len(rows)} of {n_src}"
+              + (f"; rows without a projection left out: {len(skipped)}" if skipped else "") + ".", "",
+              "## B. (not computed: no value rank)", "", "## C. (not computed: no value rank)", ""]
+    D += ["## A. Agreement", "",
          "| measure | value |", "|---|---|",
          f"| source rows joined | {len(rows)} of {n_src} |",
          f"| Spearman rho, our rank vs source rank | {rho:.3f} |",
@@ -278,6 +327,11 @@ def main():
           "| gap | player | our # | source # | Yahoo XRank / ADP | our board z-lean |", "|---|---|---|---|---|---|"]
     for r in lower:
         D.append(f"| -{r['our_rank'] - r['src_rank']} | {r['player']} | {r['our_rank']} | {r['src_rank']} | {fmt(r['yahoo_xrank'])} / {fmt(r['yahoo_adp'])} | {prof(r['player'])} |")
+    if S.get("norank"):
+        cut = len(D) - 1
+        while not D[cut].startswith("## C. (not computed"):
+            cut -= 1
+        D = D[:cut + 1]
     D += ["", f"## D. Team mismatches vs the kit ({len(mism)})", "",
           "| source # | player | source says | kit says (verified ledger) |", "|---|---|---|---|"]
     for r in mism:

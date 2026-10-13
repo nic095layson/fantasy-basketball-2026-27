@@ -75,6 +75,7 @@ ALIASES = {
     "Nic Claxton": {"Nicolas Claxton"},      # hashtag
     "Alex Sarr": {"Alexandre Sarr"},         # hashtag
     "Egor Demin": {"Egor Dёmin"},            # 2026-09-29 owner paste: Cyrillic ё, which NFKD does not fold
+    "Ron Holland": {"Ronald Holland II"},    # 2026-10-13 FantasyPros export: given name + suffix (DET, verified against the pool's team)
 }
 
 
