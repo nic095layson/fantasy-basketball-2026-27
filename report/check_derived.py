@@ -136,6 +136,11 @@ REGISTRY = [
      "cmd": ["market/adp_refresh.py", "2026-10-12"], "out": "--out-dir",
      "pin": "market/adp-refresh-2026-10-12.md",
      "outputs": ["market/yahoo-2026-10-12.csv", "market/adp-refresh-2026-10-12.md"]},
+    {"label": "2026-10-13 Yahoo intake (projected-stats page copied from the owner's draft room, 300 rows; the WO-4 price source + a projection line)",
+     "cmd": ["market/yahoo_market.py", "2026-10-13"], "out": "--out-dir",
+     "pin": "market/unmatched-yahoo-2026-10-13.md",
+     "outputs": ["market/yahoo-2026-10-13.csv", "market/yahoo-proj-2026-10-13.csv", "market/consensus-2026-10-13.csv",
+                 "market/unmatched-yahoo-2026-10-13.md", "market/disagreements-yahoo-2026-10-13.md"]},
 ]
 
 
