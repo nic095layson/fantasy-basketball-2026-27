@@ -118,6 +118,7 @@ The pass went through the standing D-RN-3 range rule, seeded with the committed 
 4. **Two of fifteen MG moves were re-decided by the range rule** (Murray, Sarr) — pre-committed, and reported as holds in effect.
 5. **`test_card.py`:** {row('test_card_note', '**pending**')}
 6. **Published twice.** The first v61 publish (Version 61, id 1791869149-918f) carried a sentence I had kept from the 10/12 colophon — "No tag, games-played figure or placement changed" — one line below the new head that says games played moved for five players on the kit plane. The read-back of the served page caught it (adversarial-verify's self-consistency step); the sentence now reads "No tag or placement changed on this page; the five games moves live on the kit plane (above)", the page was rebuilt by the same path and the full chain re-run on the rebuilt bytes before the second publish (§7). Nothing in the pool, the lines or the engine changed between the two publishes (`difflib`: one line).
+7. **The deck CSV's line endings changed.** `data/players.csv` on main carried CRLF line endings (the csv module's default, which `wo5_apply.py` keeps); the games-notes tool wrote the file back with LF, so the git diff touches every line. At the cell level the change is exactly the 17 rows claimed (15 stat lines, 17 notes; every other cell identical — checked mechanically against main's copy before the commit). The build, every gate and the whole chain ran on this file as committed. Flagged, not fixed: normalizing the endings now would change the pool hash and send the page through the chain a third time on the eve of the draft; the next pull can restore CRLF, or the tool can be taught to keep the file's endings.
 
 ## Watchlist
 
@@ -161,7 +162,9 @@ Rule (owner, 2026-10-09): on a projection pass, every top-200 line on either pla
 
 ## Decisions (owner disposes)
 
-| id | decision question | default if silent |
+The Council was convened a second time on 2026-10-13 for a final verdict on shipping the pass as built and voted 5–0 for (a) on all three rows below (the owner then asked it to convene a third time on the method itself — also 5–0, sound; the "secret sauce" is the stack around the projections, not the blend). The owner's veto stands on every row; the defaults below are the Council's choices.
+
+| id | decision question | Council 10/13 · default if silent |
 |---|---|---|
 | D-MG-1 | The pass as published (v61): (a) stands; (b) revert to v60 (one command: the before-files are in `report/mg/out/before/`) | (a) |
 | D-MG-2 | The five games moves on the deck plane: (a) kit-only, deck rows carry the note (as built, two named waivers); (b) mirror as deck risk tags where the consensus GP is 60 or under (Poeltl 58, Grant 54); (c) revert the games moves on the kit | (a) |
@@ -177,7 +180,7 @@ Rule (owner, 2026-10-09): on a projection pass, every top-200 line on either pla
 
 ## In plain language
 
-The Council said: keep the projection method, but fix the two things it copies forward from last season — minutes and games — for the players whose situation changed. You said proceed. For the 47 players in the top 150 who changed teams or had a short last season, I looked at the two October projection sources we have on file and moved a player's minutes only when both said the same thing by a clear margin; the same for games. Fifteen players' minutes moved (eight up, seven down) and five players' games moved. The engine then re-ran. Giannis, Ware, Franz Wagner, Garland, Collins and Jalen Williams climb; DeRozan, Grayson Allen, O'Neale, Oubre and Embiid fall. Our board now agrees more with the experts exactly where it disagreed most, and the rest of the board barely moved. Two things to know: the deck page cannot hold a games number, so two rows needed a recorded exception in the build (your call on D-MG-2), and Ware's jump to #27 is the one result the rule produced that the experts would not sign.
+The Council said: keep the projection method, but fix the two things it copies forward from last season — minutes and games — for the players whose situation changed. You said proceed. For the 47 players in the top 150 who changed teams or had a short last season, I looked at the two October projection sources we have on file and moved a player's minutes only when both said the same thing by a clear margin; the same for games. Fifteen players' minutes moved (eight up, seven down) and five players' games moved. The engine then re-ran. Giannis, Ware, Franz Wagner, Garland, Collins and Jalen Williams climb; DeRozan, Grayson Allen, O'Neale, Oubre and Embiid fall. Our board now agrees more with the experts exactly where it disagreed most, and the rest of the board barely moved. Two things to know: the deck page cannot hold a games number, so two rows needed a recorded exception in the build (the Council chose to keep them kit-only, D-MG-2), and Ware's jump to #27 is the one result the rule produced that the experts would not sign — the Council held it, because his line sits inside both outlets' own cells and the card, in the replayed mocks, offers him at picks 58–63 against a market price of 77.
 
 ## Appendix A — every move of three or more places (both boards, inside the top 200)
 

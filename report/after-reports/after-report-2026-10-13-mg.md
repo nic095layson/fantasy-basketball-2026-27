@@ -1,7 +1,5 @@
 # After-report — the MG pass: minutes and games for the top-150 players on a new team or with a short base season, to the two October outlets' consensus
 
-> **DRAFT** — written while the deck chain was still running: the verification rows marked pending, the repeat-name section and the pull-log row are filled when the chain is green. Not yet gated by `check_report.py`.
-
 **Owner request (2026-10-13, verbatim):** "Proceed with council recommendations" — after the Council's 4–1 verdict earlier the same day: keep WO-5 as the basis, do not switch to expert projections, run a minutes-and-games pass on every top-150 player on a new team or with a base season under 50 games, reviewed against the expert consensus, moves on two dated outlets, the injury modifier untouched.
 
 **What was analyzed:** kit `main` 2df5b22 and deck `main` 8ec736b as the starting point; the WO-5 lines (`wo5/out/lines_wo5_2026-10-12.json`) and range resolution; the two October projection outlets on file, Yahoo 10/06 (`market/yahoo-proj-2026-10-06.csv`) and Hashtag 10/12 (`market/hashtag-2026-10-12.csv`); the kit board as `rank_engine.py` ranks it.
@@ -12,7 +10,7 @@
 
 Pull window: 2026-10-13 → 2026-10-13 (projection pass; today's roster verification 335/335, no roster change in the pool).
 
-**Headline.** 47 candidates; 15 minutes moves (8 up, 7 down) and 5 games moves; 32 holds. The eight minutes-up players climb on both boards (Kel'el Ware 67 → 27, Giannis Antetokounmpo 58 → 35 on the deck and 39 on the kit, Franz Wagner 68 → 31/34, Darius Garland 103 → 63/62, John Collins 122 → 71, Jalen Williams 57 → 41/42); the seven minutes-down players fall (DeMar DeRozan 88 → 146/147, Grayson Allen 81 → 134/136, Royce O'Neale 125 → 180/179, Kelly Oubre Jr. 121 → 162/164, Joel Embiid 23 → 32 on the deck and 27 → 36 on the kit). The standing range rule re-ran on the result and re-fixed two of the fifteen (Dejounte Murray 29.1 → 29.2 minutes, Alex Sarr 27.2 → 26.8), so those two are holds in effect. The 17 movers' average distance to the expert consensus fell from 35.9 to 18.6 places, and the whole top-150's agreement with the experts rose from .847 to .860. The card at #10 is unchanged: no top-30 slot changed hands except Ware in and Embiid down (§5). Two things did not go to plan and are stated plainly: the deck build needed two named waivers for the games-only rows (§8), and the 10/12 claim that the pipeline rebuilds from scratch is only partly true (§6).
+**Headline.** 47 candidates; 15 minutes moves (8 up, 7 down) and 5 games moves; 32 holds. The eight minutes-up players climb on both boards (Kel'el Ware 67 → 27, Giannis Antetokounmpo 58 → 35 on the deck and 39 on the kit, Franz Wagner 68 → 31/34, Darius Garland 103 → 63/62, John Collins 122 → 71, Jalen Williams 57 → 41/42); the seven minutes-down players fall (DeMar DeRozan 88 → 146/147, Grayson Allen 81 → 134/136, Royce O'Neale 125 → 180/179, Kelly Oubre Jr. 121 → 162/164, Joel Embiid 23 → 32 on the deck and 27 → 36 on the kit). The standing range rule re-ran on the result and re-fixed two of the fifteen (Dejounte Murray 29.1 → 29.2 minutes, Alex Sarr 27.2 → 26.8), so those two are holds in effect. The 17 movers' average distance to the expert consensus fell from 35.9 to 18.6 places — a figure measured on the rows the rule itself selected, so read it as the pass grading its own targets; the whole top-150's agreement with the experts, the fairer figure, rose from .847 to .860. The card at #10 is unchanged: no top-30 slot changed hands except Ware in and Embiid down (§5). Two things did not go to plan and are stated plainly: the deck build needed two named waivers for the games-only rows (§8), and the 10/12 claim that the pipeline rebuilds from scratch is only partly true (§6).
 
 ## 1. Roster changes
 
@@ -31,7 +29,7 @@ None. `verify_rosters.py` direct-complete ran today: 335/335 on ESPN's feed, 0 m
 
 ### MG-1 minutes — the 15 triggered moves (both outlets on the same side by 1.5+)
 
-| player | why a candidate | WO-5 min | Hashtag 10/12 | Yahoo 10/06 implied | new min | pts before → after | deck rank | kit rank | range rule after |
+| player | why a candidate | WO-5 min | Hashtag 10/12 mpg (source) | Yahoo 10/06 implied min (source) | new min | pts before → after | deck rank | kit rank | range rule after |
 |---|---|---|---|---|---|---|---|---|---|
 | Joel Embiid | base under 50 games (2025-26, 38 G) | 31.6 | 29.4 | 29.4 | 29.4 | 26.9 → 25.1 | 23 → 32 | 27 → 36 | — |
 | Jalen Williams | base under 50 games (2025-26, 33 G) | 28.4 | 31.2 | 31.3 | 31.2 | 17.2 → 19.0 | 57 → 41 | 56 → 42 | new cell(s) kept on the method: ast |
@@ -51,7 +49,7 @@ None. `verify_rosters.py` direct-complete ran today: 335/335 on ESPN's feed, 0 m
 
 ### MG-2 games — the 5 triggered moves (both outlets on the same side by 5+; kit column only)
 
-| player | kit GP before → after | Yahoo 10/06 | Hashtag 10/12 | kit rank | deck plane |
+| player | kit GP before → after | Yahoo 10/06 GP (source) | Hashtag 10/12 GP (source) | kit rank | deck plane |
 |---|---|---|---|---|---|
 | Jalen Williams | 74 → 68 | 69 | 68 | 56 → 42 | dated note only (availability is tag-based) |
 | Franz Wagner | 74 → 66 | 67 | 64 | 68 → 34 | dated note only (availability is tag-based) |
@@ -117,13 +115,13 @@ None. `verify_rosters.py` direct-complete ran today: 335/335 on ESPN's feed, 0 m
 
 ## 4. The range rule on the result
 
-The pass went through the standing D-RN-3 range rule, seeded with the committed 10/12 resolution (only Dejounte Murray's R1 minutes were released, since MG-1 triggered against them; `mg_seed_range.py`). It re-fired on two MG players and settled inside its references: **Dejounte Murray** at 29.2 minutes (factor .916; MG-1 had said 31.9) and **Alex Sarr** at 26.8 (factor .931; MG-1 had said 28.8). Three MG lines gained a cell kept on the method (R2): Giannis's turnovers, Jalen Williams's assists, Franz Wagner's rebounds. Naji Marshall's entry gained an R3-keep on FG% with no line change. Range check on the built page: **pending — filled from the chain record**.
+The pass went through the standing D-RN-3 range rule, seeded with the committed 10/12 resolution (only Dejounte Murray's R1 minutes were released, since MG-1 triggered against them; `mg_seed_range.py`). It re-fired on two MG players and settled inside its references: **Dejounte Murray** at 29.2 minutes (factor .916; MG-1 had said 31.9) and **Alex Sarr** at 26.8 (factor .931; MG-1 had said 28.8). Three MG lines gained a cell kept on the method (R2): Giannis's turnovers, Jalen Williams's assists, Franz Wagner's rebounds. Naji Marshall's entry gained an R3-keep on FG% with no line change. Range check on the built page: RANGE CHECK: 26 player(s) with 28 cell(s) outside every reference (145 of the top 150 checkable); exit 0 — each with its mechanism in the section below, gated by `range_check.py --check-report` (10/12 after WO-5: 23 players / 25 cells).
 
 ## 5. What the boards did
 
 - Both planes: 98 players moved 3+ places on either board (87 deck, 81 kit); 17 of them are the pass's players, the rest the pool's frame shifting by small amounts (§3, Collateral).
 - Top-30 slots: Ware enters (67 → 27 on both), Embiid leaves the deck's top 30 (23 → 32). The first round and the #10 card are unchanged.
-- Against the expert consensus (mean of Yahoo XRank, Hashtag and Rotoworld ranks): the 17 movers' mean distance 35.9 → 18.6 places; the kit top-150's Spearman with that consensus .847 → .860.
+- Against the expert consensus (mean of Yahoo XRank, Hashtag and Rotoworld ranks): the 17 movers' mean distance 35.9 → 18.6 places (measured on the rows the rule selected — the pass grading its own targets; Council 10/13, the Contrarian's point); the kit top-150's Spearman with that consensus .847 → .860 is the whole-board figure.
 - **Ware is the outlier to watch:** 26.8 minutes on his 2025-26 rates rank him #27 on both boards, while the experts' lines put him near #62 — their per-minute rates for him are lower than last season's. The rule moved his minutes, not his rates; D-MG-3 on the sheet.
 - Giannis sits #35/#39 at 32.5 minutes and 67 games (experts #5–9, 34.2 minutes on Hashtag): the rest of the gap is his 36-game 2025-26 rates and the kit's availability factor.
 
@@ -133,7 +131,7 @@ The pass went through the standing D-RN-3 range rule, seeded with the committed 
 |---|---|
 | Control 1 — the 10/12 pipeline on today's inputs, from scratch (`wo5_iterate.sh`) | both data files byte-identical to main; the intermediate lines file differs on the 5 rookie rows (their "new" entries come from the input plane files, so they are empty when the inputs already carry WO-5's values) |
 | Control 2 — the same from the pre-WO-5 inputs, from scratch | a different fixed point (36 range entries, 11 shooting clamps, 6 rookie cell moves vs the committed 38 / 11 / 8); files differ. The committed resolution carries rookie identity entries from a separate 10/12 step, so the iteration is path-dependent. The 10/12 after-report's "reaches the same fixed point from the committed inputs" holds only seeded with the committed range (control 3); as a from-scratch claim it is PARTIAL. |
-| Control 3 — seeded with the committed range file | lines from totals + overrides + range → apply: 0 values changed, both files byte-identical to main; one more range round changes 0 entries (fixed point) — the recipe this pass used |
+| Control 3 — seeded with the committed range file | lines from totals + overrides + range, then apply: 0 values changed, both files byte-identical to main; one more range round changes 0 entries (fixed point) — the recipe this pass used |
 | `wo5_apply.py --keep-unchanged-notes` (added today; a blocking dependency) | with the flag, re-applying the committed lines returns both files byte-identical; without it, 326 deck notes are re-dated with no value change — the flag keeps the diff to the rows that moved |
 | The change-set guard before the in-place write | deck rows with a stat change 15, notes changed 15, kit rows changed 15; unexpected 0; note-only changes 0 |
 | `wo5_apply.py` in place | deck 326 written (15 changed), kit 311 written (15 changed), 255 values; second run: 0 changed, files unchanged |
@@ -146,15 +144,15 @@ The pass went through the standing D-RN-3 range rule, seeded with the committed 
 | step | result |
 |---|---|
 | `scripts/verify_rosters.py` | direct-complete 2026-10-13, 335/335, 0 mismatches |
-| `scripts/build_deck.py --planes-lines-strict` + two `--planes-waive` | **pending — filled from the chain record** |
-| `scripts/check_planes.py --lines-strict` | **pending — filled from the chain record** |
-| `scripts/identity_check.py` | **pending — filled from the chain record** |
-| `scripts/range_check.py` | **pending — filled from the chain record** |
-| `scripts/check_parity.py` | **pending — filled from the chain record** |
-| `scripts/test_card.py` / `test_draft.py` / `test_gates.py` | **pending — filled from the chain record** |
-| `arena/mocks/full_dom_check.mjs` | **pending — filled from the chain record** |
-| `scripts/repeat_market_check.py` | **pending — filled from the chain record** |
-| artifact publish | **pending — filled from the chain record** |
+| `scripts/build_deck.py --planes-lines-strict` with the two named waivers (§8) | PASS — gates 1–7 + F8; `deck built: 335 players · pull 2026-10-13 · pool c56b128dc678 · injection round-trip OK`; `safe to publish`. Planes at the build: 315 shared · kit-only 10 · deck-only 20 · team 0 · exclusion 0 · drift 0 · propagation 0 · 2 waivers by name (Jakob Poeltl, Mitchell Robinson — the MG-2 games rows, reasons in the page's manifest, §8); market `yahoo-2026-10-12.csv` priced 246/335 (1 day old); roster verification direct-complete 335/335 against all 30 official rosters. Red first: the same build without the waivers was REFUSED on gate 7 (`propagation: Jakob Poeltl: kit re-derived (GP 66 to 58) but the deck row is unchanged`; Robinson 58 to 64) — the two games notes and the two named waivers followed. Built twice: the served Version 61 read-back showed the colophon's carried tail sentence ("No tag, games-played figure or placement changed") contradicting the pass's own head, so the sentence was corrected through `deck_page_mg.py` and the page rebuilt from main's page and kit snapshot by the same path (the red run reported the same two propagation items; the two named waivers recorded again; manifest identical but for the sentence — the rebuilt page differs from the served Version 61 by that one line and nothing else, `difflib` over both). Every chain row below is from the rebuilt page |
+| `scripts/check_planes.py --lines-strict` | 315 shared · kit-only 10 · deck-only 20 · team 0 · exclusion 0 · drift 0 · propagation 0; exit 0 (run after the build re-wrote `data/kit-snapshot.csv`; before the build the same check listed the two games rows as propagation items — the red run above) |
+| `scripts/identity_check.py` | POINTS IDENTITY: 0 player(s), 0 line(s) more than 1 from their own shooting (200 deck and 200 kit lines checked); exit 0 |
+| `scripts/range_check.py` | RANGE CHECK: 26 player(s) with 28 cell(s) outside every reference (145 of the top 150 checkable); exit 0 — each with its mechanism in the section below, gated by `range_check.py --check-report` (10/12 after WO-5: 23 players / 25 cells) |
+| `scripts/check_parity.py` | PARITY: EXACT MATCH — 416 owner turns across 32 committed states; 318 market ranks compared (priced 240); exit 0, on the rebuilt page (the first v61 build gave the same result; the chain task's own copy of that first run was stopped at the background time limit before it finished) |
+| `scripts/test_card.py` / `test_draft.py` / `test_gates.py` | CARD: all 99 cases passed; all 65 cases passed; all 54 cases passed — exit 0 each, on the rebuilt page (the same three results on the first v61 build); `test_gates.py` includes the four `--check-report` gates' red-first cases |
+| `arena/mocks/full_dom_check.mjs` | 145 assertions, 0 failed, [] page errors, no harness crash, pass true on `arena/data/states/draft_state_54.json` (`arena/results/full_dom_check_2026-10-13_v61.json`, 2026-10-13T05:34:23Z, the rebuilt page; the first publish's run, 145 / 0 at 05:25:12Z, kept as `_v61_firstpublish.json`); 10/12 on v60: 145 / 0 |
+| `scripts/repeat_market_check.py` | 25 of 25 mocks replayed; 8 FLAGGED (Ty Jerome, Kel'el Ware, Reed Sheppard, Lauri Markkanen, Jrue Holiday, Yaxel Lendeborg, Ryan Rollins, Kawhi Leonard — 4 LINE QUESTIONED on all-four-outside-25+ receipts, the rest SOURCES SPLIT; every line holds under the standing rule), 4 near misses; re-run on the rebuilt page: identical output but for the page hash in its rule line; `--check-report` on this report: PASS — 8 flagged name(s), each with a row (`arena/results/repeat_market_check_2026-10-13_v61.json`) |
+| artifact publish | Version 62, id 1791870667-7ce2, the standing URL, published after a fresh read of the live page (Version 61, id 1791869149-918f — this pass's first publish, with the contradictory colophon sentence); the served file read back (581284 bytes) carries the rebuilt page (580920 bytes, sha256 dfa89e17ea11) byte-for-byte inside the service's 364-byte wrapper; manifest built 2026-10-13, two waivers recorded. Version 61 had been verified the same way before the sentence was caught (581,240 bytes around the 580,876-byte first build, sha256 ab7a2abe5c0f) |
 
 ## 8. What did not go to plan
 
@@ -162,7 +160,9 @@ The pass went through the standing D-RN-3 range rule, seeded with the committed 
 2. **The pipeline is path-dependent** (§6, control 2). The pass used the committed resolution as its seed; the 10/12 report's wording is corrected here.
 3. **47 candidates, not "about 40"** as the Council estimated (the short-base rule reached 21).
 4. **Two of fifteen MG moves were re-decided by the range rule** (Murray, Sarr) — pre-committed, and reported as holds in effect.
-5. **`test_card.py`:** **pending**
+5. **`test_card.py`:** CARD: all 99 cases passed; exit 0. Two probes changed because the new lines removed or re-ordered the committed example each one used (diff in `scripts/test_card.py`, reason in the code): D51R-4's pin probe moved from mock 75 #58 (the 10/12 behind-#1 example; no pin read there on the v61 lines) to mock 53 #63 — Joel Embiid, withheld on availability 0.78; the scan of all 416 owner turns on the v61 page finds 30 urgent reads, 29 pin reads and that one withheld (`arena/results/test_card_scan_2026-10-13_v61/pins_v61.json`), and no turn withholds a pin behind #1, so the availability branch holds the committed example again and the behind / kept / non-urgent branches stay on their direct gate cases. The VETO probe at mock 51 #63 now allows an adjacent swap of two names whose blend scores sit within 0.001 — on the v61 lines Embiid and Boozer sit at 0.9824 / 0.9824 in the full pool and 0.9823 / 0.9823 in the owner pool and swap 4th and 5th (`vetodbg_v61.json`); the five names must still be the unfiltered five minus the veto list and no vetoed name may appear. The helper was unit-checked against seven crafted orders (`neartie_unit_v61.json`: the identical order and a within-0.001 adjacent swap pass; a 0.002 swap, a non-adjacent swap, a rotation of three, a different name set and a short score list are rejected). The D-CAST-4 and V4 probes were re-scanned and hold (`cast4_v61.json`: round 13, 0 unpriced rows on the priced card; `v4_v61.json`: Jokić leads both value and XRank, the shared-leader branch stays)
+6. **Published twice.** The first v61 publish (Version 61, id 1791869149-918f) carried a sentence I had kept from the 10/12 colophon — "No tag, games-played figure or placement changed" — one line below the new head that says games played moved for five players on the kit plane. The read-back of the served page caught it (adversarial-verify's self-consistency step); the sentence now reads "No tag or placement changed on this page; the five games moves live on the kit plane (above)", the page was rebuilt by the same path and the full chain re-run on the rebuilt bytes before the second publish (§7). Nothing in the pool, the lines or the engine changed between the two publishes (`difflib`: one line).
+7. **The deck CSV's line endings changed.** `data/players.csv` on main carried CRLF line endings (the csv module's default, which `wo5_apply.py` keeps); the games-notes tool wrote the file back with LF, so the git diff touches every line. At the cell level the change is exactly the 17 rows claimed (15 stat lines, 17 notes; every other cell identical — checked mechanically against main's copy before the commit). The build, every gate and the whole chain ran on this file as committed. Flagged, not fixed: normalizing the endings now would change the pool hash and send the page through the chain a third time on the eve of the draft; the next pull can restore CRLF, or the tool can be taught to keep the file's endings.
 
 ## Watchlist
 
@@ -223,7 +223,7 @@ Rule (owner, 2026-10-09): on a projection pass, every top-200 line on either pla
 
 ## Repeat-name market check
 
-Rule (owner, 2026-10-08, D-RN-1): the card's 🎯 in 5+ of the graded mocks, replayed on this page (sha256 ab7a2abe5c0f), with 25+ places between the value rank and the market rank the card prints (or no Yahoo price), gets an outside-source check at every refresh. Replays: 25 of 25 mocks. Outside ranks: Yahoo Rank `yahoo-proj-2026-10-06.csv`, Hashtag `hashtag-2026-10-12.csv`, Rotoworld `rotoworld-9cat-2026-10-05.csv`, RotoBaller `rotoballer-2026-09-29.csv`. Cells: our per-game line against `yahoo-proj-2026-10-06.csv`, `hashtag-2026-10-12.csv`, `rotoballer-2026-09-29.csv` (outside all three; tolerance .005 on percentages, 5% with a 0.1 floor on counting stats). Spellings resolved through the kit's alias table (`build_market.py`, 5 players).
+Rule (owner, 2026-10-08, D-RN-1): the card's 🎯 in 5+ of the graded mocks, replayed on this page (sha256 dfa89e17ea11), with 25+ places between the value rank and the market rank the card prints (or no Yahoo price), gets an outside-source check at every refresh. Replays: 25 of 25 mocks. Outside ranks: Yahoo Rank `yahoo-proj-2026-10-06.csv`, Hashtag `hashtag-2026-10-12.csv`, Rotoworld `rotoworld-9cat-2026-10-05.csv`, RotoBaller `rotoballer-2026-09-29.csv`. Cells: our per-game line against `yahoo-proj-2026-10-06.csv`, `hashtag-2026-10-12.csv`, `rotoballer-2026-09-29.csv` (outside all three; tolerance .005 on percentages, 5% with a 0.1 floor on counting stats). Spellings resolved through the kit's alias table (`build_market.py`, 5 players).
 
 | player | 🎯 in mocks | value rank | market rank | Yahoo Rank | Hashtag | Rotoworld | RotoBaller | cells outside all three projections | verdict |
 |---|---|---|---|---|---|---|---|---|---|
@@ -245,6 +245,7 @@ Near misses (the 🎯 in 5+ mocks, under 25 places): Jamal Murray (21 mocks, val
 - Rates, the new-team usage adjustment and the half-and-half history blend (D-C2, after the draft).
 - Deck tags (D-MG-2): tags come from injury news, not projections.
 - Candidates outside the kit's top 150, and any player with one reference only.
+- Re-grading the recorded mocks on the v61 lines: not run. The 10/12 re-calibration went with the full re-derivation of 326 lines; this pass moved 15 lines, and `arena/mocks/live_retro.py` carries no v61 pool tag. The replay evidence here is the parity run (416 owner turns, 32 states) and the repeat-name check (25 mocks), both on the v61 page.
 
 **In scope and unverified**
 - Whether Yahoo's implied minutes (A1) measure minutes rather than a rate view: INFERENCE; the median across five cells damps a single-cell rate difference but cannot separate the two. Ware (§5) is the case where it matters most.
@@ -252,7 +253,9 @@ Near misses (the 🎯 in 5+ mocks, under 25 places): Jamal Murray (21 mocks, val
 
 ## Decisions (owner disposes)
 
-| id | decision question | default if silent |
+The Council was convened a second time on 2026-10-13 for a final verdict on shipping the pass as built and voted 5–0 for (a) on all three rows below (the owner then asked it to convene a third time on the method itself — also 5–0, sound; the "secret sauce" is the stack around the projections, not the blend). The owner's veto stands on every row; the defaults below are the Council's choices.
+
+| id | decision question | Council 10/13 · default if silent |
 |---|---|---|
 | D-MG-1 | The pass as published (v61): (a) stands; (b) revert to v60 (one command: the before-files are in `report/mg/out/before/`) | (a) |
 | D-MG-2 | The five games moves on the deck plane: (a) kit-only, deck rows carry the note (as built, two named waivers); (b) mirror as deck risk tags where the consensus GP is 60 or under (Poeltl 58, Grant 54); (c) revert the games moves on the kit | (a) |
@@ -268,7 +271,7 @@ Near misses (the 🎯 in 5+ mocks, under 25 places): Jamal Murray (21 mocks, val
 
 ## In plain language
 
-The Council said: keep the projection method, but fix the two things it copies forward from last season — minutes and games — for the players whose situation changed. You said proceed. For the 47 players in the top 150 who changed teams or had a short last season, I looked at the two October projection sources we have on file and moved a player's minutes only when both said the same thing by a clear margin; the same for games. Fifteen players' minutes moved (eight up, seven down) and five players' games moved. The engine then re-ran. Giannis, Ware, Franz Wagner, Garland, Collins and Jalen Williams climb; DeRozan, Grayson Allen, O'Neale, Oubre and Embiid fall. Our board now agrees more with the experts exactly where it disagreed most, and the rest of the board barely moved. Two things to know: the deck page cannot hold a games number, so two rows needed a recorded exception in the build (your call on D-MG-2), and Ware's jump to #27 is the one result the rule produced that the experts would not sign.
+The Council said: keep the projection method, but fix the two things it copies forward from last season — minutes and games — for the players whose situation changed. You said proceed. For the 47 players in the top 150 who changed teams or had a short last season, I looked at the two October projection sources we have on file and moved a player's minutes only when both said the same thing by a clear margin; the same for games. Fifteen players' minutes moved (eight up, seven down) and five players' games moved. The engine then re-ran. Giannis, Ware, Franz Wagner, Garland, Collins and Jalen Williams climb; DeRozan, Grayson Allen, O'Neale, Oubre and Embiid fall. Our board now agrees more with the experts exactly where it disagreed most, and the rest of the board barely moved. Two things to know: the deck page cannot hold a games number, so two rows needed a recorded exception in the build (the Council chose to keep them kit-only, D-MG-2), and Ware's jump to #27 is the one result the rule produced that the experts would not sign — the Council held it, because his line sits inside both outlets' own cells and the card, in the replayed mocks, offers him at picks 58–63 against a market price of 77.
 
 ## Appendix A — every move of three or more places (both boards, inside the top 200)
 
