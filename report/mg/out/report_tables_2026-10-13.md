@@ -1,6 +1,6 @@
 ### MG-1 minutes — the 15 triggered moves (both outlets on the same side by 1.5+)
 
-| player | why a candidate | WO-5 min | Hashtag 10/12 | Yahoo 10/06 implied | new min | pts before → after | deck rank | kit rank | range rule after |
+| player | why a candidate | WO-5 min | Hashtag 10/12 mpg (source) | Yahoo 10/06 implied min (source) | new min | pts before → after | deck rank | kit rank | range rule after |
 |---|---|---|---|---|---|---|---|---|---|
 | Joel Embiid | base under 50 games (2025-26, 38 G) | 31.6 | 29.4 | 29.4 | 29.4 | 26.9 → 25.1 | 23 → 32 | 27 → 36 | — |
 | Jalen Williams | base under 50 games (2025-26, 33 G) | 28.4 | 31.2 | 31.3 | 31.2 | 17.2 → 19.0 | 57 → 41 | 56 → 42 | new cell(s) kept on the method: ast |
@@ -20,7 +20,7 @@
 
 ### MG-2 games — the 5 triggered moves (both outlets on the same side by 5+; kit column only)
 
-| player | kit GP before → after | Yahoo 10/06 | Hashtag 10/12 | kit rank | deck plane |
+| player | kit GP before → after | Yahoo 10/06 GP (source) | Hashtag 10/12 GP (source) | kit rank | deck plane |
 |---|---|---|---|---|---|
 | Jalen Williams | 74 → 68 | 69 | 68 | 56 → 42 | dated note only (availability is tag-based) |
 | Franz Wagner | 74 → 66 | 67 | 64 | 68 → 34 | dated note only (availability is tag-based) |

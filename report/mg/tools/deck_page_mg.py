@@ -5,6 +5,10 @@ rewritten for this refresh (the tail from 'Rookie lines' kept verbatim). Exact a
 import json, re, sys
 P = "/home/user/yahoo-fantasy-basketball/docs/draft-deck.html"; K = "/home/user/fantasy-basketball-2026-27/report/mg"
 s = open(P, encoding="utf-8").read(); orig = s
+STALE = "No tag, games-played figure or placement changed."   # 10/12's tail sentence; false for this pass on the kit plane (five games moves)
+FIXED = "No tag or placement changed on this page; the five games moves live on the kit plane (above)."
+if STALE in s:   # second step (found on the served v61 read-back, 2026-10-13): the carried tail contradicted the new head
+    assert s.count(STALE) == 1; open(P, "w", encoding="utf-8").write(s.replace(STALE, FIXED)); print("tail sentence corrected:", FIXED); s = s.replace(STALE, FIXED)
 if 'const JUDGMENT = {\n  date: "2026-10-13",' in s and "This refresh (10/13" in s: print("already applied"); sys.exit(0)
 assert s.count('const JUDGMENT = {\n  date: "2026-10-12",') == 1
 s = s.replace('const JUDGMENT = {\n  date: "2026-10-12",', 'const JUDGMENT = {\n  date: "2026-10-13",')

@@ -87,7 +87,7 @@ The pass went through the standing D-RN-3 range rule, seeded with the committed 
 |---|---|
 | Control 1 — the 10/12 pipeline on today's inputs, from scratch (`wo5_iterate.sh`) | both data files byte-identical to main; the intermediate lines file differs on the 5 rookie rows (their "new" entries come from the input plane files, so they are empty when the inputs already carry WO-5's values) |
 | Control 2 — the same from the pre-WO-5 inputs, from scratch | a different fixed point (36 range entries, 11 shooting clamps, 6 rookie cell moves vs the committed 38 / 11 / 8); files differ. The committed resolution carries rookie identity entries from a separate 10/12 step, so the iteration is path-dependent. The 10/12 after-report's "reaches the same fixed point from the committed inputs" holds only seeded with the committed range (control 3); as a from-scratch claim it is PARTIAL. |
-| Control 3 — seeded with the committed range file | lines from totals + overrides + range → apply: 0 values changed, both files byte-identical to main; one more range round changes 0 entries (fixed point) — the recipe this pass used |
+| Control 3 — seeded with the committed range file | lines from totals + overrides + range, then apply: 0 values changed, both files byte-identical to main; one more range round changes 0 entries (fixed point) — the recipe this pass used |
 | `wo5_apply.py --keep-unchanged-notes` (added today; a blocking dependency) | with the flag, re-applying the committed lines returns both files byte-identical; without it, 326 deck notes are re-dated with no value change — the flag keeps the diff to the rows that moved |
 | The change-set guard before the in-place write | deck rows with a stat change 15, notes changed 15, kit rows changed 15; unexpected 0; note-only changes 0 |
 | `wo5_apply.py` in place | deck 326 written (15 changed), kit 311 written (15 changed), {A['values_changed']} values; second run: 0 changed, files unchanged |
@@ -100,7 +100,7 @@ The pass went through the standing D-RN-3 range rule, seeded with the committed 
 | step | result |
 |---|---|
 | `scripts/verify_rosters.py` | direct-complete 2026-10-13, 335/335, 0 mismatches |
-| `scripts/build_deck.py --planes-lines-strict` + two `--planes-waive` | {row('build')} |
+| `scripts/build_deck.py --planes-lines-strict` with the two named waivers (§8) | {row('build')} |
 | `scripts/check_planes.py --lines-strict` | {row('planes')} |
 | `scripts/identity_check.py` | {row('identity')} |
 | `scripts/range_check.py` | {row('range')} |
@@ -117,6 +117,7 @@ The pass went through the standing D-RN-3 range rule, seeded with the committed 
 3. **47 candidates, not "about 40"** as the Council estimated (the short-base rule reached 21).
 4. **Two of fifteen MG moves were re-decided by the range rule** (Murray, Sarr) — pre-committed, and reported as holds in effect.
 5. **`test_card.py`:** {row('test_card_note', '**pending**')}
+6. **Published twice.** The first v61 publish (Version 61, id 1791869149-918f) carried a sentence I had kept from the 10/12 colophon — "No tag, games-played figure or placement changed" — one line below the new head that says games played moved for five players on the kit plane. The read-back of the served page caught it (adversarial-verify's self-consistency step); the sentence now reads "No tag or placement changed on this page; the five games moves live on the kit plane (above)", the page was rebuilt by the same path and the full chain re-run on the rebuilt bytes before the second publish (§7). Nothing in the pool, the lines or the engine changed between the two publishes (`difflib`: one line).
 
 ## Watchlist
 
@@ -152,6 +153,7 @@ Rule (owner, 2026-10-09): on a projection pass, every top-200 line on either pla
 - Rates, the new-team usage adjustment and the half-and-half history blend (D-C2, after the draft).
 - Deck tags (D-MG-2): tags come from injury news, not projections.
 - Candidates outside the kit's top 150, and any player with one reference only.
+- Re-grading the recorded mocks on the v61 lines: not run. The 10/12 re-calibration went with the full re-derivation of 326 lines; this pass moved 15 lines, and `arena/mocks/live_retro.py` carries no v61 pool tag. The replay evidence here is the parity run (416 owner turns, 32 states) and the repeat-name check (25 mocks), both on the v61 page.
 
 **In scope and unverified**
 - Whether Yahoo's implied minutes (A1) measure minutes rather than a rate view: INFERENCE; the median across five cells damps a single-cell rate difference but cannot separate the two. Ware (§5) is the case where it matters most.
