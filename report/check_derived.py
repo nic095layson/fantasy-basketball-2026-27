@@ -141,6 +141,21 @@ REGISTRY = [
      "pin": "market/unmatched-yahoo-2026-10-13.md",
      "outputs": ["market/yahoo-2026-10-13.csv", "market/yahoo-proj-2026-10-13.csv", "market/consensus-2026-10-13.csv",
                  "market/unmatched-yahoo-2026-10-13.md", "market/disagreements-yahoo-2026-10-13.md"]},
+    {"label": "2026-10-13 RotoBaller overall 9-cat projected rankings, the owner's re-export (same stat lines as 9/29, re-ranked, 12 names swapped)",
+     "cmd": ["market/third_party_market.py", "rotoballer", "2026-10-13"], "out": "--out-dir",
+     "pin": "market/unmatched-rotoballer-2026-10-13.md",
+     "outputs": ["market/rotoballer-2026-10-13.csv", "market/unmatched-rotoballer-2026-10-13.md",
+                 "market/disagreements-rotoballer-2026-10-13.md"]},
+    {"label": "2026-10-13 FantasyPros rest-of-season projections (owner upload; full line with games and minutes, no value rank)",
+     "cmd": ["market/third_party_market.py", "fantasypros", "2026-10-13"], "out": "--out-dir",
+     "pin": "market/unmatched-fantasypros-2026-10-13.md",
+     "outputs": ["market/fantasypros-2026-10-13.csv", "market/unmatched-fantasypros-2026-10-13.md",
+                 "market/disagreements-fantasypros-2026-10-13.md"]},
+    {"label": "2026-10-13 player-card projections (owner paste, transcribed; full line with games and minutes, no value rank)",
+     "cmd": ["market/third_party_market.py", "cards", "2026-10-13"], "out": "--out-dir",
+     "pin": "market/unmatched-cards-2026-10-13.md",
+     "outputs": ["market/cards-2026-10-13.csv", "market/unmatched-cards-2026-10-13.md",
+                 "market/disagreements-cards-2026-10-13.md"]},
 ]
 
 
