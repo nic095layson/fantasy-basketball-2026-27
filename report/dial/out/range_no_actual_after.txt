@@ -1,0 +1,89 @@
+RANGE CHECK: 80 player(s) with 154 cell(s) outside every reference (139 of the top 150 checkable)
+
+## Range check (D-RN-3)
+
+Rule (owner, 2026-10-08): on a projection pass, every cell of a top-150 line that sits outside the range of ALL its references (three or more of: Yahoo `yahoo-proj-2026-10-13.csv`, Hashtag `hashtag-2026-10-12.csv`, RotoBaller `rotoballer-2026-09-29.csv`; tolerance .005 on percentages, 5% with a 0.1 floor on counting stats) carries a one-line mechanism naming two dated outlets, or comes back inside the range. This page: 80 player(s), 154 cell(s), of 139 checkable top-150 lines. Net z is what the cells carry beyond the nearest reference in the deck's frame (positive flatters the player).
+
+| player | deck rank | cells outside every reference | net z | mechanism (two dated outlets) |
+|---|---|---|---|---|
+| Aaron Nesmith | 150 | fg_pct .427 vs .450-.456; ft_pct .829 vs .843-.862 | -0.54 | — |
+| Jamal Murray | 6 | ast 7.1 vs 6.5-6.7; tpm 3.3 vs 2.8-3 | +0.51 | — |
+| Cooper Flagg | 44 | pts 21 vs 22.4-23.3; ast 4.5 vs 4.9-5.1 | -0.46 | — |
+| Payton Pritchard | 78 | tpm 2.7 vs 3-3.2; fg_pct .461 vs .467-.467; ft_pct .883 vs .873-.875 | -0.40 | — |
+| Coby White | 145 | fg_pct .442 vs .449-.451; ft_pct .830 vs .843-.864 | -0.40 | — |
+| Scottie Barnes | 18 | fg_pct .496 vs .477-.484; ft_pct .801 vs .784-.791 | +0.39 | — |
+| Derrick White | 29 | tpm 2.7 vs 2.9-3.1; fg_pct .409 vs .416-.440 | -0.37 | — |
+| Naz Reid | 52 | tov 1.9 vs 1.6-1.7; ft_pct .731 vs .746-.756 | -0.35 | — |
+| Josh Hart | 88 | reb 7.4 vs 7.9-8.3; ft_pct .730 vs .751-.759 | -0.34 | — |
+| Franz Wagner | 30 | reb 6 vs 5.4-5.7; ast 3.8 vs 4.1-4.3; ft_pct .832 vs .846-.852 | -0.33 | — |
+| Shai Gilgeous-Alexander | 3 | ft_pct .874 vs .885-.889 | -0.32 | — |
+| Toumani Camara | 101 | pts 13.5 vs 12.3-12.6; tpm 2.7 vs 2.2-2.3; tov 1.8 vs 1.6-1.6 | +0.32 | — |
+| Brandon Miller | 74 | tpm 3.1 vs 3.4-3.5 | -0.31 | — |
+| Luka Doncic | 4 | ft_pct .772 vs .781-.782 | -0.30 | — |
+| Michael Porter Jr. | 32 | pts 24.5 vs 18.7-21.8; ast 3 vs 2.4-2.6; stl 0.7 vs 0.8-1; tpm 3.4 vs 2.9-3.1; tov 2.3 vs 1.9-2 | +0.30 | — |
+| Giannis Antetokounmpo | 34 | tov 3.6 vs 3.1-3.3; fg_pct .600 vs .608-.613; ft_pct .664 vs .628-.639 | +0.29 | — |
+| Mikal Bridges | 64 | tov 1 vs 1.2-1.3; ft_pct .832 vs .815-.824 | +0.29 | — |
+| Ivica Zubac | 85 | tov 1.8 vs 1.6-1.6; fg_pct .603 vs .615-.618; ft_pct .716 vs .681-.700 | -0.29 | — |
+| Paolo Banchero | 120 | pts 22 vs 23.6-24.3; tpm 1.2 vs 1.4-1.5; ft_pct .764 vs .753-.756 | -0.29 | — |
+| Nikola Jokic | 1 | tov 3.7 vs 3.3-3.5; fg_pct .566 vs .573-.574; ft_pct .829 vs .816-.822 | -0.28 | — |
+| Chet Holmgren | 15 | fg_pct .549 vs .535-.538; ft_pct .790 vs .780-.784 | +0.28 | — |
+| Jalen Duren | 43 | pts 19.5 vs 17.2-18.5; ast 2 vs 2.3-2.5; stl 0.7 vs 0.8-0.8 | -0.28 | — |
+| Julian Champagnie | 110 | reb 5.8 vs 4.4-5; ft_pct .847 vs .856-.870 | +0.28 | — |
+| Rudy Gobert | 103 | ft_pct .562 vs .583-.596 | -0.27 | — |
+| Donovan Mitchell | 8 | tov 2.8 vs 2.6-2.6 | -0.26 | — |
+| Tyrese Haliburton | 11 | tov 1.5 vs 1.7-1.7 | +0.26 | — |
+| OG Anunoby | 50 | tov 1.8 vs 1.5-1.6 | -0.26 | — |
+| Alperen Sengun | 57 | tov 3.2 vs 3-3 | -0.26 | — |
+| Jarrett Allen | 80 | fg_pct .639 vs .656-.676 | -0.26 | — |
+| Tre Jones | 89 | pts 13.7 vs 11.4-12.3 | +0.26 | — |
+| Jaden McDaniels | 73 | reb 4.2 vs 4.8-5.8 | -0.25 | — |
+| De'Aaron Fox | 60 | ft_pct .756 vs .777-.799 | -0.23 | — |
+| Norman Powell | 82 | reb 3.5 vs 3.2-3.2; ast 2.5 vs 2.1-2.3 | +0.22 | — |
+| Cam Spencer | 115 | ast 5.6 vs 3-5.3; fg_pct .471 vs .452-.465 | +0.22 | — |
+| Christian Braun | 118 | fg_pct .522 vs .531-.560; ft_pct .774 vs .786-.815 | -0.22 | — |
+| Domantas Sabonis | 20 | tpm 0.9 vs 0.6-0.7 | +0.21 | — |
+| Devin Booker | 56 | ft_pct .873 vs .881-.884 | -0.21 | — |
+| Reed Sheppard | 63 | tpm 2.8 vs 2.2-2.6 | +0.21 | — |
+| Ayo Dosunmu | 81 | tpm 1.9 vs 1.5-1.7 | +0.21 | — |
+| Cade Cunningham | 23 | blk 0.7 vs 0.8-0.8; tov 3.7 vs 4-4.1 | +0.19 | — |
+| Peyton Watson | 106 | pts 14.5 vs 12.2-12.5; tpm 1.5 vs 1.2-1.3; tov 1.7 vs 1.3-1.4 | +0.19 | — |
+| Collin Gillespie | 79 | pts 12.7 vs 9.5-11.9; reb 4.1 vs 3.3-3.9; tpm 2.9 vs 2.1-2.7; tov 1.6 vs 1.1-1.4 | +0.18 | — |
+| Matas Buzelis | 95 | pts 16.2 vs 17.2-18.6 | -0.18 | — |
+| Tyler Herro | 66 | ast 4.1 vs 4.6-4.9; tpm 2.5 vs 2.9-3.2; tov 1.9 vs 2.2-2.3; ft_pct .904 vs .886-.894 | -0.17 | — |
+| Keegan Murray | 76 | pts 12.4 vs 13.3-16.1 | -0.17 | — |
+| Victor Wembanyama | 2 | ast 3.1 vs 3.3-3.6; tov 2.4 vs 2.6-2.9 | +0.16 | — |
+| Dyson Daniels | 22 | reb 6.8 vs 5.8-6.4; ast 5.9 vs 4.7-5.5; tpm 0.3 vs 0.5-0.6 | +0.16 | — |
+| Derik Queen | 136 | reb 7.1 vs 7.5-7.8 | -0.16 | — |
+| CJ McCollum | 121 | ft_pct .780 vs .749-.765 | +0.15 | — |
+| Austin Reaves | 31 | fg_pct .487 vs .470-.481 | +0.14 | — |
+| Brandon Ingram | 84 | tov 2.4 vs 2.6-2.7; ft_pct .811 vs .819-.826 | +0.14 | — |
+| Kevin Durant | 10 | ast 4.8 vs 3.8-4.3; tov 3.2 vs 2.9-2.9; fg_pct .515 vs .523-.524; ft_pct .876 vs .860-.863 | -0.11 | — |
+| Amen Thompson | 16 | ast 5.3 vs 4-5; tov 2.4 vs 2.1-2.2 | -0.11 | — |
+| Josh Giddey | 59 | ft_pct .763 vs .771-.776 | -0.11 | — |
+| Luke Kornet | 148 | reb 6.1 vs 5-5.8; fg_pct .613 vs .656-.662; ft_pct .812 vs .765-.804 | -0.11 | — |
+| Onyeka Okongwu | 33 | ast 3.1 vs 2.7-2.9 | +0.10 | — |
+| Cason Wallace | 100 | fg_pct .442 vs .449-.453 | -0.09 | — |
+| Jakob Poeltl | 114 | fg_pct .679 vs .653-.668; ft_pct .588 vs .618-.642 | -0.09 | — |
+| Neemias Queta | 83 | ft_pct .704 vs .714-.719 | -0.08 | — |
+| Isaiah Hartenstein | 111 | ft_pct .631 vs .642-.656 | -0.08 | — |
+| Zion Williamson | 112 | ast 3.2 vs 3.9-4.1; tov 2 vs 2.2-2.4; ft_pct .709 vs .696-.702 | +0.08 | — |
+| LaMelo Ball | 47 | ft_pct .882 vs .866-.874 | +0.07 | — |
+| Bobby Portis | 130 | tpm 2 vs 1.6-1.8; ft_pct .724 vs .765-.776 | +0.07 | — |
+| Bam Adebayo | 25 | ast 3.2 vs 3.6-3.8; tov 1.6 vs 1.8-1.9 | +0.06 | — |
+| John Collins | 71 | fg_pct .550 vs .541-.542; ft_pct .774 vs .799-.810 | -0.06 | — |
+| Myles Turner | 97 | ft_pct .750 vs .757-.759 | -0.06 | — |
+| Moussa Diabate | 128 | fg_pct .623 vs .607-.616 | +0.06 | — |
+| Nickeil Alexander-Walker | 48 | tpm 3.2 vs 2.6-3; tov 2.1 vs 1.7-1.9 | -0.05 | — |
+| Kel'el Ware | 26 | ft_pct .732 vs .714-.723 | +0.04 | — |
+| Grayson Allen | 133 | ast 3.3 vs 2.5-3; fg_pct .416 vs .422-.433 | +0.04 | — |
+| Tobias Harris | 135 | ft_pct .857 vs .863-.869 | -0.04 | — |
+| Mitchell Robinson | 144 | fg_pct .716 vs .685-.709 | +0.04 | — |
+| Stephen Curry | 17 | ast 4.7 vs 5-5.2; fg_pct .469 vs .453-.459; ft_pct .919 vs .926-.929 | +0.03 | — |
+| Jalen Suggs | 65 | ast 5.5 vs 4.8-5; blk 0.7 vs 0.8-0.8; ft_pct .834 vs .846-.866 | -0.03 | — |
+| Miles Bridges | 99 | fg_pct .460 vs .444-.451; ft_pct .823 vs .838-.845 | +0.03 | — |
+| Jalen Williams | 41 | ast 6 vs 5-5.3; tpm 0.8 vs 1.3-1.5; ft_pct .828 vs .805-.815 | +0.02 | — |
+| Jabari Smith Jr. | 94 | ast 1.9 vs 1.6-1.7; ft_pct .782 vs .791-.796 | +0.02 | — |
+| Tari Eason | 98 | tpm 1.6 vs 1.3-1.4; fg_pct .427 vs .441-.450 | -0.01 | — |
+| Robert Williams III | 116 | fg_pct .712 vs .687-.697; ft_pct .618 vs .651-.692 | -0.01 | — |
+| Naji Marshall | 147 | pts 15 vs 11.4-14.1; ast 3.3 vs 2.6-3.1; fg_pct .497 vs .505-.506; ft_pct .766 vs .775-.778 | +0.00 | — |
+

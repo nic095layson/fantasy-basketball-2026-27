@@ -1,0 +1,426 @@
+{
+ "top": 150,
+ "checkable": 145,
+ "players": 19,
+ "cells": 21,
+ "references": {
+  "Yahoo": "yahoo-proj-2026-10-13.csv",
+  "Hashtag": "hashtag-2026-10-12.csv",
+  "RotoBaller": "rotoballer-2026-09-29.csv",
+  "2025-26 actual": "arena/results/tuning_2026-10-08/bref_pergame_2025-26.csv"
+ },
+ "rows": [
+  {
+   "player": "Michael Porter Jr.",
+   "deck_rank": 32,
+   "refs": [
+    "2025-26 actual",
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "stl",
+     "ours": 0.7,
+     "lo": 0.8,
+     "hi": 1.1,
+     "z_beyond": -0.316,
+     "text": "stl 0.7 vs 0.8-1.1"
+    }
+   ],
+   "net_z": -0.32
+  },
+  {
+   "player": "Jalen Duren",
+   "deck_rank": 43,
+   "refs": [
+    "2025-26 actual",
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "stl",
+     "ours": 0.7,
+     "lo": 0.8,
+     "hi": 0.8,
+     "z_beyond": -0.316,
+     "text": "stl 0.7 vs 0.8-0.8"
+    }
+   ],
+   "net_z": -0.32
+  },
+  {
+   "player": "Luka Doncic",
+   "deck_rank": 4,
+   "refs": [
+    "2025-26 actual",
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "ft_pct",
+     "ours": 0.772,
+     "lo": 0.78,
+     "hi": 0.782,
+     "z_beyond": -0.264,
+     "text": "ft_pct .772 vs .780-.782"
+    }
+   ],
+   "net_z": -0.26
+  },
+  {
+   "player": "Tyrese Haliburton",
+   "deck_rank": 11,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "tov",
+     "ours": 1.5,
+     "lo": 1.7,
+     "hi": 1.7,
+     "z_beyond": 0.257,
+     "text": "tov 1.5 vs 1.7-1.7"
+    }
+   ],
+   "net_z": 0.26
+  },
+  {
+   "player": "Naz Reid",
+   "deck_rank": 52,
+   "refs": [
+    "2025-26 actual",
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "tov",
+     "ours": 1.9,
+     "lo": 1.6,
+     "hi": 1.7,
+     "z_beyond": -0.257,
+     "text": "tov 1.9 vs 1.6-1.7"
+    }
+   ],
+   "net_z": -0.26
+  },
+  {
+   "player": "Jalen Williams",
+   "deck_rank": 41,
+   "refs": [
+    "2025-26 actual",
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "ast",
+     "ours": 6.0,
+     "lo": 5.0,
+     "hi": 5.5,
+     "z_beyond": 0.249,
+     "text": "ast 6 vs 5-5.5"
+    }
+   ],
+   "net_z": 0.25
+  },
+  {
+   "player": "Domantas Sabonis",
+   "deck_rank": 20,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "tpm",
+     "ours": 0.9,
+     "lo": 0.6,
+     "hi": 0.7,
+     "z_beyond": 0.206,
+     "text": "tpm 0.9 vs 0.6-0.7"
+    }
+   ],
+   "net_z": 0.21
+  },
+  {
+   "player": "Cade Cunningham",
+   "deck_rank": 23,
+   "refs": [
+    "2025-26 actual",
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "blk",
+     "ours": 0.7,
+     "lo": 0.8,
+     "hi": 0.8,
+     "z_beyond": -0.197,
+     "text": "blk 0.7 vs 0.8-0.8"
+    }
+   ],
+   "net_z": -0.2
+  },
+  {
+   "player": "Luke Kornet",
+   "deck_rank": 148,
+   "refs": [
+    "2025-26 actual",
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "fg_pct",
+     "ours": 0.613,
+     "lo": 0.643,
+     "hi": 0.662,
+     "z_beyond": -0.194,
+     "text": "fg_pct .613 vs .643-.662"
+    }
+   ],
+   "net_z": -0.19
+  },
+  {
+   "player": "Keegan Murray",
+   "deck_rank": 76,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "pts",
+     "ours": 12.4,
+     "lo": 13.3,
+     "hi": 16.1,
+     "z_beyond": -0.166,
+     "text": "pts 12.4 vs 13.3-16.1"
+    }
+   ],
+   "net_z": -0.17
+  },
+  {
+   "player": "Naji Marshall",
+   "deck_rank": 147,
+   "refs": [
+    "2025-26 actual",
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "fg_pct",
+     "ours": 0.497,
+     "lo": 0.505,
+     "hi": 0.51,
+     "z_beyond": -0.144,
+     "text": "fg_pct .497 vs .505-.510"
+    }
+   ],
+   "net_z": -0.14
+  },
+  {
+   "player": "Franz Wagner",
+   "deck_rank": 30,
+   "refs": [
+    "2025-26 actual",
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "reb",
+     "ours": 6.0,
+     "lo": 5.2,
+     "hi": 5.7,
+     "z_beyond": 0.124,
+     "text": "reb 6 vs 5.2-5.7"
+    }
+   ],
+   "net_z": 0.12
+  },
+  {
+   "player": "Brandon Ingram",
+   "deck_rank": 84,
+   "refs": [
+    "2025-26 actual",
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "ft_pct",
+     "ours": 0.811,
+     "lo": 0.819,
+     "hi": 0.826,
+     "z_beyond": -0.12,
+     "text": "ft_pct .811 vs .819-.826"
+    }
+   ],
+   "net_z": -0.12
+  },
+  {
+   "player": "Giannis Antetokounmpo",
+   "deck_rank": 34,
+   "refs": [
+    "2025-26 actual",
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "tov",
+     "ours": 3.6,
+     "lo": 3.1,
+     "hi": 3.3,
+     "z_beyond": -0.385,
+     "text": "tov 3.6 vs 3.1-3.3"
+    },
+    {
+     "cat": "fg_pct",
+     "ours": 0.6,
+     "lo": 0.608,
+     "hi": 0.624,
+     "z_beyond": -0.242,
+     "text": "fg_pct .600 vs .608-.624"
+    },
+    {
+     "cat": "ft_pct",
+     "ours": 0.664,
+     "lo": 0.628,
+     "hi": 0.65,
+     "z_beyond": 0.512,
+     "text": "ft_pct .664 vs .628-.650"
+    }
+   ],
+   "net_z": -0.11
+  },
+  {
+   "player": "Jakob Poeltl",
+   "deck_rank": 114,
+   "refs": [
+    "2025-26 actual",
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "ft_pct",
+     "ours": 0.588,
+     "lo": 0.602,
+     "hi": 0.642,
+     "z_beyond": -0.096,
+     "text": "ft_pct .588 vs .602-.642"
+    }
+   ],
+   "net_z": -0.1
+  },
+  {
+   "player": "Jalen Suggs",
+   "deck_rank": 65,
+   "refs": [
+    "2025-26 actual",
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "ft_pct",
+     "ours": 0.834,
+     "lo": 0.846,
+     "hi": 0.866,
+     "z_beyond": -0.082,
+     "text": "ft_pct .834 vs .846-.866"
+    }
+   ],
+   "net_z": -0.08
+  },
+  {
+   "player": "CJ McCollum",
+   "deck_rank": 121,
+   "refs": [
+    "2025-26 actual",
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "ft_pct",
+     "ours": 0.78,
+     "lo": 0.749,
+     "hi": 0.772,
+     "z_beyond": 0.078,
+     "text": "ft_pct .780 vs .749-.772"
+    }
+   ],
+   "net_z": 0.08
+  },
+  {
+   "player": "Christian Braun",
+   "deck_rank": 118,
+   "refs": [
+    "2025-26 actual",
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "ft_pct",
+     "ours": 0.774,
+     "lo": 0.782,
+     "hi": 0.815,
+     "z_beyond": -0.06,
+     "text": "ft_pct .774 vs .782-.815"
+    }
+   ],
+   "net_z": -0.06
+  },
+  {
+   "player": "Tobias Harris",
+   "deck_rank": 135,
+   "refs": [
+    "2025-26 actual",
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "ft_pct",
+     "ours": 0.857,
+     "lo": 0.863,
+     "hi": 0.869,
+     "z_beyond": -0.043,
+     "text": "ft_pct .857 vs .863-.869"
+    }
+   ],
+   "net_z": -0.04
+  }
+ ]
+}

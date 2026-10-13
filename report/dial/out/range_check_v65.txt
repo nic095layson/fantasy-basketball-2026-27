@@ -1,0 +1,28 @@
+RANGE CHECK: 19 player(s) with 21 cell(s) outside every reference (145 of the top 150 checkable)
+
+## Range check (D-RN-3)
+
+Rule (owner, 2026-10-08): on a projection pass, every cell of a top-150 line that sits outside the range of ALL its references (three or more of: Yahoo `yahoo-proj-2026-10-13.csv`, Hashtag `hashtag-2026-10-12.csv`, RotoBaller `rotoballer-2026-09-29.csv`, 2025-26 actual `arena/results/tuning_2026-10-08/bref_pergame_2025-26.csv`; tolerance .005 on percentages, 5% with a 0.1 floor on counting stats) carries a one-line mechanism naming two dated outlets, or comes back inside the range. This page: 19 player(s), 21 cell(s), of 145 checkable top-150 lines. Net z is what the cells carry beyond the nearest reference in the deck's frame (positive flatters the player).
+
+| player | deck rank | cells outside every reference | net z | mechanism (two dated outlets) |
+|---|---|---|---|---|
+| Michael Porter Jr. | 32 | stl 0.7 vs 0.8-1.1 | -0.32 | — |
+| Jalen Duren | 43 | stl 0.7 vs 0.8-0.8 | -0.32 | — |
+| Luka Doncic | 4 | ft_pct .772 vs .780-.782 | -0.26 | — |
+| Tyrese Haliburton | 11 | tov 1.5 vs 1.7-1.7 | +0.26 | — |
+| Naz Reid | 52 | tov 1.9 vs 1.6-1.7 | -0.26 | — |
+| Jalen Williams | 41 | ast 6 vs 5-5.5 | +0.25 | — |
+| Domantas Sabonis | 20 | tpm 0.9 vs 0.6-0.7 | +0.21 | — |
+| Cade Cunningham | 23 | blk 0.7 vs 0.8-0.8 | -0.20 | — |
+| Luke Kornet | 148 | fg_pct .613 vs .643-.662 | -0.19 | — |
+| Keegan Murray | 76 | pts 12.4 vs 13.3-16.1 | -0.17 | — |
+| Naji Marshall | 147 | fg_pct .497 vs .505-.510 | -0.14 | — |
+| Franz Wagner | 30 | reb 6 vs 5.2-5.7 | +0.12 | — |
+| Brandon Ingram | 84 | ft_pct .811 vs .819-.826 | -0.12 | — |
+| Giannis Antetokounmpo | 34 | tov 3.6 vs 3.1-3.3; fg_pct .600 vs .608-.624; ft_pct .664 vs .628-.650 | -0.11 | — |
+| Jakob Poeltl | 114 | ft_pct .588 vs .602-.642 | -0.10 | — |
+| Jalen Suggs | 65 | ft_pct .834 vs .846-.866 | -0.08 | — |
+| CJ McCollum | 121 | ft_pct .780 vs .749-.772 | +0.08 | — |
+| Christian Braun | 118 | ft_pct .774 vs .782-.815 | -0.06 | — |
+| Tobias Harris | 135 | ft_pct .857 vs .863-.869 | -0.04 | — |
+
