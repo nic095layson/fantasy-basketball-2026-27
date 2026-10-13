@@ -1,0 +1,116 @@
+AUDIT 180 v2: tiers {'HIGH': 7, 'MEDIUM': 21, 'LOW': 69, 'UNANCHORED': 18, 'CLEAN': 65}; tests fired {'T1': 78, 'T2': 0, 'T3': 1, 'T4': 30, 'T5': 0, 'T6': 7, 'T7': 15}; references {'Yahoo': 'yahoo-proj-2026-10-13.csv', 'Hashtag': 'hashtag-2026-10-12.csv', 'RotoBaller': 'rotoballer-2026-10-13.csv', 'FantasyPros': 'fantasypros-2026-10-13.csv', 'cards': 'cards-2026-10-13.csv'}; refs per line {'0': 0, '1': 1, '2': 5, '3': 6, '4': 19, '5': 149}
+  1 Nikola Jokic (DEN) [LOW] refs 5 net_z -0.09 age 31 seasons ['2023-24', '2024-25', '2025-26'] | T1 tov 3.7 vs 3.3-3.5 (-0.26 z); T1 ft_pct 0.829 vs 0.816-0.822 (+0.17 z)
+  2 Shai Gilgeous-Alexander (OKC) [LOW] refs 5 net_z -0.26 age 28 seasons ['2023-24', '2024-25', '2025-26'] | T1 ft_pct 0.874 vs 0.883-0.889 (-0.26 z)
+  3 Victor Wembanyama (SAS) [LOW] refs 5 net_z +0.16 age 23 seasons ['2023-24', '2024-25', '2025-26'] | T1 ast 3.1 vs 3.3-3.6 (-0.10 z); T1 tov 2.4 vs 2.6-2.9 (+0.26 z)
+  4 Luka Doncic (LAL) [LOW] refs 5 net_z -0.30 age 27 seasons ['2023-24', '2024-25', '2025-26'] | T1 ft_pct 0.772 vs 0.781-0.785 (-0.30 z)
+  6 Kawhi Leonard (TOR) [LOW] refs 5 net_z +0.00 age 35 seasons ['2023-24', '2024-25', '2025-26'] | T6 age 35: above the outside average in reb, ast (no decline in the method)
+  7 Jamal Murray (DEN) [HIGH] refs 5 net_z +0.51 age 29 seasons ['2023-24', '2024-25', '2025-26'] | T1 ast 7.1 vs 6.3-6.7 (+0.20 z); T1 tpm 3.3 vs 2.6-3 (+0.31 z)
+  8 Donovan Mitchell (CLE) [LOW] refs 5 net_z -0.26 age 30 seasons ['2023-24', '2024-25', '2025-26'] | T1 tov 2.8 vs 2.6-2.6 (-0.26 z)
+ 10 Stephen Curry (GSW) [LOW] refs 5 net_z +0.15 age 38 seasons ['2023-24', '2024-25', '2025-26'] | T1 ast 4.7 vs 5-5.3 (-0.15 z); T1 fg_pct 0.469 vs 0.451-0.459 (+0.30 z)
+ 11 Tyrese Haliburton (IND) [LOW] refs 5 net_z +0.26 age 26 seasons ['2022-23', '2023-24', '2024-25'] | T1 tov 1.5 vs 1.7-1.9 (+0.26 z)
+ 12 Trey Murphy III (NOP) [LOW] refs 5 net_z +0.00 age 26 seasons ['2023-24', '2024-25', '2025-26'] | T4 gp 70 vs three-season average 59 with a season under 60
+ 13 Jalen Johnson (ATL) [LOW] refs 5 net_z +0.00 age 25 seasons ['2023-24', '2024-25', '2025-26'] | T4 gp 65 vs three-season average 55 with a season under 60
+ 14 Kevin Durant (HOU) [MEDIUM] refs 5 net_z +0.19 age 38 seasons ['2023-24', '2024-25', '2025-26'] | T1 ast 4.8 vs 3.8-4.4 (+0.20 z); T1 tov 3.2 vs 2.9-3 (-0.26 z); T1 ft_pct 0.876 vs 0.859-0.863 (+0.25 z); T6 age 38: above the outside average in pts, reb, ast (no decline in the method)
+ 18 Chet Holmgren (OKC) [LOW] refs 5 net_z +0.20 age 24 seasons ['2023-24', '2024-25', '2025-26'] | T1 fg_pct 0.549 vs 0.533-0.538 (+0.20 z)
+ 19 Scottie Barnes (TOR) [LOW] refs 5 net_z +0.33 age 25 seasons ['2023-24', '2024-25', '2025-26'] | T1 fg_pct 0.496 vs 0.477-0.486 (+0.23 z); T1 ft_pct 0.801 vs 0.784-0.793 (+0.10 z)
+ 20 Domantas Sabonis (SAC) [LOW] refs 5 net_z +0.21 age 30 seasons ['2022-23', '2023-24', '2024-25'] | T1 tpm 0.9 vs 0.6-0.7 (+0.21 z)
+ 21 Lauri Markkanen (UTA) [LOW] refs 5 net_z +0.00 age 29 seasons ['2023-24', '2024-25', '2025-26'] | T4 gp 66 vs three-season average 48 with a season under 60
+ 23 Dyson Daniels (ATL) [MEDIUM] refs 5 net_z +0.05 age 23 seasons ['2023-24', '2024-25', '2025-26'] | T1 ast 5.9 vs 4.7-5.6 (+0.15 z); T1 tpm 0.3 vs 0.4-0.6 (-0.10 z); T7 every outside rank 25+ places below ours (we are high) {"Yahoo": 62, "Hashtag": 64, "RotoBaller": 55, "RotoWire": 69, "Rotoworld": 56}
+ 24 Cade Cunningham (DET) [LOW] refs 5 net_z -0.20 age 25 seasons ['2023-24', '2024-25', '2025-26'] | T1 blk 0.7 vs 0.8-0.8 (-0.20 z)
+ 27 Kel'el Ware (MIL) [LOW] refs 5 net_z +0.00 age 22 seasons ['2024-25', '2025-26'] | T4 mpg 26.8 vs three-season high 22.2
+ 29 Derrick White (BOS) [LOW] refs 5 net_z -0.21 age 32 seasons ['2023-24', '2024-25', '2025-26'] | T1 tpm 2.7 vs 2.9-3.1 (-0.21 z)
+ 31 Michael Porter Jr (BKN) [LOW] refs 5 net_z -0.32 age 28 seasons ['2023-24', '2024-25', '2025-26'] | T1 stl 0.7 vs 0.8-1 (-0.32 z)
+ 32 Franz Wagner (ORL) [MEDIUM] refs 5 net_z -0.31 age 25 seasons ['2023-24', '2024-25', '2025-26'] | T1 reb 6 vs 5.4-5.7 (+0.12 z); T1 ast 3.8 vs 4.1-4.3 (-0.15 z); T1 ft_pct 0.832 vs 0.845-0.852 (-0.28 z); T4 gp 66 vs three-season average 55 with a season under 60
+ 37 Evan Mobley (CLE) [LOW] refs 5 net_z +0.00 age 25 seasons ['2023-24', '2024-25', '2025-26'] | T4 gp 74 vs three-season average 62 with a season under 60
+ 39 Giannis Antetokounmpo (MIA) [LOW] refs 5 net_z +0.33 age 32 seasons ['2023-24', '2024-25', '2025-26'] | T1 fg_pct 0.6 vs 0.606-0.624 (-0.18 z); T1 ft_pct 0.664 vs 0.628-0.65 (+0.51 z)
+ 41 Cooper Flagg (DAL) [UNANCHORED] refs 5 net_z -0.41 age 20 seasons ['2025-26'] | T1 pts 21 vs 22.4-25.3 (-0.26 z); T1 ast 4.5 vs 4.8-5.1 (-0.15 z)
+ 42 Jalen Williams (OKC) [MEDIUM] refs 5 net_z +0.02 age 25 seasons ['2023-24', '2024-25', '2025-26'] | T1 ast 6 vs 5-5.3 (+0.35 z); T1 tpm 0.8 vs 1.3-1.5 (-0.51 z); T1 ft_pct 0.828 vs 0.805-0.815 (+0.18 z); T4 gp 68 vs three-season average 58 with a season under 60
+ 43 Jalen Duren (DET) [LOW] refs 5 net_z -0.47 age 23 seasons ['2023-24', '2024-25', '2025-26'] | T1 ast 2 vs 2.3-2.5 (-0.15 z); T1 stl 0.7 vs 0.8-0.9 (-0.32 z)
+ 44 Cameron Boozer (MEM) [UNANCHORED] refs 5 net_z +0.00 age None seasons [] | 
+ 45 Ty Jerome (MEM) [LOW] refs 5 net_z +0.00 age 29 seasons ['2021-22', '2022-23', '2024-25'] | T4 mpg 27.6 vs three-season high 19.9
+ 48 Nickeil Alexander-Walker (ATL) [LOW] refs 5 net_z -0.05 age 28 seasons ['2023-24', '2024-25', '2025-26'] | T1 tpm 3.2 vs 2.6-3 (+0.21 z); T1 tov 2.1 vs 1.7-1.9 (-0.26 z)
+ 52 Naz Reid (CHA) [MEDIUM] refs 5 net_z -0.04 age 27 seasons ['2023-24', '2024-25', '2025-26'] | T1 ft_pct 0.731 vs 0.737-0.756 (-0.04 z); T4 mpg 31 vs three-season high 27.5
+ 53 Zach Edey (MEM) [UNANCHORED] refs 5 net_z +0.00 age 24 seasons ['2024-25'] | 
+ 54 Devin Booker (PHX) [LOW] refs 5 net_z -0.16 age 30 seasons ['2023-24', '2024-25', '2025-26'] | T1 ft_pct 0.873 vs 0.879-0.884 (-0.16 z)
+ 56 Alperen Sengun (HOU) [LOW] refs 5 net_z -0.26 age 24 seasons ['2023-24', '2024-25', '2025-26'] | T1 tov 3.2 vs 2.9-3 (-0.26 z)
+ 57 LeBron James (PHI) [LOW] refs 5 net_z +0.00 age 42 seasons ['2023-24', '2024-25', '2025-26'] | T6 age 42: above the outside average in pts, ast (no decline in the method)
+ 59 VJ Edgecombe (PHI) [UNANCHORED] refs 5 net_z +0.00 age 21 seasons ['2025-26'] | 
+ 61 Darius Garland (LAC) [LOW] refs 5 net_z +0.00 age 27 seasons ['2023-24', '2024-25', '2025-26'] | T4 gp 70 vs three-season average 59 with a season under 60
+ 62 De'Aaron Fox (SAS) [LOW] refs 5 net_z -0.18 age 29 seasons ['2023-24', '2024-25', '2025-26'] | T1 ft_pct 0.756 vs 0.772-0.799 (-0.18 z)
+ 63 Reed Sheppard (HOU) [LOW] refs 5 net_z +0.00 age 22 seasons ['2024-25', '2025-26'] | T7 every outside rank 25+ places below ours (we are high) {"Yahoo": 141, "Hashtag": 118, "RotoBaller": 129, "RotoWire": 136, "Rotoworld": 126}
+ 64 Tyler Herro (MIL) [MEDIUM] refs 5 net_z -0.28 age 27 seasons ['2023-24', '2024-25', '2025-26'] | T1 ast 4.1 vs 4.6-4.9 (-0.25 z); T1 tpm 2.5 vs 2.9-3.2 (-0.41 z); T1 tov 1.9 vs 2.2-2.3 (+0.38 z); T4 gp 70 vs three-season average 51 with a season under 60
+ 65 Mikal Bridges (NYK) [LOW] refs 5 net_z +0.26 age 30 seasons ['2023-24', '2024-25', '2025-26'] | T1 tov 1 vs 1.2-1.3 (+0.26 z)
+ 66 Kon Knueppel (CHA) [UNANCHORED] refs 5 net_z +0.00 age 21 seasons ['2025-26'] | 
+ 67 Jalen Suggs (ORL) [LOW] refs 5 net_z +0.25 age 25 seasons ['2023-24', '2024-25', '2025-26'] | T1 ast 5.5 vs 4-5 (+0.25 z)
+ 68 Kristaps Porzingis (GSW) [MEDIUM] refs 4 net_z +0.00 age 31 seasons ['2023-24', '2024-25', '2025-26'] | T4 gp 54 vs three-season average 44 with a season under 60; T7 every outside rank 25+ places below ours (we are high) {"Yahoo": 154, "Hashtag": 96, "RotoWire": 128, "Rotoworld": 115}
+ 70 Brandon Miller (CHA) [LOW] refs 5 net_z -0.31 age 24 seasons ['2023-24', '2024-25', '2025-26'] | T1 tpm 3.1 vs 3.4-3.5 (-0.31 z)
+ 71 John Collins (DET) [LOW] refs 5 net_z -0.04 age 29 seasons ['2023-24', '2024-25', '2025-26'] | T1 fg_pct 0.55 vs 0.539-0.542 (+0.14 z); T1 ft_pct 0.774 vs 0.796-0.81 (-0.18 z)
+ 72 Yaxel Lendeborg (GSW) [UNANCHORED] refs 5 net_z +0.00 age None seasons [] | 
+ 79 Collin Gillespie (PHX) [HIGH] refs 5 net_z +0.18 age 27 seasons ['2024-25', '2025-26'] | T1 pts 12.7 vs 9.5-11.9 (+0.15 z); T1 reb 4.1 vs 3.3-3.9 (+0.08 z); T1 tpm 2.9 vs 2.1-2.7 (+0.21 z); T1 tov 1.6 vs 1.1-1.4 (-0.26 z); T4 gp 75 vs three-season average 56 with a season under 60; T7 every outside rank 25+ places below ours (we are high) {"Yahoo": 116, "Hashtag": 126, "RotoBaller": 155, "RotoWire": 135, "Rotoworld": 148}
+ 80 Jarrett Allen (CLE) [LOW] refs 5 net_z -0.26 age 28 seasons ['2023-24', '2024-25', '2025-26'] | T1 fg_pct 0.639 vs 0.656-0.676 (-0.26 z)
+ 83 Neemias Queta (BOS) [MEDIUM] refs 5 net_z -0.04 age 27 seasons ['2023-24', '2024-25', '2025-26'] | T1 ft_pct 0.704 vs 0.709-0.719 (-0.04 z); T4 gp 68 vs three-season average 55 with a season under 60
+ 84 Brandon Ingram (LAC) [LOW] refs 4 net_z +0.26 age 29 seasons ['2022-23', '2023-24', '2025-26'] | T1 tov 2.4 vs 2.6-2.8 (+0.26 z)
+ 86 Ivica Zubac (IND) [LOW] refs 5 net_z -0.29 age 29 seasons ['2023-24', '2024-25', '2025-26'] | T1 tov 1.8 vs 1.5-1.6 (-0.26 z); T1 fg_pct 0.603 vs 0.615-0.629 (-0.19 z); T1 ft_pct 0.716 vs 0.678-0.7 (+0.16 z)
+ 89 Tre Jones (CHI) [LOW] refs 5 net_z +0.26 age 27 seasons ['2023-24', '2024-25', '2025-26'] | T1 pts 13.7 vs 9.3-12.3 (+0.26 z)
+ 92 Caleb Wilson (CHI) [UNANCHORED] refs 5 net_z +0.00 age None seasons [] | 
+ 93 Saddiq Bey (NOP) [LOW] refs 5 net_z +0.00 age 27 seasons ['2022-23', '2023-24', '2025-26'] | T7 every outside rank 25+ places below ours (we are high) {"Yahoo": 151, "Hashtag": 132, "RotoBaller": 157, "RotoWire": 131, "Rotoworld": 169}
+ 95 Jabari Smith Jr (HOU) [LOW] refs 5 net_z +0.10 age 23 seasons ['2023-24', '2024-25', '2025-26'] | T1 ast 1.9 vs 1.5-1.7 (+0.10 z)
+ 98 Tari Eason (HOU) [LOW] refs 5 net_z +0.21 age 25 seasons ['2022-23', '2024-25', '2025-26'] | T1 tpm 1.6 vs 1.2-1.4 (+0.21 z)
+ 99 Miles Bridges (PHX) [LOW] refs 5 net_z -0.16 age 28 seasons ['2023-24', '2024-25', '2025-26'] | T1 ft_pct 0.823 vs 0.838-0.846 (-0.16 z)
+100 Toumani Camara (POR) [LOW] refs 5 net_z +0.32 age 26 seasons ['2023-24', '2024-25', '2025-26'] | T1 pts 13.5 vs 10.7-12.6 (+0.17 z); T1 tpm 2.7 vs 1.8-2.3 (+0.41 z); T1 tov 1.8 vs 1.4-1.6 (-0.26 z)
+102 Alex Sarr (WAS) [LOW] refs 5 net_z +0.00 age 21 seasons ['2024-25', '2025-26'] | T4 gp 72 vs three-season average 58 with a season under 60
+103 Bradley Beal (LAC) [HIGH] refs 3 net_z +1.03 age 33 seasons ['2022-23', '2023-24', '2024-25'] | T1 pts 16.7 vs 9.8-13.9 (+0.52 z); T1 reb 3.3 vs 2-2.8 (+0.21 z); T1 ast 3.7 vs 2.3-3 (+0.35 z); T1 tpm 1.9 vs 1.1-1.7 (+0.21 z); T1 tov 1.9 vs 1.2-1.7 (-0.26 z); T4 mpg 32.1 vs outside 27.5/23.9 (Hashtag/FantasyPros)
+106 Ajay Mitchell (OKC) [LOW] refs 4 net_z +0.00 age 24 seasons ['2024-25', '2025-26'] | T4 gp 68 vs three-season average 46 with a season under 60
+107 Rudy Gobert (MIN) [MEDIUM] refs 5 net_z -0.27 age 34 seasons ['2023-24', '2024-25', '2025-26'] | T1 ft_pct 0.562 vs 0.583-0.599 (-0.27 z); T6 age 34: above the outside average in reb, ast (no decline in the method)
+109 Darryn Peterson (UTA) [UNANCHORED] refs 5 net_z +0.00 age None seasons [] | 
+110 Julian Champagnie (SAS) [MEDIUM] refs 5 net_z +0.12 age 25 seasons ['2023-24', '2024-25', '2025-26'] | T1 reb 5.8 vs 4.4-5.4 (+0.16 z); T1 ft_pct 0.847 vs 0.855-0.87 (-0.04 z); T7 every outside rank 25+ places below ours (we are high) {"Yahoo": 173, "Hashtag": 165, "RotoBaller": 188, "Rotoworld": 194}
+112 Deandre Ayton (WAS) [HIGH] refs 3 net_z +1.01 age 28 seasons ['2023-24', '2024-25', '2025-26'] | T1 pts 12.1 vs 9.4-11.5 (+0.11 z); T1 reb 8 vs 6.9-7.6 (+0.16 z); T1 blk 0.9 vs 0.7-0.7 (+0.39 z); T1 fg_pct 0.647 vs 0.592-0.621 (+0.35 z)
+113 Zion Williamson (NOP) [MEDIUM] refs 5 net_z +0.08 age 26 seasons ['2023-24', '2024-25', '2025-26'] | T1 ast 3.2 vs 3.9-4.3 (-0.35 z); T1 tov 2 vs 2.2-2.5 (+0.26 z); T1 ft_pct 0.709 vs 0.696-0.702 (+0.17 z); T7 every outside rank 25+ places above ours (we are low) {"Yahoo": 81, "Hashtag": 78, "RotoBaller": 78, "RotoWire": 82, "Rotoworld": 71}
+114 Jakob Poeltl (TOR) [LOW] refs 5 net_z -0.04 age 31 seasons ['2023-24', '2024-25', '2025-26'] | T1 fg_pct 0.679 vs 0.653-0.668 (+0.12 z); T1 ft_pct 0.588 vs 0.612-0.642 (-0.16 z)
+115 Cam Spencer (MEM) [MEDIUM] refs 3 net_z +0.22 age 26 seasons ['2024-25', '2025-26'] | T1 ast 5.6 vs 3-5.3 (+0.15 z); T1 fg_pct 0.471 vs 0.452-0.465 (+0.07 z); T4 gp 68 vs three-season average 48 with a season under 60
+116 Robert Williams III (POR) [LOW] refs 5 net_z -0.01 age 29 seasons ['2021-22', '2022-23', '2025-26'] | T1 fg_pct 0.712 vs 0.686-0.697 (+0.10 z); T1 ft_pct 0.618 vs 0.651-0.692 (-0.11 z)
+117 Zach LaVine (SAC) [LOW] refs 5 net_z +0.00 age 31 seasons ['2023-24', '2024-25', '2025-26'] | T4 gp 64 vs three-season average 46 with a season under 60
+118 Kyshawn George (WAS) [LOW] refs 5 net_z +0.00 age 23 seasons ['2024-25', '2025-26'] | T4 gp 68 vs three-season average 58 with a season under 60
+119 Christian Braun (DEN) [LOW] refs 4 net_z -0.22 age 25 seasons ['2023-24', '2024-25', '2025-26'] | T1 fg_pct 0.522 vs 0.531-0.56 (-0.13 z); T1 ft_pct 0.774 vs 0.786-0.815 (-0.09 z)
+120 Paolo Banchero (ORL) [LOW] refs 5 net_z -0.26 age 24 seasons ['2023-24', '2024-25', '2025-26'] | T1 pts 22 vs 23.4-24.3 (-0.26 z); T1 tpm 1.2 vs 1.4-1.5 (-0.21 z); T1 ft_pct 0.764 vs 0.748-0.756 (+0.21 z)
+121 CJ McCollum (ATL) [LOW] refs 5 net_z +0.10 age 35 seasons ['2023-24', '2024-25', '2025-26'] | T1 ft_pct 0.78 vs 0.749-0.77 (+0.10 z)
+122 Cam Johnson (DEN) [LOW] refs 5 net_z -0.22 age 30 seasons ['2023-24', '2024-25', '2025-26'] | T1 pts 12.1 vs 12.9-15.6 (-0.15 z); T1 ft_pct 0.843 vs 0.853-0.875 (-0.07 z)
+123 Aaron Gordon (DEN) [LOW] refs 5 net_z +0.00 age 31 seasons ['2023-24', '2024-25', '2025-26'] | T4 gp 66 vs three-season average 53 with a season under 60
+124 Jrue Holiday (POR) [LOW] refs 5 net_z +0.00 age 36 seasons ['2023-24', '2024-25', '2025-26'] | T6 age 36: above the outside average in pts, reb, ast (no decline in the method)
+125 Wendell Carter Jr (ORL) [LOW] refs 4 net_z +0.16 age 27 seasons ['2023-24', '2024-25', '2025-26'] | T1 fg_pct 0.511 vs 0.49-0.504 (+0.09 z); T1 ft_pct 0.775 vs 0.754-0.768 (+0.07 z)
+126 Kris Dunn (LAC) [MEDIUM] refs 4 net_z -0.03 age 32 seasons ['2023-24', '2024-25', '2025-26'] | T1 pts 7.1 vs 5.6-6.6 (+0.09 z); T1 ast 3.6 vs 2.7-3.2 (+0.20 z); T1 tov 1.4 vs 1-1.1 (-0.38 z); T1 ft_pct 0.757 vs 0.731-0.739 (+0.06 z); T7 every outside rank 25+ places below ours (we are high) {"Yahoo": 189, "Hashtag": 193, "Rotoworld": 184}
+127 Nic Claxton (CHI) [LOW] refs 5 net_z +0.10 age 27 seasons ['2023-24', '2024-25', '2025-26'] | T1 ast 3.7 vs 3.1-3.5 (+0.10 z)
+133 Ja Morant (POR) [MEDIUM] refs 5 net_z +0.00 age 27 seasons ['2021-22', '2022-23', '2024-25'] | T3 ft_pct 0.845 vs career 0.728-0.824; T4 mpg 25.5 vs outside 30.4/29.5/29.5 (Hashtag/FantasyPros/cards)
+135 Derik Queen (NOP) [UNANCHORED] refs 5 net_z +0.00 age 22 seasons ['2025-26'] | 
+136 Tobias Harris (SAS) [LOW] refs 5 net_z -0.04 age 34 seasons ['2023-24', '2024-25', '2025-26'] | T1 ft_pct 0.857 vs 0.863-0.869 (-0.04 z)
+140 AJ Dybantsa (WAS) [UNANCHORED] refs 4 net_z -0.28 age None seasons [] | T1 fg_pct 0.45 vs 0.462-0.478 (-0.28 z); T7 every outside rank 25+ places above ours (we are low) {"Yahoo": 93, "RotoBaller": 104, "RotoWire": 101, "Rotoworld": 89}
+142 Coby White (CHA) [MEDIUM] refs 5 net_z -0.24 age 26 seasons ['2023-24', '2024-25', '2025-26'] | T1 ft_pct 0.83 vs 0.843-0.864 (-0.24 z); T7 every outside rank 25+ places above ours (we are low) {"Yahoo": 86, "Hashtag": 86, "RotoBaller": 96, "RotoWire": 68, "Rotoworld": 76}
+144 Ryan Kalkbrenner (CHA) [UNANCHORED] refs 5 net_z +0.00 age 25 seasons ['2025-26'] | T7 every outside rank 25+ places below ours (we are high) {"Yahoo": 246, "Hashtag": 188, "RotoBaller": 185}
+145 Scotty Pippen Jr. (MEM) [UNANCHORED] refs 5 net_z +0.00 age 26 seasons ['2024-25'] | 
+146 Mitchell Robinson (BOS) [LOW] refs 5 net_z +0.00 age 28 seasons ['2022-23', '2023-24', '2025-26'] | T4 gp 64 vs three-season average 50 with a season under 60
+147 Luke Kornet (SAS) [MEDIUM] refs 4 net_z -0.11 age 31 seasons ['2023-24', '2024-25', '2025-26'] | T1 reb 6.1 vs 4.1-5.8 (+0.12 z); T1 fg_pct 0.613 vs 0.655-0.662 (-0.27 z); T1 ft_pct 0.812 vs 0.765-0.804 (+0.04 z); T7 every outside rank 25+ places below ours (we are high) {"Yahoo": 254, "Hashtag": 189, "RotoBaller": 214}
+148 Naji Marshall (DAL) [LOW] refs 4 net_z +0.01 age 29 seasons ['2023-24', '2024-25', '2025-26'] | T1 pts 15 vs 10.7-14.1 (+0.17 z); T1 ast 3.3 vs 2.5-3.1 (+0.10 z); T1 fg_pct 0.497 vs 0.505-0.508 (-0.14 z); T1 ft_pct 0.766 vs 0.775-0.778 (-0.12 z)
+149 Aaron Nesmith (IND) [HIGH] refs 5 net_z -0.53 age 27 seasons ['2023-24', '2024-25', '2025-26'] | T1 fg_pct 0.427 vs 0.45-0.474 (-0.42 z); T1 ft_pct 0.829 vs 0.843-0.862 (-0.11 z); T4 gp 68 vs three-season average 54 with a season under 60
+150 Santi Aldama (DAL) [LOW] refs 5 net_z +0.00 age 26 seasons ['2023-24', '2024-25', '2025-26'] | T4 gp 68 vs three-season average 56 with a season under 60
+152 Miles McBride (NYK) [MEDIUM] refs 2 net_z +0.40 age 26 seasons ['2023-24', '2024-25', '2025-26'] | T1 pts 11.9 vs 9.1-10.9 (+0.18 z); T1 tpm 2.7 vs 2-2.3 (+0.41 z); T1 tov 0.8 vs 0.6-0.7 (-0.13 z); T1 ft_pct 0.785 vs 0.803-0.803 (-0.06 z); T4 gp 72 vs three-season average 58 with a season under 60; T4 gp 72 vs outside 66 (Yahoo)
+153 Jaylon Tyson (CLE) [LOW] refs 4 net_z +0.00 age 24 seasons ['2024-25', '2025-26'] | T4 gp 72 vs three-season average 56 with a season under 60
+154 Sandro Mamukelashvili (LAL) [HIGH] refs 3 net_z -1.00 age 27 seasons ['2023-24', '2024-25', '2025-26'] | T1 pts 11 vs 12-13.7 (-0.18 z); T1 reb 4.9 vs 5.6-6.2 (-0.29 z); T1 stl 0.7 vs 0.8-0.9 (-0.32 z); T1 tpm 1.4 vs 1.6-1.9 (-0.21 z); T4 gp 74 vs three-season average 62 with a season under 60
+155 Jordan Goodwin (PHX) [LOW] refs 1 net_z +0.00 age 28 seasons ['2023-24', '2024-25', '2025-26'] | T4 gp 75 vs three-season average 52 with a season under 60; T4 gp 75 vs outside 65 (Yahoo)
+156 Cedric Coward (MEM) [UNANCHORED] refs 5 net_z +0.00 age 23 seasons ['2025-26'] | T7 every outside rank 25+ places above ours (we are low) {"Yahoo": 75, "Hashtag": 117, "RotoBaller": 98, "RotoWire": 90, "Rotoworld": 117}
+158 Kyle Filipowski (UTA) [LOW] refs 4 net_z +0.44 age 23 seasons ['2024-25', '2025-26'] | T1 pts 11.4 vs 9.2-10.7 (+0.13 z); T1 reb 7.2 vs 5.7-6.7 (+0.21 z); T1 ast 2.6 vs 2.1-2.4 (+0.10 z)
+159 Marcus Smart (HOU) [HIGH] refs 2 net_z +1.95 age 32 seasons ['2022-23', '2024-25', '2025-26'] | T1 pts 9.3 vs 7.8-7.8 (+0.28 z); T1 reb 2.8 vs 2.1-2.3 (+0.21 z); T1 ast 3 vs 2.5-2.7 (+0.15 z); T1 stl 1.5 vs 0.6-1.1 (+1.26 z); T1 tpm 1.6 vs 1.2-1.3 (+0.31 z); T1 tov 1.5 vs 1.1-1.3 (-0.26 z)
+160 Derrick Jones Jr (LAC) [MEDIUM] refs 4 net_z +0.15 age 29 seasons ['2023-24', '2024-25', '2025-26'] | T1 ast 1.4 vs 1-1.1 (+0.15 z); T7 every outside rank 25+ places below ours (we are high) {"Yahoo": 223, "Hashtag": 199, "RotoBaller": 187}
+161 Maxime Raynaud (SAC) [UNANCHORED] refs 2 net_z +0.00 age 23 seasons ['2025-26'] | 
+163 Justin Champagnie (WAS) [MEDIUM] refs 2 net_z +0.30 age 25 seasons ['2021-22', '2024-25', '2025-26'] | T1 pts 8.6 vs 7.6-8.1 (+0.09 z); T1 reb 5.6 vs 4.9-5.2 (+0.16 z); T1 ft_pct 0.776 vs 0.754-0.766 (+0.05 z); T4 gp 73 vs three-season average 56 with a season under 60; T4 gp 73 vs outside 58 (Yahoo)
+164 Kelly Oubre (IND) [LOW] refs 4 net_z +0.21 age 31 seasons ['2023-24', '2024-25', '2025-26'] | T1 tpm 1.5 vs 1.1-1.3 (+0.21 z)
+165 Quentin Grimes (LAL) [LOW] refs 5 net_z +0.14 age 26 seasons ['2023-24', '2024-25', '2025-26'] | T1 ft_pct 0.824 vs 0.799-0.811 (+0.14 z)
+167 Al Horford (GSW) [MEDIUM] refs 3 net_z +0.34 age 40 seasons ['2023-24', '2024-25', '2025-26'] | T1 pts 8.6 vs 5.8-8.1 (+0.09 z); T1 ast 2.6 vs 1.6-2.3 (+0.15 z); T1 fg_pct 0.453 vs 0.435-0.438 (+0.17 z); T1 ft_pct 0.819 vs 0.857-0.885 (-0.07 z); T6 age 40: above the outside average in pts, reb, ast (no decline in the method)
+168 Bennedict Mathurin (NOP) [LOW] refs 4 net_z +0.09 age 24 seasons ['2023-24', '2024-25', '2025-26'] | T1 pts 17.6 vs 11.2-16.5 (+0.20 z); T1 reb 5.4 vs 3.5-5.1 (+0.12 z); T1 ast 2.4 vs 1.4-2.1 (+0.15 z); T1 tov 2.2 vs 1.3-2 (-0.26 z); T1 fg_pct 0.434 vs 0.44-0.443 (-0.12 z)
+170 Dylan Cardwell (SAC) [UNANCHORED] refs 2 net_z +0.95 age 25 seasons ['2025-26'] | T1 pts 5.4 vs 3.1-4.7 (+0.13 z); T1 reb 7.5 vs 4.3-6.7 (+0.33 z); T1 ast 1.4 vs 0.8-1.2 (+0.10 z); T1 blk 1.5 vs 0.9-1.3 (+0.39 z)
+171 Keaton Wagler (LAC) [UNANCHORED] refs 3 net_z +0.34 age None seasons [] | T1 pts 16.5 vs 11.6-14.3 (+0.41 z); T1 tpm 2.3 vs 1.4-1.5 (+0.82 z); T1 tov 2.4 vs 1.5-2.2 (-0.26 z); T1 fg_pct 0.43 vs 0.462-0.508 (-0.70 z); T1 ft_pct 0.82 vs 0.697-0.814 (+0.07 z)
+173 Darius Acuff (SAC) [UNANCHORED] refs 5 net_z +0.00 age None seasons [] | 
+174 T.J. McConnell (IND) [MEDIUM] refs 4 net_z +0.04 age 34 seasons ['2023-24', '2024-25', '2025-26'] | T1 ft_pct 0.836 vs 0.767-0.814 (+0.04 z); T6 age 34: above the outside average in pts, ast (no decline in the method)
+175 Collin Murray-Boyles (TOR) [UNANCHORED] refs 5 net_z +0.00 age 21 seasons ['2025-26'] | T7 every outside rank 25+ places above ours (we are low) {"Yahoo": 102, "Hashtag": 108, "RotoBaller": 90, "RotoWire": 109, "Rotoworld": 88}
+176 Dillon Brooks (PHX) [LOW] refs 5 net_z +0.00 age 31 seasons ['2023-24', '2024-25', '2025-26'] | T1 pts 20 vs 15.9-18.6 (+0.26 z); T1 tov 1.8 vs 1.3-1.6 (-0.26 z)
+178 Bilal Coulibaly (WAS) [LOW] refs 4 net_z +0.18 age 22 seasons ['2023-24', '2024-25', '2025-26'] | T1 pts 11.7 vs 9.3-10.7 (+0.18 z)
+179 Duncan Robinson (DET) [LOW] refs 5 net_z +0.13 age 32 seasons ['2023-24', '2024-25', '2025-26'] | T1 tov 0.7 vs 0.8-1.4 (+0.13 z)
