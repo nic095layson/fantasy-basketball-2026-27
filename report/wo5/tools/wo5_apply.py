@@ -21,7 +21,9 @@ Assertions (any failure exits 1 and writes nothing):
   A5 points identity: |pts - (2*FGA*FG% + 3PM + FTA*FT%)| <= 0.25 on every written row (rounding only)
   A6 sanity: percentages in (0, 1); counts >= 0; FGA <= 30; points <= 40; minutes in [4, 40]
   A7 no deck note carries "];" (the build's non-greedy PLAYERS match would stop there — D-1006-3)
-A second run on its own output changes nothing (idempotent): the WO-5 note entry is replaced, not stacked."""
+A second run on its own output changes nothing (idempotent): the WO-5 note entry is replaced, not stacked.
+--keep-unchanged-notes (MG pass, 2026-10-13): a deck row whose eleven values are unchanged keeps its existing note, so a
+re-run dated 10/13 re-dates only the rows whose line moved."""
 import argparse, csv, io, json, os, re, sys, unicodedata
 
 STAT = ["fg_pct", "fga", "ft_pct", "fta", "tpm", "pts", "reb", "ast", "stl", "blk", "tov"]
@@ -84,6 +86,8 @@ def main():
     ap = argparse.ArgumentParser(); ap.add_argument("lines"); ap.add_argument("--deck", required=True)
     ap.add_argument("--kit", required=True); ap.add_argument("--out-dir"); ap.add_argument("--record")
     ap.add_argument("--date", default="10/12")
+    ap.add_argument("--keep-unchanged-notes", action="store_true",
+                    help="MG pass 2026-10-13: a deck row whose eleven values do not change keeps its note (no re-dated entry)")
     a = ap.parse_args()
     L = {r["key"]: r for r in json.load(open(a.lines, encoding="utf-8"))["rows"] if r.get("new")}
     draw, dhead, deck = read(a.deck); kraw, khead, kit = read(a.kit)
@@ -94,11 +98,12 @@ def main():
         if not x: continue
         before = {c: r[c] for c in STAT}
         for c in STAT: r[c] = fmt(c, x["new"][c])
-        base = strip_entry(r["note"])
-        # a note ending in "]" joins with ". ", never "; " — "];" inside the JSON ends the build's non-greedy
-        # PLAYERS match early and fails the injection round-trip (the D-1006-3 trap)
-        sep = ". " if base.rstrip().endswith("]") else "; "
-        r["note"] = (base + sep if base else "") + note_entry(a.date, x)
+        if not (a.keep_unchanged_notes and all(before[c] == r[c] for c in STAT)):
+            base = strip_entry(r["note"])
+            # a note ending in "]" joins with ". ", never "; " — "];" inside the JSON ends the build's non-greedy
+            # PLAYERS match early and fails the injection round-trip (the D-1006-3 trap)
+            sep = ". " if base.rstrip().endswith("]") else "; "
+            r["note"] = (base + sep if base else "") + note_entry(a.date, x)
         rec.append(dict(plane="deck", player=r["player"], key=k, before=before, after={c: r[c] for c in STAT},
                         changed=sorted(c for c in STAT if before[c] != r[c])))
     for r in kit:
