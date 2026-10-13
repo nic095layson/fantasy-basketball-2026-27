@@ -1,0 +1,37 @@
+== page 09a889d4baa5 618017 bytes
+== parity 18:58:14
+card orderings compared : 416 owner turns across 32 committed states
+market ranks compared   : 318 (priced 286)
+
+PARITY: EXACT MATCH
+exit 0
+== test_card 19:17:26
+
+CARD: all 99 cases passed
+exit 0
+== test_draft 19:17:35
+
+all 65 cases passed
+exit 0
+== test_gates 19:17:45
+  ok    PI --check-report: a report without the section FAILS
+
+all 54 cases passed
+exit 0
+== full_dom_check 19:33:40
+{"assertions":145,"failed":0,"pageErrors":0,"crash":false,"pass":true,"failures":[]}
+exit 0
+== repeat_market_check 19:37:46
+exit 0
+25 of 25 mocks replayed; 8 FLAGGED, 5 near miss(es)
+  FLAGGED Kel'el Ware: the 🎯 in 21 mocks, value 26, market 77 — LINE QUESTIONED: all 4 outside ranks sit 25+ places below ours; re-derive at the next projection pass (two dated outlets)
+  FLAGGED Reed Sheppard: the 🎯 in 20 mocks, value 63, market 180 — SOURCES SPLIT: 3 of 4 sit 25+ places on one side; the line holds
+== identity_check 19:40:28
+POINTS IDENTITY: 0 player(s), 0 line(s) more than 1 from their own shooting (200 deck and 200 kit lines checked)
+
+## Points identity (D-1009-3)
+exit 0
+== range_check (D-RN-3, with last season) 19:40:28
+exit 0
+RANGE CHECK: 19 player(s) with 21 cell(s) outside every reference (145 of the top 150 checkable)
+== done 19:40:28
