@@ -1,0 +1,498 @@
+{
+ "source": "/home/user/fantasy-basketball-2026-27/report/wo5/data/bref_totals_2004-2026.csv",
+ "player_seasons": 6366,
+ "targets": "2006-07..2025-26",
+ "arms": {
+  "PRIOR": {
+   "pts": {
+    "mae": 2.4201,
+    "n": 6366,
+    "mean_season_spearman": 0.8203
+   },
+   "reb": {
+    "mae": 0.9035,
+    "n": 6366,
+    "mean_season_spearman": 0.8394
+   },
+   "ast": {
+    "mae": 0.611,
+    "n": 6366,
+    "mean_season_spearman": 0.8627
+   },
+   "tpm": {
+    "mae": 0.2889,
+    "n": 6366,
+    "mean_season_spearman": 0.8802
+   },
+   "stl": {
+    "mae": 0.196,
+    "n": 6366,
+    "mean_season_spearman": 0.7706
+   },
+   "blk": {
+    "mae": 0.1558,
+    "n": 6366,
+    "mean_season_spearman": 0.8472
+   },
+   "tov": {
+    "mae": 0.3309,
+    "n": 6366,
+    "mean_season_spearman": 0.8089
+   },
+   "fg_pct": {
+    "mae": 0.2486,
+    "n": 6313,
+    "mean_season_spearman": 0.6971
+   },
+   "ft_pct": {
+    "mae": 0.114,
+    "n": 5866,
+    "mean_season_spearman": 0.7008
+   }
+  },
+  "WO5_SHRINK": {
+   "pts": {
+    "mae": 2.4201,
+    "n": 6366,
+    "mean_season_spearman": 0.8203
+   },
+   "reb": {
+    "mae": 0.9035,
+    "n": 6366,
+    "mean_season_spearman": 0.8394
+   },
+   "ast": {
+    "mae": 0.611,
+    "n": 6366,
+    "mean_season_spearman": 0.8627
+   },
+   "tpm": {
+    "mae": 0.2889,
+    "n": 6366,
+    "mean_season_spearman": 0.8802
+   },
+   "stl": {
+    "mae": 0.196,
+    "n": 6366,
+    "mean_season_spearman": 0.7706
+   },
+   "blk": {
+    "mae": 0.1558,
+    "n": 6366,
+    "mean_season_spearman": 0.8472
+   },
+   "tov": {
+    "mae": 0.3309,
+    "n": 6366,
+    "mean_season_spearman": 0.8089
+   },
+   "fg_pct": {
+    "mae": 0.2319,
+    "n": 6313,
+    "mean_season_spearman": 0.7173
+   },
+   "ft_pct": {
+    "mae": 0.1062,
+    "n": 5866,
+    "mean_season_spearman": 0.7279
+   }
+  },
+  "M3_RATES": {
+   "pts": {
+    "mae": 2.4839,
+    "n": 6366,
+    "mean_season_spearman": 0.8116
+   },
+   "reb": {
+    "mae": 0.9057,
+    "n": 6366,
+    "mean_season_spearman": 0.8383
+   },
+   "ast": {
+    "mae": 0.6095,
+    "n": 6366,
+    "mean_season_spearman": 0.8655
+   },
+   "tpm": {
+    "mae": 0.2932,
+    "n": 6366,
+    "mean_season_spearman": 0.8746
+   },
+   "stl": {
+    "mae": 0.1885,
+    "n": 6366,
+    "mean_season_spearman": 0.7858
+   },
+   "blk": {
+    "mae": 0.1505,
+    "n": 6366,
+    "mean_season_spearman": 0.861
+   },
+   "tov": {
+    "mae": 0.3268,
+    "n": 6366,
+    "mean_season_spearman": 0.8101
+   },
+   "fg_pct": {
+    "mae": 0.2304,
+    "n": 6313,
+    "mean_season_spearman": 0.723
+   },
+   "ft_pct": {
+    "mae": 0.1026,
+    "n": 5866,
+    "mean_season_spearman": 0.7438
+   }
+  },
+  "BLEND_RATES": {
+   "pts": {
+    "mae": 2.423,
+    "n": 6366,
+    "mean_season_spearman": 0.8181
+   },
+   "reb": {
+    "mae": 0.894,
+    "n": 6366,
+    "mean_season_spearman": 0.8408
+   },
+   "ast": {
+    "mae": 0.5991,
+    "n": 6366,
+    "mean_season_spearman": 0.8672
+   },
+   "tpm": {
+    "mae": 0.2844,
+    "n": 6366,
+    "mean_season_spearman": 0.8804
+   },
+   "stl": {
+    "mae": 0.1886,
+    "n": 6366,
+    "mean_season_spearman": 0.7834
+   },
+   "blk": {
+    "mae": 0.1495,
+    "n": 6366,
+    "mean_season_spearman": 0.8593
+   },
+   "tov": {
+    "mae": 0.3231,
+    "n": 6366,
+    "mean_season_spearman": 0.8133
+   },
+   "fg_pct": {
+    "mae": 0.2316,
+    "n": 6313,
+    "mean_season_spearman": 0.7213
+   },
+   "ft_pct": {
+    "mae": 0.1049,
+    "n": 5866,
+    "mean_season_spearman": 0.7326
+   }
+  },
+  "CAREER_RATES": {
+   "pts": {
+    "mae": 2.6118,
+    "n": 6366,
+    "mean_season_spearman": 0.7967
+   },
+   "reb": {
+    "mae": 0.9288,
+    "n": 6366,
+    "mean_season_spearman": 0.8315
+   },
+   "ast": {
+    "mae": 0.637,
+    "n": 6366,
+    "mean_season_spearman": 0.8598
+   },
+   "tpm": {
+    "mae": 0.3162,
+    "n": 6366,
+    "mean_season_spearman": 0.8615
+   },
+   "stl": {
+    "mae": 0.1932,
+    "n": 6366,
+    "mean_season_spearman": 0.7822
+   },
+   "blk": {
+    "mae": 0.1589,
+    "n": 6366,
+    "mean_season_spearman": 0.8563
+   },
+   "tov": {
+    "mae": 0.3408,
+    "n": 6366,
+    "mean_season_spearman": 0.797
+   },
+   "fg_pct": {
+    "mae": 0.238,
+    "n": 6313,
+    "mean_season_spearman": 0.7071
+   },
+   "ft_pct": {
+    "mae": 0.1089,
+    "n": 5866,
+    "mean_season_spearman": 0.7337
+   }
+  },
+  "M3_RATES_M3_MIN": {
+   "pts": {
+    "mae": 2.6549,
+    "n": 6366,
+    "mean_season_spearman": 0.782
+   },
+   "reb": {
+    "mae": 0.9447,
+    "n": 6366,
+    "mean_season_spearman": 0.827
+   },
+   "ast": {
+    "mae": 0.6434,
+    "n": 6366,
+    "mean_season_spearman": 0.8516
+   },
+   "tpm": {
+    "mae": 0.3039,
+    "n": 6366,
+    "mean_season_spearman": 0.866
+   },
+   "stl": {
+    "mae": 0.1924,
+    "n": 6366,
+    "mean_season_spearman": 0.7691
+   },
+   "blk": {
+    "mae": 0.1515,
+    "n": 6366,
+    "mean_season_spearman": 0.859
+   },
+   "tov": {
+    "mae": 0.3434,
+    "n": 6366,
+    "mean_season_spearman": 0.7866
+   },
+   "fg_pct": {
+    "mae": 0.2304,
+    "n": 6313,
+    "mean_season_spearman": 0.723
+   },
+   "ft_pct": {
+    "mae": 0.1026,
+    "n": 5866,
+    "mean_season_spearman": 0.7438
+   }
+  }
+ },
+ "strata": {
+  "3-5": {
+   "PRIOR": {
+    "pts": 2.3818,
+    "reb": 0.865,
+    "ast": 0.6057,
+    "tpm": 0.2902,
+    "stl": 0.1981,
+    "blk": 0.1579,
+    "tov": 0.3271,
+    "fg_pct": 0.2506,
+    "ft_pct": 0.1182
+   },
+   "WO5_SHRINK": {
+    "pts": 2.3818,
+    "reb": 0.865,
+    "ast": 0.6057,
+    "tpm": 0.2902,
+    "stl": 0.1981,
+    "blk": 0.1579,
+    "tov": 0.3271,
+    "fg_pct": 0.2338,
+    "ft_pct": 0.1092
+   },
+   "M3_RATES": {
+    "pts": 2.5081,
+    "reb": 0.8795,
+    "ast": 0.6213,
+    "tpm": 0.3077,
+    "stl": 0.1868,
+    "blk": 0.1522,
+    "tov": 0.3216,
+    "fg_pct": 0.2328,
+    "ft_pct": 0.104
+   },
+   "BLEND_RATES": {
+    "pts": 2.4061,
+    "reb": 0.8598,
+    "ast": 0.5992,
+    "tpm": 0.2915,
+    "stl": 0.188,
+    "blk": 0.1499,
+    "tov": 0.3161,
+    "fg_pct": 0.233,
+    "ft_pct": 0.1075
+   },
+   "CAREER_RATES": {
+    "pts": 2.6,
+    "reb": 0.8938,
+    "ast": 0.6454,
+    "tpm": 0.32,
+    "stl": 0.1883,
+    "blk": 0.154,
+    "tov": 0.3267,
+    "fg_pct": 0.2381,
+    "ft_pct": 0.1068
+   },
+   "M3_RATES_M3_MIN": {
+    "pts": 2.7324,
+    "reb": 0.9141,
+    "ast": 0.6678,
+    "tpm": 0.3258,
+    "stl": 0.1931,
+    "blk": 0.1465,
+    "tov": 0.3427,
+    "fg_pct": 0.2328,
+    "ft_pct": 0.104
+   },
+   "n": 1736
+  },
+  "6+": {
+   "PRIOR": {
+    "pts": 2.3357,
+    "reb": 0.8524,
+    "ast": 0.6369,
+    "tpm": 0.3151,
+    "stl": 0.1916,
+    "blk": 0.1509,
+    "tov": 0.3222,
+    "fg_pct": 0.2518,
+    "ft_pct": 0.111
+   },
+   "WO5_SHRINK": {
+    "pts": 2.3357,
+    "reb": 0.8524,
+    "ast": 0.6369,
+    "tpm": 0.3151,
+    "stl": 0.1916,
+    "blk": 0.1509,
+    "tov": 0.3222,
+    "fg_pct": 0.2274,
+    "ft_pct": 0.1016
+   },
+   "M3_RATES": {
+    "pts": 2.3357,
+    "reb": 0.8521,
+    "ast": 0.6108,
+    "tpm": 0.3108,
+    "stl": 0.1795,
+    "blk": 0.1443,
+    "tov": 0.3113,
+    "fg_pct": 0.226,
+    "ft_pct": 0.0958
+   },
+   "BLEND_RATES": {
+    "pts": 2.2988,
+    "reb": 0.8379,
+    "ast": 0.6092,
+    "tpm": 0.3031,
+    "stl": 0.1805,
+    "blk": 0.1436,
+    "tov": 0.3102,
+    "fg_pct": 0.2293,
+    "ft_pct": 0.0994
+   },
+   "CAREER_RATES": {
+    "pts": 2.5152,
+    "reb": 0.8982,
+    "ast": 0.6625,
+    "tpm": 0.3721,
+    "stl": 0.1886,
+    "blk": 0.1625,
+    "tov": 0.3321,
+    "fg_pct": 0.2428,
+    "ft_pct": 0.1099
+   },
+   "M3_RATES_M3_MIN": {
+    "pts": 2.4745,
+    "reb": 0.8971,
+    "ast": 0.6443,
+    "tpm": 0.3233,
+    "stl": 0.1825,
+    "blk": 0.1483,
+    "tov": 0.3289,
+    "fg_pct": 0.226,
+    "ft_pct": 0.0958
+   },
+   "n": 1825
+  },
+  "1-2 prior seasons": {
+   "PRIOR": {
+    "pts": 2.6702,
+    "reb": 0.9982,
+    "ast": 0.6189,
+    "tpm": 0.2966,
+    "stl": 0.2075,
+    "blk": 0.1568,
+    "tov": 0.3575,
+    "fg_pct": 0.2517,
+    "ft_pct": 0.1156
+   },
+   "WO5_SHRINK": {
+    "pts": 2.6702,
+    "reb": 0.9982,
+    "ast": 0.6189,
+    "tpm": 0.2966,
+    "stl": 0.2075,
+    "blk": 0.1568,
+    "tov": 0.3575,
+    "fg_pct": 0.2473,
+    "ft_pct": 0.1128
+   },
+   "M3_RATES": {
+    "pts": 2.7093,
+    "reb": 1.0009,
+    "ast": 0.6278,
+    "tpm": 0.302,
+    "stl": 0.2061,
+    "blk": 0.1553,
+    "tov": 0.3587,
+    "fg_pct": 0.2453,
+    "ft_pct": 0.1115
+   },
+   "BLEND_RATES": {
+    "pts": 2.6801,
+    "reb": 0.9972,
+    "ast": 0.6201,
+    "tpm": 0.2976,
+    "stl": 0.2059,
+    "blk": 0.1548,
+    "tov": 0.3563,
+    "fg_pct": 0.2463,
+    "ft_pct": 0.1122
+   },
+   "CAREER_RATES": {
+    "pts": 2.7101,
+    "reb": 1.0012,
+    "ast": 0.6277,
+    "tpm": 0.3017,
+    "stl": 0.2057,
+    "blk": 0.1549,
+    "tov": 0.3594,
+    "fg_pct": 0.2459,
+    "ft_pct": 0.112
+   },
+   "M3_RATES_M3_MIN": {
+    "pts": 2.81,
+    "reb": 1.0156,
+    "ast": 0.643,
+    "tpm": 0.3069,
+    "stl": 0.2083,
+    "blk": 0.1544,
+    "tov": 0.3636,
+    "fg_pct": 0.2453,
+    "ft_pct": 0.1115
+   },
+   "n": 1572
+  }
+ }
+}

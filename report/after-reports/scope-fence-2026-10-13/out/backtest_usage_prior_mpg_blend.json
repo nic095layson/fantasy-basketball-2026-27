@@ -1,0 +1,159 @@
+{
+ "weights": "prior_mpg",
+ "base": "blend",
+ "source": "/home/user/fantasy-basketball-2026-27/report/wo5/data/bref_totals_2004-2026.csv",
+ "records": 6086,
+ "train": 2969,
+ "test": {
+  "all": {
+   "n": 3117,
+   "pts": {
+    "mae_old_team_rates": 2.0422,
+    "mae_usage_fitted": 1.9892,
+    "change_pct": -2.59
+   },
+   "fga": {
+    "mae_old_team_rates": 1.4708,
+    "mae_usage_fitted": 1.4182,
+    "change_pct": -3.58
+   },
+   "fta": {
+    "mae_old_team_rates": 0.7343,
+    "mae_usage_fitted": 0.7263,
+    "change_pct": -1.09
+   },
+   "tpm": {
+    "mae_old_team_rates": 0.3735,
+    "mae_usage_fitted": 0.3707,
+    "change_pct": -0.77
+   },
+   "tov": {
+    "mae_old_team_rates": 0.3488,
+    "mae_usage_fitted": 0.3429,
+    "change_pct": -1.68
+   }
+  },
+  "movers": {
+   "n": 893,
+   "pts": {
+    "mae_old_team_rates": 2.2513,
+    "mae_usage_fitted": 2.2063,
+    "change_pct": -2.0
+   },
+   "fga": {
+    "mae_old_team_rates": 1.6723,
+    "mae_usage_fitted": 1.6185,
+    "change_pct": -3.22
+   },
+   "fta": {
+    "mae_old_team_rates": 0.7532,
+    "mae_usage_fitted": 0.7494,
+    "change_pct": -0.5
+   },
+   "tpm": {
+    "mae_old_team_rates": 0.4002,
+    "mae_usage_fitted": 0.3973,
+    "change_pct": -0.74
+   },
+   "tov": {
+    "mae_old_team_rates": 0.3913,
+    "mae_usage_fitted": 0.384,
+    "change_pct": -1.87
+   }
+  },
+  "stayers": {
+   "n": 2224,
+   "pts": {
+    "mae_old_team_rates": 1.9582,
+    "mae_usage_fitted": 1.902,
+    "change_pct": -2.87
+   },
+   "fga": {
+    "mae_old_team_rates": 1.3899,
+    "mae_usage_fitted": 1.3377,
+    "change_pct": -3.76
+   },
+   "fta": {
+    "mae_old_team_rates": 0.7268,
+    "mae_usage_fitted": 0.7171,
+    "change_pct": -1.34
+   },
+   "tpm": {
+    "mae_old_team_rates": 0.3628,
+    "mae_usage_fitted": 0.36,
+    "change_pct": -0.78
+   },
+   "tov": {
+    "mae_old_team_rates": 0.3317,
+    "mae_usage_fitted": 0.3264,
+    "change_pct": -1.59
+   }
+  },
+  "movers_k<0.95 (crowded new team)": {
+   "n": 45,
+   "pts": {
+    "mae_old_team_rates": 2.5246,
+    "mae_usage_fitted": 2.1136,
+    "change_pct": -16.28
+   },
+   "fga": {
+    "mae_old_team_rates": 1.9555,
+    "mae_usage_fitted": 1.5491,
+    "change_pct": -20.78
+   },
+   "fta": {
+    "mae_old_team_rates": 0.8626,
+    "mae_usage_fitted": 0.7544,
+    "change_pct": -12.54
+   },
+   "tpm": {
+    "mae_old_team_rates": 0.3478,
+    "mae_usage_fitted": 0.3271,
+    "change_pct": -5.95
+   },
+   "tov": {
+    "mae_old_team_rates": 0.4397,
+    "mae_usage_fitted": 0.396,
+    "change_pct": -9.93
+   }
+  },
+  "movers_k>1.05 (thin new team)": {
+   "n": 142,
+   "pts": {
+    "mae_old_team_rates": 2.3574,
+    "mae_usage_fitted": 2.3468,
+    "change_pct": -0.45
+   },
+   "fga": {
+    "mae_old_team_rates": 1.7432,
+    "mae_usage_fitted": 1.6807,
+    "change_pct": -3.59
+   },
+   "fta": {
+    "mae_old_team_rates": 0.7642,
+    "mae_usage_fitted": 0.8091,
+    "change_pct": 5.87
+   },
+   "tpm": {
+    "mae_old_team_rates": 0.4451,
+    "mae_usage_fitted": 0.4327,
+    "change_pct": -2.79
+   },
+   "tov": {
+    "mae_old_team_rates": 0.4093,
+    "mae_usage_fitted": 0.4008,
+    "change_pct": -2.08
+   }
+  }
+ },
+ "alpha_grid_train_pts_mae": {
+  "0": 1.8238972808661549,
+  "0.25": 1.810231459584974,
+  "0.5": 1.8027347658484727,
+  "0.75": 1.8004159707373206,
+  "1.0": 1.802887408123502,
+  "1.25": 1.8114159250819755,
+  "1.5": 1.825997855661556
+ },
+ "alpha_chosen": 0.75
+}

@@ -1,0 +1,809 @@
+{
+ "source": "/home/user/fantasy-basketball-2026-27/report/wo5/data/bref_totals_2004-2026.csv",
+ "targets": "2019-20..2025-26",
+ "min_prior_mpg": 20.0,
+ "n": 1528,
+ "scale_sd": {
+  "pts": 6.6084,
+  "reb": 2.534,
+  "ast": 2.0736,
+  "tpm": 0.9388,
+  "stl": 0.3586,
+  "blk": 0.442,
+  "tov": 0.8568,
+  "fg_pct": 0.5944,
+  "ft_pct": 0.2993
+ },
+ "strata": {
+  "all fantasy-relevant": {
+   "n": 1528,
+   "players": 461,
+   "n_choose": 876,
+   "n_judge": 652,
+   "arms": {
+    "LAST (last season only)": {
+     "composite": 0.406,
+     "composite_choose": 0.4088,
+     "composite_judge": 0.4023,
+     "per_cat_mae": {
+      "pts": 2.5637,
+      "reb": 0.8357,
+      "ast": 0.7106,
+      "tpm": 0.3702,
+      "stl": 0.1977,
+      "blk": 0.1596,
+      "tov": 0.3532,
+      "fg_pct": 0.2826,
+      "ft_pct": 0.1183
+     },
+     "seasons_better_than_LAST": "0/7",
+     "diff_vs_LAST_ci95": null,
+     "diff_vs_SHIPPED_ci95": [
+      0.0114,
+      0.0157
+     ]
+    },
+    "SHIPPED (WO-5 as on the board)": {
+     "composite": 0.3924,
+     "composite_choose": 0.3959,
+     "composite_judge": 0.3877,
+     "per_cat_mae": {
+      "pts": 2.5637,
+      "reb": 0.8357,
+      "ast": 0.7106,
+      "tpm": 0.3702,
+      "stl": 0.1856,
+      "blk": 0.1489,
+      "tov": 0.3532,
+      "fg_pct": 0.2609,
+      "ft_pct": 0.1096
+     },
+     "seasons_better_than_LAST": "7/7",
+     "diff_vs_LAST_ci95": [
+      -0.0157,
+      -0.0113
+     ],
+     "diff_vs_SHIPPED_ci95": null
+    },
+    "SHIPPED, pct pull to 3 seasons": {
+     "composite": 0.3939,
+     "composite_choose": 0.397,
+     "composite_judge": 0.3896,
+     "per_cat_mae": {
+      "pts": 2.5637,
+      "reb": 0.8357,
+      "ast": 0.7106,
+      "tpm": 0.3702,
+      "stl": 0.1856,
+      "blk": 0.1489,
+      "tov": 0.3532,
+      "fg_pct": 0.2672,
+      "ft_pct": 0.1105
+     },
+     "seasons_better_than_LAST": "7/7",
+     "diff_vs_LAST_ci95": [
+      -0.0141,
+      -0.01
+     ],
+     "diff_vs_SHIPPED_ci95": [
+      0.001,
+      0.002
+     ]
+    },
+    "THREE (5/4/3 three seasons)": {
+     "composite": 0.3921,
+     "composite_choose": 0.3962,
+     "composite_judge": 0.3866,
+     "per_cat_mae": {
+      "pts": 2.6789,
+      "reb": 0.8447,
+      "ast": 0.7126,
+      "tpm": 0.3733,
+      "stl": 0.1856,
+      "blk": 0.1489,
+      "tov": 0.3469,
+      "fg_pct": 0.2597,
+      "ft_pct": 0.1037
+     },
+     "seasons_better_than_LAST": "7/7",
+     "diff_vs_LAST_ci95": [
+      -0.0179,
+      -0.0101
+     ],
+     "diff_vs_SHIPPED_ci95": [
+      -0.0035,
+      0.003
+     ]
+    },
+    "BLEND (half last, half three)": {
+     "composite": 0.389,
+     "composite_choose": 0.3924,
+     "composite_judge": 0.3844,
+     "per_cat_mae": {
+      "pts": 2.5751,
+      "reb": 0.8253,
+      "ast": 0.694,
+      "tpm": 0.362,
+      "stl": 0.1867,
+      "blk": 0.1504,
+      "tov": 0.3415,
+      "fg_pct": 0.2621,
+      "ft_pct": 0.1076
+     },
+     "seasons_better_than_LAST": "7/7",
+     "diff_vs_LAST_ci95": [
+      -0.0191,
+      -0.0149
+     ],
+     "diff_vs_SHIPPED_ci95": [
+      -0.0053,
+      -0.0015
+     ]
+    },
+    "CAREER (career averages)": {
+     "composite": 0.4176,
+     "composite_choose": 0.4248,
+     "composite_judge": 0.408,
+     "per_cat_mae": {
+      "pts": 2.8463,
+      "reb": 0.8722,
+      "ast": 0.7529,
+      "tpm": 0.4124,
+      "stl": 0.1966,
+      "blk": 0.1613,
+      "tov": 0.3668,
+      "fg_pct": 0.2706,
+      "ft_pct": 0.1136
+     },
+     "seasons_better_than_LAST": "1/7",
+     "diff_vs_LAST_ci95": [
+      0.0044,
+      0.0191
+     ],
+     "diff_vs_SHIPPED_ci95": [
+      0.0182,
+      0.0326
+     ]
+    }
+   },
+   "chosen_on_2019_23": "BLEND (half last, half three)",
+   "judged_2023_26": {
+    "BLEND (half last, half three)": 0.3844,
+    "LAST (last season only)": 0.4023,
+    "SHIPPED (WO-5 as on the board)": 0.3877
+   }
+  },
+  "career years 2-8": {
+   "n": 1019,
+   "players": 386,
+   "n_choose": 584,
+   "n_judge": 435,
+   "arms": {
+    "LAST (last season only)": {
+     "composite": 0.4059,
+     "composite_choose": 0.406,
+     "composite_judge": 0.4059,
+     "per_cat_mae": {
+      "pts": 2.5755,
+      "reb": 0.8199,
+      "ast": 0.6791,
+      "tpm": 0.37,
+      "stl": 0.2001,
+      "blk": 0.1613,
+      "tov": 0.3526,
+      "fg_pct": 0.2841,
+      "ft_pct": 0.12
+     },
+     "seasons_better_than_LAST": "0/7",
+     "diff_vs_LAST_ci95": null,
+     "diff_vs_SHIPPED_ci95": [
+      0.0093,
+      0.014
+     ]
+    },
+    "SHIPPED (WO-5 as on the board)": {
+     "composite": 0.3944,
+     "composite_choose": 0.3954,
+     "composite_judge": 0.393,
+     "per_cat_mae": {
+      "pts": 2.5755,
+      "reb": 0.8199,
+      "ast": 0.6791,
+      "tpm": 0.37,
+      "stl": 0.1889,
+      "blk": 0.1533,
+      "tov": 0.3526,
+      "fg_pct": 0.2671,
+      "ft_pct": 0.112
+     },
+     "seasons_better_than_LAST": "7/7",
+     "diff_vs_LAST_ci95": [
+      -0.014,
+      -0.0093
+     ],
+     "diff_vs_SHIPPED_ci95": null
+    },
+    "SHIPPED, pct pull to 3 seasons": {
+     "composite": 0.3956,
+     "composite_choose": 0.3962,
+     "composite_judge": 0.3948,
+     "per_cat_mae": {
+      "pts": 2.5755,
+      "reb": 0.8199,
+      "ast": 0.6791,
+      "tpm": 0.37,
+      "stl": 0.1889,
+      "blk": 0.1533,
+      "tov": 0.3526,
+      "fg_pct": 0.2716,
+      "ft_pct": 0.1131
+     },
+     "seasons_better_than_LAST": "7/7",
+     "diff_vs_LAST_ci95": [
+      -0.0127,
+      -0.0081
+     ],
+     "diff_vs_SHIPPED_ci95": [
+      0.0008,
+      0.0016
+     ]
+    },
+    "THREE (5/4/3 three seasons)": {
+     "composite": 0.3967,
+     "composite_choose": 0.4,
+     "composite_judge": 0.3921,
+     "per_cat_mae": {
+      "pts": 2.6908,
+      "reb": 0.8303,
+      "ast": 0.701,
+      "tpm": 0.3756,
+      "stl": 0.1889,
+      "blk": 0.1533,
+      "tov": 0.3487,
+      "fg_pct": 0.2688,
+      "ft_pct": 0.1073
+     },
+     "seasons_better_than_LAST": "7/7",
+     "diff_vs_LAST_ci95": [
+      -0.0137,
+      -0.0047
+     ],
+     "diff_vs_SHIPPED_ci95": [
+      -0.0012,
+      0.006
+     ]
+    },
+    "BLEND (half last, half three)": {
+     "composite": 0.3915,
+     "composite_choose": 0.3928,
+     "composite_judge": 0.3898,
+     "per_cat_mae": {
+      "pts": 2.5849,
+      "reb": 0.8109,
+      "ast": 0.6726,
+      "tpm": 0.3631,
+      "stl": 0.1901,
+      "blk": 0.1533,
+      "tov": 0.3423,
+      "fg_pct": 0.2677,
+      "ft_pct": 0.1103
+     },
+     "seasons_better_than_LAST": "7/7",
+     "diff_vs_LAST_ci95": [
+      -0.0168,
+      -0.0121
+     ],
+     "diff_vs_SHIPPED_ci95": [
+      -0.005,
+      -0.0005
+     ]
+    },
+    "CAREER (career averages)": {
+     "composite": 0.4103,
+     "composite_choose": 0.4173,
+     "composite_judge": 0.4009,
+     "per_cat_mae": {
+      "pts": 2.8373,
+      "reb": 0.8528,
+      "ast": 0.7416,
+      "tpm": 0.3983,
+      "stl": 0.19,
+      "blk": 0.1577,
+      "tov": 0.3553,
+      "fg_pct": 0.2767,
+      "ft_pct": 0.1116
+     },
+     "seasons_better_than_LAST": "2/7",
+     "diff_vs_LAST_ci95": [
+      -0.0025,
+      0.0117
+     ],
+     "diff_vs_SHIPPED_ci95": [
+      0.0099,
+      0.0228
+     ]
+    }
+   },
+   "chosen_on_2019_23": "BLEND (half last, half three)",
+   "judged_2023_26": {
+    "BLEND (half last, half three)": 0.3898,
+    "LAST (last season only)": 0.4059,
+    "SHIPPED (WO-5 as on the board)": 0.393
+   }
+  },
+  "  years 2-3": {
+   "n": 268,
+   "players": 191,
+   "n_choose": 165,
+   "n_judge": 103,
+   "arms": {
+    "LAST (last season only)": {
+     "composite": 0.4259,
+     "composite_choose": 0.4215,
+     "composite_judge": 0.4328,
+     "per_cat_mae": {
+      "pts": 2.885,
+      "reb": 0.9179,
+      "ast": 0.7379,
+      "tpm": 0.3858,
+      "stl": 0.1996,
+      "blk": 0.154,
+      "tov": 0.392,
+      "fg_pct": 0.2972,
+      "ft_pct": 0.1179
+     },
+     "seasons_better_than_LAST": "0/7",
+     "diff_vs_LAST_ci95": null,
+     "diff_vs_SHIPPED_ci95": [
+      -0.0002,
+      0.0067
+     ]
+    },
+    "SHIPPED (WO-5 as on the board)": {
+     "composite": 0.4228,
+     "composite_choose": 0.4173,
+     "composite_judge": 0.4317,
+     "per_cat_mae": {
+      "pts": 2.885,
+      "reb": 0.9179,
+      "ast": 0.7379,
+      "tpm": 0.3858,
+      "stl": 0.2018,
+      "blk": 0.1501,
+      "tov": 0.392,
+      "fg_pct": 0.2899,
+      "ft_pct": 0.1141
+     },
+     "seasons_better_than_LAST": "5/7",
+     "diff_vs_LAST_ci95": [
+      -0.0066,
+      0.0002
+     ],
+     "diff_vs_SHIPPED_ci95": null
+    },
+    "SHIPPED, pct pull to 3 seasons": {
+     "composite": 0.4231,
+     "composite_choose": 0.4175,
+     "composite_judge": 0.4322,
+     "per_cat_mae": {
+      "pts": 2.885,
+      "reb": 0.9179,
+      "ast": 0.7379,
+      "tpm": 0.3858,
+      "stl": 0.2018,
+      "blk": 0.1501,
+      "tov": 0.392,
+      "fg_pct": 0.2907,
+      "ft_pct": 0.1145
+     },
+     "seasons_better_than_LAST": "5/7",
+     "diff_vs_LAST_ci95": [
+      -0.0063,
+      0.0005
+     ],
+     "diff_vs_SHIPPED_ci95": [
+      0.0002,
+      0.0004
+     ]
+    },
+    "THREE (5/4/3 three seasons)": {
+     "composite": 0.4238,
+     "composite_choose": 0.4185,
+     "composite_judge": 0.4323,
+     "per_cat_mae": {
+      "pts": 2.9355,
+      "reb": 0.9114,
+      "ast": 0.7571,
+      "tpm": 0.3906,
+      "stl": 0.2018,
+      "blk": 0.1501,
+      "tov": 0.3944,
+      "fg_pct": 0.2868,
+      "ft_pct": 0.1118
+     },
+     "seasons_better_than_LAST": "3/7",
+     "diff_vs_LAST_ci95": [
+      -0.0086,
+      0.0038
+     ],
+     "diff_vs_SHIPPED_ci95": [
+      -0.0036,
+      0.0056
+     ]
+    },
+    "BLEND (half last, half three)": {
+     "composite": 0.421,
+     "composite_choose": 0.4167,
+     "composite_judge": 0.428,
+     "per_cat_mae": {
+      "pts": 2.8923,
+      "reb": 0.9133,
+      "ast": 0.739,
+      "tpm": 0.3846,
+      "stl": 0.1986,
+      "blk": 0.1511,
+      "tov": 0.3899,
+      "fg_pct": 0.2885,
+      "ft_pct": 0.1131
+     },
+     "seasons_better_than_LAST": "6/7",
+     "diff_vs_LAST_ci95": [
+      -0.0083,
+      -0.0018
+     ],
+     "diff_vs_SHIPPED_ci95": [
+      -0.0045,
+      0.001
+     ]
+    },
+    "CAREER (career averages)": {
+     "composite": 0.4245,
+     "composite_choose": 0.4189,
+     "composite_judge": 0.4335,
+     "per_cat_mae": {
+      "pts": 2.9435,
+      "reb": 0.9101,
+      "ast": 0.7616,
+      "tpm": 0.3915,
+      "stl": 0.2019,
+      "blk": 0.1495,
+      "tov": 0.3954,
+      "fg_pct": 0.287,
+      "ft_pct": 0.1123
+     },
+     "seasons_better_than_LAST": "3/7",
+     "diff_vs_LAST_ci95": [
+      -0.0081,
+      0.0049
+     ],
+     "diff_vs_SHIPPED_ci95": [
+      -0.0033,
+      0.0067
+     ]
+    }
+   },
+   "chosen_on_2019_23": "BLEND (half last, half three)",
+   "judged_2023_26": {
+    "BLEND (half last, half three)": 0.428,
+    "LAST (last season only)": 0.4328,
+    "SHIPPED (WO-5 as on the board)": 0.4317
+   }
+  },
+  "  years 4-8": {
+   "n": 751,
+   "players": 311,
+   "n_choose": 419,
+   "n_judge": 332,
+   "arms": {
+    "LAST (last season only)": {
+     "composite": 0.3988,
+     "composite_choose": 0.3999,
+     "composite_judge": 0.3975,
+     "per_cat_mae": {
+      "pts": 2.465,
+      "reb": 0.7849,
+      "ast": 0.6581,
+      "tpm": 0.3644,
+      "stl": 0.2003,
+      "blk": 0.1639,
+      "tov": 0.3385,
+      "fg_pct": 0.2794,
+      "ft_pct": 0.1208
+     },
+     "seasons_better_than_LAST": "0/7",
+     "diff_vs_LAST_ci95": null,
+     "diff_vs_SHIPPED_ci95": [
+      0.0116,
+      0.0176
+     ]
+    },
+    "SHIPPED (WO-5 as on the board)": {
+     "composite": 0.3842,
+     "composite_choose": 0.3867,
+     "composite_judge": 0.381,
+     "per_cat_mae": {
+      "pts": 2.465,
+      "reb": 0.7849,
+      "ast": 0.6581,
+      "tpm": 0.3644,
+      "stl": 0.1843,
+      "blk": 0.1544,
+      "tov": 0.3385,
+      "fg_pct": 0.259,
+      "ft_pct": 0.1113
+     },
+     "seasons_better_than_LAST": "7/7",
+     "diff_vs_LAST_ci95": [
+      -0.0176,
+      -0.0116
+     ],
+     "diff_vs_SHIPPED_ci95": null
+    },
+    "SHIPPED, pct pull to 3 seasons": {
+     "composite": 0.3858,
+     "composite_choose": 0.3878,
+     "composite_judge": 0.3832,
+     "per_cat_mae": {
+      "pts": 2.465,
+      "reb": 0.7849,
+      "ast": 0.6581,
+      "tpm": 0.3644,
+      "stl": 0.1843,
+      "blk": 0.1544,
+      "tov": 0.3385,
+      "fg_pct": 0.2648,
+      "ft_pct": 0.1126
+     },
+     "seasons_better_than_LAST": "7/7",
+     "diff_vs_LAST_ci95": [
+      -0.016,
+      -0.0101
+     ],
+     "diff_vs_SHIPPED_ci95": [
+      0.001,
+      0.0021
+     ]
+    },
+    "THREE (5/4/3 three seasons)": {
+     "composite": 0.387,
+     "composite_choose": 0.3927,
+     "composite_judge": 0.3797,
+     "per_cat_mae": {
+      "pts": 2.6034,
+      "reb": 0.8014,
+      "ast": 0.6809,
+      "tpm": 0.3703,
+      "stl": 0.1843,
+      "blk": 0.1544,
+      "tov": 0.3324,
+      "fg_pct": 0.2624,
+      "ft_pct": 0.1057
+     },
+     "seasons_better_than_LAST": "7/7",
+     "diff_vs_LAST_ci95": [
+      -0.0178,
+      -0.0064
+     ],
+     "diff_vs_SHIPPED_ci95": [
+      -0.0019,
+      0.0074
+     ]
+    },
+    "BLEND (half last, half three)": {
+     "composite": 0.381,
+     "composite_choose": 0.3834,
+     "composite_judge": 0.3779,
+     "per_cat_mae": {
+      "pts": 2.4752,
+      "reb": 0.7744,
+      "ast": 0.6489,
+      "tpm": 0.3554,
+      "stl": 0.1871,
+      "blk": 0.1541,
+      "tov": 0.3253,
+      "fg_pct": 0.2604,
+      "ft_pct": 0.1093
+     },
+     "seasons_better_than_LAST": "7/7",
+     "diff_vs_LAST_ci95": [
+      -0.021,
+      -0.0149
+     ],
+     "diff_vs_SHIPPED_ci95": [
+      -0.0061,
+      -0.0002
+     ]
+    },
+    "CAREER (career averages)": {
+     "composite": 0.4053,
+     "composite_choose": 0.4167,
+     "composite_judge": 0.3908,
+     "per_cat_mae": {
+      "pts": 2.7994,
+      "reb": 0.8323,
+      "ast": 0.7345,
+      "tpm": 0.4007,
+      "stl": 0.1857,
+      "blk": 0.1607,
+      "tov": 0.3409,
+      "fg_pct": 0.2731,
+      "ft_pct": 0.1113
+     },
+     "seasons_better_than_LAST": "2/7",
+     "diff_vs_LAST_ci95": [
+      -0.0026,
+      0.0155
+     ],
+     "diff_vs_SHIPPED_ci95": [
+      0.0125,
+      0.0301
+     ]
+    }
+   },
+   "chosen_on_2019_23": "BLEND (half last, half three)",
+   "judged_2023_26": {
+    "BLEND (half last, half three)": 0.3779,
+    "LAST (last season only)": 0.3975,
+    "SHIPPED (WO-5 as on the board)": 0.381
+   }
+  },
+  "career years 9+": {
+   "n": 509,
+   "players": 171,
+   "n_choose": 292,
+   "n_judge": 217,
+   "arms": {
+    "LAST (last season only)": {
+     "composite": 0.4061,
+     "composite_choose": 0.4143,
+     "composite_judge": 0.3951,
+     "per_cat_mae": {
+      "pts": 2.5401,
+      "reb": 0.8673,
+      "ast": 0.7735,
+      "tpm": 0.3705,
+      "stl": 0.193,
+      "blk": 0.1562,
+      "tov": 0.3544,
+      "fg_pct": 0.2795,
+      "ft_pct": 0.1146
+     },
+     "seasons_better_than_LAST": "0/7",
+     "diff_vs_LAST_ci95": null,
+     "diff_vs_SHIPPED_ci95": [
+      0.0134,
+      0.0218
+     ]
+    },
+    "SHIPPED (WO-5 as on the board)": {
+     "composite": 0.3885,
+     "composite_choose": 0.397,
+     "composite_judge": 0.377,
+     "per_cat_mae": {
+      "pts": 2.5401,
+      "reb": 0.8673,
+      "ast": 0.7735,
+      "tpm": 0.3705,
+      "stl": 0.1791,
+      "blk": 0.1402,
+      "tov": 0.3544,
+      "fg_pct": 0.2486,
+      "ft_pct": 0.1046
+     },
+     "seasons_better_than_LAST": "7/7",
+     "diff_vs_LAST_ci95": [
+      -0.0217,
+      -0.0134
+     ],
+     "diff_vs_SHIPPED_ci95": null
+    },
+    "SHIPPED, pct pull to 3 seasons": {
+     "composite": 0.3904,
+     "composite_choose": 0.3988,
+     "composite_judge": 0.3792,
+     "per_cat_mae": {
+      "pts": 2.5401,
+      "reb": 0.8673,
+      "ast": 0.7735,
+      "tpm": 0.3705,
+      "stl": 0.1791,
+      "blk": 0.1402,
+      "tov": 0.3544,
+      "fg_pct": 0.2583,
+      "ft_pct": 0.105
+     },
+     "seasons_better_than_LAST": "7/7",
+     "diff_vs_LAST_ci95": [
+      -0.0192,
+      -0.0114
+     ],
+     "diff_vs_SHIPPED_ci95": [
+      0.0007,
+      0.0034
+     ]
+    },
+    "THREE (5/4/3 three seasons)": {
+     "composite": 0.3829,
+     "composite_choose": 0.3885,
+     "composite_judge": 0.3754,
+     "per_cat_mae": {
+      "pts": 2.6553,
+      "reb": 0.8733,
+      "ast": 0.7359,
+      "tpm": 0.3687,
+      "stl": 0.1791,
+      "blk": 0.1402,
+      "tov": 0.3434,
+      "fg_pct": 0.2414,
+      "ft_pct": 0.0964
+     },
+     "seasons_better_than_LAST": "7/7",
+     "diff_vs_LAST_ci95": [
+      -0.0315,
+      -0.0154
+     ],
+     "diff_vs_SHIPPED_ci95": [
+      -0.0125,
+      0.0009
+     ]
+    },
+    "BLEND (half last, half three)": {
+     "composite": 0.384,
+     "composite_choose": 0.3916,
+     "composite_judge": 0.3736,
+     "per_cat_mae": {
+      "pts": 2.5555,
+      "reb": 0.8541,
+      "ast": 0.7367,
+      "tpm": 0.3598,
+      "stl": 0.1798,
+      "blk": 0.1444,
+      "tov": 0.34,
+      "fg_pct": 0.2509,
+      "ft_pct": 0.1021
+     },
+     "seasons_better_than_LAST": "7/7",
+     "diff_vs_LAST_ci95": [
+      -0.0264,
+      -0.0182
+     ],
+     "diff_vs_SHIPPED_ci95": [
+      -0.0086,
+      -0.0006
+     ]
+    },
+    "CAREER (career averages)": {
+     "composite": 0.4323,
+     "composite_choose": 0.4398,
+     "composite_judge": 0.4223,
+     "per_cat_mae": {
+      "pts": 2.8642,
+      "reb": 0.9112,
+      "ast": 0.7756,
+      "tpm": 0.4408,
+      "stl": 0.2099,
+      "blk": 0.1683,
+      "tov": 0.3898,
+      "fg_pct": 0.2583,
+      "ft_pct": 0.1178
+     },
+     "seasons_better_than_LAST": "0/7",
+     "diff_vs_LAST_ci95": [
+      0.012,
+      0.0406
+     ],
+     "diff_vs_SHIPPED_ci95": [
+      0.0308,
+      0.0584
+     ]
+    }
+   },
+   "chosen_on_2019_23": "THREE (5/4/3 three seasons)",
+   "judged_2023_26": {
+    "THREE (5/4/3 three seasons)": 0.3754,
+    "LAST (last season only)": 0.3951,
+    "SHIPPED (WO-5 as on the board)": 0.377
+   }
+  }
+ }
+}
