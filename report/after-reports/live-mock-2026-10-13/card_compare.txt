@@ -1,0 +1,62 @@
+🎯 by page at each owner turn (actual pick in brackets)
+pick | actual | v59 | v60 | v62 | v63 | v64
+#10 | Donovan Mitchell | Karl-Anthony Towns | Tyrese Maxey | Tyrese Maxey | Tyrese Maxey | Tyrese Maxey
+#15 | Kevin Durant | Chet Holmgren | Kevin Durant | Kevin Durant | Kevin Durant | Kevin Durant
+#34 | Kawhi Leonard | Anthony Davis | Kawhi Leonard | Kawhi Leonard | Kawhi Leonard | Kawhi Leonard
+#39 | Walker Kessler | Derrick White | Derrick White | Kel'el Ware | Kel'el Ware | Kel'el Ware
+#58 | Franz Wagner | OG Anunoby | Ryan Rollins | Kel'el Ware | Kel'el Ware | Kel'el Ware
+#63 | Zach Edey | Payton Pritchard | Ryan Rollins | Kel'el Ware | Kel'el Ware | Kel'el Ware
+#82 | Mikal Bridges | Payton Pritchard | VJ Edgecombe | VJ Edgecombe | VJ Edgecombe | VJ Edgecombe
+#87 | VJ Edgecombe | Coby White | VJ Edgecombe | VJ Edgecombe | VJ Edgecombe | VJ Edgecombe
+#106 | Darryn Peterson | Sandro Mamukelashvili | Reed Sheppard | Reed Sheppard | Reed Sheppard | Reed Sheppard
+#111 | Yaxel Lendeborg | Sandro Mamukelashvili | Collin Gillespie | Collin Gillespie | Collin Gillespie | Collin Gillespie
+#130 | Aaron Gordon | Sandro Mamukelashvili | Collin Gillespie | Jrue Holiday | Jrue Holiday | Jrue Holiday
+#135 | Jrue Holiday | PJ Washington | Reed Sheppard | Jrue Holiday | Jrue Holiday | Jrue Holiday
+#154 | Fred VanVleet | Saddiq Bey | Grayson Allen | Reed Sheppard | Reed Sheppard | Reed Sheppard
+🎯 same v59 vs v60: 1 of 13
+🎯 same v60 vs v62: 7 of 13
+🎯 same v59 vs v63: 0 of 13
+🎯 same v62 vs v63: 13 of 13
+🎯 same v63 vs v64: 13 of 13
+top-5 overlap v59 vs v63 per turn: [2, 2, 2, 2, 3, 1, 1, 1, 1, 2, 0, 1, 2] (mean 1.54 of 5)
+top-5 overlap v63 vs v64 per turn: [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5] (mean 5.00 of 5)
+
+#10 actual Donovan Mitchell: v59 top5 ['Karl-Anthony Towns', 'Tyrese Maxey', 'Jalen Johnson', 'Tyrese Haliburton', 'Anthony Davis']
+      v63 top5 ['Tyrese Maxey', 'Jamal Murray', 'Jalen Johnson', 'Kawhi Leonard', 'Kevin Durant']
+      actual's card rank v59 #10 / v63 #6
+#15 actual Kevin Durant: v59 top5 ['Chet Holmgren', 'Karl-Anthony Towns', 'Anthony Davis', 'Evan Mobley', 'Kevin Durant']
+      v63 top5 ['Kevin Durant', 'Chet Holmgren', 'Scottie Barnes', 'Jamal Murray', 'Amen Thompson']
+      actual's card rank v59 #5 / v63 #1
+#34 actual Kawhi Leonard: v59 top5 ['Anthony Davis', 'Jalen Williams', 'Derrick White', 'Dyson Daniels', 'OG Anunoby']
+      v63 top5 ['Kawhi Leonard', "Kel'el Ware", 'Derrick White', 'Anthony Davis', 'Ryan Rollins']
+      actual's card rank v59 #20 / v63 #1
+#39 actual Walker Kessler: v59 top5 ['Derrick White', 'Jalen Williams', 'Onyeka Okongwu', 'Dyson Daniels', 'Desmond Bane']
+      v63 top5 ["Kel'el Ware", 'Derrick White', 'Dyson Daniels', 'Walker Kessler', 'Donovan Clingan']
+      actual's card rank v59 #15 / v63 #4
+#58 actual Franz Wagner: v59 top5 ['OG Anunoby', 'Dyson Daniels', 'Franz Wagner', 'Payton Pritchard', 'Onyeka Okongwu']
+      v63 top5 ["Kel'el Ware", 'Ryan Rollins', 'Dyson Daniels', 'Onyeka Okongwu', 'Franz Wagner']
+      actual's card rank v59 #3 / v63 #5
+#63 actual Zach Edey: v59 top5 ['Payton Pritchard', 'OG Anunoby', 'Dyson Daniels', 'Tyler Herro', "De'Aaron Fox"]
+      v63 top5 ["Kel'el Ware", 'Ryan Rollins', 'Dyson Daniels', 'Naz Reid', 'Ty Jerome']
+      actual's card rank v59 #66 / v63 #40
+#82 actual Mikal Bridges: v59 top5 ['Payton Pritchard', 'Tyler Herro', 'Zach LaVine', 'Coby White', 'Jalen Suggs']
+      v63 top5 ['VJ Edgecombe', 'Reed Sheppard', 'Immanuel Quickley', 'Tyler Herro', 'Mikal Bridges']
+      actual's card rank v59 #6 / v63 #5
+#87 actual VJ Edgecombe: v59 top5 ['Coby White', 'Zach LaVine', 'Jalen Suggs', 'Sandro Mamukelashvili', 'Cason Wallace']
+      v63 top5 ['VJ Edgecombe', 'Immanuel Quickley', 'Reed Sheppard', 'Jalen Suggs', 'Collin Gillespie']
+      actual's card rank v59 #19 / v63 #1
+#106 actual Darryn Peterson: v59 top5 ['Sandro Mamukelashvili', 'Isaiah Hartenstein', 'PJ Washington', 'Yaxel Lendeborg', 'Devin Vassell']
+      v63 top5 ['Reed Sheppard', 'Collin Gillespie', 'Jrue Holiday', 'Yaxel Lendeborg', 'Saddiq Bey']
+      actual's card rank v59 #37 / v63 #15
+#111 actual Yaxel Lendeborg: v59 top5 ['Sandro Mamukelashvili', 'PJ Washington', 'Cason Wallace', 'Yaxel Lendeborg', 'Collin Gillespie']
+      v63 top5 ['Collin Gillespie', 'Reed Sheppard', 'Jrue Holiday', 'Yaxel Lendeborg', 'Saddiq Bey']
+      actual's card rank v59 #4 / v63 #4
+#130 actual Aaron Gordon: v59 top5 ['Sandro Mamukelashvili', 'PJ Washington', 'Cason Wallace', 'Devin Vassell', 'Herbert Jones']
+      v63 top5 ['Jrue Holiday', 'Collin Gillespie', 'Reed Sheppard', 'Saddiq Bey', 'Andrew Nembhard']
+      actual's card rank v59 #8 / v63 #17
+#135 actual Jrue Holiday: v59 top5 ['PJ Washington', 'Sandro Mamukelashvili', 'Cason Wallace', 'Fred VanVleet', 'Devin Vassell']
+      v63 top5 ['Jrue Holiday', 'Reed Sheppard', 'Saddiq Bey', 'Tre Jones', 'Devin Vassell']
+      actual's card rank v59 #16 / v63 #1
+#154 actual Fred VanVleet: v59 top5 ['Saddiq Bey', 'Devin Vassell', 'Herbert Jones', 'Draymond Green', 'Fred VanVleet']
+      v63 top5 ['Reed Sheppard', 'Saddiq Bey', 'Devin Vassell', 'Tre Jones', 'Cam Spencer']
+      actual's card rank v59 #5 / v63 #8
