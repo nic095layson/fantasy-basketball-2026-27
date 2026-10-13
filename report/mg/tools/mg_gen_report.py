@@ -190,4 +190,6 @@ Built by `wo5_boarddiff.py` from the before-files and the published files (`repo
 - Records: `report/mg/out/` (candidates, seed and final range files, lines, apply record, board diff, iteration logs, before-files) and `report/mg/data/` (the overrides file, the games list).
 - Re-verify: rerun `mg_moves.py` on the before-files (same outputs); rerun the seeded iteration from `report/mg/out/iter_logs/`; `python3 -I report/mg/tools/mg_report_tables.py report/mg out.md` and diff.
 """
+if not CH:
+    txt = txt.replace("\n\n**Owner request", "\n\n> **DRAFT** — written while the deck chain was still running: the verification rows marked pending, the repeat-name section and the pull-log row are filled when the chain is green. Not yet gated by `check_report.py`.\n\n**Owner request", 1)
 open(OUT, "w", encoding="utf-8").write(txt); print("wrote", OUT, len(txt), "chars; chain filled:", bool(CH), "; repeat filled:", bool(RP))
