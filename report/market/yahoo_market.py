@@ -126,8 +126,12 @@ def parse_raw(path):
     """Returns (rows, problems, fmt) with fmt in {"block", "rank"}."""
     lines = [l.strip() for l in open(path, encoding="utf-8")]
     nonblank = [l for l in lines if l]
-    if nonblank and nonblank[0].startswith("Player\tXRank\tRank\tADP\tGP"):
-        rows, problems = _parse_table(nonblank[1:])
+    if nonblank and (nonblank[0].startswith("Player\tXRank\tRank\tADP\tGP")
+                     or nonblank[0].startswith("Queue\tPlayer\tXRank\tRank\tADP\tGP")):
+        # 2026-10-13 paste: the same page copied from the draft room — a leading "Queue" header column (no
+        # per-row value) and the owner's "Your Turn - Nth Pick" markers between entries; both carry no data.
+        body = [l for l in nonblank[1:] if not re.fullmatch(r"Your Turn - \d+(st|nd|rd|th) Pick", l)]
+        rows, problems = _parse_table(body)
         return rows, problems, "table"
     if nonblank and re.fullmatch(r"\d+", nonblank[0]):
         rows, problems = _parse_rank_list(nonblank)
@@ -145,7 +149,7 @@ def parse_raw(path):
     return rows, problems, "block"
 
 
-STATUS = {"Q", "O", "P", "D", "GTD", "OUT"}
+STATUS = {"Q", "O", "P", "D", "GTD", "OUT", "NA"}   # NA (2026-10-13 paste): on no roster — Westbrook, Konchar, Valančiūnas, Batum
 TOTALS = ["tpm", "pts", "reb", "ast", "stl", "blk", "tov"]
 
 

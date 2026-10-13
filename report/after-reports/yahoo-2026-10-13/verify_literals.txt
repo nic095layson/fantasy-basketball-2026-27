@@ -1,0 +1,55 @@
+PASS 13 turn markers at 10,15,34,39,58,63,82,87,106,111,130,135,154  [[10, 15, 34, 39, 58, 63, 82, 87, 106, 111, 130, 135, 154]]
+PASS raw paste 1,910 lines  [1910]
+PASS price file 300 names, XRank 1..300 with no gap  [300]
+PASS 187 names carry an ADP  [187]
+PASS the 10/01 list was 300 deep
+PASS I7 297 of 300 resolved (3 Yahoo-only names)  [3]
+PASS Ben Simmons ADP 111.1 with 15 projected games  [('111.1', '15')]
+PASS Tre Jones keeps XRank 138, no ADP  [{'player': 'Tre Jones', 'team': 'CHI', 'pos': 'PG,SG', 'xrank': '138', 'adp': ''}]
+PASS Yves Missi ADP 114.9  [114.9]
+PASS kit: Ben Simmons GP 55 (corrected 2026-10-13 from a typed 15, which was Yahoo's figure)  [55]
+PASS kit: Ben Simmons outside the top-200 board
+PASS deck: Ben Simmons availability 0.78, negative value  [(0.78, -4.995)]
+PASS O letters on 10 rows  [10]
+PASS Jusuf Nurkic ADP 113.9  [113.9]
+PASS Jimmy Butler ADP 115.8  [115.8]
+PASS Mark Williams ADP 109.3  [109.3]
+PASS Maxime Raynaud ADP 117.7  [117.7]
+PASS Isaiah Stewart ADP 113.0  [113.0]
+PASS Brandon Ingram ADP 72.5  [72.5]
+PASS of the seven excluded O rows, three carry an ADP (Nurkić, Butler, Mark Williams; corrected from a typed four)  [['Jusuf Nurkic', 'Jimmy Butler', 'Mark Williams']]
+PASS disagreements §D lists 9 rows  [9]
+PASS Alex Caruso Q, Yahoo GP 58  [('Q', '58')]
+PASS Al Horford Q, Yahoo GP 53  [('Q', '53')]
+PASS Jaylin Williams Q, Yahoo GP 60  [('Q', '60')]
+PASS Khris Middleton Q, Yahoo GP 53  [('Q', '53')]
+PASS Zach Collins Q, Yahoo GP 55  [('Q', '55')]
+PASS Ziaire Williams Q, Yahoo GP 38  [('Q', '38')]
+PASS Dominick Barlow Q, Yahoo GP 53  [('Q', '53')]
+PASS Dru Smith Q, Yahoo GP 60  [('Q', '60')]
+PASS Luka Garza Q, Yahoo GP 52  [('Q', '52')]
+PASS none of those nine is a top-150 row (Yahoo XRank or our value rank)
+PASS Brandon Ingram letter 'O' ADP 72.5  [('O', '72.5')]
+PASS Kristaps Porzingis letter 'Q' ADP 104.2  [('Q', '104.2')]
+PASS Kawhi Leonard letter '' ADP 34.2  [('', '34.2')]
+PASS Ryan Rollins letter '' ADP 74.3  [('', '74.3')]
+PASS Bennedict Mathurin letter '' ADP 115.9  [('', '115.9')]
+PASS Jeremy Sochan absent from the 300
+PASS Cam Thomas absent from the 300
+PASS Jaden Ivey absent from the 300
+PASS Lonzo Ball absent from the 300
+PASS Rob Dillingham absent from the 300
+PASS Ty Jerome among §F risers
+PASS Kevin Porter among §F risers
+PASS Darius Acuff among §F risers
+PASS Ajay Mitchell among §F risers
+PASS Keegan Murray among §F risers
+PASS John Collins among §F risers
+PASS DeRozan among §F fallers
+PASS Herb among §F fallers
+PASS Claxton among §F fallers
+PASS Bey among §F fallers
+PASS Ingram among §F fallers
+PASS Turner among §F fallers
+
+53 of 53 claims PASS
