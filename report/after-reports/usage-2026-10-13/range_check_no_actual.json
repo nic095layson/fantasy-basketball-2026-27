@@ -1,0 +1,2949 @@
+{
+ "top": 150,
+ "checkable": 139,
+ "players": 102,
+ "cells": 214,
+ "references": {
+  "Yahoo": "yahoo-proj-2026-10-13.csv",
+  "Hashtag": "hashtag-2026-10-12.csv",
+  "RotoBaller": "rotoballer-2026-09-29.csv"
+ },
+ "rows": [
+  {
+   "player": "Jaylen Brown",
+   "deck_rank": 59,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "pts",
+     "ours": 28.6,
+     "lo": 22.6,
+     "hi": 24.0,
+     "z_beyond": 0.821,
+     "text": "pts 28.6 vs 22.6-24"
+    },
+    {
+     "cat": "reb",
+     "ours": 6.9,
+     "lo": 5.7,
+     "hi": 6.0,
+     "z_beyond": 0.369,
+     "text": "reb 6.9 vs 5.7-6"
+    },
+    {
+     "cat": "ast",
+     "ours": 5.1,
+     "lo": 3.4,
+     "hi": 4.6,
+     "z_beyond": 0.245,
+     "text": "ast 5.1 vs 3.4-4.6"
+    },
+    {
+     "cat": "tov",
+     "ours": 3.6,
+     "lo": 2.5,
+     "hi": 3.4,
+     "z_beyond": -0.253,
+     "text": "tov 3.6 vs 2.5-3.4"
+    }
+   ],
+   "net_z": 1.18
+  },
+  {
+   "player": "Jrue Holiday",
+   "deck_rank": 88,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "pts",
+     "ours": 16.4,
+     "lo": 12.0,
+     "hi": 12.8,
+     "z_beyond": 0.643,
+     "text": "pts 16.4 vs 12-12.8"
+    },
+    {
+     "cat": "reb",
+     "ours": 4.6,
+     "lo": 4.0,
+     "hi": 4.2,
+     "z_beyond": 0.164,
+     "text": "reb 4.6 vs 4-4.2"
+    },
+    {
+     "cat": "ast",
+     "ours": 6.1,
+     "lo": 4.4,
+     "hi": 4.6,
+     "z_beyond": 0.735,
+     "text": "ast 6.1 vs 4.4-4.6"
+    },
+    {
+     "cat": "tpm",
+     "ours": 2.6,
+     "lo": 1.9,
+     "hi": 2.0,
+     "z_beyond": 0.611,
+     "text": "tpm 2.6 vs 1.9-2"
+    },
+    {
+     "cat": "tov",
+     "ours": 2.8,
+     "lo": 1.8,
+     "hi": 2.1,
+     "z_beyond": -0.884,
+     "text": "tov 2.8 vs 1.8-2.1"
+    },
+    {
+     "cat": "ft_pct",
+     "ours": 0.822,
+     "lo": 0.855,
+     "hi": 0.867,
+     "z_beyond": -0.211,
+     "text": "ft_pct .822 vs .855-.867"
+    }
+   ],
+   "net_z": 1.06
+  },
+  {
+   "player": "Andrew Nembhard",
+   "deck_rank": 101,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "pts",
+     "ours": 17.1,
+     "lo": 13.1,
+     "hi": 14.7,
+     "z_beyond": 0.429,
+     "text": "pts 17.1 vs 13.1-14.7"
+    },
+    {
+     "cat": "ast",
+     "ours": 7.7,
+     "lo": 6.1,
+     "hi": 6.8,
+     "z_beyond": 0.441,
+     "text": "ast 7.7 vs 6.1-6.8"
+    },
+    {
+     "cat": "tpm",
+     "ours": 1.9,
+     "lo": 1.3,
+     "hi": 1.5,
+     "z_beyond": 0.407,
+     "text": "tpm 1.9 vs 1.3-1.5"
+    },
+    {
+     "cat": "tov",
+     "ours": 2.4,
+     "lo": 2.0,
+     "hi": 2.2,
+     "z_beyond": -0.253,
+     "text": "tov 2.4 vs 2-2.2"
+    }
+   ],
+   "net_z": 1.02
+  },
+  {
+   "player": "Kawhi Leonard",
+   "deck_rank": 6,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "pts",
+     "ours": 27.8,
+     "lo": 23.7,
+     "hi": 24.3,
+     "z_beyond": 0.625,
+     "text": "pts 27.8 vs 23.7-24.3"
+    },
+    {
+     "cat": "tpm",
+     "ours": 2.6,
+     "lo": 2.2,
+     "hi": 2.3,
+     "z_beyond": 0.305,
+     "text": "tpm 2.6 vs 2.2-2.3"
+    }
+   ],
+   "net_z": 0.93
+  },
+  {
+   "player": "James Harden",
+   "deck_rank": 17,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "pts",
+     "ours": 22.9,
+     "lo": 18.9,
+     "hi": 20.8,
+     "z_beyond": 0.375,
+     "text": "pts 22.9 vs 18.9-20.8"
+    },
+    {
+     "cat": "tpm",
+     "ours": 3.0,
+     "lo": 2.6,
+     "hi": 2.7,
+     "z_beyond": 0.305,
+     "text": "tpm 3 vs 2.6-2.7"
+    },
+    {
+     "cat": "fg_pct",
+     "ours": 0.435,
+     "lo": 0.421,
+     "hi": 0.426,
+     "z_beyond": 0.227,
+     "text": "fg_pct .435 vs .421-.426"
+    }
+   ],
+   "net_z": 0.91
+  },
+  {
+   "player": "Ausar Thompson",
+   "deck_rank": 104,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "pts",
+     "ours": 9.8,
+     "lo": 10.4,
+     "hi": 11.6,
+     "z_beyond": -0.107,
+     "text": "pts 9.8 vs 10.4-11.6"
+    },
+    {
+     "cat": "stl",
+     "ours": 1.8,
+     "lo": 2.0,
+     "hi": 2.2,
+     "z_beyond": -0.644,
+     "text": "stl 1.8 vs 2-2.2"
+    },
+    {
+     "cat": "ft_pct",
+     "ours": 0.58,
+     "lo": 0.5920000000000001,
+     "hi": 0.602,
+     "z_beyond": -0.1,
+     "text": "ft_pct .580 vs .592-.602"
+    }
+   ],
+   "net_z": -0.85
+  },
+  {
+   "player": "Lauri Markkanen",
+   "deck_rank": 11,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "pts",
+     "ours": 26.4,
+     "lo": 20.2,
+     "hi": 23.8,
+     "z_beyond": 0.464,
+     "text": "pts 26.4 vs 20.2-23.8"
+    },
+    {
+     "cat": "ast",
+     "ours": 2.1,
+     "lo": 1.8,
+     "hi": 1.9,
+     "z_beyond": 0.098,
+     "text": "ast 2.1 vs 1.8-1.9"
+    },
+    {
+     "cat": "fg_pct",
+     "ours": 0.471,
+     "lo": 0.452,
+     "hi": 0.463,
+     "z_beyond": 0.248,
+     "text": "fg_pct .471 vs .452-.463"
+    }
+   ],
+   "net_z": 0.81
+  },
+  {
+   "player": "Tyrese Maxey",
+   "deck_rank": 4,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "pts",
+     "ours": 28.2,
+     "lo": 24.2,
+     "hi": 26.1,
+     "z_beyond": 0.375,
+     "text": "pts 28.2 vs 24.2-26.1"
+    },
+    {
+     "cat": "reb",
+     "ours": 4.1,
+     "lo": 3.4,
+     "hi": 3.8,
+     "z_beyond": 0.123,
+     "text": "reb 4.1 vs 3.4-3.8"
+    },
+    {
+     "cat": "ast",
+     "ours": 6.6,
+     "lo": 5.8,
+     "hi": 6.0,
+     "z_beyond": 0.294,
+     "text": "ast 6.6 vs 5.8-6"
+    }
+   ],
+   "net_z": 0.79
+  },
+  {
+   "player": "Pascal Siakam",
+   "deck_rank": 109,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "tov",
+     "ours": 2.2,
+     "lo": 1.8,
+     "hi": 1.9,
+     "z_beyond": -0.379,
+     "text": "tov 2.2 vs 1.8-1.9"
+    },
+    {
+     "cat": "fg_pct",
+     "ours": 0.488,
+     "lo": 0.499,
+     "hi": 0.505,
+     "z_beyond": -0.331,
+     "text": "fg_pct .488 vs .499-.505"
+    }
+   ],
+   "net_z": -0.71
+  },
+  {
+   "player": "Keyonte George",
+   "deck_rank": 73,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "pts",
+     "ours": 23.1,
+     "lo": 17.7,
+     "hi": 20.3,
+     "z_beyond": 0.5,
+     "text": "pts 23.1 vs 17.7-20.3"
+    },
+    {
+     "cat": "ft_pct",
+     "ours": 0.88,
+     "lo": 0.86,
+     "hi": 0.871,
+     "z_beyond": 0.201,
+     "text": "ft_pct .880 vs .860-.871"
+    }
+   ],
+   "net_z": 0.7
+  },
+  {
+   "player": "Ryan Rollins",
+   "deck_rank": 28,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "stl",
+     "ours": 1.7,
+     "lo": 1.3,
+     "hi": 1.5,
+     "z_beyond": 0.644,
+     "text": "stl 1.7 vs 1.3-1.5"
+    }
+   ],
+   "net_z": 0.64
+  },
+  {
+   "player": "Dejounte Murray",
+   "deck_rank": 91,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "stl",
+     "ours": 1.4,
+     "lo": 1.6,
+     "hi": 1.7,
+     "z_beyond": -0.644,
+     "text": "stl 1.4 vs 1.6-1.7"
+    }
+   ],
+   "net_z": -0.64
+  },
+  {
+   "player": "Sam Merrill",
+   "deck_rank": 142,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "pts",
+     "ours": 12.5,
+     "lo": 10.0,
+     "hi": 10.8,
+     "z_beyond": 0.304,
+     "text": "pts 12.5 vs 10-10.8"
+    },
+    {
+     "cat": "ast",
+     "ours": 2.4,
+     "lo": 2.0,
+     "hi": 2.2,
+     "z_beyond": 0.098,
+     "text": "ast 2.4 vs 2-2.2"
+    },
+    {
+     "cat": "tpm",
+     "ours": 3.0,
+     "lo": 2.6,
+     "hi": 2.7,
+     "z_beyond": 0.305,
+     "text": "tpm 3 vs 2.6-2.7"
+    },
+    {
+     "cat": "tov",
+     "ours": 0.8,
+     "lo": 0.7,
+     "hi": 0.7,
+     "z_beyond": -0.126,
+     "text": "tov 0.8 vs 0.7-0.7"
+    },
+    {
+     "cat": "fg_pct",
+     "ours": 0.449,
+     "lo": 0.426,
+     "hi": 0.44,
+     "z_beyond": 0.135,
+     "text": "fg_pct .449 vs .426-.440"
+    },
+    {
+     "cat": "ft_pct",
+     "ours": 0.867,
+     "lo": 0.885,
+     "hi": 0.902,
+     "z_beyond": -0.075,
+     "text": "ft_pct .867 vs .885-.902"
+    }
+   ],
+   "net_z": 0.64
+  },
+  {
+   "player": "Deni Avdija",
+   "deck_rank": 76,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "pts",
+     "ours": 24.1,
+     "lo": 18.9,
+     "hi": 20.7,
+     "z_beyond": 0.607,
+     "text": "pts 24.1 vs 18.9-20.7"
+    },
+    {
+     "cat": "ast",
+     "ours": 6.7,
+     "lo": 4.9,
+     "hi": 5.5,
+     "z_beyond": 0.588,
+     "text": "ast 6.7 vs 4.9-5.5"
+    },
+    {
+     "cat": "tov",
+     "ours": 3.8,
+     "lo": 3.0,
+     "hi": 3.5,
+     "z_beyond": -0.379,
+     "text": "tov 3.8 vs 3-3.5"
+    },
+    {
+     "cat": "fg_pct",
+     "ours": 0.462,
+     "lo": 0.469,
+     "hi": 0.473,
+     "z_beyond": -0.182,
+     "text": "fg_pct .462 vs .469-.473"
+    }
+   ],
+   "net_z": 0.63
+  },
+  {
+   "player": "Santi Aldama",
+   "deck_rank": 124,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "pts",
+     "ours": 13.9,
+     "lo": 10.1,
+     "hi": 13.2,
+     "z_beyond": 0.125,
+     "text": "pts 13.9 vs 10.1-13.2"
+    },
+    {
+     "cat": "reb",
+     "ours": 6.7,
+     "lo": 4.8,
+     "hi": 5.5,
+     "z_beyond": 0.491,
+     "text": "reb 6.7 vs 4.8-5.5"
+    }
+   ],
+   "net_z": 0.62
+  },
+  {
+   "player": "Evan Mobley",
+   "deck_rank": 50,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "fg_pct",
+     "ours": 0.546,
+     "lo": 0.552,
+     "hi": 0.5539999999999999,
+     "z_beyond": -0.128,
+     "text": "fg_pct .546 vs .552-.554"
+    },
+    {
+     "cat": "ft_pct",
+     "ours": 0.629,
+     "lo": 0.661,
+     "hi": 0.7,
+     "z_beyond": -0.47,
+     "text": "ft_pct .629 vs .661-.700"
+    }
+   ],
+   "net_z": -0.6
+  },
+  {
+   "player": "Daniel Gafford",
+   "deck_rank": 117,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "reb",
+     "ours": 6.9,
+     "lo": 5.8,
+     "hi": 6.5,
+     "z_beyond": 0.164,
+     "text": "reb 6.9 vs 5.8-6.5"
+    },
+    {
+     "cat": "blk",
+     "ours": 1.6,
+     "lo": 1.2,
+     "hi": 1.4,
+     "z_beyond": 0.392,
+     "text": "blk 1.6 vs 1.2-1.4"
+    }
+   ],
+   "net_z": 0.56
+  },
+  {
+   "player": "Anthony Edwards",
+   "deck_rank": 23,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "reb",
+     "ours": 5.0,
+     "lo": 5.5,
+     "hi": 5.6,
+     "z_beyond": -0.205,
+     "text": "reb 5 vs 5.5-5.6"
+    },
+    {
+     "cat": "ft_pct",
+     "ours": 0.798,
+     "lo": 0.813,
+     "hi": 0.818,
+     "z_beyond": -0.345,
+     "text": "ft_pct .798 vs .813-.818"
+    }
+   ],
+   "net_z": -0.55
+  },
+  {
+   "player": "Zach LaVine",
+   "deck_rank": 133,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "reb",
+     "ours": 2.8,
+     "lo": 3.1,
+     "hi": 3.6,
+     "z_beyond": -0.123,
+     "text": "reb 2.8 vs 3.1-3.6"
+    },
+    {
+     "cat": "ast",
+     "ours": 2.3,
+     "lo": 2.8,
+     "hi": 3.4,
+     "z_beyond": -0.245,
+     "text": "ast 2.3 vs 2.8-3.4"
+    },
+    {
+     "cat": "fg_pct",
+     "ours": 0.476,
+     "lo": 0.48700000000000004,
+     "hi": 0.501,
+     "z_beyond": -0.249,
+     "text": "fg_pct .476 vs .487-.501"
+    },
+    {
+     "cat": "ft_pct",
+     "ours": 0.865,
+     "lo": 0.844,
+     "hi": 0.8590000000000001,
+     "z_beyond": 0.069,
+     "text": "ft_pct .865 vs .844-.859"
+    }
+   ],
+   "net_z": -0.55
+  },
+  {
+   "player": "Aaron Gordon",
+   "deck_rank": 136,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "fg_pct",
+     "ours": 0.493,
+     "lo": 0.516,
+     "hi": 0.518,
+     "z_beyond": -0.413,
+     "text": "fg_pct .493 vs .516-.518"
+    },
+    {
+     "cat": "ft_pct",
+     "ours": 0.744,
+     "lo": 0.753,
+     "hi": 0.789,
+     "z_beyond": -0.129,
+     "text": "ft_pct .744 vs .753-.789"
+    }
+   ],
+   "net_z": -0.54
+  },
+  {
+   "player": "Kristaps Porzingis",
+   "deck_rank": 77,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "tpm",
+     "ours": 1.7,
+     "lo": 1.9,
+     "hi": 2.0,
+     "z_beyond": -0.204,
+     "text": "tpm 1.7 vs 1.9-2"
+    },
+    {
+     "cat": "fg_pct",
+     "ours": 0.451,
+     "lo": 0.467,
+     "hi": 0.474,
+     "z_beyond": -0.31,
+     "text": "fg_pct .451 vs .467-.474"
+    }
+   ],
+   "net_z": -0.51
+  },
+  {
+   "player": "Jamal Murray",
+   "deck_rank": 7,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "ast",
+     "ours": 7.1,
+     "lo": 6.5,
+     "hi": 6.7,
+     "z_beyond": 0.196,
+     "text": "ast 7.1 vs 6.5-6.7"
+    },
+    {
+     "cat": "tpm",
+     "ours": 3.3,
+     "lo": 2.8,
+     "hi": 3.0,
+     "z_beyond": 0.305,
+     "text": "tpm 3.3 vs 2.8-3"
+    }
+   ],
+   "net_z": 0.5
+  },
+  {
+   "player": "Cooper Flagg",
+   "deck_rank": 44,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "pts",
+     "ours": 21.0,
+     "lo": 22.4,
+     "hi": 23.3,
+     "z_beyond": -0.25,
+     "text": "pts 21 vs 22.4-23.3"
+    },
+    {
+     "cat": "ast",
+     "ours": 4.5,
+     "lo": 4.9,
+     "hi": 5.1,
+     "z_beyond": -0.196,
+     "text": "ast 4.5 vs 4.9-5.1"
+    }
+   ],
+   "net_z": -0.45
+  },
+  {
+   "player": "Payton Pritchard",
+   "deck_rank": 80,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "tpm",
+     "ours": 2.7,
+     "lo": 3.0,
+     "hi": 3.2,
+     "z_beyond": -0.305,
+     "text": "tpm 2.7 vs 3-3.2"
+    },
+    {
+     "cat": "fg_pct",
+     "ours": 0.461,
+     "lo": 0.467,
+     "hi": 0.467,
+     "z_beyond": -0.134,
+     "text": "fg_pct .461 vs .467-.467"
+    },
+    {
+     "cat": "ft_pct",
+     "ours": 0.883,
+     "lo": 0.873,
+     "hi": 0.875,
+     "z_beyond": 0.043,
+     "text": "ft_pct .883 vs .873-.875"
+    }
+   ],
+   "net_z": -0.4
+  },
+  {
+   "player": "Coby White",
+   "deck_rank": 149,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "fg_pct",
+     "ours": 0.442,
+     "lo": 0.449,
+     "hi": 0.451,
+     "z_beyond": -0.164,
+     "text": "fg_pct .442 vs .449-.451"
+    },
+    {
+     "cat": "ft_pct",
+     "ours": 0.83,
+     "lo": 0.843,
+     "hi": 0.864,
+     "z_beyond": -0.233,
+     "text": "ft_pct .830 vs .843-.864"
+    }
+   ],
+   "net_z": -0.4
+  },
+  {
+   "player": "Scottie Barnes",
+   "deck_rank": 19,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "fg_pct",
+     "ours": 0.496,
+     "lo": 0.477,
+     "hi": 0.484,
+     "z_beyond": 0.271,
+     "text": "fg_pct .496 vs .477-.484"
+    },
+    {
+     "cat": "ft_pct",
+     "ours": 0.801,
+     "lo": 0.784,
+     "hi": 0.7909999999999999,
+     "z_beyond": 0.118,
+     "text": "ft_pct .801 vs .784-.791"
+    }
+   ],
+   "net_z": 0.39
+  },
+  {
+   "player": "Derrick White",
+   "deck_rank": 30,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "tpm",
+     "ours": 2.7,
+     "lo": 2.9,
+     "hi": 3.1,
+     "z_beyond": -0.204,
+     "text": "tpm 2.7 vs 2.9-3.1"
+    },
+    {
+     "cat": "fg_pct",
+     "ours": 0.409,
+     "lo": 0.416,
+     "hi": 0.44,
+     "z_beyond": -0.163,
+     "text": "fg_pct .409 vs .416-.440"
+    }
+   ],
+   "net_z": -0.37
+  },
+  {
+   "player": "Naz Reid",
+   "deck_rank": 52,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "tov",
+     "ours": 1.9,
+     "lo": 1.6,
+     "hi": 1.7,
+     "z_beyond": -0.253,
+     "text": "tov 1.9 vs 1.6-1.7"
+    },
+    {
+     "cat": "ft_pct",
+     "ours": 0.731,
+     "lo": 0.746,
+     "hi": 0.756,
+     "z_beyond": -0.091,
+     "text": "ft_pct .731 vs .746-.756"
+    }
+   ],
+   "net_z": -0.34
+  },
+  {
+   "player": "Josh Hart",
+   "deck_rank": 87,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "reb",
+     "ours": 7.4,
+     "lo": 7.9,
+     "hi": 8.3,
+     "z_beyond": -0.205,
+     "text": "reb 7.4 vs 7.9-8.3"
+    },
+    {
+     "cat": "ft_pct",
+     "ours": 0.73,
+     "lo": 0.7509999999999999,
+     "hi": 0.759,
+     "z_beyond": -0.127,
+     "text": "ft_pct .730 vs .751-.759"
+    }
+   ],
+   "net_z": -0.33
+  },
+  {
+   "player": "Shai Gilgeous-Alexander",
+   "deck_rank": 3,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "ft_pct",
+     "ours": 0.874,
+     "lo": 0.885,
+     "hi": 0.889,
+     "z_beyond": -0.316,
+     "text": "ft_pct .874 vs .885-.889"
+    }
+   ],
+   "net_z": -0.32
+  },
+  {
+   "player": "Franz Wagner",
+   "deck_rank": 31,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "reb",
+     "ours": 6.0,
+     "lo": 5.4,
+     "hi": 5.7,
+     "z_beyond": 0.123,
+     "text": "reb 6 vs 5.4-5.7"
+    },
+    {
+     "cat": "ast",
+     "ours": 3.8,
+     "lo": 4.1,
+     "hi": 4.3,
+     "z_beyond": -0.147,
+     "text": "ast 3.8 vs 4.1-4.3"
+    },
+    {
+     "cat": "ft_pct",
+     "ours": 0.832,
+     "lo": 0.846,
+     "hi": 0.852,
+     "z_beyond": -0.3,
+     "text": "ft_pct .832 vs .846-.852"
+    }
+   ],
+   "net_z": -0.32
+  },
+  {
+   "player": "Toumani Camara",
+   "deck_rank": 99,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "pts",
+     "ours": 13.5,
+     "lo": 12.3,
+     "hi": 12.6,
+     "z_beyond": 0.161,
+     "text": "pts 13.5 vs 12.3-12.6"
+    },
+    {
+     "cat": "tpm",
+     "ours": 2.7,
+     "lo": 2.2,
+     "hi": 2.3,
+     "z_beyond": 0.407,
+     "text": "tpm 2.7 vs 2.2-2.3"
+    },
+    {
+     "cat": "tov",
+     "ours": 1.8,
+     "lo": 1.6,
+     "hi": 1.6,
+     "z_beyond": -0.253,
+     "text": "tov 1.8 vs 1.6-1.6"
+    }
+   ],
+   "net_z": 0.32
+  },
+  {
+   "player": "Brandon Miller",
+   "deck_rank": 75,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "tpm",
+     "ours": 3.1,
+     "lo": 3.4,
+     "hi": 3.5,
+     "z_beyond": -0.305,
+     "text": "tpm 3.1 vs 3.4-3.5"
+    }
+   ],
+   "net_z": -0.31
+  },
+  {
+   "player": "Luka Doncic",
+   "deck_rank": 5,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "ft_pct",
+     "ours": 0.772,
+     "lo": 0.781,
+     "hi": 0.782,
+     "z_beyond": -0.29,
+     "text": "ft_pct .772 vs .781-.782"
+    }
+   ],
+   "net_z": -0.29
+  },
+  {
+   "player": "Joel Embiid",
+   "deck_rank": 32,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "ft_pct",
+     "ours": 0.846,
+     "lo": 0.857,
+     "hi": 0.867,
+     "z_beyond": -0.288,
+     "text": "ft_pct .846 vs .857-.867"
+    }
+   ],
+   "net_z": -0.29
+  },
+  {
+   "player": "Jalen Duren",
+   "deck_rank": 43,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "pts",
+     "ours": 19.5,
+     "lo": 17.2,
+     "hi": 18.5,
+     "z_beyond": 0.179,
+     "text": "pts 19.5 vs 17.2-18.5"
+    },
+    {
+     "cat": "ast",
+     "ours": 2.0,
+     "lo": 2.3,
+     "hi": 2.5,
+     "z_beyond": -0.147,
+     "text": "ast 2 vs 2.3-2.5"
+    },
+    {
+     "cat": "stl",
+     "ours": 0.7,
+     "lo": 0.8,
+     "hi": 0.8,
+     "z_beyond": -0.322,
+     "text": "stl 0.7 vs 0.8-0.8"
+    }
+   ],
+   "net_z": -0.29
+  },
+  {
+   "player": "Ivica Zubac",
+   "deck_rank": 85,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "tov",
+     "ours": 1.8,
+     "lo": 1.6,
+     "hi": 1.6,
+     "z_beyond": -0.253,
+     "text": "tov 1.8 vs 1.6-1.6"
+    },
+    {
+     "cat": "fg_pct",
+     "ours": 0.603,
+     "lo": 0.615,
+     "hi": 0.618,
+     "z_beyond": -0.194,
+     "text": "fg_pct .603 vs .615-.618"
+    },
+    {
+     "cat": "ft_pct",
+     "ours": 0.716,
+     "lo": 0.681,
+     "hi": 0.7,
+     "z_beyond": 0.153,
+     "text": "ft_pct .716 vs .681-.700"
+    }
+   ],
+   "net_z": -0.29
+  },
+  {
+   "player": "Nikola Jokic",
+   "deck_rank": 1,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "tov",
+     "ours": 3.7,
+     "lo": 3.3,
+     "hi": 3.5,
+     "z_beyond": -0.253,
+     "text": "tov 3.7 vs 3.3-3.5"
+    },
+    {
+     "cat": "fg_pct",
+     "ours": 0.566,
+     "lo": 0.573,
+     "hi": 0.574,
+     "z_beyond": -0.197,
+     "text": "fg_pct .566 vs .573-.574"
+    },
+    {
+     "cat": "ft_pct",
+     "ours": 0.829,
+     "lo": 0.816,
+     "hi": 0.8220000000000001,
+     "z_beyond": 0.165,
+     "text": "ft_pct .829 vs .816-.822"
+    }
+   ],
+   "net_z": -0.28
+  },
+  {
+   "player": "Chet Holmgren",
+   "deck_rank": 16,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "fg_pct",
+     "ours": 0.549,
+     "lo": 0.535,
+     "hi": 0.538,
+     "z_beyond": 0.201,
+     "text": "fg_pct .549 vs .535-.538"
+    },
+    {
+     "cat": "ft_pct",
+     "ours": 0.79,
+     "lo": 0.78,
+     "hi": 0.784,
+     "z_beyond": 0.079,
+     "text": "ft_pct .790 vs .780-.784"
+    }
+   ],
+   "net_z": 0.28
+  },
+  {
+   "player": "Michael Porter Jr.",
+   "deck_rank": 34,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "pts",
+     "ours": 24.5,
+     "lo": 18.7,
+     "hi": 21.8,
+     "z_beyond": 0.482,
+     "text": "pts 24.5 vs 18.7-21.8"
+    },
+    {
+     "cat": "ast",
+     "ours": 3.0,
+     "lo": 2.4,
+     "hi": 2.6,
+     "z_beyond": 0.196,
+     "text": "ast 3 vs 2.4-2.6"
+    },
+    {
+     "cat": "stl",
+     "ours": 0.7,
+     "lo": 0.8,
+     "hi": 1.0,
+     "z_beyond": -0.322,
+     "text": "stl 0.7 vs 0.8-1"
+    },
+    {
+     "cat": "tpm",
+     "ours": 3.4,
+     "lo": 2.9,
+     "hi": 3.1,
+     "z_beyond": 0.305,
+     "text": "tpm 3.4 vs 2.9-3.1"
+    },
+    {
+     "cat": "tov",
+     "ours": 2.3,
+     "lo": 1.9,
+     "hi": 2.0,
+     "z_beyond": -0.379,
+     "text": "tov 2.3 vs 1.9-2"
+    }
+   ],
+   "net_z": 0.28
+  },
+  {
+   "player": "Mikal Bridges",
+   "deck_rank": 66,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "tov",
+     "ours": 1.0,
+     "lo": 1.2,
+     "hi": 1.3,
+     "z_beyond": 0.253,
+     "text": "tov 1 vs 1.2-1.3"
+    },
+    {
+     "cat": "ft_pct",
+     "ours": 0.832,
+     "lo": 0.815,
+     "hi": 0.824,
+     "z_beyond": 0.031,
+     "text": "ft_pct .832 vs .815-.824"
+    }
+   ],
+   "net_z": 0.28
+  },
+  {
+   "player": "Julian Champagnie",
+   "deck_rank": 113,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "reb",
+     "ours": 5.8,
+     "lo": 4.4,
+     "hi": 5.0,
+     "z_beyond": 0.328,
+     "text": "reb 5.8 vs 4.4-5"
+    },
+    {
+     "cat": "ft_pct",
+     "ours": 0.847,
+     "lo": 0.856,
+     "hi": 0.87,
+     "z_beyond": -0.046,
+     "text": "ft_pct .847 vs .856-.870"
+    }
+   ],
+   "net_z": 0.28
+  },
+  {
+   "player": "Paolo Banchero",
+   "deck_rank": 123,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "pts",
+     "ours": 22.0,
+     "lo": 23.6,
+     "hi": 24.3,
+     "z_beyond": -0.286,
+     "text": "pts 22 vs 23.6-24.3"
+    },
+    {
+     "cat": "tpm",
+     "ours": 1.2,
+     "lo": 1.4,
+     "hi": 1.5,
+     "z_beyond": -0.204,
+     "text": "tpm 1.2 vs 1.4-1.5"
+    },
+    {
+     "cat": "ft_pct",
+     "ours": 0.764,
+     "lo": 0.753,
+     "hi": 0.756,
+     "z_beyond": 0.21,
+     "text": "ft_pct .764 vs .753-.756"
+    }
+   ],
+   "net_z": -0.28
+  },
+  {
+   "player": "Giannis Antetokounmpo",
+   "deck_rank": 35,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "tov",
+     "ours": 3.6,
+     "lo": 3.1,
+     "hi": 3.3,
+     "z_beyond": -0.379,
+     "text": "tov 3.6 vs 3.1-3.3"
+    },
+    {
+     "cat": "fg_pct",
+     "ours": 0.6,
+     "lo": 0.608,
+     "hi": 0.613,
+     "z_beyond": -0.242,
+     "text": "fg_pct .600 vs .608-.613"
+    },
+    {
+     "cat": "ft_pct",
+     "ours": 0.664,
+     "lo": 0.628,
+     "hi": 0.639,
+     "z_beyond": 0.895,
+     "text": "ft_pct .664 vs .628-.639"
+    }
+   ],
+   "net_z": 0.27
+  },
+  {
+   "player": "Rudy Gobert",
+   "deck_rank": 102,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "ft_pct",
+     "ours": 0.562,
+     "lo": 0.583,
+     "hi": 0.596,
+     "z_beyond": -0.268,
+     "text": "ft_pct .562 vs .583-.596"
+    }
+   ],
+   "net_z": -0.27
+  },
+  {
+   "player": "Jarrett Allen",
+   "deck_rank": 78,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "fg_pct",
+     "ours": 0.639,
+     "lo": 0.6559999999999999,
+     "hi": 0.676,
+     "z_beyond": -0.258,
+     "text": "fg_pct .639 vs .656-.676"
+    }
+   ],
+   "net_z": -0.26
+  },
+  {
+   "player": "Donovan Mitchell",
+   "deck_rank": 8,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "tov",
+     "ours": 2.8,
+     "lo": 2.6,
+     "hi": 2.6,
+     "z_beyond": -0.253,
+     "text": "tov 2.8 vs 2.6-2.6"
+    }
+   ],
+   "net_z": -0.25
+  },
+  {
+   "player": "Tyrese Haliburton",
+   "deck_rank": 12,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "tov",
+     "ours": 1.5,
+     "lo": 1.7,
+     "hi": 1.7,
+     "z_beyond": 0.253,
+     "text": "tov 1.5 vs 1.7-1.7"
+    }
+   ],
+   "net_z": 0.25
+  },
+  {
+   "player": "OG Anunoby",
+   "deck_rank": 48,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "tov",
+     "ours": 1.8,
+     "lo": 1.5,
+     "hi": 1.6,
+     "z_beyond": -0.253,
+     "text": "tov 1.8 vs 1.5-1.6"
+    }
+   ],
+   "net_z": -0.25
+  },
+  {
+   "player": "Alperen Sengun",
+   "deck_rank": 55,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "tov",
+     "ours": 3.2,
+     "lo": 3.0,
+     "hi": 3.0,
+     "z_beyond": -0.253,
+     "text": "tov 3.2 vs 3-3"
+    }
+   ],
+   "net_z": -0.25
+  },
+  {
+   "player": "LeBron James",
+   "deck_rank": 60,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "ft_pct",
+     "ours": 0.737,
+     "lo": 0.752,
+     "hi": 0.76,
+     "z_beyond": -0.254,
+     "text": "ft_pct .737 vs .752-.760"
+    }
+   ],
+   "net_z": -0.25
+  },
+  {
+   "player": "Jaden McDaniels",
+   "deck_rank": 72,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "reb",
+     "ours": 4.2,
+     "lo": 4.8,
+     "hi": 5.8,
+     "z_beyond": -0.246,
+     "text": "reb 4.2 vs 4.8-5.8"
+    }
+   ],
+   "net_z": -0.25
+  },
+  {
+   "player": "Tre Jones",
+   "deck_rank": 89,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "pts",
+     "ours": 13.7,
+     "lo": 11.4,
+     "hi": 12.3,
+     "z_beyond": 0.25,
+     "text": "pts 13.7 vs 11.4-12.3"
+    }
+   ],
+   "net_z": 0.25
+  },
+  {
+   "player": "De'Aaron Fox",
+   "deck_rank": 61,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "ft_pct",
+     "ours": 0.756,
+     "lo": 0.777,
+     "hi": 0.799,
+     "z_beyond": -0.228,
+     "text": "ft_pct .756 vs .777-.799"
+    }
+   ],
+   "net_z": -0.23
+  },
+  {
+   "player": "Norman Powell",
+   "deck_rank": 83,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "reb",
+     "ours": 3.5,
+     "lo": 3.2,
+     "hi": 3.2,
+     "z_beyond": 0.123,
+     "text": "reb 3.5 vs 3.2-3.2"
+    },
+    {
+     "cat": "ast",
+     "ours": 2.5,
+     "lo": 2.1,
+     "hi": 2.3,
+     "z_beyond": 0.098,
+     "text": "ast 2.5 vs 2.1-2.3"
+    }
+   ],
+   "net_z": 0.22
+  },
+  {
+   "player": "Cam Spencer",
+   "deck_rank": 118,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "ast",
+     "ours": 5.6,
+     "lo": 3.0,
+     "hi": 5.3,
+     "z_beyond": 0.147,
+     "text": "ast 5.6 vs 3-5.3"
+    },
+    {
+     "cat": "fg_pct",
+     "ours": 0.471,
+     "lo": 0.452,
+     "hi": 0.465,
+     "z_beyond": 0.075,
+     "text": "fg_pct .471 vs .452-.465"
+    }
+   ],
+   "net_z": 0.22
+  },
+  {
+   "player": "Christian Braun",
+   "deck_rank": 120,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "fg_pct",
+     "ours": 0.522,
+     "lo": 0.531,
+     "hi": 0.56,
+     "z_beyond": -0.128,
+     "text": "fg_pct .522 vs .531-.560"
+    },
+    {
+     "cat": "ft_pct",
+     "ours": 0.774,
+     "lo": 0.7859999999999999,
+     "hi": 0.815,
+     "z_beyond": -0.088,
+     "text": "ft_pct .774 vs .786-.815"
+    }
+   ],
+   "net_z": -0.22
+  },
+  {
+   "player": "Devin Booker",
+   "deck_rank": 57,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "ft_pct",
+     "ours": 0.873,
+     "lo": 0.8809999999999999,
+     "hi": 0.884,
+     "z_beyond": -0.207,
+     "text": "ft_pct .873 vs .881-.884"
+    }
+   ],
+   "net_z": -0.21
+  },
+  {
+   "player": "Domantas Sabonis",
+   "deck_rank": 21,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "tpm",
+     "ours": 0.9,
+     "lo": 0.6,
+     "hi": 0.7,
+     "z_beyond": 0.204,
+     "text": "tpm 0.9 vs 0.6-0.7"
+    }
+   ],
+   "net_z": 0.2
+  },
+  {
+   "player": "Reed Sheppard",
+   "deck_rank": 62,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "tpm",
+     "ours": 2.8,
+     "lo": 2.2,
+     "hi": 2.6,
+     "z_beyond": 0.204,
+     "text": "tpm 2.8 vs 2.2-2.6"
+    }
+   ],
+   "net_z": 0.2
+  },
+  {
+   "player": "Ayo Dosunmu",
+   "deck_rank": 81,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "tpm",
+     "ours": 1.9,
+     "lo": 1.5,
+     "hi": 1.7,
+     "z_beyond": 0.204,
+     "text": "tpm 1.9 vs 1.5-1.7"
+    }
+   ],
+   "net_z": 0.2
+  },
+  {
+   "player": "Cade Cunningham",
+   "deck_rank": 24,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "blk",
+     "ours": 0.7,
+     "lo": 0.8,
+     "hi": 0.8,
+     "z_beyond": -0.196,
+     "text": "blk 0.7 vs 0.8-0.8"
+    },
+    {
+     "cat": "tov",
+     "ours": 3.7,
+     "lo": 4.0,
+     "hi": 4.1,
+     "z_beyond": 0.379,
+     "text": "tov 3.7 vs 4-4.1"
+    }
+   ],
+   "net_z": 0.18
+  },
+  {
+   "player": "Collin Gillespie",
+   "deck_rank": 79,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "pts",
+     "ours": 12.7,
+     "lo": 9.5,
+     "hi": 11.9,
+     "z_beyond": 0.143,
+     "text": "pts 12.7 vs 9.5-11.9"
+    },
+    {
+     "cat": "reb",
+     "ours": 4.1,
+     "lo": 3.3,
+     "hi": 3.9,
+     "z_beyond": 0.082,
+     "text": "reb 4.1 vs 3.3-3.9"
+    },
+    {
+     "cat": "tpm",
+     "ours": 2.9,
+     "lo": 2.1,
+     "hi": 2.7,
+     "z_beyond": 0.204,
+     "text": "tpm 2.9 vs 2.1-2.7"
+    },
+    {
+     "cat": "tov",
+     "ours": 1.6,
+     "lo": 1.1,
+     "hi": 1.4,
+     "z_beyond": -0.253,
+     "text": "tov 1.6 vs 1.1-1.4"
+    }
+   ],
+   "net_z": 0.18
+  },
+  {
+   "player": "Matas Buzelis",
+   "deck_rank": 98,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "pts",
+     "ours": 16.2,
+     "lo": 17.2,
+     "hi": 18.6,
+     "z_beyond": -0.179,
+     "text": "pts 16.2 vs 17.2-18.6"
+    }
+   ],
+   "net_z": -0.18
+  },
+  {
+   "player": "Peyton Watson",
+   "deck_rank": 106,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "pts",
+     "ours": 14.5,
+     "lo": 12.2,
+     "hi": 12.5,
+     "z_beyond": 0.357,
+     "text": "pts 14.5 vs 12.2-12.5"
+    },
+    {
+     "cat": "tpm",
+     "ours": 1.5,
+     "lo": 1.2,
+     "hi": 1.3,
+     "z_beyond": 0.204,
+     "text": "tpm 1.5 vs 1.2-1.3"
+    },
+    {
+     "cat": "tov",
+     "ours": 1.7,
+     "lo": 1.3,
+     "hi": 1.4,
+     "z_beyond": -0.379,
+     "text": "tov 1.7 vs 1.3-1.4"
+    }
+   ],
+   "net_z": 0.18
+  },
+  {
+   "player": "Tyler Herro",
+   "deck_rank": 68,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "ast",
+     "ours": 4.1,
+     "lo": 4.6,
+     "hi": 4.9,
+     "z_beyond": -0.245,
+     "text": "ast 4.1 vs 4.6-4.9"
+    },
+    {
+     "cat": "tpm",
+     "ours": 2.5,
+     "lo": 2.9,
+     "hi": 3.2,
+     "z_beyond": -0.407,
+     "text": "tpm 2.5 vs 2.9-3.2"
+    },
+    {
+     "cat": "tov",
+     "ours": 1.9,
+     "lo": 2.2,
+     "hi": 2.3,
+     "z_beyond": 0.379,
+     "text": "tov 1.9 vs 2.2-2.3"
+    },
+    {
+     "cat": "ft_pct",
+     "ours": 0.904,
+     "lo": 0.886,
+     "hi": 0.894,
+     "z_beyond": 0.105,
+     "text": "ft_pct .904 vs .886-.894"
+    }
+   ],
+   "net_z": -0.17
+  },
+  {
+   "player": "Dyson Daniels",
+   "deck_rank": 22,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "reb",
+     "ours": 6.8,
+     "lo": 5.8,
+     "hi": 6.4,
+     "z_beyond": 0.164,
+     "text": "reb 6.8 vs 5.8-6.4"
+    },
+    {
+     "cat": "ast",
+     "ours": 5.9,
+     "lo": 4.7,
+     "hi": 5.5,
+     "z_beyond": 0.196,
+     "text": "ast 5.9 vs 4.7-5.5"
+    },
+    {
+     "cat": "tpm",
+     "ours": 0.3,
+     "lo": 0.5,
+     "hi": 0.6,
+     "z_beyond": -0.204,
+     "text": "tpm 0.3 vs 0.5-0.6"
+    }
+   ],
+   "net_z": 0.16
+  },
+  {
+   "player": "Keegan Murray",
+   "deck_rank": 74,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "pts",
+     "ours": 12.4,
+     "lo": 13.3,
+     "hi": 16.1,
+     "z_beyond": -0.161,
+     "text": "pts 12.4 vs 13.3-16.1"
+    }
+   ],
+   "net_z": -0.16
+  },
+  {
+   "player": "Derik Queen",
+   "deck_rank": 137,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "reb",
+     "ours": 7.1,
+     "lo": 7.5,
+     "hi": 7.8,
+     "z_beyond": -0.164,
+     "text": "reb 7.1 vs 7.5-7.8"
+    }
+   ],
+   "net_z": -0.16
+  },
+  {
+   "player": "Victor Wembanyama",
+   "deck_rank": 2,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "ast",
+     "ours": 3.1,
+     "lo": 3.3,
+     "hi": 3.6,
+     "z_beyond": -0.098,
+     "text": "ast 3.1 vs 3.3-3.6"
+    },
+    {
+     "cat": "tov",
+     "ours": 2.4,
+     "lo": 2.6,
+     "hi": 2.9,
+     "z_beyond": 0.253,
+     "text": "tov 2.4 vs 2.6-2.9"
+    }
+   ],
+   "net_z": 0.15
+  },
+  {
+   "player": "Austin Reaves",
+   "deck_rank": 33,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "fg_pct",
+     "ours": 0.487,
+     "lo": 0.47,
+     "hi": 0.48100000000000004,
+     "z_beyond": 0.144,
+     "text": "fg_pct .487 vs .470-.481"
+    }
+   ],
+   "net_z": 0.14
+  },
+  {
+   "player": "CJ McCollum",
+   "deck_rank": 125,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "ft_pct",
+     "ours": 0.78,
+     "lo": 0.749,
+     "hi": 0.765,
+     "z_beyond": 0.144,
+     "text": "ft_pct .780 vs .749-.765"
+    }
+   ],
+   "net_z": 0.14
+  },
+  {
+   "player": "Brandon Ingram",
+   "deck_rank": 84,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "tov",
+     "ours": 2.4,
+     "lo": 2.6,
+     "hi": 2.7,
+     "z_beyond": 0.253,
+     "text": "tov 2.4 vs 2.6-2.7"
+    },
+    {
+     "cat": "ft_pct",
+     "ours": 0.811,
+     "lo": 0.819,
+     "hi": 0.826,
+     "z_beyond": -0.118,
+     "text": "ft_pct .811 vs .819-.826"
+    }
+   ],
+   "net_z": 0.13
+  },
+  {
+   "player": "Kevin Durant",
+   "deck_rank": 10,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "ast",
+     "ours": 4.8,
+     "lo": 3.8,
+     "hi": 4.3,
+     "z_beyond": 0.245,
+     "text": "ast 4.8 vs 3.8-4.3"
+    },
+    {
+     "cat": "tov",
+     "ours": 3.2,
+     "lo": 2.9,
+     "hi": 2.9,
+     "z_beyond": -0.379,
+     "text": "tov 3.2 vs 2.9-2.9"
+    },
+    {
+     "cat": "fg_pct",
+     "ours": 0.515,
+     "lo": 0.523,
+     "hi": 0.524,
+     "z_beyond": -0.227,
+     "text": "fg_pct .515 vs .523-.524"
+    },
+    {
+     "cat": "ft_pct",
+     "ours": 0.876,
+     "lo": 0.86,
+     "hi": 0.863,
+     "z_beyond": 0.249,
+     "text": "ft_pct .876 vs .860-.863"
+    }
+   ],
+   "net_z": -0.11
+  },
+  {
+   "player": "Amen Thompson",
+   "deck_rank": 15,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "ast",
+     "ours": 5.3,
+     "lo": 4.0,
+     "hi": 5.0,
+     "z_beyond": 0.147,
+     "text": "ast 5.3 vs 4-5"
+    },
+    {
+     "cat": "tov",
+     "ours": 2.4,
+     "lo": 2.1,
+     "hi": 2.2,
+     "z_beyond": -0.253,
+     "text": "tov 2.4 vs 2.1-2.2"
+    }
+   ],
+   "net_z": -0.11
+  },
+  {
+   "player": "Josh Giddey",
+   "deck_rank": 58,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "ft_pct",
+     "ours": 0.763,
+     "lo": 0.771,
+     "hi": 0.776,
+     "z_beyond": -0.107,
+     "text": "ft_pct .763 vs .771-.776"
+    }
+   ],
+   "net_z": -0.11
+  },
+  {
+   "player": "Luke Kornet",
+   "deck_rank": 150,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "reb",
+     "ours": 6.1,
+     "lo": 5.0,
+     "hi": 5.8,
+     "z_beyond": 0.123,
+     "text": "reb 6.1 vs 5-5.8"
+    },
+    {
+     "cat": "fg_pct",
+     "ours": 0.613,
+     "lo": 0.6559999999999999,
+     "hi": 0.662,
+     "z_beyond": -0.278,
+     "text": "fg_pct .613 vs .656-.662"
+    },
+    {
+     "cat": "ft_pct",
+     "ours": 0.812,
+     "lo": 0.765,
+     "hi": 0.804,
+     "z_beyond": 0.043,
+     "text": "ft_pct .812 vs .765-.804"
+    }
+   ],
+   "net_z": -0.11
+  },
+  {
+   "player": "Onyeka Okongwu",
+   "deck_rank": 36,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "ast",
+     "ours": 3.1,
+     "lo": 2.7,
+     "hi": 2.9,
+     "z_beyond": 0.098,
+     "text": "ast 3.1 vs 2.7-2.9"
+    }
+   ],
+   "net_z": 0.1
+  },
+  {
+   "player": "Cason Wallace",
+   "deck_rank": 95,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "fg_pct",
+     "ours": 0.442,
+     "lo": 0.449,
+     "hi": 0.453,
+     "z_beyond": -0.086,
+     "text": "fg_pct .442 vs .449-.453"
+    }
+   ],
+   "net_z": -0.09
+  },
+  {
+   "player": "Isaiah Hartenstein",
+   "deck_rank": 112,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "ft_pct",
+     "ours": 0.631,
+     "lo": 0.642,
+     "hi": 0.656,
+     "z_beyond": -0.077,
+     "text": "ft_pct .631 vs .642-.656"
+    }
+   ],
+   "net_z": -0.08
+  },
+  {
+   "player": "Zion Williamson",
+   "deck_rank": 114,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "ast",
+     "ours": 3.2,
+     "lo": 3.9,
+     "hi": 4.1,
+     "z_beyond": -0.343,
+     "text": "ast 3.2 vs 3.9-4.1"
+    },
+    {
+     "cat": "tov",
+     "ours": 2.0,
+     "lo": 2.2,
+     "hi": 2.4,
+     "z_beyond": 0.253,
+     "text": "tov 2 vs 2.2-2.4"
+    },
+    {
+     "cat": "ft_pct",
+     "ours": 0.709,
+     "lo": 0.696,
+     "hi": 0.702,
+     "z_beyond": 0.168,
+     "text": "ft_pct .709 vs .696-.702"
+    }
+   ],
+   "net_z": 0.08
+  },
+  {
+   "player": "Jakob Poeltl",
+   "deck_rank": 115,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "fg_pct",
+     "ours": 0.679,
+     "lo": 0.653,
+     "hi": 0.6679999999999999,
+     "z_beyond": 0.119,
+     "text": "fg_pct .679 vs .653-.668"
+    },
+    {
+     "cat": "ft_pct",
+     "ours": 0.588,
+     "lo": 0.618,
+     "hi": 0.642,
+     "z_beyond": -0.201,
+     "text": "ft_pct .588 vs .618-.642"
+    }
+   ],
+   "net_z": -0.08
+  },
+  {
+   "player": "Neemias Queta",
+   "deck_rank": 82,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "ft_pct",
+     "ours": 0.704,
+     "lo": 0.714,
+     "hi": 0.719,
+     "z_beyond": -0.073,
+     "text": "ft_pct .704 vs .714-.719"
+    }
+   ],
+   "net_z": -0.07
+  },
+  {
+   "player": "Bobby Portis",
+   "deck_rank": 131,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "tpm",
+     "ours": 2.0,
+     "lo": 1.6,
+     "hi": 1.8,
+     "z_beyond": 0.204,
+     "text": "tpm 2 vs 1.6-1.8"
+    },
+    {
+     "cat": "ft_pct",
+     "ours": 0.724,
+     "lo": 0.765,
+     "hi": 0.776,
+     "z_beyond": -0.131,
+     "text": "ft_pct .724 vs .765-.776"
+    }
+   ],
+   "net_z": 0.07
+  },
+  {
+   "player": "Bam Adebayo",
+   "deck_rank": 26,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "ast",
+     "ours": 3.2,
+     "lo": 3.6,
+     "hi": 3.8,
+     "z_beyond": -0.196,
+     "text": "ast 3.2 vs 3.6-3.8"
+    },
+    {
+     "cat": "tov",
+     "ours": 1.6,
+     "lo": 1.8,
+     "hi": 1.9,
+     "z_beyond": 0.253,
+     "text": "tov 1.6 vs 1.8-1.9"
+    }
+   ],
+   "net_z": 0.06
+  },
+  {
+   "player": "LaMelo Ball",
+   "deck_rank": 46,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "ft_pct",
+     "ours": 0.882,
+     "lo": 0.866,
+     "hi": 0.8740000000000001,
+     "z_beyond": 0.064,
+     "text": "ft_pct .882 vs .866-.874"
+    }
+   ],
+   "net_z": 0.06
+  },
+  {
+   "player": "John Collins",
+   "deck_rank": 71,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "fg_pct",
+     "ours": 0.55,
+     "lo": 0.541,
+     "hi": 0.542,
+     "z_beyond": 0.141,
+     "text": "fg_pct .550 vs .541-.542"
+    },
+    {
+     "cat": "ft_pct",
+     "ours": 0.774,
+     "lo": 0.799,
+     "hi": 0.81,
+     "z_beyond": -0.2,
+     "text": "ft_pct .774 vs .799-.810"
+    }
+   ],
+   "net_z": -0.06
+  },
+  {
+   "player": "Myles Turner",
+   "deck_rank": 97,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "ft_pct",
+     "ours": 0.75,
+     "lo": 0.757,
+     "hi": 0.759,
+     "z_beyond": -0.056,
+     "text": "ft_pct .750 vs .757-.759"
+    }
+   ],
+   "net_z": -0.06
+  },
+  {
+   "player": "Moussa Diabate",
+   "deck_rank": 127,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "fg_pct",
+     "ours": 0.623,
+     "lo": 0.607,
+     "hi": 0.616,
+     "z_beyond": 0.057,
+     "text": "fg_pct .623 vs .607-.616"
+    }
+   ],
+   "net_z": 0.06
+  },
+  {
+   "player": "Nickeil Alexander-Walker",
+   "deck_rank": 47,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "tpm",
+     "ours": 3.2,
+     "lo": 2.6,
+     "hi": 3.0,
+     "z_beyond": 0.204,
+     "text": "tpm 3.2 vs 2.6-3"
+    },
+    {
+     "cat": "tov",
+     "ours": 2.1,
+     "lo": 1.7,
+     "hi": 1.9,
+     "z_beyond": -0.253,
+     "text": "tov 2.1 vs 1.7-1.9"
+    }
+   ],
+   "net_z": -0.05
+  },
+  {
+   "player": "Stephen Curry",
+   "deck_rank": 18,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "ast",
+     "ours": 4.7,
+     "lo": 5.0,
+     "hi": 5.2,
+     "z_beyond": -0.147,
+     "text": "ast 4.7 vs 5-5.2"
+    },
+    {
+     "cat": "fg_pct",
+     "ours": 0.469,
+     "lo": 0.453,
+     "hi": 0.45899999999999996,
+     "z_beyond": 0.301,
+     "text": "fg_pct .469 vs .453-.459"
+    },
+    {
+     "cat": "ft_pct",
+     "ours": 0.919,
+     "lo": 0.9259999999999999,
+     "hi": 0.929,
+     "z_beyond": -0.114,
+     "text": "ft_pct .919 vs .926-.929"
+    }
+   ],
+   "net_z": 0.04
+  },
+  {
+   "player": "Kel'el Ware",
+   "deck_rank": 27,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "ft_pct",
+     "ours": 0.732,
+     "lo": 0.714,
+     "hi": 0.723,
+     "z_beyond": 0.043,
+     "text": "ft_pct .732 vs .714-.723"
+    }
+   ],
+   "net_z": 0.04
+  },
+  {
+   "player": "Miles Bridges",
+   "deck_rank": 100,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "fg_pct",
+     "ours": 0.46,
+     "lo": 0.444,
+     "hi": 0.451,
+     "z_beyond": 0.196,
+     "text": "fg_pct .460 vs .444-.451"
+    },
+    {
+     "cat": "ft_pct",
+     "ours": 0.823,
+     "lo": 0.838,
+     "hi": 0.845,
+     "z_beyond": -0.158,
+     "text": "ft_pct .823 vs .838-.845"
+    }
+   ],
+   "net_z": 0.04
+  },
+  {
+   "player": "Grayson Allen",
+   "deck_rank": 134,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "ast",
+     "ours": 3.3,
+     "lo": 2.5,
+     "hi": 3.0,
+     "z_beyond": 0.147,
+     "text": "ast 3.3 vs 2.5-3"
+    },
+    {
+     "cat": "fg_pct",
+     "ours": 0.416,
+     "lo": 0.422,
+     "hi": 0.433,
+     "z_beyond": -0.109,
+     "text": "fg_pct .416 vs .422-.433"
+    }
+   ],
+   "net_z": 0.04
+  },
+  {
+   "player": "Tobias Harris",
+   "deck_rank": 140,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "ft_pct",
+     "ours": 0.857,
+     "lo": 0.863,
+     "hi": 0.869,
+     "z_beyond": -0.042,
+     "text": "ft_pct .857 vs .863-.869"
+    }
+   ],
+   "net_z": -0.04
+  },
+  {
+   "player": "Mitchell Robinson",
+   "deck_rank": 144,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "fg_pct",
+     "ours": 0.716,
+     "lo": 0.685,
+     "hi": 0.709,
+     "z_beyond": 0.038,
+     "text": "fg_pct .716 vs .685-.709"
+    }
+   ],
+   "net_z": 0.04
+  },
+  {
+   "player": "Jalen Suggs",
+   "deck_rank": 64,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "ast",
+     "ours": 5.5,
+     "lo": 4.8,
+     "hi": 5.0,
+     "z_beyond": 0.245,
+     "text": "ast 5.5 vs 4.8-5"
+    },
+    {
+     "cat": "blk",
+     "ours": 0.7,
+     "lo": 0.8,
+     "hi": 0.8,
+     "z_beyond": -0.196,
+     "text": "blk 0.7 vs 0.8-0.8"
+    },
+    {
+     "cat": "ft_pct",
+     "ours": 0.834,
+     "lo": 0.846,
+     "hi": 0.866,
+     "z_beyond": -0.081,
+     "text": "ft_pct .834 vs .846-.866"
+    }
+   ],
+   "net_z": -0.03
+  },
+  {
+   "player": "Tari Eason",
+   "deck_rank": 93,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "tpm",
+     "ours": 1.6,
+     "lo": 1.3,
+     "hi": 1.4,
+     "z_beyond": 0.204,
+     "text": "tpm 1.6 vs 1.3-1.4"
+    },
+    {
+     "cat": "fg_pct",
+     "ours": 0.427,
+     "lo": 0.441,
+     "hi": 0.45,
+     "z_beyond": -0.219,
+     "text": "fg_pct .427 vs .441-.450"
+    }
+   ],
+   "net_z": -0.02
+  },
+  {
+   "player": "Jabari Smith Jr.",
+   "deck_rank": 96,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "ast",
+     "ours": 1.9,
+     "lo": 1.6,
+     "hi": 1.7,
+     "z_beyond": 0.098,
+     "text": "ast 1.9 vs 1.6-1.7"
+    },
+    {
+     "cat": "ft_pct",
+     "ours": 0.782,
+     "lo": 0.791,
+     "hi": 0.796,
+     "z_beyond": -0.078,
+     "text": "ft_pct .782 vs .791-.796"
+    }
+   ],
+   "net_z": 0.02
+  },
+  {
+   "player": "Jalen Williams",
+   "deck_rank": 41,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "ast",
+     "ours": 6.0,
+     "lo": 5.0,
+     "hi": 5.3,
+     "z_beyond": 0.343,
+     "text": "ast 6 vs 5-5.3"
+    },
+    {
+     "cat": "tpm",
+     "ours": 0.8,
+     "lo": 1.3,
+     "hi": 1.5,
+     "z_beyond": -0.509,
+     "text": "tpm 0.8 vs 1.3-1.5"
+    },
+    {
+     "cat": "ft_pct",
+     "ours": 0.828,
+     "lo": 0.805,
+     "hi": 0.815,
+     "z_beyond": 0.179,
+     "text": "ft_pct .828 vs .805-.815"
+    }
+   ],
+   "net_z": 0.01
+  },
+  {
+   "player": "Robert Williams III",
+   "deck_rank": 119,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "fg_pct",
+     "ours": 0.712,
+     "lo": 0.687,
+     "hi": 0.697,
+     "z_beyond": 0.102,
+     "text": "fg_pct .712 vs .687-.697"
+    },
+    {
+     "cat": "ft_pct",
+     "ours": 0.618,
+     "lo": 0.651,
+     "hi": 0.6920000000000001,
+     "z_beyond": -0.105,
+     "text": "ft_pct .618 vs .651-.692"
+    }
+   ],
+   "net_z": -0.0
+  },
+  {
+   "player": "Naji Marshall",
+   "deck_rank": 148,
+   "refs": [
+    "Hashtag",
+    "RotoBaller",
+    "Yahoo"
+   ],
+   "cells": [
+    {
+     "cat": "pts",
+     "ours": 15.0,
+     "lo": 11.4,
+     "hi": 14.1,
+     "z_beyond": 0.161,
+     "text": "pts 15 vs 11.4-14.1"
+    },
+    {
+     "cat": "ast",
+     "ours": 3.3,
+     "lo": 2.6,
+     "hi": 3.1,
+     "z_beyond": 0.098,
+     "text": "ast 3.3 vs 2.6-3.1"
+    },
+    {
+     "cat": "fg_pct",
+     "ours": 0.497,
+     "lo": 0.505,
+     "hi": 0.506,
+     "z_beyond": -0.143,
+     "text": "fg_pct .497 vs .505-.506"
+    },
+    {
+     "cat": "ft_pct",
+     "ours": 0.766,
+     "lo": 0.775,
+     "hi": 0.778,
+     "z_beyond": -0.118,
+     "text": "ft_pct .766 vs .775-.778"
+    }
+   ],
+   "net_z": -0.0
+  }
+ ]
+}
