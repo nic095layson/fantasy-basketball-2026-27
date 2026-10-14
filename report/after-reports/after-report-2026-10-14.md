@@ -155,6 +155,21 @@ EVIDENCE: `feed_diff_2026-10-14.json` (the diff), `tags_2026-10-14.txt` (the pag
 
 Predictions: "the preseason backs the outside on at least half of the 15 we have low" — 8 of 15 ✓; "Harper about 25+ adjusted" — 32.3 to 34.5 ✓; the A2 branch (a shift past 4 minutes) **fired** at -11.43, and the third correction was added as described in the method.
 
+## Range check (D-RN-3)
+
+Rule (owner, 2026-10-08): on a projection pass, every cell of a top-150 line that sits outside ALL its references either carries a one-line mechanism naming two dated outlets, or comes back inside. References: Yahoo `yahoo-proj-2026-10-13.csv`, Hashtag `hashtag-2026-10-12.csv`, RotoBaller `rotoballer-2026-10-13.csv` and the 2025-26 actual line. Version 68: 4 player(s) with 4 cell(s) outside every reference (147 of the top 150 checkable) (`range_check_v68.txt`) — the same four cells as Version 67; Kornet's restored line is not in the top 150 checked. Each sits outside because the blend also reads FantasyPros and the BBM cards, which the deck's range check does not yet read (D-1013-14).
+
+| player | deck rank | cells outside every reference | net z | mechanism (two dated outlets) |
+|---|---|---|---|---|
+| Yaxel Lendeborg | 102 | tpm 1 vs 1.2-1.3 | -0.21 | the six-way blend: FantasyPros 10/13 (0.6) and the BBM cards 10/13 (0.3) sit below the three references the check reads (Yahoo 10/13 1.3, Hashtag 10/12 1.2, RotoBaller 10/13 1.3); the equal-weight mean of the six is 1.0 |
+| Caleb Wilson | 73 | ft_pct .735 vs .720-.728 | +0.09 | the six-way blend: FantasyPros 10/13 (.752) and the BBM cards 10/13 (.770) sit above the three references (Yahoo 10/13 .720, Hashtag 10/12 .720, RotoBaller 10/13 .728); the mean of the six is .735 |
+| Collin Murray-Boyles | 132 | fg_pct .586 vs .579-.580 | +0.07 | the six-way blend: FantasyPros 10/13 (.600) and the BBM cards 10/13 (.599) sit above the three references (Yahoo 10/13 .580, Hashtag 10/12 .579, RotoBaller 10/13 .579); the mean of the six is .586 |
+| Dylan Harper | 103 | ft_pct .765 vs .754-.758 | +0.05 | the six-way blend: FantasyPros 10/13 (.785) and the BBM cards 10/13 (.785) sit above the three references (Yahoo 10/13 .758, Hashtag 10/12 .754, RotoBaller 10/13 .755); the mean of the six is .765 |
+
+## Points identity (D-1009-3)
+
+0 player(s), 0 line(s) more than 1 from their own shooting (200 deck and 200 kit lines checked) (`identity_v68.txt`; the deck's `identity_check.py` on Version 68, both planes — Kornet's restored line included). No line needs a mechanism.
+
 ## Watchlist
 
 - Tonight's seven preseason games (BKN at MIA, CHA at BOS, PHX at SA, NO at DAL, CHI at MIL, DET at MIN, DEN at LAC) end after the lock; Harper, Kornet, Jalen Green, Porter and Bey play in them. They cannot change the board before the draft.

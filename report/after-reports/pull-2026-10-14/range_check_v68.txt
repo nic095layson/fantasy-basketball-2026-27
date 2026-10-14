@@ -1,0 +1,13 @@
+RANGE CHECK: 4 player(s) with 4 cell(s) outside every reference (147 of the top 150 checkable)
+
+## Range check (D-RN-3)
+
+Rule (owner, 2026-10-08): on a projection pass, every cell of a top-150 line that sits outside the range of ALL its references (three or more of: Yahoo `yahoo-proj-2026-10-13.csv`, Hashtag `hashtag-2026-10-12.csv`, RotoBaller `rotoballer-2026-10-13.csv`, 2025-26 actual `arena/results/tuning_2026-10-08/bref_pergame_2025-26.csv`; tolerance .005 on percentages, 5% with a 0.1 floor on counting stats) carries a one-line mechanism naming two dated outlets, or comes back inside the range. This page: 4 player(s), 4 cell(s), of 147 checkable top-150 lines. Net z is what the cells carry beyond the nearest reference in the deck's frame (positive flatters the player).
+
+| player | deck rank | cells outside every reference | net z | mechanism (two dated outlets) |
+|---|---|---|---|---|
+| Yaxel Lendeborg | 102 | tpm 1 vs 1.2-1.3 | -0.21 | — |
+| Caleb Wilson | 73 | ft_pct .735 vs .720-.728 | +0.09 | — |
+| Collin Murray-Boyles | 132 | fg_pct .586 vs .579-.580 | +0.07 | — |
+| Dylan Harper | 103 | ft_pct .765 vs .754-.758 | +0.05 | — |
+

@@ -45,6 +45,19 @@ today_items = sorted(((i["date"][:16], i["athlete"]["displayName"], i.get("statu
 pool_today = [x for x in today_items if any(x[1] == k or x[1].rstrip(".") == k.rstrip(".") for k in N)]
 today_tab = "\n".join(f"| {d[11:]}Z | {n} | {s} | {c.replace('|', '/')} |" for d, n, s, c in pool_today)
 pool_out = ", ".join(f"{x['name']} ({x['detail']}, {x['returnDate'] or 'no'} estimate)" for x in F["pool_out"])
+# Range check and points identity on Version 68 (the deck's own scripts, outputs kept beside this writer). The four
+# cells are the four of Version 67; their mechanisms are carried from that report's writer (blend-2026-10-14).
+MECH = {
+    "Yaxel Lendeborg": "the six-way blend: FantasyPros 10/13 (0.6) and the BBM cards 10/13 (0.3) sit below the three references the check reads (Yahoo 10/13 1.3, Hashtag 10/12 1.2, RotoBaller 10/13 1.3); the equal-weight mean of the six is 1.0",
+    "Caleb Wilson": "the six-way blend: FantasyPros 10/13 (.752) and the BBM cards 10/13 (.770) sit above the three references (Yahoo 10/13 .720, Hashtag 10/12 .720, RotoBaller 10/13 .728); the mean of the six is .735",
+    "Collin Murray-Boyles": "the six-way blend: FantasyPros 10/13 (.600) and the BBM cards 10/13 (.599) sit above the three references (Yahoo 10/13 .580, Hashtag 10/12 .579, RotoBaller 10/13 .579); the mean of the six is .586",
+    "Dylan Harper": "the six-way blend: FantasyPros 10/13 (.785) and the BBM cards 10/13 (.785) sit above the three references (Yahoo 10/13 .758, Hashtag 10/12 .754, RotoBaller 10/13 .755); the mean of the six is .765",
+}
+RC = rd(os.path.join(H, "range_check_v68.txt")); IDT = rd(os.path.join(H, "identity_v68.txt"))
+rc_rows = re.findall(r"^\| ([^|]+?) \| (\d+) \| ([^|]+?) \| ([+-][\d.]+) \| — \|$", RC, re.M)
+assert {r[0] for r in rc_rows} == set(MECH), rc_rows
+rc_head = re.search(r"RANGE CHECK: (.*)", RC).group(1); id_head = re.search(r"POINTS IDENTITY: (.*)", IDT).group(1)
+rc_tab = "\n".join(f"| {n} | {rk} | {cells} | {z} | {MECH[n]} |" for n, rk, cells, z in rc_rows)
 cut = ["Dain Dainja", "Dion Brown", "Miles Kelly", "Yuki Kawamura", "Aaron Nkrumah", "Damari Monsanto", "Chucky Hepburn"]
 
 RPT = f"""# After-report — 2026-10-14: the final morning pull before the draft (Version 68), with the 24 disputed-minutes players read against the preseason
@@ -159,6 +172,18 @@ EVIDENCE: `feed_diff_2026-10-14.json` (the diff), `tags_2026-10-14.txt` (the pag
 | C6 this report through the five gates; the sheet covers the 24 | PASS | the gate runs ride the kit PR; D-1014-8 |
 
 Predictions: "the preseason backs the outside on at least half of the 15 we have low" — {len(lower_out)} of {len(lower)} ✓; "Harper about 25+ adjusted" — {next(r['adj_team'] for r in rows if r['name'] == 'Dylan Harper')} to {next(r['adj_scale'] for r in rows if r['name'] == 'Dylan Harper')} ✓; the A2 branch (a shift past 4 minutes) **fired** at {cal['shift']:+.2f}, and the third correction was added as described in the method.
+
+## Range check (D-RN-3)
+
+Rule (owner, 2026-10-08): on a projection pass, every cell of a top-150 line that sits outside ALL its references either carries a one-line mechanism naming two dated outlets, or comes back inside. References: Yahoo `yahoo-proj-2026-10-13.csv`, Hashtag `hashtag-2026-10-12.csv`, RotoBaller `rotoballer-2026-10-13.csv` and the 2025-26 actual line. Version 68: {rc_head} (`range_check_v68.txt`) — the same four cells as Version 67; Kornet's restored line is not in the top 150 checked. Each sits outside because the blend also reads FantasyPros and the BBM cards, which the deck's range check does not yet read (D-1013-14).
+
+| player | deck rank | cells outside every reference | net z | mechanism (two dated outlets) |
+|---|---|---|---|---|
+{rc_tab}
+
+## Points identity (D-1009-3)
+
+{id_head} (`identity_v68.txt`; the deck's `identity_check.py` on Version 68, both planes — Kornet's restored line included). No line needs a mechanism.
 
 ## Watchlist
 
