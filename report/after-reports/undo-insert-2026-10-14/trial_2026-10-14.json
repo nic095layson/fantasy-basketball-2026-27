@@ -1,0 +1,277 @@
+{
+ "page": "/tmp/claude-0/-home-user-fantasy-basketball-2026-27/3cdbbd9b-02dd-585e-8d00-b8a370128fae/scratchpad/undo/page_v68.html",
+ "at": "2026-10-14T15:37:17.983Z",
+ "assertions": 51,
+ "failed": 4,
+ "pageErrors": [],
+ "pass": false,
+ "notes": {
+  "pool": 318,
+  "page": "/tmp/claude-0/-home-user-fantasy-basketball-2026-27/3cdbbd9b-02dd-585e-8d00-b8a370128fae/scratchpad/undo/page_v68.html",
+  "A_history_bad": 0,
+  "R1": {
+   "insert": 5,
+   "undo": 18,
+   "wrongLog": 10
+  },
+  "randomOps": {
+   "insert": 5,
+   "undo": 18,
+   "wrongLog": 10
+  }
+ },
+ "failures": [
+  {
+   "id": "D.refusals-change-nothing",
+   "ok": false,
+   "detail": [
+    "tab:best @line 22: path \"YOUR ROSTER (2/13)\" | oracle \"Insert\"",
+    "tab:boardtab @line 22: path \"YOUR ROSTER (2/13)\" | oracle \"Insert\"",
+    "tab:rosters @line 22: path \"YOUR ROSTER (2/13)\" | oracle \"Insert\"",
+    "tab:matrix @line 22: path \"YOUR ROSTER (2/13)\" | oracle \"Insert\"",
+    "tab:vs @line 22: path \"YOUR ROSTER (2/13)\" | oracle \"Insert\""
+   ]
+  },
+  {
+   "id": "G.insert-refused-unchanged",
+   "ok": false,
+   "detail": [
+    "tab:best @line 22: path \"YOUR ROSTER (2/13)\" | oracle \"Insert\"",
+    "tab:boardtab @line 22: path \"YOUR ROSTER (2/13)\" | oracle \"Insert\"",
+    "tab:rosters @line 22: path \"YOUR ROSTER (2/13)\" | oracle \"Insert\"",
+    "tab:matrix @line 22: path \"YOUR ROSTER (2/13)\" | oracle \"Insert\"",
+    "tab:vs @line 22: path \"YOUR ROSTER (2/13)\" | oracle \"Insert\""
+   ]
+  },
+  {
+   "id": "G.history-matches-state",
+   "ok": false,
+   "detail": [
+    {
+     "line": "✓ (R1) #11: Jalen Johnson → Seat 10 (YOU)",
+     "state": {
+      "player": "Cooper Flagg",
+      "slot": 11
+     }
+    }
+   ]
+  },
+  {
+   "id": "R1.path-equals-oracle",
+   "ok": false,
+   "detail": [
+    "tab:best @line 82: path \"Take Reed Sheppard — +0.022 expected categories per week over Fred VanVleet.\" | oracle \"Take Nikola Jokic — top of the 9-cat value board; no opponent roster to measure a marginal category against yet; only ~5% chance he survives to your next turn.\"",
+    "tab:boardtab @line 82: path \"Take Reed Sheppard — +0.022 expected categories per week over Fred VanVleet.\" | oracle \"Take Nikola Jokic — top of the 9-cat value board; no opponent roster to measure a marginal category against yet; only ~5% chance he survives to your next turn.\"",
+    "tab:rosters @line 82: path \"Take Reed Sheppard — +0.022 expected categories per week over Fred VanVleet.\" | oracle \"Take Nikola Jokic — top of the 9-cat value board; no opponent roster to measure a marginal category against yet; only ~5% chance he survives to your next turn.\"",
+    "tab:matrix @line 82: path \"Take Reed Sheppard — +0.022 expected categories per week over Fred VanVleet.\" | oracle \"Take Nikola Jokic — top of the 9-cat value board; no opponent roster to measure a marginal category against yet; only ~5% chance he survives to your next turn.\"",
+    "tab:vs @line 82: path \"Take Reed Sheppard — +0.022 expected categories per week over Fred VanVleet.\" | oracle \"Take Nikola Jokic — top of the 9-cat value board; no opponent roster to measure a marginal category against yet; only ~5% chance he survives to your next turn.\""
+   ]
+  }
+ ],
+ "all": [
+  {
+   "id": "A.undo-pops-five",
+   "ok": true
+  },
+  {
+   "id": "A.undo-lines-name-seat",
+   "ok": true
+  },
+  {
+   "id": "A.final-list",
+   "ok": true
+  },
+  {
+   "id": "A.seats-equal-snake",
+   "ok": true
+  },
+  {
+   "id": "A.path-equals-oracle",
+   "ok": true
+  },
+  {
+   "id": "A.history-matches-state",
+   "ok": true
+  },
+  {
+   "id": "B.pre-owner-#15",
+   "ok": true
+  },
+  {
+   "id": "B.insert-line",
+   "ok": true
+  },
+  {
+   "id": "B.moved-off-owner",
+   "ok": true
+  },
+  {
+   "id": "B.moved-on-owner",
+   "ok": true
+  },
+  {
+   "id": "B.final-list",
+   "ok": true
+  },
+  {
+   "id": "B.seats-equal-snake",
+   "ok": true
+  },
+  {
+   "id": "B.path-equals-oracle",
+   "ok": true
+  },
+  {
+   "id": "B.history-matches-state",
+   "ok": true
+  },
+  {
+   "id": "H.reload-identical",
+   "ok": true
+  },
+  {
+   "id": "F.final-list",
+   "ok": true
+  },
+  {
+   "id": "F.seats-equal-snake",
+   "ok": true
+  },
+  {
+   "id": "F.path-equals-oracle",
+   "ok": true
+  },
+  {
+   "id": "F.history-matches-state",
+   "ok": true
+  },
+  {
+   "id": "C.final-list",
+   "ok": true
+  },
+  {
+   "id": "C.seats-equal-snake",
+   "ok": true
+  },
+  {
+   "id": "C.path-equals-oracle",
+   "ok": true
+  },
+  {
+   "id": "C.history-matches-state",
+   "ok": true
+  },
+  {
+   "id": "D.refusals-change-nothing",
+   "ok": false
+  },
+  {
+   "id": "D.refusals-logged",
+   "ok": true
+  },
+  {
+   "id": "D.final-list",
+   "ok": true
+  },
+  {
+   "id": "D.seats-equal-snake",
+   "ok": true
+  },
+  {
+   "id": "D.path-equals-oracle",
+   "ok": true
+  },
+  {
+   "id": "D.history-matches-state",
+   "ok": true
+  },
+  {
+   "id": "E.unknown-logged",
+   "ok": true
+  },
+  {
+   "id": "E.unknown-renamed",
+   "ok": true
+  },
+  {
+   "id": "E.order",
+   "ok": true
+  },
+  {
+   "id": "E.path-equals-oracle",
+   "ok": true
+  },
+  {
+   "id": "E.history-matches-state",
+   "ok": true
+  },
+  {
+   "id": "E.fix-by-number",
+   "ok": true
+  },
+  {
+   "id": "E2.final-list",
+   "ok": true
+  },
+  {
+   "id": "E2.seats-equal-snake",
+   "ok": true
+  },
+  {
+   "id": "E2.path-equals-oracle",
+   "ok": true
+  },
+  {
+   "id": "E2.history-matches-state",
+   "ok": true
+  },
+  {
+   "id": "G.my-off-snake-to-owner",
+   "ok": true
+  },
+  {
+   "id": "G.insert-refused-unchanged",
+   "ok": false
+  },
+  {
+   "id": "G.refusal-logged",
+   "ok": true
+  },
+  {
+   "id": "G.owner-roster-has-it",
+   "ok": true
+  },
+  {
+   "id": "G.final-list",
+   "ok": true
+  },
+  {
+   "id": "G.seats-equal-snake",
+   "ok": true
+  },
+  {
+   "id": "G.path-equals-oracle",
+   "ok": true
+  },
+  {
+   "id": "G.history-matches-state",
+   "ok": false
+  },
+  {
+   "id": "R1.final-list",
+   "ok": true
+  },
+  {
+   "id": "R1.seats-equal-snake",
+   "ok": true
+  },
+  {
+   "id": "R1.path-equals-oracle",
+   "ok": false
+  },
+  {
+   "id": "R1.history-matches-state",
+   "ok": true
+  }
+ ]
+}

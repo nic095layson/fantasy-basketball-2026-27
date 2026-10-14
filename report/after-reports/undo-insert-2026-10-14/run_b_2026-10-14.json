@@ -1,0 +1,386 @@
+{
+ "page": "/tmp/claude-0/-home-user-fantasy-basketball-2026-27/3cdbbd9b-02dd-585e-8d00-b8a370128fae/scratchpad/undo/page_v68.html",
+ "at": "2026-10-14T16:11:52.078Z",
+ "assertions": 45,
+ "failed": 10,
+ "pageErrors": [],
+ "pass": false,
+ "notes": {
+  "pool": 318,
+  "page": "/tmp/claude-0/-home-user-fantasy-basketball-2026-27/3cdbbd9b-02dd-585e-8d00-b8a370128fae/scratchpad/undo/page_v68.html",
+  "R6": {
+   "insert": 6,
+   "undo": 22,
+   "wrongLog": 10
+  },
+  "R6.advice_at_complete": {
+   "path": {
+    "text": "Take Reed Sheppard — +0.012 expected categories per week over Jakob Poeltl.",
+    "hidden": false
+   },
+   "oracle": {
+    "text": "Take Nikola Jokic — top of the 9-cat value board; no opponent roster to measure a marginal category against yet; only ~5% chance he survives to your next turn.",
+    "hidden": false
+   }
+  },
+  "R7": {
+   "insert": 13,
+   "undo": 23,
+   "wrongLog": 9
+  },
+  "R7.advice_at_complete": {
+   "path": {
+    "text": "Take Reed Sheppard — +0.023 expected categories per week over Keegan Murray.",
+    "hidden": false
+   },
+   "oracle": {
+    "text": "Take Nikola Jokic — top of the 9-cat value board; no opponent roster to measure a marginal category against yet; only ~5% chance he survives to your next turn.",
+    "hidden": false
+   }
+  },
+  "R8": {
+   "insert": 11,
+   "undo": 24,
+   "wrongLog": 16
+  },
+  "R8.advice_at_complete": {
+   "path": {
+    "text": "Take Reed Sheppard — +0.055 expected categories per week over Cason Wallace.",
+    "hidden": false
+   },
+   "oracle": {
+    "text": "Take Nikola Jokic — top of the 9-cat value board; no opponent roster to measure a marginal category against yet; only ~5% chance he survives to your next turn.",
+    "hidden": false
+   }
+  },
+  "R9": {
+   "insert": 11,
+   "undo": 26,
+   "wrongLog": 12
+  },
+  "R9.advice_at_complete": {
+   "path": {
+    "text": "Take Jakob Poeltl — +0.084 expected categories per week over Reed Sheppard.",
+    "hidden": false
+   },
+   "oracle": {
+    "text": "Take Nikola Jokic — top of the 9-cat value board; no opponent roster to measure a marginal category against yet; only ~5% chance he survives to your next turn.",
+    "hidden": false
+   }
+  },
+  "R10": {
+   "insert": 5,
+   "undo": 24,
+   "wrongLog": 13
+  },
+  "R10.advice_at_complete": {
+   "path": {
+    "text": "Take Cason Wallace — +0.020 expected categories per week over Reed Sheppard.",
+    "hidden": false
+   },
+   "oracle": {
+    "text": "Take Nikola Jokic — top of the 9-cat value board; no opponent roster to measure a marginal category against yet; only ~5% chance he survives to your next turn.",
+    "hidden": false
+   }
+  },
+  "randomOps": {
+   "insert": 46,
+   "undo": 119,
+   "wrongLog": 60
+  }
+ },
+ "failures": [
+  {
+   "id": "R6@138.path-equals-oracle",
+   "ok": false,
+   "detail": [
+    "tab:best 105 line(s) differ: @86: path \"Losing 3PTM, TO to most of the room, 2 picks running (you beat 14% of the room in 3PTM, 14% in TO). Punting them works: you'd be winning 5 of the other 7 categories (need 5). Your call — set the punt box if you agree.\" | oracle \"Watching 3PTM, TO: losing them to most of the room this pick (you beat 14% of the room in 3PTM, 14% in TO). Becomes advice after 2 of your picks in a row.\" ;; @88: path \"Don't reach for a lost category: Duncan Robinson (3PTM, card #50) · Trayce Jackson-Davis (TO, card #—) — none beats 🎯 Reed Sheppard; the card already priced those in.\" | oracle \"top rival Seat 5: you lead 2/9 kept\" ;; @89: path \"\" | oracle \"BOARD LEAN: Best G\" ;; @90: path \"top rival Seat 5: you lead 2/9 kept\" | oracle \"\" ;; @91: path \"BOARD LEAN: Best G\" | oracle \"NBA-team stacks: DET:2 MEM:2 PHX:2\" ;; @93: path \"NBA-team stacks: DET:2 MEM:2 PHX:2\" | oracle \"STRONGFG% · AST · 🔒ST · WINNABLEFT% · REB · BLK · SOFT PUNT3PTM\"",
+    "tab:boardtab 62 line(s) differ: @86: path \"Losing 3PTM, TO to most of the room, 2 picks running (you beat 14% of the room in 3PTM, 14% in TO). Punting them works: you'd be winning 5 of the other 7 categories (need 5). Your call — set the punt box if you agree.\" | oracle \"Watching 3PTM, TO: losing them to most of the room this pick (you beat 14% of the room in 3PTM, 14% in TO). Becomes advice after 2 of your picks in a row.\" ;; @88: path \"Don't reach for a lost category: Duncan Robinson (3PTM, card #50) · Trayce Jackson-Davis (TO, card #—) — none beats 🎯 Reed Sheppard; the card already priced those in.\" | oracle \"top rival Seat 5: you lead 2/9 kept\" ;; @89: path \"\" | oracle \"BOARD LEAN: Best G\" ;; @90: path \"top rival Seat 5: you lead 2/9 kept\" | oracle \"\" ;; @91: path \"BOARD LEAN: Best G\" | oracle \"NBA-team stacks: DET:2 MEM:2 PHX:2\" ;; @93: path \"NBA-team stacks: DET:2 MEM:2 PHX:2\" | oracle \"STRONGFG% · AST · 🔒ST · WINNABLEFT% · REB · BLK · SOFT PUNT3PTM\"",
+    "tab:rosters 222 line(s) differ: @86: path \"Losing 3PTM, TO to most of the room, 2 picks running (you beat 14% of the room in 3PTM, 14% in TO). Punting them works: you'd be winning 5 of the other 7 categories (need 5). Your call — set the punt box if you agree.\" | oracle \"Watching 3PTM, TO: losing them to most of the room this pick (you beat 14% of the room in 3PTM, 14% in TO). Becomes advice after 2 of your picks in a row.\" ;; @88: path \"Don't reach for a lost category: Duncan Robinson (3PTM, card #50) · Trayce Jackson-Davis (TO, card #—) — none beats 🎯 Reed Sheppard; the card already priced those in.\" | oracle \"top rival Seat 5: you lead 2/9 kept\" ;; @89: path \"\" | oracle \"BOARD LEAN: Best G\" ;; @90: path \"top rival Seat 5: you lead 2/9 kept\" | oracle \"\" ;; @91: path \"BOARD LEAN: Best G\" | oracle \"NBA-team stacks: DET:2 MEM:2 PHX:2\" ;; @93: path \"NBA-team stacks: DET:2 MEM:2 PHX:2\" | oracle \"STRONGFG% · AST · 🔒ST · WINNABLEFT% · REB · BLK · SOFT PUNT3PTM\"",
+    "tab:matrix 67 line(s) differ: @86: path \"Losing 3PTM, TO to most of the room, 2 picks running (you beat 14% of the room in 3PTM, 14% in TO). Punting them works: you'd be winning 5 of the other 7 categories (need 5). Your call — set the punt box if you agree.\" | oracle \"Watching 3PTM, TO: losing them to most of the room this pick (you beat 14% of the room in 3PTM, 14% in TO). Becomes advice after 2 of your picks in a row.\" ;; @88: path \"Don't reach for a lost category: Duncan Robinson (3PTM, card #50) · Trayce Jackson-Davis (TO, card #—) — none beats 🎯 Reed Sheppard; the card already priced those in.\" | oracle \"top rival Seat 5: you lead 2/9 kept\" ;; @89: path \"\" | oracle \"BOARD LEAN: Best G\" ;; @90: path \"top rival Seat 5: you lead 2/9 kept\" | oracle \"\" ;; @91: path \"BOARD LEAN: Best G\" | oracle \"NBA-team stacks: DET:2 MEM:2 PHX:2\" ;; @93: path \"NBA-team stacks: DET:2 MEM:2 PHX:2\" | oracle \"STRONGFG% · AST · 🔒ST · WINNABLEFT% · REB · BLK · SOFT PUNT3PTM\"",
+    "tab:vs 72 line(s) differ: @86: path \"Losing 3PTM, TO to most of the room, 2 picks running (you beat 14% of the room in 3PTM, 14% in TO). Punting them works: you'd be winning 5 of the other 7 categories (need 5). Your call — set the punt box if you agree.\" | oracle \"Watching 3PTM, TO: losing them to most of the room this pick (you beat 14% of the room in 3PTM, 14% in TO). Becomes advice after 2 of your picks in a row.\" ;; @88: path \"Don't reach for a lost category: Duncan Robinson (3PTM, card #50) · Trayce Jackson-Davis (TO, card #—) — none beats 🎯 Reed Sheppard; the card already priced those in.\" | oracle \"top rival Seat 5: you lead 2/9 kept\" ;; @89: path \"\" | oracle \"BOARD LEAN: Best G\" ;; @90: path \"top rival Seat 5: you lead 2/9 kept\" | oracle \"\" ;; @91: path \"BOARD LEAN: Best G\" | oracle \"NBA-team stacks: DET:2 MEM:2 PHX:2\" ;; @93: path \"NBA-team stacks: DET:2 MEM:2 PHX:2\" | oracle \"STRONGFG% · AST · 🔒ST · WINNABLEFT% · REB · BLK · SOFT PUNT3PTM\""
+   ]
+  },
+  {
+   "id": "R6.path-equals-oracle",
+   "ok": false,
+   "detail": [
+    "tab:best 1 line(s) differ: @84: path \"Losing TO, 3PTM to most of the room, 2 picks running (you beat 17% of the room in TO, 19% in 3PTM). Don't punt them: you'd be winning only 4 of the other 7 categories (need 5). Keep taking the best player.\" | oracle \"Watching TO, 3PTM: losing them to most of the room this pick (you beat 17% of the room in TO, 19% in 3PTM). Becomes advice after 2 of your picks in a row.\"",
+    "tab:boardtab 1 line(s) differ: @84: path \"Losing TO, 3PTM to most of the room, 2 picks running (you beat 17% of the room in TO, 19% in 3PTM). Don't punt them: you'd be winning only 4 of the other 7 categories (need 5). Keep taking the best player.\" | oracle \"Watching TO, 3PTM: losing them to most of the room this pick (you beat 17% of the room in TO, 19% in 3PTM). Becomes advice after 2 of your picks in a row.\"",
+    "tab:rosters 1 line(s) differ: @84: path \"Losing TO, 3PTM to most of the room, 2 picks running (you beat 17% of the room in TO, 19% in 3PTM). Don't punt them: you'd be winning only 4 of the other 7 categories (need 5). Keep taking the best player.\" | oracle \"Watching TO, 3PTM: losing them to most of the room this pick (you beat 17% of the room in TO, 19% in 3PTM). Becomes advice after 2 of your picks in a row.\"",
+    "tab:matrix 1 line(s) differ: @84: path \"Losing TO, 3PTM to most of the room, 2 picks running (you beat 17% of the room in TO, 19% in 3PTM). Don't punt them: you'd be winning only 4 of the other 7 categories (need 5). Keep taking the best player.\" | oracle \"Watching TO, 3PTM: losing them to most of the room this pick (you beat 17% of the room in TO, 19% in 3PTM). Becomes advice after 2 of your picks in a row.\"",
+    "tab:vs 1 line(s) differ: @84: path \"Losing TO, 3PTM to most of the room, 2 picks running (you beat 17% of the room in TO, 19% in 3PTM). Don't punt them: you'd be winning only 4 of the other 7 categories (need 5). Keep taking the best player.\" | oracle \"Watching TO, 3PTM: losing them to most of the room this pick (you beat 17% of the room in TO, 19% in 3PTM). Becomes advice after 2 of your picks in a row.\""
+   ]
+  },
+  {
+   "id": "R7@127.path-equals-oracle",
+   "ok": false,
+   "detail": [
+    "tab:best 110 line(s) differ: @84: path \"Losing PTS, 3PTM to most of the room, 2 picks running (you beat 23% of the room in PTS, 26% in 3PTM). Don't punt them: you'd be winning only 4 of the other 7 categories (need 5). Keep taking the best player.\" | oracle \"Watching PTS: losing it to most of the room this pick (you beat 23% of the room in PTS). Becomes advice after 2 of your picks in a row.\" ;; @86: path \"Don't reach for a lost category: RJ Barrett (PTS, card #46) · Duncan Robinson (3PTM, card #59) — none beats 🎯 Reed Sheppard; the card already priced those in.\" | oracle \"top rival Seat 2: you lead 5/9 kept\" ;; @87: path \"\" | oracle \"BOARD LEAN: 3&D G — can wait\" ;; @88: path \"top rival Seat 2: you lead 5/9 kept\" | oracle \"\" ;; @89: path \"BOARD LEAN: 3&D G — can wait\" | oracle \"NBA-team stacks: OKC:2\" ;; @91: path \"NBA-team stacks: OKC:2\" | oracle \"STRONGFG% · 🔒REB · 🔒BLK · WINNABLEAST · ST · TO · SOFT PUNTFT% + 3PTM\"",
+    "tab:boardtab 67 line(s) differ: @84: path \"Losing PTS, 3PTM to most of the room, 2 picks running (you beat 23% of the room in PTS, 26% in 3PTM). Don't punt them: you'd be winning only 4 of the other 7 categories (need 5). Keep taking the best player.\" | oracle \"Watching PTS: losing it to most of the room this pick (you beat 23% of the room in PTS). Becomes advice after 2 of your picks in a row.\" ;; @86: path \"Don't reach for a lost category: RJ Barrett (PTS, card #46) · Duncan Robinson (3PTM, card #59) — none beats 🎯 Reed Sheppard; the card already priced those in.\" | oracle \"top rival Seat 2: you lead 5/9 kept\" ;; @87: path \"\" | oracle \"BOARD LEAN: 3&D G — can wait\" ;; @88: path \"top rival Seat 2: you lead 5/9 kept\" | oracle \"\" ;; @89: path \"BOARD LEAN: 3&D G — can wait\" | oracle \"NBA-team stacks: OKC:2\" ;; @91: path \"NBA-team stacks: OKC:2\" | oracle \"STRONGFG% · 🔒REB · 🔒BLK · WINNABLEAST · ST · TO · SOFT PUNTFT% + 3PTM\"",
+    "tab:rosters 216 line(s) differ: @84: path \"Losing PTS, 3PTM to most of the room, 2 picks running (you beat 23% of the room in PTS, 26% in 3PTM). Don't punt them: you'd be winning only 4 of the other 7 categories (need 5). Keep taking the best player.\" | oracle \"Watching PTS: losing it to most of the room this pick (you beat 23% of the room in PTS). Becomes advice after 2 of your picks in a row.\" ;; @86: path \"Don't reach for a lost category: RJ Barrett (PTS, card #46) · Duncan Robinson (3PTM, card #59) — none beats 🎯 Reed Sheppard; the card already priced those in.\" | oracle \"top rival Seat 2: you lead 5/9 kept\" ;; @87: path \"\" | oracle \"BOARD LEAN: 3&D G — can wait\" ;; @88: path \"top rival Seat 2: you lead 5/9 kept\" | oracle \"\" ;; @89: path \"BOARD LEAN: 3&D G — can wait\" | oracle \"NBA-team stacks: OKC:2\" ;; @91: path \"NBA-team stacks: OKC:2\" | oracle \"STRONGFG% · 🔒REB · 🔒BLK · WINNABLEAST · ST · TO · SOFT PUNTFT% + 3PTM\"",
+    "tab:matrix 72 line(s) differ: @84: path \"Losing PTS, 3PTM to most of the room, 2 picks running (you beat 23% of the room in PTS, 26% in 3PTM). Don't punt them: you'd be winning only 4 of the other 7 categories (need 5). Keep taking the best player.\" | oracle \"Watching PTS: losing it to most of the room this pick (you beat 23% of the room in PTS). Becomes advice after 2 of your picks in a row.\" ;; @86: path \"Don't reach for a lost category: RJ Barrett (PTS, card #46) · Duncan Robinson (3PTM, card #59) — none beats 🎯 Reed Sheppard; the card already priced those in.\" | oracle \"top rival Seat 2: you lead 5/9 kept\" ;; @87: path \"\" | oracle \"BOARD LEAN: 3&D G — can wait\" ;; @88: path \"top rival Seat 2: you lead 5/9 kept\" | oracle \"\" ;; @89: path \"BOARD LEAN: 3&D G — can wait\" | oracle \"NBA-team stacks: OKC:2\" ;; @91: path \"NBA-team stacks: OKC:2\" | oracle \"STRONGFG% · 🔒REB · 🔒BLK · WINNABLEAST · ST · TO · SOFT PUNTFT% + 3PTM\"",
+    "tab:vs 77 line(s) differ: @84: path \"Losing PTS, 3PTM to most of the room, 2 picks running (you beat 23% of the room in PTS, 26% in 3PTM). Don't punt them: you'd be winning only 4 of the other 7 categories (need 5). Keep taking the best player.\" | oracle \"Watching PTS: losing it to most of the room this pick (you beat 23% of the room in PTS). Becomes advice after 2 of your picks in a row.\" ;; @86: path \"Don't reach for a lost category: RJ Barrett (PTS, card #46) · Duncan Robinson (3PTM, card #59) — none beats 🎯 Reed Sheppard; the card already priced those in.\" | oracle \"top rival Seat 2: you lead 5/9 kept\" ;; @87: path \"\" | oracle \"BOARD LEAN: 3&D G — can wait\" ;; @88: path \"top rival Seat 2: you lead 5/9 kept\" | oracle \"\" ;; @89: path \"BOARD LEAN: 3&D G — can wait\" | oracle \"NBA-team stacks: OKC:2\" ;; @91: path \"NBA-team stacks: OKC:2\" | oracle \"STRONGFG% · 🔒REB · 🔒BLK · WINNABLEAST · ST · TO · SOFT PUNTFT% + 3PTM\""
+   ]
+  },
+  {
+   "id": "R7.path-equals-oracle",
+   "ok": false,
+   "detail": [
+    "tab:best 1 line(s) differ: @84: path \"Losing 3PTM to most of the room, 2 picks running (you beat 22% of the room in 3PTM). Don't punt them: you'd be winning only 5 of the other 8 categories (need 6). Keep taking the best player.\" | oracle \"Watching 3PTM: losing it to most of the room this pick (you beat 22% of the room in 3PTM). Becomes advice after 2 of your picks in a row.\"",
+    "tab:boardtab 1 line(s) differ: @84: path \"Losing 3PTM to most of the room, 2 picks running (you beat 22% of the room in 3PTM). Don't punt them: you'd be winning only 5 of the other 8 categories (need 6). Keep taking the best player.\" | oracle \"Watching 3PTM: losing it to most of the room this pick (you beat 22% of the room in 3PTM). Becomes advice after 2 of your picks in a row.\"",
+    "tab:rosters 1 line(s) differ: @84: path \"Losing 3PTM to most of the room, 2 picks running (you beat 22% of the room in 3PTM). Don't punt them: you'd be winning only 5 of the other 8 categories (need 6). Keep taking the best player.\" | oracle \"Watching 3PTM: losing it to most of the room this pick (you beat 22% of the room in 3PTM). Becomes advice after 2 of your picks in a row.\"",
+    "tab:matrix 2 line(s) differ: @84: path \"Losing 3PTM to most of the room, 2 picks running (you beat 22% of the room in 3PTM). Don't punt them: you'd be winning only 5 of the other 8 categories (need 6). Keep taking the best player.\" | oracle \"Watching 3PTM: losing it to most of the room this pick (you beat 22% of the room in 3PTM). Becomes advice after 2 of your picks in a row.\" ;; @118: path \"Drift drafting like a punt of 3PTM (beats 22% of the room), PTS (beats 27% of the room) — clear path (5/7 kept winnable); advice only — set it in the punt box yourself if you agree, and the Top 5 turns punt-coherent.\" | oracle \"Drift drafting like a punt of 3PTM (beats 22% of the room) — no clear path yet (5/8 kept winnable, need ≥70%); build strengths or commit pre-draft — mid-draft pivots measured net-negative in the arena (2026-07-27 study).\"",
+    "tab:vs 1 line(s) differ: @84: path \"Losing 3PTM to most of the room, 2 picks running (you beat 22% of the room in 3PTM). Don't punt them: you'd be winning only 5 of the other 8 categories (need 6). Keep taking the best player.\" | oracle \"Watching 3PTM: losing it to most of the room this pick (you beat 22% of the room in 3PTM). Becomes advice after 2 of your picks in a row.\""
+   ]
+  },
+  {
+   "id": "R8@117.path-equals-oracle",
+   "ok": false,
+   "detail": [
+    "tab:best 110 line(s) differ: @84: path \"Losing PTS to most of the room, 2 picks running (you beat 21% of the room in PTS). Don't punt them: you'd be winning only 1 of the other 8 categories (need 6). Keep taking the best player.\" | oracle \"Watching PTS: losing it to most of the room this pick (you beat 21% of the room in PTS). Becomes advice after 2 of your picks in a row.\" ;; @86: path \"Don't reach for a lost category: RJ Barrett (PTS, card #54) — none beats 🎯 John Collins; the card already priced those in.\" | oracle \"top rival Seat 5: you lead 2/9 kept\" ;; @87: path \"\" | oracle \"BOARD LEAN: Rim-protecting C\" ;; @88: path \"top rival Seat 5: you lead 2/9 kept\" | oracle \"\" ;; @89: path \"BOARD LEAN: Rim-protecting C\" | oracle \"⚠ LEAN: 10G vs 4F — flag for roster balance\" ;; @91: path \"⚠ LEAN: 10G vs 4F — flag for roster balance\" | oracle \"STRONGFG% · REB · 🔒AST · WINNABLEFT% · BLK · SOFT PUNTTO\"",
+    "tab:boardtab 67 line(s) differ: @84: path \"Losing PTS to most of the room, 2 picks running (you beat 21% of the room in PTS). Don't punt them: you'd be winning only 1 of the other 8 categories (need 6). Keep taking the best player.\" | oracle \"Watching PTS: losing it to most of the room this pick (you beat 21% of the room in PTS). Becomes advice after 2 of your picks in a row.\" ;; @86: path \"Don't reach for a lost category: RJ Barrett (PTS, card #54) — none beats 🎯 John Collins; the card already priced those in.\" | oracle \"top rival Seat 5: you lead 2/9 kept\" ;; @87: path \"\" | oracle \"BOARD LEAN: Rim-protecting C\" ;; @88: path \"top rival Seat 5: you lead 2/9 kept\" | oracle \"\" ;; @89: path \"BOARD LEAN: Rim-protecting C\" | oracle \"⚠ LEAN: 10G vs 4F — flag for roster balance\" ;; @91: path \"⚠ LEAN: 10G vs 4F — flag for roster balance\" | oracle \"STRONGFG% · REB · 🔒AST · WINNABLEFT% · BLK · SOFT PUNTTO\"",
+    "tab:rosters 206 line(s) differ: @84: path \"Losing PTS to most of the room, 2 picks running (you beat 21% of the room in PTS). Don't punt them: you'd be winning only 1 of the other 8 categories (need 6). Keep taking the best player.\" | oracle \"Watching PTS: losing it to most of the room this pick (you beat 21% of the room in PTS). Becomes advice after 2 of your picks in a row.\" ;; @86: path \"Don't reach for a lost category: RJ Barrett (PTS, card #54) — none beats 🎯 John Collins; the card already priced those in.\" | oracle \"top rival Seat 5: you lead 2/9 kept\" ;; @87: path \"\" | oracle \"BOARD LEAN: Rim-protecting C\" ;; @88: path \"top rival Seat 5: you lead 2/9 kept\" | oracle \"\" ;; @89: path \"BOARD LEAN: Rim-protecting C\" | oracle \"⚠ LEAN: 10G vs 4F — flag for roster balance\" ;; @91: path \"⚠ LEAN: 10G vs 4F — flag for roster balance\" | oracle \"STRONGFG% · REB · 🔒AST · WINNABLEFT% · BLK · SOFT PUNTTO\"",
+    "tab:matrix 74 line(s) differ: @84: path \"Losing PTS to most of the room, 2 picks running (you beat 21% of the room in PTS). Don't punt them: you'd be winning only 1 of the other 8 categories (need 6). Keep taking the best player.\" | oracle \"Watching PTS: losing it to most of the room this pick (you beat 21% of the room in PTS). Becomes advice after 2 of your picks in a row.\" ;; @86: path \"Don't reach for a lost category: RJ Barrett (PTS, card #54) — none beats 🎯 John Collins; the card already priced those in.\" | oracle \"top rival Seat 5: you lead 2/9 kept\" ;; @87: path \"\" | oracle \"BOARD LEAN: Rim-protecting C\" ;; @88: path \"top rival Seat 5: you lead 2/9 kept\" | oracle \"\" ;; @89: path \"BOARD LEAN: Rim-protecting C\" | oracle \"⚠ LEAN: 10G vs 4F — flag for roster balance\" ;; @91: path \"⚠ LEAN: 10G vs 4F — flag for roster balance\" | oracle \"STRONGFG% · REB · 🔒AST · WINNABLEFT% · BLK · SOFT PUNTTO\"",
+    "tab:vs 77 line(s) differ: @84: path \"Losing PTS to most of the room, 2 picks running (you beat 21% of the room in PTS). Don't punt them: you'd be winning only 1 of the other 8 categories (need 6). Keep taking the best player.\" | oracle \"Watching PTS: losing it to most of the room this pick (you beat 21% of the room in PTS). Becomes advice after 2 of your picks in a row.\" ;; @86: path \"Don't reach for a lost category: RJ Barrett (PTS, card #54) — none beats 🎯 John Collins; the card already priced those in.\" | oracle \"top rival Seat 5: you lead 2/9 kept\" ;; @87: path \"\" | oracle \"BOARD LEAN: Rim-protecting C\" ;; @88: path \"top rival Seat 5: you lead 2/9 kept\" | oracle \"\" ;; @89: path \"BOARD LEAN: Rim-protecting C\" | oracle \"⚠ LEAN: 10G vs 4F — flag for roster balance\" ;; @91: path \"⚠ LEAN: 10G vs 4F — flag for roster balance\" | oracle \"STRONGFG% · REB · 🔒AST · WINNABLEFT% · BLK · SOFT PUNTTO\""
+   ]
+  },
+  {
+   "id": "R8.path-equals-oracle",
+   "ok": false,
+   "detail": [
+    "tab:best 1 line(s) differ: @84: path \"Losing PTS, 3PTM to most of the room, 2 picks running (you beat 14% of the room in PTS, 28% in 3PTM). Don't punt them: you'd be winning only 1 of the other 7 categories (need 5). Keep taking the best player.\" | oracle \"Watching PTS: losing it to most of the room this pick (you beat 14% of the room in PTS). Becomes advice after 2 of your picks in a row.\"",
+    "tab:boardtab 1 line(s) differ: @84: path \"Losing PTS, 3PTM to most of the room, 2 picks running (you beat 14% of the room in PTS, 28% in 3PTM). Don't punt them: you'd be winning only 1 of the other 7 categories (need 5). Keep taking the best player.\" | oracle \"Watching PTS: losing it to most of the room this pick (you beat 14% of the room in PTS). Becomes advice after 2 of your picks in a row.\"",
+    "tab:rosters 1 line(s) differ: @84: path \"Losing PTS, 3PTM to most of the room, 2 picks running (you beat 14% of the room in PTS, 28% in 3PTM). Don't punt them: you'd be winning only 1 of the other 7 categories (need 5). Keep taking the best player.\" | oracle \"Watching PTS: losing it to most of the room this pick (you beat 14% of the room in PTS). Becomes advice after 2 of your picks in a row.\"",
+    "tab:matrix 5 line(s) differ: @84: path \"Losing PTS, 3PTM to most of the room, 2 picks running (you beat 14% of the room in PTS, 28% in 3PTM). Don't punt them: you'd be winning only 1 of the other 7 categories (need 5). Keep taking the best player.\" | oracle \"Watching PTS: losing it to most of the room this pick (you beat 14% of the room in PTS). Becomes advice after 2 of your picks in a row.\" ;; @118: path \"⚠⚠ STRUCTURE PTS 12/12 · TO 12/12 · 3PTM 11/12 — 3 categories at 11th-or-worse with fewer than 2 C-eligible players when this latched. Sustained interior repair (multiple picks, not one) was the only measured mitigation.\" | oracle \"Drift drafting like a punt of PTS (beats 14% of the room) — no clear path yet (1/8 kept winnable, need ≥70%); build strengths or commit pre-draft — mid-draft pivots measured net-negative in the arena (2026-07-27 study).\" ;; @120: path \"Drift drafting like a punt of PTS (beats 14% of the room), 3PTM (beats 28% of the room) — no clear path yet (1/7 kept winnable, need ≥70%); build strengths or commit pre-draft — mid-draft pivots measured net-negative in the arena (2026-07-27 study).\" | oracle \"Swing vs top rival Seat 5: ST (-0.7) — closest flips to beat them\" ;; @121: path \"\" | oracle undefined ;; @122: path \"Swing vs top rival Seat 5: ST (-0.7) — closest flips to beat them\" | oracle undefined",
+    "tab:vs 1 line(s) differ: @84: path \"Losing PTS, 3PTM to most of the room, 2 picks running (you beat 14% of the room in PTS, 28% in 3PTM). Don't punt them: you'd be winning only 1 of the other 7 categories (need 5). Keep taking the best player.\" | oracle \"Watching PTS: losing it to most of the room this pick (you beat 14% of the room in PTS). Becomes advice after 2 of your picks in a row.\""
+   ]
+  },
+  {
+   "id": "R9@107.path-equals-oracle",
+   "ok": false,
+   "detail": [
+    "tab:best 108 line(s) differ: @83: path \"Losing BLK, REB to most of the room, 2 picks running (you beat 20% of the room in BLK, 21% in REB). Don't punt them: you'd be winning only 4 of the other 7 categories (need 5). Keep taking the best player.\" | oracle \"Watching BLK, REB: losing them to most of the room this pick (you beat 20% of the room in BLK, 21% in REB). Becomes advice after 2 of your picks in a row.\" ;; @85: path \"Don't reach for a lost category: Yves Missi (BLK, card #53) · Isaiah Hartenstein (REB, card #3) — none beats 🎯 John Collins; the card already priced those in.\" | oracle \"top rival Seat 8: you lead 2/9 kept\" ;; @86: path \"\" | oracle \"TARGET: Low-TO C\" ;; @87: path \"top rival Seat 8: you lead 2/9 kept\" | oracle \"\" ;; @88: path \"TARGET: Low-TO C\" | oracle \"STRONG🔒FT% · 🔒3PTM · 🔒PTS · WINNABLEAST · ST · TO · SOFT PUNTBLK\" ;; @90: path \"STRONG🔒FT% · 🔒3PTM · 🔒PTS · WINNABLEAST · ST · TO · SOFT PUNTBLK\" | oracle \"1\"",
+    "tab:boardtab 65 line(s) differ: @83: path \"Losing BLK, REB to most of the room, 2 picks running (you beat 20% of the room in BLK, 21% in REB). Don't punt them: you'd be winning only 4 of the other 7 categories (need 5). Keep taking the best player.\" | oracle \"Watching BLK, REB: losing them to most of the room this pick (you beat 20% of the room in BLK, 21% in REB). Becomes advice after 2 of your picks in a row.\" ;; @85: path \"Don't reach for a lost category: Yves Missi (BLK, card #53) · Isaiah Hartenstein (REB, card #3) — none beats 🎯 John Collins; the card already priced those in.\" | oracle \"top rival Seat 8: you lead 2/9 kept\" ;; @86: path \"\" | oracle \"TARGET: Low-TO C\" ;; @87: path \"top rival Seat 8: you lead 2/9 kept\" | oracle \"\" ;; @88: path \"TARGET: Low-TO C\" | oracle \"STRONG🔒FT% · 🔒3PTM · 🔒PTS · WINNABLEAST · ST · TO · SOFT PUNTBLK\" ;; @90: path \"STRONG🔒FT% · 🔒3PTM · 🔒PTS · WINNABLEAST · ST · TO · SOFT PUNTBLK\" | oracle \"1\"",
+    "tab:rosters 194 line(s) differ: @83: path \"Losing BLK, REB to most of the room, 2 picks running (you beat 20% of the room in BLK, 21% in REB). Don't punt them: you'd be winning only 4 of the other 7 categories (need 5). Keep taking the best player.\" | oracle \"Watching BLK, REB: losing them to most of the room this pick (you beat 20% of the room in BLK, 21% in REB). Becomes advice after 2 of your picks in a row.\" ;; @85: path \"Don't reach for a lost category: Yves Missi (BLK, card #53) · Isaiah Hartenstein (REB, card #3) — none beats 🎯 John Collins; the card already priced those in.\" | oracle \"top rival Seat 8: you lead 2/9 kept\" ;; @86: path \"\" | oracle \"TARGET: Low-TO C\" ;; @87: path \"top rival Seat 8: you lead 2/9 kept\" | oracle \"\" ;; @88: path \"TARGET: Low-TO C\" | oracle \"STRONG🔒FT% · 🔒3PTM · 🔒PTS · WINNABLEAST · ST · TO · SOFT PUNTBLK\" ;; @90: path \"STRONG🔒FT% · 🔒3PTM · 🔒PTS · WINNABLEAST · ST · TO · SOFT PUNTBLK\" | oracle \"1\"",
+    "tab:matrix 72 line(s) differ: @83: path \"Losing BLK, REB to most of the room, 2 picks running (you beat 20% of the room in BLK, 21% in REB). Don't punt them: you'd be winning only 4 of the other 7 categories (need 5). Keep taking the best player.\" | oracle \"Watching BLK, REB: losing them to most of the room this pick (you beat 20% of the room in BLK, 21% in REB). Becomes advice after 2 of your picks in a row.\" ;; @85: path \"Don't reach for a lost category: Yves Missi (BLK, card #53) · Isaiah Hartenstein (REB, card #3) — none beats 🎯 John Collins; the card already priced those in.\" | oracle \"top rival Seat 8: you lead 2/9 kept\" ;; @86: path \"\" | oracle \"TARGET: Low-TO C\" ;; @87: path \"top rival Seat 8: you lead 2/9 kept\" | oracle \"\" ;; @88: path \"TARGET: Low-TO C\" | oracle \"STRONG🔒FT% · 🔒3PTM · 🔒PTS · WINNABLEAST · ST · TO · SOFT PUNTBLK\" ;; @90: path \"STRONG🔒FT% · 🔒3PTM · 🔒PTS · WINNABLEAST · ST · TO · SOFT PUNTBLK\" | oracle \"1\"",
+    "tab:vs 75 line(s) differ: @83: path \"Losing BLK, REB to most of the room, 2 picks running (you beat 20% of the room in BLK, 21% in REB). Don't punt them: you'd be winning only 4 of the other 7 categories (need 5). Keep taking the best player.\" | oracle \"Watching BLK, REB: losing them to most of the room this pick (you beat 20% of the room in BLK, 21% in REB). Becomes advice after 2 of your picks in a row.\" ;; @85: path \"Don't reach for a lost category: Yves Missi (BLK, card #53) · Isaiah Hartenstein (REB, card #3) — none beats 🎯 John Collins; the card already priced those in.\" | oracle \"top rival Seat 8: you lead 2/9 kept\" ;; @86: path \"\" | oracle \"TARGET: Low-TO C\" ;; @87: path \"top rival Seat 8: you lead 2/9 kept\" | oracle \"\" ;; @88: path \"TARGET: Low-TO C\" | oracle \"STRONG🔒FT% · 🔒3PTM · 🔒PTS · WINNABLEAST · ST · TO · SOFT PUNTBLK\" ;; @90: path \"STRONG🔒FT% · 🔒3PTM · 🔒PTS · WINNABLEAST · ST · TO · SOFT PUNTBLK\" | oracle \"1\""
+   ]
+  },
+  {
+   "id": "R9.path-equals-oracle",
+   "ok": false,
+   "detail": [
+    "tab:best 1 line(s) differ: @84: path \"Losing BLK, REB to most of the room, 2 picks running (you beat 16% of the room in BLK, 26% in REB). Don't punt them: you'd be winning only 4 of the other 7 categories (need 5). Keep taking the best player.\" | oracle \"Watching BLK: losing it to most of the room this pick (you beat 16% of the room in BLK). Becomes advice after 2 of your picks in a row.\"",
+    "tab:boardtab 1 line(s) differ: @84: path \"Losing BLK, REB to most of the room, 2 picks running (you beat 16% of the room in BLK, 26% in REB). Don't punt them: you'd be winning only 4 of the other 7 categories (need 5). Keep taking the best player.\" | oracle \"Watching BLK: losing it to most of the room this pick (you beat 16% of the room in BLK). Becomes advice after 2 of your picks in a row.\"",
+    "tab:rosters 1 line(s) differ: @84: path \"Losing BLK, REB to most of the room, 2 picks running (you beat 16% of the room in BLK, 26% in REB). Don't punt them: you'd be winning only 4 of the other 7 categories (need 5). Keep taking the best player.\" | oracle \"Watching BLK: losing it to most of the room this pick (you beat 16% of the room in BLK). Becomes advice after 2 of your picks in a row.\"",
+    "tab:matrix 5 line(s) differ: @84: path \"Losing BLK, REB to most of the room, 2 picks running (you beat 16% of the room in BLK, 26% in REB). Don't punt them: you'd be winning only 4 of the other 7 categories (need 5). Keep taking the best player.\" | oracle \"Watching BLK: losing it to most of the room this pick (you beat 16% of the room in BLK). Becomes advice after 2 of your picks in a row.\" ;; @116: path \"⚠⚠ STRUCTURE FG% 12/12 · BLK 12/12 — 2 categories at 11th-or-worse with fewer than 2 C-eligible players when this latched. Sustained interior repair (multiple picks, not one) was the only measured mitigation.\" | oracle \"Drift drafting like a punt of BLK (beats 16% of the room) — no clear path yet (4/8 kept winnable, need ≥70%); build strengths or commit pre-draft — mid-draft pivots measured net-negative in the arena (2026-07-27 study).\" ;; @118: path \"Drift drafting like a punt of BLK (beats 16% of the room), REB (beats 26% of the room) — no clear path yet (4/7 kept winnable, need ≥70%); build strengths or commit pre-draft — mid-draft pivots measured net-negative in the arena (2026-07-27 study).\" | oracle \"Swing vs top rival Seat 8: TO (-0.8), REB (-1.5) — closest flips to beat them\" ;; @119: path \"\" | oracle undefined ;; @120: path \"Swing vs top rival Seat 8: TO (-0.8), REB (-1.5) — closest flips to beat them\" | oracle undefined",
+    "tab:vs 1 line(s) differ: @84: path \"Losing BLK, REB to most of the room, 2 picks running (you beat 16% of the room in BLK, 26% in REB). Don't punt them: you'd be winning only 4 of the other 7 categories (need 5). Keep taking the best player.\" | oracle \"Watching BLK: losing it to most of the room this pick (you beat 16% of the room in BLK). Becomes advice after 2 of your picks in a row.\""
+   ]
+  },
+  {
+   "id": "R10@97.path-equals-oracle",
+   "ok": false,
+   "detail": [
+    "tab:best 107 line(s) differ: @82: path \"Losing 3PTM, FT%, ST to most of the room, 2 picks running (you beat 5% of the room in 3PTM, 16% in FT%, 31% in ST). Don't punt them: you'd be winning only 4 of the other 6 categories (need 5). Keep taking the best player.\" | oracle \"Watching 3PTM, FT%: losing them to most of the room this pick (you beat 5% of the room in 3PTM, 16% in FT%). Becomes advice after 2 of your picks in a row.\" ;; @84: path \"Don't reach for a lost category: AJ Green (3PTM, card #147) · DeMar DeRozan (FT%, card #30) · Cason Wallace (ST, card #6) — none beats 🎯 Ty Jerome; the card already priced those in.\" | oracle \"top rival Seat 12: you lead 4/9 kept\" ;; @85: path \"\" | oracle \"TARGET: Playmaking G\" ;; @86: path \"top rival Seat 12: you lead 4/9 kept\" | oracle \"\" ;; @87: path \"TARGET: Playmaking G\" | oracle \"NBA-team stacks: CHI:2 NYK:2\" ;; @89: path \"NBA-team stacks: CHI:2 NYK:2\" | oracle \"STRONG🔒FG% · REB · TO · WINNABLEPTS · AST · BLK · SOFT PUNTFT% + 3PTM\"",
+    "tab:boardtab 64 line(s) differ: @82: path \"Losing 3PTM, FT%, ST to most of the room, 2 picks running (you beat 5% of the room in 3PTM, 16% in FT%, 31% in ST). Don't punt them: you'd be winning only 4 of the other 6 categories (need 5). Keep taking the best player.\" | oracle \"Watching 3PTM, FT%: losing them to most of the room this pick (you beat 5% of the room in 3PTM, 16% in FT%). Becomes advice after 2 of your picks in a row.\" ;; @84: path \"Don't reach for a lost category: AJ Green (3PTM, card #147) · DeMar DeRozan (FT%, card #30) · Cason Wallace (ST, card #6) — none beats 🎯 Ty Jerome; the card already priced those in.\" | oracle \"top rival Seat 12: you lead 4/9 kept\" ;; @85: path \"\" | oracle \"TARGET: Playmaking G\" ;; @86: path \"top rival Seat 12: you lead 4/9 kept\" | oracle \"\" ;; @87: path \"TARGET: Playmaking G\" | oracle \"NBA-team stacks: CHI:2 NYK:2\" ;; @89: path \"NBA-team stacks: CHI:2 NYK:2\" | oracle \"STRONG🔒FG% · REB · TO · WINNABLEPTS · AST · BLK · SOFT PUNTFT% + 3PTM\"",
+    "tab:rosters 183 line(s) differ: @82: path \"Losing 3PTM, FT%, ST to most of the room, 2 picks running (you beat 5% of the room in 3PTM, 16% in FT%, 31% in ST). Don't punt them: you'd be winning only 4 of the other 6 categories (need 5). Keep taking the best player.\" | oracle \"Watching 3PTM, FT%: losing them to most of the room this pick (you beat 5% of the room in 3PTM, 16% in FT%). Becomes advice after 2 of your picks in a row.\" ;; @84: path \"Don't reach for a lost category: AJ Green (3PTM, card #147) · DeMar DeRozan (FT%, card #30) · Cason Wallace (ST, card #6) — none beats 🎯 Ty Jerome; the card already priced those in.\" | oracle \"top rival Seat 12: you lead 4/9 kept\" ;; @85: path \"\" | oracle \"TARGET: Playmaking G\" ;; @86: path \"top rival Seat 12: you lead 4/9 kept\" | oracle \"\" ;; @87: path \"TARGET: Playmaking G\" | oracle \"NBA-team stacks: CHI:2 NYK:2\" ;; @89: path \"NBA-team stacks: CHI:2 NYK:2\" | oracle \"STRONG🔒FG% · REB · TO · WINNABLEPTS · AST · BLK · SOFT PUNTFT% + 3PTM\"",
+    "tab:matrix 69 line(s) differ: @82: path \"Losing 3PTM, FT%, ST to most of the room, 2 picks running (you beat 5% of the room in 3PTM, 16% in FT%, 31% in ST). Don't punt them: you'd be winning only 4 of the other 6 categories (need 5). Keep taking the best player.\" | oracle \"Watching 3PTM, FT%: losing them to most of the room this pick (you beat 5% of the room in 3PTM, 16% in FT%). Becomes advice after 2 of your picks in a row.\" ;; @84: path \"Don't reach for a lost category: AJ Green (3PTM, card #147) · DeMar DeRozan (FT%, card #30) · Cason Wallace (ST, card #6) — none beats 🎯 Ty Jerome; the card already priced those in.\" | oracle \"top rival Seat 12: you lead 4/9 kept\" ;; @85: path \"\" | oracle \"TARGET: Playmaking G\" ;; @86: path \"top rival Seat 12: you lead 4/9 kept\" | oracle \"\" ;; @87: path \"TARGET: Playmaking G\" | oracle \"NBA-team stacks: CHI:2 NYK:2\" ;; @89: path \"NBA-team stacks: CHI:2 NYK:2\" | oracle \"STRONG🔒FG% · REB · TO · WINNABLEPTS · AST · BLK · SOFT PUNTFT% + 3PTM\"",
+    "tab:vs 74 line(s) differ: @82: path \"Losing 3PTM, FT%, ST to most of the room, 2 picks running (you beat 5% of the room in 3PTM, 16% in FT%, 31% in ST). Don't punt them: you'd be winning only 4 of the other 6 categories (need 5). Keep taking the best player.\" | oracle \"Watching 3PTM, FT%: losing them to most of the room this pick (you beat 5% of the room in 3PTM, 16% in FT%). Becomes advice after 2 of your picks in a row.\" ;; @84: path \"Don't reach for a lost category: AJ Green (3PTM, card #147) · DeMar DeRozan (FT%, card #30) · Cason Wallace (ST, card #6) — none beats 🎯 Ty Jerome; the card already priced those in.\" | oracle \"top rival Seat 12: you lead 4/9 kept\" ;; @85: path \"\" | oracle \"TARGET: Playmaking G\" ;; @86: path \"top rival Seat 12: you lead 4/9 kept\" | oracle \"\" ;; @87: path \"TARGET: Playmaking G\" | oracle \"NBA-team stacks: CHI:2 NYK:2\" ;; @89: path \"NBA-team stacks: CHI:2 NYK:2\" | oracle \"STRONG🔒FG% · REB · TO · WINNABLEPTS · AST · BLK · SOFT PUNTFT% + 3PTM\""
+   ]
+  },
+  {
+   "id": "R10.path-equals-oracle",
+   "ok": false,
+   "detail": [
+    "tab:best 1 line(s) differ: @84: path \"Losing 3PTM, FT%, PTS to most of the room, 2 picks running (you beat 0% of the room in 3PTM, 11% in FT%, 24% in PTS). Don't punt them: you'd be winning only 4 of the other 6 categories (need 5). Keep taking the best player.\" | oracle \"Watching 3PTM, FT%, PTS: losing them to most of the room this pick (you beat 0% of the room in 3PTM, 11% in FT%, 24% in PTS). Becomes advice after 2 of your picks in a row.\"",
+    "tab:boardtab 1 line(s) differ: @84: path \"Losing 3PTM, FT%, PTS to most of the room, 2 picks running (you beat 0% of the room in 3PTM, 11% in FT%, 24% in PTS). Don't punt them: you'd be winning only 4 of the other 6 categories (need 5). Keep taking the best player.\" | oracle \"Watching 3PTM, FT%, PTS: losing them to most of the room this pick (you beat 0% of the room in 3PTM, 11% in FT%, 24% in PTS). Becomes advice after 2 of your picks in a row.\"",
+    "tab:rosters 1 line(s) differ: @84: path \"Losing 3PTM, FT%, PTS to most of the room, 2 picks running (you beat 0% of the room in 3PTM, 11% in FT%, 24% in PTS). Don't punt them: you'd be winning only 4 of the other 6 categories (need 5). Keep taking the best player.\" | oracle \"Watching 3PTM, FT%, PTS: losing them to most of the room this pick (you beat 0% of the room in 3PTM, 11% in FT%, 24% in PTS). Becomes advice after 2 of your picks in a row.\"",
+    "tab:matrix 1 line(s) differ: @84: path \"Losing 3PTM, FT%, PTS to most of the room, 2 picks running (you beat 0% of the room in 3PTM, 11% in FT%, 24% in PTS). Don't punt them: you'd be winning only 4 of the other 6 categories (need 5). Keep taking the best player.\" | oracle \"Watching 3PTM, FT%, PTS: losing them to most of the room this pick (you beat 0% of the room in 3PTM, 11% in FT%, 24% in PTS). Becomes advice after 2 of your picks in a row.\"",
+    "tab:vs 1 line(s) differ: @84: path \"Losing 3PTM, FT%, PTS to most of the room, 2 picks running (you beat 0% of the room in 3PTM, 11% in FT%, 24% in PTS). Don't punt them: you'd be winning only 4 of the other 6 categories (need 5). Keep taking the best player.\" | oracle \"Watching 3PTM, FT%, PTS: losing them to most of the room this pick (you beat 0% of the room in 3PTM, 11% in FT%, 24% in PTS). Becomes advice after 2 of your picks in a row.\""
+   ]
+  }
+ ],
+ "all": [
+  {
+   "id": "R6@138.final-list",
+   "ok": true
+  },
+  {
+   "id": "R6@138.seats-equal-snake",
+   "ok": true
+  },
+  {
+   "id": "R6@138.path-equals-oracle",
+   "ok": false
+  },
+  {
+   "id": "R6@138.history-matches-state",
+   "ok": true
+  },
+  {
+   "id": "R6@138.advice-line-live",
+   "ok": true
+  },
+  {
+   "id": "R6.final-list",
+   "ok": true
+  },
+  {
+   "id": "R6.seats-equal-snake",
+   "ok": true
+  },
+  {
+   "id": "R6.path-equals-oracle",
+   "ok": false
+  },
+  {
+   "id": "R6.history-matches-state",
+   "ok": true
+  },
+  {
+   "id": "R7@127.final-list",
+   "ok": true
+  },
+  {
+   "id": "R7@127.seats-equal-snake",
+   "ok": true
+  },
+  {
+   "id": "R7@127.path-equals-oracle",
+   "ok": false
+  },
+  {
+   "id": "R7@127.history-matches-state",
+   "ok": true
+  },
+  {
+   "id": "R7@127.advice-line-live",
+   "ok": true
+  },
+  {
+   "id": "R7.final-list",
+   "ok": true
+  },
+  {
+   "id": "R7.seats-equal-snake",
+   "ok": true
+  },
+  {
+   "id": "R7.path-equals-oracle",
+   "ok": false
+  },
+  {
+   "id": "R7.history-matches-state",
+   "ok": true
+  },
+  {
+   "id": "R8@117.final-list",
+   "ok": true
+  },
+  {
+   "id": "R8@117.seats-equal-snake",
+   "ok": true
+  },
+  {
+   "id": "R8@117.path-equals-oracle",
+   "ok": false
+  },
+  {
+   "id": "R8@117.history-matches-state",
+   "ok": true
+  },
+  {
+   "id": "R8@117.advice-line-live",
+   "ok": true
+  },
+  {
+   "id": "R8.final-list",
+   "ok": true
+  },
+  {
+   "id": "R8.seats-equal-snake",
+   "ok": true
+  },
+  {
+   "id": "R8.path-equals-oracle",
+   "ok": false
+  },
+  {
+   "id": "R8.history-matches-state",
+   "ok": true
+  },
+  {
+   "id": "R9@107.final-list",
+   "ok": true
+  },
+  {
+   "id": "R9@107.seats-equal-snake",
+   "ok": true
+  },
+  {
+   "id": "R9@107.path-equals-oracle",
+   "ok": false
+  },
+  {
+   "id": "R9@107.history-matches-state",
+   "ok": true
+  },
+  {
+   "id": "R9@107.advice-line-live",
+   "ok": true
+  },
+  {
+   "id": "R9.final-list",
+   "ok": true
+  },
+  {
+   "id": "R9.seats-equal-snake",
+   "ok": true
+  },
+  {
+   "id": "R9.path-equals-oracle",
+   "ok": false
+  },
+  {
+   "id": "R9.history-matches-state",
+   "ok": true
+  },
+  {
+   "id": "R10@97.final-list",
+   "ok": true
+  },
+  {
+   "id": "R10@97.seats-equal-snake",
+   "ok": true
+  },
+  {
+   "id": "R10@97.path-equals-oracle",
+   "ok": false
+  },
+  {
+   "id": "R10@97.history-matches-state",
+   "ok": true
+  },
+  {
+   "id": "R10@97.advice-line-live",
+   "ok": true
+  },
+  {
+   "id": "R10.final-list",
+   "ok": true
+  },
+  {
+   "id": "R10.seats-equal-snake",
+   "ok": true
+  },
+  {
+   "id": "R10.path-equals-oracle",
+   "ok": false
+  },
+  {
+   "id": "R10.history-matches-state",
+   "ok": true
+  }
+ ]
+}
