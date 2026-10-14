@@ -283,11 +283,31 @@ The adjustment: the draft page still adapts to the actual room (who your opponen
 
 | item | query run (2026-10-14) | dated finding |
 |---|---|---|
-| (research) | records only; no web research and no roster pull | the lines are Version 68's (`players_v68.csv`); the open items of the morning pull stand (`after-report-2026-10-14.md`) |
+| (research) | records only; no web research and no roster pull | the lines are Version 68's (`players_v68.csv`) |
+| Brandon Ingram, Kristaps Porzingis, Kawhi Leonard, Cam Thomas, Jaden Ivey, Jeremy Sochan, Lonzo Ball, Rob Dillingham, Bennedict Mathurin, Ryan Rollins | this morning's final pull (`after-report-2026-10-14.md`, receipts dated 10/14) and the lock report (`after-report-2026-10-14-lock.md`) | as recorded there; not re-queried for this research (did not check) |
+
+The standing check below is the one run on the locked page (Version 70) for the lock report; this research built no page.
 
 ## Repeat-name market check
 
-Not re-run for this report: research on records, no page built. The standing check on the published page is in `after-report-2026-10-14-yahoo.md` (Version 69).
+Rule (owner, 2026-10-08, D-RN-1): the card's 🎯 in 5+ of the graded mocks, replayed on this page (sha256 e68a85a5305f), with 25+ places between the value rank and the market rank the card prints (or no Yahoo price), gets an outside-source check at every refresh. Replays: 29 of 29 mocks. Outside ranks: Yahoo Rank `yahoo-proj-2026-10-14.csv`, Hashtag `hashtag-2026-10-14.csv`, Rotoworld `rotoworld-9cat-2026-10-05.csv`, RotoBaller `rotoballer-2026-10-13.csv`. Cells: our per-game line against `yahoo-proj-2026-10-14.csv`, `hashtag-2026-10-14.csv`, `rotoballer-2026-10-13.csv` (outside all three; tolerance .005 on percentages, 5% with a 0.1 floor on counting stats). Spellings resolved through the kit's alias table (`build_market.py`, 6 players).
+
+| player | 🎯 in mocks | value rank | market rank | Yahoo Rank | Hashtag | Rotoworld | RotoBaller | cells outside all three projections | verdict |
+|---|---|---|---|---|---|---|---|---|---|
+| Ty Jerome | 29 of 29 | 44 | 111 | 63 | 60 | 101 | 65 | none | SOURCES SPLIT: 1 of 4 sit 25+ places on one side; the line holds |
+| OG Anunoby | 21 of 29 | 32 | 67 | 58 | 56 | 43 | 45 | none | SOURCES SPLIT: 1 of 4 sit 25+ places on one side; the line holds |
+| Collin Gillespie | 12 of 29 | 101 | 182 | 100 | 125 | 148 | 155 | none | SOURCES SPLIT: 2 of 4 sit 25+ places on one side; the line holds |
+| Brandin Podziemski | 11 of 29 | 93 | 146 | 74 | 102 | 114 | 132 | none | SOURCES SPLIT: 1 of 4 sit 25+ places on one side; the line holds |
+| Cameron Johnson | 11 of 29 | 107 | 138 | 182 | 93 | 129 | 107 | none | SOURCES SPLIT: 1 of 4 sit 25+ places on one side; the line holds |
+| John Collins | 11 of 29 | 73 | 117 | 105 | 72 | 104 | 109 | none | SOURCES SPLIT: 3 of 4 sit 25+ places on one side; the line holds |
+| Reed Sheppard | 8 of 29 | 92 | 179 | 89 | 117 | 126 | 129 | none | SOURCES SPLIT: 3 of 4 sit 25+ places on one side; the line holds |
+| Kawhi Leonard | 7 of 29 | 6 | 32 | 15 | 24 | 15 | 20 | none | SOURCES SPLIT: 0 of 4 sit 25+ places on one side; the line holds |
+| Jaden McDaniels | 6 of 29 | 62 | 90 | 42 | 67 | 86 | 59 | none | SOURCES SPLIT: 0 of 4 sit 25+ places on one side; the line holds |
+| Devin Vassell | 5 of 29 | 114 | 139 | 122 | 130 | 125 | 125 | none | SOURCES SPLIT: 0 of 4 sit 25+ places on one side; the line holds |
+| Immanuel Quickley | 5 of 29 | 67 | 94 | 65 | 73 | 79 | 84 | none | SOURCES SPLIT: 0 of 4 sit 25+ places on one side; the line holds |
+| Keegan Murray | 5 of 29 | 83 | 142 | 82 | 94 | 102 | 85 | none | SOURCES SPLIT: 0 of 4 sit 25+ places on one side; the line holds |
+
+Near misses (the 🎯 in 5+ mocks, under 25 places): Jamal Murray (18 mocks, value 9, market 18); Derrick White (14 mocks, value 27, market 45); Lauri Markkanen (14 mocks, value 21, market 37); Tyrese Haliburton (12 mocks, value 7, market 12); Kel'el Ware (8 mocks, value 57, market 77); Tyler Herro (8 mocks, value 51, market 69); Tyrese Maxey (8 mocks, value 5, market 9); Karl-Anthony Towns (5 mocks, value 12, market 15).
 
 ## Bounds
 

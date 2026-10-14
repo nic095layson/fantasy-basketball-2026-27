@@ -1,0 +1,42 @@
+== page e68a85a5305f 687819 bytes
+== parity 17:12:23
+card orderings compared : 468 owner turns across 36 committed states
+market ranks compared   : 318 (priced 294)
+
+PARITY: EXACT MATCH
+exit 0
+== test_card 17:40:59
+
+CARD: all 103 cases passed
+exit 0
+== test_draft 17:41:12
+
+all 65 cases passed
+exit 0
+== test_gates 17:41:25
+== test_gates 17:42:48
+  ok    PI --check-report: a report without the section FAILS
+
+all 54 cases passed
+exit 0
+== identity_check 18:06:27
+|---|---|---|---|---|---|---|
+
+exit 0
+== range_check 18:06:27
+| Dylan Harper | 106 | ft_pct .765 vs .754-.758 | +0.05 | — |
+
+exit 0
+== end_a 18:06:27
+== full_dom_check 17:42:48
+{"assertions":145,"failed":0,"pageErrors":0,"crash":false,"pass":true,"failures":[]}
+exit 0
+== end_b 17:48:28
+== repeat_market_check 17:42:49
+exit 0
+29 of 29 mocks replayed; 12 FLAGGED, 8 near miss(es)
+  FLAGGED Ty Jerome: the 🎯 in 29 mocks, value 44, market 111 — SOURCES SPLIT: 1 of 4 sit 25+ places on one side; the line holds
+  FLAGGED OG Anunoby: the 🎯 in 21 mocks, value 32, market 67 — SOURCES SPLIT: 1 of 4 sit 25+ places on one side; the line holds
+== end_c 17:48:16
+POINTS IDENTITY: 0 player(s), 0 line(s) more than 1 from their own shooting (200 deck and 200 kit lines checked)
+RANGE CHECK: 4 player(s) with 4 cell(s) outside every reference (147 of the top 150 checkable)
