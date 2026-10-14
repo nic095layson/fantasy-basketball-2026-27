@@ -236,10 +236,10 @@ def resolve_table_names(rows, board):
     for r in rows:
         t = BM.norm(r["src_name"]).split()
         cands = idx.get((t[0][:1], " ".join(t[1:])), []) if t else []
+        if cands and not any(c[1]["team"] == r["team"] for c in cands) and all(c[0] in claimed for c in cands):
+            continue   # every candidate is taken by a same-team row: this one is Yahoo-only (also L. Ball CLE, T. Jones DEN)
         if len(cands) > 1:
             by_team = [c for c in cands if c[1]["team"] == r["team"]]
-            if not by_team and all(c[0] in claimed for c in cands):
-                continue   # every candidate is taken by a same-team row: this one is Yahoo-only
             cands = by_team or cands
         if len(cands) > 1:
             by_pos = [c for c in cands if c[1].get("pos", "").replace(" ", "") == r["pos"]]
@@ -249,6 +249,12 @@ def resolve_table_names(rows, board):
                             f"{len(cands)} pool rows: {', '.join(c[0] for c in cands)}")
         elif cands:
             r["player"] = cands[0][0]
+    # I5 after I7: two Yahoo rows may not land on one pool row (2026-10-14 caught L. Ball CLE -> LaMelo Ball)
+    seen = {}
+    for r in rows:
+        if r["player"] != r["src_name"]:
+            seen.setdefault(r["player"], []).append(f"{r['src_name']}/{r['team']}")
+    problems += [f"I7: {k} resolved from {len(v)} Yahoo rows: {', '.join(v)}" for k, v in seen.items() if len(v) > 1]
     return problems
 
 
