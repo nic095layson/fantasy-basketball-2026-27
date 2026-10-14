@@ -1,0 +1,35 @@
+31 of 31 mocks replayed; 12 FLAGGED, 8 near miss(es)
+  FLAGGED Ty Jerome: the 🎯 in 30 mocks, value 44, market 111 — SOURCES SPLIT: 1 of 4 sit 25+ places on one side; the line holds
+  FLAGGED OG Anunoby: the 🎯 in 22 mocks, value 32, market 67 — SOURCES SPLIT: 1 of 4 sit 25+ places on one side; the line holds
+  FLAGGED Cameron Johnson: the 🎯 in 13 mocks, value 107, market 138 — SOURCES SPLIT: 1 of 4 sit 25+ places on one side; the line holds
+  FLAGGED Collin Gillespie: the 🎯 in 12 mocks, value 101, market 182 — SOURCES SPLIT: 2 of 4 sit 25+ places on one side; the line holds
+  FLAGGED John Collins: the 🎯 in 12 mocks, value 73, market 117 — SOURCES SPLIT: 3 of 4 sit 25+ places on one side; the line holds
+  FLAGGED Brandin Podziemski: the 🎯 in 11 mocks, value 93, market 146 — SOURCES SPLIT: 1 of 4 sit 25+ places on one side; the line holds
+  FLAGGED Reed Sheppard: the 🎯 in 10 mocks, value 92, market 179 — SOURCES SPLIT: 3 of 4 sit 25+ places on one side; the line holds
+  FLAGGED Kawhi Leonard: the 🎯 in 8 mocks, value 6, market 32 — SOURCES SPLIT: 0 of 4 sit 25+ places on one side; the line holds
+  FLAGGED Jaden McDaniels: the 🎯 in 6 mocks, value 62, market 90 — SOURCES SPLIT: 0 of 4 sit 25+ places on one side; the line holds
+  FLAGGED Devin Vassell: the 🎯 in 5 mocks, value 114, market 139 — SOURCES SPLIT: 0 of 4 sit 25+ places on one side; the line holds
+  FLAGGED Immanuel Quickley: the 🎯 in 5 mocks, value 67, market 94 — SOURCES SPLIT: 0 of 4 sit 25+ places on one side; the line holds
+  FLAGGED Keegan Murray: the 🎯 in 5 mocks, value 83, market 142 — SOURCES SPLIT: 0 of 4 sit 25+ places on one side; the line holds
+
+## Repeat-name market check
+
+Rule (owner, 2026-10-08, D-RN-1): the card's 🎯 in 5+ of the graded mocks, replayed on this page (sha256 beb243ef57af), with 25+ places between the value rank and the market rank the card prints (or no Yahoo price), gets an outside-source check at every refresh. Replays: 31 of 31 mocks. Outside ranks: Yahoo Rank `yahoo-proj-2026-10-14.csv`, Hashtag `hashtag-2026-10-14.csv`, Rotoworld `rotoworld-9cat-2026-10-05.csv`, RotoBaller `rotoballer-2026-10-13.csv`. Cells: our per-game line against `yahoo-proj-2026-10-14.csv`, `hashtag-2026-10-14.csv`, `rotoballer-2026-10-13.csv` (outside all three; tolerance .005 on percentages, 5% with a 0.1 floor on counting stats). Spellings resolved through the kit's alias table (`build_market.py`, 6 players).
+
+| player | 🎯 in mocks | value rank | market rank | Yahoo Rank | Hashtag | Rotoworld | RotoBaller | cells outside all three projections | verdict |
+|---|---|---|---|---|---|---|---|---|---|
+| Ty Jerome | 30 of 31 | 44 | 111 | 63 | 60 | 101 | 65 | none | SOURCES SPLIT: 1 of 4 sit 25+ places on one side; the line holds |
+| OG Anunoby | 22 of 31 | 32 | 67 | 58 | 56 | 43 | 45 | none | SOURCES SPLIT: 1 of 4 sit 25+ places on one side; the line holds |
+| Cameron Johnson | 13 of 31 | 107 | 138 | 182 | 93 | 129 | 107 | none | SOURCES SPLIT: 1 of 4 sit 25+ places on one side; the line holds |
+| Collin Gillespie | 12 of 31 | 101 | 182 | 100 | 125 | 148 | 155 | none | SOURCES SPLIT: 2 of 4 sit 25+ places on one side; the line holds |
+| John Collins | 12 of 31 | 73 | 117 | 105 | 72 | 104 | 109 | none | SOURCES SPLIT: 3 of 4 sit 25+ places on one side; the line holds |
+| Brandin Podziemski | 11 of 31 | 93 | 146 | 74 | 102 | 114 | 132 | none | SOURCES SPLIT: 1 of 4 sit 25+ places on one side; the line holds |
+| Reed Sheppard | 10 of 31 | 92 | 179 | 89 | 117 | 126 | 129 | none | SOURCES SPLIT: 3 of 4 sit 25+ places on one side; the line holds |
+| Kawhi Leonard | 8 of 31 | 6 | 32 | 15 | 24 | 15 | 20 | none | SOURCES SPLIT: 0 of 4 sit 25+ places on one side; the line holds |
+| Jaden McDaniels | 6 of 31 | 62 | 90 | 42 | 67 | 86 | 59 | none | SOURCES SPLIT: 0 of 4 sit 25+ places on one side; the line holds |
+| Devin Vassell | 5 of 31 | 114 | 139 | 122 | 130 | 125 | 125 | none | SOURCES SPLIT: 0 of 4 sit 25+ places on one side; the line holds |
+| Immanuel Quickley | 5 of 31 | 67 | 94 | 65 | 73 | 79 | 84 | none | SOURCES SPLIT: 0 of 4 sit 25+ places on one side; the line holds |
+| Keegan Murray | 5 of 31 | 83 | 142 | 82 | 94 | 102 | 85 | none | SOURCES SPLIT: 0 of 4 sit 25+ places on one side; the line holds |
+
+Near misses (the 🎯 in 5+ mocks, under 25 places): Jamal Murray (18 mocks, value 9, market 18); Derrick White (16 mocks, value 27, market 45); Lauri Markkanen (15 mocks, value 21, market 37); Tyrese Haliburton (13 mocks, value 7, market 12); Kel'el Ware (9 mocks, value 57, market 77); Tyler Herro (9 mocks, value 51, market 69); Tyrese Maxey (9 mocks, value 5, market 9); Karl-Anthony Towns (7 mocks, value 12, market 15).
+
