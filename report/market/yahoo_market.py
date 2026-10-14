@@ -126,11 +126,16 @@ def parse_raw(path):
     """Returns (rows, problems, fmt) with fmt in {"block", "rank"}."""
     lines = [l.strip() for l in open(path, encoding="utf-8")]
     nonblank = [l for l in lines if l]
-    if nonblank and (nonblank[0].startswith("Player\tXRank\tRank\tADP\tGP")
-                     or nonblank[0].startswith("Queue\tPlayer\tXRank\tRank\tADP\tGP")):
+    headed = nonblank and (nonblank[0].startswith("Player\tXRank\tRank\tADP\tGP")
+                           or nonblank[0].startswith("Queue\tPlayer\tXRank\tRank\tADP\tGP"))
+    # 2026-10-14 paste: the same draft-room page copied without its header row — the first entry starts at once
+    # (name, duplicate name, ..., a 13-field numeric line within the next four lines)
+    headless = (len(nonblank) > 5 and nonblank[0] == nonblank[1]
+                and any(len(l.split("\t")) == 13 for l in nonblank[2:6]))
+    if headed or headless:
         # 2026-10-13 paste: the same page copied from the draft room — a leading "Queue" header column (no
         # per-row value) and the owner's "Your Turn - Nth Pick" markers between entries; both carry no data.
-        body = [l for l in nonblank[1:] if not re.fullmatch(r"Your Turn - \d+(st|nd|rd|th) Pick", l)]
+        body = [l for l in nonblank[1 if headed else 0:] if not re.fullmatch(r"Your Turn - \d+(st|nd|rd|th) Pick", l)]
         rows, problems = _parse_table(body)
         return rows, problems, "table"
     if nonblank and re.fullmatch(r"\d+", nonblank[0]):
@@ -219,10 +224,20 @@ def resolve_table_names(rows, board):
         if not t:
             continue
         idx.setdefault((t[0][:1], " ".join(t[1:])), []).append((name, b["row"]))
+    # a pool row already claimed by a Yahoo row on its own team is not a candidate for a second Yahoo row on
+    # another team (2026-10-14: a third "J. Green", UTA, XRank 333, beside Jalen Green PHX and Javonte Green DET)
+    claimed = {}
+    for r in rows:
+        t = BM.norm(r["src_name"]).split()
+        for c in (idx.get((t[0][:1], " ".join(t[1:])), []) if t else []):
+            if c[1]["team"] == r["team"]:
+                claimed.setdefault(c[0], []).append(r["src_name"] + "/" + r["team"])
     problems = []
     for r in rows:
         t = BM.norm(r["src_name"]).split()
         cands = idx.get((t[0][:1], " ".join(t[1:])), []) if t else []
+        if cands and not any(c[1]["team"] == r["team"] for c in cands) and all(c[0] in claimed for c in cands):
+            continue   # every candidate is taken by a same-team row: this one is Yahoo-only (also L. Ball CLE, T. Jones DEN)
         if len(cands) > 1:
             by_team = [c for c in cands if c[1]["team"] == r["team"]]
             cands = by_team or cands
@@ -234,6 +249,12 @@ def resolve_table_names(rows, board):
                             f"{len(cands)} pool rows: {', '.join(c[0] for c in cands)}")
         elif cands:
             r["player"] = cands[0][0]
+    # I5 after I7: two Yahoo rows may not land on one pool row (2026-10-14 caught L. Ball CLE -> LaMelo Ball)
+    seen = {}
+    for r in rows:
+        if r["player"] != r["src_name"]:
+            seen.setdefault(r["player"], []).append(f"{r['src_name']}/{r['team']}")
+    problems += [f"I7: {k} resolved from {len(v)} Yahoo rows: {', '.join(v)}" for k, v in seen.items() if len(v) > 1]
     return problems
 
 

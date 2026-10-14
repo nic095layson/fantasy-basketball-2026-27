@@ -14,7 +14,7 @@ A4 universe: every kit row with three or more outside projections (the deck twin
   blend_lines.py --deck <data/players.csv> --kit <report/projections-2026-27.csv> --out <lines.json>"""
 import argparse, csv, json, os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from common import CATS, STAT, KITCOL, MIN_REFS, SOURCES, canon, references, fmt, blend_cell  # noqa: E402
+from common import CATS, STAT, KITCOL, MIN_REFS, SOURCES, LOCK, canon, references, fmt, blend_cell  # noqa: E402
 SHOOT = ["fg_pct", "fga", "ft_pct", "fta", "tpm", "pts"]
 LO, HI = 0.85, 1.15
 
@@ -44,7 +44,7 @@ def main():
         if rescaled and abs(resid) > 0.25: problems.append(f"{r['name']}: identity residual {resid:.3f}")
         labels = [s for s, _, _, _ in SOURCES if s in ref]
         cells = [dict(cat=c, ours=ours[c], refs={s: ref[s][c] for s in labels}, new=new[c]) for c in CATS]
-        note = (f"10/14: six-way blend (owner call 10/14, council 4–1) — each category the equal-weight mean of this line and "
+        note = (f"10/14: six-way blend (owner call 10/14, council 4–1{'; the lock re-blend on Yahoo 10/14 and Hashtag 10/14' if LOCK else ''}) — each category the equal-weight mean of this line and "
                 f"{len(labels)} outside projections ({', '.join(labels)}); games, minutes and tags unchanged"
 )
         rows.append(dict(key=k, name=r["name"], on_deck=bool(d), n_refs=len(labels), sources=labels, old=ours, new=new,

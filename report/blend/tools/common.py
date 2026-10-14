@@ -13,6 +13,12 @@ MIN_REFS = 3
 SOURCES = [("Yahoo", "yahoo-proj-2026-10-13.csv", "", 1.0), ("Hashtag", "hashtag-2026-10-12.csv", "", 1.0),
            ("RotoBaller", "rotoballer-2026-10-13.csv", "src_", 100.0), ("FantasyPros", "fantasypros-2026-10-13.csv", "src_", 100.0),
            ("BBM cards", "cards-2026-10-13.csv", "src_", 100.0)]
+# 2026-10-14 lock (owner: "Take the Yahoo and Hashtag projections dated today, and synergize with kit's"): BLEND_SET=lock
+# swaps in the two outlets' 10/14 files; the other three outlets and the method are unchanged. Unset, the set above stands
+# (Version 67's blend reproduces).
+LOCK = os.environ.get("BLEND_SET") == "lock"
+if LOCK:
+    SOURCES = [("Yahoo", "yahoo-proj-2026-10-14.csv", "", 1.0), ("Hashtag", "hashtag-2026-10-14.csv", "", 1.0)] + SOURCES[2:]
 
 
 def aliases():

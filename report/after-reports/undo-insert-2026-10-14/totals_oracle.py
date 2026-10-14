@@ -12,8 +12,10 @@ dumps = json.load(open(sys.argv[1]))
 if len(sys.argv) > 2: hoops.DATA_PATH = sys.argv[2]
 P = {p["player"]: p for p in hoops.zscores(hoops.load_players())}
 TEAMS, SLOT = 12, 10
+# the page bakes each player z to 6 decimals: a 13-man total can drift 13 x 5e-7 = 6.5e-6 from full precision
+TOL = 13 * 5e-7
 snake = lambda n, t: (n % t) + 1 if (n // t) % 2 == 0 else t - (n % t)
-worst, bad, cells = 0.0, [], 0
+worst, bad, cells, rank_bad = 0.0, [], 0, []
 for d in dumps:
     rosters = {s: [] for s in range(1, TEAMS + 1)}
     for i, (name, seat) in enumerate(d["picks"]):
@@ -23,9 +25,9 @@ for d in dumps:
         for c in hoops.CATS:
             got = d["totals"][str(s)][c]; want = tot[s][c]; cells += 1
             err = abs(got - want); worst = max(worst, err)
-            if err > 1e-6: bad.append((d["id"], s, c, got, round(want, 9)))
+            if err > TOL: bad.append((d["id"], s, c, got, round(want, 9)))
     ranks = {c: 1 + sum(1 for s in range(1, TEAMS + 1) if s != SLOT and tot[s][c] > tot[SLOT][c]) for c in hoops.CATS}
-    if ranks != d["ranks"]: bad.append((d["id"], "ranks", d["ranks"], ranks))
-out = {"states": len(dumps), "team_category_cells": cells, "max_abs_error": worst, "mismatches": bad[:20], "n_mismatches": len(bad)}
+    if ranks != d["ranks"]: bad.append((d["id"], "ranks", d["ranks"], ranks)); rank_bad.append(d["id"])
+out = {"states": len(dumps), "team_category_cells": cells, "max_abs_error": worst, "mismatches": bad[:20], "n_mismatches": len(bad), "tolerance": TOL, "rank_mismatch_states": rank_bad}
 print(json.dumps(out))
 sys.exit(1 if bad else 0)
