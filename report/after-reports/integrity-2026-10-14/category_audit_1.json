@@ -1,0 +1,2078 @@
+{
+ "inputs": {
+  "deck_pool": "data/players.csv",
+  "deck_rows": 335,
+  "kit_csv": "report/projections-2026-27.csv",
+  "kit_rows": 325,
+  "sources": {
+   "Yahoo": "yahoo-proj-2026-10-14.csv",
+   "Hashtag": "hashtag-2026-10-14.csv",
+   "RotoBaller": "rotoballer-2026-10-13.csv"
+  },
+  "source_rows": {
+   "Yahoo": 350,
+   "Hashtag": 200,
+   "RotoBaller": 241
+  },
+  "actual": "arena/results/tuning_2026-10-08/bref_pergame_2025-26.csv",
+  "actual_rows": 432
+ },
+ "A_deck": {
+  "rows": 335,
+  "live": 318,
+  "excluded": 17,
+  "risk": 35,
+  "fixed_point_iterations": 3,
+  "fixed_point_stable": true,
+  "league_fg": 0.4842,
+  "league_ft": 0.79829,
+  "max_abs_z_diff": {
+   "fg_pct": 0.0,
+   "ft_pct": 0.0,
+   "tpm": 0.0,
+   "pts": 0.0,
+   "reb": 0.0,
+   "ast": 0.0,
+   "stl": 0.0,
+   "blk": 0.0,
+   "tov": 0.0
+  },
+  "order_identical_all": true,
+  "order_identical_top200": true
+ },
+ "A_kit": {
+  "rows_signed": 321,
+  "board_rows": 200,
+  "max_abs_z_diff_vs_engine_unrounded": {
+   "fg_pct": 0.0,
+   "ft_pct": 0.0,
+   "tpm": 0.0,
+   "pts": 0.0,
+   "reb": 0.0,
+   "ast": 0.0,
+   "stl": 0.0,
+   "blk": 0.0,
+   "tov": 0.0
+  },
+  "max_abs_zpg_diff_vs_board": 0.1348,
+  "max_abs_zadj_diff_vs_board": 0.1053,
+  "board_rounding": 0.005,
+  "order_identical_top200": false,
+  "league_fg": 0.48414,
+  "league_ft": 0.79656,
+  "pool3_overlap_with_pool2": 179,
+  "pass3_top200_mean_rank_move": 0.16,
+  "pass3_top200_max_rank_move": 3,
+  "gp25_rows_inside_the_180_pool": [
+   "Dereck Lively",
+   "Donte DiVincenzo",
+   "Jimmy Butler",
+   "Jusuf Nurkic",
+   "Mark Williams"
+  ]
+ },
+ "A_direction_spearman_raw_vs_z": {
+  "tpm": 1.0,
+  "pts": 1.0,
+  "reb": 1.0,
+  "ast": 1.0,
+  "stl": 1.0,
+  "blk": 1.0,
+  "tov": -1.0,
+  "fg_pct": 1.0,
+  "ft_pct": 1.0
+ },
+ "A4_haircut_reach": {
+  "pool_mean_total": 0.0,
+  "last_positive_live_rank": 67,
+  "risk_rows_top200_discounted": 13,
+  "risk_rows_top200_not_discounted": [
+   [
+    69,
+    "Dejounte Murray",
+    -0.075
+   ],
+   [
+    83,
+    "Keegan Murray",
+    -0.446
+   ],
+   [
+    87,
+    "Fred VanVleet",
+    -0.711
+   ],
+   [
+    88,
+    "Brandon Ingram",
+    -0.734
+   ],
+   [
+    89,
+    "Alex Sarr",
+    -0.934
+   ],
+   [
+    94,
+    "Coby White",
+    -1.177
+   ],
+   [
+    100,
+    "Zion Williamson",
+    -1.356
+   ],
+   [
+    128,
+    "Mitchell Robinson",
+    -2.129
+   ],
+   [
+    129,
+    "Robert Williams III",
+    -2.142
+   ],
+   [
+    139,
+    "Ja Morant",
+    -2.419
+   ],
+   [
+    156,
+    "Marcus Smart",
+    -2.856
+   ],
+   [
+    157,
+    "De'Anthony Melton",
+    -2.858
+   ],
+   [
+    172,
+    "Maxime Raynaud",
+    -3.095
+   ],
+   [
+    174,
+    "Dylan Cardwell",
+    -3.111
+   ],
+   [
+    187,
+    "Bradley Beal",
+    -3.496
+   ],
+   [
+    200,
+    "Isaiah Stewart",
+    -3.803
+   ]
+  ],
+  "replacement_total_rank156": -2.856,
+  "counterfactual_replacement_haircut": {
+   "rows_moved_top200": 94,
+   "risk_rows_moved": [
+    [
+     6,
+     "Kawhi Leonard",
+     8
+    ],
+    [
+     13,
+     "Stephen Curry",
+     18
+    ],
+    [
+     14,
+     "Jayson Tatum",
+     19
+    ],
+    [
+     15,
+     "Anthony Davis",
+     20
+    ],
+    [
+     19,
+     "Kyrie Irving",
+     23
+    ],
+    [
+     23,
+     "Trey Murphy III",
+     29
+    ],
+    [
+     42,
+     "Joel Embiid",
+     51
+    ],
+    [
+     43,
+     "Paul George",
+     54
+    ],
+    [
+     45,
+     "Jaren Jackson Jr.",
+     59
+    ],
+    [
+     46,
+     "Damian Lillard",
+     50
+    ],
+    [
+     54,
+     "Zach Edey",
+     70
+    ],
+    [
+     55,
+     "LeBron James",
+     72
+    ],
+    [
+     58,
+     "Kristaps Porzingis",
+     77
+    ],
+    [
+     69,
+     "Dejounte Murray",
+     85
+    ],
+    [
+     83,
+     "Keegan Murray",
+     88
+    ],
+    [
+     87,
+     "Fred VanVleet",
+     91
+    ],
+    [
+     88,
+     "Brandon Ingram",
+     92
+    ],
+    [
+     89,
+     "Alex Sarr",
+     98
+    ],
+    [
+     94,
+     "Coby White",
+     102
+    ],
+    [
+     100,
+     "Zion Williamson",
+     108
+    ],
+    [
+     128,
+     "Mitchell Robinson",
+     131
+    ],
+    [
+     129,
+     "Robert Williams III",
+     132
+    ],
+    [
+     139,
+     "Ja Morant",
+     140
+    ]
+   ],
+   "max_move": 19
+  }
+ },
+ "A4_kit": {
+  "last_positive_rank": 81,
+  "gp_under_70_top200_not_discounted": [
+   [
+    82,
+    "Andrew Wiggins",
+    66,
+    -0.078
+   ],
+   [
+    84,
+    "Norman Powell",
+    66,
+    -0.119
+   ],
+   [
+    87,
+    "Rudy Gobert",
+    68,
+    -0.309
+   ],
+   [
+    88,
+    "Brandon Ingram",
+    48,
+    -0.373
+   ],
+   [
+    89,
+    "Fred VanVleet",
+    55,
+    -0.397
+   ],
+   [
+    90,
+    "Donte DiVincenzo",
+    15,
+    -0.46
+   ],
+   [
+    93,
+    "Jaylen Brown",
+    68,
+    -0.619
+   ],
+   [
+    94,
+    "Coby White",
+    62,
+    -0.818
+   ],
+   [
+    95,
+    "Isaiah Hartenstein",
+    66,
+    -0.861
+   ],
+   [
+    99,
+    "Myles Turner",
+    68,
+    -0.92
+   ],
+   [
+    100,
+    "Neemias Queta",
+    68,
+    -0.921
+   ],
+   [
+    101,
+    "Jakob Poeltl",
+    58,
+    -0.937
+   ],
+   [
+    103,
+    "Zion Williamson",
+    50,
+    -1.082
+   ],
+   [
+    107,
+    "Zach LaVine",
+    64,
+    -1.235
+   ],
+   [
+    108,
+    "Mark Williams",
+    15,
+    -1.269
+   ],
+   [
+    109,
+    "Derik Queen",
+    68,
+    -1.304
+   ],
+   [
+    111,
+    "Cam Johnson",
+    66,
+    -1.323
+   ],
+   [
+    114,
+    "Dereck Lively",
+    25,
+    -1.425
+   ],
+   [
+    115,
+    "Darryn Peterson",
+    68,
+    -1.448
+   ],
+   [
+    116,
+    "Ajay Mitchell",
+    68,
+    -1.494
+   ],
+   [
+    117,
+    "Tobias Harris",
+    68,
+    -1.506
+   ],
+   [
+    118,
+    "Kevin Porter Jr",
+    66,
+    -1.552
+   ],
+   [
+    119,
+    "Day'Ron Sharpe",
+    68,
+    -1.567
+   ],
+   [
+    120,
+    "Devin Vassell",
+    68,
+    -1.567
+   ],
+   [
+    123,
+    "CJ McCollum",
+    64,
+    -1.677
+   ],
+   [
+    125,
+    "Nic Claxton",
+    68,
+    -1.707
+   ],
+   [
+    126,
+    "Julius Randle",
+    68,
+    -1.71
+   ],
+   [
+    129,
+    "Robert Williams III",
+    60,
+    -1.755
+   ],
+   [
+    131,
+    "Kyshawn George",
+    68,
+    -1.775
+   ],
+   [
+    133,
+    "Mitchell Robinson",
+    64,
+    -1.811
+   ],
+   [
+    135,
+    "Tari Eason",
+    64,
+    -1.881
+   ],
+   [
+    136,
+    "Collin Murray-Boyles",
+    68,
+    -1.917
+   ],
+   [
+    137,
+    "Grayson Allen",
+    64,
+    -1.994
+   ],
+   [
+    138,
+    "Bobby Portis",
+    68,
+    -2.025
+   ],
+   [
+    139,
+    "Aaron Nesmith",
+    68,
+    -2.033
+   ],
+   [
+    140,
+    "Ja Morant",
+    60,
+    -2.051
+   ],
+   [
+    141,
+    "Alex Caruso",
+    62,
+    -2.058
+   ],
+   [
+    143,
+    "Paul Reed",
+    69,
+    -2.078
+   ],
+   [
+    145,
+    "Jusuf Nurkic",
+    25,
+    -2.181
+   ],
+   [
+    147,
+    "Jrue Holiday",
+    62,
+    -2.23
+   ],
+   [
+    148,
+    "Daniel Gafford",
+    66,
+    -2.257
+   ],
+   [
+    149,
+    "Wendell Carter Jr",
+    66,
+    -2.266
+   ],
+   [
+    150,
+    "Herb Jones",
+    66,
+    -2.295
+   ],
+   [
+    152,
+    "Rui Hachimura",
+    68,
+    -2.322
+   ],
+   [
+    153,
+    "Scotty Pippen Jr.",
+    65,
+    -2.322
+   ],
+   [
+    154,
+    "Aaron Gordon",
+    66,
+    -2.35
+   ],
+   [
+    157,
+    "Dillon Brooks",
+    68,
+    -2.394
+   ],
+   [
+    159,
+    "Jaime Jaquez Jr",
+    68,
+    -2.493
+   ],
+   [
+    161,
+    "Draymond Green",
+    64,
+    -2.512
+   ],
+   [
+    162,
+    "Marcus Smart",
+    60,
+    -2.559
+   ],
+   [
+    163,
+    "Darius Acuff",
+    68,
+    -2.559
+   ],
+   [
+    164,
+    "De'Anthony Melton",
+    60,
+    -2.56
+   ],
+   [
+    167,
+    "Ace Bailey",
+    68,
+    -2.608
+   ],
+   [
+    168,
+    "Quentin Grimes",
+    66,
+    -2.612
+   ],
+   [
+    169,
+    "Kris Dunn",
+    68,
+    -2.619
+   ],
+   [
+    171,
+    "Kelly Oubre",
+    68,
+    -2.636
+   ],
+   [
+    173,
+    "Nikola Vucevic",
+    68,
+    -2.653
+   ],
+   [
+    176,
+    "Collin Sexton",
+    68,
+    -2.715
+   ],
+   [
+    177,
+    "Maxime Raynaud",
+    66,
+    -2.735
+   ],
+   [
+    178,
+    "Dylan Cardwell",
+    59,
+    -2.745
+   ],
+   [
+    179,
+    "Deandre Ayton",
+    62,
+    -2.763
+   ],
+   [
+    180,
+    "Cam Spencer",
+    68,
+    -2.812
+   ],
+   [
+    185,
+    "Santi Aldama",
+    68,
+    -3.053
+   ],
+   [
+    186,
+    "Sam Merrill",
+    68,
+    -3.133
+   ],
+   [
+    187,
+    "Al Horford",
+    62,
+    -3.137
+   ],
+   [
+    188,
+    "Derrick Jones Jr",
+    68,
+    -3.166
+   ],
+   [
+    190,
+    "Taylor Hendricks",
+    66,
+    -3.177
+   ],
+   [
+    191,
+    "Bradley Beal",
+    55,
+    -3.182
+   ],
+   [
+    192,
+    "Jerami Grant",
+    54,
+    -3.186
+   ],
+   [
+    195,
+    "Hannes Steinbach",
+    68,
+    -3.251
+   ],
+   [
+    196,
+    "Jalen Smith",
+    62,
+    -3.336
+   ],
+   [
+    198,
+    "Bilal Coulibaly",
+    68,
+    -3.394
+   ],
+   [
+    199,
+    "Kevin Huerter",
+    65,
+    -3.395
+   ],
+   [
+    200,
+    "Morez Johnson Jr.",
+    50,
+    -3.411
+   ]
+  ]
+ },
+ "B_deck": {
+  "domain": [],
+  "tpm_gt_fgm": [],
+  "pts_identity": [],
+  "duplicates": [],
+  "resid_stats": {
+   "n": 200,
+   "mean": 0.0,
+   "sd": 0.06,
+   "max_abs": 0.7
+  }
+ },
+ "B_kit": {
+  "domain": [],
+  "tpm_gt_fgm": [],
+  "pts_identity": [],
+  "duplicates": [],
+  "resid_stats": {
+   "n": 200,
+   "mean": 0.001,
+   "sd": 0.06,
+   "max_abs": 0.7
+  }
+ },
+ "B_reference_identity": {
+  "hashtag": {
+   "n": 200,
+   "mean": -0.004,
+   "sd": 0.056
+  },
+  "actual_2025_26": {
+   "n": 432,
+   "mean": 0.004,
+   "sd": 0.055
+  }
+ },
+ "B_kit_per36": {
+  "league_max_per36_2025_26": {
+   "pts": 34.38,
+   "reb": 16.16,
+   "ast": 11.07,
+   "stl": 4.5,
+   "blk": 3.82,
+   "tpm": 5.13,
+   "tov": 4.53
+  },
+  "flags": [
+   [
+    "Victor Wembanyama",
+    "blk",
+    4.07,
+    3.82
+   ],
+   [
+    "Trae Young",
+    "tov",
+    4.6,
+    4.53
+   ],
+   [
+    "Stephen Curry",
+    "tpm",
+    5.24,
+    5.13
+   ],
+   [
+    "Ja Morant",
+    "tov",
+    4.8,
+    4.53
+   ],
+   [
+    "Mitchell Robinson",
+    "reb",
+    17.08,
+    16.16
+   ],
+   [
+    "Jay Huff",
+    "blk",
+    4.0,
+    3.82
+   ]
+  ]
+ },
+ "C_deck": {
+  "fg_pct": {
+   "n": 148,
+   "mean_diff_vs_outside_median": 0.0005,
+   "share_above": 0.473,
+   "net_z_vs_outside_median": 1.17,
+   "mean_z_vs_outside_median": 0.008,
+   "spearman": {
+    "Yahoo": 0.966,
+    "Hashtag": 0.977,
+    "RotoBaller": 0.982,
+    "2025-26 actual": 0.971
+   }
+  },
+  "ft_pct": {
+   "n": 148,
+   "mean_diff_vs_outside_median": -0.0001,
+   "share_above": 0.459,
+   "net_z_vs_outside_median": 0.02,
+   "mean_z_vs_outside_median": 0.0,
+   "spearman": {
+    "Yahoo": 0.994,
+    "Hashtag": 0.987,
+    "RotoBaller": 0.99,
+    "2025-26 actual": 0.979
+   }
+  },
+  "tpm": {
+   "n": 148,
+   "mean_diff_vs_outside_median": -0.0024,
+   "share_above": 0.264,
+   "net_z_vs_outside_median": -0.36,
+   "mean_z_vs_outside_median": -0.002,
+   "spearman": {
+    "Yahoo": 0.988,
+    "Hashtag": 0.992,
+    "RotoBaller": 0.989,
+    "2025-26 actual": 0.975
+   }
+  },
+  "pts": {
+   "n": 148,
+   "mean_diff_vs_outside_median": 0.0672,
+   "share_above": 0.514,
+   "net_z_vs_outside_median": 1.85,
+   "mean_z_vs_outside_median": 0.012,
+   "spearman": {
+    "Yahoo": 0.98,
+    "Hashtag": 0.984,
+    "RotoBaller": 0.968,
+    "2025-26 actual": 0.957
+   }
+  },
+  "reb": {
+   "n": 148,
+   "mean_diff_vs_outside_median": -0.0189,
+   "share_above": 0.392,
+   "net_z_vs_outside_median": -1.17,
+   "mean_z_vs_outside_median": -0.008,
+   "spearman": {
+    "Yahoo": 0.977,
+    "Hashtag": 0.985,
+    "RotoBaller": 0.989,
+    "2025-26 actual": 0.974
+   }
+  },
+  "ast": {
+   "n": 148,
+   "mean_diff_vs_outside_median": 0.0206,
+   "share_above": 0.365,
+   "net_z_vs_outside_median": 1.55,
+   "mean_z_vs_outside_median": 0.01,
+   "spearman": {
+    "Yahoo": 0.987,
+    "Hashtag": 0.987,
+    "RotoBaller": 0.988,
+    "2025-26 actual": 0.974
+   }
+  },
+  "stl": {
+   "n": 148,
+   "mean_diff_vs_outside_median": -0.0027,
+   "share_above": 0.149,
+   "net_z_vs_outside_median": -1.35,
+   "mean_z_vs_outside_median": -0.009,
+   "spearman": {
+    "Yahoo": 0.954,
+    "Hashtag": 0.968,
+    "RotoBaller": 0.957,
+    "2025-26 actual": 0.916
+   }
+  },
+  "blk": {
+   "n": 148,
+   "mean_diff_vs_outside_median": 0.0061,
+   "share_above": 0.155,
+   "net_z_vs_outside_median": 1.81,
+   "mean_z_vs_outside_median": 0.012,
+   "spearman": {
+    "Yahoo": 0.98,
+    "Hashtag": 0.982,
+    "RotoBaller": 0.973,
+    "2025-26 actual": 0.958
+   }
+  },
+  "tov": {
+   "n": 148,
+   "mean_diff_vs_outside_median": 0.0041,
+   "share_above": 0.27,
+   "net_z_vs_outside_median": -0.8,
+   "mean_z_vs_outside_median": -0.005,
+   "spearman": {
+    "Yahoo": 0.981,
+    "Hashtag": 0.982,
+    "RotoBaller": 0.982,
+    "2025-26 actual": 0.963
+   }
+  }
+ },
+ "C_kit": {
+  "fg_pct": {
+   "n": 148,
+   "mean_diff_vs_outside_median": 0.0004,
+   "share_above": 0.466,
+   "net_z_vs_outside_median": 0.9,
+   "mean_z_vs_outside_median": 0.006,
+   "spearman": {
+    "Yahoo": 0.978,
+    "Hashtag": 0.979,
+    "RotoBaller": 0.981,
+    "2025-26 actual": 0.973
+   }
+  },
+  "ft_pct": {
+   "n": 148,
+   "mean_diff_vs_outside_median": -0.0001,
+   "share_above": 0.459,
+   "net_z_vs_outside_median": -0.04,
+   "mean_z_vs_outside_median": -0.0,
+   "spearman": {
+    "Yahoo": 0.994,
+    "Hashtag": 0.987,
+    "RotoBaller": 0.989,
+    "2025-26 actual": 0.98
+   }
+  },
+  "tpm": {
+   "n": 148,
+   "mean_diff_vs_outside_median": -0.0034,
+   "share_above": 0.257,
+   "net_z_vs_outside_median": -0.52,
+   "mean_z_vs_outside_median": -0.004,
+   "spearman": {
+    "Yahoo": 0.988,
+    "Hashtag": 0.993,
+    "RotoBaller": 0.99,
+    "2025-26 actual": 0.977
+   }
+  },
+  "pts": {
+   "n": 148,
+   "mean_diff_vs_outside_median": 0.0821,
+   "share_above": 0.52,
+   "net_z_vs_outside_median": 2.23,
+   "mean_z_vs_outside_median": 0.015,
+   "spearman": {
+    "Yahoo": 0.982,
+    "Hashtag": 0.985,
+    "RotoBaller": 0.97,
+    "2025-26 actual": 0.96
+   }
+  },
+  "reb": {
+   "n": 148,
+   "mean_diff_vs_outside_median": -0.0155,
+   "share_above": 0.385,
+   "net_z_vs_outside_median": -0.97,
+   "mean_z_vs_outside_median": -0.007,
+   "spearman": {
+    "Yahoo": 0.976,
+    "Hashtag": 0.985,
+    "RotoBaller": 0.99,
+    "2025-26 actual": 0.975
+   }
+  },
+  "ast": {
+   "n": 148,
+   "mean_diff_vs_outside_median": 0.0166,
+   "share_above": 0.351,
+   "net_z_vs_outside_median": 1.26,
+   "mean_z_vs_outside_median": 0.008,
+   "spearman": {
+    "Yahoo": 0.986,
+    "Hashtag": 0.987,
+    "RotoBaller": 0.987,
+    "2025-26 actual": 0.972
+   }
+  },
+  "stl": {
+   "n": 148,
+   "mean_diff_vs_outside_median": -0.003,
+   "share_above": 0.155,
+   "net_z_vs_outside_median": -1.5,
+   "mean_z_vs_outside_median": -0.01,
+   "spearman": {
+    "Yahoo": 0.945,
+    "Hashtag": 0.968,
+    "RotoBaller": 0.956,
+    "2025-26 actual": 0.907
+   }
+  },
+  "blk": {
+   "n": 148,
+   "mean_diff_vs_outside_median": 0.0064,
+   "share_above": 0.162,
+   "net_z_vs_outside_median": 1.96,
+   "mean_z_vs_outside_median": 0.013,
+   "spearman": {
+    "Yahoo": 0.98,
+    "Hashtag": 0.982,
+    "RotoBaller": 0.974,
+    "2025-26 actual": 0.958
+   }
+  },
+  "tov": {
+   "n": 148,
+   "mean_diff_vs_outside_median": 0.0003,
+   "share_above": 0.257,
+   "net_z_vs_outside_median": -0.07,
+   "mean_z_vs_outside_median": -0.0,
+   "spearman": {
+    "Yahoo": 0.983,
+    "Hashtag": 0.982,
+    "RotoBaller": 0.983,
+    "2025-26 actual": 0.961
+   }
+  }
+ },
+ "C_benchmark_outside_vs_actual": {
+  "fg_pct": {
+   "Yahoo": 0.939,
+   "Hashtag": 0.951,
+   "RotoBaller": 0.961
+  },
+  "ft_pct": {
+   "Yahoo": 0.969,
+   "Hashtag": 0.956,
+   "RotoBaller": 0.971
+  },
+  "tpm": {
+   "Yahoo": 0.964,
+   "Hashtag": 0.963,
+   "RotoBaller": 0.969
+  },
+  "pts": {
+   "Yahoo": 0.933,
+   "Hashtag": 0.939,
+   "RotoBaller": 0.927
+  },
+  "reb": {
+   "Yahoo": 0.948,
+   "Hashtag": 0.955,
+   "RotoBaller": 0.956
+  },
+  "ast": {
+   "Yahoo": 0.957,
+   "Hashtag": 0.95,
+   "RotoBaller": 0.964
+  },
+  "stl": {
+   "Yahoo": 0.888,
+   "Hashtag": 0.895,
+   "RotoBaller": 0.893
+  },
+  "blk": {
+   "Yahoo": 0.947,
+   "Hashtag": 0.939,
+   "RotoBaller": 0.941
+  },
+  "tov": {
+   "Yahoo": 0.934,
+   "Hashtag": 0.943,
+   "RotoBaller": 0.952
+  }
+ },
+ "D_deck_sensitivity": {
+  "fg_pct": {
+   "mean_rank_move_top150": 1.75,
+   "max_rank_move": 12,
+   "biggest": [
+    {
+     "player": "Rui Hachimura",
+     "now": 148,
+     "with_outside_median": 160
+    },
+    {
+     "player": "Stephon Castle",
+     "now": 144,
+     "with_outside_median": 153
+    },
+    {
+     "player": "Bam Adebayo",
+     "now": 39,
+     "with_outside_median": 31
+    },
+    {
+     "player": "Ja Morant",
+     "now": 139,
+     "with_outside_median": 147
+    },
+    {
+     "player": "Cameron Boozer",
+     "now": 68,
+     "with_outside_median": 75
+    }
+   ]
+  },
+  "ft_pct": {
+   "mean_rank_move_top150": 1.27,
+   "max_rank_move": 7,
+   "biggest": [
+    {
+     "player": "Julius Randle",
+     "now": 123,
+     "with_outside_median": 116
+    },
+    {
+     "player": "Anthony Black",
+     "now": 150,
+     "with_outside_median": 144
+    },
+    {
+     "player": "Pascal Siakam",
+     "now": 64,
+     "with_outside_median": 69
+    },
+    {
+     "player": "Caleb Wilson",
+     "now": 74,
+     "with_outside_median": 79
+    },
+    {
+     "player": "AJ Dybantsa",
+     "now": 110,
+     "with_outside_median": 115
+    }
+   ]
+  },
+  "tpm": {
+   "mean_rank_move_top150": 1.84,
+   "max_rank_move": 11,
+   "biggest": [
+    {
+     "player": "Reed Sheppard",
+     "now": 92,
+     "with_outside_median": 103
+    },
+    {
+     "player": "Yaxel Lendeborg",
+     "now": 105,
+     "with_outside_median": 95
+    },
+    {
+     "player": "Matas Buzelis",
+     "now": 77,
+     "with_outside_median": 69
+    },
+    {
+     "player": "Ayo Dosunmu",
+     "now": 103,
+     "with_outside_median": 111
+    },
+    {
+     "player": "Sandro Mamukelashvili",
+     "now": 122,
+     "with_outside_median": 114
+    }
+   ]
+  },
+  "pts": {
+   "mean_rank_move_top150": 2.62,
+   "max_rank_move": 18,
+   "biggest": [
+    {
+     "player": "AJ Dybantsa",
+     "now": 110,
+     "with_outside_median": 128
+    },
+    {
+     "player": "Darryn Peterson",
+     "now": 111,
+     "with_outside_median": 123
+    },
+    {
+     "player": "Kyshawn George",
+     "now": 126,
+     "with_outside_median": 138
+    },
+    {
+     "player": "Ayo Dosunmu",
+     "now": 103,
+     "with_outside_median": 113
+    },
+    {
+     "player": "Collin Murray-Boyles",
+     "now": 132,
+     "with_outside_median": 122
+    }
+   ]
+  },
+  "reb": {
+   "mean_rank_move_top150": 2.24,
+   "max_rank_move": 15,
+   "biggest": [
+    {
+     "player": "Mitchell Robinson",
+     "now": 128,
+     "with_outside_median": 143
+    },
+    {
+     "player": "Day'Ron Sharpe",
+     "now": 116,
+     "with_outside_median": 102
+    },
+    {
+     "player": "Rui Hachimura",
+     "now": 148,
+     "with_outside_median": 135
+    },
+    {
+     "player": "Domantas Sabonis",
+     "now": 31,
+     "with_outside_median": 40
+    },
+    {
+     "player": "Tobias Harris",
+     "now": 113,
+     "with_outside_median": 122
+    }
+   ]
+  },
+  "ast": {
+   "mean_rank_move_top150": 1.9,
+   "max_rank_move": 15,
+   "biggest": [
+    {
+     "player": "Stephon Castle",
+     "now": 144,
+     "with_outside_median": 159
+    },
+    {
+     "player": "Tre Jones",
+     "now": 127,
+     "with_outside_median": 117
+    },
+    {
+     "player": "Domantas Sabonis",
+     "now": 31,
+     "with_outside_median": 40
+    },
+    {
+     "player": "Reed Sheppard",
+     "now": 92,
+     "with_outside_median": 99
+    },
+    {
+     "player": "Collin Murray-Boyles",
+     "now": 132,
+     "with_outside_median": 125
+    }
+   ]
+  },
+  "stl": {
+   "mean_rank_move_top150": 4.01,
+   "max_rank_move": 28,
+   "biggest": [
+    {
+     "player": "Scotty Pippen Jr.",
+     "now": 145,
+     "with_outside_median": 173
+    },
+    {
+     "player": "Tobias Harris",
+     "now": 113,
+     "with_outside_median": 133
+    },
+    {
+     "player": "Andrew Nembhard",
+     "now": 141,
+     "with_outside_median": 160
+    },
+    {
+     "player": "Ajay Mitchell",
+     "now": 112,
+     "with_outside_median": 94
+    },
+    {
+     "player": "Darryn Peterson",
+     "now": 111,
+     "with_outside_median": 128
+    }
+   ]
+  },
+  "blk": {
+   "mean_rank_move_top150": 2.45,
+   "max_rank_move": 19,
+   "biggest": [
+    {
+     "player": "Daniel Gafford",
+     "now": 147,
+     "with_outside_median": 166
+    },
+    {
+     "player": "Cameron Boozer",
+     "now": 68,
+     "with_outside_median": 83
+    },
+    {
+     "player": "AJ Dybantsa",
+     "now": 110,
+     "with_outside_median": 124
+    },
+    {
+     "player": "Alex Sarr",
+     "now": 89,
+     "with_outside_median": 102
+    },
+    {
+     "player": "CJ McCollum",
+     "now": 118,
+     "with_outside_median": 129
+    }
+   ]
+  },
+  "tov": {
+   "mean_rank_move_top150": 2.65,
+   "max_rank_move": 17,
+   "biggest": [
+    {
+     "player": "Ja Morant",
+     "now": 139,
+     "with_outside_median": 156
+    },
+    {
+     "player": "Ajay Mitchell",
+     "now": 112,
+     "with_outside_median": 127
+    },
+    {
+     "player": "Egor Demin",
+     "now": 137,
+     "with_outside_median": 152
+    },
+    {
+     "player": "Day'Ron Sharpe",
+     "now": 116,
+     "with_outside_median": 130
+    },
+    {
+     "player": "Kyshawn George",
+     "now": 126,
+     "with_outside_median": 112
+    }
+   ]
+  }
+ },
+ "F_deck_largest_departures": {
+  "fg_pct": [
+   {
+    "player": "Rui Hachimura",
+    "deck_rank": 148,
+    "ours": 0.501,
+    "outside_median": 0.485,
+    "actual_2025_26": 0.514,
+    "z_beyond_median": 0.284
+   },
+   {
+    "player": "Onyeka Okongwu",
+    "deck_rank": 40,
+    "ours": 0.496,
+    "outside_median": 0.481,
+    "actual_2025_26": 0.48,
+    "z_beyond_median": 0.276
+   },
+   {
+    "player": "Keyonte George",
+    "deck_rank": 85,
+    "ours": 0.441,
+    "outside_median": 0.431,
+    "actual_2025_26": 0.456,
+    "z_beyond_median": 0.234
+   },
+   {
+    "player": "Ja Morant",
+    "deck_rank": 139,
+    "ours": 0.446,
+    "outside_median": 0.437,
+    "actual_2025_26": null,
+    "z_beyond_median": 0.223
+   },
+   {
+    "player": "Cameron Boozer",
+    "deck_rank": 68,
+    "ours": 0.495,
+    "outside_median": 0.486,
+    "actual_2025_26": null,
+    "z_beyond_median": 0.196
+   },
+   {
+    "player": "Yaxel Lendeborg",
+    "deck_rank": 105,
+    "ours": 0.478,
+    "outside_median": 0.466,
+    "actual_2025_26": null,
+    "z_beyond_median": 0.178
+   },
+   {
+    "player": "Alex Sarr",
+    "deck_rank": 89,
+    "ours": 0.46,
+    "outside_median": 0.468,
+    "actual_2025_26": 0.482,
+    "z_beyond_median": -0.174
+   },
+   {
+    "player": "Reed Sheppard",
+    "deck_rank": 92,
+    "ours": 0.425,
+    "outside_median": 0.415,
+    "actual_2025_26": 0.43,
+    "z_beyond_median": 0.168
+   }
+  ],
+  "ft_pct": [
+   {
+    "player": "Anthony Davis",
+    "deck_rank": 15,
+    "ours": 0.779,
+    "outside_median": 0.768,
+    "actual_2025_26": null,
+    "z_beyond_median": 0.22
+   },
+   {
+    "player": "Caleb Wilson",
+    "deck_rank": 74,
+    "ours": 0.735,
+    "outside_median": 0.72,
+    "actual_2025_26": null,
+    "z_beyond_median": 0.185
+   },
+   {
+    "player": "Giannis Antetokounmpo",
+    "deck_rank": 37,
+    "ours": 0.643,
+    "outside_median": 0.638,
+    "actual_2025_26": 0.65,
+    "z_beyond_median": 0.179
+   },
+   {
+    "player": "Yaxel Lendeborg",
+    "deck_rank": 105,
+    "ours": 0.786,
+    "outside_median": 0.808,
+    "actual_2025_26": null,
+    "z_beyond_median": -0.174
+   },
+   {
+    "player": "Anthony Edwards",
+    "deck_rank": 10,
+    "ours": 0.811,
+    "outside_median": 0.818,
+    "actual_2025_26": 0.796,
+    "z_beyond_median": -0.16
+   },
+   {
+    "player": "Cameron Boozer",
+    "deck_rank": 68,
+    "ours": 0.773,
+    "outside_median": 0.784,
+    "actual_2025_26": null,
+    "z_beyond_median": -0.16
+   },
+   {
+    "player": "AJ Dybantsa",
+    "deck_rank": 110,
+    "ours": 0.787,
+    "outside_median": 0.776,
+    "actual_2025_26": null,
+    "z_beyond_median": 0.143
+   },
+   {
+    "player": "Kyshawn George",
+    "deck_rank": 126,
+    "ours": 0.802,
+    "outside_median": 0.785,
+    "actual_2025_26": 0.802,
+    "z_beyond_median": 0.14
+   }
+  ],
+  "tpm": [
+   {
+    "player": "Yaxel Lendeborg",
+    "deck_rank": 105,
+    "ours": 1.0,
+    "outside_median": 1.3,
+    "actual_2025_26": null,
+    "z_beyond_median": -0.312
+   },
+   {
+    "player": "Kyrie Irving",
+    "deck_rank": 19,
+    "ours": 2.6,
+    "outside_median": 2.4,
+    "actual_2025_26": null,
+    "z_beyond_median": 0.208
+   },
+   {
+    "player": "Walker Kessler",
+    "deck_rank": 26,
+    "ours": 0.3,
+    "outside_median": 0.5,
+    "actual_2025_26": null,
+    "z_beyond_median": -0.208
+   },
+   {
+    "player": "Bam Adebayo",
+    "deck_rank": 39,
+    "ours": 1.6,
+    "outside_median": 1.4,
+    "actual_2025_26": 1.7,
+    "z_beyond_median": 0.208
+   },
+   {
+    "player": "Ty Jerome",
+    "deck_rank": 44,
+    "ours": 2.4,
+    "outside_median": 2.2,
+    "actual_2025_26": null,
+    "z_beyond_median": 0.208
+   },
+   {
+    "player": "Damian Lillard",
+    "deck_rank": 46,
+    "ours": 2.8,
+    "outside_median": 3.0,
+    "actual_2025_26": null,
+    "z_beyond_median": -0.208
+   },
+   {
+    "player": "Cameron Boozer",
+    "deck_rank": 68,
+    "ours": 1.1,
+    "outside_median": 1.3,
+    "actual_2025_26": null,
+    "z_beyond_median": -0.208
+   },
+   {
+    "player": "Matas Buzelis",
+    "deck_rank": 77,
+    "ours": 2.3,
+    "outside_median": 2.5,
+    "actual_2025_26": 2.2,
+    "z_beyond_median": -0.208
+   }
+  ],
+  "pts": [
+   {
+    "player": "AJ Dybantsa",
+    "deck_rank": 110,
+    "ours": 17.8,
+    "outside_median": 15.45,
+    "actual_2025_26": null,
+    "z_beyond_median": 0.437
+   },
+   {
+    "player": "Darryn Peterson",
+    "deck_rank": 111,
+    "ours": 16.9,
+    "outside_median": 15.1,
+    "actual_2025_26": null,
+    "z_beyond_median": 0.334
+   },
+   {
+    "player": "Walker Kessler",
+    "deck_rank": 26,
+    "ours": 12.3,
+    "outside_median": 14.0,
+    "actual_2025_26": null,
+    "z_beyond_median": -0.316
+   },
+   {
+    "player": "Kyshawn George",
+    "deck_rank": 126,
+    "ours": 14.2,
+    "outside_median": 12.5,
+    "actual_2025_26": 14.8,
+    "z_beyond_median": 0.316
+   },
+   {
+    "player": "Joel Embiid",
+    "deck_rank": 42,
+    "ours": 24.6,
+    "outside_median": 23.0,
+    "actual_2025_26": 26.9,
+    "z_beyond_median": 0.297
+   },
+   {
+    "player": "Michael Porter Jr.",
+    "deck_rank": 47,
+    "ours": 21.6,
+    "outside_median": 20.1,
+    "actual_2025_26": 24.2,
+    "z_beyond_median": 0.279
+   },
+   {
+    "player": "Ayo Dosunmu",
+    "deck_rank": 103,
+    "ours": 14.2,
+    "outside_median": 12.7,
+    "actual_2025_26": 14.8,
+    "z_beyond_median": 0.279
+   },
+   {
+    "player": "Ajay Mitchell",
+    "deck_rank": 112,
+    "ours": 13.0,
+    "outside_median": 14.5,
+    "actual_2025_26": 13.6,
+    "z_beyond_median": -0.279
+   }
+  ],
+  "reb": [
+   {
+    "player": "Day'Ron Sharpe",
+    "deck_rank": 116,
+    "ours": 8.3,
+    "outside_median": 9.4,
+    "actual_2025_26": 6.7,
+    "z_beyond_median": -0.459
+   },
+   {
+    "player": "Mitchell Robinson",
+    "deck_rank": 128,
+    "ours": 9.3,
+    "outside_median": 8.3,
+    "actual_2025_26": 8.8,
+    "z_beyond_median": 0.417
+   },
+   {
+    "player": "Domantas Sabonis",
+    "deck_rank": 31,
+    "ours": 13.1,
+    "outside_median": 12.4,
+    "actual_2025_26": null,
+    "z_beyond_median": 0.292
+   },
+   {
+    "player": "Damian Lillard",
+    "deck_rank": 46,
+    "ours": 4.2,
+    "outside_median": 3.5,
+    "actual_2025_26": null,
+    "z_beyond_median": 0.292
+   },
+   {
+    "player": "Matas Buzelis",
+    "deck_rank": 77,
+    "ours": 6.1,
+    "outside_median": 6.7,
+    "actual_2025_26": 5.8,
+    "z_beyond_median": -0.25
+   },
+   {
+    "player": "Collin Murray-Boyles",
+    "deck_rank": 132,
+    "ours": 5.6,
+    "outside_median": 6.2,
+    "actual_2025_26": 5.0,
+    "z_beyond_median": -0.25
+   },
+   {
+    "player": "Paul Reed",
+    "deck_rank": 138,
+    "ours": 5.0,
+    "outside_median": 5.6,
+    "actual_2025_26": 4.5,
+    "z_beyond_median": -0.25
+   },
+   {
+    "player": "Rui Hachimura",
+    "deck_rank": 148,
+    "ours": 4.4,
+    "outside_median": 5.0,
+    "actual_2025_26": 3.3,
+    "z_beyond_median": -0.25
+   }
+  ],
+  "ast": [
+   {
+    "player": "Domantas Sabonis",
+    "deck_rank": 31,
+    "ours": 5.8,
+    "outside_median": 5.2,
+    "actual_2025_26": null,
+    "z_beyond_median": 0.305
+   },
+   {
+    "player": "Damian Lillard",
+    "deck_rank": 46,
+    "ours": 5.6,
+    "outside_median": 5.0,
+    "actual_2025_26": null,
+    "z_beyond_median": 0.305
+   },
+   {
+    "player": "Ajay Mitchell",
+    "deck_rank": 112,
+    "ours": 3.4,
+    "outside_median": 4.0,
+    "actual_2025_26": 3.6,
+    "z_beyond_median": -0.305
+   },
+   {
+    "player": "Stephon Castle",
+    "deck_rank": 144,
+    "ours": 6.9,
+    "outside_median": 6.3,
+    "actual_2025_26": 7.4,
+    "z_beyond_median": 0.305
+   },
+   {
+    "player": "Jalen Johnson",
+    "deck_rank": 11,
+    "ours": 7.4,
+    "outside_median": 6.9,
+    "actual_2025_26": 7.9,
+    "z_beyond_median": 0.254
+   },
+   {
+    "player": "Amen Thompson",
+    "deck_rank": 25,
+    "ours": 4.7,
+    "outside_median": 4.2,
+    "actual_2025_26": 5.3,
+    "z_beyond_median": 0.254
+   },
+   {
+    "player": "Deni Avdija",
+    "deck_rank": 91,
+    "ours": 5.5,
+    "outside_median": 5.0,
+    "actual_2025_26": 6.7,
+    "z_beyond_median": 0.254
+   },
+   {
+    "player": "Dyson Daniels",
+    "deck_rank": 33,
+    "ours": 5.3,
+    "outside_median": 4.9,
+    "actual_2025_26": 5.9,
+    "z_beyond_median": 0.203
+   }
+  ],
+  "stl": [
+   {
+    "player": "Ajay Mitchell",
+    "deck_rank": 112,
+    "ours": 1.2,
+    "outside_median": 1.4,
+    "actual_2025_26": 1.2,
+    "z_beyond_median": -0.674
+   },
+   {
+    "player": "Day'Ron Sharpe",
+    "deck_rank": 116,
+    "ours": 1.2,
+    "outside_median": 1.4,
+    "actual_2025_26": 1.1,
+    "z_beyond_median": -0.674
+   },
+   {
+    "player": "Scotty Pippen Jr.",
+    "deck_rank": 145,
+    "ours": 1.5,
+    "outside_median": 1.3,
+    "actual_2025_26": null,
+    "z_beyond_median": 0.674
+   },
+   {
+    "player": "Victor Wembanyama",
+    "deck_rank": 2,
+    "ours": 1.1,
+    "outside_median": 1.0,
+    "actual_2025_26": 1.0,
+    "z_beyond_median": 0.337
+   },
+   {
+    "player": "Jamal Murray",
+    "deck_rank": 9,
+    "ours": 1.1,
+    "outside_median": 1.0,
+    "actual_2025_26": 0.9,
+    "z_beyond_median": 0.337
+   },
+   {
+    "player": "Stephen Curry",
+    "deck_rank": 13,
+    "ours": 1.1,
+    "outside_median": 1.0,
+    "actual_2025_26": 1.1,
+    "z_beyond_median": 0.337
+   },
+   {
+    "player": "Kyrie Irving",
+    "deck_rank": 19,
+    "ours": 1.2,
+    "outside_median": 1.1,
+    "actual_2025_26": null,
+    "z_beyond_median": 0.337
+   },
+   {
+    "player": "Cooper Flagg",
+    "deck_rank": 24,
+    "ours": 1.2,
+    "outside_median": 1.3,
+    "actual_2025_26": 1.2,
+    "z_beyond_median": -0.337
+   }
+  ],
+  "blk": [
+   {
+    "player": "Alex Sarr",
+    "deck_rank": 89,
+    "ours": 1.7,
+    "outside_median": 1.45,
+    "actual_2025_26": 2.0,
+    "z_beyond_median": 0.504
+   },
+   {
+    "player": "Walker Kessler",
+    "deck_rank": 26,
+    "ours": 2.4,
+    "outside_median": 2.2,
+    "actual_2025_26": null,
+    "z_beyond_median": 0.403
+   },
+   {
+    "player": "Kel'el Ware",
+    "deck_rank": 57,
+    "ours": 1.2,
+    "outside_median": 1.4,
+    "actual_2025_26": 1.1,
+    "z_beyond_median": -0.403
+   },
+   {
+    "player": "Cameron Boozer",
+    "deck_rank": 68,
+    "ours": 0.8,
+    "outside_median": 0.6,
+    "actual_2025_26": null,
+    "z_beyond_median": 0.403
+   },
+   {
+    "player": "Daniel Gafford",
+    "deck_rank": 147,
+    "ours": 1.4,
+    "outside_median": 1.2,
+    "actual_2025_26": 1.3,
+    "z_beyond_median": 0.403
+   },
+   {
+    "player": "AJ Dybantsa",
+    "deck_rank": 110,
+    "ours": 0.6,
+    "outside_median": 0.45,
+    "actual_2025_26": null,
+    "z_beyond_median": 0.302
+   },
+   {
+    "player": "Nic Claxton",
+    "deck_rank": 121,
+    "ours": 1.3,
+    "outside_median": 1.45,
+    "actual_2025_26": 1.1,
+    "z_beyond_median": -0.302
+   },
+   {
+    "player": "Victor Wembanyama",
+    "deck_rank": 2,
+    "ours": 3.3,
+    "outside_median": 3.2,
+    "actual_2025_26": 3.1,
+    "z_beyond_median": 0.202
+   }
+  ],
+  "tov": [
+   {
+    "player": "Deni Avdija",
+    "deck_rank": 91,
+    "ours": 3.4,
+    "outside_median": 3.1,
+    "actual_2025_26": 3.8,
+    "z_beyond_median": -0.399
+   },
+   {
+    "player": "Michael Porter Jr.",
+    "deck_rank": 47,
+    "ours": 2.1,
+    "outside_median": 1.9,
+    "actual_2025_26": 2.3,
+    "z_beyond_median": -0.266
+   },
+   {
+    "player": "Zach Edey",
+    "deck_rank": 54,
+    "ours": 2.0,
+    "outside_median": 1.8,
+    "actual_2025_26": null,
+    "z_beyond_median": -0.266
+   },
+   {
+    "player": "Dejounte Murray",
+    "deck_rank": 69,
+    "ours": 3.1,
+    "outside_median": 3.3,
+    "actual_2025_26": null,
+    "z_beyond_median": 0.266
+   },
+   {
+    "player": "Ajay Mitchell",
+    "deck_rank": 112,
+    "ours": 1.4,
+    "outside_median": 1.6,
+    "actual_2025_26": 1.4,
+    "z_beyond_median": 0.266
+   },
+   {
+    "player": "Day'Ron Sharpe",
+    "deck_rank": 116,
+    "ours": 1.9,
+    "outside_median": 2.1,
+    "actual_2025_26": 1.7,
+    "z_beyond_median": 0.266
+   },
+   {
+    "player": "Kyshawn George",
+    "deck_rank": 126,
+    "ours": 2.4,
+    "outside_median": 2.2,
+    "actual_2025_26": 2.6,
+    "z_beyond_median": -0.266
+   },
+   {
+    "player": "Egor Demin",
+    "deck_rank": 137,
+    "ours": 1.9,
+    "outside_median": 2.1,
+    "actual_2025_26": 1.7,
+    "z_beyond_median": 0.266
+   }
+  ]
+ },
+ "A5_kit_exclusion_class_counterfactual": {
+  "gp25_rows_on_the_top200_now": [
+   [
+    55,
+    "Jimmy Butler",
+    20
+   ],
+   [
+    90,
+    "Donte DiVincenzo",
+    15
+   ],
+   [
+    108,
+    "Mark Williams",
+    15
+   ],
+   [
+    114,
+    "Dereck Lively",
+    25
+   ],
+   [
+    145,
+    "Jusuf Nurkic",
+    25
+   ]
+  ],
+  "top200_rows_moving": 151,
+  "mean_move": 2.57,
+  "max_move": 8
+ },
+ "E_cross_plane": {
+  "fg_pct": {
+   "n": 309,
+   "mean_deck_minus_kit": 0.0,
+   "spearman": 1.0,
+   "differ_beyond_tol": 0
+  },
+  "ft_pct": {
+   "n": 309,
+   "mean_deck_minus_kit": 0.0,
+   "spearman": 1.0,
+   "differ_beyond_tol": 0
+  },
+  "tpm": {
+   "n": 309,
+   "mean_deck_minus_kit": 0.0,
+   "spearman": 1.0,
+   "differ_beyond_tol": 0
+  },
+  "pts": {
+   "n": 309,
+   "mean_deck_minus_kit": 0.0,
+   "spearman": 1.0,
+   "differ_beyond_tol": 0
+  },
+  "reb": {
+   "n": 309,
+   "mean_deck_minus_kit": 0.0,
+   "spearman": 1.0,
+   "differ_beyond_tol": 0
+  },
+  "ast": {
+   "n": 309,
+   "mean_deck_minus_kit": 0.0,
+   "spearman": 1.0,
+   "differ_beyond_tol": 0
+  },
+  "stl": {
+   "n": 309,
+   "mean_deck_minus_kit": 0.0,
+   "spearman": 1.0,
+   "differ_beyond_tol": 0
+  },
+  "blk": {
+   "n": 309,
+   "mean_deck_minus_kit": 0.0,
+   "spearman": 1.0,
+   "differ_beyond_tol": 0
+  },
+  "tov": {
+   "n": 309,
+   "mean_deck_minus_kit": 0.0,
+   "spearman": 1.0,
+   "differ_beyond_tol": 0
+  }
+ }
+}

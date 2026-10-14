@@ -1,0 +1,41 @@
+A deck: fixed point 3 iterations, stable True | max |z diff| per cat: {'fg_pct': '0.0e+00', 'ft_pct': '0.0e+00', 'tpm': '0.0e+00', 'pts': '0.0e+00', 'reb': '0.0e+00', 'ast': '0.0e+00', 'stl': '0.0e+00', 'blk': '0.0e+00', 'tov': '0.0e+00'} | order identical (all rows): True
+A kit: max |z diff| vs the engine (unrounded) per cat: {'fg_pct': '0.0e+00', 'ft_pct': '0.0e+00', 'tpm': '0.0e+00', 'pts': '0.0e+00', 'reb': '0.0e+00', 'ast': '0.0e+00', 'stl': '0.0e+00', 'blk': '0.0e+00', 'tov': '0.0e+00'} | max |zPG diff| vs board 0.1348 | max |zAdj diff| 0.1053 | top-200 order identical: False | pass-3 top-200 mean/max move 0.16 3 | GP<=25 rows inside the 180 pool: 5
+A direction (Spearman raw vs z): {'tpm': 1.0, 'pts': 1.0, 'reb': 1.0, 'ast': 1.0, 'stl': 1.0, 'blk': 1.0, 'tov': -1.0, 'fg_pct': 1.0, 'ft_pct': 1.0}
+A4 deck: pool-mean total 0.0 | last positive live rank 67 | risk rows in top 200: discounted 13 not discounted 16 | replacement-haircut counterfactual moves 94 max 19
+A4 kit: last positive rank 81 | GP<70 rows in top 200 with no discount: 74
+B_deck domain 0 | 3PM>FGM 0 | dupes 0 | pts identity flags (top 200) 0 | resid {'n': 200, 'mean': 0.0, 'sd': 0.06, 'max_abs': 0.7}
+B_kit domain 0 | 3PM>FGM 0 | dupes 0 | pts identity flags (top 200) 0 | resid {'n': 200, 'mean': 0.001, 'sd': 0.06, 'max_abs': 0.7}
+B reference identity residuals: {'hashtag': {'n': 200, 'mean': -0.004, 'sd': 0.056}, 'actual_2025_26': {'n': 432, 'mean': 0.004, 'sd': 0.055}}
+B kit per-36 flags: 6
+C_deck
+  fg_pct  n=148 mean diff +0.0005 above 0.47 net z +1.17 | rho {'Yahoo': 0.966, 'Hashtag': 0.977, 'RotoBaller': 0.982, '2025-26 actual': 0.971} | bench {'Yahoo': 0.939, 'Hashtag': 0.951, 'RotoBaller': 0.961}
+  ft_pct  n=148 mean diff -0.0001 above 0.46 net z +0.02 | rho {'Yahoo': 0.994, 'Hashtag': 0.987, 'RotoBaller': 0.99, '2025-26 actual': 0.979} | bench {'Yahoo': 0.969, 'Hashtag': 0.956, 'RotoBaller': 0.971}
+  tpm     n=148 mean diff -0.0024 above 0.26 net z -0.36 | rho {'Yahoo': 0.988, 'Hashtag': 0.992, 'RotoBaller': 0.989, '2025-26 actual': 0.975} | bench {'Yahoo': 0.964, 'Hashtag': 0.963, 'RotoBaller': 0.969}
+  pts     n=148 mean diff +0.0672 above 0.51 net z +1.85 | rho {'Yahoo': 0.98, 'Hashtag': 0.984, 'RotoBaller': 0.968, '2025-26 actual': 0.957} | bench {'Yahoo': 0.933, 'Hashtag': 0.939, 'RotoBaller': 0.927}
+  reb     n=148 mean diff -0.0189 above 0.39 net z -1.17 | rho {'Yahoo': 0.977, 'Hashtag': 0.985, 'RotoBaller': 0.989, '2025-26 actual': 0.974} | bench {'Yahoo': 0.948, 'Hashtag': 0.955, 'RotoBaller': 0.956}
+  ast     n=148 mean diff +0.0206 above 0.36 net z +1.55 | rho {'Yahoo': 0.987, 'Hashtag': 0.987, 'RotoBaller': 0.988, '2025-26 actual': 0.974} | bench {'Yahoo': 0.957, 'Hashtag': 0.95, 'RotoBaller': 0.964}
+  stl     n=148 mean diff -0.0027 above 0.15 net z -1.35 | rho {'Yahoo': 0.954, 'Hashtag': 0.968, 'RotoBaller': 0.957, '2025-26 actual': 0.916} | bench {'Yahoo': 0.888, 'Hashtag': 0.895, 'RotoBaller': 0.893}
+  blk     n=148 mean diff +0.0061 above 0.15 net z +1.81 | rho {'Yahoo': 0.98, 'Hashtag': 0.982, 'RotoBaller': 0.973, '2025-26 actual': 0.958} | bench {'Yahoo': 0.947, 'Hashtag': 0.939, 'RotoBaller': 0.941}
+  tov     n=148 mean diff +0.0041 above 0.27 net z -0.80 | rho {'Yahoo': 0.981, 'Hashtag': 0.982, 'RotoBaller': 0.982, '2025-26 actual': 0.963} | bench {'Yahoo': 0.934, 'Hashtag': 0.943, 'RotoBaller': 0.952}
+C_kit
+  fg_pct  n=148 mean diff +0.0004 above 0.47 net z +0.90 | rho {'Yahoo': 0.978, 'Hashtag': 0.979, 'RotoBaller': 0.981, '2025-26 actual': 0.973} | bench 
+  ft_pct  n=148 mean diff -0.0001 above 0.46 net z -0.04 | rho {'Yahoo': 0.994, 'Hashtag': 0.987, 'RotoBaller': 0.989, '2025-26 actual': 0.98} | bench 
+  tpm     n=148 mean diff -0.0034 above 0.26 net z -0.52 | rho {'Yahoo': 0.988, 'Hashtag': 0.993, 'RotoBaller': 0.99, '2025-26 actual': 0.977} | bench 
+  pts     n=148 mean diff +0.0821 above 0.52 net z +2.23 | rho {'Yahoo': 0.982, 'Hashtag': 0.985, 'RotoBaller': 0.97, '2025-26 actual': 0.96} | bench 
+  reb     n=148 mean diff -0.0155 above 0.39 net z -0.97 | rho {'Yahoo': 0.976, 'Hashtag': 0.985, 'RotoBaller': 0.99, '2025-26 actual': 0.975} | bench 
+  ast     n=148 mean diff +0.0166 above 0.35 net z +1.26 | rho {'Yahoo': 0.986, 'Hashtag': 0.987, 'RotoBaller': 0.987, '2025-26 actual': 0.972} | bench 
+  stl     n=148 mean diff -0.0030 above 0.15 net z -1.50 | rho {'Yahoo': 0.945, 'Hashtag': 0.968, 'RotoBaller': 0.956, '2025-26 actual': 0.907} | bench 
+  blk     n=148 mean diff +0.0064 above 0.16 net z +1.96 | rho {'Yahoo': 0.98, 'Hashtag': 0.982, 'RotoBaller': 0.974, '2025-26 actual': 0.958} | bench 
+  tov     n=148 mean diff +0.0003 above 0.26 net z -0.07 | rho {'Yahoo': 0.983, 'Hashtag': 0.982, 'RotoBaller': 0.983, '2025-26 actual': 0.961} | bench 
+A5 kit exclusion-class counterfactual: {'gp25_rows_on_the_top200_now': [(55, 'Jimmy Butler', 20), (90, 'Donte DiVincenzo', 15), (108, 'Mark Williams', 15), (114, 'Dereck Lively', 25), (145, 'Jusuf Nurkic', 25)], 'top200_rows_moving': 151, 'mean_move': 2.57, 'max_move': 8}
+F fg_pct [('Rui Hachimura', 0.501, 0.485, 0.514, 0.284), ('Onyeka Okongwu', 0.496, 0.481, 0.48, 0.276), ('Keyonte George', 0.441, 0.431, 0.456, 0.234), ('Ja Morant', 0.446, 0.437, None, 0.223), ('Cameron Boozer', 0.495, 0.486, None, 0.196)]
+F ft_pct [('Anthony Davis', 0.779, 0.768, None, 0.22), ('Caleb Wilson', 0.735, 0.72, None, 0.185), ('Giannis Antetokounmpo', 0.643, 0.638, 0.65, 0.179), ('Yaxel Lendeborg', 0.786, 0.808, None, -0.174), ('Anthony Edwards', 0.811, 0.818, 0.796, -0.16)]
+F tpm [('Yaxel Lendeborg', 1.0, 1.3, None, -0.312), ('Kyrie Irving', 2.6, 2.4, None, 0.208), ('Walker Kessler', 0.3, 0.5, None, -0.208), ('Bam Adebayo', 1.6, 1.4, 1.7, 0.208), ('Ty Jerome', 2.4, 2.2, None, 0.208)]
+F pts [('AJ Dybantsa', 17.8, 15.45, None, 0.437), ('Darryn Peterson', 16.9, 15.1, None, 0.334), ('Walker Kessler', 12.3, 14.0, None, -0.316), ('Kyshawn George', 14.2, 12.5, 14.8, 0.316), ('Joel Embiid', 24.6, 23.0, 26.9, 0.297)]
+F reb [("Day'Ron Sharpe", 8.3, 9.4, 6.7, -0.459), ('Mitchell Robinson', 9.3, 8.3, 8.8, 0.417), ('Domantas Sabonis', 13.1, 12.4, None, 0.292), ('Damian Lillard', 4.2, 3.5, None, 0.292), ('Matas Buzelis', 6.1, 6.7, 5.8, -0.25)]
+F ast [('Domantas Sabonis', 5.8, 5.2, None, 0.305), ('Damian Lillard', 5.6, 5.0, None, 0.305), ('Ajay Mitchell', 3.4, 4.0, 3.6, -0.305), ('Stephon Castle', 6.9, 6.3, 7.4, 0.305), ('Jalen Johnson', 7.4, 6.9, 7.9, 0.254)]
+F stl [('Ajay Mitchell', 1.2, 1.4, 1.2, -0.674), ("Day'Ron Sharpe", 1.2, 1.4, 1.1, -0.674), ('Scotty Pippen Jr.', 1.5, 1.3, None, 0.674), ('Victor Wembanyama', 1.1, 1.0, 1.0, 0.337), ('Jamal Murray', 1.1, 1.0, 0.9, 0.337)]
+F blk [('Alex Sarr', 1.7, 1.45, 2.0, 0.504), ('Walker Kessler', 2.4, 2.2, None, 0.403), ("Kel'el Ware", 1.2, 1.4, 1.1, -0.403), ('Cameron Boozer', 0.8, 0.6, None, 0.403), ('Daniel Gafford', 1.4, 1.2, 1.3, 0.403)]
+F tov [('Deni Avdija', 3.4, 3.1, 3.8, -0.399), ('Michael Porter Jr.', 2.1, 1.9, 2.3, -0.266), ('Zach Edey', 2.0, 1.8, None, -0.266), ('Dejounte Murray', 3.1, 3.3, None, 0.266), ('Ajay Mitchell', 1.4, 1.6, 1.4, 0.266)]
+D sensitivity: {'fg_pct': (1.75, 12), 'ft_pct': (1.27, 7), 'tpm': (1.84, 11), 'pts': (2.62, 18), 'reb': (2.24, 15), 'ast': (1.9, 15), 'stl': (4.01, 28), 'blk': (2.45, 19), 'tov': (2.65, 17)}
+E cross-plane: {'fg_pct': (0.0, 1.0, 0), 'ft_pct': (0.0, 1.0, 0), 'tpm': (0.0, 1.0, 0), 'pts': (0.0, 1.0, 0), 'reb': (0.0, 1.0, 0), 'ast': (0.0, 1.0, 0), 'stl': (0.0, 1.0, 0), 'blk': (0.0, 1.0, 0), 'tov': (0.0, 1.0, 0)}

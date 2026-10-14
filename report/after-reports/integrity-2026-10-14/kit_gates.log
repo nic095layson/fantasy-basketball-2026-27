@@ -1,0 +1,15 @@
+== check_provenance 19:08:52
+PROVENANCE GATE: FAIL (1 problem(s))
+ - STALE: oldest verification is 93 days old (limit 14); 318 row(s) over the limit, e.g. AJ Dybantsa, AJ Green, Aaron Gordon, Aaron Nesmith, Aaron Wiggins
+exit 1
+== test_rank_engine
+Ran 4 tests in 0.001s
+
+OK
+exit 0
+== check_derived 19:08:52
+PASS  2026-10-13 FantasyPros rest-of-season projections (owner upload; full line with games and minutes, no value rank) (pin d08ac74; 3 files identical)
+PASS  2026-10-13 player-card projections (owner paste, transcribed; full line with games and minutes, no value rank) (pin d08ac74; 3 files identical)
+DERIVED: all 29 dated artifacts reproduce byte-for-byte from their pinned inputs
+exit 0
+== done 19:08:56

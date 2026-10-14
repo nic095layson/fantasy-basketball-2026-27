@@ -1,0 +1,25 @@
+== page e68a85a5305f
+== parity 19:08:51
+survival probs compared : 12 (bit-identical)
+clock reads compared    : 12 (field-identical)
+card orderings compared : 481 owner turns across 37 committed states
+market ranks compared   : 318 (priced 294)
+
+PARITY: EXACT MATCH
+exit 0
+== test_card 19:37:00
+  ok    MILD the page legend names the 0.85 tier
+
+CARD: all 103 cases passed
+exit 0
+== test_draft 19:37:12
+  ok    turn card at 155 picks: 94ms (process incl. interpreter start)
+
+all 65 cases passed
+exit 0
+== test_gates 19:37:24
+  ok    PI --check-report: a report without the section FAILS
+
+all 54 cases passed
+exit 0
+== done 20:02:14
