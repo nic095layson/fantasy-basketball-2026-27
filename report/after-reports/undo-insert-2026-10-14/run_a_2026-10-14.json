@@ -1,0 +1,537 @@
+{
+ "page": "/tmp/claude-0/-home-user-fantasy-basketball-2026-27/3cdbbd9b-02dd-585e-8d00-b8a370128fae/scratchpad/undo/page_v68.html",
+ "at": "2026-10-14T16:34:32.082Z",
+ "assertions": 99,
+ "failed": 4,
+ "pageErrors": [],
+ "pass": false,
+ "notes": {
+  "pool": 318,
+  "page": "/tmp/claude-0/-home-user-fantasy-basketball-2026-27/3cdbbd9b-02dd-585e-8d00-b8a370128fae/scratchpad/undo/page_v68.html",
+  "A_history_bad": 0,
+  "R1": {
+   "insert": 5,
+   "undo": 17,
+   "wrongLog": 9
+  },
+  "R1.advice_at_complete": {
+   "path": {
+    "text": "Take Reed Sheppard — +0.022 expected categories per week over Fred VanVleet.",
+    "hidden": false
+   },
+   "oracle": {
+    "text": "Take Nikola Jokic — top of the 9-cat value board; no opponent roster to measure a marginal category against yet; only ~5% chance he survives to your next turn.",
+    "hidden": false
+   }
+  },
+  "R2": {
+   "insert": 11,
+   "undo": 19,
+   "wrongLog": 13
+  },
+  "R2.advice_at_complete": {
+   "path": {
+    "text": "Take Keegan Murray — the best value left (Mkt 148); Neemias Queta fits this week's roster slightly better (+0.009 cats/wk) but ranks lower on value.",
+    "hidden": false
+   },
+   "oracle": {
+    "text": "Take Nikola Jokic — top of the 9-cat value board; no opponent roster to measure a marginal category against yet; only ~5% chance he survives to your next turn.",
+    "hidden": false
+   }
+  },
+  "R3": {
+   "insert": 11,
+   "undo": 12,
+   "wrongLog": 8
+  },
+  "R3.advice_at_complete": {
+   "path": {
+    "text": "Take Reed Sheppard — +0.032 expected categories per week over Fred VanVleet.",
+    "hidden": false
+   },
+   "oracle": {
+    "text": "Take Nikola Jokic — top of the 9-cat value board; no opponent roster to measure a marginal category against yet; only ~5% chance he survives to your next turn.",
+    "hidden": false
+   }
+  },
+  "R4": {
+   "insert": 11,
+   "undo": 13,
+   "wrongLog": 13
+  },
+  "R4.advice_at_complete": {
+   "path": {
+    "text": "Take Jakob Poeltl — +0.012 expected categories per week over Collin Gillespie.",
+    "hidden": false
+   },
+   "oracle": {
+    "text": "Take Nikola Jokic — top of the 9-cat value board; no opponent roster to measure a marginal category against yet; only ~5% chance he survives to your next turn.",
+    "hidden": false
+   }
+  },
+  "R5": {
+   "insert": 6,
+   "undo": 23,
+   "wrongLog": 10
+  },
+  "R5.advice_at_complete": {
+   "path": {
+    "text": "Take Collin Gillespie — +0.021 expected categories per week over Reed Sheppard.",
+    "hidden": false
+   },
+   "oracle": {
+    "text": "Take Nikola Jokic — top of the 9-cat value board; no opponent roster to measure a marginal category against yet; only ~5% chance he survives to your next turn.",
+    "hidden": false
+   }
+  },
+  "randomOps": {
+   "insert": 44,
+   "undo": 84,
+   "wrongLog": 53
+  }
+ },
+ "failures": [
+  {
+   "id": "R1@75.path-equals-oracle",
+   "ok": false,
+   "detail": [
+    "tab:best 107 line(s) differ: @80: path \"Losing FT% to most of the room, 2 picks running (you beat 21% of the room in FT%). Don't punt them: you'd be winning only 4 of the other 8 categories (need 6). Keep taking the best player.\" | oracle \"Watching FT%: losing it to most of the room this pick (you beat 21% of the room in FT%). Becomes advice after 2 of your picks in a row.\" ;; @82: path \"Don't reach for a lost category: DeMar DeRozan (FT%, card #69) — none beats 🎯 OG Anunoby; the card already priced those in.\" | oracle \"top rival Seat 4: you lead 4/9 kept\" ;; @83: path \"\" | oracle \"TARGET: Two-way playmaking G — can wait\" ;; @84: path \"top rival Seat 4: you lead 4/9 kept\" | oracle \"\" ;; @85: path \"TARGET: Two-way playmaking G — can wait\" | oracle \"⚠ LEAN: 7F vs 2G — flag for roster balance\" ;; @87: path \"⚠ LEAN: 7F vs 2G — flag for roster balance\" | oracle \"STRONG🔒FG% · REB · TO · WINNABLE3PTM · PTS · BLK · SOFT PUNTFT%\"",
+    "tab:boardtab 64 line(s) differ: @80: path \"Losing FT% to most of the room, 2 picks running (you beat 21% of the room in FT%). Don't punt them: you'd be winning only 4 of the other 8 categories (need 6). Keep taking the best player.\" | oracle \"Watching FT%: losing it to most of the room this pick (you beat 21% of the room in FT%). Becomes advice after 2 of your picks in a row.\" ;; @82: path \"Don't reach for a lost category: DeMar DeRozan (FT%, card #69) — none beats 🎯 OG Anunoby; the card already priced those in.\" | oracle \"top rival Seat 4: you lead 4/9 kept\" ;; @83: path \"\" | oracle \"TARGET: Two-way playmaking G — can wait\" ;; @84: path \"top rival Seat 4: you lead 4/9 kept\" | oracle \"\" ;; @85: path \"TARGET: Two-way playmaking G — can wait\" | oracle \"⚠ LEAN: 7F vs 2G — flag for roster balance\" ;; @87: path \"⚠ LEAN: 7F vs 2G — flag for roster balance\" | oracle \"STRONG🔒FG% · REB · TO · WINNABLE3PTM · PTS · BLK · SOFT PUNTFT%\"",
+    "tab:rosters 161 line(s) differ: @80: path \"Losing FT% to most of the room, 2 picks running (you beat 21% of the room in FT%). Don't punt them: you'd be winning only 4 of the other 8 categories (need 6). Keep taking the best player.\" | oracle \"Watching FT%: losing it to most of the room this pick (you beat 21% of the room in FT%). Becomes advice after 2 of your picks in a row.\" ;; @82: path \"Don't reach for a lost category: DeMar DeRozan (FT%, card #69) — none beats 🎯 OG Anunoby; the card already priced those in.\" | oracle \"top rival Seat 4: you lead 4/9 kept\" ;; @83: path \"\" | oracle \"TARGET: Two-way playmaking G — can wait\" ;; @84: path \"top rival Seat 4: you lead 4/9 kept\" | oracle \"\" ;; @85: path \"TARGET: Two-way playmaking G — can wait\" | oracle \"⚠ LEAN: 7F vs 2G — flag for roster balance\" ;; @87: path \"⚠ LEAN: 7F vs 2G — flag for roster balance\" | oracle \"STRONG🔒FG% · REB · TO · WINNABLE3PTM · PTS · BLK · SOFT PUNTFT%\"",
+    "tab:matrix 69 line(s) differ: @80: path \"Losing FT% to most of the room, 2 picks running (you beat 21% of the room in FT%). Don't punt them: you'd be winning only 4 of the other 8 categories (need 6). Keep taking the best player.\" | oracle \"Watching FT%: losing it to most of the room this pick (you beat 21% of the room in FT%). Becomes advice after 2 of your picks in a row.\" ;; @82: path \"Don't reach for a lost category: DeMar DeRozan (FT%, card #69) — none beats 🎯 OG Anunoby; the card already priced those in.\" | oracle \"top rival Seat 4: you lead 4/9 kept\" ;; @83: path \"\" | oracle \"TARGET: Two-way playmaking G — can wait\" ;; @84: path \"top rival Seat 4: you lead 4/9 kept\" | oracle \"\" ;; @85: path \"TARGET: Two-way playmaking G — can wait\" | oracle \"⚠ LEAN: 7F vs 2G — flag for roster balance\" ;; @87: path \"⚠ LEAN: 7F vs 2G — flag for roster balance\" | oracle \"STRONG🔒FG% · REB · TO · WINNABLE3PTM · PTS · BLK · SOFT PUNTFT%\"",
+    "tab:vs 74 line(s) differ: @80: path \"Losing FT% to most of the room, 2 picks running (you beat 21% of the room in FT%). Don't punt them: you'd be winning only 4 of the other 8 categories (need 6). Keep taking the best player.\" | oracle \"Watching FT%: losing it to most of the room this pick (you beat 21% of the room in FT%). Becomes advice after 2 of your picks in a row.\" ;; @82: path \"Don't reach for a lost category: DeMar DeRozan (FT%, card #69) — none beats 🎯 OG Anunoby; the card already priced those in.\" | oracle \"top rival Seat 4: you lead 4/9 kept\" ;; @83: path \"\" | oracle \"TARGET: Two-way playmaking G — can wait\" ;; @84: path \"top rival Seat 4: you lead 4/9 kept\" | oracle \"\" ;; @85: path \"TARGET: Two-way playmaking G — can wait\" | oracle \"⚠ LEAN: 7F vs 2G — flag for roster balance\" ;; @87: path \"⚠ LEAN: 7F vs 2G — flag for roster balance\" | oracle \"STRONG🔒FG% · REB · TO · WINNABLE3PTM · PTS · BLK · SOFT PUNTFT%\""
+   ]
+  },
+  {
+   "id": "R1.path-equals-oracle",
+   "ok": false,
+   "detail": [
+    "tab:best 1 line(s) differ: @84: path \"Losing 3PTM, FT% to most of the room, 2 picks running (you beat 12% of the room in 3PTM, 15% in FT%). Punting them works: you'd be winning 5 of the other 7 categories (need 5). Your call — set the punt box if you agree.\" | oracle \"Watching 3PTM, FT%: losing them to most of the room this pick (you beat 12% of the room in 3PTM, 15% in FT%). Becomes advice after 2 of your picks in a row.\"",
+    "tab:boardtab 1 line(s) differ: @84: path \"Losing 3PTM, FT% to most of the room, 2 picks running (you beat 12% of the room in 3PTM, 15% in FT%). Punting them works: you'd be winning 5 of the other 7 categories (need 5). Your call — set the punt box if you agree.\" | oracle \"Watching 3PTM, FT%: losing them to most of the room this pick (you beat 12% of the room in 3PTM, 15% in FT%). Becomes advice after 2 of your picks in a row.\"",
+    "tab:rosters 1 line(s) differ: @84: path \"Losing 3PTM, FT% to most of the room, 2 picks running (you beat 12% of the room in 3PTM, 15% in FT%). Punting them works: you'd be winning 5 of the other 7 categories (need 5). Your call — set the punt box if you agree.\" | oracle \"Watching 3PTM, FT%: losing them to most of the room this pick (you beat 12% of the room in 3PTM, 15% in FT%). Becomes advice after 2 of your picks in a row.\"",
+    "tab:matrix 1 line(s) differ: @84: path \"Losing 3PTM, FT% to most of the room, 2 picks running (you beat 12% of the room in 3PTM, 15% in FT%). Punting them works: you'd be winning 5 of the other 7 categories (need 5). Your call — set the punt box if you agree.\" | oracle \"Watching 3PTM, FT%: losing them to most of the room this pick (you beat 12% of the room in 3PTM, 15% in FT%). Becomes advice after 2 of your picks in a row.\"",
+    "tab:vs 1 line(s) differ: @84: path \"Losing 3PTM, FT% to most of the room, 2 picks running (you beat 12% of the room in 3PTM, 15% in FT%). Punting them works: you'd be winning 5 of the other 7 categories (need 5). Your call — set the punt box if you agree.\" | oracle \"Watching 3PTM, FT%: losing them to most of the room this pick (you beat 12% of the room in 3PTM, 15% in FT%). Becomes advice after 2 of your picks in a row.\""
+   ]
+  },
+  {
+   "id": "R2@66.path-equals-oracle",
+   "ok": false,
+   "detail": [
+    "tab:best 107 line(s) differ: @80: path \"Losing 3PTM to most of the room, 2 picks running (you beat 18% of the room in 3PTM). Don't punt them: you'd be winning only 5 of the other 8 categories (need 6). Keep taking the best player.\" | oracle \"Watching 3PTM: losing it to most of the room this pick (you beat 18% of the room in 3PTM). Becomes advice after 2 of your picks in a row.\" ;; @82: path \"Don't reach for a lost category: AJ Green (3PTM, card #139) — none beats 🎯 Ty Jerome; the card already priced those in.\" | oracle \"top rival Seat 9: you lead 3/9 kept\" ;; @83: path \"\" | oracle \"TARGET: Shot-block\" ;; @84: path \"top rival Seat 9: you lead 3/9 kept\" | oracle \"\" ;; @85: path \"TARGET: Shot-block\" | oracle \"NBA-team stacks: ATL:2 HOU:2\" ;; @87: path \"NBA-team stacks: ATL:2 HOU:2\" | oracle \"STRONG🔒FG% · REB · ST · WINNABLEAST · BLK · TO · SOFT PUNTFT% + 3PTM\"",
+    "tab:boardtab 64 line(s) differ: @80: path \"Losing 3PTM to most of the room, 2 picks running (you beat 18% of the room in 3PTM). Don't punt them: you'd be winning only 5 of the other 8 categories (need 6). Keep taking the best player.\" | oracle \"Watching 3PTM: losing it to most of the room this pick (you beat 18% of the room in 3PTM). Becomes advice after 2 of your picks in a row.\" ;; @82: path \"Don't reach for a lost category: AJ Green (3PTM, card #139) — none beats 🎯 Ty Jerome; the card already priced those in.\" | oracle \"top rival Seat 9: you lead 3/9 kept\" ;; @83: path \"\" | oracle \"TARGET: Shot-block\" ;; @84: path \"top rival Seat 9: you lead 3/9 kept\" | oracle \"\" ;; @85: path \"TARGET: Shot-block\" | oracle \"NBA-team stacks: ATL:2 HOU:2\" ;; @87: path \"NBA-team stacks: ATL:2 HOU:2\" | oracle \"STRONG🔒FG% · REB · ST · WINNABLEAST · BLK · TO · SOFT PUNTFT% + 3PTM\"",
+    "tab:rosters 152 line(s) differ: @80: path \"Losing 3PTM to most of the room, 2 picks running (you beat 18% of the room in 3PTM). Don't punt them: you'd be winning only 5 of the other 8 categories (need 6). Keep taking the best player.\" | oracle \"Watching 3PTM: losing it to most of the room this pick (you beat 18% of the room in 3PTM). Becomes advice after 2 of your picks in a row.\" ;; @82: path \"Don't reach for a lost category: AJ Green (3PTM, card #139) — none beats 🎯 Ty Jerome; the card already priced those in.\" | oracle \"top rival Seat 9: you lead 3/9 kept\" ;; @83: path \"\" | oracle \"TARGET: Shot-block\" ;; @84: path \"top rival Seat 9: you lead 3/9 kept\" | oracle \"\" ;; @85: path \"TARGET: Shot-block\" | oracle \"NBA-team stacks: ATL:2 HOU:2\" ;; @87: path \"NBA-team stacks: ATL:2 HOU:2\" | oracle \"STRONG🔒FG% · REB · ST · WINNABLEAST · BLK · TO · SOFT PUNTFT% + 3PTM\"",
+    "tab:matrix 68 line(s) differ: @80: path \"Losing 3PTM to most of the room, 2 picks running (you beat 18% of the room in 3PTM). Don't punt them: you'd be winning only 5 of the other 8 categories (need 6). Keep taking the best player.\" | oracle \"Watching 3PTM: losing it to most of the room this pick (you beat 18% of the room in 3PTM). Becomes advice after 2 of your picks in a row.\" ;; @82: path \"Don't reach for a lost category: AJ Green (3PTM, card #139) — none beats 🎯 Ty Jerome; the card already priced those in.\" | oracle \"top rival Seat 9: you lead 3/9 kept\" ;; @83: path \"\" | oracle \"TARGET: Shot-block\" ;; @84: path \"top rival Seat 9: you lead 3/9 kept\" | oracle \"\" ;; @85: path \"TARGET: Shot-block\" | oracle \"NBA-team stacks: ATL:2 HOU:2\" ;; @87: path \"NBA-team stacks: ATL:2 HOU:2\" | oracle \"STRONG🔒FG% · REB · ST · WINNABLEAST · BLK · TO · SOFT PUNTFT% + 3PTM\"",
+    "tab:vs 74 line(s) differ: @80: path \"Losing 3PTM to most of the room, 2 picks running (you beat 18% of the room in 3PTM). Don't punt them: you'd be winning only 5 of the other 8 categories (need 6). Keep taking the best player.\" | oracle \"Watching 3PTM: losing it to most of the room this pick (you beat 18% of the room in 3PTM). Becomes advice after 2 of your picks in a row.\" ;; @82: path \"Don't reach for a lost category: AJ Green (3PTM, card #139) — none beats 🎯 Ty Jerome; the card already priced those in.\" | oracle \"top rival Seat 9: you lead 3/9 kept\" ;; @83: path \"\" | oracle \"TARGET: Shot-block\" ;; @84: path \"top rival Seat 9: you lead 3/9 kept\" | oracle \"\" ;; @85: path \"TARGET: Shot-block\" | oracle \"NBA-team stacks: ATL:2 HOU:2\" ;; @87: path \"NBA-team stacks: ATL:2 HOU:2\" | oracle \"STRONG🔒FG% · REB · ST · WINNABLEAST · BLK · TO · SOFT PUNTFT% + 3PTM\""
+   ]
+  },
+  {
+   "id": "R4.path-equals-oracle",
+   "ok": false,
+   "detail": [
+    "tab:best 1 line(s) differ: @84: path \"Losing BLK to most of the room, 2 picks running (you beat 18% of the room in BLK). Don't punt them: you'd be winning only 5 of the other 8 categories (need 6). Keep taking the best player.\" | oracle \"Watching BLK: losing it to most of the room this pick (you beat 18% of the room in BLK). Becomes advice after 2 of your picks in a row.\"",
+    "tab:boardtab 1 line(s) differ: @84: path \"Losing BLK to most of the room, 2 picks running (you beat 18% of the room in BLK). Don't punt them: you'd be winning only 5 of the other 8 categories (need 6). Keep taking the best player.\" | oracle \"Watching BLK: losing it to most of the room this pick (you beat 18% of the room in BLK). Becomes advice after 2 of your picks in a row.\"",
+    "tab:rosters 1 line(s) differ: @84: path \"Losing BLK to most of the room, 2 picks running (you beat 18% of the room in BLK). Don't punt them: you'd be winning only 5 of the other 8 categories (need 6). Keep taking the best player.\" | oracle \"Watching BLK: losing it to most of the room this pick (you beat 18% of the room in BLK). Becomes advice after 2 of your picks in a row.\"",
+    "tab:matrix 1 line(s) differ: @84: path \"Losing BLK to most of the room, 2 picks running (you beat 18% of the room in BLK). Don't punt them: you'd be winning only 5 of the other 8 categories (need 6). Keep taking the best player.\" | oracle \"Watching BLK: losing it to most of the room this pick (you beat 18% of the room in BLK). Becomes advice after 2 of your picks in a row.\"",
+    "tab:vs 1 line(s) differ: @84: path \"Losing BLK to most of the room, 2 picks running (you beat 18% of the room in BLK). Don't punt them: you'd be winning only 5 of the other 8 categories (need 6). Keep taking the best player.\" | oracle \"Watching BLK: losing it to most of the room this pick (you beat 18% of the room in BLK). Becomes advice after 2 of your picks in a row.\""
+   ]
+  }
+ ],
+ "all": [
+  {
+   "id": "A.undo-pops-five",
+   "ok": true
+  },
+  {
+   "id": "A.undo-lines-name-seat",
+   "ok": true
+  },
+  {
+   "id": "A.final-list",
+   "ok": true
+  },
+  {
+   "id": "A.seats-equal-snake",
+   "ok": true
+  },
+  {
+   "id": "A.path-equals-oracle",
+   "ok": true
+  },
+  {
+   "id": "A.history-matches-state",
+   "ok": true
+  },
+  {
+   "id": "A.advice-line-live",
+   "ok": true
+  },
+  {
+   "id": "B.pre-owner-#15",
+   "ok": true
+  },
+  {
+   "id": "B.insert-line",
+   "ok": true
+  },
+  {
+   "id": "B.moved-off-owner",
+   "ok": true
+  },
+  {
+   "id": "B.moved-on-owner",
+   "ok": true
+  },
+  {
+   "id": "B.final-list",
+   "ok": true
+  },
+  {
+   "id": "B.seats-equal-snake",
+   "ok": true
+  },
+  {
+   "id": "B.path-equals-oracle",
+   "ok": true
+  },
+  {
+   "id": "B.history-matches-state",
+   "ok": true
+  },
+  {
+   "id": "B.advice-line-live",
+   "ok": true
+  },
+  {
+   "id": "H.reload-identical",
+   "ok": true
+  },
+  {
+   "id": "F.final-list",
+   "ok": true
+  },
+  {
+   "id": "F.seats-equal-snake",
+   "ok": true
+  },
+  {
+   "id": "F.path-equals-oracle",
+   "ok": true
+  },
+  {
+   "id": "F.history-matches-state",
+   "ok": true
+  },
+  {
+   "id": "F.advice-line-live",
+   "ok": true
+  },
+  {
+   "id": "C.final-list",
+   "ok": true
+  },
+  {
+   "id": "C.seats-equal-snake",
+   "ok": true
+  },
+  {
+   "id": "C.path-equals-oracle",
+   "ok": true
+  },
+  {
+   "id": "C.history-matches-state",
+   "ok": true
+  },
+  {
+   "id": "C.advice-line-live",
+   "ok": true
+  },
+  {
+   "id": "D.refusals-change-nothing",
+   "ok": true
+  },
+  {
+   "id": "D.refusals-logged",
+   "ok": true
+  },
+  {
+   "id": "D.final-list",
+   "ok": true
+  },
+  {
+   "id": "D.seats-equal-snake",
+   "ok": true
+  },
+  {
+   "id": "D.path-equals-oracle",
+   "ok": true
+  },
+  {
+   "id": "D.history-matches-state",
+   "ok": true
+  },
+  {
+   "id": "D.advice-line-live",
+   "ok": true
+  },
+  {
+   "id": "E.unknown-logged",
+   "ok": true
+  },
+  {
+   "id": "E.unknown-renamed",
+   "ok": true
+  },
+  {
+   "id": "E.order",
+   "ok": true
+  },
+  {
+   "id": "E.path-equals-oracle",
+   "ok": true
+  },
+  {
+   "id": "E.history-matches-state",
+   "ok": true
+  },
+  {
+   "id": "E.fix-by-number",
+   "ok": true
+  },
+  {
+   "id": "E2.final-list",
+   "ok": true
+  },
+  {
+   "id": "E2.seats-equal-snake",
+   "ok": true
+  },
+  {
+   "id": "E2.path-equals-oracle",
+   "ok": true
+  },
+  {
+   "id": "E2.history-matches-state",
+   "ok": true
+  },
+  {
+   "id": "E2.advice-line-live",
+   "ok": true
+  },
+  {
+   "id": "G.my-off-snake-to-owner",
+   "ok": true
+  },
+  {
+   "id": "G.insert-refused-unchanged",
+   "ok": true
+  },
+  {
+   "id": "G.refusal-logged",
+   "ok": true
+  },
+  {
+   "id": "G.owner-roster-has-it",
+   "ok": true
+  },
+  {
+   "id": "G.final-list",
+   "ok": true
+  },
+  {
+   "id": "G.seats-equal-snake",
+   "ok": true
+  },
+  {
+   "id": "G.path-equals-oracle",
+   "ok": true
+  },
+  {
+   "id": "G.history-matches-state",
+   "ok": true
+  },
+  {
+   "id": "G.advice-line-live",
+   "ok": true
+  },
+  {
+   "id": "R1@75.final-list",
+   "ok": true
+  },
+  {
+   "id": "R1@75.seats-equal-snake",
+   "ok": true
+  },
+  {
+   "id": "R1@75.path-equals-oracle",
+   "ok": false
+  },
+  {
+   "id": "R1@75.history-matches-state",
+   "ok": true
+  },
+  {
+   "id": "R1@75.advice-line-live",
+   "ok": true
+  },
+  {
+   "id": "R1.final-list",
+   "ok": true
+  },
+  {
+   "id": "R1.seats-equal-snake",
+   "ok": true
+  },
+  {
+   "id": "R1.path-equals-oracle",
+   "ok": false
+  },
+  {
+   "id": "R1.history-matches-state",
+   "ok": true
+  },
+  {
+   "id": "R2@66.final-list",
+   "ok": true
+  },
+  {
+   "id": "R2@66.seats-equal-snake",
+   "ok": true
+  },
+  {
+   "id": "R2@66.path-equals-oracle",
+   "ok": false
+  },
+  {
+   "id": "R2@66.history-matches-state",
+   "ok": true
+  },
+  {
+   "id": "R2@66.advice-line-live",
+   "ok": true
+  },
+  {
+   "id": "R2.final-list",
+   "ok": true
+  },
+  {
+   "id": "R2.seats-equal-snake",
+   "ok": true
+  },
+  {
+   "id": "R2.path-equals-oracle",
+   "ok": true
+  },
+  {
+   "id": "R2.history-matches-state",
+   "ok": true
+  },
+  {
+   "id": "R3@56.final-list",
+   "ok": true
+  },
+  {
+   "id": "R3@56.seats-equal-snake",
+   "ok": true
+  },
+  {
+   "id": "R3@56.path-equals-oracle",
+   "ok": true
+  },
+  {
+   "id": "R3@56.history-matches-state",
+   "ok": true
+  },
+  {
+   "id": "R3@56.advice-line-live",
+   "ok": true
+  },
+  {
+   "id": "R3.final-list",
+   "ok": true
+  },
+  {
+   "id": "R3.seats-equal-snake",
+   "ok": true
+  },
+  {
+   "id": "R3.path-equals-oracle",
+   "ok": true
+  },
+  {
+   "id": "R3.history-matches-state",
+   "ok": true
+  },
+  {
+   "id": "R4@46.final-list",
+   "ok": true
+  },
+  {
+   "id": "R4@46.seats-equal-snake",
+   "ok": true
+  },
+  {
+   "id": "R4@46.path-equals-oracle",
+   "ok": true
+  },
+  {
+   "id": "R4@46.history-matches-state",
+   "ok": true
+  },
+  {
+   "id": "R4@46.advice-line-live",
+   "ok": true
+  },
+  {
+   "id": "R4.final-list",
+   "ok": true
+  },
+  {
+   "id": "R4.seats-equal-snake",
+   "ok": true
+  },
+  {
+   "id": "R4.path-equals-oracle",
+   "ok": false
+  },
+  {
+   "id": "R4.history-matches-state",
+   "ok": true
+  },
+  {
+   "id": "R5@146.final-list",
+   "ok": true
+  },
+  {
+   "id": "R5@146.seats-equal-snake",
+   "ok": true
+  },
+  {
+   "id": "R5@146.path-equals-oracle",
+   "ok": true
+  },
+  {
+   "id": "R5@146.history-matches-state",
+   "ok": true
+  },
+  {
+   "id": "R5@146.advice-line-live",
+   "ok": true
+  },
+  {
+   "id": "R5.final-list",
+   "ok": true
+  },
+  {
+   "id": "R5.seats-equal-snake",
+   "ok": true
+  },
+  {
+   "id": "R5.path-equals-oracle",
+   "ok": true
+  },
+  {
+   "id": "R5.history-matches-state",
+   "ok": true
+  }
+ ]
+}
