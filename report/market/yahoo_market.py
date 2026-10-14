@@ -224,12 +224,22 @@ def resolve_table_names(rows, board):
         if not t:
             continue
         idx.setdefault((t[0][:1], " ".join(t[1:])), []).append((name, b["row"]))
+    # a pool row already claimed by a Yahoo row on its own team is not a candidate for a second Yahoo row on
+    # another team (2026-10-14: a third "J. Green", UTA, XRank 333, beside Jalen Green PHX and Javonte Green DET)
+    claimed = {}
+    for r in rows:
+        t = BM.norm(r["src_name"]).split()
+        for c in (idx.get((t[0][:1], " ".join(t[1:])), []) if t else []):
+            if c[1]["team"] == r["team"]:
+                claimed.setdefault(c[0], []).append(r["src_name"] + "/" + r["team"])
     problems = []
     for r in rows:
         t = BM.norm(r["src_name"]).split()
         cands = idx.get((t[0][:1], " ".join(t[1:])), []) if t else []
         if len(cands) > 1:
             by_team = [c for c in cands if c[1]["team"] == r["team"]]
+            if not by_team and all(c[0] in claimed for c in cands):
+                continue   # every candidate is taken by a same-team row: this one is Yahoo-only
             cands = by_team or cands
         if len(cands) > 1:
             by_pos = [c for c in cands if c[1].get("pos", "").replace(" ", "") == r["pos"]]
