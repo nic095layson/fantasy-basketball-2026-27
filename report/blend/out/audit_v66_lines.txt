@@ -1,0 +1,29 @@
+refs per player (top 200): {0: 1, 1: 1, 2: 7, 3: 8, 4: 26, 5: 157}
+cat        n bias ours-med  MAE ours MAE src(loo)  ratio outside env
+pts      191       +0.1961    0.8898       0.9904   0.90    56 (29%)
+reb      191       +0.0325    0.3335       0.3651   0.91    42 (22%)
+ast      191       +0.0668    0.2688       0.2551   1.05    63 (33%)
+stl      191       -0.0024    0.0647       0.0773   0.84    25 (13%)
+blk      191       +0.0099    0.0466       0.0629   0.74    18 (9%)
+tpm      191       +0.0283    0.1272       0.1282   0.99    45 (24%)
+tov      191       +0.0293    0.1435       0.1246   1.15    52 (27%)
+fg_pct   191       -0.0003    0.0062       0.0065   0.96    50 (26%)
+ft_pct   191       -0.0028    0.0095       0.0078   1.22    76 (40%)
+cells inside the five-source envelope: 1292/1719 = 75.2%
+
+envelope test, each forecaster vs the min-max of four others (157 players with all five):
+  RotoBaller   inside 77.2%
+  FantasyPros  inside 73.9%
+  Yahoo        inside 73.0%
+  OURS         inside 72.1%
+  BBM cards    inside 71.9%
+  Hashtag      inside 68.5%
+
+mean distance to the median of the other five (category SD units, 157 players):
+                  pts    reb    ast    stl    blk    tpm    tov fg_pct ft_pct    all
+  Yahoo         0.166  0.157  0.122  0.205  0.108  0.133  0.185  0.105  0.085  0.141
+  Hashtag       0.146  0.149  0.116  0.223  0.109  0.126  0.146  0.112  0.102  0.137
+  RotoBaller    0.190  0.142  0.125  0.207  0.137  0.119  0.139  0.076  0.084  0.135
+  FantasyPros   0.160  0.145  0.119  0.240  0.132  0.123  0.137  0.097  0.079  0.137
+  BBM cards     0.177  0.150  0.124  0.207  0.124  0.145  0.148  0.090  0.096  0.140
+  OURS          0.153  0.135  0.134  0.190  0.095  0.129  0.182  0.086  0.104  0.134
