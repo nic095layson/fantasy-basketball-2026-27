@@ -11,13 +11,13 @@
 // every tab (the history box excepted — it is a log, checked separately against the
 // state). Per-team totals are dumped for an independent Python recomputation
 // (totals_oracle.py). Read-only on the page file.
-//   node undo_insert_check.mjs <deck.html> <out.json> [nRandom=20]
+//   node undo_insert_check.mjs <deck.html> <out.json> [seedFrom=1] [seedTo=10] [hand=1]
 import fs from "node:fs";
 import path from "node:path";
 import { createRequire } from "node:module";
 const { chromium } = createRequire(import.meta.url)(process.env.PW_MODULE || "/opt/node22/lib/node_modules/playwright");
-const [html, outPath, nRandArg] = process.argv.slice(2);
-const N_RANDOM = parseInt(nRandArg || "20", 10);
+const [html, outPath, seedFrom = "1", seedTo = "10", handArg = "1"] = process.argv.slice(2);
+const SEED_FROM = parseInt(seedFrom, 10), SEED_TO = parseInt(seedTo, 10), HAND = handArg !== "0";
 const TEAMS = 12, SIZE = 13, SLOT = 10, MAXP = TEAMS * SIZE;
 const snake = (n, t) => { const r = Math.floor(n / t), i = n % t; return r % 2 === 0 ? i + 1 : t - i; };
 
@@ -62,21 +62,31 @@ async function snapshot(page) {
   const tabs = {};
   for (const t of ["best", "boardtab", "rosters", "matrix", "vs"]) {
     await page.click(`#tab-${t}`);
-    tabs[t] = await page.evaluate(() => document.getElementById("draft").innerText.replace(document.getElementById("mirror").innerText, ""));
+    tabs[t] = await page.evaluate(() => {
+      const al = document.getElementById("adviceline"), alt = al ? al.innerText : "";
+      let txt = document.getElementById("draft").innerText.replace(document.getElementById("mirror").innerText, "");
+      if (window.__stripAdvice && alt) txt = txt.replace(alt, "<advice line>");
+      return txt;
+    });
   }
   await page.click("#tab-best");
+  const advice = await page.evaluate(() => { const a = document.getElementById("adviceline"); return a ? { text: a.innerText, hidden: a.classList.contains("hidden") } : null; });
   const top5 = await page.locator("#recos li").evaluateAll(lis => lis.map(li => li.innerText.replace(/\s+/g, " ").trim()));
-  return { ...eng, tabs, top5 };
+  return { ...eng, tabs, top5, advice };
 }
 // History: the LATEST line naming each pick number must agree with the state at that
 // number (earlier lines for the same number are superseded history: an undone or
 // corrected pick). Lines naming a number past the end of the state are counted apart.
 function historyCheck(lines, picks) {
-  const last = new Map();
+  const seen = [];   // pick lines in order; an "↶ undid: NAME (Seat S)" supersedes the latest live line for NAME
   for (const l of lines) {
     const m = l.match(/^✓ \(R(\d+)\) #(\d+): (.+?) → Seat (\d+)( \(YOU\))?/);
-    if (m) last.set(+m[2], { l, m });
+    if (m) { seen.push({ l, m, dead: false }); continue; }
+    const u = l.match(/^↶ undid: (.+) \(Seat (\d+)\)$/);
+    if (u) for (let k = seen.length - 1; k >= 0; k--) if (!seen[k].dead && seen[k].m[3] === u[1]) { seen[k].dead = true; break; }
   }
+  const last = new Map();
+  for (const x of seen) if (!x.dead) last.set(+x.m[2], x);
   const bad = [];
   for (const [num, { l, m }] of last) {
     const i = num - 1, pk = picks[i];
@@ -93,19 +103,22 @@ function diffSnap(a, b) {
     if (JSON.stringify(a[k]) !== JSON.stringify(b[k])) d.push(k);
   for (const t of Object.keys(a.tabs)) if (a.tabs[t] !== b.tabs[t]) {
     const al = a.tabs[t].split("\n"), bl = b.tabs[t].split("\n");
-    const first = al.findIndex((x, i) => x !== bl[i]);
-    d.push(`tab:${t} @line ${first}: path ${JSON.stringify(al[first])} | oracle ${JSON.stringify(bl[first])}`);
+    const lines = [];
+    for (let i = 0; i < Math.max(al.length, bl.length); i++) if (al[i] !== bl[i]) lines.push(`@${i}: path ${JSON.stringify(al[i])} | oracle ${JSON.stringify(bl[i])}`);
+    d.push(`tab:${t} ${lines.length} line(s) differ: ${lines.slice(0, 6).join(" ;; ")}`);
   }
   return d;
 }
 async function oracleSnap(names) {
   const { ctx, page } = await newPage();
   if (names.length) await feed(page, names.join("; "));
+  if (names.length >= MAXP) await page.evaluate(() => { window.__stripAdvice = true; });
   const s = await snapshot(page); await ctx.close(); return s;
 }
 // Compare a finished PATH page with a clean ORACLE built from `finalNames`.
 async function judge(id, page, finalNames, extra = {}) {
   const P = await picksOf(page);
+  if (P.length >= MAXP) await page.evaluate(() => { window.__stripAdvice = true; });   // finding F1: stale advice line after the last pick
   const path_ = await snapshot(page);
   const orc = await oracleSnap(finalNames);
   ok(`${id}.final-list`, JSON.stringify(P.map(p => p.player)) === JSON.stringify(finalNames), { got: P.map(p => p.player).slice(0, 40), want: finalNames.slice(0, 40) });
@@ -115,6 +128,8 @@ async function judge(id, page, finalNames, extra = {}) {
   ok(`${id}.path-equals-oracle`, d.length === 0, d);
   const hb = historyCheck(await mirrorLines(page), P);
   ok(`${id}.history-matches-state`, hb.length === 0, hb.slice(0, 6));
+  if (P.length >= MAXP) notes[`${id}.advice_at_complete`] = { path: path_.advice, oracle: orc.advice };
+  else ok(`${id}.advice-line-live`, orc.advice && path_.advice && path_.advice.text === orc.advice.text, { path: path_.advice, oracle: orc.advice });
   dumps.push({ id, picks: path_.picks, totals: path_.totals, ranks: path_.ranks });
   return { path_, orc, historyBad: hb };
 }
@@ -126,6 +141,7 @@ notes.pool = ORDER.length; notes.page = html;
 await c0.close();
 const L = ORDER.slice(0, 40), X = ORDER.slice(40, 50);
 
+if (HAND) {
 /* A: undo five, re-log five different players */
 { const { ctx, page } = await newPage();
   for (const n of L.slice(0, 30)) await feed(page, n);
@@ -171,6 +187,7 @@ const L = ORDER.slice(0, 40), X = ORDER.slice(40, 50);
 /* D: insert at the end (#picks+1) and the refusals around it */
 { const { ctx, page } = await newPage();
   for (const n of L.slice(0, 29)) await feed(page, n);
+  await page.click("#insertToggle");      // the bar open in both snapshots
   const s0 = await snapshot(page);
   await insert(page, 31, L[29]);          // mid-air gap: refused
   await insert(page, 5, L[3]);            // already drafted: refused
@@ -218,6 +235,7 @@ const L = ORDER.slice(0, 40), X = ORDER.slice(40, 50);
   await feed(page, L[11]);
   const P = await picksOf(page);
   ok("G.my-off-snake-to-owner", P[10].slot === SLOT && P[11].slot === snake(11, TEAMS), [P[10], P[11]]);
+  await page.click("#insertToggle");
   const s0 = await snapshot(page);
   await insert(page, 5, X[0]);
   const s1 = await snapshot(page);
@@ -231,10 +249,11 @@ const L = ORDER.slice(0, 40), X = ORDER.slice(40, 50);
   await judge("G", page, [...L.slice(0, 4), X[0], ...L.slice(4, 12)]);
   await ctx.close(); }
 
+}
 /* R: seeded random full drafts (156 picks) with misses, wrong logs and undo runs */
 function rng(seed) { let s = seed >>> 0; return () => { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; }; }
 const ops = { insert: 0, undo: 0, wrongLog: 0 };
-for (let seed = 1; seed <= N_RANDOM; seed++) {
+for (let seed = SEED_FROM; seed <= SEED_TO; seed++) {
   const R = rng(seed * 7919);
   // target draft: market order with noise (a plausible room)
   const pool = ORDER.slice(0, 260).map((n, i) => ({ n, k: i + (R() - 0.5) * 30 })).sort((a, b) => a.k - b.k).map(o => o.n);
@@ -242,8 +261,10 @@ for (let seed = 1; seed <= N_RANDOM; seed++) {
   const spare = pool.slice(MAXP);
   const { ctx, page } = await newPage();
   let missed = null, missedAt = null, logged = 0, wait = 0, local = { insert: 0, undo: 0, wrongLog: 0 };
-  let i = 0;
+  let i = 0, checked = false;
+  const CP = 40 + Math.floor(R() * 110);                               // mid-draft checkpoint (advice line live)
   while (i < MAXP) {
+    if (!checked && missed === null && i >= CP) { await judge(`R${seed}@${i}`, page, F.slice(0, i)); checked = true; }
     if (missed !== null && (wait <= 0 || i === MAXP - 1)) {         // insert the missed pick at its true number
       await insert(page, missedAt + 1, missed); local.insert++; missed = null;
       continue;
