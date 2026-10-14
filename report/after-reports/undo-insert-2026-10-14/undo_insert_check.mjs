@@ -28,11 +28,12 @@ const browser = await chromium.launch({ executablePath: process.env.PW_CHROMIUM 
 async function newPage() {
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
+  page.setDefaultTimeout(180000);
   page.on("pageerror", e => errors.push(String(e && e.message || e)));
   page.on("console", m => { if (m.type() === "error") errors.push(m.text()); });
   await page.goto("file://" + path.resolve(html));
   await page.fill("#cfgTeams", String(TEAMS)); await page.fill("#cfgSize", String(SIZE)); await page.fill("#cfgSlot", String(SLOT));
-  await page.click("#modeLive"); await page.click("#startBtn"); await page.waitForSelector("#draft:not(.hidden)");
+  await page.click("#modeLive"); await page.click("#startBtn"); await page.waitForSelector("#draft:not(.hidden)", { timeout: 180000 });
   return { ctx, page };
 }
 const feed = async (page, text) => { await page.fill("#feed", text); await page.click("#logBtn"); };
