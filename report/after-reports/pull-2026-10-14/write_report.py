@@ -44,7 +44,7 @@ today_items = sorted(((i["date"][:16], i["athlete"]["displayName"], i.get("statu
                       for t in feed["injuries"] for i in t["injuries"] if (i.get("date") or "") >= "2026-10-14"), key=lambda x: x[0])
 pool_today = [x for x in today_items if any(x[1] == k or x[1].rstrip(".") == k.rstrip(".") for k in N)]
 today_tab = "\n".join(f"| {d[11:]}Z | {n} | {s} | {c.replace('|', '/')} |" for d, n, s, c in pool_today)
-pool_out = ", ".join(f"{n} ({t}, {d})" for n, t, d in F["pool_out"])
+pool_out = ", ".join(f"{x['name']} ({x['detail']}, {x['returnDate'] or 'no'} estimate)" for x in F["pool_out"])
 cut = ["Dain Dainja", "Dion Brown", "Miles Kelly", "Yuki Kawamura", "Aaron Nkrumah", "Damari Monsanto", "Chucky Hepburn"]
 
 RPT = f"""# After-report — 2026-10-14: the final morning pull before the draft (Version 68), with the 24 disputed-minutes players read against the preseason
@@ -128,7 +128,7 @@ Each is on the player's page note (`deck_notes_2026-10-14.json`, {len(N)} rows),
 
 ## 5. The injury feed both ways
 
-EVIDENCE: `feed_diff_2026-10-14.json` (the diff), `tags_2026-10-14.txt` (the page's tag inventory). Feed: {F['feed_rows']} items on {F['feed_teams']} teams, {F['pool_rows_on_feed']} on pool rows; the page carries {F['tags']} tags ({F['excluded']} excluded, {F['risk']} risk).
+EVIDENCE: `feed_diff_2026-10-14.json` (the diff), `tags_2026-10-14.txt` (the page's tag inventory). Feed: {F['feed_rows']} items on {F['feed_teams']} teams, {F['pool_rows_on_feed']} on pool rows; at the 14:31 pull the page carried {F['tags']} tags ({F['excluded']} excluded, {F['risk']} risk); the two lock-call tags (§3a) make it {F['tags'] + 2} and {F['risk'] + 2}.
 
 - **Pool rows Out on the feed ({len(F['pool_out'])}):** {pool_out}. All carry their tag; Dylan Cardwell, the one new item since the 10/13 pull (Out, at least two weeks, left calf strain, per Anthony Slater of ESPN.com on ESPN's feed, item 2026-10-13 20:57 UTC, 10/29 estimate), was untagged in the first draft and is tagged now by the owner's call (D-1014-5).
 - **Coby White** (left calf strain announced 10/5, out the whole preseason, 10/21 estimate) was on the page as healthy with a role note; the 10/5 reports (TSN, NBA.com, RotoBaller) call it his third calf strain in about a year — tagged now by the owner's call (D-1014-6).
@@ -142,7 +142,7 @@ EVIDENCE: `feed_diff_2026-10-14.json` (the diff), `tags_2026-10-14.txt` (the pag
 | deck notes | {len(N)} rows, note column only (`deck_notes.py`: every name resolved, no other column changed, no `];`, a second run changes nothing) |
 | lock calls | `lock_calls.py` PASS, kit {len(LC['kit'])} cells / page {len(LC['deck'])} cells, second run 0 |
 | kit board | `rank_engine.py` re-run (200 of 313 projected, 12 held), `slate.py`, `test_rank_engine` OK, `check_provenance` PASS, `check_derived` 27/27 |
-| build | red-first: refused on gate 7 without a waiver (propagation 2: White GP 68 to 62, Cardwell GP 65 to 59 — the page has no games column; its rows changed by tag). With the two named waivers: 7 gates PASS, 335 players, rosters direct-complete 335/335, planes 315 shared, drift 0, waived 2 (recorded in the manifest), market the 10/13 paste (294/335 priced) |
+| build | red-first: refused on gate 7 without the exemption (propagation 2: White GP 68 to 62, Cardwell GP 65 to 59 — the page has no games column; its rows changed by tag). With the two players excused by name (the build's plane exemption flag, recorded in the manifest): 7 gates PASS, 335 players, rosters direct-complete 335/335, planes 315 shared, drift 0, 2 named exemptions, market the 10/13 paste (294/335 priced) |
 | chain on Version 68 | parity EXACT ({chain['parity']}); test_card {chain['card']}; test_draft {chain['draft']}; test_gates {chain['gates']}; full DOM {chain['dom']} assertions, 0 failed; repeat-name {chain['rn']} |
 | publish | Version 68, version id {PUB['version_id']}; the served page equals the local file (sha256 {chain['page']}) inside the publisher's wrapper |
 
