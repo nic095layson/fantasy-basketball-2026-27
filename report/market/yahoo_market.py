@@ -126,11 +126,16 @@ def parse_raw(path):
     """Returns (rows, problems, fmt) with fmt in {"block", "rank"}."""
     lines = [l.strip() for l in open(path, encoding="utf-8")]
     nonblank = [l for l in lines if l]
-    if nonblank and (nonblank[0].startswith("Player\tXRank\tRank\tADP\tGP")
-                     or nonblank[0].startswith("Queue\tPlayer\tXRank\tRank\tADP\tGP")):
+    headed = nonblank and (nonblank[0].startswith("Player\tXRank\tRank\tADP\tGP")
+                           or nonblank[0].startswith("Queue\tPlayer\tXRank\tRank\tADP\tGP"))
+    # 2026-10-14 paste: the same draft-room page copied without its header row — the first entry starts at once
+    # (name, duplicate name, ..., a 13-field numeric line within the next four lines)
+    headless = (len(nonblank) > 5 and nonblank[0] == nonblank[1]
+                and any(len(l.split("\t")) == 13 for l in nonblank[2:6]))
+    if headed or headless:
         # 2026-10-13 paste: the same page copied from the draft room — a leading "Queue" header column (no
         # per-row value) and the owner's "Your Turn - Nth Pick" markers between entries; both carry no data.
-        body = [l for l in nonblank[1:] if not re.fullmatch(r"Your Turn - \d+(st|nd|rd|th) Pick", l)]
+        body = [l for l in nonblank[1 if headed else 0:] if not re.fullmatch(r"Your Turn - \d+(st|nd|rd|th) Pick", l)]
         rows, problems = _parse_table(body)
         return rows, problems, "table"
     if nonblank and re.fullmatch(r"\d+", nonblank[0]):
