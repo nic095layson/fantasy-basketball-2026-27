@@ -1,0 +1,690 @@
+{
+ "managers": {
+  "Oblena": {
+   "seat": 1,
+   "team": "Itsy Bitsy Spida",
+   "picks": [
+    "Nikola Jokic",
+    "Josh Giddey",
+    "Chet Holmgren",
+    "Darius Garland",
+    "Jaren Jackson Jr.",
+    "Michael Porter Jr.",
+    "Payton Pritchard",
+    "Derik Queen",
+    "Jalen Green",
+    "Ja Morant",
+    "Jaime Jaquez Jr.",
+    "Jeremiah Fears",
+    "Kristaps Porzingis"
+   ],
+   "reach_2026": {
+    "n": 13,
+    "mean": -7.8,
+    "early": 0.5
+   },
+   "reach_2025": {
+    "n": 13,
+    "mean": -5.5,
+    "early": 9.3
+   },
+   "profile_reach_early_2526": 9.3,
+   "market_reach_2026": {
+    "n": 13,
+    "mean": 7.1,
+    "early": -1.2
+   },
+   "guard_share_2026": 0.54,
+   "guard_share_hist": {
+    "2025-26": 0.46,
+    "2024-25": 0.54,
+    "2023-24": 0.62
+   },
+   "repeats": [
+    "Chet Holmgren",
+    "Darius Garland",
+    "Ja Morant"
+   ],
+   "loyalty_listed": [
+    "Donovan Mitchell"
+   ],
+   "loyalty_hit": [],
+   "loyalty_went": {
+    "Donovan Mitchell": "#19 Martin"
+   },
+   "profile_model": {
+    "adp_w": 0.35,
+    "val_w": 0.65,
+    "noise": 9,
+    "pos_bias": {},
+    "streamer": true
+   },
+   "profile_read": "value early, hype late; record #2 in 24-25 — real drafter, inconsistent finisher"
+  },
+  "Noah": {
+   "seat": 2,
+   "team": "Devin Minutes in Heaven",
+   "picks": [
+    "Victor Wembanyama",
+    "LaMelo Ball",
+    "Evan Mobley",
+    "Cameron Boozer",
+    "Desmond Bane",
+    "Ryan Rollins",
+    "Paul George",
+    "CJ McCollum",
+    "AJ Dybantsa",
+    "Darryn Peterson",
+    "Jusuf Nurkic",
+    "Dillon Brooks",
+    "Bilal Coulibaly"
+   ],
+   "reach_2026": {
+    "n": 12,
+    "mean": -6.4,
+    "early": -4.0
+   },
+   "reach_2025": {
+    "n": 13,
+    "mean": -30.9,
+    "early": -43.5
+   },
+   "profile_reach_early_2526": -43.5,
+   "market_reach_2026": {
+    "n": 12,
+    "mean": 2.5,
+    "early": -3.4
+   },
+   "guard_share_2026": 0.46,
+   "guard_share_hist": {
+    "2025-26": 0.62,
+    "2024-25": 0.54,
+    "2023-24": 0.58
+   },
+   "repeats": [
+    "LaMelo Ball"
+   ],
+   "loyalty_listed": [
+    "LaMelo Ball"
+   ],
+   "loyalty_hit": [
+    "LaMelo Ball"
+   ],
+   "loyalty_went": {},
+   "profile_model": {
+    "adp_w": 0.75,
+    "val_w": 0.25,
+    "noise": 9,
+    "pos_bias": {},
+    "streamer": false
+   },
+   "profile_read": "MANUAL drafter (owner correction 2026-08-04: autodraft was 2025-26 ONLY, so the -43.5 reach is Yahoo's board geometry, not his behavior - it is retained as the room's geometry reference and excluded from his behavioral fit). Manual seasons read ADP-leaning with real LaMelo loyalty (R1 23-24, R2 24-25, both manual)"
+  },
+  "Will": {
+   "seat": 3,
+   "team": "The Konclave",
+   "picks": [
+    "Luka Doncic",
+    "Lauri Markkanen",
+    "Walker Kessler",
+    "James Harden",
+    "Onyeka Okongwu",
+    "Dylan Harper",
+    "Mikal Bridges",
+    "Jabari Smith Jr.",
+    "Josh Hart",
+    "Rui Hachimura",
+    "Anthony Black",
+    "RJ Barrett",
+    "Jonathan Kuminga"
+   ],
+   "reach_2026": {
+    "n": 13,
+    "mean": -15.2,
+    "early": -1.0
+   },
+   "reach_2025": {
+    "n": 12,
+    "mean": -7.4,
+    "early": -16.5
+   },
+   "profile_reach_early_2526": -16.5,
+   "market_reach_2026": {
+    "n": 13,
+    "mean": 2.2,
+    "early": -5.7
+   },
+   "guard_share_2026": 0.46,
+   "guard_share_hist": {
+    "2025-26": 0.54,
+    "2024-25": 0.58,
+    "2023-24": 0.45
+   },
+   "repeats": [
+    "Mikal Bridges",
+    "Onyeka Okongwu"
+   ],
+   "loyalty_listed": [
+    "Onyeka Okongwu",
+    "Jaden Ivey"
+   ],
+   "loyalty_hit": [
+    "Onyeka Okongwu"
+   ],
+   "loyalty_went": {
+    "Jaden Ivey": "undrafted"
+   },
+   "profile_model": {
+    "adp_w": 0.55,
+    "val_w": 0.45,
+    "noise": 11,
+    "pos_bias": {},
+    "streamer": true
+   },
+   "profile_read": "the waiver-wire grinder (top-2 moves every year); early name reaches, salvages in-season"
+  },
+  "Robby": {
+   "seat": 4,
+   "team": "Gotta Be Bamonte",
+   "picks": [
+    "Shai Gilgeous-Alexander",
+    "Devin Booker",
+    "Bam Adebayo",
+    "Jaylen Brown",
+    "Paolo Banchero",
+    "Damian Lillard",
+    "Zach Edey",
+    "Dejounte Murray",
+    "Keegan Murray",
+    "Fred VanVleet",
+    "Tari Eason",
+    "Daniel Gafford",
+    "Grayson Allen"
+   ],
+   "reach_2026": {
+    "n": 13,
+    "mean": -2.2,
+    "early": -20.7
+   },
+   "reach_2025": {
+    "n": 13,
+    "mean": -18.8,
+    "early": -25.7
+   },
+   "profile_reach_early_2526": -25.7,
+   "market_reach_2026": {
+    "n": 13,
+    "mean": 7.7,
+    "early": 4.5
+   },
+   "guard_share_2026": 0.62,
+   "guard_share_hist": {
+    "2025-26": 0.54,
+    "2024-25": 0.54,
+    "2023-24": 0.54
+   },
+   "repeats": [
+    "Bam Adebayo",
+    "Devin Booker",
+    "Fred VanVleet",
+    "Jaylen Brown"
+   ],
+   "loyalty_listed": [
+    "Jarrett Allen",
+    "Collin Sexton",
+    "Devin Booker",
+    "Devin Vassell"
+   ],
+   "loyalty_hit": [
+    "Devin Booker"
+   ],
+   "loyalty_went": {
+    "Jarrett Allen": "#56 JCo",
+    "Collin Sexton": "#152 JCo",
+    "Devin Vassell": "#131 Cayas"
+   },
+   "profile_model": {
+    "adp_w": 0.7,
+    "val_w": 0.3,
+    "noise": 8,
+    "pos_bias": {},
+    "streamer": false
+   },
+   "profile_read": "back-to-back champ then collapse; name-brand early, solid value late; set-and-forget; adp_w refit 0.55->0.7 (E18 calib 2026-08-04: his measured reach is 2nd-deepest among active drafters and the 0.55 blend under-produced it)"
+  },
+  "Kyle": {
+   "seat": 5,
+   "team": "ur my only hope Anti-wan",
+   "picks": [
+    "Giannis Antetokounmpo",
+    "Jamal Murray",
+    "Trey Murphy III",
+    "OG Anunoby",
+    "Alex Sarr",
+    "Rudy Gobert",
+    "De'Aaron Fox",
+    "Jalen Suggs",
+    "Collin Murray-Boyles",
+    "Toumani Camara",
+    "Collin Gillespie",
+    "Ayo Dosunmu",
+    "Reed Sheppard"
+   ],
+   "reach_2026": {
+    "n": 13,
+    "mean": 3.8,
+    "early": -9.5
+   },
+   "reach_2025": {
+    "n": 13,
+    "mean": -1.0,
+    "early": -7.0
+   },
+   "profile_reach_early_2526": -7.0,
+   "market_reach_2026": {
+    "n": 13,
+    "mean": -1.7,
+    "early": -9.0
+   },
+   "guard_share_2026": 0.54,
+   "guard_share_hist": {
+    "2025-26": 0.54,
+    "2024-25": 0.42,
+    "2023-24": 0.62
+   },
+   "repeats": [
+    "Rudy Gobert"
+   ],
+   "loyalty_listed": [],
+   "loyalty_hit": [],
+   "loyalty_went": {},
+   "profile_model": {
+    "adp_w": 0.45,
+    "val_w": 0.55,
+    "noise": 9,
+    "pos_bias": {},
+    "streamer": false
+   },
+   "profile_read": "improving from the basement; near-ADP drafter; engagement jumped in 25-26 (74 moves); E18b refit 2026-08-04: measured reach is MILD (-7, 7th-deepest of 10) - the initial adp_w 0.55 simmed him 3rd-deepest, so adp_w 0.55->0.45, noise 10->9 (fit to his own measurement)"
+  },
+  "Martin": {
+   "seat": 6,
+   "team": "HalleLuka Amen",
+   "picks": [
+    "Cade Cunningham",
+    "Donovan Mitchell",
+    "Jalen Brunson",
+    "Jalen Duren",
+    "Pascal Siakam",
+    "Dyson Daniels",
+    "Naz Reid",
+    "Caleb Wilson",
+    "Andrew Wiggins",
+    "Cedric Coward",
+    "Mitchell Robinson",
+    "Ajay Mitchell",
+    "Kyshawn George"
+   ],
+   "reach_2026": {
+    "n": 13,
+    "mean": 8.6,
+    "early": 2.0
+   },
+   "reach_2025": {
+    "n": 13,
+    "mean": -4.4,
+    "early": -14.8
+   },
+   "profile_reach_early_2526": -14.8,
+   "market_reach_2026": {
+    "n": 13,
+    "mean": 11.9,
+    "early": 4.4
+   },
+   "guard_share_2026": 0.62,
+   "guard_share_hist": {
+    "2025-26": 0.54,
+    "2024-25": 0.54,
+    "2023-24": 0.55
+   },
+   "repeats": [
+    "Donovan Mitchell",
+    "Jalen Brunson",
+    "Jalen Duren",
+    "Kyshawn George",
+    "Pascal Siakam"
+   ],
+   "loyalty_listed": [
+    "Luka Doncic",
+    "Brandon Ingram",
+    "Jalen Suggs"
+   ],
+   "loyalty_hit": [],
+   "loyalty_went": {
+    "Luka Doncic": "#3 Will",
+    "Brandon Ingram": "#79 John",
+    "Jalen Suggs": "#92 Kyle"
+   },
+   "profile_model": {
+    "adp_w": 0.45,
+    "val_w": 0.55,
+    "noise": 10,
+    "pos_bias": {},
+    "streamer": true
+   },
+   "profile_read": "apex threat, ascending 3 straight years; reaches for HIS guys and converts; heavy streamer"
+  },
+  "John": {
+   "seat": 7,
+   "team": "John's Cool Team",
+   "picks": [
+    "Jayson Tatum",
+    "Jalen Johnson",
+    "Trae Young",
+    "Donovan Clingan",
+    "Ivica Zubac",
+    "Julius Randle",
+    "Brandon Ingram",
+    "Zach LaVine",
+    "Jared McCain",
+    "Aaron Gordon",
+    "Cameron Johnson",
+    "Saddiq Bey",
+    "Jakob Poeltl"
+   ],
+   "reach_2026": {
+    "n": 13,
+    "mean": -17.9,
+    "early": -20.5
+   },
+   "reach_2025": {
+    "n": 12,
+    "mean": -1.3,
+    "early": -8.0
+   },
+   "profile_reach_early_2526": -8.0,
+   "market_reach_2026": {
+    "n": 12,
+    "mean": 3.1,
+    "early": 0.1
+   },
+   "guard_share_2026": 0.31,
+   "guard_share_hist": {
+    "2025-26": 0.31,
+    "2024-25": 0.38,
+    "2023-24": 0.67
+   },
+   "repeats": [
+    "Aaron Gordon",
+    "Cameron Johnson",
+    "Jakob Poeltl",
+    "Julius Randle",
+    "Zach LaVine"
+   ],
+   "loyalty_listed": [
+    "Tyrese Maxey",
+    "Jakob Poeltl",
+    "Jeremy Sochan"
+   ],
+   "loyalty_hit": [
+    "Jakob Poeltl"
+   ],
+   "loyalty_went": {
+    "Tyrese Maxey": "#11 Cayas",
+    "Jeremy Sochan": "undrafted"
+   },
+   "profile_model": {
+    "adp_w": 0.5,
+    "val_w": 0.5,
+    "noise": 7,
+    "pos_bias": {},
+    "streamer": false
+   },
+   "profile_read": "steady, competent, low-churn; 24-25's record #1; mild reacher, rarely surprising"
+  },
+  "JCo": {
+   "seat": 8,
+   "team": "Wing Chun Wemby",
+   "picks": [
+    "Anthony Edwards",
+    "Scottie Barnes",
+    "Stephen Curry",
+    "Anthony Davis",
+    "Jarrett Allen",
+    "Nickeil Alexander-Walker",
+    "Zion Williamson",
+    "Norman Powell",
+    "Isaiah Hartenstein",
+    "Andrew Nembhard",
+    "DeMar DeRozan",
+    "Davion Mitchell",
+    "Collin Sexton"
+   ],
+   "reach_2026": {
+    "n": 13,
+    "mean": -3.8,
+    "early": 7.3
+   },
+   "reach_2025": {
+    "n": 11,
+    "mean": -15.0,
+    "early": 4.3
+   },
+   "profile_reach_early_2526": 4.3,
+   "market_reach_2026": {
+    "n": 13,
+    "mean": 5.8,
+    "early": -0.3
+   },
+   "guard_share_2026": 0.54,
+   "guard_share_hist": {
+    "2025-26": 0.46,
+    "2024-25": 0.46,
+    "2023-24": 0.25
+   },
+   "repeats": [
+    "DeMar DeRozan",
+    "Zion Williamson"
+   ],
+   "loyalty_listed": [
+    "Tyrese Haliburton",
+    "Jimmy Butler III",
+    "Nic Claxton"
+   ],
+   "loyalty_hit": [],
+   "loyalty_went": {
+    "Tyrese Haliburton": "#10 Me",
+    "Jimmy Butler III": "#156 Hegi",
+    "Nic Claxton": "#129 Kevin"
+   },
+   "profile_model": {
+    "adp_w": 0.45,
+    "val_w": 0.55,
+    "noise": 8,
+    "pos_bias": {},
+    "streamer": false
+   },
+   "profile_read": "quietly ascending 3 straight years (6-4-3); value-anchored; the sneaky threat"
+  },
+  "Kevin": {
+   "seat": 9,
+   "team": "All guards no defense",
+   "picks": [
+    "Cooper Flagg",
+    "Alperen Sengun",
+    "Brandon Miller",
+    "Deni Avdija",
+    "Matas Buzelis",
+    "Stephon Castle",
+    "VJ Edgecombe",
+    "Brandin Podziemski",
+    "John Collins",
+    "Sandro Mamukelashvili",
+    "Nic Claxton",
+    "Quentin Grimes",
+    "Aday Mara"
+   ],
+   "reach_2026": {
+    "n": 13,
+    "mean": -28.1,
+    "early": -37.5
+   },
+   "reach_2025": {
+    "n": 13,
+    "mean": 10.0,
+    "early": -15.8
+   },
+   "profile_reach_early_2526": -15.8,
+   "market_reach_2026": {
+    "n": 13,
+    "mean": 3.7,
+    "early": -2.1
+   },
+   "guard_share_2026": 0.46,
+   "guard_share_hist": {
+    "2025-26": 0.46,
+    "2024-25": 0.33,
+    "2023-24": 0.46
+   },
+   "repeats": [
+    "Quentin Grimes"
+   ],
+   "loyalty_listed": [
+    "Pascal Siakam"
+   ],
+   "loyalty_hit": [],
+   "loyalty_went": {
+    "Pascal Siakam": "#54 Martin"
+   },
+   "profile_model": {
+    "adp_w": 0.45,
+    "val_w": 0.55,
+    "noise": 10,
+    "pos_bias": {
+     "G": 1.25,
+     "C": 0.85
+    },
+    "streamer": false
+   },
+   "profile_read": "guard-heavy identity three years running — bigs fall to his neighbors, guards vanish near his picks"
+  },
+  "Cayas": {
+   "seat": 11,
+   "team": "IM SO HORT",
+   "picks": [
+    "Tyrese Maxey",
+    "Karl-Anthony Towns",
+    "Kon Knueppel",
+    "Jalen Williams",
+    "Keyonte George",
+    "Franz Wagner",
+    "Joel Embiid",
+    "Immanuel Quickley",
+    "Darius Acuff Jr.",
+    "Myles Turner",
+    "Devin Vassell",
+    "Kevin Porter Jr.",
+    "Herbert Jones"
+   ],
+   "reach_2026": {
+    "n": 13,
+    "mean": 3.4,
+    "early": -3.8
+   },
+   "reach_2025": {
+    "n": 11,
+    "mean": 8.7,
+    "early": 5.5
+   },
+   "profile_reach_early_2526": 5.5,
+   "market_reach_2026": {
+    "n": 12,
+    "mean": 4.7,
+    "early": -0.4
+   },
+   "guard_share_2026": 0.62,
+   "guard_share_hist": {
+    "2025-26": 0.46,
+    "2024-25": 0.54,
+    "2023-24": 0.33
+   },
+   "repeats": [
+    "Franz Wagner",
+    "Jalen Williams",
+    "Joel Embiid"
+   ],
+   "loyalty_listed": [],
+   "loyalty_hit": [],
+   "loyalty_went": {},
+   "profile_model": {
+    "adp_w": 0.4,
+    "val_w": 0.6,
+    "noise": 12,
+    "pos_bias": {},
+    "streamer": true
+   },
+   "profile_read": "volatile: record #1, then 11th, then 4th; value-anchored 25-26; high variance drafter"
+  },
+  "Hegi": {
+   "seat": 12,
+   "team": "Not hurt just SARR",
+   "picks": [
+    "Austin Reaves",
+    "Amen Thompson",
+    "Domantas Sabonis",
+    "LeBron James",
+    "Tyler Herro",
+    "Ausar Thompson",
+    "Coby White",
+    "Day'Ron Sharpe",
+    "Khaman Maluach",
+    "Cason Wallace",
+    "Egor Demin",
+    "Peyton Watson",
+    "Jimmy Butler"
+   ],
+   "reach_2026": {
+    "n": 12,
+    "mean": -13.2,
+    "early": -6.3
+   },
+   "reach_2025": {
+    "n": 11,
+    "mean": -17.2,
+    "early": -26.0
+   },
+   "profile_reach_early_2526": -26.0,
+   "market_reach_2026": {
+    "n": 13,
+    "mean": -0.6,
+    "early": -7.2
+   },
+   "guard_share_2026": 0.54,
+   "guard_share_hist": {
+    "2025-26": 0.5,
+    "2024-25": 0.46,
+    "2023-24": 0.5
+   },
+   "repeats": [],
+   "loyalty_listed": [
+    "Immanuel Quickley",
+    "Andrew Wiggins"
+   ],
+   "loyalty_hit": [],
+   "loyalty_went": {
+    "Immanuel Quickley": "#86 Cayas",
+    "Andrew Wiggins": "#102 Martin"
+   },
+   "profile_model": {
+    "adp_w": 0.65,
+    "val_w": 0.35,
+    "noise": 14,
+    "pos_bias": {},
+    "streamer": false
+   },
+   "profile_read": "low-engagement bottom-dweller; name/hype reaches; value falls AROUND his picks"
+  }
+ },
+ "spearman_early_reach_2025_vs_2026": 0.4,
+ "n": 11
+}
