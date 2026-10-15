@@ -1,0 +1,65 @@
+test_exit0_with_empty_log_is_fail (__main__.RunGate.test_exit0_with_empty_log_is_fail) ... FAIL
+test_overall_verdict_fails_if_any_gate_fails (__main__.RunGate.test_overall_verdict_fails_if_any_gate_fails) ... FAIL
+test_pass_needs_exit0_and_pass_line (__main__.RunGate.test_pass_needs_exit0_and_pass_line) ... ok
+test_pass_text_with_nonzero_exit_is_fail (__main__.RunGate.test_pass_text_with_nonzero_exit_is_fail) ... ok
+test_changed_input_is_refused (__main__.Verify.test_changed_input_is_refused) ... /home/user/fantasy-basketball-2026-27/scripts/gates.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpute7xsfu/gates.json' mode='r' encoding='utf-8'>
+  try: rec = json.load(open(path))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+FAIL
+test_failing_record_is_refused (__main__.Verify.test_failing_record_is_refused) ... /home/user/fantasy-basketball-2026-27/scripts/gates.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpqq3_rgeb/gates.json' mode='r' encoding='utf-8'>
+  try: rec = json.load(open(path))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+FAIL
+test_fresh_pass_record_verifies (__main__.Verify.test_fresh_pass_record_verifies) ... /home/user/fantasy-basketball-2026-27/scripts/gates.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpc2nhm8zr/gates.json' mode='r' encoding='utf-8'>
+  try: rec = json.load(open(path))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_missing_record_is_refused (__main__.Verify.test_missing_record_is_refused) ... ok
+test_quote_carries_pass_lines_and_exit_codes (__main__.Verify.test_quote_carries_pass_lines_and_exit_codes) ... ok
+
+======================================================================
+FAIL: test_exit0_with_empty_log_is_fail (__main__.RunGate.test_exit0_with_empty_log_is_fail)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/fantasy-basketball-2026-27/scripts/test_gates_runner.py", line 41, in test_exit0_with_empty_log_is_fail
+    self.assertEqual(r["verdict"], "FAIL")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'PASS' != 'FAIL'
+- PASS
++ FAIL
+
+
+======================================================================
+FAIL: test_overall_verdict_fails_if_any_gate_fails (__main__.RunGate.test_overall_verdict_fails_if_any_gate_fails)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/fantasy-basketball-2026-27/scripts/test_gates_runner.py", line 51, in test_overall_verdict_fails_if_any_gate_fails
+    self.assertEqual(G.run_all([], inputs=[], root=d)["verdict"], "FAIL")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'PASS' != 'FAIL'
+- PASS
++ FAIL
+
+
+======================================================================
+FAIL: test_changed_input_is_refused (__main__.Verify.test_changed_input_is_refused)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/fantasy-basketball-2026-27/scripts/test_gates_runner.py", line 78, in test_changed_input_is_refused
+    self.assertFalse(ok)
+    ~~~~~~~~~~~~~~~~^^^^
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_failing_record_is_refused (__main__.Verify.test_failing_record_is_refused)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/fantasy-basketball-2026-27/scripts/test_gates_runner.py", line 88, in test_failing_record_is_refused
+    self.assertFalse(ok)
+    ~~~~~~~~~~~~~~~~^^^^
+AssertionError: True is not false
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.224s
+
+FAILED (failures=4)
