@@ -132,47 +132,68 @@ Priority: **P0** this week (in-season operation starts 10/21), **P1** before wee
 
 ---
 
-## 6. The prompt to re-feed to Code
+## 6. Council verdict (2026-10-15) and the executed order
 
-Paste the block below as the opening message of a fresh Code session in `fantasy-basketball-2026-27` (the deck repo `yahoo-fantasy-basketball` is cloned alongside, as in every session).
+Convened on the owner's instruction after §4 was written. Verdict 4–1 to re-order around the 10/21 opener: the draft tool will not see a live draft for eleven months, so its fixes (C1–C5) move to P2; the in-season advice cannot exist without the league's current state (every opponent's roster, the standings, the weekly scoreboard), which no package ingested, so a **league-state intake** (E0) is added and goes first; one session, one vertical slice — a daily brief that runs on 10/21 — rather than parallel sessions on repos whose governor hook does not exist yet. The Contrarian's dissent: the governance trio must not eat day 1 — the SessionStart hook is deferred to P1 and `RULES.md` is capped at one page. Decisions taken: D-SA-1 re-ordered as below; D-SA-2 harden RESYNC, P2; D-SA-3 disambiguation line, P2; D-SA-4 both graders, P1; D-SA-5 owner screenshots, pinned.
+
+**Session 1 (by 2026-10-21), in this order.**
+1. **D2** `RULES.md` (one page) and `OPEN.md` in both repos; **D3** `scripts/gates.py` → `gates.json` quoted in every PR body (the stop-hook refusal and the SessionStart hook are P1).
+2. **B1** `league_settings.json` from the owner's settings screenshots; `test_settings.py` fails on any divergence of `arena.py` / `hoops.py` constants.
+3. **B2** the league's 18-week matchup schedule (owner screenshot/paste) → `league_sim.py --schedule`.
+4. **A2** D-INT-1 re-dating pass (mechanical; `--max-age-days 14` green).
+5. **A3** status feed: Yahoo status letters + ESPN injuries → availability tiers with dated receipts; a Q/O row at 1.00 with no receipt fails the build.
+6. **E0** league-state intake: the owner pastes the league's rosters/standings/scoreboard page(s); a parser pins them (as the 8/04 intel and the draft pastes were pinned), resolves names to the pool 100%, and writes `data/league_state.json` (12 rosters, IL slots, standings, the week's scoreboard) with a date.
+7. **E1** the daily brief (`scripts/daily_brief.py`): for the owner's roster and the day's NBA schedule — who plays today, the lineup by the daily-fill rule, the waiver scan (reuse `waiver_moves.py` against the current league state), streaming candidates by games remaining this week, and the title odds on the real schedule with the Monte-Carlo error stated. Output: one short markdown note; the first real run on 10/21.
+8. **E2 + B6** the weekly preview (the real opponent, category by category, with their roster as of that morning) and the calibration ledger with week 1's predicted category-win probabilities recorded *before* the week, scored when the scoreboard comes in.
+
+**P1 (weeks 2–4):** A1, A4, A5, B3, B4, B5, D1 (hook + stop-hook refusal), D4, D5, D6, C6. **P2:** C1, C2, C3, C4, C5, and whatever the P0/P1 after-reports put on the sheet.
+
+## 6b. The prompt to re-feed to Code
+
+Paste the block below as the opening message of a fresh Code session in `fantasy-basketball-2026-27` (the deck repo `yahoo-fantasy-basketball` cloned alongside, as in every session).
 
 ```
-You are the Co-GM agent for the 2026-27 fantasy basketball season. The draft is done (seat 10, locked lines v69; league grade in report/after-reports/after-report-2026-10-14-league-draft.md). Read, in this order, before acting:
-1. report/plans/co-gm-self-audit-2026-10-15.md (this plan) — the incidents, lessons and work packages.
-2. yahoo-fantasy-basketball/LESSONS.md (23 lessons) and report/after-reports/after-report-2026-10-13-scope-fence.md §4.
-3. The open decision sheet: D-INT-1, D-INT-2, D-LD-1, D-LD-2, D82-1, D83-1, D-1013-2, D-1009-2.
+You are the Co-GM agent for the 2026-27 fantasy basketball season. The draft is done (seat 10, locked lines v69; league grade in report/after-reports/after-report-2026-10-14-league-draft.md: 22.5% title share, rank 1 of 12 on the model). The season opens 2026-10-21. Your job in this session is Session 1 of the plan in report/plans/co-gm-self-audit-2026-10-15.md: a daily brief that runs on opening day, on verified league settings and the real schedule, with the governance scaffolding that keeps it honest. Read, in this order, before acting:
+1. report/plans/co-gm-self-audit-2026-10-15.md — §1 incidents, §2 lessons, §4 packages, §6 the executed order (the Council re-ordered §4; §6 governs).
+2. yahoo-fantasy-basketball/LESSONS.md and report/after-reports/after-report-2026-10-13-scope-fence.md §4.
+3. report/after-reports/draft-league-2026-10-14/ (waiver_moves.py, league_sim usage, the stress method) — reuse, do not rebuild.
 
-Rules in force (write them into RULES.md in both repos as package D2's first step):
-- Plan-gate before any consequential action; the gate's output is emitted to the owner before the work.
+Rules in force (write them into RULES.md in both repos as your first commit; one page, no more):
+- Plan-gate before any consequential action; emit the gate (goal, knowns, assumptions, success criteria, phases) to the owner before the work.
 - A question gets an assessment, not a build. A stated requirement is not a build order.
 - Every run parameter (window, sample, threshold, seed, source) is stated to the owner in one line before the run.
-- No data is written from memory: a team, position, stat line, minutes, games or status value needs a dated fetched record pinned in the repo.
-- Every fix lands red-first: a test that fails before the fix, passes after, and a gate that has been seen red.
-- No figure in a report is typed by hand; writers read records. Monte-Carlo figures are run twice.
-- Every gate run writes a PASS line and exit code to gates.json; no merge without it on the head commit.
-- Disputed results are carried only as DISPUTED; OPEN.md is re-read after every compaction.
-- Publish only after a fresh read of the artifact, byte-verify the served page, and never during a live room.
+- No data is written from memory: a team, position, stat line, minutes, games, status or roster value needs a dated fetched record or owner paste pinned in the repo.
+- Every fix lands red-first: a test that fails before the fix and passes after; every gate has been seen red.
+- No figure in a report is typed by hand; writers read records. Monte-Carlo figures run twice; odds carry their error.
+- Every gate run writes its PASS line and exit code to gates.json; every PR body quotes gates.json; a merge without it is refused.
+- Disputed results are carried only as DISPUTED in OPEN.md; re-read OPEN.md after every compaction.
+- Publish only after a fresh read of the artifact and a byte-verify of the served page; never during a live room.
+- Scope: Session 1 is items 1–8 of plan §6. Anything else you notice is flagged in the after-report's decision sheet, not built.
 
-Execute the packages in this order, each as its own PR pair (deck + kit) with an after-report gated by check_report.py and the two deck --check-report gates, and stop for the owner's decision where a package names one:
-P0: D1 (governor hook + startup check), D2 (RULES.md, OPEN.md), D3 (gates.py + gates.json + stop-hook refusal), B1 (league_settings.json from the owner's settings screenshots — ask for them first), A1 (line provenance columns + gate), A2 (D-INT-1 re-dating), A3 (status feed + Q-at-1.00 gate), C1 (D-LD-1/D83-1 red-first), C2 (D-1013-2 RESYNC hardening), C4 (prose-claim tests), B2 (real schedule — ask the owner for the matchup schedule), B6 (calibration ledger, first entry = week 1), E daily/weekly cadence scripts (waiver scan reusing draft-league-2026-10-14/waiver_moves.py, matchup preview, lineup recommendation).
-P1: A4, A5, B3, B4, B5, C3, C5, C6, D4, D5, D6.
-P2: anything the P0/P1 after-reports put on the decision sheet.
+Do these in order, each as its own PR (kit, and deck where the item touches it) with an after-report in report/after-reports/ gated by report/check_report.py and the two deck --check-report gates, and stop for the owner where an item needs an input:
+1. RULES.md + OPEN.md (both repos); scripts/gates.py writing gates.json.
+2. ASK the owner for screenshots of the league's settings page and the full 18-week schedule before anything else in this item. Build data/league_settings.json and data/league_schedule.json from them (pin the screenshots), with test_settings.py failing on any divergence from arena.py / hoops.py constants; wire league_sim.py --schedule.
+3. D-INT-1: re-verify the 318 July-dated provenance rows live; check_provenance.py --max-age-days 14 green.
+4. Status feed: a daily script reading Yahoo status letters (owner paste or fetch) and the ESPN injury feed into availability tiers with dated receipts; gate: a Q/O-flagged row at availability 1.00 with no receipt fails the build. Record Durant, Irving, Miles Bridges first.
+5. League-state intake: ASK the owner to paste the league's rosters, standings and the current scoreboard; parse, pin, resolve names 100% to the pool (halt on any miss), write data/league_state.json with a date.
+6. scripts/daily_brief.py: for today — the owner's players with games, the lineup by the daily-fill rule, the waiver scan (waiver_moves.py against league_state.json), streaming candidates by games remaining this week, title odds on the real schedule (10,000 seasons, two seeds, error stated). One markdown note. Run it for 10/21 and show the owner the note.
+7. scripts/weekly_preview.py (the real opponent, category by category) and calibration.md/calibration.json with week 1's predicted category-win probabilities recorded before the week.
+8. Closing after-report for Session 1: what runs, what it was tested against, what it cannot see, the decision sheet for P1.
 
-Acceptance for each package is the red-first test, the gate verdict in gates.json, the after-report's Bounds and decision sheet, and both PRs merged with branches synced. Report to the owner in plain language at the end of each package: what changed, what it was tested against, what it cannot see.
+Acceptance for each item: the red-first test, gates.json on the head commit, the after-report's Bounds and decision sheet, the PR merged and the branch synced. Report to the owner in plain language after each item.
 ```
-
----
 
 ## 7. Decision sheet (owner disposes)
 
 | id | decision question | default if silent |
 |---|---|---|
-| D-SA-1 | Execute the plan as ordered (P0 first), or re-order (e.g. the in-season cadence E before the integrity packages)? | as ordered: D1–D3 and B1 first, because every later package depends on the settings file and the gate runner |
-| D-SA-2 | D-1013-2 RESYNC: harden (C2) or hide the button for the season? | harden (C2) |
-| D-SA-3 | D82-1 resolver: disambiguation line (C3) or keep the bare-surname rule? | C3 |
-| D-SA-4 | The independent graders (D4): add both consensus and actuals, or actuals only? | both |
-| D-SA-5 | The league settings and schedule: owner screenshots, or does the league expose them to a daily fetch? | screenshots, pinned like the 8/04 intel |
+| D-SA-1 | the order | DECIDED (Council 4–1, 2026-10-15): the §6 order — in-season vertical slice first; draft-tool fixes P2 |
+| D-SA-2 | D-1013-2 RESYNC | DECIDED: harden (C2), P2 |
+| D-SA-3 | D82-1 resolver | DECIDED: disambiguation line (C3), P2 |
+| D-SA-4 | independent graders | DECIDED: both, P1 |
+| D-SA-5 | settings and schedule source | DECIDED: owner screenshots, pinned; Session 1 asks for them first |
+| D-SA-6 | the SessionStart governor hook (D1): P1 per the Contrarian's dissent, or pull it into Session 1 if it costs under an hour? | P1 |
 
 ## Provenance
-- Written 2026-10-15 from the records named in the header; no figure here is from recall except the self-grades in §3, which are judgments and say so.
+- Written 2026-10-15 from the records named in the header; §6 re-ordered the same day on the Council's 4–1 verdict; no figure here is from recall except the self-grades in §3, which are judgments and say so.
 - No line, tag, placement or price changed; nothing was published.
