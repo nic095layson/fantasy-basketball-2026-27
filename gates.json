@@ -1,54 +1,53 @@
 {
- "ran_at_utc": "2026-10-15T19:48:12Z",
+ "ran_at_utc": "2026-10-15T19:59:40Z",
  "inputs": {
-  "report/after-reports/after-report-2026-10-15-co-gm-league-state.md": "44143c26fe8cadcb6a823520e5ff6b48ef37fe9f50280c413712012e418b0a82",
-  "data/league_state.json": "c03cc0694ec0d707bc861f1c560555b9e80ca9c1db42a6c40e245d955e08b591",
-  "data/unpooled_il.json": "1d0f61beec0b4337365135d4913264ecdb4f541330f2e3aeca123bfc3feec7af",
-  "data/source/yahoo-starting-rosters-2026-10-20-view.transcribed.csv": "603ce60532f9c025d11a5d1fbaef1e7a783e780f76dbd22c174d539a80b5df80"
+  "report/after-reports/after-report-2026-10-15-co-gm-status.md": "2ee7b7b328754361094a52fa2293406fa312c7215e3561bdcc36ee0b546a83bf",
+  "data/status/status_2026-10-15.json": "5686cfe10571f0cdef0cf2a57d87d7946e3a789aa009875a403ddfe895fe1b78",
+  "scripts/gates.py": "4e2a128d6e51c7d0a684923f5055e88efda30d5b86b78440d3864938ce28f4fd"
  },
  "gates": [
   {
    "name": "kit check_report",
-   "cmd": "/usr/bin/python3 report/check_report.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-15-co-gm-league-state.md",
+   "cmd": "/usr/bin/python3 report/check_report.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-15-co-gm-status.md",
    "cwd": ".",
    "pass_re": "^REPORT GATE: PASS",
    "exit": 0,
-   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-10-15-co-gm-league-state.md (structure, publication rule, pull-log row)",
+   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-10-15-co-gm-status.md (structure, publication rule, pull-log row)",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "REPORT GATE: PASS \u2014 after-report-2026-10-15-co-gm-league-state.md (structure, publication rule, pull-log row)"
+    "REPORT GATE: PASS \u2014 after-report-2026-10-15-co-gm-status.md (structure, publication rule, pull-log row)"
    ]
   },
   {
    "name": "deck judgment_open_items --check-report",
-   "cmd": "/usr/bin/python3 scripts/judgment_open_items.py --check-report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-15-co-gm-league-state.md",
+   "cmd": "/usr/bin/python3 scripts/judgment_open_items.py --check-report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-15-co-gm-status.md",
    "cwd": "../yahoo-fantasy-basketball",
    "pass_re": "^receipts check PASS",
    "exit": 0,
-   "pass_line": "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-10-15-co-gm-league-state.md",
+   "pass_line": "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-10-15-co-gm-status.md",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-10-15-co-gm-league-state.md"
+    "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-10-15-co-gm-status.md"
    ]
   },
   {
    "name": "deck repeat_market_check --check-report",
-   "cmd": "/usr/bin/python3 scripts/repeat_market_check.py --check-report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-15-co-gm-league-state.md",
+   "cmd": "/usr/bin/python3 scripts/repeat_market_check.py --check-report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-15-co-gm-status.md",
    "cwd": "../yahoo-fantasy-basketball",
    "pass_re": "^REPEAT-NAME CHECK: PASS",
    "exit": 0,
-   "pass_line": "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-10-15-co-gm-league-state.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)",
+   "pass_line": "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-10-15-co-gm-status.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-10-15-co-gm-league-state.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)"
+    "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-10-15-co-gm-status.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)"
    ]
   },
   {
-   "name": "kit test_league_intake",
-   "cmd": "python3 scripts/test_league_intake.py",
+   "name": "kit test_status_feed",
+   "cmd": "python3 scripts/test_status_feed.py",
    "cwd": ".",
    "pass_re": "^OK$",
    "exit": 0,
@@ -57,8 +56,21 @@
    "why": "",
    "tail": [
     "----------------------------------------------------------------------",
-    "Ran 6 tests in 0.012s",
+    "Ran 7 tests in 0.001s",
     "OK"
+   ]
+  },
+  {
+   "name": "kit status_feed --check",
+   "cmd": "python3 scripts/status_feed.py --check",
+   "cwd": ".",
+   "pass_re": "^STATUS GATE: PASS",
+   "exit": 0,
+   "pass_line": "STATUS GATE: PASS \u2014 status_2026-10-15.json: 53 flagged row(s), each tiered with a dated receipt",
+   "verdict": "PASS",
+   "why": "",
+   "tail": [
+    "STATUS GATE: PASS \u2014 status_2026-10-15.json: 53 flagged row(s), each tiered with a dated receipt"
    ]
   },
   {
@@ -72,11 +84,11 @@
    "why": "",
    "tail": [
     "----------------------------------------------------------------------",
-    "Ran 9 tests in 0.318s",
+    "Ran 10 tests in 0.334s",
     "OK"
    ]
   }
  ],
  "verdict": "PASS",
- "base_commit": "a283e2faad1855ee046d89fab6d6a603bdf72de3"
+ "base_commit": "06b52a040c053ecbd1626c7df107ea69c8fdbf15"
 }

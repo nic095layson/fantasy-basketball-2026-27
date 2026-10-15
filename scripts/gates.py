@@ -14,7 +14,7 @@ repeat_market_check.py --check-report. Item-specific checks are added with --gat
         [--gate 'NAME::kit|deck::PASS_REGEX::COMMAND' ...] [--input PATH ...] \\
         [--out gates.json] [--deck ../yahoo-fantasy-basketball]
     python3 scripts/gates.py --quote [--out gates.json]     # PR-body block
-    python3 scripts/gates.py --verify [--out gates.json]    # exit 1 unless PASS and fresh
+    python3 scripts/gates.py --verify [--report R] [--out gates.json]  # exit 1 unless PASS, fresh, covering R
 
 Exit codes: 0 PASS, 1 FAIL, 2 usage error.
 """
@@ -73,8 +73,9 @@ def run_all(specs, inputs, root):
     return rec
 
 
-def verify(path, root):
-    """(ok, problems): the record exists, every gate PASSED, every input is unchanged."""
+def verify(path, root, report=None):
+    """(ok, problems): the record exists, every gate PASSED, every input is unchanged, and (with
+    `report`) the record judged that report — a stale gates.json from an earlier item is refused."""
     try:
         with open(path, encoding="utf-8") as f:
             rec = json.load(f)
@@ -94,6 +95,10 @@ def verify(path, root):
             problems.append(f"input {rel} missing")
         elif sha256(p) != digest:
             problems.append(f"input {rel} changed since the gates ran")
+    if report is not None:
+        rel = os.path.relpath(os.path.abspath(report), root)
+        if rel not in rec.get("inputs", {}):
+            problems.append(f"gates.json does not cover {rel}")
     return not problems, problems
 
 
@@ -144,7 +149,7 @@ def main():
     root = os.path.dirname(os.path.abspath(a.out))
 
     if a.verify:
-        ok, problems = verify(a.out, root)
+        ok, problems = verify(a.out, root, report=a.report)
         print("GATES VERIFY: PASS — gates.json is PASS and its inputs are unchanged" if ok
               else "GATES VERIFY: FAIL\n  " + "\n  ".join(problems))
         sys.exit(0 if ok else 1)

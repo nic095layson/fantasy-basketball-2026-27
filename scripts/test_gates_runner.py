@@ -88,6 +88,17 @@ class Verify(unittest.TestCase):
         self.assertFalse(ok)
         self.assertTrue(any("empty" in p for p in problems), problems)
 
+    def test_verify_refuses_a_record_that_does_not_cover_the_named_report(self):
+        # 2026-10-15 (item 5): a failed chain left item 2's gates.json in place and --verify passed it
+        self.write([OK])
+        other = os.path.join(self.d, "other-report.md")
+        open(other, "w").write("a different report\n")
+        ok, problems = G.verify(self.out, root=self.d, report=other)
+        self.assertFalse(ok)
+        self.assertTrue(any("does not cover" in p for p in problems), problems)
+        ok, problems = G.verify(self.out, root=self.d, report=self.inp)
+        self.assertTrue(ok, problems)
+
     def test_quote_carries_pass_lines_and_exit_codes(self):
         rec = self.write([OK])
         q = G.quote(rec)

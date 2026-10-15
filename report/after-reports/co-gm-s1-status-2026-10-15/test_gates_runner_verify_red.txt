@@ -1,0 +1,27 @@
+test_exit0_with_empty_log_is_fail (__main__.RunGate.test_exit0_with_empty_log_is_fail) ... ok
+test_overall_verdict_fails_if_any_gate_fails (__main__.RunGate.test_overall_verdict_fails_if_any_gate_fails) ... ok
+test_pass_needs_exit0_and_pass_line (__main__.RunGate.test_pass_needs_exit0_and_pass_line) ... ok
+test_pass_text_with_nonzero_exit_is_fail (__main__.RunGate.test_pass_text_with_nonzero_exit_is_fail) ... ok
+test_changed_input_is_refused (__main__.Verify.test_changed_input_is_refused) ... ok
+test_failing_record_is_refused (__main__.Verify.test_failing_record_is_refused) ... ok
+test_fresh_pass_record_verifies (__main__.Verify.test_fresh_pass_record_verifies) ... ok
+test_missing_record_is_refused (__main__.Verify.test_missing_record_is_refused) ... ok
+test_quote_carries_pass_lines_and_exit_codes (__main__.Verify.test_quote_carries_pass_lines_and_exit_codes) ... ok
+test_verify_refuses_a_record_that_does_not_cover_the_named_report (__main__.Verify.test_verify_refuses_a_record_that_does_not_cover_the_named_report) ... /home/user/fantasy-basketball-2026-27/scripts/test_gates_runner.py:95: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp46b_tyjl/other-report.md' mode='w' encoding='utf-8'>
+  open(other, "w").write("a different report\n")
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ERROR
+
+======================================================================
+ERROR: test_verify_refuses_a_record_that_does_not_cover_the_named_report (__main__.Verify.test_verify_refuses_a_record_that_does_not_cover_the_named_report)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/fantasy-basketball-2026-27/scripts/test_gates_runner.py", line 96, in test_verify_refuses_a_record_that_does_not_cover_the_named_report
+    ok, problems = G.verify(self.out, root=self.d, report=other)
+                   ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: verify() got an unexpected keyword argument 'report'
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.319s
+
+FAILED (errors=1)
