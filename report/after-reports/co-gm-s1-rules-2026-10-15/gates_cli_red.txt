@@ -1,0 +1,13 @@
+gates.json — ran 2026-10-15T06:18:07Z on base 
+- FAIL · kit check_report · exit 1 · (no PASS line: exit 1)
+- FAIL · deck judgment_open_items --check-report · exit 1 · (no PASS line: exit 1)
+- FAIL · deck repeat_market_check --check-report · exit 1 · (no PASS line: exit 1)
+- input stub.md sha256 a220f596e8b0
+verdict: FAIL
+exit=1
+GATES VERIFY: FAIL
+  verdict is 'FAIL'
+  gate kit check_report: exit 1
+  gate deck judgment_open_items --check-report: exit 1
+  gate deck repeat_market_check --check-report: exit 1
+verify exit=1
