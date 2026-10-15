@@ -44,6 +44,33 @@ class Resolve(unittest.TestCase):
         self.assertEqual(miss, ["Y. Konan Niederhäuser", "T. Haliburton"])
 
 
+class UnpooledIL(unittest.TestCase):
+    """Council 2026-10-15 (4-1): a name off the pool may pass ONLY as a recorded IL stash."""
+    UNPOOLED = {"Y. Konan Niederhäuser": {"team": "LAC", "reason": "owner Yahoo page 2026-10-15, IL, O"}}
+
+    def test_listed_name_on_il_passes_with_no_line(self):
+        with tempfile.TemporaryDirectory() as d:
+            src = write([["A", 1, "PG", "Tyrese Haliburton", "IND", "PG", ""],
+                         ["A", 1, "IL", "Y. Konan Niederhäuser", "LAC", "C", "O"]], d)
+            out = os.path.join(d, "state.json")
+            rc = LI.run(src, out, POOL, ABBR, draft={10: ["Tyrese Haliburton"]}, as_of="2026-10-15",
+                        unpooled=self.UNPOOLED)
+            self.assertEqual(rc, 0)
+            team = json.load(open(out))["teams"][0]
+            self.assertEqual(team["unpooled_il"], ["Y. Konan Niederhäuser"])
+            self.assertNotIn("Y. Konan Niederhäuser", [p["yahoo_name"] for p in team["players"]])
+
+    def test_listed_name_off_il_still_halts(self):
+        with tempfile.TemporaryDirectory() as d:
+            src = write([["A", 1, "PG", "Tyrese Haliburton", "IND", "PG", ""],
+                         ["A", 1, "BN", "Y. Konan Niederhäuser", "LAC", "C", "O"]], d)
+            out = os.path.join(d, "state.json")
+            rc = LI.run(src, out, POOL, ABBR, draft={10: ["Tyrese Haliburton"]}, as_of="2026-10-15",
+                        unpooled=self.UNPOOLED)
+            self.assertEqual(rc, 1)
+            self.assertFalse(os.path.exists(out))
+
+
 class Intake(unittest.TestCase):
     def test_halts_and_writes_nothing_on_a_miss(self):
         with tempfile.TemporaryDirectory() as d:

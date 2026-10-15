@@ -11,6 +11,9 @@ Resolution: the deck's name fold (verify_rosters.norm: accents, punctuation, suf
 aliases), then Yahoo's own abbreviations as recorded on the draft board (recap.json
 "abbr" -> "player"). Nothing else: a name neither rule resolves HALTS the intake and
 nothing is written (RULES.md rule 4; the Session 1 prompt: "halt on any miss").
+One recorded exception (Council 2026-10-15, 4-1): a name listed in data/unpooled_il.json
+passes ONLY while it sits in an IL slot, carried as `unpooled_il` with no line; on any
+other slot it halts like every other miss.
 
     python3 scripts/league_intake.py [--as-of YYYY-MM-DD]
 
@@ -34,6 +37,7 @@ PDF = os.path.join(KIT, "data", "source", "yahoo-starting-rosters-2026-10-20-vie
 RECAP = os.path.join(KIT, "report", "after-reports", "draft-league-2026-10-14", "recap.json")
 POOL = os.path.join(DECK, "data", "players.csv")
 OUT = os.path.join(KIT, "data", "league_state.json")
+UNPOOLED = os.path.join(KIT, "data", "unpooled_il.json")
 EMPTY = "(Empty)"
 
 
@@ -57,9 +61,11 @@ def sha(path):
     return hashlib.sha256(open(path, "rb").read()).hexdigest()
 
 
-def run(src, out, pool, abbr, draft, as_of, managers=None, sources=None):
+def run(src, out, pool, abbr, draft, as_of, managers=None, sources=None, unpooled=None):
+    unpooled = unpooled or {}
     rows = list(csv.DictReader(open(src, encoding="utf-8")))
-    names = [r["player"] for r in rows if r["player"] != EMPTY]
+    il_exempt = {r["player"] for r in rows if r["player"] in unpooled and r["slot"] == "IL"}
+    names = [r["player"] for r in rows if r["player"] != EMPTY and r["player"] not in il_exempt]
     res, miss = resolve(names, pool, abbr)
     if miss:
         print(f"LEAGUE INTAKE: HALT — {len(miss)} name(s) not in the pool; nothing written:")
@@ -72,10 +78,13 @@ def run(src, out, pool, abbr, draft, as_of, managers=None, sources=None):
     for r in rows:
         t = r["fantasy_team"]
         if t not in teams:
-            teams[t] = {"name": t, "players": [], "empty_slots": []}
+            teams[t] = {"name": t, "players": [], "empty_slots": [], "unpooled_il": []}
             order.append(t)
         if r["player"] == EMPTY:
             teams[t]["empty_slots"].append(r["slot"])
+            continue
+        if r["player"] in il_exempt:
+            teams[t]["unpooled_il"].append(r["player"])
             continue
         p = res[r["player"]]
         teams[t]["players"].append({"player": p, "yahoo_name": r["player"], "slot": r["slot"],
@@ -106,7 +115,7 @@ def run(src, out, pool, abbr, draft, as_of, managers=None, sources=None):
         for p in problems:
             print("  -", p)
         return 1
-    state = {"as_of": as_of, "sources": sources or {}, "standings": None, "scoreboard": None,
+    state = {"as_of": as_of, "sources": sources or {}, "unpooled_il": {n: unpooled[n] for n in sorted(il_exempt)}, "standings": None, "scoreboard": None,
              "standings_note": "pre-season: no standings or scoreboard exist before week 1 (2026-10-20)",
              "teams": [teams[t] for t in order], "nba_team_disagreements": disagreements}
     with open(out, "w", encoding="utf-8") as f:
@@ -133,7 +142,8 @@ def main():
                "transcription": {"file": os.path.relpath(SRC, KIT), "sha256": sha(SRC),
                                  "method": "agent transcription of the page images (no text layer)"},
                "draft_board": os.path.relpath(RECAP, KIT), "pool": "deck data/players.csv"}
-    sys.exit(run(SRC, OUT, pool, abbr, draft, a.as_of, managers, sources))
+    unpooled = json.load(open(UNPOOLED, encoding="utf-8"))["players"] if os.path.exists(UNPOOLED) else {}
+    sys.exit(run(SRC, OUT, pool, abbr, draft, a.as_of, managers, sources, unpooled))
 
 
 if __name__ == "__main__":

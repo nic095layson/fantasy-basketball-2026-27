@@ -1,0 +1,41 @@
+test_halts_and_writes_nothing_on_a_miss (__main__.Intake.test_halts_and_writes_nothing_on_a_miss) ... /home/user/fantasy-basketball-2026-27/scripts/league_intake.py:61: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmppjv61efu/t.csv' mode='r' encoding='utf-8'>
+  rows = list(csv.DictReader(open(src, encoding="utf-8")))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+LEAGUE INTAKE: HALT — 1 name(s) not in the pool; nothing written:
+  - Nobody Atall (A, IL, LAC, status O)
+ok
+test_writes_dated_state_when_all_resolve (__main__.Intake.test_writes_dated_state_when_all_resolve) ... /home/user/fantasy-basketball-2026-27/scripts/league_intake.py:61: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp0rvk7fs5/t.csv' mode='r' encoding='utf-8'>
+  rows = list(csv.DictReader(open(src, encoding="utf-8")))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+LEAGUE INTAKE: PASS — 1 teams, 1 players, 1 of 1 resolved; 0 NBA-team disagreement(s) with the pool; wrote ../../../tmp/tmp0rvk7fs5/state.json
+/home/user/fantasy-basketball-2026-27/scripts/test_league_intake.py:91: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp0rvk7fs5/state.json' mode='r' encoding='utf-8'>
+  st = json.load(open(out))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_exact_accent_and_abbreviation (__main__.Resolve.test_exact_accent_and_abbreviation) ... ok
+test_unknown_name_is_a_miss_not_a_guess (__main__.Resolve.test_unknown_name_is_a_miss_not_a_guess) ... ok
+test_listed_name_off_il_still_halts (__main__.UnpooledIL.test_listed_name_off_il_still_halts) ... ERROR
+test_listed_name_on_il_passes_with_no_line (__main__.UnpooledIL.test_listed_name_on_il_passes_with_no_line) ... ERROR
+
+======================================================================
+ERROR: test_listed_name_off_il_still_halts (__main__.UnpooledIL.test_listed_name_off_il_still_halts)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/fantasy-basketball-2026-27/scripts/test_league_intake.py", line 68, in test_listed_name_off_il_still_halts
+    rc = LI.run(src, out, POOL, ABBR, draft={10: ["Tyrese Haliburton"]}, as_of="2026-10-15",
+                unpooled=self.UNPOOLED)
+TypeError: run() got an unexpected keyword argument 'unpooled'
+
+======================================================================
+ERROR: test_listed_name_on_il_passes_with_no_line (__main__.UnpooledIL.test_listed_name_on_il_passes_with_no_line)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/fantasy-basketball-2026-27/scripts/test_league_intake.py", line 56, in test_listed_name_on_il_passes_with_no_line
+    rc = LI.run(src, out, POOL, ABBR, draft={10: ["Tyrese Haliburton"]}, as_of="2026-10-15",
+                unpooled=self.UNPOOLED)
+TypeError: run() got an unexpected keyword argument 'unpooled'
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.016s
+
+FAILED (errors=2)
