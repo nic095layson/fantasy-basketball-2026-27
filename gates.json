@@ -1,53 +1,53 @@
 {
- "ran_at_utc": "2026-10-15T20:25:33Z",
+ "ran_at_utc": "2026-10-15T20:37:04Z",
  "inputs": {
-  "report/after-reports/after-report-2026-10-15-co-gm-daily-brief.md": "c5cab97ce490ddc7f0a6cd5dac99e043dfa605506404afb909980142c415d054",
-  "report/briefs/brief_2026-10-21.md": "d5bd7374c271264508f088374abedfdc7a2823ef2b7a33b6a3573f27f762dc5f",
-  "report/briefs/brief_2026-10-21.json": "08bf8b488cc7d1118bd9362e1b8af3d4688ec3a7a57c9e16d9a2b0c078315065"
+  "report/after-reports/after-report-2026-10-15-co-gm-weekly.md": "0148ba563410cb0521fb0b4d88d94440e4446c241e9add9a5db71401bef000ef",
+  "report/calibration.json": "a5db5a742419084353b86bba3a7be22482aefdc98b7dd9f02546c0ef19146403",
+  "report/previews/week_01.md": "536b330f6c2d7826165a7fa0b3397d3684da489bfe8cefdd40ed2d4b4ed1e76e"
  },
  "gates": [
   {
    "name": "kit check_report",
-   "cmd": "/usr/bin/python3 report/check_report.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-15-co-gm-daily-brief.md",
+   "cmd": "/usr/bin/python3 report/check_report.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-15-co-gm-weekly.md",
    "cwd": ".",
    "pass_re": "^REPORT GATE: PASS",
    "exit": 0,
-   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-10-15-co-gm-daily-brief.md (structure, publication rule, pull-log row)",
+   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-10-15-co-gm-weekly.md (structure, publication rule, pull-log row)",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "REPORT GATE: PASS \u2014 after-report-2026-10-15-co-gm-daily-brief.md (structure, publication rule, pull-log row)"
+    "REPORT GATE: PASS \u2014 after-report-2026-10-15-co-gm-weekly.md (structure, publication rule, pull-log row)"
    ]
   },
   {
    "name": "deck judgment_open_items --check-report",
-   "cmd": "/usr/bin/python3 scripts/judgment_open_items.py --check-report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-15-co-gm-daily-brief.md",
+   "cmd": "/usr/bin/python3 scripts/judgment_open_items.py --check-report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-15-co-gm-weekly.md",
    "cwd": "../yahoo-fantasy-basketball",
    "pass_re": "^receipts check PASS",
    "exit": 0,
-   "pass_line": "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-10-15-co-gm-daily-brief.md",
+   "pass_line": "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-10-15-co-gm-weekly.md",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-10-15-co-gm-daily-brief.md"
+    "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-10-15-co-gm-weekly.md"
    ]
   },
   {
    "name": "deck repeat_market_check --check-report",
-   "cmd": "/usr/bin/python3 scripts/repeat_market_check.py --check-report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-15-co-gm-daily-brief.md",
+   "cmd": "/usr/bin/python3 scripts/repeat_market_check.py --check-report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-15-co-gm-weekly.md",
    "cwd": "../yahoo-fantasy-basketball",
    "pass_re": "^REPEAT-NAME CHECK: PASS",
    "exit": 0,
-   "pass_line": "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-10-15-co-gm-daily-brief.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)",
+   "pass_line": "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-10-15-co-gm-weekly.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-10-15-co-gm-daily-brief.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)"
+    "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-10-15-co-gm-weekly.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)"
    ]
   },
   {
-   "name": "kit test_daily_brief",
-   "cmd": "python3 scripts/test_daily_brief.py",
+   "name": "kit test_weekly",
+   "cmd": "python3 scripts/test_weekly.py",
    "cwd": ".",
    "pass_re": "^OK$",
    "exit": 0,
@@ -56,7 +56,7 @@
    "why": "",
    "tail": [
     "----------------------------------------------------------------------",
-    "Ran 7 tests in 0.001s",
+    "Ran 3 tests in 0.011s",
     "OK"
    ]
   },
@@ -71,24 +71,11 @@
    "why": "",
    "tail": [
     "----------------------------------------------------------------------",
-    "Ran 10 tests in 0.325s",
+    "Ran 10 tests in 0.335s",
     "OK"
-   ]
-  },
-  {
-   "name": "kit status_feed --check",
-   "cmd": "python3 scripts/status_feed.py --check",
-   "cwd": ".",
-   "pass_re": "^STATUS GATE: PASS",
-   "exit": 0,
-   "pass_line": "STATUS GATE: PASS \u2014 status_2026-10-15.json: 53 flagged row(s), each tiered with a dated receipt",
-   "verdict": "PASS",
-   "why": "",
-   "tail": [
-    "STATUS GATE: PASS \u2014 status_2026-10-15.json: 53 flagged row(s), each tiered with a dated receipt"
    ]
   }
  ],
  "verdict": "PASS",
- "base_commit": "dea0827dc5b432334a1531093cf3fe1f9ae4fdc8"
+ "base_commit": "3e186c0cb97a89a99cb335df2aef3a67a79c6d8c"
 }

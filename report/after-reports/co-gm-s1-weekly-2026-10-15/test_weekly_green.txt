@@ -1,0 +1,17 @@
+test_brier_scores_the_categories_and_the_matchup (__main__.Ledger.test_brier_scores_the_categories_and_the_matchup) ... ok
+test_records_before_the_week_and_refuses_a_rewrite (__main__.Ledger.test_records_before_the_week_and_refuses_a_rewrite) ... /home/user/fantasy-basketball-2026-27/scripts/weekly_preview.py:87: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpg42h4mt0/calibration.json' mode='w' encoding='utf-8'>
+  json.dump(led, open(path, "w", encoding="utf-8"), indent=1, ensure_ascii=False)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/weekly_preview.py:82: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpg42h4mt0/calibration.json' mode='r' encoding='utf-8'>
+  led = json.load(open(path, encoding="utf-8")) if os.path.exists(path) else {"weeks": {}}
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_weekly.py:29: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpg42h4mt0/calibration.json' mode='r' encoding='utf-8'>
+  self.assertEqual(json.load(open(p))["weeks"]["1"]["p_win"], 0.6)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_refuses_a_prediction_recorded_after_the_week_started (__main__.Ledger.test_refuses_a_prediction_recorded_after_the_week_started) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.015s
+
+OK
