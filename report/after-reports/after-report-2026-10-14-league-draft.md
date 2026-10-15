@@ -226,6 +226,49 @@ EVIDENCE: `opponents_vs_history.py` → `opponents_vs_history.json`; history fro
 - **Caution on the measure:** value reach is measured against our own board. A manager who drafts the market looks like a reacher wherever our board and the market disagree (Kevin is the clearest case). The market column is the neutral one.
 - **What the sim does not see:** the in-season grinders. Will (83 moves last season), Martin (50, and the title), Oblena (69) and Cayas (61) streamed and churned heavily; the 10,000 seasons freeze every roster at the draft, so their real chances are likely higher than modelled, and the gap to you likely smaller.
 
+## 11. Retro: who else was on the board at each of your picks, and what each would have done to your title odds
+
+EVIDENCE: `retro_picks.py` → `retro_picks.json`. At each of your 13 turns, `m100_hindsight.json` scores every legal alternative by expected weekly category wins (ECW) against the final rosters. The three alternatives with the largest positive gain at each turn (or, where nobody beat your pick, the single closest) were swapped in for your pick on Yahoo's final board, pairwise as in §4b: the seat that drafted the alternative later gets your player instead; an undrafted alternative leaves your player undrafted. Each of the 27 swaps ran 10,000 seasons through the verified simulator on seeds 2026 and 2027, the baselines' seeds (22.50 / 21.84 percent), so each swap and its baseline share their random draws. The script ran twice with identical results, and its #10 Maxey row equals §4b's. **Verdict rule:** better than yours only when both seeds exceed +0.5 title points; yours was better when both fall below −0.5; anything else is inside the noise (the two seeds differ by 0.30 points on average across these rows). **Cross-check:** 11 of these swaps also exist in the house arms (§5: 18,000 seasons on seeds 11/23/47, a different set of dice); the direction agrees at 11 of 11.
+
+| pick | you took | alternative (drafted at, by) | ECW gain | title shift, seed 2026 / 2027 | mean | players with an ECW gain over yours | verdict |
+|---|---|---|---|---|---|---|---|
+| #10 | Tyrese Haliburton | Tyrese Maxey (#11, Cayas) | +0.007 | +0.79 / +0.78 | +0.79 | 1 of 295 | better than yours |
+| #15 | Kevin Durant | Jalen Johnson (#18, John) | +0.132 | +2.17 / +1.81 | +1.99 | 7 of 291 | better than yours |
+| #15 | Kevin Durant | Donovan Mitchell (#19, Martin) | +0.046 | +0.97 / +1.12 | +1.04 | 7 of 291 | better than yours |
+| #15 | Kevin Durant | Jamal Murray (#20, Kyle) | +0.038 | +0.62 / +0.18 | +0.40 | 7 of 291 | inside the noise |
+| #34 | Kawhi Leonard | Domantas Sabonis (#36, Hegi) | +0.087 | +0.79 / +1.37 | +1.08 | 2 of 273 | better than yours |
+| #34 | Kawhi Leonard | James Harden (#46, Will) | +0.080 | +1.81 / +1.90 | +1.85 | 2 of 273 | better than yours |
+| #39 | Derrick White | James Harden (#46, Will) | +0.021 | -0.47 / -0.76 | -0.61 | 1 of 269 | inside the noise |
+| #58 | Kyrie Irving | Michael Porter Jr. (#72, Oblena) | +0.024 | +0.55 / +1.02 | +0.79 | 2 of 251 | better than yours |
+| #58 | Kyrie Irving | Franz Wagner (#62, Cayas) | +0.018 | -0.41 / -0.02 | -0.21 | 2 of 251 | inside the noise |
+| #63 | Kel'el Ware | Michael Porter Jr. (#72, Oblena) | +0.060 | +1.57 / +1.31 | +1.44 | 3 of 247 | better than yours |
+| #63 | Kel'el Ware | Naz Reid (#78, Martin) | +0.034 | +1.52 / +1.25 | +1.39 | 3 of 247 | better than yours |
+| #63 | Kel'el Ware | Dyson Daniels (#67, Martin) | +0.007 | -0.29 / -0.11 | -0.20 | 3 of 247 | inside the noise |
+| #82 | Ty Jerome | Immanuel Quickley (#86, Cayas) | -0.019 | -1.33 / -1.11 | -1.22 | 0 of 229 | yours was better |
+| #87 | Jaden McDaniels | Josh Hart (#99, Will) | +0.055 | +0.33 / +0.66 | +0.49 | 2 of 225 | inside the noise |
+| #87 | Jaden McDaniels | Caleb Wilson (#91, Martin) | +0.035 | +0.65 / +0.84 | +0.74 | 2 of 225 | better than yours |
+| #106 | Miles Bridges | Kyshawn George (#150, Martin) | -0.045 | -1.54 / -0.68 | -1.11 | 0 of 207 | yours was better |
+| #111 | Yaxel Lendeborg | Kyshawn George (#150, Martin) | +0.058 | +1.84 / +1.57 | +1.71 | 6 of 203 | better than yours |
+| #111 | Yaxel Lendeborg | Cedric Coward (#115, Martin) | +0.035 | +0.49 / +0.63 | +0.56 | 6 of 203 | inside the noise |
+| #111 | Yaxel Lendeborg | Draymond Green (undrafted) | +0.026 | +0.79 / +0.36 | +0.57 | 6 of 203 | inside the noise |
+| #130 | Neemias Queta | Kyshawn George (#150, Martin) | +0.037 | +1.40 / +0.75 | +1.07 | 3 of 162 | better than yours |
+| #130 | Neemias Queta | Draymond Green (undrafted) | +0.025 | +0.50 / +0.76 | +0.63 | 3 of 162 | inside the noise |
+| #130 | Neemias Queta | Jakob Poeltl (#151, John) | +0.011 | -0.48 / -0.41 | -0.44 | 3 of 162 | inside the noise |
+| #135 | PJ Washington | Kyshawn George (#150, Martin) | +0.045 | +0.68 / +0.86 | +0.77 | 2 of 158 | better than yours |
+| #135 | PJ Washington | Draymond Green (undrafted) | +0.022 | +0.41 / +0.42 | +0.41 | 2 of 158 | inside the noise |
+| #154 | Christian Braun | Draymond Green (undrafted) | +0.061 | +1.54 / +1.72 | +1.63 | 5 of 141 | better than yours |
+| #154 | Christian Braun | Bobby Portis (undrafted) | +0.029 | +0.89 / +1.15 | +1.02 | 5 of 141 | better than yours |
+| #154 | Christian Braun | Jrue Holiday (undrafted) | +0.012 | +0.69 / +0.16 | +0.42 | 5 of 141 | inside the noise |
+
+**Reading it.**
+
+- **Turns where a clearly better player was on the board (10 of 13):** #10 Tyrese Maxey over Tyrese Haliburton (+0.79); #15 Jalen Johnson over Kevin Durant (+1.99); #34 James Harden over Kawhi Leonard (+1.85); #58 Michael Porter Jr. over Kyrie Irving (+0.79); #63 Michael Porter Jr. over Kel'el Ware (+1.44); #87 Caleb Wilson over Jaden McDaniels (+0.74); #111 Kyshawn George over Yaxel Lendeborg (+1.71); #130 Kyshawn George over Neemias Queta (+1.07); #135 Kyshawn George over PJ Washington (+0.77); #154 Draymond Green over Christian Braun (+1.63).
+- **Turns where your pick stands (3 of 13):** #39 Derrick White, #82 Ty Jerome, #106 Miles Bridges. At #82 and #106 no legal alternative beat your pick even by ECW; at #39 Harden's small ECW gain turns into a loss in the seasons.
+- **The largest single miss is #15:** Jalen Johnson, taken three picks later by John, instead of Durant. The second tier is the same shape: Harden at #34, MPJ or Naz Reid at #63, Kyshawn George at #111 (still on the board until #150), and Draymond at #154 (never drafted).
+- **The same player recurs.** Kyshawn George is the top alternative at #111, #130 and #135, and Draymond at four turns; you could have had each once. MPJ is the top alternative at both #58 and #63.
+- **Where the alternative went matters.** Harden instead of Kawhi at #34 is +1.85; Harden instead of White at #39 is −0.61. In the first swap Will (seat 3) receives Kawhi at #46, in the second White. Every shift includes what the displaced player does on the seat that receives that player; it is not a pure measure of the two players.
+- **Hindsight's ceiling.** All the better picks at once, each player used once (#10 Tyrese Maxey, #15 Jalen Johnson, #34 James Harden, #58 Michael Porter Jr., #63 Naz Reid, #87 Caleb Wilson, #111 Kyshawn George, #130 Draymond Green, #154 Bobby Portis), give a title share of 28.58 / 28.67 percent: +6.08 / +6.83 points. That is far below the sum of the single shifts (+10.9): gains overlap, and each swap also strengthens a rival. For scale, following the card at every turn graded 24.55 percent against 21.78 as drafted on the house arms (different seeds). The ceiling is perfect hindsight, not an attainable draft: it knows who every opponent took later.
+
 ## 9. Critical review: what this analysis can and cannot tell you
 
 1. **The title share is model-relative.** Every season is simulated on the lock's projection lines. The integrity audit put projection confidence at 97.8%, but that figure mostly measures agreement with consensus (the lines sit about five-sixths of the way to it): if the consensus is wrong about a player, so is this. Real projection error is the largest uncertainty here, larger than the ±0.4-point Monte-Carlo error or the 0.88-point spread between two runs.
@@ -280,6 +323,7 @@ Near misses (the 🎯 in 5+ mocks, under 25 places): Jamal Murray (18 mocks, val
 - No line, price or engine change; the lines are the lock's.
 - The league's real weekly schedule is not in either repository: the simulation draws the pairings at random each week, so each team meets an average schedule. A real schedule moves an individual season, not the 10,000-season shares much.
 - In-season management (streaming, trades, waiver moves) is not modelled beyond the daily-fill start rates; §6 is the only replacement modelled.
+- §11 simulates only the top three alternatives by ECW at each turn; a player lower on ECW whose title shift would have been larger is not tested. The swaps are single changes on the final board: they do not model how the rest of the draft would have unfolded after a different pick.
 
 **In scope and unverified.**
 - Injury news after the 10/14 lock: did not check (no pull tonight); the board's availability multipliers are the lock's.
@@ -297,7 +341,7 @@ Near misses (the 🎯 in 5+ mocks, under 25 places): Jamal Murray (18 mocks, val
 ## Provenance
 
 - Inputs: the owner's paste (`owner_message.txt`, verbatim); the lock pool (deck `af91b23`, `arena/results/players_v69.csv`); the page `docs/draft-deck.html` (Version 70, deck main `ec070a6`).
-- Tools: `build_state.py` (parse, resolve, the typed sequence), the deck's `arena/mocks/league_sim.py` (new: the house simulator with the full season recorded, `--verify` against `arena.simulate_seasons`), `live_retro.py` (the draft registered as key 100 on tag v69: replay, final, hindsight, arms), `live_deckcard.py`, `live_replay_dom.mjs`, `stress.py`, `scripts/repeat_market_check.py` (33 of 33 rooms, 12 flagged; the league draft is room 100 in that count), `write_report.py`.
+- Tools: `build_state.py` (parse, resolve, the typed sequence), the deck's `arena/mocks/league_sim.py` (new: the house simulator with the full season recorded, `--verify` against `arena.simulate_seasons`), `live_retro.py` (the draft registered as key 100 on tag v69: replay, final, hindsight, arms), `live_deckcard.py`, `live_replay_dom.mjs`, `stress.py`, `retro_picks.py` (§11), `scripts/repeat_market_check.py` (33 of 33 rooms, 12 flagged; the league draft is room 100 in that count), `write_report.py`.
 - No line, tag or placement changed on either plane; nothing was published.
 
 ## In plain language
@@ -315,5 +359,7 @@ Near misses (the 🎯 in 5+ mocks, under 25 places): Jamal Murray (18 mocks, val
 **Your picks against the card.** Of your six picks off the card's 🎯, yours came out better on title share at 4 (#63 Kel'el Ware, #111 Yaxel Lendeborg, #130 Neemias Queta, #135 PJ Washington); the card was better at 2 (#10 Tyrese Maxey over Tyrese Haliburton, #154 Tobias Harris over Christian Braun). Every difference is under about 1.2 title points; the clearest wins for you were PJ Washington over Poeltl at #135, and for the card, Maxey over Haliburton at #10.
 
 **Your opponents.** Most drafted roughly as before, but the history predicts less than it seems: only 4 of 20 "loyalty" repeats happened, and the reach ranking barely carried over year to year. The notable change is Martin, last year's champion, who drafted for value this time and sits third in the simulation. The managers who churn the waiver wire hardest (Will, Martin, Oblena, Cayas) are probably stronger than the frozen simulation shows.
+
+**Looking back at every pick (§11).** At 10 of your 13 picks a clearly better player was still on the board; the biggest was Jalen Johnson instead of Durant at #15 (about +2.0 title points). At the other 3 picks your choice holds up. Fixing all of them at once with perfect hindsight would have lifted the title share from about 22 to about 29 percent, but that needs knowing every later pick in advance; following the card would have recovered part of it.
 
 **The tool.** Your corrections all worked: the board matched Yahoo's 156 of 156. The history display has two cosmetic bugs (§8), on the list for after the draft.
