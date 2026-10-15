@@ -1,0 +1,56 @@
+test_categories (__main__.Settings.test_categories) ... ok
+test_playoff_reseeding (__main__.Settings.test_playoff_reseeding)
+Reseeded: after round 1 the best remaining seed meets the worst remaining seed. ... FAIL
+test_playoff_teams (__main__.Settings.test_playoff_teams) ... ok
+test_playoff_weeks_in_the_schedule_builder (__main__.Settings.test_playoff_weeks_in_the_schedule_builder) ... FAIL
+test_regular_season_weeks (__main__.Settings.test_regular_season_weeks) ... FAIL
+test_roster_size_and_draft (__main__.Settings.test_roster_size_and_draft) ... ok
+test_starting_slots (__main__.Settings.test_starting_slots) ... ok
+test_teams (__main__.Settings.test_teams) ... ok
+
+======================================================================
+FAIL: test_playoff_reseeding (__main__.Settings.test_playoff_reseeding)
+Reseeded: after round 1 the best remaining seed meets the worst remaining seed.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/fantasy-basketball-2026-27/scripts/test_settings.py", line 82, in test_playoff_reseeding
+    self.assertEqual(set(played[4:6]), {(3, 8), (4, 7)}, f"semifinals played: {played[4:6]}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Items in the first set but not the second:
+(3, 7)
+(4, 8)
+Items in the second set but not the first:
+(3, 8)
+(4, 7) : semifinals played: [(4, 8), (3, 7)]
+
+======================================================================
+FAIL: test_playoff_weeks_in_the_schedule_builder (__main__.Settings.test_playoff_weeks_in_the_schedule_builder)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/fantasy-basketball-2026-27/scripts/test_settings.py", line 52, in test_playoff_weeks_in_the_schedule_builder
+    self.assertEqual(tuple(build_schedule.OWNER_PLAYOFF_WEEKS), tuple(S["playoffs"]["weeks"]))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (19, 20, 21) != (18, 19, 20)
+
+First differing element 0:
+19
+18
+
+- (19, 20, 21)
++ (18, 19, 20)
+
+======================================================================
+FAIL: test_regular_season_weeks (__main__.Settings.test_regular_season_weeks)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/fantasy-basketball-2026-27/scripts/test_settings.py", line 45, in test_regular_season_weeks
+    self.assertEqual(arena.WEEKS, S["regular_season_weeks"],
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                     "arena.WEEKS is the regular-season matchup count")
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 18 != 17 : arena.WEEKS is the regular-season matchup count
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.003s
+
+FAILED (failures=3)
