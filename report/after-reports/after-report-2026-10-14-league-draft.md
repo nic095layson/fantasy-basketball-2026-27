@@ -99,6 +99,21 @@ EVIDENCE: `m100_deckcard_v69.json` (the page's own engine on Yahoo's board befor
 
 The turns off the 🎯 and where the 🎯 went: #10 Tyrese Haliburton (🎯 Tyrese Maxey, taken #11 by Cayas (IM SO HORT)); #63 Kel'el Ware (🎯 Dyson Daniels, taken #67 by Martin (HalleLuka Amen)); #111 Yaxel Lendeborg (🎯 Jakob Poeltl, taken #151 by John (John's Cool Team)); #130 Neemias Queta (🎯 Jakob Poeltl, taken #151 by John (John's Cool Team)); #135 PJ Washington (🎯 Jakob Poeltl, taken #151 by John (John's Cool Team)); #154 Christian Braun (🎯 Tobias Harris, undrafted).
 
+### 4b. Were your picks better than the card's?
+
+EVIDENCE: `card_vs_owner.py` → `card_vs_owner.json`. At each of your six turns off the 🎯, the 🎯 was swapped in for your pick on Yahoo's final board — pairwise, as the house arms do: the seat that took the 🎯 later gets your player instead (an undrafted 🎯 leaves your player undrafted). Each swap scored by expected weekly category wins and by title share over 10,000 seasons on both seeds (the baselines' seeds, so the dice line up). Negative = your pick was better.
+
+| pick | you took | the card's 🎯 (where it went) | Δ cats a week if 🎯 | Δ title % if 🎯 (seed 2026 / 2027) | verdict |
+|---|---|---|---|---|---|
+| #10 | Tyrese Haliburton | Tyrese Maxey (#11 seat 11) | +0.0069 | +0.79 / +0.78 | the card's pick was better |
+| #63 | Kel'el Ware | Dyson Daniels (#67 seat 6) | +0.0074 | -0.29 / -0.11 | your pick was better (inside the noise) |
+| #111 | Yaxel Lendeborg | Jakob Poeltl (#151 seat 7) | +0.0002 | -0.69 / -0.20 | your pick was better |
+| #130 | Neemias Queta | Jakob Poeltl (#151 seat 7) | +0.0105 | -0.48 / -0.41 | your pick was better (inside the noise) |
+| #135 | PJ Washington | Jakob Poeltl (#151 seat 7) | -0.0171 | -1.20 / -0.57 | your pick was better |
+| #154 | Christian Braun | Tobias Harris (undrafted) | +0.0086 | +0.13 / +0.41 | the card's pick was better (inside the noise) |
+
+On title share your pick beat the 🎯 at 4 of 6 turns (#63 Kel'el Ware, #111 Yaxel Lendeborg, #130 Neemias Queta, #135 PJ Washington) and the 🎯 beat yours at 2 (#10 Tyrese Maxey over Tyrese Haliburton, #154 Tobias Harris over Christian Braun). On the card's own measure (cats a week against the final rosters) the 🎯 edges five of the six by 0.011 or less — differences that small sit inside projection error. The two measures can disagree because a pairwise swap also hands a rival your player: the three Poeltl turns would have given John's team Lendeborg, Queta or Washington. The three Poeltl rows are alternatives, not a sum — Poeltl could be taken once.
+
 ## 5. What-ifs (the house arms: 18,000 seasons each, seeds 11/23/47 — the method every mock was graded on)
 
 EVIDENCE: `m100_arms.json`. These use the house seeds, not the 10,000-season runs above, so the as-drafted line differs from §2 by Monte-Carlo noise.
@@ -183,6 +198,33 @@ EVIDENCE: the typed sequence rebuilt in `arena/data/events/m100_tool_events.json
 **Two log-display defects, neither touching the board or the card.** (a) The paste's history shows each undone entry under the name of the pick's later occupant ("#10 Tyrese Haliburton" above "undid: Tyrese Maxey"; "#38 Jalen Williams" and "#39 Derrick White" above the undos of Avdija and White): an Insert-at-# re-renders the history from the state (D59-1), undone lines included; the undo lines name what was removed, and the replay rebuilt from them reproduces the paste. (b) At the #98 insert the log said "#59 Keyonte George is no longer your pick after the shift": George was never your pick on the final board; `relabelLog` (`docs/draft-deck.html`, ~line 1050) maps every history line that carries a pick index — undone entries included — to the state's current pick there, and calls a line "moved off" when its old text had "(YOU)" and the current occupant is not yours; the undone George entry (typed when the tool was one pick short, so it sat on your seat) was re-mapped to #59, where the re-entered George sits for seat 11. The shift line at #58 (D83-1's message) said "Kyrie Irving is the 🎯" — on this board it was true: the card had Kyrie #1 at #58.
 
 The 2 "off the card" lines for entries later undone (Deni Avdija, Keyonte George) were the card's verdicts on mis-seated entries, not on your picks.
+
+## 10. Your opponents against their own history
+
+EVIDENCE: `opponents_vs_history.py` → `opponents_vs_history.json`; history from `arena/draft_boards.json` (three seasons, 156 picks each) and `arena/profiles.json` (the E18 manager profiles). **Value reach** = pick − 9-cat value rank (room_model.py's formula; positive = took fallers, negative = reached past value), 2025-26 on that season's frozen pool and 2026 on the lock pool — two different pools, so the levels compare loosely and the order of managers is the firmer test. **Market reach** = pick − Yahoo ADP (2026 only; there is no earlier ADP file). **Guard share** = picks eligible at PG or SG. Rank agreement of early value reach, 2025-26 against 2026, across the eleven: Spearman +0.40 (n = 11) — a weak link; with eleven managers it is not distinguishable from chance.
+
+| manager (team) | early value reach, 2025-26 to 2026 | whole-draft value reach, 2025-26 to 2026 | market reach 2026 (early) | guard share 2026 (2025-26 / 24-25 / 23-24) | took again from his own past drafts | the profile's loyalty names: taken / gone elsewhere |
+|---|---|---|---|---|---|---|
+| Oblena (Itsy Bitsy Spida) | +9.3 to +0.5 | -5.5 to -7.8 | +7.1 (-1.2) | 0.54 (0.46 / 0.54 / 0.62) | Chet Holmgren, Darius Garland, Ja Morant | — / Donovan Mitchell #19 Martin |
+| Noah (Devin Minutes in Heaven) | -43.5 to -4.0 | -30.9 to -6.4 | +2.5 (-3.4) | 0.46 (0.62 / 0.54 / 0.58) | LaMelo Ball | LaMelo Ball / — |
+| Will (The Konclave) | -16.5 to -1.0 | -7.4 to -15.2 | +2.2 (-5.7) | 0.46 (0.54 / 0.58 / 0.45) | Mikal Bridges, Onyeka Okongwu | Onyeka Okongwu / Jaden Ivey undrafted |
+| Robby (Gotta Be Bamonte) | -25.7 to -20.7 | -18.8 to -2.2 | +7.7 (+4.5) | 0.62 (0.54 / 0.54 / 0.54) | Bam Adebayo, Devin Booker, Fred VanVleet, Jaylen Brown | Devin Booker / Jarrett Allen #56 JCo; Collin Sexton #152 JCo; Devin Vassell #131 Cayas |
+| Kyle (ur my only hope Anti-wan) | -7.0 to -9.5 | -1.0 to +3.8 | -1.7 (-9.0) | 0.54 (0.54 / 0.42 / 0.62) | Rudy Gobert | — / — |
+| Martin (HalleLuka Amen) | -14.8 to +2.0 | -4.4 to +8.6 | +11.9 (+4.4) | 0.62 (0.54 / 0.54 / 0.55) | Donovan Mitchell, Jalen Brunson, Jalen Duren, Kyshawn George, Pascal Siakam | — / Luka Doncic #3 Will; Brandon Ingram #79 John; Jalen Suggs #92 Kyle |
+| John (John's Cool Team) | -8.0 to -20.5 | -1.3 to -17.9 | +3.1 (+0.1) | 0.31 (0.31 / 0.38 / 0.67) | Aaron Gordon, Cameron Johnson, Jakob Poeltl, Julius Randle, Zach LaVine | Jakob Poeltl / Tyrese Maxey #11 Cayas; Jeremy Sochan undrafted |
+| JCo (Wing Chun Wemby) | +4.3 to +7.3 | -15.0 to -3.8 | +5.8 (-0.3) | 0.54 (0.46 / 0.46 / 0.25) | DeMar DeRozan, Zion Williamson | — / Tyrese Haliburton #10 Me; Jimmy Butler III #156 Hegi; Nic Claxton #129 Kevin |
+| Kevin (All guards no defense) | -15.8 to -37.5 | +10.0 to -28.1 | +3.7 (-2.1) | 0.46 (0.46 / 0.33 / 0.46) | Quentin Grimes | — / Pascal Siakam #54 Martin |
+| Cayas (IM SO HORT) | +5.5 to -3.8 | +8.7 to +3.4 | +4.7 (-0.4) | 0.62 (0.46 / 0.54 / 0.33) | Franz Wagner, Jalen Williams, Joel Embiid | — / — |
+| Hegi (Not hurt just SARR) | -26.0 to -6.3 | -17.2 to -13.2 | -0.6 (-7.2) | 0.54 (0.5 / 0.46 / 0.5) | — | — / Immanuel Quickley #86 Cayas; Andrew Wiggins #102 Martin |
+
+**What held, what broke.**
+
+- **Loyalty is weak.** Of the 20 manager–player pairs the profiles list as repeat picks, 4 repeated (Booker to Robby, Okongwu to Will, Poeltl to John, LaMelo Ball to Noah). The profile's own note says league-wide repetition runs at chance; tonight agrees.
+- **The model's named prediction missed.** The profile gave Robby drafting Jarrett Allen a 0.77 chance; Robby took Banchero at #52 and Allen went to JCo at #56.
+- **Held to type:** Robby (early reach -25.7 → -20.7; at or after Yahoo's ADP early, +4.5 — the market-anchored, name-brand drafter the profile describes); Kyle (mild reacher, -7.0 → -9.5); JCo (value-anchored, +4.3 → +7.3); Oblena's shape (better early than late in both years); John's light guard share (0.31, against 0.31 a year ago).
+- **Changed:** Martin — the reigning champion and the profile's apex threat — drafted value this time (early -14.8 → +2.0; on average he took players +11.9 places after their ADP), and he is third in the 10,000 seasons. Kevin reached far harder against the board (-15.8 → -37.5) while staying near ADP (-2.1): he drafted the market, and our board disagrees with the market on his players. His guard-heavy label did not show (0.46). John reached more than before (-8.0 → -20.5). Hegi and Will reached less early than their histories. Noah's −43.5 was 2025-26's autodraft geometry (the profile's own correction); drafting by hand he sat near value (-4.0).
+- **Caution on the measure:** value reach is measured against our own board. A manager who drafts the market looks like a reacher wherever our board and the market disagree (Kevin is the clearest case). The market column is the neutral one.
+- **What the sim does not see:** the in-season grinders. Will (83 moves last season), Martin (50, and the title), Oblena (69) and Cayas (61) streamed and churned heavily; the 10,000 seasons freeze every roster at the draft, so their real chances are likely higher than modelled, and the gap to you likely smaller.
 
 ## 9. Critical review: what this analysis can and cannot tell you
 
@@ -269,5 +311,9 @@ Near misses (the 🎯 in 5+ mocks, under 25 places): Jamal Murray (18 mocks, val
 **The risk.** Losing Haliburton or Durant for the whole season would cut the title share to about 11 percent; Kawhi or Kyrie, to about 14 and 16. The board already prices ordinary missed games.
 
 **Pickups.** Of 520 add/drop pairs, only 8 help, all by dropping one of Braun, Queta, Washington or Lendeborg. The best is **Draymond Green for Christian Braun** (about +1.5 to +1.7 title points), but only if Green plays a normal schedule: at reduced availability the same move costs about 1.3 points, and he has been resting in the preseason. The safer, smaller move is **Bobby Portis for Braun** (about +0.9 to +1.2). Nobody on the wire beats any of your top nine.
+
+**Your picks against the card.** Of your six picks off the card's 🎯, yours came out better on title share at 4 (#63 Kel'el Ware, #111 Yaxel Lendeborg, #130 Neemias Queta, #135 PJ Washington); the card was better at 2 (#10 Tyrese Maxey over Tyrese Haliburton, #154 Tobias Harris over Christian Braun). Every difference is under about 1.2 title points; the clearest wins for you were PJ Washington over Poeltl at #135, and for the card, Maxey over Haliburton at #10.
+
+**Your opponents.** Most drafted roughly as before, but the history predicts less than it seems: only 4 of 20 "loyalty" repeats happened, and the reach ranking barely carried over year to year. The notable change is Martin, last year's champion, who drafted for value this time and sits third in the simulation. The managers who churn the waiver wire hardest (Will, Martin, Oblena, Cayas) are probably stronger than the frozen simulation shows.
 
 **The tool.** Your corrections all worked: the board matched Yahoo's 156 of 156. The history display has two cosmetic bugs (§8), on the list for after the draft.
