@@ -148,6 +148,24 @@ EVIDENCE: `waiver.json` — the undrafted players by the board's value (availabi
 | 9 | Scotty Pippen Jr. | MEM | PG | 1.00 |
 | 10 | Wendell Carter Jr. | ORL | C | 1.00 |
 
+## 7b. Pickups tested: every add/drop pair
+
+EVIDENCE: `waiver_moves.py` → `waiver_moves.json`: the 40 best undrafted players (availability > 0, the owner's veto off) × your 13 = 520 pairs, each scored by expected weekly category wins against the eleven final rosters (the card's own measure; your baseline 5.1439). **8 of 520 pairs improve the team**, and every one drops Braun, Queta, Washington or Lendeborg; no undrafted player improves on any of your top nine. The best pairs then ran 10,000 seasons each through the verified simulator, on the baseline's seed 2026 and again on seed 2027 (`waiver_moves_s2027.json`).
+
+| add | drop | Δ cats a week | title %, seed 2026 (Δ) | title %, seed 2027 (Δ) | categories that move most |
+|---|---|---|---|---|---|
+| Draymond Green (GSW) | Christian Braun | +0.0606 | 24.04 (+1.54) | 23.56 (+1.72) | AST +0.15, TO -0.11, FG% -0.06 |
+| Bobby Portis (MIA) | Christian Braun | +0.0288 | 23.39 (+0.89) | 22.99 (+1.15) | REB +0.08, 3PTM +0.06, AST -0.04 |
+| Jrue Holiday (POR) | Christian Braun | +0.0124 | 23.19 (+0.69) | 22.00 (+0.16) | AST +0.09, 3PTM +0.07, TO -0.05 |
+| Tobias Harris (SAS) | Christian Braun | +0.0086 | 22.63 (+0.13) | — | FG% -0.04, FT% +0.02, 3PTM +0.02 |
+| Aaron Nesmith (IND) | Christian Braun | +0.0039 | 22.96 (+0.46) | — | 3PTM +0.10, FG% -0.05, AST -0.04 |
+| Draymond Green (GSW) | Neemias Queta | +0.0253 | 23.00 (+0.50) | 22.60 (+0.76) | AST +0.20, 3PTM +0.10, TO -0.10 |
+
+**The availability test (the critical one).** Draymond Green's line on the board carries full availability (1.00). Run again with Green at the board's risk tier (0.78 ranking / 0.75 weekly — `waiver_draymond_risk.json`), the same Green-for-Braun swap grades 21.25 and 20.54 percent: **below** the as-drafted 22.50 / 21.84. The move's whole gain rests on Green playing a normal schedule. Web check 2026-10-15 (`web_receipts_2026-10-15.md`, leads not box scores): ESPN lists him day-to-day (rest) with a return estimate of Oct 16; RotoWire and Fox Sports report preseason rest games and limited minutes ahead of the Oct 21 opener.
+
+Monte-Carlo error on a single 10,000-season title share is about ±0.4 points (one standard error at 22%); the paired runs share their dice, so a difference that keeps its sign on both seeds is the signal. Green-for-Braun (+1.54 / +1.72) and Portis-for-Braun (+0.89 / +1.15) keep their sign; Holiday (+0.69 / +0.16) is inside the noise.
+
+
 ## 8. Tool-state integrity
 
 recap picks 156; seats 12; managers 1 Oblena (Itsy Bitsy Spida), 2 Noah (Devin Minutes in Heaven), 3 Will (The Konclave), 4 Robby (Gotta Be Bamonte), 5 Kyle (ur my only hope Anti-wan), 6 Martin (HalleLuka Amen), 7 John (John's Cool Team), 8 JCo (Wing Chun Wemby), 9 Kevin (All guards no defense), 10 Me (Your Team), 11 Cayas (IM SO HORT), 12 Hegi (Not hurt just SARR); name resolution: initial+surname, unique 143; initial+surname+team 12; initial+surname, tool log as tie-break 1; tie-breaks by the tool log: #38 J. Williams (OKC): candidates Jalen Williams (OKC), Jaylin Williams (OKC); the tool log has Jalen Williams; Yahoo team differs from the pool's team: 0 []; feed vs recap: 156 of 156 agree on name and seat; differences []; owner picks: #10 Tyrese Haliburton, #15 Kevin Durant, #34 Kawhi Leonard, #39 Derrick White, #58 Kyrie Irving, #63 Kel'el Ware, #82 Ty Jerome, #87 Jaden McDaniels, #106 Miles Bridges, #111 Yaxel Lendeborg, #130 Neemias Queta, #135 PJ Washington, #154 Christian Braun; events 165: feed 157, undo 4, insert 3, HALTED 1; feeds later undone 4: Tyrese Maxey, Derrick White, Deni Avdija, Keyonte George.
@@ -165,6 +183,18 @@ EVIDENCE: the typed sequence rebuilt in `arena/data/events/m100_tool_events.json
 **Two log-display defects, neither touching the board or the card.** (a) The paste's history shows each undone entry under the name of the pick's later occupant ("#10 Tyrese Haliburton" above "undid: Tyrese Maxey"; "#38 Jalen Williams" and "#39 Derrick White" above the undos of Avdija and White): an Insert-at-# re-renders the history from the state (D59-1), undone lines included; the undo lines name what was removed, and the replay rebuilt from them reproduces the paste. (b) At the #98 insert the log said "#59 Keyonte George is no longer your pick after the shift": George was never your pick on the final board; `relabelLog` (`docs/draft-deck.html`, ~line 1050) maps every history line that carries a pick index — undone entries included — to the state's current pick there, and calls a line "moved off" when its old text had "(YOU)" and the current occupant is not yours; the undone George entry (typed when the tool was one pick short, so it sat on your seat) was re-mapped to #59, where the re-entered George sits for seat 11. The shift line at #58 (D83-1's message) said "Kyrie Irving is the 🎯" — on this board it was true: the card had Kyrie #1 at #58.
 
 The 2 "off the card" lines for entries later undone (Deni Avdija, Keyonte George) were the card's verdicts on mis-seated entries, not on your picks.
+
+## 9. Critical review: what this analysis can and cannot tell you
+
+1. **The title share is model-relative.** Every season is simulated on the lock's projection lines. The integrity audit put projection confidence at 97.8%, but that figure mostly measures agreement with consensus (the lines sit about five-sixths of the way to it): if the consensus is wrong about a player, so is this. Real projection error is the largest uncertainty here, larger than the ±0.4-point Monte-Carlo error or the 0.88-point spread between two runs.
+2. **The grader and the card are the same engine.** "Following the 🎯 would have graded higher" and "hindsight's best alternative" are measured by the model that produced the card. They show internal consistency, not that the card is right about basketball.
+3. **Hindsight uses information you did not have.** §4's alternatives are scored against the final rosters; at the pick, the later picks were unknown. Hindsight gains of 0.1 cats a week or less are small against projection error.
+4. **The schedule is average, not yours.** Pairings are drawn at random each week; the league's real schedule (not in either repository) decides any one season's luck.
+5. **Opponents stand still.** No trades, streaming or waiver moves by anyone after the draft; the eleven rosters are frozen. Active managers will move the table; the stress test (§6) and the pickup test (§7b) are the only in-season changes modelled.
+6. **Availability is the lock's.** Yahoo flags Durant, Kyrie and Miles Bridges questionable; the board carries Durant and Bridges at full availability. Injury news since the lock was not pulled (did not check), apart from the three pickup-relevant names in `web_receipts_2026-10-15.md`. §6 shows what a full-season loss costs: about half the title share for Haliburton or Durant.
+7. **The simulator was verified against the house simulator, not against reality.** `league_sim.py` equals `arena.simulate_seasons` draw for draw; that proves the extension is faithful, not that the season model is calibrated. The model's last calibration evidence is in earlier reports (the 2025-26 what-if and survival work), not re-run tonight.
+8. **Your team's shape is a real exposure.** Last in assists and ninth in points and rebounds: you win weeks through efficiency and defense (FT%, BLK, TO). A team built that way can drop weeks when one shooter goes cold or one center misses time; the category win shares in §3 are averages over 10,000 seasons, not a promise for any given week.
+9. **The pickup test is narrow.** It tries one add for one drop against frozen rosters, using undrafted players by the board's value (top 40). It does not test two-for-one moves, trades, or streaming for games.
 
 ## Watchlist
 
@@ -218,6 +248,7 @@ Near misses (the 🎯 in 5+ mocks, under 25 places): Jamal Murray (18 mocks, val
 
 | id | decision question | default if silent |
 |---|---|---|
+| D-LD-2 | waiver move after the draft: (a) Draymond Green for Christian Braun now, accepting the rest-day risk; (b) watch Green's first week of games, then decide; (c) Bobby Portis for Braun now, the smaller but sturdier gain; (d) stand pat | (b) |
 | D-LD-1 | the log-display defects (§8: undone lines re-rendered under the later occupant; the stale "no longer your pick" line) together with D83-1: fix after the draft, red-first, on the next deck version | fix after the draft |
 | D-INT-1 (provenance freshness), D82-1, D83-1, earlier | carried; post-draft items | carried |
 
@@ -236,5 +267,7 @@ Near misses (the 🎯 in 5+ mocks, under 25 places): Jamal Murray (18 mocks, val
 **The draft itself.** You took the card's 🎯 at 7 of 13 picks and stayed in its Top 5 at 12. The best single change in hindsight was #15: Jalen Johnson instead of Kevin Durant (+2.2 title points on the house arms). Taking the 🎯 every time grades 24.6 percent on the house arms against 21.8 as drafted.
 
 **The risk.** Losing Haliburton or Durant for the whole season would cut the title share to about 11 percent; Kawhi or Kyrie, to about 14 and 16. The board already prices ordinary missed games.
+
+**Pickups.** Of 520 add/drop pairs, only 8 help, all by dropping one of Braun, Queta, Washington or Lendeborg. The best is **Draymond Green for Christian Braun** (about +1.5 to +1.7 title points), but only if Green plays a normal schedule: at reduced availability the same move costs about 1.3 points, and he has been resting in the preseason. The safer, smaller move is **Bobby Portis for Braun** (about +0.9 to +1.2). Nobody on the wire beats any of your top nine.
 
 **The tool.** Your corrections all worked: the board matched Yahoo's 156 of 156. The history display has two cosmetic bugs (§8), on the list for after the draft.
