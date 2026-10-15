@@ -18,12 +18,14 @@ repo's `OPEN.md`; this kit copy is the master.
 | id | question | default | record |
 |---|---|---|---|
 | D-S1-2 | Model weeks 7 and 17 (Yahoo's two 14-day matchups) as double-length in the simulator | not modelled; flagged | `after-report-2026-10-15-co-gm-settings.md` |
+| D-S1-4 | Sourced pool row for Y. Konan Niederhäuser (now an IL-only exception, Council 4-1) | keep exception | `after-report-2026-10-15-co-gm-league-state.md` |
+| D-S1-7 | Q availability tier 0.50 | 0.50 until calibration | `after-report-2026-10-15-co-gm-status.md` |
 | D-SA-6 | SessionStart governor hook: P1, or pull into Session 1 if under an hour | P1 | plan §7 |
 | D-LD-2 | Waiver move: Draymond Green for Christian Braun now / watch week 1 / Portis for Braun / stand pat | watch week 1 | `after-report-2026-10-14-league-draft.md` |
 | D-LD-1, D83-1, D82-1 | Draft-page log/shift/resolver defects | P2 per D-SA-1 | plan §6 |
 | D-1013-2 | RESYNC hardening | P2 per D-SA-2 | plan §7 |
 | D-1009-2 | Availability discount zero at replacement level | P1 (B4) | plan §4 |
-| D-INT-1 | Provenance re-dating pass (318 July rows) | Session 1 item 3 | `after-report-2026-10-14-integrity.md` |
+| D-INT-1 / D-S1-6 | Provenance re-dating pass (320 rows over 14 days) — BLOCKED: the environment denies site.api.espn.com; owner to allow the host | Session 1 item 3, when the host is allowed | `after-report-2026-10-15-co-gm-session1.md` |
 | D-INT-2 | Commit the two lagging tools as standing versions | after the draft | `after-report-2026-10-14-integrity.md` |
 | D-SF-1..4 | Scope-fence follow-ups (analysis-session prompt, lessons entry, Hashtag parse, usage dry run) | (a)/(b)/(b)/(a) | `after-report-2026-10-13-scope-fence.md` |
 
@@ -31,6 +33,7 @@ repo's `OPEN.md`; this kit copy is the master.
 
 | asked | what | for |
 |---|---|---|
-| 2026-10-15 | Standings and current scoreboard (none exist before 10/20; rosters RECEIVED 2026-10-15, pinned `data/source/`) | Session 1 item 5 |
+| 2026-10-15 | Week 1 final scoreboard (categories won), after 10/25 | `weekly_preview.py --score 1` |
+| 2026-10-15 | Fresh rosters/status paste on brief mornings (Yahoo page) | `daily_brief.py` |
 | 2026-10-15 | Reseeding semantics (assumed: best remaining seed v worst) | `data/league_settings.json` |
 | 2026-10-15 | The other ten teams' weekly pairings (only the owner's 17 opponents were supplied; the sim pairs the rest at random) | `league_sim.py --schedule` |
