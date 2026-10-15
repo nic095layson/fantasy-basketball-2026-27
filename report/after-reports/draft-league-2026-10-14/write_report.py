@@ -45,14 +45,14 @@ ad = A["as_drafted"]; fc = A["follow_card_selfconsistent"]
 swaps = sorted(((k.split(":", 1)[1], int(k.split(":")[0][5:]), v["champ"]) for k, v in A.items() if k.startswith("swap#")), key=lambda x: -x[2])
 best = swaps[0] if swaps else None; hb = {t["pick"]: t for t in HS["turns"]}
 taken = {p["player"]: (p["n"], p["slot"]) for p in recap}
-po = F["per_opp"]
+po = F["per_opp"]; ECW = {int(str(k).lstrip('T')): v for k, v in F['ecw'].items()}[10]
 hoops.DATA_PATH = f"{DK}/arena/results/players_v69.csv"; PL = {p["player"]: p for p in hoops.load_players()}
 o = []; w = o.append
 w("# After-report — the league draft, 2026-10-14: the owner's real 12-team league from seat 10, graded and simulated over 10,000 seasons\n")
 w("**Owner request (2026-10-14, verbatim):** \"Alright. Final draft is completed- here we go! Proceed with full analysis and simulate 10000 seasons\", with the deck tool's LIVE feed, Yahoo's pick list and the draft order (`draft-league-2026-10-14/owner_message.txt`, pinned verbatim).\n")
 w("**League:** 12 teams × 13 rounds, head-to-head nine categories, 18 regular-season weeks, eight teams to an eight-team bracket with no byes. Seats by the draft order: " + "; ".join(f"{s} {who(s)}" for s in range(1, 13)) + ". **Board:** the locked lines (pool tag v69 = data/players.csv at deck `af91b23`, byte-identical to the current main's); the page in the room was Version 70, whose engine output equals Version 69's.\n")
 w("Pull window: 2026-10-14 → 2026-10-14 (analysis only; no roster pull, no line change).\n")
-w(f"**Headline.** Over 10,000 simulated seasons your team wins the title **{me1['champ']:.2f} percent** of the time, the most in the league (rank {rank1} of 12; the second run of 10,000 on another seed: {me2['champ']:.2f} percent, rank {rank2}). Playoffs {me1['playoff']:.2f} percent, the top seed {me1['seed_pct'][0]:.2f} percent, mean seed {me1['mean_seed']:.2f}, {me1['cats_per_week']:.3f} categories a week. The nearest rival is {who(int(rival))} at {T1[rival]['champ']:.2f} percent. Expected weekly category wins {F['ecw']:.3f}, rank {F['ecw_rank']} of 12, favored in {F['exp_winning_weeks']} of 11 head-to-heads. The card's 🎯 was taken at {len(followed)} of 13 turns, the Top 5 at {len(top5)}. The tool's board equals Yahoo's 156 of 156 after {len(undone)} undone entries, {len(ins)} Insert-at-# and {len(halts)} halted name.\n")
+w(f"**Headline.** Over 10,000 simulated seasons your team wins the title **{me1['champ']:.2f} percent** of the time, the most in the league (rank {rank1} of 12; the second run of 10,000 on another seed: {me2['champ']:.2f} percent, rank {rank2}). Playoffs {me1['playoff']:.2f} percent, the top seed {me1['seed_pct'][0]:.2f} percent, mean seed {me1['mean_seed']:.2f}, {me1['cats_per_week']:.3f} categories a week. The nearest rival is {who(int(rival))} at {T1[rival]['champ']:.2f} percent. Expected weekly category wins {ECW:.3f}, rank {F['ecw_rank']} of 12, favored in {F['exp_winning_weeks']} of 11 head-to-heads. The card's 🎯 was taken at {len(followed)} of 13 turns, the Top 5 at {len(top5)}. The tool's board equals Yahoo's 156 of 156 after {len(undone)} undone entries, {len(ins)} Insert-at-# and {len(halts)} halted name.\n")
 w("## 1. Roster changes\n\nNone. No line, tag, placement or price changed on either plane.\n")
 w(f"## 2. The league over 10,000 seasons\n\nEVIDENCE: `arena/results/m100_league_sim_10k_s2026.json` and `_s2027.json`, written by `arena/mocks/league_sim.py` — the house simulator (`arena.simulate_seasons`: weekly category draws from each roster's daily-fill model, a shared games shock, the category record as the standings, the 1v8/4v5/2v7/3v6 bracket) with each season's seeds and rounds recorded. Before writing, each run re-ran `arena.simulate_seasons` on its seed and asserted equal champion and playoff counts for all 12 teams. Largest difference between the two runs on any team's title or playoff share: {gap:.2f} points.\n")
 w("| seat | manager (team) | title % | title %, 2nd run | final % | playoffs % | top seed % | mean seed | cats a week |\n|---|---|---|---|---|---|---|---|---|")
@@ -68,7 +68,7 @@ for t in turns:
 w("\nCategory profile — the share of weeks your team wins each category, and its rank among the 12 (10,000 seasons, seed 2026):\n")
 w("| " + " | ".join(CATS) + " |\n|" + "---|" * len(CATS))
 w("| " + " | ".join(f"{me1['cat_win_pct'][c]:.1f}% (#{crank[c]})" for c in CATS) + " |")
-strong = [c for c in CATS if crank[c] <= 3]; weak = [c for c in CATS if crank[c] >= 10]
+strong = [c for c in CATS if crank[c] <= 3]; weak = [c for c in CATS if crank[c] >= 9]
 w(f"\nStrongest: {', '.join(strong)}; weakest: {', '.join(weak)}. The weekly model's category ranks (`m100_final.json`): " + ", ".join(f"{c} {r}" for c, r in F["cat_rank_weekly"].items()) + ".\n")
 w("Expected categories a week against each opponent (`m100_final.json`, the weekly model; 4.5 is even):\n")
 w("| opponent | expected cats | your categories above 50% |\n|---|---|---|")
@@ -77,7 +77,7 @@ for s in sorted(po, key=lambda s: po[s]["exp_cats"]):
 w("\n## 4. Pick by pick: the page's card, your pick, hindsight\n\nEVIDENCE: `m100_deckcard_v69.json` (the page's own engine on Yahoo's board before each of your turns), `m100_hindsight.json` (every single-swap alternative scored by weekly category wins against the final rosters).\n")
 w("| pick | you took | card rank | the page's 🎯 | gap to 🎯 | hindsight's best alternative (Δ weekly cat wins) |\n|---|---|---|---|---|---|")
 for t in turns:
-    h = hb[t["pick"]]["top"]; hh = f"{h[0]['n']} ({h[0]['gain']:+.3f})" if h else "—"
+    h = hb[t["pick"]]["top"]; hh = (f"{h[0]['n']} ({h[0]['gain']:+.3f})" if h[0]["gain"] > 0 else f"none better (closest {h[0]['n']}, {h[0]['gain']:+.3f})") if h else "—"
     g = dsg(t); w(f"| #{t['pick']} | {t['actual']} | {t['actualCardRank']} | {tgt(t)} | {'—' if t['actualCardRank'] == 1 else (f'{g:.3f}' if g == g else 'off the Top 5')} | {hh} |")
 off = [t for t in turns if t["actualCardRank"] > 1]
 w(f"\nThe turns off the 🎯 and where the 🎯 went: " + "; ".join(f"#{t['pick']} {t['actual']} (🎯 {tgt(t)}, " + (f"taken #{taken[tgt(t)][0]} by {who(taken[tgt(t)][1])})" if tgt(t) in taken else "undrafted)") for t in off) + ".\n")
@@ -105,6 +105,8 @@ w("The " + str(len(E_stale)) + " \"off the card\" lines for entries later undone
 w("## Watchlist\n")
 w(f"- The two injury-tail names that move the title share most: " + ", ".join(f"{nm} ({r['champ']:.1f}% if out)" for nm, r in sorted(ST["arms"].items(), key=lambda x: x[1]["champ"])[:2]) + ". Their status is the first thing to watch in the season's first weeks.")
 w(f"- The weak categories ({', '.join(weak)}) are where waiver and trade moves pay; the strong ones ({', '.join(strong)}) are what to protect.")
+qflag = [(t['actual'], next(x for x in recap if x['n'] == t['pick'])['status'], hoops.availability(PL[t['actual']])) for t in turns if next(x for x in recap if x['n'] == t['pick'])['status']]
+w("- Yahoo's status column at the draft flags " + ", ".join(f"{n} ({st})" for n, st, a in qflag) + "; the board carries them at availability " + ", ".join(f"{a:.2f}" for n, st, a in qflag) + ". What the flags mean today was not checked (no pull tonight): the first in-season pull should read them.")
 w("- The log-display defects (§8) and D83-1 wait for after the draft; nothing in them changed a pick or the card.\n")
 w("## Open-item receipts\n\n| item | query run (2026-10-14) | dated finding |\n|---|---|---|")
 w("| (this draft) | records only; no web research and no roster pull | Yahoo's 156 names resolve to the lock pool 156 of 156; Yahoo's NBA team agrees with the pool's at all 156 |")
@@ -131,7 +133,7 @@ PLG = os.path.join(K, "report", "pull-log.md"); pl = rd(PLG)
 if "after-report-2026-10-14-league-draft.md" not in pl:
     row = (f"| 2026-10-14 | THE LEAGUE DRAFT (real league, seat 10, locked lines) — graded and simulated over 10,000 seasons | 0 | 0 | 0 | "
            f"after-reports/after-report-2026-10-14-league-draft.md — title {me1['champ']:.2f}% (rank {rank1}; 2nd run {me2['champ']:.2f}%), playoffs {me1['playoff']:.2f}%, top seed {me1['seed_pct'][0]:.2f}%; "
-           f"ECW {F['ecw']:.3f} rank {F['ecw_rank']}, favored {F['exp_winning_weeks']} of 11; card {len(followed)} of 13, Top-5 {len(top5)}; follow-card {fc['champ']:.2f}% vs as drafted {ad['champ']:.2f}% (house arms); "
+           f"ECW {ECW:.3f} rank {F['ecw_rank']}, favored {F['exp_winning_weeks']} of 11; card {len(followed)} of 13, Top-5 {len(top5)}; follow-card {fc['champ']:.2f}% vs as drafted {ad['champ']:.2f}% (house arms); "
            f"tool board = Yahoo 156/156; simulator verified against arena on both seeds; D-LD-1 on the sheet; no plane change |")
     open(PLG, "w", encoding="utf-8").write(pl.rstrip("\n") + "\n" + row + "\n")
 print("written", P)
