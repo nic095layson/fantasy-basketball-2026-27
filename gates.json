@@ -1,49 +1,9 @@
 {
- "ran_at_utc": "2026-10-15T20:47:25Z",
+ "ran_at_utc": "2026-10-16T21:02:23Z",
  "inputs": {
-  "report/after-reports/after-report-2026-10-15-co-gm-session1.md": "c44715a7c1332364b7030d6d83f19e9393cfbfc39b4dd86e6abdacdc25ed3340",
-  "OPEN.md": "ce9299a47dd389ae4c7e245a678e9e003ce84d60148df7b70d9fbc29ed15b899"
+  "report/plans/season-end-calibration-prompt.md": "ec8ace0fa7c6a814928097fd2092439eae19e118ca165c716aaed9ecee27e28c"
  },
  "gates": [
-  {
-   "name": "kit check_report",
-   "cmd": "/usr/bin/python3 report/check_report.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-15-co-gm-session1.md",
-   "cwd": ".",
-   "pass_re": "^REPORT GATE: PASS",
-   "exit": 0,
-   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-10-15-co-gm-session1.md (structure, publication rule, pull-log row)",
-   "verdict": "PASS",
-   "why": "",
-   "tail": [
-    "REPORT GATE: PASS \u2014 after-report-2026-10-15-co-gm-session1.md (structure, publication rule, pull-log row)"
-   ]
-  },
-  {
-   "name": "deck judgment_open_items --check-report",
-   "cmd": "/usr/bin/python3 scripts/judgment_open_items.py --check-report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-15-co-gm-session1.md",
-   "cwd": "../yahoo-fantasy-basketball",
-   "pass_re": "^receipts check PASS",
-   "exit": 0,
-   "pass_line": "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-10-15-co-gm-session1.md",
-   "verdict": "PASS",
-   "why": "",
-   "tail": [
-    "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-10-15-co-gm-session1.md"
-   ]
-  },
-  {
-   "name": "deck repeat_market_check --check-report",
-   "cmd": "/usr/bin/python3 scripts/repeat_market_check.py --check-report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-15-co-gm-session1.md",
-   "cwd": "../yahoo-fantasy-basketball",
-   "pass_re": "^REPEAT-NAME CHECK: PASS",
-   "exit": 0,
-   "pass_line": "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-10-15-co-gm-session1.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)",
-   "verdict": "PASS",
-   "why": "",
-   "tail": [
-    "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-10-15-co-gm-session1.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)"
-   ]
-  },
   {
    "name": "kit test_gates_runner",
    "cmd": "python3 scripts/test_gates_runner.py",
@@ -55,67 +15,7 @@
    "why": "",
    "tail": [
     "----------------------------------------------------------------------",
-    "Ran 10 tests in 0.297s",
-    "OK"
-   ]
-  },
-  {
-   "name": "kit test_settings",
-   "cmd": "python3 scripts/test_settings.py",
-   "cwd": ".",
-   "pass_re": "^OK$",
-   "exit": 0,
-   "pass_line": "OK",
-   "verdict": "PASS",
-   "why": "",
-   "tail": [
-    "----------------------------------------------------------------------",
-    "Ran 8 tests in 0.002s",
-    "OK"
-   ]
-  },
-  {
-   "name": "kit test_league_intake",
-   "cmd": "python3 scripts/test_league_intake.py",
-   "cwd": ".",
-   "pass_re": "^OK$",
-   "exit": 0,
-   "pass_line": "OK",
-   "verdict": "PASS",
-   "why": "",
-   "tail": [
-    "----------------------------------------------------------------------",
-    "Ran 6 tests in 0.008s",
-    "OK"
-   ]
-  },
-  {
-   "name": "kit test_status_feed",
-   "cmd": "python3 scripts/test_status_feed.py",
-   "cwd": ".",
-   "pass_re": "^OK$",
-   "exit": 0,
-   "pass_line": "OK",
-   "verdict": "PASS",
-   "why": "",
-   "tail": [
-    "----------------------------------------------------------------------",
-    "Ran 7 tests in 0.001s",
-    "OK"
-   ]
-  },
-  {
-   "name": "kit test_daily_brief",
-   "cmd": "python3 scripts/test_daily_brief.py",
-   "cwd": ".",
-   "pass_re": "^OK$",
-   "exit": 0,
-   "pass_line": "OK",
-   "verdict": "PASS",
-   "why": "",
-   "tail": [
-    "----------------------------------------------------------------------",
-    "Ran 7 tests in 0.001s",
+    "Ran 10 tests in 0.237s",
     "OK"
    ]
   },
@@ -130,11 +30,11 @@
    "why": "",
    "tail": [
     "----------------------------------------------------------------------",
-    "Ran 3 tests in 0.012s",
+    "Ran 3 tests in 0.010s",
     "OK"
    ]
   }
  ],
  "verdict": "PASS",
- "base_commit": "a75e5ebc3a4de273b9af820b0031b023a0bc93dd"
+ "base_commit": "03786940f4bb1722e25bda34a8e93a121c4c217b"
 }
