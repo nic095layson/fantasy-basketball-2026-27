@@ -22,11 +22,13 @@ Record of the run: `report/briefs/morning_<date>.json`. Re-run by hand any time:
 
 ## What you feed it
 
-1. **Rosters** (weekly, before your waiver moves, and after any move you make): the text of Yahoo's league
-   "Starting Rosters" page. Until the paste parser lands (it is built against your first sample), the input is
-   the transcription CSV `data/source/yahoo-starting-rosters-<date>-view.transcribed.csv` (columns
-   `fantasy_team,page,slot,player,nba_team,positions,status`) and `python3 scripts/league_intake.py --as-of <date>`,
-   which halts on any name it cannot resolve. The brief prints the state's as-of date.
+1. **Rosters** (weekly, before your waiver moves, and after any move you make): paste the text of Yahoo's league
+   "Starting Rosters" page into the chat or save it as a file, then
+   `python3 scripts/league_intake.py --paste data/source/yahoo-starting-rosters-<date>-paste.txt --as-of <date>`
+   (built 2026-10-19 on your first sample; it transcribes the paste to a CSV beside it, pins both with hashes, and
+   halts on any malformed block or unresolved name). The transcription-CSV route
+   (`league_intake.py --as-of <date>` on `...-view.transcribed.csv`) stays as the fallback. The brief prints the
+   state's as-of date.
 2. **Weekly scoreboard** (after each week closes): copy `data/weeks/TEMPLATE.csv` to `data/weeks/week_<N>.csv`,
    one row per fantasy team with its opponent and the nine category totals (all six matchups), then
    `python3 scripts/scoreboard_intake.py --week <N>`. It halts on any team it cannot resolve, writes
