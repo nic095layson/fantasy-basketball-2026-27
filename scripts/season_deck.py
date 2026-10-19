@@ -13,8 +13,8 @@ Inputs (all must exist; a missing or malformed record halts the build):
 
 The page embeds those records verbatim as JSON and renders every figure from them in the browser; the static shell
 carries no figure. The one derivation here is a mechanical join: each board row gains its fantasy owner (or FA).
-The Moves pane (trade analyzer + free-agent adder, owner pitch 2026-10-19 evening) does z-score arithmetic on the
-board's own vectors in the page; its tier thresholds are stated defaults (D-SD-1), carried in the embedded config,
+The Trade Analyzer and Free-Agent Adder tabs (owner pitch 2026-10-19 evening; split into two tabs and the Waivers tab
+removed on the owner's audit the same night) do z-score arithmetic on the board's own vectors in the page; its tier thresholds are stated defaults (D-SD-1), carried in the embedded config,
 and the pane labels itself a screen — the sim-graded verdict (title odds) stays a session ask.
 Writes report/season/deck_<date>.html and deck_record_<date>.json (sha256 of every input).
 """
@@ -43,8 +43,43 @@ def default_paths(date):
                 calibration=os.path.join(KIT, "report", "calibration.json"))
 
 
+def resolve_rostered(rostered, board_names, held_names, aliases):
+    """Map each rostered name (the league paste's spelling) to its season-board row or held name (the kit's spelling).
+    Owner audit 2026-10-19: Jaren Jackson Jr. / Cameron Johnson showed as free agents under an exact-string join.
+    Order: exact; accent-and-punctuation fold; the kit alias table (report/market/build_market.py); suffix-dropped
+    name only when unique. Anything unresolved, or two rostered names on one row, halts the build."""
+    import box_pull as BP
+    targets = list(board_names) + [h for h in held_names if h not in board_names]
+    exact = set(targets)
+    by_fold = {}
+    for t in targets: by_fold.setdefault(BP.fold(t), []).append(t)
+    alias = {}
+    for canon, variants in (aliases or {}).items():
+        for v in variants:
+            alias.setdefault(BP.fold(v), canon); alias.setdefault(BP.fold(canon), v)
+    by_key = {}
+    for t in targets: by_key.setdefault(BP.name_key(t), []).append(t)
+    out, unresolved = {}, []
+    for n in rostered:
+        hit = None
+        if n in exact: hit = n
+        elif len(by_fold.get(BP.fold(n), [])) == 1: hit = by_fold[BP.fold(n)][0]
+        else:
+            a = alias.get(BP.fold(n))
+            if a is not None and len(by_fold.get(BP.fold(a), [])) == 1: hit = by_fold[BP.fold(a)][0]
+            elif len(by_key.get(BP.name_key(n), [])) == 1: hit = by_key[BP.name_key(n)][0]
+        (unresolved.append(n) if hit is None else out.__setitem__(n, hit))
+    if unresolved: raise DeckError(f"rostered player(s) with no season-board or held row: {sorted(unresolved)}")
+    seen = {}
+    for n, t in out.items():
+        if t in seen: raise DeckError(f"two rostered names resolve to one row {t!r}: {seen[t]!r} and {n!r}")
+        seen[t] = n
+    return out
+
+
 def build(paths, date):
     import co_gm
+    import box_pull as BP
     my_seat = co_gm.OWNER_SEAT
     brief = _load(paths["brief"], "brief"); board = _load(paths["board"], "board")
     status = _load(paths["status"], "status"); league = _load(paths["league_state"], "league state")
@@ -54,20 +89,26 @@ def build(paths, date):
         if k not in brief: raise DeckError(f"brief lacks {k}")
     if brief["date"] != date: raise DeckError(f"brief is for {brief['date']}, not {date}")
     # mechanical join: each board row gains its fantasy owner
+    board_names = [r["name"] for r in board["board"]]
+    rostered = [p["player"] for t in league["teams"] for p in t["players"]]
+    rmap = resolve_rostered(rostered, board_names, board.get("held") or [], BP.load_aliases())
+    on_board = set(board_names)
     own = {}
     my_team = None
     for t in league["teams"]:
         if t["seat"] == my_seat: my_team = t["name"]
-        for p in t["players"]: own[p["player"]] = (t["name"], t["seat"])
+        for p in t["players"]: own[rmap[p["player"]]] = (t["name"], t["seat"])
     if my_team is None: raise DeckError(f"league state has no seat {my_seat}")
     for r in board["board"]:
         o = own.get(r["name"])
         r["owner"] = o[0] if o else None; r["seat"] = o[1] if o else None
         r["fa"] = o is None; r["mine"] = bool(o and o[1] == my_seat)
     rosters = {t["name"]: dict(seat=t["seat"], manager=t.get("manager"),
-                               players=[p["player"] for p in t["players"]],
+                               players=[rmap[p["player"]] for p in t["players"] if rmap[p["player"]] in on_board],
+                               off_board=[rmap[p["player"]] for p in t["players"] if rmap[p["player"]] not in on_board],
                                added=t.get("added_since_draft") or [], dropped=t.get("dropped_since_draft") or [],
                                unpooled_il=t.get("unpooled_il") or []) for t in league["teams"]}
+    respelled = sorted((n, m) for n, m in rmap.items() if n != m)
     shock = sweep["constants"]["arena.TEAM_WEEK_SHOCK"]
     band = dict(name="arena.TEAM_WEEK_SHOCK", tier=shock["tier"], engine=sweep.get("engine_commit") or sweep.get("engine"),
                 variants=[dict(label=v.get("label"), shift=v.get("shift_mean_1dp", f"{v['shift_mean']:+.1f}"))
@@ -86,7 +127,10 @@ def build(paths, date):
     record = dict(date=date, out=f"report/season/deck_{date}.html",
                   inputs={k: dict(path=os.path.relpath(p, KIT) if p.startswith(KIT) else p,
                                   sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
-                  board_rows=len(board["board"]), status_rows=len(status["rows"]), panes=6 + 1)
+                  board_rows=len(board["board"]), status_rows=len(status["rows"]), panes=7,
+                  join=dict(rostered=len(rostered), unresolved=0, on_board=sum(1 for n in rostered if rmap[n] in on_board),
+                            off_board=sum(1 for n in rostered if rmap[n] not in on_board), respelled=respelled,
+                            free_agents_on_board=sum(1 for r in board["board"] if r["fa"])))
     return html, data, record
 
 
@@ -179,8 +223,8 @@ footer{color:var(--ink2); font-size:12px; margin-top:28px; border-top:1px solid 
 </div></header>
 <main><div class="wrap">
   <section class="pane" id="pane-today" role="tabpanel"></section>
-  <section class="pane" id="pane-waivers" role="tabpanel" hidden></section>
-  <section class="pane" id="pane-moves" role="tabpanel" hidden></section>
+  <section class="pane" id="pane-trade" role="tabpanel" hidden></section>
+  <section class="pane" id="pane-fa" role="tabpanel" hidden></section>
   <section class="pane" id="pane-board" role="tabpanel" hidden></section>
   <section class="pane" id="pane-movers" role="tabpanel" hidden></section>
   <section class="pane" id="pane-status" role="tabpanel" hidden></section>
@@ -239,66 +283,54 @@ function statusChip(letter){ if(!letter) return null; const cls=letter==="O"?"cr
       h("div",{class:"card span2"},h("h2",{},"Week "+b.week+" categories (recorded before the week)"),catTbl)));
 })();
 
-// ---- Waivers ----
-(function(){ const b=D.brief, p=$("#pane-waivers");
-  const mx=Math.max(0.01,...b.waiver_top.map(x=>Math.abs(x.d_title_seed2026||0)));
-  p.append(h("div",{class:"card"},h("h2",{},"Engine-graded pickups"),
-    h("p",{class:"note"},b.waiver_pairs_scored+" add/drop pairs scored against the 11 rosters; "+b.waiver_positive_pairs+" positive; base expected weekly category wins "+f2(b.waiver_base_ecw)+". Graded in the simulator (seed 2026 titles), unlike the Moves screen."),
-    b.waiver_top.length? h("div",{class:"tablebox"},h("table",{},
-      h("tr",{},h("th",{},"add"),h("th",{},"drop"),h("th",{class:"num"},"ΔECW"),h("th",{},"Δ title (seed 2026)")),
-      b.waiver_top.map(x=>h("tr",{},h("td",{},x.add+" ("+x.add_team+")"),h("td",{},x.drop),
-        h("td",{class:"num"},sgn(x.d_ecw,4)),
-        h("td",{},h("span",{class:"bar "+(x.d_title_seed2026>=0?"pos":"neg")},
-          h("i",{style:"width:"+Math.round(Math.abs(x.d_title_seed2026)/mx*120)+"px"}),h("b",{},sgn(x.d_title_seed2026,2)+" pts"))))))) : h("div",{class:"zero"},"No positive pickup today."),
-    h("p",{class:"note"},"Structural band: "+bandLine()),
-    b.streaming_vs? h("p",{class:"note"},"Weakest roster spot: "+b.streaming_vs.player+" ("+b.streaming_vs.games_left+" games left this week)."):null));
-})();
-
-// ---- Moves (trade analyzer + free-agent adder; z screen, stated defaults) ----
-(function(){ const p=$("#pane-moves"); const rows=D.board.board; const byName={}; rows.forEach(r=>byName[r.name]=r);
-  const mine=rows.filter(r=>r.mine);
-  const teams=Object.keys(D.league.rosters).filter(t=>t!==D.my_team).sort();
-  let mode="trade", team=teams[0], search="";
-  const out=new Set(), inc=new Set();
-  const root=h("div",{class:"card"}); p.append(root);
-  p.append(h("div",{class:"card"},h("h2",{},"How this screen works"),
-    h("p",{class:"note"},"Per-category z-scores come from today's board (the same vectors the rankings sum; the turnover column already credits low turnovers). Gains are the acquired players' z minus the sent players' z, tiered low (<"+C.tier_low+"), medium (<"+C.tier_high+"), high (≥"+C.tier_high+"). The verdict is the net z against ±"+C.verdict_edge+" (strong at ±"+C.verdict_strong+") — "+C.thresholds_note+". For the 10,000-season title-odds verdict on a specific move, ask Claude in session.")));
-  function roster(name){ return (D.league.rosters[name]&&D.league.rosters[name].players)||[]; }
-  function render(){
-    out.forEach(n=>{ if(!byName[n]||!byName[n].mine) out.delete(n); });
-    const inPool = mode==="trade"? roster(team).map(n=>byName[n]).filter(Boolean)
-                                 : rows.filter(r=>r.fa && (!search || r.name.toLowerCase().includes(search.toLowerCase()))).slice(0,60);
-    inc.forEach(n=>{ const r=byName[n]; if(!r||(mode==="trade"? r.owner!==team : !r.fa)) inc.delete(n); });
-    const inRows=[...inc].map(n=>byName[n]), outRows=[...out].map(n=>byName[n]);
-    const m=swapMath(inRows,outRows,CATS);
-    root.replaceChildren(
-      h("h2",{},"Trade analyzer / Free-agent adder"),
-      h("div",{class:"mode"},
-        h("button",{"aria-pressed":String(mode==="trade"),onclick:()=>{mode="trade";inc.clear();render();}},"Trade"),
-        h("button",{"aria-pressed":String(mode==="fa"),onclick:()=>{mode="fa";inc.clear();render();}},"Free agent")),
+// ---- Trade Analyzer + Free-Agent Adder (owner 2026-10-19: two tabs; z screen, stated defaults D-SD-1) ----
+const BOARD=D.board.board, BYNAME={}; BOARD.forEach(r=>BYNAME[r.name]=r);
+const MINE=BOARD.filter(r=>r.mine);
+function howItWorks(){ return h("div",{class:"card"},h("h2",{},"How this screen works"),
+  h("p",{class:"note"},"Per-category z-scores come from today's board (the same vectors the rankings sum; the turnover column already credits low turnovers). Gains are the incoming players' z minus the outgoing players' z, tiered low (<"+C.tier_low+"), medium (<"+C.tier_high+"), high (≥"+C.tier_high+"). The verdict is the net z against ±"+C.verdict_edge+" (strong at ±"+C.verdict_strong+") — "+C.thresholds_note+". For the 10,000-season title-odds verdict on a specific move, ask Claude in session.")); }
+function pickList(rows, set, rerender, empty){ return h("div",{class:"plist"}, rows.length? rows.map(r=>h("label",{},
+  h("input",{type:"checkbox",...(set.has(r.name)?{checked:""}:{}),onchange:(e)=>{e.target.checked?set.add(r.name):set.delete(r.name);rerender();}}),
+  r.name+" · "+r.team+" · z "+f2(r.z_adj))) : h("div",{class:"zero"},empty)); }
+function scoreBlock(inRows, outRows){
+  if(!(inRows.length||outRows.length)) return h("p",{class:"zero"},"Pick players on both sides to score a move.");
+  const m=swapMath(inRows,outRows,CATS);
+  return h("div",{},
+    h("div",{class:"tablebox"},h("table",{},
+      h("tr",{},h("th",{},"category"),h("th",{class:"num"},"Δz"),h("th",{},"size"),h("th",{},"")),
+      CATS.map(c=>h("tr",{},h("td",{},c),h("td",{class:"num"},sgn(m.d[c])),h("td",{},tier(m.d[c],C.tier_low,C.tier_high)),
+        h("td",{},h("span",{class:"bar "+(m.d[c]>=0?"pos":"neg")},h("i",{style:"width:"+Math.min(120,Math.round(Math.abs(m.d[c])*40))+"px"}))))))),
+    h("p",{},h("span",{class:"verdict "+(m.net>=C.verdict_edge?"pos":(m.net<=-C.verdict_edge?"neg":"even"))},
+      (m.net>=C.verdict_strong?"STRONG FAVORABLE SCREEN":m.net>=C.verdict_edge?"FAVORABLE SCREEN":m.net<=-C.verdict_strong?"STRONG UNFAVORABLE SCREEN":m.net<=-C.verdict_edge?"UNFAVORABLE SCREEN":"ABOUT EVEN")),
+      " ",h("span",{class:"note"},"net Δz "+sgn(m.net)+" · in "+inRows.length+" / out "+outRows.length+" · z screen only — not the simulator")),
+    (inRows.length!==outRows.length)? h("p",{class:"note"},"Unequal player counts: the net also prices the empty or extra roster spot at z 0; judge accordingly."):null);
+}
+(function(){ const p=$("#pane-trade"); const teams=Object.keys(D.league.rosters).filter(t=>t!==D.my_team).sort();
+  let team=teams[0]; const out=new Set(), inc=new Set(); const root=h("div",{class:"card"}); p.append(root, howItWorks());
+  function render(){ const R=D.league.rosters[team]||{players:[],off_board:[]};
+    const theirs=R.players.map(n=>BYNAME[n]).filter(Boolean).sort((a,b)=>a.rank-b.rank);
+    inc.forEach(n=>{ if(!R.players.includes(n)) inc.delete(n); });
+    root.replaceChildren(h("h2",{},"Trade Analyzer"),
       h("div",{class:"pick"},
-        h("div",{},h("h2",{},"I send"+(mode==="fa"?" / drop":"")),
-          h("div",{class:"plist"},mine.map(r=>h("label",{},
-            h("input",{type:"checkbox",...(out.has(r.name)?{checked:""}:{}),onchange:(e)=>{e.target.checked?out.add(r.name):out.delete(r.name);render();}}),
-            r.name+" · "+r.team+" · z "+f2(r.z_adj))))),
-        h("div",{},h("h2",{},mode==="trade"?"I receive":"I add"),
-          mode==="trade"? h("select",{id:"mv-team",onchange:(e)=>{team=e.target.value;inc.clear();render();}},
-              teams.map(t=>h("option",{value:t,...(t===team?{selected:""}:{})},t)))
-            : h("input",{type:"search",id:"mv-search",placeholder:"Search free agents",value:search,oninput:(e)=>{search=e.target.value;render();}}),
-          h("div",{class:"plist"}, inPool.length? inPool.map(r=>h("label",{},
-            h("input",{type:"checkbox",...(inc.has(r.name)?{checked:""}:{}),onchange:(e)=>{e.target.checked?inc.add(r.name):inc.delete(r.name);render();}}),
-            r.name+" · "+r.team+" · z "+f2(r.z_adj))) : h("div",{class:"zero"},"No board rows here.")))),
-      (inRows.length||outRows.length)? h("div",{},
-        h("div",{class:"tablebox"},h("table",{},
-          h("tr",{},h("th",{},"category"),h("th",{class:"num"},"Δz"),h("th",{},"size"),h("th",{},"")),
-          CATS.map(c=>h("tr",{},h("td",{},c),h("td",{class:"num"},sgn(m.d[c])),h("td",{},tier(m.d[c],C.tier_low,C.tier_high)),
-            h("td",{},h("span",{class:"bar "+(m.d[c]>=0?"pos":"neg")},h("i",{style:"width:"+Math.min(120,Math.round(Math.abs(m.d[c])*40))+"px"}))))))),
-        h("p",{},h("span",{class:"verdict "+(m.net>=C.verdict_edge?"pos":(m.net<=-C.verdict_edge?"neg":"even"))},
-          (m.net>=C.verdict_strong?"STRONG FAVORABLE SCREEN":m.net>=C.verdict_edge?"FAVORABLE SCREEN":m.net<=-C.verdict_strong?"STRONG UNFAVORABLE SCREEN":m.net<=-C.verdict_edge?"UNFAVORABLE SCREEN":"ABOUT EVEN")),
-          " ",h("span",{class:"note"},"net Δz "+sgn(m.net)+" · in "+inRows.length+" / out "+outRows.length+" · z screen only — not the simulator")),
-        (inRows.length!==outRows.length)? h("p",{class:"note"},"Unequal player counts: the net also prices the empty or extra roster spot at z 0; judge accordingly."):null
-      ) : h("p",{class:"zero"},"Pick players on both sides to score a move.")
-    );
+        h("div",{},h("h2",{},"I send"),pickList(MINE,out,render,"No players of yours on the board.")),
+        h("div",{},h("h2",{},"I receive"),
+          h("select",{id:"tr-team",onchange:(e)=>{team=e.target.value;inc.clear();render();}},teams.map(t=>h("option",{value:t,...(t===team?{selected:""}:{})},t))),
+          pickList(theirs,inc,render,"No board rows on this roster."),
+          R.off_board.length? h("p",{class:"note"},"Also rostered, off the board (held, no z line): "+R.off_board.join(", ")) : null)),
+      scoreBlock([...inc].map(n=>BYNAME[n]),[...out].map(n=>BYNAME[n])));
+  }
+  render();
+})();
+(function(){ const p=$("#pane-fa"); let search=""; const drop=new Set(), add=new Set(); const root=h("div",{class:"card"}); p.append(root, howItWorks());
+  const nfa=BOARD.filter(r=>r.fa).length;
+  function render(){ const pool=BOARD.filter(r=>r.fa && (!search || r.name.toLowerCase().includes(search.toLowerCase()))).slice(0,60);
+    root.replaceChildren(h("h2",{},"Free-Agent Adder"),
+      h("p",{class:"note"},nfa+" unrostered players on today's board, matched to all 12 rosters as of "+D.league.as_of+"."),
+      h("div",{class:"pick"},
+        h("div",{},h("h2",{},"I drop"),pickList(MINE,drop,render,"No players of yours on the board.")),
+        h("div",{},h("h2",{},"I add"),
+          h("input",{type:"search",id:"fa-search",placeholder:"Search free agents",value:search,oninput:(e)=>{search=e.target.value;render();}}),
+          pickList(pool,add,render,"No free agents match."))),
+      scoreBlock([...add].map(n=>BYNAME[n]),[...drop].map(n=>BYNAME[n])));
   }
   render();
 })();
@@ -377,7 +409,7 @@ function statusChip(letter){ if(!letter) return null; const cls=letter==="O"?"cr
 })();
 
 // ---- tabs, footer ----
-(function(){ const defs=[["today","Today"],["waivers","Waivers"],["moves","Moves"],["board","Board"],["movers","Movers"],["status","Status"],["week","Week"]];
+(function(){ const defs=[["today","Today"],["trade","Trade Analyzer"],["fa","Free Agents"],["board","Board"],["movers","Movers"],["status","Status"],["week","Week"]];
   const tabs=$("#tabs"); let cur="today";
   try{ const s=localStorage.getItem("deck-tab"); if(s&&defs.some(d=>d[0]===s)) cur=s; }catch(e){}
   const hash=(location.hash||"").replace("#",""); if(defs.some(d=>d[0]===hash)) cur=hash;

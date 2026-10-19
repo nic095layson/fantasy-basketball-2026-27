@@ -1,0 +1,758 @@
+/home/user/fantasy-basketball-2026-27/scripts/test_box_pull.py:56: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/fantasy-basketball-2026-27/scripts/fixtures/bref_202604100ATL_basic_tables.html' mode='r' encoding='utf-8'>
+  html = open(os.path.join(FX, "bref_202604100ATL_basic_tables.html"), encoding="utf-8").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./home/user/fantasy-basketball-2026-27/scripts/test_box_pull.py:70: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/fantasy-basketball-2026-27/scripts/fixtures/bref_index_2026-04-10_links.txt' mode='r' encoding='utf-8'>
+  links = open(os.path.join(FX, "bref_index_2026-04-10_links.txt")).read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+../home/user/fantasy-basketball-2026-27/scripts/test_box_pull.py:23: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/fantasy-basketball-2026-27/scripts/fixtures/espn_scoreboard_2026-10-16.json' mode='r' encoding='utf-8'>
+  self.sb = json.load(open(os.path.join(FX, "espn_scoreboard_2026-10-16.json")))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_box_pull.py:24: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/fantasy-basketball-2026-27/scripts/fixtures/espn_summary_401898406_2026-10-16.json' mode='r' encoding='utf-8'>
+  self.sm = json.load(open(os.path.join(FX, "espn_summary_401898406_2026-10-16.json")))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+............................................/home/user/fantasy-basketball-2026-27/scripts/test_gates_runner.py:95: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpf7pq9vmi/other-report.md' mode='w' encoding='utf-8'>
+  open(other, "w").write("a different report\n")
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./home/user/fantasy-basketball-2026-27/scripts/league_intake.py:125: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpphozbv9t/t.csv' mode='r' encoding='utf-8'>
+  rows = list(csv.DictReader(open(src, encoding="utf-8")))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./home/user/fantasy-basketball-2026-27/scripts/league_intake.py:125: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpkgq8imga/t.csv' mode='r' encoding='utf-8'>
+  rows = list(csv.DictReader(open(src, encoding="utf-8")))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_league_intake.py:91: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpkgq8imga/state.json' mode='r' encoding='utf-8'>
+  st = json.load(open(out))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./home/user/fantasy-basketball-2026-27/scripts/test_league_intake.py:125: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/fantasy-basketball-2026-27/data/source/yahoo-starting-rosters-2026-10-19-paste.txt' mode='r' encoding='utf-8'>
+  text = open(self.SAMPLE, encoding="utf-8").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+../home/user/fantasy-basketball-2026-27/scripts/test_league_intake.py:105: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/fantasy-basketball-2026-27/data/source/yahoo-starting-rosters-2026-10-19-paste.txt' mode='r' encoding='utf-8'>
+  rows = LI.parse_paste(open(self.SAMPLE, encoding="utf-8").read())
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./home/user/fantasy-basketball-2026-27/scripts/test_league_intake.py:111: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/fantasy-basketball-2026-27/data/source/yahoo-starting-rosters-2026-10-19-paste.txt' mode='r' encoding='utf-8'>
+  rows = {r["player"]: r for r in LI.parse_paste(open(self.SAMPLE, encoding="utf-8").read())}
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+.../home/user/fantasy-basketball-2026-27/scripts/league_intake.py:125: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpzmd4_ku0/t.csv' mode='r' encoding='utf-8'>
+  rows = list(csv.DictReader(open(src, encoding="utf-8")))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./home/user/fantasy-basketball-2026-27/scripts/league_intake.py:125: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp4hdaec6d/t.csv' mode='r' encoding='utf-8'>
+  rows = list(csv.DictReader(open(src, encoding="utf-8")))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_league_intake.py:59: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp4hdaec6d/state.json' mode='r' encoding='utf-8'>
+  team = json.load(open(out))["teams"][0]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+......................./home/user/fantasy-basketball-2026-27/scripts/test_schedule.py:46: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp9wb_6z62/sim.json' mode='r' encoding='utf-8'>
+  rec = json.load(open(out))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_schedule.py:47: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/fantasy-basketball-2026-27/data/league_schedule.json' mode='r' encoding='utf-8'>
+  weeks = json.load(open(SCHED))["regular_season_weeks"]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./home/user/fantasy-basketball-2026-27/scripts/test_schedule.py:32: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/fantasy-basketball-2026-27/data/league_schedule.json' mode='r' encoding='utf-8'>
+  s = json.load(open(SCHED))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./home/user/fantasy-basketball-2026-27/scripts/test_schedule.py:26: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/fantasy-basketball-2026-27/data/league_schedule.json' mode='r' encoding='utf-8'>
+  s, st = json.load(open(SCHED)), json.load(open(SETTINGS))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_schedule.py:26: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/fantasy-basketball-2026-27/data/league_settings.json' mode='r' encoding='utf-8'>
+  s, st = json.load(open(SCHED)), json.load(open(SETTINGS))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+........./home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpl8kkrwer/brief.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpl8kkrwer/board.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpl8kkrwer/status.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpl8kkrwer/league.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpl8kkrwer/season_lines.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpl8kkrwer/sweep.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpl8kkrwer/calibration.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpl8kkrwer/brief.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpl8kkrwer/board.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpl8kkrwer/status.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpl8kkrwer/league.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpl8kkrwer/season_lines.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpl8kkrwer/sweep.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpl8kkrwer/calibration.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/box_pull.py:167: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/fantasy-basketball-2026-27/report/market/build_market.py' mode='r' encoding='utf-8'>
+  tree = ast.parse(open(path, encoding="utf-8").read())
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpl8kkrwer/brief.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpl8kkrwer/board.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpl8kkrwer/status.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpl8kkrwer/league.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpl8kkrwer/season_lines.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpl8kkrwer/sweep.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpl8kkrwer/calibration.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpu_koy2x8/brief.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpu_koy2x8/board.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpu_koy2x8/status.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpu_koy2x8/league.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpu_koy2x8/season_lines.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpu_koy2x8/sweep.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpu_koy2x8/calibration.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpu_koy2x8/brief.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpilbozsdi/brief.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpilbozsdi/board.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpilbozsdi/status.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpilbozsdi/league.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpilbozsdi/season_lines.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpilbozsdi/sweep.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpilbozsdi/calibration.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpilbozsdi/brief.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpilbozsdi/board.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpilbozsdi/status.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpilbozsdi/league.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpilbozsdi/season_lines.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpilbozsdi/sweep.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpilbozsdi/calibration.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpilbozsdi/brief.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpilbozsdi/board.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpilbozsdi/status.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpilbozsdi/league.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpilbozsdi/season_lines.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpilbozsdi/sweep.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpilbozsdi/calibration.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpnoordi8b/brief.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpnoordi8b/board.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpnoordi8b/status.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpnoordi8b/league.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpnoordi8b/season_lines.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpnoordi8b/sweep.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpnoordi8b/calibration.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpnoordi8b/brief.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpnoordi8b/board.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpnoordi8b/status.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpnoordi8b/league.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpnoordi8b/season_lines.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpnoordi8b/sweep.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpnoordi8b/calibration.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpnoordi8b/brief.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpnoordi8b/board.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpnoordi8b/status.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpnoordi8b/league.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpnoordi8b/season_lines.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpnoordi8b/sweep.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpnoordi8b/calibration.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmplzqyytks/brief.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmplzqyytks/board.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmplzqyytks/status.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmplzqyytks/league.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmplzqyytks/season_lines.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmplzqyytks/sweep.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmplzqyytks/calibration.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmplzqyytks/brief.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmplzqyytks/board.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmplzqyytks/status.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmplzqyytks/league.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmplzqyytks/season_lines.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmplzqyytks/sweep.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmplzqyytks/calibration.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmplzqyytks/brief.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmplzqyytks/board.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmplzqyytks/status.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmplzqyytks/league.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmplzqyytks/season_lines.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmplzqyytks/sweep.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmplzqyytks/calibration.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpgo_atmtj/brief.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpgo_atmtj/board.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpgo_atmtj/status.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpgo_atmtj/league.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpgo_atmtj/season_lines.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpgo_atmtj/sweep.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpgo_atmtj/calibration.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpgo_atmtj/brief.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpgo_atmtj/board.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpgo_atmtj/status.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpgo_atmtj/league.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpgo_atmtj/season_lines.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpgo_atmtj/sweep.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpgo_atmtj/calibration.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpgo_atmtj/brief.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpgo_atmtj/board.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpgo_atmtj/status.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpgo_atmtj/league.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpgo_atmtj/season_lines.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpgo_atmtj/sweep.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpgo_atmtj/calibration.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpci7zyi17/brief.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpci7zyi17/board.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpci7zyi17/status.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpci7zyi17/league.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpci7zyi17/season_lines.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpci7zyi17/sweep.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpci7zyi17/calibration.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpci7zyi17/brief.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpci7zyi17/board.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpci7zyi17/status.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpci7zyi17/league.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpci7zyi17/season_lines.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpci7zyi17/sweep.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpci7zyi17/calibration.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpci7zyi17/brief.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpci7zyi17/board.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpci7zyi17/status.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpci7zyi17/league.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpci7zyi17/season_lines.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpci7zyi17/sweep.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpci7zyi17/calibration.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+../home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmppc6_ze18/brief.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmppc6_ze18/board.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmppc6_ze18/status.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmppc6_ze18/league.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmppc6_ze18/season_lines.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmppc6_ze18/sweep.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmppc6_ze18/calibration.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:110: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmppc6_ze18/board.json' mode='r' encoding='utf-8'>
+  b = json.load(open(self.fx["board"])); L = json.load(open(self.fx["league_state"]))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:110: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmppc6_ze18/league.json' mode='r' encoding='utf-8'>
+  b = json.load(open(self.fx["board"])); L = json.load(open(self.fx["league_state"]))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:119: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmppc6_ze18/board.json' mode='w' encoding='utf-8'>
+  json.dump(b, open(self.fx["board"], "w")); json.dump(L, open(self.fx["league_state"], "w"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:119: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmppc6_ze18/league.json' mode='w' encoding='utf-8'>
+  json.dump(b, open(self.fx["board"], "w")); json.dump(L, open(self.fx["league_state"], "w"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmppc6_ze18/brief.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmppc6_ze18/board.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmppc6_ze18/status.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmppc6_ze18/league.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmppc6_ze18/season_lines.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmppc6_ze18/sweep.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmppc6_ze18/calibration.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmppc6_ze18/brief.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmppc6_ze18/board.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmppc6_ze18/status.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmppc6_ze18/league.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmppc6_ze18/season_lines.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmppc6_ze18/sweep.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmppc6_ze18/calibration.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp0houzay4/brief.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp0houzay4/board.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp0houzay4/status.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp0houzay4/league.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp0houzay4/season_lines.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp0houzay4/sweep.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp0houzay4/calibration.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:110: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp0houzay4/board.json' mode='r' encoding='utf-8'>
+  b = json.load(open(self.fx["board"])); L = json.load(open(self.fx["league_state"]))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:110: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp0houzay4/league.json' mode='r' encoding='utf-8'>
+  b = json.load(open(self.fx["board"])); L = json.load(open(self.fx["league_state"]))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:119: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp0houzay4/board.json' mode='w' encoding='utf-8'>
+  json.dump(b, open(self.fx["board"], "w")); json.dump(L, open(self.fx["league_state"], "w"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:119: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp0houzay4/league.json' mode='w' encoding='utf-8'>
+  json.dump(b, open(self.fx["board"], "w")); json.dump(L, open(self.fx["league_state"], "w"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp0houzay4/brief.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp0houzay4/board.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp0houzay4/status.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp0houzay4/league.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp0houzay4/season_lines.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp0houzay4/sweep.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp0houzay4/calibration.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp0houzay4/brief.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp0houzay4/board.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp0houzay4/status.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp0houzay4/league.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp0houzay4/season_lines.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp0houzay4/sweep.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:129: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp0houzay4/calibration.json'>
+  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpa4l5uwvc/brief.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpa4l5uwvc/board.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpa4l5uwvc/status.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpa4l5uwvc/league.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpa4l5uwvc/season_lines.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpa4l5uwvc/sweep.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpa4l5uwvc/calibration.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:110: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpa4l5uwvc/board.json' mode='r' encoding='utf-8'>
+  b = json.load(open(self.fx["board"])); L = json.load(open(self.fx["league_state"]))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:110: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpa4l5uwvc/league.json' mode='r' encoding='utf-8'>
+  b = json.load(open(self.fx["board"])); L = json.load(open(self.fx["league_state"]))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:119: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpa4l5uwvc/board.json' mode='w' encoding='utf-8'>
+  json.dump(b, open(self.fx["board"], "w")); json.dump(L, open(self.fx["league_state"], "w"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:119: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpa4l5uwvc/league.json' mode='w' encoding='utf-8'>
+  json.dump(b, open(self.fx["board"], "w")); json.dump(L, open(self.fx["league_state"], "w"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:142: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpa4l5uwvc/league.json' mode='r' encoding='utf-8'>
+  L = json.load(open(self.fx["league_state"]))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:144: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpa4l5uwvc/league.json' mode='w' encoding='utf-8'>
+  json.dump(L, open(self.fx["league_state"], "w"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpa4l5uwvc/brief.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpa4l5uwvc/board.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpa4l5uwvc/status.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpa4l5uwvc/league.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpa4l5uwvc/season_lines.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpa4l5uwvc/sweep.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpa4l5uwvc/calibration.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpc6kvwqsk/brief.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpc6kvwqsk/board.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpc6kvwqsk/status.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpc6kvwqsk/league.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpc6kvwqsk/season_lines.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpc6kvwqsk/sweep.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:12: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpc6kvwqsk/calibration.json' mode='w' encoding='utf-8'>
+  j = lambda name, obj: (json.dump(obj, open(os.path.join(d, name), "w")), os.path.join(d, name))[1]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:110: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpc6kvwqsk/board.json' mode='r' encoding='utf-8'>
+  b = json.load(open(self.fx["board"])); L = json.load(open(self.fx["league_state"]))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:110: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpc6kvwqsk/league.json' mode='r' encoding='utf-8'>
+  b = json.load(open(self.fx["board"])); L = json.load(open(self.fx["league_state"]))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:119: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpc6kvwqsk/board.json' mode='w' encoding='utf-8'>
+  json.dump(b, open(self.fx["board"], "w")); json.dump(L, open(self.fx["league_state"], "w"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:119: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpc6kvwqsk/league.json' mode='w' encoding='utf-8'>
+  json.dump(b, open(self.fx["board"], "w")); json.dump(L, open(self.fx["league_state"], "w"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:136: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpc6kvwqsk/league.json' mode='r' encoding='utf-8'>
+  L = json.load(open(self.fx["league_state"]))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_deck.py:138: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpc6kvwqsk/league.json' mode='w' encoding='utf-8'>
+  json.dump(L, open(self.fx["league_state"], "w"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpc6kvwqsk/brief.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpc6kvwqsk/board.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpc6kvwqsk/status.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpc6kvwqsk/league.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpc6kvwqsk/season_lines.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpc6kvwqsk/sweep.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/season_deck.py:31: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpc6kvwqsk/calibration.json' mode='r' encoding='utf-8'>
+  return json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+......./home/user/fantasy-basketball-2026-27/scripts/test_season_lines.py:99: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmprthz8q0z/projections_season.csv' mode='r' encoding='utf-8'>
+  self.assertEqual(open(os.path.join(d, "projections_season.csv")).read().replace("\r", ""),
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_lines.py:100: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmprthz8q0z/kit.csv' mode='r' encoding='utf-8'>
+  open(kit).read().replace("\r", ""))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_lines.py:101: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmprthz8q0z/pool_season.csv' mode='r' encoding='utf-8'>
+  self.assertEqual(open(os.path.join(d, "pool_season.csv")).read().replace("\r", ""),
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_season_lines.py:102: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmprthz8q0z/deck.csv' mode='r' encoding='utf-8'>
+  open(deck).read().replace("\r", ""))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+..................../home/user/fantasy-basketball-2026-27/scripts/weekly_preview.py:87: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpy23taqn5/calibration.json' mode='w' encoding='utf-8'>
+  json.dump(led, open(path, "w", encoding="utf-8"), indent=1, ensure_ascii=False)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/weekly_preview.py:82: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpy23taqn5/calibration.json' mode='r' encoding='utf-8'>
+  led = json.load(open(path, encoding="utf-8")) if os.path.exists(path) else {"weeks": {}}
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_weekly.py:29: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpy23taqn5/calibration.json' mode='r' encoding='utf-8'>
+  self.assertEqual(json.load(open(p))["weeks"]["1"]["p_win"], 0.6)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+..
+----------------------------------------------------------------------
+Ran 131 tests in 1.861s
+
+OK

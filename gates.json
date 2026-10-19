@@ -1,52 +1,51 @@
 {
- "ran_at_utc": "2026-10-19T22:28:46Z",
+ "ran_at_utc": "2026-10-19T22:52:51Z",
  "inputs": {
-  "report/after-reports/after-report-2026-10-19-season-deck.md": "0b9720e46e81c0acfad840ae987f478b854b7e201ce71ff38ee45b296caed017",
-  "report/season/deck_2026-10-21.html": "d14a381fc2d0e80b0ef07ea0f5cdafbab663695da75ad801a706b4753171864d",
-  "report/season/deck_record_2026-10-21.json": "be16b6a6da6bd7c819bb59683c8e8d893e9b47c76d388cb6cea2efcbc71a6a8e",
-  "report/briefs/morning_2026-10-21.json": "1c52a8048c79e94c7b97ac7d5da0e2523711a0dfdd7ab1fc78e7ced13c3d231e",
-  "report/after-reports/redteam-2026-10-19/sweep.json": "434dc69314419dc0e223623c436afa673f2e16e7a2f69820c8403435e5f49d87",
-  "report/after-reports/season-deck-2026-10-19/swap-math-mirror.txt": "f6d5d98394cc6f7df4dba2a6062c2195023cb296245d1c83cfe3ac0847204852",
-  "report/after-reports/season-deck-2026-10-19/tests-season-deck.txt": "d9e09ead58f1d77354008da0b2a41560f021fcabbbb908ae703187d8f0c9d85b"
+  "report/after-reports/after-report-2026-10-19-season-deck-audit.md": "beec91264139d40ee33d0a8c48cf22c5b67b6fe8be1e3d3e227131bddfdf5fc3",
+  "report/season/deck_2026-10-21.html": "7a29830ac85dc2c96cb84f0aa7dd1113a05c54a1663354aff54ec07458384f1c",
+  "report/season/deck_record_2026-10-21.json": "4658694d7abc639947bd5c7a130f932a72e63b9c05af23491a2d297417342f06",
+  "data/league_state.json": "d8e5b2086708a7fcf28dde2d08568ae828b0e5f5a7cd611e8f4fcb17da91389f",
+  "report/after-reports/season-deck-audit-2026-10-19/tests-full-suite.txt": "45c8e348906649dfd15a7164d892a83b911a8923e2a2551675716def344708f0",
+  "report/after-reports/redteam-2026-10-19/sweep.json": "434dc69314419dc0e223623c436afa673f2e16e7a2f69820c8403435e5f49d87"
  },
  "gates": [
   {
    "name": "kit check_report",
-   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-19-season-deck.md",
+   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-19-season-deck-audit.md",
    "cwd": ".",
    "pass_re": "^REPORT GATE: PASS",
    "exit": 0,
-   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-10-19-season-deck.md (structure, publication rule, pull-log row)",
+   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-10-19-season-deck-audit.md (structure, publication rule, pull-log row)",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "REPORT GATE: PASS \u2014 after-report-2026-10-19-season-deck.md (structure, publication rule, pull-log row)"
+    "REPORT GATE: PASS \u2014 after-report-2026-10-19-season-deck-audit.md (structure, publication rule, pull-log row)"
    ]
   },
   {
    "name": "deck judgment_open_items --check-report",
-   "cmd": "/usr/local/bin/python3 scripts/judgment_open_items.py --check-report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-19-season-deck.md",
+   "cmd": "/usr/local/bin/python3 scripts/judgment_open_items.py --check-report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-19-season-deck-audit.md",
    "cwd": "../yahoo-fantasy-basketball",
    "pass_re": "^receipts check PASS",
    "exit": 0,
-   "pass_line": "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-10-19-season-deck.md",
+   "pass_line": "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-10-19-season-deck-audit.md",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-10-19-season-deck.md"
+    "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-10-19-season-deck-audit.md"
    ]
   },
   {
    "name": "deck repeat_market_check --check-report",
-   "cmd": "/usr/local/bin/python3 scripts/repeat_market_check.py --check-report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-19-season-deck.md",
+   "cmd": "/usr/local/bin/python3 scripts/repeat_market_check.py --check-report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-19-season-deck-audit.md",
    "cwd": "../yahoo-fantasy-basketball",
    "pass_re": "^REPEAT-NAME CHECK: PASS",
    "exit": 0,
-   "pass_line": "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-10-19-season-deck.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)",
+   "pass_line": "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-10-19-season-deck-audit.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-10-19-season-deck.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)"
+    "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-10-19-season-deck-audit.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)"
    ]
   },
   {
@@ -64,7 +63,7 @@
   },
   {
    "name": "redteam bands",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/redteam/check_bands.py --report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-19-season-deck.md --sweep /home/user/fantasy-basketball-2026-27/report/after-reports/redteam-2026-10-19/sweep.json",
+   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/redteam/check_bands.py --report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-19-season-deck-audit.md --sweep /home/user/fantasy-basketball-2026-27/report/after-reports/redteam-2026-10-19/sweep.json",
    "cwd": ".",
    "pass_re": "^BANDS CHECK: PASS",
    "exit": 0,
@@ -90,5 +89,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "1d9a51533f6e56191aee18167a4e3de6023e34fc"
+ "base_commit": "17b320bdddecedd4976e9d50924c7471fc2cebdf"
 }
