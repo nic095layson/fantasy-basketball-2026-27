@@ -25,6 +25,7 @@ import datetime
 import hashlib
 import json
 import os
+import re
 import sys
 
 KIT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -39,6 +40,64 @@ POOL = os.path.join(DECK, "data", "players.csv")
 OUT = os.path.join(KIT, "data", "league_state.json")
 UNPOOLED = os.path.join(KIT, "data", "unpooled_il.json")
 EMPTY = "(Empty)"
+SLOT_RE = re.compile(r"^(PG|SG|G|SF|PF|F|C|Util|BN|IL|IL\+)\t?\s*$")
+NBA_RE = re.compile(r"^([A-Z]{2,4}) - ([A-Z,]+)\s*$")
+NOTE_RE = re.compile(r"^(?P<name>.+?)(?P<status>Q|O|P|D|DTD|GTD|INJ|NA|SUSP)?(?:New Player Note|No new player Notes|Player Note)\s*$")
+GAME_RE = re.compile(r"^\d{1,2}:\d{2} [ap]m (vs|@) [A-Z]{2,4}\s*$")
+DATE_RE = re.compile(r"^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), [A-Z][a-z]{2} \d{1,2}\s*$")
+
+
+class PasteError(Exception):
+    pass
+
+
+def parse_paste(text):
+    """The Yahoo league 'Starting Rosters' page pasted as text (owner sample 2026-10-19), to the transcription
+    schema (fantasy_team, page, slot, player, nba_team, positions, status). The page lists each fantasy team as a
+    header line, then 'Pos' / 'Player', then per slot: the slot line, '<Name><status letter?><note label>', the
+    '<NBA> - <POS,...>' line, and an optional game-time line. Date tabs and blank lines are skipped. Anything
+    else inside a player block HALTS the parse (RULES.md rule 4: no guessing)."""
+    lines = [ln.rstrip("\n") for ln in text.splitlines()]
+    rows, team, i, pending = [], None, 0, None
+    while i < len(lines):
+        ln = lines[i].strip()
+        if not ln or ln in ("Starting Rosters", "Pos", "Player") or DATE_RE.match(ln) or GAME_RE.match(ln):
+            i += 1; continue
+        if SLOT_RE.match(lines[i].strip()):
+            if team is None:
+                raise PasteError(f"line {i + 1}: slot before any team header")
+            slot = SLOT_RE.match(lines[i].strip()).group(1)
+            j = i + 1
+            while j < len(lines) and not lines[j].strip():
+                j += 1
+            if j >= len(lines):
+                raise PasteError(f"line {i + 1}: slot {slot} with no player line")
+            m = NOTE_RE.match(lines[j].strip())
+            if lines[j].strip() == EMPTY:
+                rows.append(dict(fantasy_team=team, page=1, slot=slot, player=EMPTY, nba_team="", positions="", status="")); i = j + 1; continue
+            if not m:
+                raise PasteError(f"line {j + 1}: {lines[j].strip()!r} is not a '<Name><status><note label>' line")
+            k = j + 1
+            while k < len(lines) and not lines[k].strip():
+                k += 1
+            n = NBA_RE.match(lines[k].strip()) if k < len(lines) else None
+            if not n:
+                raise PasteError(f"line {k + 1}: {lines[k].strip() if k < len(lines) else '<eof>'!r} is not an '<NBA> - <POS>' line for {m.group('name')!r}")
+            rows.append(dict(fantasy_team=team, page=1, slot=slot, player=m.group("name").strip(), nba_team=n.group(1),
+                             positions=n.group(2), status=m.group("status") or ""))
+            i = k + 1; continue
+        # anything else is a fantasy-team header (the page prints it with a trailing space)
+        team = ln
+        i += 1
+    if not rows:
+        raise PasteError("no roster rows found")
+    return rows
+
+
+def write_rows(rows, path):
+    with open(path, "w", encoding="utf-8", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=["fantasy_team", "page", "slot", "player", "nba_team", "positions", "status"], lineterminator="\n")
+        w.writeheader(); w.writerows(rows)
 
 
 def resolve(names, pool, abbr):
@@ -130,7 +189,16 @@ def run(src, out, pool, abbr, draft, as_of, managers=None, sources=None, unpoole
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--as-of", default=datetime.date.today().isoformat())
+    ap.add_argument("--paste", help="the Yahoo Starting Rosters page pasted as text (pinned under data/source/); parsed to the transcription schema")
     a = ap.parse_args()
+    src, pdf = SRC, PDF
+    if a.paste:
+        try:
+            rows = parse_paste(open(a.paste, encoding="utf-8").read())
+        except (PasteError, OSError) as e:
+            print(f"LEAGUE INTAKE: HALT — paste not parsed: {e}"); sys.exit(1)
+        src = os.path.splitext(a.paste)[0] + ".transcribed.csv"
+        write_rows(rows, src); pdf = None
     pool = list(csv.DictReader(open(POOL, encoding="utf-8")))
     recap = json.load(open(RECAP, encoding="utf-8"))
     abbr = {p["abbr"]: p["player"] for p in recap}
@@ -138,12 +206,17 @@ def main():
     for p in recap:
         draft.setdefault(p["slot"], []).append(p["player"])
         managers[p["slot"]] = p["manager"]
-    sources = {"pdf": {"file": os.path.relpath(PDF, KIT), "sha256": sha(PDF), "view": "Yahoo Starting Rosters, Tue Oct 20 tab"},
-               "transcription": {"file": os.path.relpath(SRC, KIT), "sha256": sha(SRC),
-                                 "method": "agent transcription of the page images (no text layer)"},
-               "draft_board": os.path.relpath(RECAP, KIT), "pool": "deck data/players.csv"}
+    if a.paste:
+        sources = {"paste": {"file": os.path.relpath(a.paste, KIT), "sha256": sha(a.paste), "view": "Yahoo Starting Rosters page, pasted as text by the owner"},
+                   "transcription": {"file": os.path.relpath(src, KIT), "sha256": sha(src), "method": "league_intake.parse_paste (mechanical)"},
+                   "draft_board": os.path.relpath(RECAP, KIT), "pool": "deck data/players.csv"}
+    else:
+        sources = {"pdf": {"file": os.path.relpath(pdf, KIT), "sha256": sha(pdf), "view": "Yahoo Starting Rosters, Tue Oct 20 tab"},
+                   "transcription": {"file": os.path.relpath(src, KIT), "sha256": sha(src),
+                                     "method": "agent transcription of the page images (no text layer)"},
+                   "draft_board": os.path.relpath(RECAP, KIT), "pool": "deck data/players.csv"}
     unpooled = json.load(open(UNPOOLED, encoding="utf-8"))["players"] if os.path.exists(UNPOOLED) else {}
-    sys.exit(run(SRC, OUT, pool, abbr, draft, a.as_of, managers, sources, unpooled))
+    sys.exit(run(src, OUT, pool, abbr, draft, a.as_of, managers, sources, unpooled))
 
 
 if __name__ == "__main__":

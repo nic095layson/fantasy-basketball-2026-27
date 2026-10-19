@@ -31,7 +31,9 @@ OVERRIDES = os.path.join(KIT, "data", "status_overrides.json")
 OUTDIR = os.path.join(KIT, "data", "status")
 ESPN_INJURIES = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
 OWNER_SEAT = 10
-TIERS = {None: ("healthy", 1.00), "Q": ("questionable", 0.50), "O": ("out", 0.00)}
+TIERS = {None: ("healthy", 1.00), "Q": ("questionable", 0.50), "O": ("out", 0.00),
+         # 2026-10-19: P (probable) seen on the owner's rosters paste (Curry); 0.75 is a stated default, D-IS-6
+         "P": ("probable", 0.75)}
 
 
 def tier(letter):
@@ -78,7 +80,7 @@ def build(state, espn=None, espn_attempt=None, overrides=None):
 def check(rows):
     problems = []
     for r in rows:
-        if r.get("yahoo_status") not in ("Q", "O"):
+        if r.get("yahoo_status") not in ("Q", "O", "P"):
             continue
         dated = [x for x in r.get("receipts", []) if x.get("captured") or x.get("date")]
         if r["availability"] >= 1.0 and not dated:

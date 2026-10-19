@@ -58,5 +58,14 @@ class Gate(unittest.TestCase):
         self.assertEqual(SF.check(rows), [])
 
 
+class Probable(unittest.TestCase):
+    """2026-10-19: Yahoo's P (probable) letter appeared on the owner's rosters paste (Stephen Curry); tiered 0.75 as
+    a stated default (D-IS-6), between Q (0.50) and healthy (1.00). An unknown letter still refuses."""
+    def test_p_is_tiered_and_unknown_still_refuses(self):
+        self.assertEqual(SF.tier("P"), ("probable", 0.75))
+        with self.assertRaises(ValueError):
+            SF.tier("ZZ")
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
