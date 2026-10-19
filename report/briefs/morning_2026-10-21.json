@@ -1,0 +1,49 @@
+{
+ "ran_at_utc": "2026-10-19T17:55:32Z",
+ "steps": [
+  {
+   "name": "season lines",
+   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/season_lines.py --date 2026-10-21",
+   "exit": 0,
+   "pass_line": "SEASON LINES: PASS — 2026-10-21: 1 box-score records, 0 pool players with regular-season games, 0 lines moved by 0.25+ (priors in games: FG% 26.0, FT% 37.5, 3PM 9.5, PTS 11.7, REB 12.4, AST 11.7, STL 21.7, BLK 14.5, TO 14.0); 0 unpooled players with games",
+   "verdict": "PASS",
+   "tail": [
+    "SEASON LINES: PASS — 2026-10-21: 1 box-score records, 0 pool players with regular-season games, 0 lines moved by 0.25+ (priors in games: FG% 26.0, FT% 37.5, 3PM 9.5, PTS 11.7, REB 12.4, AST 11.7, STL 21.7, BLK 14.5, TO 14.0); 0 unpooled players with games"
+   ]
+  },
+  {
+   "name": "season board",
+   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/season_board.py --date 2026-10-21",
+   "exit": 0,
+   "pass_line": "SEASON BOARD: PASS — 2026-10-21: report/season/board_2026-10-21.md (0 movers listed)",
+   "verdict": "PASS",
+   "tail": [
+    "SEASON BOARD: PASS — 2026-10-21: report/season/board_2026-10-21.md (0 movers listed)"
+   ]
+  },
+  {
+   "name": "status feed",
+   "cmd": "bash -c '/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/status_feed.py --date 2026-10-21 && /usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/status_feed.py --check'",
+   "exit": 0,
+   "pass_line": "STATUS GATE: PASS — status_2026-10-21.json: 53 flagged row(s), each tiered with a dated receipt",
+   "verdict": "PASS",
+   "tail": [
+    "status: 53 flagged row(s) league-wide; yours: Kevin Durant Q→0.50, Kyrie Irving Q→0.50, Max Strus O→0.00, Miles Bridges Q→0.50",
+    "ESPN injuries: read",
+    "wrote data/status/status_2026-10-21.json",
+    "STATUS GATE: PASS — status_2026-10-21.json: 53 flagged row(s), each tiered with a dated receipt"
+   ]
+  },
+  {
+   "name": "daily brief",
+   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/daily_brief.py --date 2026-10-21 --seasons 10000",
+   "exit": 0,
+   "pass_line": "wrote report/briefs/brief_2026-10-21.md",
+   "verdict": "PASS",
+   "tail": [
+    "wrote report/briefs/brief_2026-10-21.md"
+   ]
+  }
+ ],
+ "verdict": "PASS"
+}
