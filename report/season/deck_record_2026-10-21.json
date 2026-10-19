@@ -1,0 +1,37 @@
+{
+ "date": "2026-10-21",
+ "out": "report/season/deck_2026-10-21.html",
+ "inputs": {
+  "brief": {
+   "path": "report/briefs/brief_2026-10-21.json",
+   "sha256": "f2963bed327fa6bc5a7d9c6fd19e6ac92353818c10665c911ffeb85b9f5a2b40"
+  },
+  "board": {
+   "path": "report/season/board_2026-10-21.json",
+   "sha256": "27d6273aa1b71be90d099f4c134bfd0d292153c1a11ab9acbae49af4a5e14b36"
+  },
+  "status": {
+   "path": "data/status/status_2026-10-21.json",
+   "sha256": "ae2ae302a981ba896d7ac00f976c85d46e002710544a84cb0a61d6c413d6b7e5"
+  },
+  "league_state": {
+   "path": "data/league_state.json",
+   "sha256": "d8e5b2086708a7fcf28dde2d08568ae828b0e5f5a7cd611e8f4fcb17da91389f"
+  },
+  "season_lines": {
+   "path": "data/season/season_lines_2026-10-21.json",
+   "sha256": "bb15cda567fb9f97d1f483368e1faa2854f444166b71b9c259f83faa395d1fc5"
+  },
+  "sweep": {
+   "path": "report/after-reports/redteam-2026-10-19/sweep.json",
+   "sha256": "434dc69314419dc0e223623c436afa673f2e16e7a2f69820c8403435e5f49d87"
+  },
+  "calibration": {
+   "path": "report/calibration.json",
+   "sha256": "a5db5a742419084353b86bba3a7be22482aefdc98b7dd9f02546c0ef19146403"
+  }
+ },
+ "board_rows": 313,
+ "status_rows": 24,
+ "panes": 7
+}
