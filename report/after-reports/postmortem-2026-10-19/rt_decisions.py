@@ -4,7 +4,7 @@ title level most? Draymond Green for Braun (the pickup) and Jalen Johnson for Du
 measured as a title-share difference against the baseline under the same variant, so the structural parameter moves
 both sides. Variants: shock 0 / 0.06 / 0.12, no in-sim injury discount. 6,000 seasons, seeds 2026 and 2027. Writes
 rt_decisions.json."""
-import json, math, os, random, sys
+import json, math, os, random, subprocess, sys
 from concurrent.futures import ProcessPoolExecutor
 H=os.path.dirname(os.path.abspath(__file__)); DECK="/home/user/yahoo-fantasy-basketball"
 sys.path.insert(0,DECK+"/scripts"); sys.path.insert(0,DECK+"/arena")
@@ -36,7 +36,7 @@ if __name__=="__main__":
         out[v]={}
         for s in SWAPS:
             out[v][s]={sd:dict(title=round(g[(s,v,sd)],2),d_title=round(g[(s,v,sd)]-g[("as drafted",v,sd)],2)) for sd in SEEDS}
-    json.dump(dict(seasons=SEASONS,seeds=list(SEEDS),mc_se_diff_points=round(100*math.sqrt(2*0.22*0.78/SEASONS),2),results=out),open(os.path.join(H,"rt_decisions.json"),"w"),indent=1)
+    json.dump(dict(engine_commit=subprocess.check_output(["git","-C",DECK,"rev-parse","--short","HEAD"]).decode().strip(),seasons=SEASONS,seeds=list(SEEDS),mc_se_diff_points=round(100*math.sqrt(2*0.22*0.78/SEASONS),2),results=out),open(os.path.join(H,"rt_decisions.json"),"w"),indent=1)
     for v in VARIANTS:
         print(v); 
         for s in SWAPS: print(f"   {s:<32} {out[v][s][2026]['title']:6.2f} / {out[v][s][2027]['title']:6.2f}   d {out[v][s][2026]['d_title']:+.2f} / {out[v][s][2027]['d_title']:+.2f}")

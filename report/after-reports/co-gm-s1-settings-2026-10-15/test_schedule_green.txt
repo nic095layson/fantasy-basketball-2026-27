@@ -1,0 +1,23 @@
+test_owner_plays_the_listed_opponent_every_week (__main__.LeagueSimSchedule.test_owner_plays_the_listed_opponent_every_week) ... /home/user/fantasy-basketball-2026-27/scripts/test_schedule.py:46: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp3s3zh3yh/sim.json' mode='r' encoding='utf-8'>
+  rec = json.load(open(out))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_schedule.py:47: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/fantasy-basketball-2026-27/data/league_schedule.json' mode='r' encoding='utf-8'>
+  weeks = json.load(open(SCHED))["regular_season_weeks"]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_every_other_team_appears_and_never_self (__main__.ScheduleFile.test_every_other_team_appears_and_never_self) ... /home/user/fantasy-basketball-2026-27/scripts/test_schedule.py:32: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/fantasy-basketball-2026-27/data/league_schedule.json' mode='r' encoding='utf-8'>
+  s = json.load(open(SCHED))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_matches_settings (__main__.ScheduleFile.test_matches_settings) ... /home/user/fantasy-basketball-2026-27/scripts/test_schedule.py:26: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/fantasy-basketball-2026-27/data/league_schedule.json' mode='r' encoding='utf-8'>
+  s, st = json.load(open(SCHED)), json.load(open(SETTINGS))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/test_schedule.py:26: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/fantasy-basketball-2026-27/data/league_settings.json' mode='r' encoding='utf-8'>
+  s, st = json.load(open(SCHED)), json.load(open(SETTINGS))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.483s
+
+OK

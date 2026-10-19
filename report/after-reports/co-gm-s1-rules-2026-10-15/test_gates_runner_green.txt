@@ -1,0 +1,14 @@
+test_exit0_with_empty_log_is_fail (__main__.RunGate.test_exit0_with_empty_log_is_fail) ... ok
+test_overall_verdict_fails_if_any_gate_fails (__main__.RunGate.test_overall_verdict_fails_if_any_gate_fails) ... ok
+test_pass_needs_exit0_and_pass_line (__main__.RunGate.test_pass_needs_exit0_and_pass_line) ... ok
+test_pass_text_with_nonzero_exit_is_fail (__main__.RunGate.test_pass_text_with_nonzero_exit_is_fail) ... ok
+test_changed_input_is_refused (__main__.Verify.test_changed_input_is_refused) ... ok
+test_failing_record_is_refused (__main__.Verify.test_failing_record_is_refused) ... ok
+test_fresh_pass_record_verifies (__main__.Verify.test_fresh_pass_record_verifies) ... ok
+test_missing_record_is_refused (__main__.Verify.test_missing_record_is_refused) ... ok
+test_quote_carries_pass_lines_and_exit_codes (__main__.Verify.test_quote_carries_pass_lines_and_exit_codes) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.220s
+
+OK

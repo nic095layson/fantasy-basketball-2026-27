@@ -1,0 +1,21 @@
+test_a_flex_player_moves_aside_so_a_lower_valued_specialist_still_starts (__main__.DailyFill.test_a_flex_player_moves_aside_so_a_lower_valued_specialist_still_starts) ... ok
+test_every_slot_kind_is_respected (__main__.DailyFill.test_every_slot_kind_is_respected) ... ok
+test_out_players_never_start_and_eleventh_player_sits (__main__.DailyFill.test_out_players_never_start_and_eleventh_player_sits) ... ok
+test_odds_line_carries_both_seeds_and_the_error (__main__.Note.test_odds_line_carries_both_seeds_and_the_error) ... ok
+test_bref_codes_map_to_pool_codes (__main__.Schedule.test_bref_codes_map_to_pool_codes) ... ok
+test_games_left_counts_from_the_date_to_the_week_end (__main__.Schedule.test_games_left_counts_from_the_date_to_the_week_end) ... ok
+test_ranks_by_value_among_players_with_more_games_than_the_drop (__main__.Streaming.test_ranks_by_value_among_players_with_more_games_than_the_drop) ... ERROR
+
+======================================================================
+ERROR: test_ranks_by_value_among_players_with_more_games_than_the_drop (__main__.Streaming.test_ranks_by_value_among_players_with_more_games_than_the_drop)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/fantasy-basketball-2026-27/scripts/test_daily_brief.py", line 66, in test_ranks_by_value_among_players_with_more_games_than_the_drop
+    out = CG.streaming(fa, drop_games=2)
+          ^^^^^^^^^^^^
+AttributeError: module 'co_gm' has no attribute 'streaming'
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.002s
+
+FAILED (errors=1)

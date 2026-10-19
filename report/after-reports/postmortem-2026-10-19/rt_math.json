@@ -2,6 +2,57 @@
  "pool": "arena/results/players_v69.csv",
  "rows": 335,
  "fixed_point_iterations": 3,
+ "settings_check": {
+  "scoring_type": "head-to-head categories",
+  "standings_rule_engine": "cumulative category record (arena.simulate_seasons)",
+  "regular_season_weeks": {
+   "settings": 17,
+   "engine": 17,
+   "agree": true
+  },
+  "playoff_teams": {
+   "settings": 8,
+   "engine": 8,
+   "agree": true
+  },
+  "active_slots": {
+   "settings": [
+    "PG",
+    "SG",
+    "G",
+    "SF",
+    "PF",
+    "F",
+    "C",
+    "C",
+    "Util",
+    "Util"
+   ],
+   "engine": [
+    "PG",
+    "SG",
+    "G",
+    "SF",
+    "PF",
+    "F",
+    "C",
+    "C",
+    "Util",
+    "Util"
+   ],
+   "agree": true
+  },
+  "categories_agree": true,
+  "playoff_reseeding": {
+   "settings": true,
+   "semantics_note": "assumed: after round 1 the best remaining seed meets the worst remaining seed (Yahoo's reseed rule); not confirmed by the owner",
+   "engine": "reseed() after round 1"
+  },
+  "lineup_deadline": "daily",
+  "source": "data/source/yahoo-league-settings-2026-10-15.pdf",
+  "received": "2026-10-15",
+  "engine_commit": "259c630"
+ },
  "z_max_abs_diff": 0.0,
  "availability_max_abs_diff": 0.0,
  "board_first_order_difference": null,

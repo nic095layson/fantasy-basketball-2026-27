@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Red team, phase 2: the card's measure (ECW, normal approximation, independent categories, 11 opponents) against the
-simulator's realized category win rates (shock, random pairings, 18 weeks) for all 12 seats; the league totals that must
+simulator's realized category win rates (shock, random pairings, 17 weeks, reseeded bracket) for all 12 seats; the league totals that must
 hold by construction (every category sums to 50% across teams; each seat's category rates equal its cats-per-week);
 rank agreement between ECW and title share. Writes rt_consistency.json."""
 import json, math, os, sys
@@ -20,7 +20,7 @@ def ecw(s):
             tot+=v; cats[c]+=v/11
     return tot/11,cats
 E={s:ecw(s) for s in ros}
-S={sd:json.load(open(f"{DECK}/arena/results/m100_league_sim_10k_s{sd}.json"))["teams"] for sd in (2026,2027)}
+S={sd:json.load(open(f"{DECK}/arena/results/m100_league_sim_10k_s{sd}_w17r.json"))["teams"] for sd in (2026,2027)}  # the shipped engine's reference runs (17 weeks, reseeded; Session 1 item 2)
 def rank(vals):
     o=sorted(vals,key=lambda k:-vals[k]); return {k:i+1 for i,k in enumerate(o)}
 def spearman(a,b):

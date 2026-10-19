@@ -14,9 +14,10 @@ Yahoo's 2026-27 calendar (Yahoo's schedule analysis, 2026-09; validated
 mechanically in after-report-2026-09-30-gap-audit.md §3): week 1 is Tue Oct 20
 to Sun Oct 25; every later week runs Mon-Sun except two 14-day matchups — week 7
 (Nov 30-Dec 13, the NBA Cup knockout window) and week 17 (Feb 15-28, All-Star).
-23 game weeks; the season ends Sun Apr 11, 2027. The owner's league plays 18
-regular weeks and three 1-week playoff rounds in weeks 19-21 (Mar 8-28) —
-confirm on the settings page (D-G5). Yahoo's default playoffs are weeks 20-22.
+23 game weeks; the season ends Sun Apr 11, 2027. The owner's league plays 17
+regular weeks and three 1-week playoff rounds in weeks 18-20 (Mar 1-21) — the
+settings page, pinned 2026-10-15 (data/league_settings.json; D-G5 closed: it was
+assumed 19-21 until then). Yahoo's default playoffs are weeks 20-22.
 
 The NBA Cup knockout window (Dec 4-11) is undated until group play ends on
 Nov 27: every team plays exactly two counted games in it (nba.com Cup FAQ), and
@@ -27,6 +28,7 @@ dated games plus an explicit `undated_knockout` column of 2 for every team.
 Usage:
   python3 build_schedule.py                 # fetch the seven pages live
   python3 build_schedule.py --cache DIR     # read <month>.html from DIR instead
+  python3 build_schedule.py --games games-2026-27.csv   # re-bucket the committed games, no fetch
 """
 import argparse
 import csv
@@ -47,7 +49,7 @@ WEEK1 = (dt.date(2026, 10, 20), dt.date(2026, 10, 25))
 FIRST_MONDAY = dt.date(2026, 10, 26)
 SEASON_END = dt.date(2027, 4, 11)
 FOURTEEN_DAY_STARTS = {dt.date(2026, 11, 30), dt.date(2027, 2, 15)}
-OWNER_PLAYOFF_WEEKS = (19, 20, 21)   # league setting per owner (2026-08-04); D-G5
+OWNER_PLAYOFF_WEEKS = (18, 19, 20)   # league settings page, pinned 2026-10-15 (test_settings.py)
 YAHOO_DEFAULT_PLAYOFF_WEEKS = (20, 21, 22)
 UNDATED_KNOCKOUT_GAMES = 2           # per team, Dec 4-11 (nba.com Cup FAQ)
 
@@ -96,12 +98,17 @@ def parse(html):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--cache", help="directory holding <month>.html copies of the seven pages")
+    ap.add_argument("--games", help="re-bucket an existing games CSV (date,yahoo_week,visitor,home,note) instead of fetching")
     ap.add_argument("--out", default=HERE)
     a = ap.parse_args()
 
     games = []
-    for m in MONTHS:
-        games.extend(parse(fetch(m, a.cache)))
+    if a.games:
+        with open(a.games, encoding="utf-8") as f:
+            games = [(r["date"].replace("-", ""), r["visitor"], r["home"], r["note"]) for r in csv.DictReader(f)]
+    else:
+        for m in MONTHS:
+            games.extend(parse(fetch(m, a.cache)))
     games.sort()
     if not games:
         sys.exit("no games parsed")
@@ -134,7 +141,8 @@ def main():
         w = csv.writer(f)
         w.writerow(["team"] + [f"w{n}" for n, _, _ in W]
                    + ["dated_total", "undated_knockout", "b2b_total",
-                      "b2b_w19_21", "po_w19_21", "po_w20_22"])
+                      "b2b_w{0}_{2}".format(*OWNER_PLAYOFF_WEEKS), "po_w{0}_{2}".format(*OWNER_PLAYOFF_WEEKS),
+                      "po_w{0}_{2}".format(*YAHOO_DEFAULT_PLAYOFF_WEEKS)])
         for t in teams:
             ds = sorted(dates[t])
             pairs = [(x, y) for x, y in zip(ds, ds[1:]) if (y - x).days == 1]
@@ -147,8 +155,9 @@ def main():
     print(f"games dated: {len(games)}  teams: {len(teams)}  weeks: {len(W)}")
     for n, s, e in W:
         print(f"  week {n:2}: {s} to {e}  ({(e - s).days + 1} days)  mean games/team {sum(counts[t][n] for t in teams) / len(teams):.2f}")
-    sev = [counts[t][n] for t in teams for n in range(2, 19) if n not in (7, 17)]
-    print(f"7-day regular weeks (2-18 minus 7 and 17): mean {sum(sev) / len(sev):.3f} games per team-week over {len(sev)} team-weeks")
+    last = OWNER_PLAYOFF_WEEKS[0] - 1
+    sev = [counts[t][n] for t in teams for n in range(2, last + 1) if n not in (7, 17)]
+    print(f"7-day regular weeks (2-{last} minus 7 and 17): mean {sum(sev) / len(sev):.3f} games per team-week over {len(sev)} team-weeks")
 
 
 if __name__ == "__main__":

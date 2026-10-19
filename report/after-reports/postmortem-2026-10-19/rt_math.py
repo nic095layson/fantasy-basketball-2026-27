@@ -65,7 +65,20 @@ kby={r[kname]:r for r in kit}
 common=[p for p in rows if p["player"] in kby]
 numeric_cols=[c for c in ("pts","reb","ast","stl","blk","tpm","tov","fga","fta","fg_pct","ft_pct") if c in kcols]
 line_diff=max(abs(float(kby[p["player"]][c])-p[c]) for p in common for c in numeric_cols) if numeric_cols else None
-out=dict(pool=os.path.relpath(POOL,DECK),rows=len(rows),fixed_point_iterations=iters,
+# the pinned league settings (kit data/league_settings.json, Session 1 item 2) against the engine's constants
+LS=json.load(open(f"{KIT}/data/league_settings.json",encoding="utf-8"))
+active=[x for x in LS["roster_positions"]["value"] if x not in ("BN","IL")]
+slot_of=lambda sl: "Util" if sl is None else ("G" if sl==("PG","SG") else "F" if sl==("SF","PF") else sl[0])
+engine_slots=[slot_of(sl) for sl in arena.LINEUP_SLOTS]
+settings_check=dict(scoring_type=LS["scoring_type"]["value"],standings_rule_engine="cumulative category record (arena.simulate_seasons)",
+    regular_season_weeks=dict(settings=LS["regular_season_weeks"]["value"],engine=arena.WEEKS,agree=LS["regular_season_weeks"]["value"]==arena.WEEKS),
+    playoff_teams=dict(settings=LS["playoffs"]["value"]["teams"],engine=arena.PLAYOFF_TEAMS,agree=LS["playoffs"]["value"]["teams"]==arena.PLAYOFF_TEAMS),
+    active_slots=dict(settings=active,engine=engine_slots,agree=active==engine_slots),
+    categories_agree=LS["categories"]["value"]==list(hoops.CATS),
+    playoff_reseeding=dict(settings=LS["playoff_reseeding"]["value"],semantics_note=LS["playoff_reseeding"].get("semantics"),engine="reseed() after round 1" if hasattr(arena,"reseed") else "fixed"),
+    lineup_deadline=LS["lineup_deadline"]["value"],source=LS["_source"]["file"],received=LS["_source"]["received"],
+    engine_commit=__import__("subprocess").check_output(["git","-C",DECK,"rev-parse","--short","HEAD"]).decode().strip())
+out=dict(pool=os.path.relpath(POOL,DECK),rows=len(rows),fixed_point_iterations=iters,settings_check=settings_check,
  z_max_abs_diff=maxdz,availability_max_abs_diff=maxda,board_first_order_difference=first_diff,board_len=len(ord1),
  owner_week_fg=dict(engine=mu["FG%"],known_answer=mk/at,naive_mean_of_pcts=naive,abs_diff=abs(mu["FG%"]-mk/at)),
  owner_week_fg_var=dict(engine=var["FG%"],known_answer=(1.15**2)*(mk/at)*(1-mk/at)/at),

@@ -1,0 +1,55 @@
+{
+ "ran_at_utc": "2026-10-19T07:30:51Z",
+ "inputs": {
+  "report/after-reports/after-report-2026-10-19-draft-postmortem.md": "b5b39962a0da71b29b6b83f421d78e795d160a730cfc6b65b8beea24d979f57e",
+  "report/after-reports/postmortem-2026-10-19/rt_consistency.json": "f0ed1c8c66d8a6a4061362c30bfd2624c5e26c46efe47202ccf0f95dbf90ea5c",
+  "report/after-reports/postmortem-2026-10-19/rt_decisions.json": "88b84feead74827054309f9a3c9febd0ed7cce51b9a3ca356074b74ad6d62868",
+  "report/after-reports/postmortem-2026-10-19/rt_join.json": "c180a3bd08396d1cd82c2a16a30cd61f7151f3155f123c06449304685d8c0b84",
+  "report/after-reports/postmortem-2026-10-19/rt_math.json": "c720f7103533bb4e1c2aa9ad7251c9e349891336e3989b524ec1c0d65ee8cb28",
+  "report/after-reports/postmortem-2026-10-19/rt_sensitivity.json": "a7ef3920525a6f5997f8f8d2cfb86edbfe76dccbd104896227a885463f85f8bc",
+  "report/after-reports/postmortem-2026-10-19/rt_ties.json": "bb38f9d734e98e14d8237024f55663bfed24b7a3945cc06314ba5b32858c1e93"
+ },
+ "gates": [
+  {
+   "name": "kit check_report",
+   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-19-draft-postmortem.md",
+   "cwd": ".",
+   "pass_re": "^REPORT GATE: PASS",
+   "exit": 0,
+   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-10-19-draft-postmortem.md (structure, publication rule, pull-log row)",
+   "verdict": "PASS",
+   "why": "",
+   "tail": [
+    "REPORT GATE: PASS \u2014 after-report-2026-10-19-draft-postmortem.md (structure, publication rule, pull-log row)"
+   ]
+  },
+  {
+   "name": "deck judgment_open_items --check-report",
+   "cmd": "/usr/local/bin/python3 scripts/judgment_open_items.py --check-report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-19-draft-postmortem.md",
+   "cwd": "../yahoo-fantasy-basketball",
+   "pass_re": "^receipts check PASS",
+   "exit": 0,
+   "pass_line": "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-10-19-draft-postmortem.md",
+   "verdict": "PASS",
+   "why": "",
+   "tail": [
+    "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-10-19-draft-postmortem.md"
+   ]
+  },
+  {
+   "name": "deck repeat_market_check --check-report",
+   "cmd": "/usr/local/bin/python3 scripts/repeat_market_check.py --check-report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-19-draft-postmortem.md",
+   "cwd": "../yahoo-fantasy-basketball",
+   "pass_re": "^REPEAT-NAME CHECK: PASS",
+   "exit": 0,
+   "pass_line": "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-10-19-draft-postmortem.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)",
+   "verdict": "PASS",
+   "why": "",
+   "tail": [
+    "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-10-19-draft-postmortem.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)"
+   ]
+  }
+ ],
+ "verdict": "PASS",
+ "base_commit": "80aa1efd4cac5f4fad14e1b3e423af93194c2f43"
+}

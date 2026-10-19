@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """Red team, phase 3: the owner's title share under each assumption the simulator makes, one at a time, on the final
 rosters. arena.simulate_seasons (the house simulator league_sim.py is verified equal to) with the constant patched:
-regular-season weeks 17 / 18 / 20; standings by weekly wins instead of the category record; the in-sim availability
+regular-season weeks 17 (shipped) / 18 / 20; the playoff bracket fixed instead of reseeded (shipped); standings by weekly wins instead of the category record; the in-sim availability
 tiers (healthy 0.88, risk 0.75) moved; the shared games shock at 0 / 0.06 / 0.12; per-game variance scaled 0.8 / 1.2;
 category independence broken by a second shared shock on the percentages. 6,000 seasons on seeds 2026 and 2027 per
 variant (Monte-Carlo SE about 0.53 points at 22%). Writes rt_sensitivity.json."""
-import json, math, os, random, sys
+import json, math, os, random, subprocess, sys
 from concurrent.futures import ProcessPoolExecutor
 H=os.path.dirname(os.path.abspath(__file__)); DECK="/home/user/yahoo-fantasy-basketball"
 sys.path.insert(0,DECK+"/scripts"); sys.path.insert(0,DECK+"/arena")
@@ -22,6 +22,14 @@ def run(args):
     if "avail" in patch:
         h,r=patch["avail"]; orig=arena.weekly_availability
         arena.weekly_availability=lambda p,h=h,r=r,orig=orig: (r if orig(p)==0.75 else h if orig(p)==0.88 else orig(p))
+    if patch.get("fixed_bracket"):
+        def fixed_champion(top, week_result):  # the bracket that shipped until 2026-10-15: no reseed after round 1
+            qf=[(top[0],top[7]),(top[3],top[4]),(top[1],top[6]),(top[2],top[5])]
+            w1=[a if week_result(a,b)>=5 else b for a,b in qf]
+            sf=[(w1[0],w1[1]),(w1[2],w1[3])]
+            w2=[a if week_result(a,b)>=5 else b for a,b in sf]
+            return w2[0] if week_result(*w2)>=5 else w2[1]
+        arena.playoff_champion=fixed_champion
     if "cv" in patch:
         arena.CV={c:v*patch["cv"] for c,v in arena.CV.items()}
     rng=random.Random(sd)
@@ -56,9 +64,10 @@ def run(args):
         champ,po=arena.simulate_seasons(ros,SEASONS,rng)
     return name,sd,100*champ[10]/SEASONS,100*po[10]/SEASONS,{i:100*champ[i]/SEASONS for i in champ}
 VARIANTS={
- "baseline (18 weeks, category record, 0.88/0.75, shock 0.06)":{},
- "17 regular-season weeks":{"const":{"WEEKS":17}},
+ "baseline (shipped: 17 weeks, reseeded bracket, category record, 0.88/0.75, shock 0.06)":{},
+ "18 regular-season weeks (the engine of the draft grade)":{"const":{"WEEKS":18}},
  "20 regular-season weeks":{"const":{"WEEKS":20}},
+ "fixed bracket, no reseed after round 1 (the engine of the draft grade)":{"fixed_bracket":True},
  "standings by weekly wins (not the category record)":{"weekly_win":True},
  "no in-sim injury discount (risk 0.88 like healthy)":{"avail":(0.88,0.88)},
  "harsher risk tier (0.65)":{"avail":(0.88,0.65)},
@@ -74,11 +83,12 @@ if __name__=="__main__":
     jobs=[(n,p,sd) for n,p in VARIANTS.items() for sd in SEEDS]
     with ProcessPoolExecutor(4) as ex: R=list(ex.map(run,jobs))
     # harness self-check: the baseline must reproduce league_sim's 10,000-season figures within 3 SE on both seeds
-    ref={sd:json.load(open(f"{DECK}/arena/results/m100_league_sim_10k_s{sd}.json"))["teams"]["10"]["champ"] for sd in SEEDS}
+    ref={sd:json.load(open(f"{DECK}/arena/results/m100_league_sim_10k_s{sd}_w17r.json"))["teams"]["10"]["champ"] for sd in SEEDS}
+    ref_old={sd:json.load(open(f"{DECK}/arena/results/m100_league_sim_10k_s{sd}.json"))["teams"]["10"]["champ"] for sd in SEEDS}
     out={}
     for n,sd,c,p,allc in R: out.setdefault(n,{})[sd]=dict(title=round(c,2),playoff=round(p,2),all=allc)
-    base={sd:out["baseline (18 weeks, category record, 0.88/0.75, shock 0.06)"][sd]["title"] for sd in SEEDS}
+    base_key=next(k for k in out if k.startswith("baseline")); base={sd:out[base_key][sd]["title"] for sd in SEEDS}
     se=math.sqrt(0.22*0.78/SEASONS)*100; base_ok={sd:abs(base[sd]-ref[sd])<3*se for sd in SEEDS}
-    json.dump(dict(seasons=SEASONS,seeds=list(SEEDS),mc_se_points=round(se,3),reference_10k=ref,baseline_within_3se=base_ok,variants=out),open(os.path.join(H,"rt_sensitivity.json"),"w"),indent=1)
+    json.dump(dict(seasons=SEASONS,seeds=list(SEEDS),mc_se_points=round(se,3),reference_10k=ref,reference_10k_draft_grade_engine=ref_old,engine_commit=subprocess.check_output(["git","-C",DECK,"rev-parse","--short","HEAD"]).decode().strip(),baseline_within_3se=base_ok,variants=out),open(os.path.join(H,"rt_sensitivity.json"),"w"),indent=1)
     print("MC SE",round(se,2),"reference 10k",ref,"baseline within 3 SE:",base_ok)
     for n in VARIANTS: print(f"{n:<60} title {out[n][2026]['title']:6.2f} / {out[n][2027]['title']:6.2f}   d {out[n][2026]['title']-base[2026]:+.2f} / {out[n][2027]['title']-base[2027]:+.2f}   playoffs {out[n][2026]['playoff']:.1f}")
