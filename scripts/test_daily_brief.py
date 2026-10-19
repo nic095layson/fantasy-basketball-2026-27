@@ -75,6 +75,14 @@ class Note(unittest.TestCase):
         self.assertIn("±", line)
 
 
+class Band(unittest.TestCase):
+    """Post-mortem D-PM-6 / D-RT-2: every title figure carries the structural band from the standing sweep."""
+    def test_band_line_names_the_fragile_constant_and_its_figures(self):
+        line = DB.band_line()
+        self.assertIn("TEAM_WEEK_SHOCK", line); self.assertIn("FRAGILE", line)
+        self.assertRegex(line, r"[+-]\d\.\d")
+
+
 class SeasonPool(unittest.TestCase):
     """In-season tool: SEASON_POOL (a deck-schema CSV path) overrides the preseason v69 pool for the brief, the
     preview and the waiver scan; unset, the preseason pool loads as before."""

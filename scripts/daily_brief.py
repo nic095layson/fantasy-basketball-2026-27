@@ -28,6 +28,24 @@ OUTDIR = os.path.join(CG.KIT, "report", "briefs")
 SEEDS = (2026, 2027)
 
 
+SWEEP = os.path.join(CG.KIT, "report", "after-reports", "redteam-2026-10-19", "sweep.json")
+
+
+def band_line(path=SWEEP):
+    """The structural band every title figure carries (post-mortem 2026-10-19 D-PM-6, D-RT-2): each FRAGILE constant
+    of the standing sweep with its shifts, read from the record, never typed."""
+    try:
+        with open(path, encoding="utf-8") as f:
+            sw = json.load(f)
+    except (OSError, ValueError):
+        return "Structural band: no sweep record found (scripts/redteam/sweep.py writes it)."
+    parts = []
+    for key in sw.get("fragile", []):
+        c = sw["constants"][key]
+        parts.append(f"{key.split('.')[-1]} is FRAGILE: " + " / ".join(f"{v['shift_mean']:+.1f} ({v['label']})" for v in c["variants"]))
+    return "Structural band (standing sweep, deck " + str(sw.get("engine_commit", "?")) + "): " + ("; ".join(parts) if parts else "no FRAGILE constant") + "."
+
+
 def odds_line(a, b, n):
     m = (a + b) / 2
     e = 196 * math.sqrt(m / 100 * (1 - m / 100) / (2 * n))
@@ -144,7 +162,8 @@ def main():
           f"Free agents with more games left, best per game first:"]
     L += [f"- {r['player']} ({r['team']}): {r['games_left']} games, {r['value_per_game']:+.2f} per game" for r in stream] or ["- none"]
     L += ["", "## Title odds (real schedule)", "", f"- Title: {odds_line(base[SEEDS[0]]['champ'], base[SEEDS[1]]['champ'], a.seasons)}",
-          f"- Playoffs: {(base[SEEDS[0]]['playoff'] + base[SEEDS[1]]['playoff']) / 2:.1f}%", "",
+          f"- Playoffs: {(base[SEEDS[0]]['playoff'] + base[SEEDS[1]]['playoff']) / 2:.1f}%",
+          f"- {band_line()}", "",
           "_Cannot see: news after the rosters/status paste; ESPN injuries (network-denied); minutes limits; "
           "other managers' pending claims. Q counts as a coin flip._"]
     path = os.path.join(OUTDIR, f"brief_{a.date}.md")
