@@ -32,7 +32,10 @@ WAIVER_CANDIDATES = 40  # inherited from waiver_moves.py; stated to the owner be
 
 
 def load_pool():
-    hoops.DATA_PATH = os.path.join(DECK, "arena", "results", f"players_{LINES_TAG}.csv")
+    """The preseason v69 pool, or the season pool when SEASON_POOL names a deck-schema CSV (in-season tool,
+    2026-10-19: data/season/pool_season.csv from season_lines.py; the brief, preview and waiver scan then run on the
+    blended lines and say so)."""
+    hoops.DATA_PATH = os.environ.get("SEASON_POOL") or os.path.join(DECK, "arena", "results", f"players_{LINES_TAG}.csv")
     P = hoops.zscores(hoops.load_players())
     return P, {p["player"]: p for p in P}
 

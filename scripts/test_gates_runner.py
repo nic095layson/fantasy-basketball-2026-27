@@ -107,5 +107,35 @@ class Verify(unittest.TestCase):
         self.assertIn("verdict: PASS", q)
 
 
+class RedTeam(unittest.TestCase):
+    """--redteam SWEEP adds the three standing red-team gates (post-mortem 2026-10-19 D-PM-1)."""
+    def test_redteam_gates_are_the_three_checks(self):
+        specs = G.redteam_gates("/x/report.md", "/x/sweep.json", "/deck")
+        self.assertEqual([s["name"] for s in specs],
+                         ["redteam constants", "redteam bands", "redteam attacks"])
+        self.assertEqual([s["pass_re"] for s in specs],
+                         [r"^CONSTANTS CHECK: PASS", r"^BANDS CHECK: PASS", r"^ATTACKS CHECK: PASS"])
+        self.assertTrue(all(s["cwd"] == G.KIT for s in specs))
+        bands = specs[1]["cmd"]
+        self.assertIn("/x/report.md", bands)
+        self.assertIn("/x/sweep.json", bands)
+
+    def test_bands_gate_goes_red_on_a_report_missing_a_fragile_band(self):
+        with tempfile.TemporaryDirectory() as d:
+            sweep = os.path.join(d, "sweep.json")
+            with open(sweep, "w") as f:
+                json.dump({"constants": {"arena.TEAM_WEEK_SHOCK": {"tier": "FRAGILE", "variants": [
+                    {"label": "no shock", "shift_mean": 3.4}, {"label": "doubled", "shift_mean": -2.3}]}},
+                    "fragile": ["arena.TEAM_WEEK_SHOCK"], "engine_commit": "t"}, f)
+            bad = os.path.join(d, "bad.md")
+            with open(bad, "w") as f:
+                f.write("title share 21.4 percent\n")
+            good = os.path.join(d, "good.md")
+            with open(good, "w") as f:
+                f.write("TEAM_WEEK_SHOCK is FRAGILE: +3.4 / -2.3\n")
+            self.assertEqual(G.run_gate(G.redteam_gates(bad, sweep, "/deck")[1])["verdict"], "FAIL")
+            self.assertEqual(G.run_gate(G.redteam_gates(good, sweep, "/deck")[1])["verdict"], "PASS")
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

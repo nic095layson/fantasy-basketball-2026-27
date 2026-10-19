@@ -75,5 +75,31 @@ class Note(unittest.TestCase):
         self.assertIn("±", line)
 
 
+class Band(unittest.TestCase):
+    """Post-mortem D-PM-6 / D-RT-2: every title figure carries the structural band from the standing sweep."""
+    def test_band_line_names_the_fragile_constant_and_its_figures(self):
+        line = DB.band_line()
+        self.assertIn("TEAM_WEEK_SHOCK", line); self.assertIn("FRAGILE", line)
+        self.assertRegex(line, r"[+-]\d\.\d")
+
+
+class SeasonPool(unittest.TestCase):
+    """In-season tool: SEASON_POOL (a deck-schema CSV path) overrides the preseason v69 pool for the brief, the
+    preview and the waiver scan; unset, the preseason pool loads as before."""
+    def test_env_override_points_the_pool_at_the_season_file(self):
+        import importlib
+        season = os.path.join(CG.KIT, "data", "season", "pool_season.csv")
+        if not os.path.exists(season):
+            self.skipTest("no season pool written")
+        os.environ["SEASON_POOL"] = season
+        try:
+            CG.load_pool()
+            self.assertEqual(os.path.abspath(CG.hoops.DATA_PATH), os.path.abspath(season))
+        finally:
+            del os.environ["SEASON_POOL"]
+        CG.load_pool()
+        self.assertTrue(CG.hoops.DATA_PATH.endswith(f"players_{CG.LINES_TAG}.csv"))
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

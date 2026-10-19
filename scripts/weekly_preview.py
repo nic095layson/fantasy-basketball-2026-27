@@ -107,8 +107,8 @@ def render_ledger(led):
         s = w.get("score")
         L.append(f"| {k} | {w['opponent_team']} ({w['opponent_manager']}) | {w['recorded_at']} | {w['p_win']:.3f} | "
                  f"{w['exp_cats']:.2f} | {('W' if s['cats_won'] >= 5 else 'L') if s else 'pending'} | "
-                 f"{s['cats_won'] if s else '—'} | {f'{s[chr(98)+"rier_cats"]:.3f}' if s else '—'} | "
-                 f"{f'{s[chr(98)+"rier_matchup"]:.3f}' if s else '—'} |")
+                 f"{s['cats_won'] if s else '—'} | {('%.3f' % s['brier_cats']) if s else '—'} | "
+                 f"{('%.3f' % s['brier_matchup']) if s else '—'} |")
     return "\n".join(L) + "\n"
 
 

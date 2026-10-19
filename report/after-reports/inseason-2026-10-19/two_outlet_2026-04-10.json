@@ -1,0 +1,24 @@
+{
+ "date": "2026-04-10",
+ "fetched_at_utc": "2026-10-19T17:49:17Z",
+ "games": 15,
+ "n_players": 401,
+ "n_pooled": 209,
+ "single_source": false,
+ "reconciliation": {
+  "matched": 401,
+  "mismatched": [],
+  "espn_only": [],
+  "bref_only": []
+ },
+ "sources": {
+  "espn": {
+   "events": 15,
+   "final": 15
+  },
+  "bref": {
+   "games": 15
+  }
+ },
+ "note": "two-outlet exercise of box_pull.py on a 2025-26 regular-season slate (the 2026-27 season had not started); the full record was written to the session scratchpad, this is its summary"
+}

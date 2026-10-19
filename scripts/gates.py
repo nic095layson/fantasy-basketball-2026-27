@@ -11,7 +11,7 @@ names): kit report/check_report.py, deck judgment_open_items.py --check-report, 
 repeat_market_check.py --check-report. Item-specific checks are added with --gate.
 
     python3 scripts/gates.py --report report/after-reports/X.md \\
-        [--gate 'NAME::kit|deck::PASS_REGEX::COMMAND' ...] [--input PATH ...] \\
+        [--gate 'NAME::kit|deck::PASS_REGEX::COMMAND' ...] [--input PATH ...] [--redteam SWEEP_JSON] \\
         [--out gates.json] [--deck ../yahoo-fantasy-basketball]
     python3 scripts/gates.py --quote [--out gates.json]     # PR-body block
     python3 scripts/gates.py --verify [--report R] [--out gates.json]  # exit 1 unless PASS, fresh, covering R
@@ -127,6 +127,22 @@ def report_gates(report, deck):
     ]
 
 
+def redteam_gates(report, sweep, deck):
+    """The three standing red-team gates (post-mortem 2026-10-19 D-PM-1; scripts/redteam/): the constants
+    registry against the live engine, the report quoting every FRAGILE band of the sweep record, and the attack
+    list's records present and on the live engine."""
+    py = sys.executable
+    rt = os.path.join(KIT, "scripts", "redteam")
+    return [
+        {"name": "redteam constants", "cwd": KIT, "pass_re": r"^CONSTANTS CHECK: PASS",
+         "cmd": [py, os.path.join(rt, "check_constants.py"), "--deck", deck]},
+        {"name": "redteam bands", "cwd": KIT, "pass_re": r"^BANDS CHECK: PASS",
+         "cmd": [py, os.path.join(rt, "check_bands.py"), "--report", report, "--sweep", sweep]},
+        {"name": "redteam attacks", "cwd": KIT, "pass_re": r"^ATTACKS CHECK: PASS",
+         "cmd": [py, os.path.join(rt, "run_attacks.py"), "--check", "--deck", deck]},
+    ]
+
+
 def parse_gate(text, deck):
     parts = text.split("::", 3)
     if len(parts) != 4 or parts[1] not in ("kit", "deck"):
@@ -143,6 +159,8 @@ def main():
     ap.add_argument("--input", action="append", default=[])
     ap.add_argument("--out", default=os.path.join(KIT, "gates.json"))
     ap.add_argument("--deck", default=DECK_DEFAULT)
+    ap.add_argument("--redteam", metavar="SWEEP_JSON",
+                    help="add the three red-team gates (constants, bands vs this sweep record, attacks)")
     ap.add_argument("--quote", action="store_true")
     ap.add_argument("--verify", action="store_true")
     a = ap.parse_args()
@@ -169,6 +187,13 @@ def main():
         report = os.path.abspath(a.report)
         specs = report_gates(report, deck) + specs
         inputs = [report] + inputs
+    if a.redteam:
+        if not a.report:
+            print("--redteam needs --report (the bands check reads the report)")
+            sys.exit(2)
+        sweep = os.path.abspath(a.redteam)
+        specs = specs + redteam_gates(report, sweep, deck)
+        inputs = inputs + [sweep]
     if not specs:
         print("no gates: pass --report and/or --gate")
         sys.exit(2)

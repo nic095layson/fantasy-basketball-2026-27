@@ -1,0 +1,491 @@
+{
+ "_about": "Every judgment constant the engine runs on, with its live value and its calibration status (RULES.md rule 5, post-mortem 2026-10-19 D-PM-1/D-PM-4). check_constants.py compares each 'value' to the live deck module and refuses an entry whose status has no record or decision. Statuses: structural = no judgment in it (format, parity hash, reporting band); measured = fit to a committed record (cite it); declared_band = hand-set, a sensitivity band is published and the report must quote it when FRAGILE; uncalibrated = hand-set, no band yet (needs a decision id); settings = read from the league settings page (data/league_settings.json). No value here is a source: the deck module is; this file says what each value is FOR and what vouches for it. A declared_band entry carries 'band': the variants scripts/redteam/sweep.py runs, one at a time, to publish the title-share band the report must quote (check_bands.py).",
+ "deck_commit_registered": "259c630",
+ "constants": [
+  {
+   "module": "arena",
+   "name": "TEAMS",
+   "value": 12,
+   "role": "league size",
+   "status": "settings",
+   "record": "data/league_settings.json teams.value"
+  },
+  {
+   "module": "arena",
+   "name": "ROUNDS",
+   "value": 13,
+   "role": "draft rounds (13 roster slots: 10 active + 3 bench)",
+   "status": "settings",
+   "record": "data/league_settings.json roster_positions (15 incl. 2 IL)"
+  },
+  {
+   "module": "arena",
+   "name": "WEEKS",
+   "value": 17,
+   "role": "regular-season weeks in the simulator",
+   "status": "settings",
+   "record": "data/league_settings.json; arena.py comment cites test_settings.py"
+  },
+  {
+   "module": "arena",
+   "name": "PLAYOFF_TEAMS",
+   "value": 8,
+   "role": "playoff field (reseeded after round 1)",
+   "status": "settings",
+   "record": "data/league_settings.json; reseed semantics 'assumed' (D-PM-3)"
+  },
+  {
+   "module": "arena",
+   "name": "LINEUP_SLOTS",
+   "value": [
+    [
+     "PG"
+    ],
+    [
+     "SG"
+    ],
+    [
+     "PG",
+     "SG"
+    ],
+    [
+     "SF"
+    ],
+    [
+     "PF"
+    ],
+    [
+     "SF",
+     "PF"
+    ],
+    [
+     "C"
+    ],
+    [
+     "C"
+    ],
+    null,
+    null
+   ],
+   "role": "active lineup slots (None = Util)",
+   "status": "settings",
+   "record": "data/league_settings.json roster_positions; rt_math.json settings_check"
+  },
+  {
+   "module": "arena",
+   "name": "STARTERS",
+   "value": 13,
+   "role": "legacy roster cap (lineup_weights governs since 2026-07-23)",
+   "status": "structural",
+   "record": "arena.py comment 2026-07-23: superseded by lineup_weights; no effect on team_week_model"
+  },
+  {
+   "module": "arena",
+   "name": "BENCH_WEIGHT",
+   "value": 0.15,
+   "role": "weight of bench slots 11-13 in lineup_weights (the pick engine); team_week_model reads daily-fill weights instead (arena.py 2026-07-23), so the title band is zero by structure",
+   "status": "declared_band",
+   "record": "deck arena/results/analysis_2026-08-09_findings_table.md F07/F23: hand-set; measured start-share 0.85-0.97 disputed; band: sweep.json 0.50 / 1.00 (expected +0.0: the simulator does not read it)",
+   "decision": "D-PM-4 / deck N1 refit",
+   "band": [
+    {
+     "label": "bench weight 0.50",
+     "const": {
+      "BENCH_WEIGHT": 0.5
+     }
+    },
+    {
+     "label": "bench weight 1.00 (F07's flip)",
+     "const": {
+      "BENCH_WEIGHT": 1.0
+     }
+    }
+   ]
+  },
+  {
+   "module": "arena",
+   "name": "CV",
+   "value": {
+    "PTS": 0.3,
+    "REB": 0.35,
+    "AST": 0.4,
+    "3PTM": 0.55,
+    "ST": 0.7,
+    "BLK": 0.75,
+    "TO": 0.5
+   },
+   "role": "per-game coefficient of variation by counting category",
+   "status": "declared_band",
+   "record": "deck analysis_2026-08-09_findings_table.md F39 'hand-set with no fit'; band: postmortem rt_sensitivity.json 'per-game variance x0.8 / x1.2'",
+   "decision": "deck N1 refit (weekly_matchups_2025-26_README.md registers the fit data)",
+   "band": [
+    {
+     "label": "per-game variance x0.8",
+     "cv": 0.8
+    },
+    {
+     "label": "per-game variance x1.2",
+     "cv": 1.2
+    }
+   ]
+  },
+  {
+   "module": "arena",
+   "name": "PCT_MIX_INFL",
+   "value": 1.15,
+   "role": "shot-mix inflation of the binomial weekly % variance",
+   "status": "declared_band",
+   "record": "deck analysis_2026-08-09_findings_table.md F39 hand-set; FG% implied 1.08-1.11, FT% 0.86-0.94 on 16 owner team-weeks (same table, PCT_MIX_INFL study); band: sweep.json PCT_MIX_INFL 1.0 / 1.30",
+   "decision": "deck N1 refit",
+   "band": [
+    {
+     "label": "binomial floor only (1.0)",
+     "const": {
+      "PCT_MIX_INFL": 1.0
+     }
+    },
+    {
+     "label": "inflation 1.30",
+     "const": {
+      "PCT_MIX_INFL": 1.3
+     }
+    }
+   ]
+  },
+  {
+   "module": "arena",
+   "name": "TEAM_WEEK_SHOCK",
+   "value": 0.06,
+   "role": "shared games-played shock correlating the counting categories within a team-week",
+   "status": "declared_band",
+   "record": "deck analysis_2026-08-09_findings_table.md F39 hand-set; band: postmortem rt_sensitivity.json shock 0 / 0.12 (FRAGILE: +3.0/+3.8 and -2.0/-2.7 title points)",
+   "decision": "D-PM-1 calibrate the shock",
+   "band": [
+    {
+     "label": "no shared games shock (0.0)",
+     "const": {
+      "TEAM_WEEK_SHOCK": 0.0
+     }
+    },
+    {
+     "label": "shared games shock doubled (0.12)",
+     "const": {
+      "TEAM_WEEK_SHOCK": 0.12
+     }
+    }
+   ]
+  },
+  {
+   "module": "arena",
+   "name": "GRAD_DEFL",
+   "value": {
+    "ST": 0.58,
+    "TO": 0.705,
+    "FG%": 0.736,
+    "PTS": 0.774,
+    "BLK": 0.785,
+    "3PTM": 0.79,
+    "REB": 0.819,
+    "AST": 0.837,
+    "FT%": 0.862
+   },
+   "role": "gradient deflators for slot 1-3 council picks (draft-time only)",
+   "status": "measured",
+   "record": "deck arena/results/findings_2026-07-30_gradient_confidence.md"
+  },
+  {
+   "module": "arena",
+   "name": "GRAD_K",
+   "value": 1.0,
+   "role": "gradient gain (draft-time only)",
+   "status": "uncalibrated",
+   "record": "arena.py comment 2026-07-30 council 5-0; no fit",
+   "decision": "none needed: draft-time only, no in-season effect"
+  },
+  {
+   "module": "arena",
+   "name": "GRAD_SLOTS",
+   "value": 3,
+   "role": "draft slots that use the gradient",
+   "status": "measured",
+   "record": "arena.py comment: CRN-paired t=4.63 slots 1-3, global t=0.64; deck findings_2026-08-03_gradient_gate.md"
+  },
+  {
+   "module": "arena",
+   "name": "GRAD_SCALE",
+   "value": 10.0,
+   "role": "gradient scale (draft-time only)",
+   "status": "uncalibrated",
+   "record": "arena.py 2026-07-30; no fit",
+   "decision": "none needed: draft-time only, no in-season effect"
+  },
+  {
+   "module": "arena",
+   "name": "MKT_W",
+   "value": {
+    "PTS": 1.6,
+    "3PTM": 1.2,
+    "AST": 1.0,
+    "REB": 1.0,
+    "ST": 0.7,
+    "BLK": 0.7,
+    "FG%": 0.5,
+    "FT%": 0.5,
+    "TO": 0.25
+   },
+   "role": "market-persona category weights (mock-room opponents only)",
+   "status": "uncalibrated",
+   "record": "arena.py strategy personalities block; no fit",
+   "decision": "none needed: mock rooms only, not the league simulator"
+  },
+  {
+   "module": "arena",
+   "name": "DF_K",
+   "value": 32,
+   "role": "day-fill hash constant (deck parity)",
+   "status": "structural",
+   "record": "arena.py comment: check_parity df_hash vector check"
+  },
+  {
+   "module": "arena",
+   "name": "DF_DAY_W",
+   "value": [
+    1.3,
+    0.7,
+    1.4,
+    0.8,
+    1.5,
+    0.9,
+    1.4
+   ],
+   "role": "day-of-week fill weights (deck parity)",
+   "status": "structural",
+   "record": "arena.py comment: check_parity df_hash vector check"
+  },
+  {
+   "module": "arena",
+   "name": "MKT_PIN",
+   "value": {
+    "Cooper Flagg": 18,
+    "AJ Dybantsa": 30,
+    "Darryn Peterson": 55,
+    "Dylan Harper": 60,
+    "Cameron Boozer": 70,
+    "Caleb Wilson": 90,
+    "Mikel Brown Jr.": 95
+   },
+   "role": "hand-set market pins for named rookies (mock rooms only)",
+   "status": "uncalibrated",
+   "record": "deck analysis_2026-08-09_findings_table.md (MKT_PIN finding): hand-set July pins, no eligibility guard",
+   "decision": "none needed for the league simulator; mock rooms only"
+  },
+  {
+   "module": "arena",
+   "name": "TIERS",
+   "value": [
+    [
+     1,
+     12
+    ],
+    [
+     13,
+     24
+    ],
+    [
+     25,
+     50
+    ],
+    [
+     51,
+     100
+    ]
+   ],
+   "role": "board tier bands for reporting",
+   "status": "structural",
+   "record": "reporting bands only; no model effect"
+  },
+  {
+   "module": "arena",
+   "name": "weekly_availability",
+   "value": {
+    "healthy": 0.88,
+    "mild": 0.79,
+    "risk": 0.75,
+    "recovery": 0.6
+   },
+   "role": "in-sim share of games played by tier (g = 3.5 a, Var[G] = 3.5 a (1-a))",
+   "status": "declared_band",
+   "record": "deck analysis_2026-08-09_findings_table.md F39 hand-set; 0.79 derived 2026-10-13 as the mild share of the healthy-to-risk gap; band: postmortem rt_sensitivity.json healthy 0.95/0.80, risk 0.88/0.65 (no-discount SENSITIVE -1.3/-1.5)",
+   "decision": "D-PM-4 reconcile with hoops.availability",
+   "band": [
+    {
+     "label": "no in-sim injury discount (risk 0.88 like healthy)",
+     "avail": [
+      0.88,
+      0.88
+     ]
+    },
+    {
+     "label": "harsher risk tier (0.65)",
+     "avail": [
+      0.88,
+      0.65
+     ]
+    },
+    {
+     "label": "healthy players play 0.95 of games",
+     "avail": [
+      0.95,
+      0.75
+     ]
+    },
+    {
+     "label": "healthy players play 0.80 of games",
+     "avail": [
+      0.8,
+      0.75
+     ]
+    }
+   ]
+  },
+  {
+   "module": "arena",
+   "name": "GAMES_PER_WEEK",
+   "value": 3.5,
+   "role": "expected games per healthy player-week before the availability share",
+   "status": "declared_band",
+   "record": "deck analysis_2026-08-09_findings_table.md F39 / games finding: 'the 3.5 games/week constant', hand-set; real 2025-26 owner weeks 41.75 player-games; band: sweep.json games 3.0 / 4.0",
+   "decision": "deck N1 refit (schedule-aware games)",
+   "band": [
+    {
+     "label": "3.0 games per healthy week",
+     "games": 3.0
+    },
+    {
+     "label": "4.0 games per healthy week",
+     "games": 4.0
+    }
+   ]
+  },
+  {
+   "module": "hoops",
+   "name": "CATS",
+   "value": [
+    "FG%",
+    "FT%",
+    "3PTM",
+    "PTS",
+    "REB",
+    "AST",
+    "ST",
+    "BLK",
+    "TO"
+   ],
+   "role": "the nine categories",
+   "status": "settings",
+   "record": "data/league_settings.json categories.value"
+  },
+  {
+   "module": "hoops",
+   "name": "DRAFTABLE",
+   "value": 156,
+   "role": "z-score pool (12 x 13); the z-sum's zero is this pool's mean",
+   "status": "settings",
+   "record": "deck arena/results/findings_2026-07-30_ninecat_math.md; hoops.py D-1009-2 note"
+  },
+  {
+   "module": "hoops",
+   "name": "SURV_K",
+   "value": 0.3,
+   "role": "survival-curve slope (availability of a player at a pick)",
+   "status": "measured",
+   "record": "deck arena/results/survival_refit_2026-09-22.json"
+  },
+  {
+   "module": "hoops",
+   "name": "SURV_FLOOR",
+   "value": 8,
+   "role": "survival-curve floor",
+   "status": "measured",
+   "record": "deck arena/results/survival_refit_2026-09-22.json"
+  },
+  {
+   "module": "hoops",
+   "name": "PAIR_MIN_GAIN",
+   "value": 0.01,
+   "role": "minimum gain for a pair recommendation (draft-time)",
+   "status": "uncalibrated",
+   "record": "hoops.py; no fit",
+   "decision": "none needed: draft-time only"
+  },
+  {
+   "module": "hoops",
+   "name": "PAIR_WAIT_MIN",
+   "value": 0.6,
+   "role": "minimum survival to wait on a pair (draft-time)",
+   "status": "uncalibrated",
+   "record": "hoops.py; no fit",
+   "decision": "none needed: draft-time only"
+  },
+  {
+   "module": "hoops",
+   "name": "availability",
+   "value": {
+    "healthy": 1.0,
+    "mild": 0.85,
+    "risk": 0.78,
+    "recovery": 0.0,
+    "out": 0.0
+   },
+   "role": "board haircut by injury tier (applies above the pool mean only)",
+   "status": "uncalibrated",
+   "record": "hoops.py docstring: 0.78 'arena-calibrated vs real 2025-26 games played'; deck LESSONS.md item 5 (2026-07-12): risk-flagged played 51% of games vs 75% assumed, 0.78 kept above the realized ratio for streaming; 0.85 from outside projections' games 0.84-0.87 (2026-10-13); not used by the simulator (weekly_availability is), so no title band",
+   "decision": "D-PM-4 reconcile with arena.weekly_availability (0.78 vs 0.75, 1.0 vs 0.88); D-RN-4 review"
+  },
+  {
+   "module": "season_lines",
+   "name": "STABILITY",
+   "value": {
+    "FG%": 0.714,
+    "FT%": 0.634,
+    "3PM": 0.872,
+    "PTS": 0.848,
+    "REB": 0.84,
+    "AST": 0.847,
+    "STL": 0.75,
+    "BLK": 0.818,
+    "TO": 0.823
+   },
+   "role": "year-over-year Spearman rho per category, mean of three transitions 2022-23..2025-26 (the input to the season-line priors)",
+   "status": "measured",
+   "record": "report/after-reports/after-report-2026-10-09-market.md 'Year-over-year stability' (deck arena/results/actuals_2026-10-09/)"
+  },
+  {
+   "module": "season_lines",
+   "name": "SEASON_GAMES",
+   "value": 65,
+   "role": "games a season of the stability sample is taken to carry (n in k = n (1 - rho) / rho)",
+   "status": "uncalibrated",
+   "record": "season_lines.py: stated assumption; the sample is players with 25+ games, whose mean games is not recorded",
+   "decision": "D-IS-1 (in-season after-report 2026-10-19): measure the sample's mean games from actuals_2026-10-09 and replace, or sweep 50 / 80"
+  },
+  {
+   "module": "season_lines",
+   "name": "PRIOR_GAMES",
+   "value": {
+    "FG%": 26.0,
+    "FT%": 37.5,
+    "3PM": 9.5,
+    "PTS": 11.7,
+    "REB": 12.4,
+    "AST": 11.7,
+    "STL": 21.7,
+    "BLK": 14.5,
+    "TO": 14.0
+   },
+   "role": "prior strength in games per category for the in-season blend (derived from STABILITY and SEASON_GAMES, never tuned)",
+   "status": "measured",
+   "record": "season_lines.prior_games(); test_season_lines.py checks each value against the formula"
+  }
+ ]
+}

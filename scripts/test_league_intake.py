@@ -96,5 +96,43 @@ class Intake(unittest.TestCase):
             self.assertEqual(team["empty_slots"], ["C"])
 
 
+class Paste(unittest.TestCase):
+    """In-season tool 2026-10-19 (Council decision 1): the Yahoo 'Starting Rosters' page pasted as text, parsed to the
+    transcription schema; owner sample data/source/yahoo-starting-rosters-2026-10-19-paste.txt."""
+    SAMPLE = os.path.join(LI.KIT, "data", "source", "yahoo-starting-rosters-2026-10-19-paste.txt")
+
+    def test_sample_parses_to_twelve_teams_and_166_rows(self):
+        rows = LI.parse_paste(open(self.SAMPLE, encoding="utf-8").read())
+        self.assertEqual(len({r["fantasy_team"] for r in rows}), 12)
+        self.assertEqual(len(rows), 166)
+        self.assertEqual([r["slot"] for r in rows[:15]], ["PG", "SG", "G", "SF", "PF", "F", "C", "C", "Util", "Util", "BN", "BN", "BN", "IL", "IL"])
+
+    def test_status_letters_and_note_variants(self):
+        rows = {r["player"]: r for r in LI.parse_paste(open(self.SAMPLE, encoding="utf-8").read())}
+        self.assertEqual(rows["Josh Hart"]["status"], "Q")                 # 'Josh HartQPlayer Note'
+        self.assertEqual(rows["Stephen Curry"]["status"], "P")             # 'Stephen CurryPNew Player Note'
+        self.assertEqual(rows["Mark Williams"]["status"], "O")             # 'Mark WilliamsONo new player Notes'
+        self.assertEqual(rows["Anthony Black"]["status"], "Q")             # 'Anthony BlackQNew Player Note'
+        self.assertEqual(rows["Walker Kessler"]["status"], "")             # no letter
+        self.assertEqual(rows["Jarrett Allen"]["status"], "")              # 'No new player Notes', no letter
+        self.assertEqual(rows["Wendell Carter Jr."]["status"], "")
+        self.assertEqual((rows["Luka Dončić"]["nba_team"], rows["Luka Dončić"]["positions"]), ("LAL", "PG,SG"))
+        self.assertEqual(rows["RJ Barrett"]["positions"], "SG,SF,PF")
+        self.assertEqual(rows["Y. Konan Niederhäuser"]["slot"], "IL")
+        self.assertEqual(rows["Lauri Markkanen"]["fantasy_team"], "Lauri’s Prime Rib")
+
+    def test_game_time_lines_and_header_tabs_are_ignored(self):
+        text = open(self.SAMPLE, encoding="utf-8").read()
+        rows = LI.parse_paste(text)
+        self.assertFalse(any(LI.GAME_RE.match(r["player"]) or r["player"].startswith(("Tue,", "Wed,")) for r in rows))
+        self.assertIn("Amen Thompson", {r["player"] for r in rows})  # 'pm' inside a name is not a game line
+        self.assertFalse(any(r["fantasy_team"].startswith(("Tue,", "Wed,", "Starting")) for r in rows))
+
+    def test_malformed_player_block_halts(self):
+        text = "Team X \n\nPos\nPlayer\nPG\t\nSomebodyPlayer Note\nNOT A TEAM LINE\n"
+        with self.assertRaises(LI.PasteError):
+            LI.parse_paste(text)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

@@ -1,0 +1,89 @@
+#!/usr/bin/env python3
+"""Red-first tests for scripts/scoreboard_intake.py (in-season tool, Council 2026-10-19 decision 3: the league
+scoreboard with all six matchups' nine category totals, one CSV per week; the owner's cats won go to the ledger,
+every team-week's totals go to the calibration dataset for D-PM-1).
+
+    python3 scripts/test_scoreboard_intake.py
+"""
+import csv
+import json
+import os
+import sys
+import tempfile
+import unittest
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+import scoreboard_intake as SI  # noqa: E402
+
+TEAMS = [f"Team {i}" for i in range(1, 13)]
+STATE = {"teams": [{"name": t, "seat": i + 1} for i, t in enumerate(TEAMS)]}
+CATS = ["FG%", "FT%", "3PTM", "PTS", "REB", "AST", "ST", "BLK", "TO"]
+
+
+def rows(week=1, owner_vals=None, opp_vals=None):
+    out = []
+    for k in range(6):
+        a, b = TEAMS[2 * k], TEAMS[2 * k + 1]
+        va = dict(zip(CATS, [0.480, 0.800, 40, 600, 220, 130, 35, 25, 60]))
+        vb = dict(zip(CATS, [0.470, 0.780, 38, 590, 230, 120, 30, 28, 70]))
+        if k == 4:  # Team 9 vs Team 10 (the owner's seat 10)
+            if owner_vals: vb = dict(zip(CATS, owner_vals))
+            if opp_vals: va = dict(zip(CATS, opp_vals))
+        out.append(dict(week=week, team=a, opponent=b, **va)); out.append(dict(week=week, team=b, opponent=a, **vb))
+    return out
+
+
+def write_csv(path, rs):
+    with open(path, "w", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=["week", "team", "opponent"] + CATS); w.writeheader(); w.writerows(rs)
+
+
+class Parse(unittest.TestCase):
+    def test_twelve_rows_six_matchups_resolve_to_seats(self):
+        with tempfile.TemporaryDirectory() as d:
+            p = os.path.join(d, "w1.csv"); write_csv(p, rows())
+            wk = SI.parse(p, STATE)
+            self.assertEqual(wk["week"], 1); self.assertEqual(len(wk["teams"]), 12); self.assertEqual(len(wk["matchups"]), 6)
+            self.assertEqual(wk["teams"]["Team 10"]["seat"], 10)
+
+    def test_unknown_team_name_halts(self):
+        with tempfile.TemporaryDirectory() as d:
+            rs = rows(); rs[0]["team"] = "Mystery Squad"; rs[1]["opponent"] = "Mystery Squad"
+            p = os.path.join(d, "w1.csv"); write_csv(p, rs)
+            with self.assertRaises(SI.IntakeError):
+                SI.parse(p, STATE)
+
+    def test_missing_team_or_bad_number_halts(self):
+        with tempfile.TemporaryDirectory() as d:
+            p = os.path.join(d, "w1.csv"); write_csv(p, rows()[:11])
+            with self.assertRaises(SI.IntakeError):
+                SI.parse(p, STATE)
+            rs = rows(); rs[3]["PTS"] = "n/a"; write_csv(p, rs)
+            with self.assertRaises(SI.IntakeError):
+                SI.parse(p, STATE)
+
+
+class Score(unittest.TestCase):
+    def test_owner_cats_won_with_turnovers_reversed_and_ties_named(self):
+        with tempfile.TemporaryDirectory() as d:
+            p = os.path.join(d, "w1.csv")
+            write_csv(p, rows(owner_vals=[0.500, 0.700, 45, 650, 200, 140, 30, 25, 50], opp_vals=[0.480, 0.800, 40, 600, 220, 130, 30, 20, 60]))
+            wk = SI.parse(p, STATE); res = SI.owner_result(wk, owner_seat=10)
+            self.assertEqual(res["won"], ["FG%", "3PTM", "PTS", "AST", "BLK", "TO"])
+            self.assertEqual(res["lost"], ["FT%", "REB"]); self.assertEqual(res["tied"], ["ST"])
+            self.assertEqual(res["opponent"], "Team 9")
+
+
+class Dataset(unittest.TestCase):
+    def test_team_weeks_append_is_idempotent_per_week(self):
+        with tempfile.TemporaryDirectory() as d:
+            p = os.path.join(d, "w1.csv"); write_csv(p, rows()); wk = SI.parse(p, STATE)
+            ds = os.path.join(d, "team_weeks.csv")
+            SI.append_team_weeks(wk, ds); SI.append_team_weeks(wk, ds)
+            with open(ds) as f:
+                self.assertEqual(len(list(csv.DictReader(f))), 12)
+
+
+if __name__ == "__main__":
+    unittest.main(verbosity=2)
