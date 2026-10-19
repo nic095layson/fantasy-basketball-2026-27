@@ -42,7 +42,9 @@ def steps(date, fetch=True, seasons=10000):
                                                   f"{shlex.quote(PY)} {shlex.quote(os.path.join(HERE, 'status_feed.py'))} --check"],
                 cwd=KIT, pass_re=r"^STATUS GATE: PASS", env={}),
            dict(name="daily brief", cmd=[PY, os.path.join(HERE, "daily_brief.py"), "--date", date, "--seasons", str(seasons)], cwd=KIT,
-                pass_re=r"^wrote report/briefs/brief_", env={"SEASON_POOL": season_pool})]
+                pass_re=r"^wrote report/briefs/brief_", env={"SEASON_POOL": season_pool}),
+           dict(name="season deck", cmd=[PY, os.path.join(HERE, "season_deck.py"), "--date", date], cwd=KIT,
+                pass_re=r"^SEASON DECK: PASS", env={})]
     return st
 
 
