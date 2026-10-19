@@ -1,51 +1,49 @@
 {
- "ran_at_utc": "2026-10-19T16:32:19Z",
+ "ran_at_utc": "2026-10-19T17:31:57Z",
  "inputs": {
-  "report/after-reports/after-report-2026-10-19-redteam-standing.md": "97f8decc12929b5fc652afbb673e5266af3bd21f2b0c0f6e3edd60d517b7fd5a",
-  "report/after-reports/redteam-2026-10-19/constants.json": "c672cf59484bf6b687aa469c213b6cc44a7b96c82e574061f31bffd251bd874e",
-  "report/after-reports/redteam-2026-10-19/attacks.json": "69bdef23b8cfd761c522b7a7e4ee02dd1aafc3cdded3d33860dc388c73a5f1b2",
-  "scripts/redteam/constants_registry.json": "90f9780b63aecdce5fc5e104378f272327c957746f2f45fc26cf877e369d8f8d",
-  "scripts/redteam/attacks.json": "3941e6b3a620c6d995f6a09b4ab1c49da138c9e04432a5a3ac3eeeb170940829",
+  "report/after-reports/after-report-2026-10-19-retro-redteam.md": "39f55f9b0eddcb410d9f910fec78b1b4a35c78bc492f4c96cd23d1aebb25a9f2",
+  "report/after-reports/retro-redteam-2026-10-19/retro_redteam.json": "e94f11bb232cbcca9492286b951a9f2dea2f4ba527a577e626cef3cfa66c8ddb",
+  "report/after-reports/retro-redteam-2026-10-19/cumulative.json": "fb55261d76ba73d789c012d25cb2dbfe0670beb8ab21ae31cf577547bbf0e602",
   "report/after-reports/redteam-2026-10-19/sweep.json": "434dc69314419dc0e223623c436afa673f2e16e7a2f69820c8403435e5f49d87"
  },
  "gates": [
   {
    "name": "kit check_report",
-   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-19-redteam-standing.md",
+   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-19-retro-redteam.md",
    "cwd": ".",
    "pass_re": "^REPORT GATE: PASS",
    "exit": 0,
-   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-10-19-redteam-standing.md (structure, publication rule, pull-log row)",
+   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-10-19-retro-redteam.md (structure, publication rule, pull-log row)",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "REPORT GATE: PASS \u2014 after-report-2026-10-19-redteam-standing.md (structure, publication rule, pull-log row)"
+    "REPORT GATE: PASS \u2014 after-report-2026-10-19-retro-redteam.md (structure, publication rule, pull-log row)"
    ]
   },
   {
    "name": "deck judgment_open_items --check-report",
-   "cmd": "/usr/local/bin/python3 scripts/judgment_open_items.py --check-report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-19-redteam-standing.md",
+   "cmd": "/usr/local/bin/python3 scripts/judgment_open_items.py --check-report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-19-retro-redteam.md",
    "cwd": "../yahoo-fantasy-basketball",
    "pass_re": "^receipts check PASS",
    "exit": 0,
-   "pass_line": "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-10-19-redteam-standing.md",
+   "pass_line": "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-10-19-retro-redteam.md",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-10-19-redteam-standing.md"
+    "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-10-19-retro-redteam.md"
    ]
   },
   {
    "name": "deck repeat_market_check --check-report",
-   "cmd": "/usr/local/bin/python3 scripts/repeat_market_check.py --check-report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-19-redteam-standing.md",
+   "cmd": "/usr/local/bin/python3 scripts/repeat_market_check.py --check-report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-19-retro-redteam.md",
    "cwd": "../yahoo-fantasy-basketball",
    "pass_re": "^REPEAT-NAME CHECK: PASS",
    "exit": 0,
-   "pass_line": "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-10-19-redteam-standing.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)",
+   "pass_line": "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-10-19-retro-redteam.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-10-19-redteam-standing.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)"
+    "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-10-19-retro-redteam.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)"
    ]
   },
   {
@@ -63,7 +61,7 @@
   },
   {
    "name": "redteam bands",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/redteam/check_bands.py --report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-19-redteam-standing.md --sweep /home/user/fantasy-basketball-2026-27/report/after-reports/redteam-2026-10-19/sweep.json",
+   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/redteam/check_bands.py --report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-19-retro-redteam.md --sweep /home/user/fantasy-basketball-2026-27/report/after-reports/redteam-2026-10-19/sweep.json",
    "cwd": ".",
    "pass_re": "^BANDS CHECK: PASS",
    "exit": 0,
@@ -89,5 +87,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "d36aa873a7d58a5832360f0cbfce773594874f91"
+ "base_commit": "d1492e3afaa5a931690b50fb540cb167d51467d9"
 }
