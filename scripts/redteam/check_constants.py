@@ -32,7 +32,9 @@ STATUSES = ("settings", "structural", "measured", "declared_band", "uncalibrated
 # Module-level names that are paths, derived aliases or environment, not judgment constants.
 IGNORE = {"arena": {"ARENA_DIR", "REPO", "DATA", "CATS", "BASE_POS", "STRATEGIES", "DEFAULT"},
           "hoops": {"DATA_PATH", "FRESH_PATH", "STATE_PATH", "POSITIONAL_SLOTS", "COUNT_COLS", "MUST_HAVE",
-                    "NUMERIC_COLS", "DECK_HTML", "NICKNAMES", "NAME_SUFFIXES"}}
+                    "NUMERIC_COLS", "DECK_HTML", "NICKNAMES", "NAME_SUFFIXES"},
+          # the kit's in-season blend (2026-10-19): paths and column maps are not judgment constants
+          "season_lines": {"HERE", "KIT", "DECK", "KIT_CSV", "DECK_CSV", "ACTUALS", "OUT", "KIT_COLS", "DECK_COLS", "DEC"}}
 TIER_NOTES = {"healthy": "", "mild": "inj-acl-mild", "risk": "inj-knee-risk", "recovery": "inj-achilles-recovery",
               "out": "out-season"}
 
@@ -61,8 +63,12 @@ def read_live(deck=DECK):
             sys.path.insert(0, d)
     hoops = importlib.import_module("hoops")
     arena = importlib.import_module("arena")
+    kit_scripts = os.path.join(KIT, "scripts")
+    if kit_scripts not in sys.path:
+        sys.path.insert(0, kit_scripts)
+    season_lines = importlib.import_module("season_lines")
     live = {}
-    for modname, mod in (("arena", arena), ("hoops", hoops)):
+    for modname, mod in (("arena", arena), ("hoops", hoops), ("season_lines", season_lines)):
         for name, val in vars(mod).items():
             if name.isupper() and not name.startswith("_") and name not in IGNORE[modname] \
                     and not callable(val) and not inspect.ismodule(val):

@@ -441,6 +441,51 @@
    "status": "uncalibrated",
    "record": "hoops.py docstring: 0.78 'arena-calibrated vs real 2025-26 games played'; deck LESSONS.md item 5 (2026-07-12): risk-flagged played 51% of games vs 75% assumed, 0.78 kept above the realized ratio for streaming; 0.85 from outside projections' games 0.84-0.87 (2026-10-13); not used by the simulator (weekly_availability is), so no title band",
    "decision": "D-PM-4 reconcile with arena.weekly_availability (0.78 vs 0.75, 1.0 vs 0.88); D-RN-4 review"
+  },
+  {
+   "module": "season_lines",
+   "name": "STABILITY",
+   "value": {
+    "FG%": 0.714,
+    "FT%": 0.634,
+    "3PM": 0.872,
+    "PTS": 0.848,
+    "REB": 0.84,
+    "AST": 0.847,
+    "STL": 0.75,
+    "BLK": 0.818,
+    "TO": 0.823
+   },
+   "role": "year-over-year Spearman rho per category, mean of three transitions 2022-23..2025-26 (the input to the season-line priors)",
+   "status": "measured",
+   "record": "report/after-reports/after-report-2026-10-09-market.md 'Year-over-year stability' (deck arena/results/actuals_2026-10-09/)"
+  },
+  {
+   "module": "season_lines",
+   "name": "SEASON_GAMES",
+   "value": 65,
+   "role": "games a season of the stability sample is taken to carry (n in k = n (1 - rho) / rho)",
+   "status": "uncalibrated",
+   "record": "season_lines.py: stated assumption; the sample is players with 25+ games, whose mean games is not recorded",
+   "decision": "D-IS-1 (in-season after-report 2026-10-19): measure the sample's mean games from actuals_2026-10-09 and replace, or sweep 50 / 80"
+  },
+  {
+   "module": "season_lines",
+   "name": "PRIOR_GAMES",
+   "value": {
+    "FG%": 26.0,
+    "FT%": 37.5,
+    "3PM": 9.5,
+    "PTS": 11.7,
+    "REB": 12.4,
+    "AST": 11.7,
+    "STL": 21.7,
+    "BLK": 14.5,
+    "TO": 14.0
+   },
+   "role": "prior strength in games per category for the in-season blend (derived from STABILITY and SEASON_GAMES, never tuned)",
+   "status": "measured",
+   "record": "season_lines.prior_games(); test_season_lines.py checks each value against the formula"
   }
  ]
 }

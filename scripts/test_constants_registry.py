@@ -91,5 +91,16 @@ class LiveEngine(unittest.TestCase):
         self.assertIn(("hoops", "availability"), live)
 
 
+class KitModules(unittest.TestCase):
+    """In-season tool 2026-10-19: the registry also covers the kit's own judgment constants (season_lines)."""
+    def test_live_includes_the_season_line_priors(self):
+        if not os.path.isdir(C.DECK):
+            self.skipTest("deck not present")
+        live = C.read_live(C.DECK)
+        self.assertIn(("season_lines", "PRIOR_GAMES"), live)
+        self.assertIn(("season_lines", "SEASON_GAMES"), live)
+        self.assertIn(("season_lines", "STABILITY"), live)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
