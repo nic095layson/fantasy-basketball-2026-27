@@ -1,0 +1,31 @@
+{
+ "verdict": "PASS",
+ "engine_commit": "259c630",
+ "registered": 28,
+ "live": 28,
+ "by_status": {
+  "settings": 7,
+  "structural": 4,
+  "declared_band": 6,
+  "measured": 4,
+  "uncalibrated": 7
+ },
+ "uncalibrated": [
+  "arena.GRAD_K",
+  "arena.GRAD_SCALE",
+  "arena.MKT_W",
+  "arena.MKT_PIN",
+  "hoops.PAIR_MIN_GAIN",
+  "hoops.PAIR_WAIT_MIN",
+  "hoops.availability"
+ ],
+ "declared_band": [
+  "arena.BENCH_WEIGHT",
+  "arena.CV",
+  "arena.PCT_MIX_INFL",
+  "arena.TEAM_WEEK_SHOCK",
+  "arena.weekly_availability",
+  "arena.GAMES_PER_WEEK"
+ ],
+ "problems": []
+}
