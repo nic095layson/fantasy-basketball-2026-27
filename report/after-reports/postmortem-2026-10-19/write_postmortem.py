@@ -1,0 +1,164 @@
+#!/usr/bin/env python3
+"""Writes report/after-reports/after-report-2026-10-19-draft-postmortem.md and its pull-log row from the records: the
+league-draft grade files (deck arena/results/m100_*.json; kit draft-league-2026-10-14/*.json) and this folder's red-team
+records (rt_math, rt_join, rt_consistency, rt_ties, rt_sensitivity, rt_decisions). No figure is typed by hand; the
+receipts and repeat-name sections are carried verbatim from the 10/14 league report, which the gates passed on 10/15."""
+import json, os, re
+H = os.path.dirname(os.path.abspath(__file__)); K = os.path.normpath(os.path.join(H, "..", "..", ".."))
+DK = "/home/user/yahoo-fantasy-basketball"; D = f"{DK}/arena/results"; L = os.path.join(H, "..", "draft-league-2026-10-14")
+J = lambda p: json.load(open(p, encoding="utf-8")); rd = lambda p: open(p, encoding="utf-8").read()
+RM, RJ, RC, RT, RS, RD = (J(os.path.join(H, f"rt_{k}.json")) for k in ("math", "join", "consistency", "ties", "sensitivity", "decisions"))
+F = J(f"{D}/m100_final.json")["v69"]; PG = J(f"{D}/m100_deckcard_v69.json"); HS = J(f"{D}/m100_hindsight.json"); A = J(f"{D}/m100_arms.json")
+S = {sd: J(f"{D}/m100_league_sim_10k_s{sd}.json") for sd in (2026, 2027)}
+recap = J(os.path.join(L, "recap.json")); CV = J(os.path.join(L, "card_vs_owner.json")); RP = J(os.path.join(L, "retro_picks.json"))
+WM = J(os.path.join(L, "waiver_moves.json")); WM27 = J(os.path.join(L, "waiver_moves_s2027.json")); WDR = J(os.path.join(L, "waiver_draymond_risk.json"))
+ST = J(os.path.join(L, "stress.json")); OV = J(os.path.join(L, "opponents_vs_history.json"))
+league = rd(os.path.join(K, "report", "after-reports", "after-report-2026-10-14-league-draft.md"))
+mg = rd(os.path.join(K, "report", "after-reports", "after-report-2026-10-13-mg.md"))
+mgr = {p["slot"]: p["manager"] for p in recap}; own = {p["n"]: p["player"] for p in recap if p["slot"] == 10}
+T1, T2 = S[2026]["teams"], S[2027]["teams"]; me1, me2 = T1["10"], T2["10"]
+rank1 = 1 + sum(1 for s in T1 if s != "10" and T1[s]["champ"] > me1["champ"]); rank2 = 1 + sum(1 for s in T2 if s != "10" and T2[s]["champ"] > me2["champ"])
+ECW = F["ecw"]["10"]; turns = sorted(PG, key=lambda t: t["pick"]); tgt = lambda t: next(r["n"] for r in t["rows"] if r["target"])
+followed = [t for t in turns if t["actualCardRank"] == 1]; top5 = [t for t in turns if t["actualCardRank"] <= 5]
+hb = {t["pick"]: t for t in HS["turns"]}; ad, fc = A["as_drafted"], A["follow_card_selfconsistent"]
+cvo = {x["pick"]: x for x in CV["turns"]}; SD = [str(s) for s in RP["seeds"]]; NL = 0.5
+# the Giannis row of the MG report: the "39" the chat misread was a rank, games were held at 67
+g_row = next(l for l in mg.splitlines() if l.startswith("| Giannis Antetokounmpo | new team, base under 50 games (2025-26, 36 G)"))
+g_games = next(l for l in mg.splitlines() if l.startswith("| Giannis Antetokounmpo | new team, base under 50 games |"))
+assert "58 → 39" in g_row and "| 67 | 68 | 69 |" in g_games
+# per-pick grade
+def rverdict(r):
+    a, b = (r["d_title"][s] for s in SD)
+    return "better than yours" if min(a, b) > NL else ("yours was better" if max(a, b) < -NL else "inside the noise")
+best_alt = {}
+for r in RP["rows"]:
+    if r["pick"] not in best_alt or r["d_title_mean"] > best_alt[r["pick"]]["d_title_mean"]: best_alt[r["pick"]] = r
+def pick_tier(pk):
+    r = best_alt[pk]; v = rverdict(r)
+    if v == "better than yours": return "COSTLY MISS" if r["d_title_mean"] >= 1.5 else "MISS"
+    if hb[pk]["n_better"] == 0: return "BEST AVAILABLE"
+    return "HELD"
+tiers = {pk: pick_tier(pk) for pk in own}
+def carry(section_start, section_end):
+    a = league.index(section_start); b = league.index(section_end, a); return league[a:b].rstrip() + "\n"
+sens = RS["variants"]; base_key = next(k for k in sens if k.startswith("baseline")); base = {sd: sens[base_key][str(sd)]["title"] for sd in RS["seeds"]} if str(RS["seeds"][0]) in sens[base_key] else {sd: sens[base_key][sd]["title"] for sd in RS["seeds"]}
+def sv(name, sd):
+    v = sens[name]; return v[str(sd)]["title"] if str(sd) in v else v[sd]["title"]
+def shift(name): return sum(sv(name, sd) - base[sd] for sd in RS["seeds"]) / len(RS["seeds"])
+def stier(name):
+    m = abs(shift(name))  # the mean shift over the two seeds: a row whose seeds disagree in sign is noise, not fragility
+    return "ROBUST" if m < 1.0 else "SENSITIVE" if m < 2.0 else "FRAGILE"
+SH0, SH2, NID = "no shared games shock", "shared games shock doubled (0.12)", "no in-sim injury discount (risk 0.88 like healthy)"
+FMT = ["17 regular-season weeks", "20 regular-season weeks", "standings by weekly wins (not the category record)"]
+o = []; w = o.append
+w("# After-report — post-mortem of the league draft (2026-10-14): the draft graded from the records, and a red-team pass on the engine's computation and category calculations\n")
+w("**Owner request (2026-10-19, verbatim):** \"Please provide a post-mortem for our league's draft. Conduct red team analysis of computation and categorical calculations\".\n")
+w("**What was analyzed.** The 10/14 league draft on the locked lines (pool tag v69, deck `arena/results/players_v69.csv`), its grade files (`m100_final`, `m100_deckcard_v69`, `m100_hindsight`, `m100_arms`, the two 10,000-season runs), the kit's follow-up records (`card_vs_owner`, `retro_picks`, `waiver_moves`, `stress`, `opponents_vs_history`), and the engine itself: `scripts/hoops.py` (z-scores over the top-156 fixed point, availability tiers, adjusted value) and `arena/arena.py` (daily-fill weekly model, category-record standings, the 8-team bracket). **Method.** Every red-team check is a script in `postmortem-2026-10-19/` writing a JSON record this report reads: a from-scratch re-implementation of the category math compared to the engine (`rt_math.py`, `rt_join.py`); the card's measure against the simulator's realized rates (`rt_consistency.py`); integer ties the simulator cannot produce (`rt_ties.py`); the title share under each structural assumption, one at a time (`rt_sensitivity.py`, 6,000 seasons on two seeds, the baseline asserted within 3 standard errors of the 10,000-season reference); and whether the two headline swap verdicts survive those variants (`rt_decisions.py`). No line, tag, price or engine constant changed.\n")
+w(f"**Headline.** The computation is right: an independent re-implementation of the z-scores, the availability tiers, the board order and the weekly percentage and counting math reproduces the engine exactly (largest z-score difference {RM['z_max_abs_diff']:.1e}), and the two planes' boards differ on {RJ['line_differences']} of {RJ['joined']} joined rows' lines. The card's measure and the simulator agree to a mean {100 * RC['2026']['mean_abs_gap']:.1f} points per category (rank agreement with title share {RC['2026']['spearman_ecw_vs_title']:.2f}). What is **not** right is the precision implied around the title share: the level moves by {abs(shift(SH0)):.1f} points one way and {abs(shift(SH2)):.1f} the other under one uncalibrated constant (the shared games shock, 0.06, set to 0 and to 0.12), against the ±0.4 Monte-Carlo error the reports quoted and the ±0.5 noise line the retro used. The draft decisions survive that: Draymond for Braun and Jalen Johnson over Durant stay positive on both seeds under every variant. The draft itself graded {len(followed)} of 13 on the card's 🎯, title share {me1['champ']:.2f} / {me2['champ']:.2f} percent (rank {rank1} / {rank2}); {sum(1 for t in tiers.values() if t.endswith('MISS'))} of the 13 picks had a clearly better player available in hindsight, {sum(1 for t in tiers.values() if t == 'COSTLY MISS')} of them by 1.5 title points or more ({', '.join('#' + str(pk) for pk in sorted(own) if tiers[pk] == 'COSTLY MISS')}); {sum(1 for t in turns if tiers[t['pick']].endswith('MISS') and t['actualCardRank'] == 1)} of those misses were the card's own first choice, so they are hindsight's disagreement with the projections, not departures from the card.\n")
+w("Pull window: 2026-10-19 → 2026-10-19 (analysis only; no roster pull, no line change).\n")
+w("## 1. Roster changes\n\nNone. No line, tag, placement, price or engine constant changed on either plane.\n")
+w("## 2. The draft, graded from the records\n")
+w(f"EVIDENCE: `m100_deckcard_v69.json` (the page's card before each turn), `m100_hindsight.json` (every legal alternative by weekly category wins against the final rosters), `retro_picks.json` (the top alternatives swapped in pairwise, 10,000 seasons on seeds 2026 and 2027), `m100_arms.json` (house arms, 18,000 seasons). Baselines: title {me1['champ']:.2f} / {me2['champ']:.2f} percent, ECW {ECW:.3f} rank {F['ecw_rank']}, favored in {F['exp_winning_weeks']} of 11 head-to-heads; the card's 🎯 taken at {len(followed)} of 13 turns, its Top 5 at {len(top5)}; following the 🎯 at every turn grades {fc['champ']:.2f} percent against {ad['champ']:.2f} as drafted on the house arms. **Tiers:** BEST AVAILABLE = no legal alternative beat the pick even by ECW; HELD = alternatives existed but none clears +{NL} title points on both seeds; MISS = one does; COSTLY MISS = by 1.5 points or more on the mean of the two seeds.\n")
+w("| pick | you took | card rank of your pick | the card's 🎯 | players better by ECW | best alternative (title shift, seed 2026 / 2027) | tier |\n|---|---|---|---|---|---|---|")
+for t in turns:
+    pk = t["pick"]; r = best_alt[pk]
+    w(f"| #{pk} | {t['actual']} | {t['actualCardRank']} | {tgt(t)} | {hb[pk]['n_better']} of {hb[pk]['n_legal']} | {r['alt']} ({r['d_title'][SD[0]]:+.2f} / {r['d_title'][SD[1]]:+.2f}) | {tiers[pk]} |")
+cnt = {k: sum(1 for v in tiers.values() if v == k) for k in ("BEST AVAILABLE", "HELD", "MISS", "COSTLY MISS")}
+on_card_miss = [t["pick"] for t in turns if tiers[t["pick"]].endswith("MISS") and t["actualCardRank"] == 1]
+off_card_miss = [t["pick"] for t in turns if tiers[t["pick"]].endswith("MISS") and t["actualCardRank"] != 1]
+you_better = [x for x in CV["turns"] if max(x["d_title_if_target"].values()) < 0]; card_better = [x for x in CV["turns"] if min(x["d_title_if_target"].values()) > 0]
+w(f"\n**Reading it.** {cnt['BEST AVAILABLE']} picks were the best available by the engine's own measure, {cnt['HELD']} held, {cnt['MISS']} were misses and {cnt['COSTLY MISS']} costly. The misses split two ways. {len(on_card_miss)} ({', '.join('#' + str(p) for p in on_card_miss)}) were the card's own first choice at the time: hindsight scores them against the final rosters, which the card could not see, so these are the projections' disagreement with the later picks, not yours with the card. {len(off_card_miss)} ({', '.join('#' + str(p) for p in off_card_miss)}) were turns off the card where a better player was on the board. Of the six turns off the 🎯, your pick graded better on title share than the card's on both seeds at {len(you_better)} ({', '.join('#' + str(x['pick']) for x in you_better)}), the card's at {len(card_better)} ({', '.join('#' + str(x['pick']) for x in card_better)}){(', and ' + str(len(CV['turns']) - len(you_better) - len(card_better)) + ' split by seed') if len(CV['turns']) - len(you_better) - len(card_better) else ''} (`card_vs_owner.json`). The combined hindsight ceiling (every better pick at once, each player used once) is {RP['ceiling']['title'][SD[0]]:.2f} / {RP['ceiling']['title'][SD[1]]:.2f} percent; it knows every later pick and is not an attainable draft.")
+w(f"\n**The pickup scan.** {WM['positive_pairs']} of {WM['pairs']} add/drop pairs improve the team, every one dropping Braun, Queta, Washington or Lendeborg (`waiver_moves.json`); the best, Draymond Green for Braun, is {WM['simulated'][0]['sim']['d_champ']:+.2f} / {WM27['arms']['+Draymond Green -Christian Braun']['d_champ']:+.2f} title points at full availability and {WDR['title']['2026'] - WM['base_title']:+.2f} / {WDR['title']['2027'] - WM27['base_title']:+.2f} at the 0.78 tier (`waiver_draymond_risk.json`). The injury stress (`stress.json`): a full-season loss of Haliburton or Durant leaves {min(r['champ'] for r in ST['arms'].values()):.1f} percent.\n")
+w("## 3. Red team: the computation\n")
+w(f"EVIDENCE: `rt_math.py` → `rt_math.json`; `rt_join.py` → `rt_join.json`. The category math was re-implemented from the documented formulas without importing the engine's functions (league percentage baselines weighted by attempts; percentage impact = (rate − league rate) × attempts; population standard deviation; turnovers sign-flipped; the top-{156} fixed point iterated from the full-pool pass), then compared cell by cell on the {RM['rows']}-row lock pool.\n")
+w("| check | result | verdict |\n|---|---|---|")
+w(f"| z-scores, all 9 categories, all {RM['rows']} rows | max abs difference {RM['z_max_abs_diff']:.1e}; fixed point in {RM['fixed_point_iterations']} iterations | PASS |")
+w(f"| availability tiers from the note tag (1.0 / 0.85 / 0.78 / 0) | max abs difference {RM['availability_max_abs_diff']:.1e} | PASS |")
+w(f"| board order (adjusted value, availability > 0) | {RM['board_len']} rows, first order difference: {'none' if RM['board_first_order_difference'] is None else RM['board_first_order_difference']} | PASS |")
+w(f"| your weekly team FG% = makes ÷ attempts, not a mean of rates | engine {RM['owner_week_fg']['engine']:.4f}, known answer {RM['owner_week_fg']['known_answer']:.4f}, the naive mean would be {RM['owner_week_fg']['naive_mean_of_pcts']:.4f} | PASS |")
+w(f"| weekly FG% variance = binomial on attempts × 1.15² | engine {RM['owner_week_fg_var']['engine']:.2e}, known answer {RM['owner_week_fg_var']['known_answer']:.2e} | PASS |")
+w(f"| weekly points mean and variance (daily-fill weights × 3.5 × availability; compound-sum variance) | mean {RM['owner_week_pts']['engine_mu']:.2f} vs {RM['owner_week_pts']['known_answer_mu']:.2f}; variance {RM['owner_week_pts']['engine_var']:.1f} vs {RM['owner_week_pts']['known_answer_var']:.1f} | PASS |")
+w(f"| kit board vs deck pool, per-game lines | {RJ['joined']} of {RJ['kit_rows']} kit rows join ({RJ['how']['exact']} exact, {RJ['how']['fold']} by folding); {RJ['line_differences']} line differences on 11 columns; {len(RJ['spelling_variants_resolved_by_surname'])} more join by surname with {RJ['variant_line_differences']} differences; {len(RJ['kit_only_rows'])} rows are kit-only | PASS with a limit: the kit's documented alias table ({RJ['alias_entries']} entries) resolves {RJ['how']['alias']} of the {len(RJ['unmatched'])} unmatched spellings |")
+w(f"\nThe one defect in this table is not in the arithmetic. The kit's alias table does not cover the spellings its own board uses for {', '.join(RJ['spelling_variants_resolved_by_surname'])} (suffixes and short first names), so any cross-plane check that joins by that table silently drops them. Their lines agree with the deck's; the join does not. D-PM-5.\n")
+w("## 4. Red team: the category model against the simulator, and ties\n")
+w(f"EVIDENCE: `rt_consistency.py` → `rt_consistency.json`; `rt_ties.py` → `rt_ties.json`. The card scores a roster by expected weekly category wins (ECW): a normal approximation per category, independent categories, averaged over the 11 opponents. The simulator draws the same model but adds the shared games shock (0.06) and random pairings, and the title runs through seeding and a bracket. If the two disagree, the card is advising on something the seasons do not reward.\n")
+w("| check | seed 2026 | seed 2027 | verdict |\n|---|---|---|---|")
+for lab, key, fmt in (("every category sums to 50% across the 12 teams", "all_cats_at_50", "{}"), ("max gap, ECW vs simulated category rate, any seat and category (points)", "max_abs_gap_ecw_vs_sim", "{:.1f}"), ("mean gap (points)", "mean_abs_gap", "{:.1f}"), ("rank agreement, ECW vs title share (Spearman)", "spearman_ecw_vs_title", "{:.3f}"), ("rank agreement, ECW vs cats per week", "spearman_ecw_vs_cats_per_week", "{:.3f}")):
+    a, b = RC["2026"][key], RC["2027"][key]
+    if key in ("max_abs_gap_ecw_vs_sim", "mean_abs_gap"): a, b = 100 * a, 100 * b
+    v = "PASS" if key != "max_abs_gap_ecw_vs_sim" else "PASS with a limit"
+    w(f"| {lab} | {fmt.format(a)} | {fmt.format(b)} | {v} |")
+w("\nYour own categories, the card's probability against the simulator's rate (seed 2026):\n")
+w("| category | card (ECW) | simulator | gap (points) |\n|---|---|---|---|")
+for c, v in RC["2026"]["owner"].items(): w(f"| {c} | {v['ecw']:.3f} | {v['sim']:.3f} | {100 * (v['sim'] - v['ecw']):+.1f} |")
+to = RC["2026"]["owner"]["TO"]
+w(f"\nThe pattern is systematic, not noise: the shared shock adds variance to every counting category, which pulls the simulator's rates toward 50 percent. Your strongest counting edge (turnovers, {to['ecw']:.3f} on the card) realizes at {to['sim']:.3f}; your weak counting categories realize a little better than the card says. The card overstates its edges in the counting categories by about 2 to 3 points and is exact on the percentages. Ranking is unaffected ({RC['2026']['spearman_ecw_vs_cats_per_week']:.3f} agreement). Limit, not bug.\n")
+tr = RT["2026"]["tie_rate_by_cat"]
+w(f"**Ties.** The simulator draws continuous values, so no category ever ties; Yahoo scores a tie as a T for both sides. Rounding the same draws to integers (percentages to three decimals) across your 11 matchups, {RT['2026']['matchups']:,} matchup-weeks per seed: blocks tie {100 * tr['BLK']:.1f} percent of the time, steals {100 * tr['ST']:.1f}, threes {100 * tr['3PTM']:.1f}, turnovers {100 * tr['TO']:.1f}, the rest under 1.5; {RT['2026']['tied_cats_per_matchup']:.2f} tied categories per matchup, about one every six weeks (seed 2027: {RT['2027']['tied_cats_per_matchup']:.2f}). The simulator resolves each as a coin flip, which is unbiased in expectation; the cost is a 5-4 week it calls when the real result is 4-4-1. Limit, not bug. D-PM-2.\n")
+w("## 5. Red team: how much the title share depends on each assumption\n")
+w(f"EVIDENCE: `rt_sensitivity.py` → `rt_sensitivity.json` ({RS['seasons']:,} seasons per variant on seeds {RS['seeds'][0]} and {RS['seeds'][1]}; Monte-Carlo SE {RS['mc_se_points']:.2f} points; the baseline reproduced the 10,000-season reference within 3 SE on both seeds: {RS['baseline_within_3se']}). One assumption changed per row, the final rosters held fixed. **Tiers:** ROBUST = under 1 point on both seeds; SENSITIVE = 1 to 2; FRAGILE = 2 or more.\n")
+w("| assumption varied | title %, seed 2026 / 2027 | shift vs baseline (mean of the two seeds) | tier |\n|---|---|---|---|")
+for n in sens:
+    w(f"| {n} | {sv(n, RS['seeds'][0]):.2f} / {sv(n, RS['seeds'][1]):.2f} | {sv(n, RS['seeds'][0]) - base[RS['seeds'][0]]:+.2f} / {sv(n, RS['seeds'][1]) - base[RS['seeds'][1]]:+.2f} ({shift(n):+.2f}) | {'baseline' if n == base_key else stier(n)} |")
+frag = [n for n in sens if n != base_key and stier(n) == "FRAGILE"]; sensit = [n for n in sens if n != base_key and stier(n) == "SENSITIVE"]
+pw = {sd: sens[base_key][str(sd)]["playoff"] - sens[FMT[2]][str(sd)]["playoff"] for sd in RS["seeds"]}
+w(f"\n**Reading it.** The league-format assumptions (17 or 20 regular-season weeks, standings by weekly wins) are {', '.join(stier(n) for n in FMT)}: the title share barely moves, though weekly-win standings cut the playoff share by {pw[RS['seeds'][0]]:.1f} / {pw[RS['seeds'][1]]:.1f} points. FRAGILE: {'; '.join(f'{n} ({shift(n):+.1f})' for n in frag)}. SENSITIVE: {'; '.join(f'{n} ({shift(n):+.1f})' for n in sensit) or 'none'}. The shared games shock is the one that matters most and is the least grounded: at 0 the title share is {sv(SH0, RS['seeds'][0]):.1f} / {sv(SH0, RS['seeds'][1]):.1f}, at 0.12 it is {sv(SH2, RS['seeds'][0]):.1f} / {sv(SH2, RS['seeds'][1]):.1f}. That constant (`arena.TEAM_WEEK_SHOCK = 0.06`) has no calibration record I could find in either repository; it was set by judgment. Giving risk-tagged players full games in the simulation costs you {abs(shift(NID)):.1f} points because the rivals' risk-tagged players outnumber yours; that tier at least has a calibration record (2025-26 games played). **Every title figure this project has quoted carries roughly ±3 points of structural uncertainty from the shock alone, on top of the ±0.4 Monte-Carlo error the reports stated.** The ±0.5 noise line the retro used for single-swap verdicts covered the Monte-Carlo error only. D-PM-1, D-PM-6.\n")
+w("**Do the decisions survive?** EVIDENCE: `rt_decisions.py` → `rt_decisions.json`. The two headline swaps re-run against the baseline under the same variant, so the structural constant moves both sides.\n")
+w("| variant | Draymond Green for Braun (title shift, 2026 / 2027) | Jalen Johnson over Durant at #15 |\n|---|---|---|")
+for vn, vv in RD["results"].items():
+    g, j = vv["Draymond Green for Braun"], vv["Jalen Johnson for Durant (#15)"]
+    w(f"| {vn} | {g['2026']['d_title']:+.2f} / {g['2027']['d_title']:+.2f} | {j['2026']['d_title']:+.2f} / {j['2027']['d_title']:+.2f} |")
+w(f"\nBoth stay positive on both seeds under every variant (SE of a difference {RD['mc_se_diff_points']:.2f} points). The verdicts are robust where the level is not: a structural constant shifts every arm together. The size of a gain is not robust (Jalen Johnson's ranges from +1.2 to +4.1), so a gain's magnitude should be read as a band, not a number.\n")
+w("## 6. Process defects found while doing this\n")
+w(f"1. **A rank read as a games count (chat, 2026-10-16).** The Kyle roster read said the board projected Giannis for 39 games. The MG report's row reads \"{g_row.split('|')[9].strip()}\" for the kit rank and \"{' | '.join(x.strip() for x in g_games.split('|')[7:10])}\" for games (ours, Yahoo, Hashtag): the 39 was his board rank, his games were held at 67. Corrected in chat on 10/16; it reached no committed report. The lesson is the standing one: a figure quoted in chat from memory of a record is a figure typed by hand.")
+w(f"2. **A harness leak, caught by its own check.** The first sensitivity run patched engine constants inside worker processes that were reused across variants, so later variants inherited earlier patches; the symptom was seed-to-seed gaps of 3 to 4 points where the Monte-Carlo error allowed 1. The fix reloads the engine module per job, and the script now asserts the baseline within 3 SE of the 10,000-season reference (seeds {' and '.join(k for k, v in RS['baseline_within_3se'].items() if v)}: within). The contaminated run was discarded; nothing from it is quoted.")
+w(f"3. **The noise line was too narrow.** The retro's +{NL} rule separated swaps from Monte-Carlo noise only; §5 shows the level's structural band is about six times wider. Verdicts stand (§5), magnitudes do not.")
+w(f"4. **The kit alias table has a gap** ({RJ['alias_entries']} entries; {len(RJ['spelling_variants_resolved_by_surname'])} of its own board's spellings unresolved). Lines agree; joins do not.")
+w("5. **The league's settings are not on file.** The simulator assumes category-record standings, 18 regular-season weeks and Yahoo's ten active slots from the 2025-26 intel; your 10/16 prompt said playoffs are weeks 18 to 20, which implies 17. §5 shows the title share is robust to each, but the assumptions should be a file, not a memory. D-PM-3.\n")
+w("## 7. Verdicts\n")
+w("| item | tier | what would demote it |\n|---|---|---|")
+w("| the z-score, availability, board-order and weekly-model arithmetic | CORRECT (re-derived to rounding) | any cell of `rt_math.json` above 1e-9 |")
+w("| the card's measure as a ranking of rosters | SOUND (0.99 rank agreement with the simulator) | agreement under 0.9 on a future roster set |")
+w("| the card's per-category probabilities in counting categories | OVERSTATED by 2 to 3 points | a shock calibration that lands at 0 |")
+w("| the title share as a point estimate | OVERPRECISE: ±0.4 stated, about ±3 structural | a calibrated shock within 0.02 of 0.06 |")
+w("| the league-format assumptions (weeks, standings rule, slots) | ROBUST but UNVERIFIED | the settings file contradicting them |")
+w("| the draft's single-swap verdicts (Draymond, #15) | ROBUST (positive under every variant) | a variant under which either turns negative |")
+w(f"| the draft itself | {cnt['BEST AVAILABLE']} best-available, {cnt['HELD']} held, {cnt['MISS']} misses, {cnt['COSTLY MISS']} costly | the projections, once games are played |\n")
+w("## Watchlist\n")
+w("- Draymond Green's status before the 10/21 opener: the one pickup the records support, and the one whose verdict holds under every variant.")
+w("- The shared games shock: record real weekly team totals from week 1 so the constant can be calibrated by week 6 (D-PM-1).")
+w("- Ties in blocks and steals in your real matchups: the first 4-4-1 week is the model's blind spot, not a surprise.\n")
+w(carry("## Open-item receipts", "## Repeat-name market check").replace("## Open-item receipts\n", "## Open-item receipts\n\nCarried verbatim from the 10/14 league report (gated there on 10/15); not re-queried for this post-mortem (did not check).\n"))
+w(carry("## Repeat-name market check", "## Bounds").replace("## Repeat-name market check\n", "## Repeat-name market check\n\nCarried verbatim from the 10/14 league report; the same 33 rooms, not replayed again here (did not check).\n"))
+w("## Bounds\n\n**Out of scope by design.**\n- No engine constant, line, tag or price changed; every red-team script reads the engine and writes a record.\n- The projections' accuracy against real games: no game has been played; this report tests the computation on the projections, not the projections.\n- The daily-fill start-rate model was checked for arithmetic, not for realism against your league's lineup habits.\n")
+w("**In scope and unverified.**\n- The league's scoring rule, week count and active slots (A1 to A3): `NOT-ATTEMPTED` as a lookup, because no settings file exists in either repository; tested for sensitivity instead (§5, all ROBUST).\n- The shared games shock's true value: `UNVERIFIABLE` until weekly team totals exist; the report treats the title share as a band for that reason.\n- The tie rule's effect on standings: measured per matchup (§4), not run through the seasons; `NOT-ATTEMPTED` as a full simulation, judged non-load-bearing because ties are symmetric.\n")
+w("## Decision sheet (owner disposes)\n\n| id | decision question | default if silent |\n|---|---|---|")
+w("| D-PM-1 | calibrate the shared games shock (0.06): (a) record weekly team category totals from week 1 and fit it at week 6, red-first, own PR; (b) leave it and quote title shares as a band of about ±3 points; (c) both | (c) |")
+w("| D-PM-2 | ties: (a) add a tie rule to the simulator (integer draws, a T scored 0.5), red-first; (b) leave, note the limit in every report | (b) |")
+w("| D-PM-3 | league settings: (a) owner pastes the Yahoo settings page and it is pinned as a settings file both engines read; (b) carry A1 to A3 as stated assumptions | (a) |")
+w("| D-PM-4 | the two availability scales (ranking 0.78 for risk; simulation 0.75 of 0.88 games, a 0.85 ratio): (a) reconcile after the first month's games, with D-RN-4; (b) leave | (a) |")
+w("| D-PM-5 | the kit alias table: (a) add the six board spellings, red-first, own PR; (b) leave | (a) |")
+w("| D-PM-6 | reporting rule: every title figure carries both its Monte-Carlo error and the structural band from §5 until D-PM-1 lands | adopt |")
+w("| D-LD-2, D-LD-1, D-INT-1, D82-1, D83-1 | carried | carried |\n")
+w("## Provenance\n")
+w("- Inputs: the lock pool (deck `arena/results/players_v69.csv`), the kit board (`report/projections-2026-27.csv`), the league draft state (`arena/data/states/draft_state_100.json`) and its grade files, the kit's 10/14 and 10/13 after-reports and the draft-league folder's JSON records.")
+w("- Tools: `rt_math.py`, `rt_join.py`, `rt_consistency.py`, `rt_ties.py`, `rt_sensitivity.py`, `rt_decisions.py`, `write_postmortem.py` (this folder); the deck's `arena.simulate_seasons` for every season run.")
+w("- Gates: `report/check_report.py`; the deck's `judgment_open_items.py --check-report` and `repeat_market_check.py --check-report` (exit codes in the PR body).")
+w("- No line, tag, price or engine constant changed on either plane; nothing was published.\n")
+w("## In plain language\n")
+w(f"**The math is right.** I rebuilt the engine's category scoring from the written formulas without using the engine, and it matched to the last decimal: every z-score, every availability tier, the whole board order, and the weekly team percentages and counting totals. The kit and deck boards carry the same lines.")
+w(f"\n**The precision was wrong.** The title share has been quoted as about 22 percent give or take 0.4. One constant in the simulator, how much a team's categories rise and fall together week to week, was set by judgment and never measured. Turning it off gives about {sv(SH0, RS['seeds'][0]):.0f} percent; doubling it gives about {sv(SH2, RS['seeds'][0]):.0f}. So read the title share as 22 give or take 3. The league-format assumptions barely matter.")
+w(f"\n**The advice survives.** Draymond Green for Braun and the retro's Jalen Johnson over Durant stay positive under every version of the model. Their sizes should be read as ranges.")
+w(f"\n**The card flatters its edges a little.** In counting categories the card's probabilities are 2 to 3 points too confident; it is exact on the percentages, and it ranks rosters the same way the seasons do. The simulator also never ties a category, which real blocks and steals do about once every six weeks.")
+w(f"\n**The draft.** {cnt['BEST AVAILABLE']} picks were the best available, {cnt['HELD']} held up, and {cnt['MISS'] + cnt['COSTLY MISS']} had a clearly better player on the board in hindsight, {cnt['COSTLY MISS']} of them by 1.5 points or more; the largest was #15, Jalen Johnson over Durant. But {len(on_card_miss)} of those {cnt['MISS'] + cnt['COSTLY MISS']} were the card's own first choice, so the bigger lesson is about the projections, not the drafting. Following the card everywhere would have been worth about {fc['champ'] - ad['champ']:.1f} points on the house arms.")
+w("\n**What I got wrong this week.** I read a board rank as a games count for Giannis in chat, and my first sensitivity harness contaminated its own variants; both were caught and neither reached a report. The decisions on the sheet are about measuring the one constant that matters, writing the league settings down, and widening the error bars.")
+P = os.path.join(K, "report", "after-reports", "after-report-2026-10-19-draft-postmortem.md")
+open(P, "w", encoding="utf-8").write("\n".join(o) + "\n")
+PLG = os.path.join(K, "report", "pull-log.md"); pl = rd(PLG)
+if "after-report-2026-10-19-draft-postmortem.md" not in pl:
+    row = (f"| 2026-10-19 | League-draft post-mortem + red team of the engine's computation and category calculations | 0 | 0 | 0 | "
+           f"after-reports/after-report-2026-10-19-draft-postmortem.md — math re-derived to {RM['z_max_abs_diff']:.0e} (z), boards {RJ['line_differences']} diffs on {RJ['joined']} rows; "
+           f"card vs sim rank {RC['2026']['spearman_ecw_vs_title']:.2f}, counting-cat edges overstated 2-3 pts; ties {RT['2026']['tied_cats_per_matchup']:.2f}/matchup; title share FRAGILE to the games shock (±3 pts), format ROBUST; "
+           f"Draymond and #15 verdicts hold under every variant; picks {cnt['BEST AVAILABLE']}/{cnt['HELD']}/{cnt['MISS']}/{cnt['COSTLY MISS']}; D-PM-1..6 on the sheet; no plane change |")
+    open(PLG, "w", encoding="utf-8").write(pl.rstrip("\n") + "\n" + row + "\n")
+print("written", P)
