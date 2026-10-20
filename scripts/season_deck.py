@@ -333,7 +333,7 @@ function myField(){ return h("div",{class:"field static",title:T(D.my_team)},T(D
 function pickList(rows, set, rerender, empty){ return h("div",{class:"plist"}, rows.length? rows.map(r=>h("label",{},
   h("input",{type:"checkbox",...(set.has(r.name)?{checked:""}:{}),onchange:(e)=>{e.target.checked?set.add(r.name):set.delete(r.name);rerender();}}),
   r.name+" · "+r.team+" · z "+f2(r.z_adj))) : h("div",{class:"zero"},empty)); }
-function scoreBlock(inRows, outRows){
+function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
   if(!(inRows.length||outRows.length)) return h("p",{class:"zero"},"Pick players on both sides to score a move.");
   const m=swapMath(inRows,outRows,CATS);
   return h("div",{},
@@ -342,7 +342,7 @@ function scoreBlock(inRows, outRows){
       CATS.map(c=>h("tr",{},h("td",{},c),h("td",{class:"num"},sgn(m.d[c])),h("td",{},tier(m.d[c],C.tier_low,C.tier_high)),
         h("td",{},h("span",{class:"bar "+(m.d[c]>=0?"pos":"neg")},h("i",{style:"width:"+Math.min(120,Math.round(Math.abs(m.d[c])*40))+"px"}))))))),
     h("p",{},h("span",{class:"verdict "+(m.net>=C.verdict_edge?"pos":(m.net<=-C.verdict_edge?"neg":"even"))},
-      (m.net>=C.verdict_strong?"STRONG FAVORABLE SCREEN":m.net>=C.verdict_edge?"FAVORABLE SCREEN":m.net<=-C.verdict_strong?"STRONG UNFAVORABLE SCREEN":m.net<=-C.verdict_edge?"UNFAVORABLE SCREEN":"ABOUT EVEN")),
+      (m.net>=C.verdict_strong?"STRONG FAVORABLE "+noun:m.net>=C.verdict_edge?"FAVORABLE "+noun:m.net<=-C.verdict_strong?"STRONG UNFAVORABLE "+noun:m.net<=-C.verdict_edge?"UNFAVORABLE "+noun:"ABOUT EVEN")),
       " ",h("span",{class:"note"},"net Δz "+sgn(m.net)+" · in "+inRows.length+" / out "+outRows.length+" · z screen only — not the simulator")),
     (inRows.length!==outRows.length)? h("p",{class:"note"},"Unequal player counts: the net also prices the empty or extra roster spot at z 0; judge accordingly."):null);
 }
@@ -358,8 +358,8 @@ function scoreBlock(inRows, outRows){
           h("select",{id:"tr-team",class:"field",onchange:(e)=>{team=e.target.value;inc.clear();render();}},teams.map(t=>h("option",{value:t,...(t===team?{selected:""}:{})},T(t)))),
           pickList(theirs,inc,render,"No board rows on this roster."))),
       ...(R.off_board.length? [h("p",{class:"note"},T(team)+" also rosters, off the board (held, no z line): "+R.off_board.join(", "))] : []),
-      scoreBlock([...inc].map(n=>BYNAME[n]),[...out].map(n=>BYNAME[n])),
-      buildStrip("tr-build",{[D.my_team]:{out:out,inc:inc},[team]:{out:inc,inc:out}},inc.size||out.size));
+      buildStrip("tr-build",{[D.my_team]:{out:out,inc:inc},[team]:{out:inc,inc:out}},inc.size||out.size),
+      scoreBlock([...inc].map(n=>BYNAME[n]),[...out].map(n=>BYNAME[n]),"TRADE"));
   }
   render();
 })();
@@ -374,8 +374,8 @@ function scoreBlock(inRows, outRows){
         h("div",{},h("h2",{},"I add"),
           inp,
           pickList(pool,add,render,"No free agents match."))),
-      scoreBlock([...add].map(n=>BYNAME[n]),[...drop].map(n=>BYNAME[n])),
-      buildStrip("fa-build",{[D.my_team]:{out:drop,inc:add}},add.size||drop.size));
+      buildStrip("fa-build",{[D.my_team]:{out:drop,inc:add}},add.size||drop.size),
+      scoreBlock([...add].map(n=>BYNAME[n]),[...drop].map(n=>BYNAME[n])));
   }
   render();
 })();
