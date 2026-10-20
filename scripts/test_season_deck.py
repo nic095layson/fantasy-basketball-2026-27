@@ -120,6 +120,17 @@ class Deck(unittest.TestCase):
         self.assertIn('r.pos', html.split("pickList(rows")[1][:400])
         self.assertIn('sort((a,b)=>b.z_adj-a.z_adj)', html)
 
+    def test_negative_z_scores_wear_the_negative_color(self):
+        # owner 2026-10-20: negative z-scores in red font, so they read apart from positives. Every z render site
+        # goes through zv(); a value that rounds to -0.00 is zero and stays uncolored (DOM checked in Chromium).
+        html, data, rec = self.build()
+        self.assertIn(".zneg{color:var(--negtx)}", html)
+        self.assertEqual(html.count("--negtx:"), 3)  # light, dark media, dark toggle
+        self.assertIn("function zv(", html)
+        for raw in ["f2(r.z_adj)", "f2(a.z_adj)", "f2(b.z_adj)", "f2(r.z[c])", "f2(a.z[c])", "f2(b.z[c])",
+                    "sgn(m.d[c])", "sgn(m.net)", "+sgn(v)"]:
+            self.assertNotIn(raw, html, raw + " renders a z-score without zv()")
+
     def test_no_hand_typed_figures_outside_data(self):
         # the static shell (html with the data block stripped) carries no decimal figures from the records
         html, data, rec = self.build()
