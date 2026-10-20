@@ -101,6 +101,20 @@ class Deck(unittest.TestCase):
         self.assertEqual(data["league"]["managers"], {"MY TEAM": "David", "THEM": "Cayas"})
         self.assertEqual(set(data["league"]["managers"]), set(data["league"]["rosters"]))
 
+    def test_build_strips_present_and_il_names_embedded(self):
+        # Owner 2026-10-20: BUILD rank strip (1-12 vs the league) on the trade and FA panes; IL players count 0 (D-IS-8),
+        # so the page needs each team's IL names in board spelling.
+        L = json.load(open(self.fx["league_state"]))
+        L["teams"][0]["players"][1]["slot"] = "IL"  # Bench Guy to IL
+        json.dump(L, open(self.fx["league_state"], "w"))
+        html, data, rec = self.build()
+        r = data["league"]["rosters"]["MY TEAM"]
+        self.assertEqual(r["il"], ["Bench Guy"])
+        self.assertIn("Bench Guy", r["players"])  # pick lists keep him; only the build totals zero him
+        self.assertEqual(data["league"]["rosters"]["THEM"]["il"], [])
+        # the ids are made at runtime; the shell carries the two buildStrip calls (DOM checked in Chromium)
+        self.assertIn('buildStrip("tr-build"', html); self.assertIn('buildStrip("fa-build"', html)
+
     def test_no_hand_typed_figures_outside_data(self):
         # the static shell (html with the data block stripped) carries no decimal figures from the records
         html, data, rec = self.build()
