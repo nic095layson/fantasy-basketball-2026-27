@@ -221,5 +221,17 @@ class Morning(unittest.TestCase):
         self.assertIn("season_deck.py", " ".join(s["cmd"])); self.assertTrue(s["pass_re"].startswith("^SEASON DECK: PASS"))
 
 
+
+class WeekTabCurrentNames(Deck):
+    """Owner 2026-10-20 ("Merge 145 to correct to KEVIN", option a): the Week tab shows each
+    opponent's CURRENT team name (by seat, from the live board), while the ledger record itself
+    stays frozen as written."""
+
+    def test_week_rows_resolve_the_opponent_name_by_seat(self):
+        html, data, rec = self.build()
+        self.assertIn("seatName", html)
+        # the row no longer prints the frozen name directly
+        self.assertNotIn('h("td",{},w.opponent_team+" ("', html)
+
 if __name__ == "__main__":
     unittest.main()

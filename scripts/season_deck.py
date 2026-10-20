@@ -455,12 +455,15 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
 
 // ---- Week / ledger ----
 (function(){ const p=$("#pane-week"); const b=D.brief; const weeks=Object.values(D.ledger).sort((a,z)=>a.week-z.week);
+  // owner 2026-10-20 (option a): show each opponent's CURRENT team name by seat; the ledger record stays frozen
+  const seatName={}; for(const r of D.board.board){ if(r.seat!=null) seatName[r.seat]=r.owner; }
   p.append(h("div",{class:"card"},h("h2",{},"Week "+b.week+" — "+(b.week_window?b.week_window.join(" to "):"")),
     h("p",{class:"note"},"Each week's prediction is recorded before the week starts and never rewritten; results land when you paste the scoreboard."),
     weeks.length? h("div",{class:"tablebox"},h("table",{},
       h("tr",{},h("th",{class:"num"},"wk"),h("th",{},"opponent"),h("th",{class:"num"},"P(win)"),h("th",{class:"num"},"exp cats"),h("th",{},"recorded on rosters"),h("th",{},"result")),
       weeks.map(w=>{ const sd=Object.values(w.by_seed||{}); const pw=sd.length?avg2(sd.map(x=>x.p_win)):null, ec=sd.length?avg2(sd.map(x=>x.exp_cats)):null;
-        return h("tr",{},h("td",{class:"num"},String(w.week)),h("td",{},w.opponent_team+" ("+(w.opponent_manager||"?")+")"),
+        const oname=seatName[w.opponent_seat]||w.opponent_team;
+        return h("tr",{},h("td",{class:"num"},String(w.week)),h("td",{},oname+" ("+(w.opponent_manager||"?")+")"),
           h("td",{class:"num"},pct(pw)),h("td",{class:"num"},f2(ec)),h("td",{},w.rosters_as_of||"—"),h("td",{},w.result||"pending"));})))
       : h("div",{class:"zero"},"No weeks recorded yet.")));
 })();
