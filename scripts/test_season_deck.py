@@ -116,6 +116,9 @@ class Deck(unittest.TestCase):
         self.assertIn('buildStrip("tr-build"', html); self.assertIn('buildStrip("fa-build"', html)
         # owner 2026-10-20: a Reset button clears each pane's picks (and the FA search)
         self.assertIn('id:"tr-reset"', html); self.assertIn('id:"fa-reset"', html)
+        # owner 2026-10-20: positions between name and team in the pick lists; FA pool explicitly z-descending
+        self.assertIn('r.pos', html.split("pickList(rows")[1][:400])
+        self.assertIn('sort((a,b)=>b.z_adj-a.z_adj)', html)
 
     def test_no_hand_typed_figures_outside_data(self):
         # the static shell (html with the data block stripped) carries no decimal figures from the records
