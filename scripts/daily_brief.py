@@ -8,7 +8,7 @@ data/status/status_*.json (availability tiers with receipts), report/schedule/ga
 Sections: the owner's players with games; the lineup by the daily-fill rule; the waiver scan
 (co_gm.waiver_pairs, lifted from waiver_moves.py, against the league state; the top 3 pairs
 checked in the league simulator on the real schedule); streaming candidates by games left
-this week; title odds on the real schedule (two seeds, the error stated).
+this week; title odds on the real schedule (the average of two seeded runs, the error stated).
 
     python3 scripts/daily_brief.py --date 2026-10-21 [--seasons 10000]
 Writes report/briefs/brief_<date>.md and brief_<date>.json (the numbers behind the note).
@@ -49,7 +49,8 @@ def band_line(path=SWEEP):
 def odds_line(a, b, n):
     m = (a + b) / 2
     e = 196 * math.sqrt(m / 100 * (1 - m / 100) / (2 * n))
-    return f"{m:.1f}% ± {e:.1f} (seeds {SEEDS[0]} / {SEEDS[1]}: {a:.2f}% / {b:.2f}%; {n:,} seasons each)"
+    # owner 2026-10-20: one averaged figure; the per-run values stay in the JSON record
+    return f"{m:.1f}% ± {e:.1f} (avg of 2 runs × {n:,} seasons)"
 
 
 def newest_status(date):
@@ -139,9 +140,11 @@ def main():
     for x in top:
         r2 = {s: list(r) for s, r in ros.items()}
         r2[CG.OWNER_SEAT] = [p for p in r2[CG.OWNER_SEAT] if p["player"] != x["drop"]] + [by[x["add"]]]
-        t = CG.run_league_sim(r2, SEEDS[0], a.seasons, work, tag="w")["teams"][str(CG.OWNER_SEAT)]
-        x["title_seed2026"] = round(t["champ"], 2)
-        x["d_title_seed2026"] = round(t["champ"] - base[SEEDS[0]]["champ"], 2)
+        # owner 2026-10-20: the waiver check runs both seeds, so its title figure is the same two-run average
+        t = {s: CG.run_league_sim(r2, s, a.seasons, work, tag="w")["teams"][str(CG.OWNER_SEAT)]["champ"] for s in SEEDS}
+        x["title_by_seed"] = {str(s): round(t[s], 2) for s in SEEDS}
+        x["title"] = round(sum(t.values()) / len(SEEDS), 2)
+        x["d_title"] = round(x["title"] - sum(base[s]["champ"] for s in SEEDS) / len(SEEDS), 2)
 
     # 4. streaming: free agents by per-game board value x games left this week
     weakest = min((p for p in ros[CG.OWNER_SEAT]), key=lambda p: CG.hoops.adj_value(p, ()))
@@ -178,9 +181,9 @@ def main():
     L += ["", "## Waiver scan", ""]
     if top:
         L.append(f"{len(pos)} of {len(pairs)} add/drop pairs raise expected weekly category wins (base {base_ecw:.3f}). "
-                 f"Best three, checked in the simulator (seed {SEEDS[0]}, {a.seasons:,} seasons, real schedule):")
+                 f"Best three, checked in the simulator (avg of 2 runs × {a.seasons:,} seasons, real schedule):")
         L += [f"- Add **{x['add']}** ({x['add_team']}), drop {x['drop']}: {x['d_ecw']:+.3f} cats/week; "
-              f"title {x['title_seed2026']:.2f}% ({x['d_title_seed2026']:+.2f} vs {base[SEEDS[0]]['champ']:.2f}%)" for x in top]
+              f"title {x['title']:.1f}% ({x['d_title']:+.1f})" for x in top]
     else:
         L.append(f"No add/drop pair raises expected weekly category wins ({len(pairs)} scored). Stand pat.")
     L += ["", f"## Streaming ({a.date} to {wend})", "",

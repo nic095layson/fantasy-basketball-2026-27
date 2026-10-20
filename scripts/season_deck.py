@@ -255,6 +255,8 @@ function h(tag, attrs, ...kids){ const el=document.createElement(tag);
   for(const k of kids.flat()){ if(k==null) continue; el.append(k.nodeType?k:document.createTextNode(k)); } return el; }
 const f1=(x)=>(x==null?"—":(Math.round(x*10)/10).toFixed(1)), f2=(x)=>(x==null?"—":x.toFixed(2)), pct=(x)=>(x==null?"—":(x*100).toFixed(1)+"%");
 const sgn=(x,d)=>((x>=0?"+":"")+x.toFixed(d==null?2:d));
+// owner 2026-10-20: odds shown as the average of the two seeded runs (the seed labels read as years)
+const avg2=(xs)=>{ const v=xs.filter(x=>x!=null); return v.length? v.reduce((a,b)=>a+b,0)/v.length : null; };
 // owner 2026-10-20: negative z-scores in red font; a value that rounds to 0.00 stays uncolored
 function zv(x, signed){ const t=signed? sgn(x) : f2(x); return h("span",(x!=null && Math.round(x*100)<0)?{class:"zneg"}:{},t); }
 /*SWAP_MATH_BEGIN*/
@@ -276,12 +278,12 @@ function statusChip(letter){ if(!letter) return null; const cls=letter==="O"?"cr
 (function(){ const b=D.brief, p=$("#pane-today");
   $("#hdate").textContent=D.date;
   $("#hsub").textContent=T(D.my_team)+" · week "+b.week+" vs "+T(b.opponent)+" · lines "+b.lines+" · rosters as-of "+D.league.as_of;
-  const seeds=Object.keys(b.title);
+  const runs="avg of 2 runs × "+b.seasons.toLocaleString()+" seasons", BS=D.matchup.by_seed;
   const tiles=h("div",{class:"tiles"},
-    h("div",{class:"tile"},h("div",{class:"v"},pct((D.matchup.by_seed?D.matchup.by_seed[seeds[0]].p_win:null))),h("div",{class:"l"},"win week "+b.week),h("div",{class:"e"},D.matchup.by_seed?("seed "+seeds[1]+": "+pct(D.matchup.by_seed[seeds[1]].p_win)):"")),
-    h("div",{class:"tile"},h("div",{class:"v"},f1(b.title[seeds[0]])+"%"),h("div",{class:"l"},"title odds"),h("div",{class:"e"},"seed "+seeds[1]+": "+f1(b.title[seeds[1]])+"% · "+b.seasons.toLocaleString()+" seasons")),
-    h("div",{class:"tile"},h("div",{class:"v"},f1(b.playoffs[seeds[0]])+"%"),h("div",{class:"l"},"playoffs"),h("div",{class:"e"},"seed "+seeds[1]+": "+f1(b.playoffs[seeds[1]])+"%")));
-  const catRows = D.matchup.by_seed? Object.entries(D.matchup.by_seed[seeds[0]].cat_p) : [];
+    h("div",{class:"tile"},h("div",{class:"v"},pct(BS?avg2(Object.values(BS).map(x=>x.p_win)):null)),h("div",{class:"l"},"win week "+b.week),h("div",{class:"e"},BS?"avg of 2 runs":"")),
+    h("div",{class:"tile"},h("div",{class:"v"},f1(avg2(Object.values(b.title)))+"%"),h("div",{class:"l"},"title odds"),h("div",{class:"e"},runs)),
+    h("div",{class:"tile"},h("div",{class:"v"},f1(avg2(Object.values(b.playoffs)))+"%"),h("div",{class:"l"},"playoffs"),h("div",{class:"e"},runs)));
+  const catRows = BS? Object.keys(Object.values(BS)[0].cat_p).map(c=>[c, avg2(Object.values(BS).map(x=>x.cat_p[c]))]) : [];
   const catTbl = catRows.length? h("div",{class:"tablebox"},h("table",{},
       h("tr",{},h("th",{},"category"),h("th",{class:"num"},"P(win cat)"),h("th",{},"")),
       catRows.map(([c,v])=>h("tr",{},h("td",{},c),h("td",{class:"num"},pct(v)),
@@ -457,7 +459,7 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
     h("p",{class:"note"},"Each week's prediction is recorded before the week starts and never rewritten; results land when you paste the scoreboard."),
     weeks.length? h("div",{class:"tablebox"},h("table",{},
       h("tr",{},h("th",{class:"num"},"wk"),h("th",{},"opponent"),h("th",{class:"num"},"P(win)"),h("th",{class:"num"},"exp cats"),h("th",{},"recorded on rosters"),h("th",{},"result")),
-      weeks.map(w=>{ const sd=Object.keys(w.by_seed||{}); const pw=sd.length?w.by_seed[sd[0]].p_win:null, ec=sd.length?w.by_seed[sd[0]].exp_cats:null;
+      weeks.map(w=>{ const sd=Object.values(w.by_seed||{}); const pw=sd.length?avg2(sd.map(x=>x.p_win)):null, ec=sd.length?avg2(sd.map(x=>x.exp_cats)):null;
         return h("tr",{},h("td",{class:"num"},String(w.week)),h("td",{},w.opponent_team+" ("+(w.opponent_manager||"?")+")"),
           h("td",{class:"num"},pct(pw)),h("td",{class:"num"},f2(ec)),h("td",{},w.rosters_as_of||"—"),h("td",{},w.result||"pending"));})))
       : h("div",{class:"zero"},"No weeks recorded yet.")));

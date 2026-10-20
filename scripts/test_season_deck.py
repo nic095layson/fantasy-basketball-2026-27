@@ -152,6 +152,13 @@ class Deck(unittest.TestCase):
         fa = html.split('$("#pane-fa")')[1].split("// ---- Board")[0]
         self.assertIn("myHeld()", trade); self.assertIn("myHeld()", fa)
 
+    def test_odds_tiles_show_the_two_run_average_not_seed_labels(self):
+        # owner 2026-10-20: "Please relabel them, or just provide the average"
+        html, data, rec = self.build()
+        shell = re.sub(r'<script id="deck-data".*?</script>', "", html, flags=re.S)
+        self.assertNotIn('"seed "', shell)
+        self.assertIn("const avg2=", shell)
+
     def test_no_hand_typed_figures_outside_data(self):
         # the static shell (html with the data block stripped) carries no decimal figures from the records
         html, data, rec = self.build()

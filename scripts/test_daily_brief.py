@@ -68,11 +68,13 @@ class Streaming(unittest.TestCase):
 
 
 class Note(unittest.TestCase):
-    def test_odds_line_carries_both_seeds_and_the_error(self):
+    def test_odds_line_is_the_two_run_average_with_its_error(self):
+        # owner 2026-10-20: "just provide the average" — the seed labels read as years; one averaged figure
         line = DB.odds_line(21.81, 21.60, 10000)
-        self.assertIn("21.81", line)
-        self.assertIn("21.60", line)
+        self.assertIn("21.7%", line)
         self.assertIn("±", line)
+        self.assertNotIn("seed", line.lower())
+        self.assertNotIn("21.81", line)
 
 
 class Band(unittest.TestCase):
