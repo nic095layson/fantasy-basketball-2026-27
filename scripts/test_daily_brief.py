@@ -139,5 +139,16 @@ class Transactions(unittest.TestCase):
         self.assertIn("Not read", DB.transactions_lines(None, "ME", "THEM")[0])
 
 
+class InjuredList(unittest.TestCase):
+    """Owner 2026-10-20 (D-IS-8): "Keep IL players as '0' value unless they are on active roster"."""
+    def test_il_players_are_absent_from_the_simulation_rosters_until_moved_to_an_active_slot(self):
+        by = {n: {"player": n} for n in ("A", "B", "C")}
+        state = {"teams": [{"seat": 10, "players": [{"player": "A", "slot": "PG"}, {"player": "B", "slot": "BN"},
+                                                    {"player": "C", "slot": "IL"}]}]}
+        self.assertEqual([p["player"] for p in CG.rosters(state, by)[10]], ["A", "B"])
+        state["teams"][0]["players"][2]["slot"] = "Util"
+        self.assertEqual([p["player"] for p in CG.rosters(state, by)[10]], ["A", "B", "C"])
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

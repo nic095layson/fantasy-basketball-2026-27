@@ -41,6 +41,7 @@ def load_pool():
 
 
 def rosters(state, by, include_il=False):
+    # owner 2026-10-20 (D-IS-8): an IL player counts as zero (absent from the simulation) until he is on the active roster
     out = {}
     for t in state["teams"]:
         out[t["seat"]] = [by[p["player"]] for p in t["players"] if include_il or p["slot"] != "IL"]
