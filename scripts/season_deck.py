@@ -214,6 +214,10 @@ select,input[type=search],input[type=text]{background:var(--surface); color:var(
 .bchip.up .br{color:var(--pos)} .bchip.down .br{color:var(--neg)}
 .verdict{font-family:var(--disp); font-weight:700; font-size:22px; letter-spacing:.03em}
 .verdict.pos{color:var(--pos)} .verdict.neg{color:var(--neg)} .verdict.even{color:var(--ink2)}
+.h2row{display:flex; justify-content:space-between; align-items:center; gap:10px; margin:0 0 8px}
+.h2row h2{margin:0}
+.resetbtn{border:1px solid var(--line); background:var(--surface); color:var(--ink2); border-radius:999px; padding:5px 14px; cursor:pointer; font-size:13px; min-height:32px}
+.resetbtn:hover{background:var(--chip); color:var(--ink)}
 .mode{display:flex; gap:8px; margin-bottom:10px}
 .mode button{border:1px solid var(--line); background:var(--surface); color:var(--ink2); border-radius:999px; padding:7px 14px; cursor:pointer; font-size:13.5px; min-height:38px}
 .mode button[aria-pressed="true"]{background:var(--ink); color:var(--bg); border-color:var(--ink)}
@@ -351,7 +355,9 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
   function render(){ const R=D.league.rosters[team]||{players:[],off_board:[]};
     const theirs=R.players.map(n=>BYNAME[n]).filter(Boolean).sort((a,b)=>a.rank-b.rank);
     inc.forEach(n=>{ if(!R.players.includes(n)) inc.delete(n); });
-    root.replaceChildren(h("h2",{},"Trade Analyzer"),
+    root.replaceChildren(
+      h("div",{class:"h2row"},h("h2",{},"Trade Analyzer"),
+        h("button",{id:"tr-reset",class:"resetbtn",onclick:()=>{out.clear();inc.clear();render();}},"Reset")),
       h("div",{class:"pick"},
         h("div",{},h("h2",{},"I send"),myField(),pickList(MINE,out,render,"No players of yours on the board.")),
         h("div",{},h("h2",{},"I receive"),
@@ -367,7 +373,9 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
   const nfa=BOARD.filter(r=>r.fa).length;
   const inp=h("input",{type:"search",id:"fa-search",class:"field",placeholder:"Search free agents",oninput:()=>{search=inp.value; keepTyping(inp,render);}});
   function render(){ const pool=BOARD.filter(r=>r.fa && (!search || r.name.toLowerCase().includes(search.toLowerCase()))).slice(0,60);
-    root.replaceChildren(h("h2",{},"Free-Agent Adder"),
+    root.replaceChildren(
+      h("div",{class:"h2row"},h("h2",{},"Free-Agent Adder"),
+        h("button",{id:"fa-reset",class:"resetbtn",onclick:()=>{drop.clear();add.clear();search="";inp.value="";render();}},"Reset")),
       h("p",{class:"note"},nfa+" unrostered players on today's board, matched to all 12 rosters as of "+D.league.as_of+"."),
       h("div",{class:"pick"},
         h("div",{},h("h2",{},"I drop"),myField(),pickList(MINE,drop,render,"No players of yours on the board.")),
