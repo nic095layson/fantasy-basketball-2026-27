@@ -24,7 +24,9 @@ def fixtures(d):
         board=[dict(rank=1, name="Alpha Man", team="DEN", pos="C", gp=72.0, z_adj=10.19, z_total=11.29,
                     z={c: 1.0 for c in ["FG%", "FT%", "3PM", "PTS", "REB", "AST", "STL", "BLK", "TOV"]}),
                dict(rank=2, name="Free Agent", team="GSW", pos="PF", gp=70.0, z_adj=2.0, z_total=2.5,
-                    z={c: 0.2 for c in ["FG%", "FT%", "3PM", "PTS", "REB", "AST", "STL", "BLK", "TOV"]})]))
+                    z={c: 0.2 for c in ["FG%", "FT%", "3PM", "PTS", "REB", "AST", "STL", "BLK", "TOV"]}),
+               dict(rank=3, name="Bench Guy", team="DAL", pos="PF", gp=70.0, z_adj=-1.0, z_total=-1.0,
+                    z={c: -0.1 for c in ["FG%", "FT%", "3PM", "PTS", "REB", "AST", "STL", "BLK", "TOV"]})]))
     status = j("status.json", dict(date="2026-10-21", league_state_as_of="2026-10-19",
         tiers={"None": ["healthy", 1.0], "Q": ["questionable", 0.5], "O": ["out", 0.0], "P": ["probable", 0.75]},
         espn=dict(ok=False), rows=[dict(player="Alpha Man", fantasy_team="MY TEAM", seat=10, slot="PG",
@@ -88,8 +90,10 @@ class Deck(unittest.TestCase):
 
     def test_panes_present(self):
         html, data, rec = self.build()
-        for pane in ["pane-today", "pane-waivers", "pane-moves", "pane-board", "pane-movers", "pane-status", "pane-week"]:
+        for pane in ["pane-today", "pane-trade", "pane-fa", "pane-board", "pane-movers", "pane-week"]:
             self.assertIn(f'id="{pane}"', html)
+        for gone in ["pane-status", "pane-waivers", "pane-moves"]:  # removed on the owner's calls 2026-10-19
+            self.assertNotIn(f'id="{gone}"', html)
         self.assertIn("deck-data", html); self.assertIn("<title>", html)
 
     def test_no_hand_typed_figures_outside_data(self):
@@ -98,6 +102,49 @@ class Deck(unittest.TestCase):
         shell = re.sub(r'<script id="deck-data".*?</script>', "", html, flags=re.S)
         for lit in ["24.97", "0.0551", "26.82", "5.2257"]:
             self.assertNotIn(lit, shell)
+
+
+class OwnershipJoin(unittest.TestCase):
+    """Owner audit 2026-10-19: rostered players showed as FA because the league state carries the roster's spelling
+    (Jaren Jackson Jr., Cameron Johnson) and the season board the kit's (Jaren Jackson Jr, Cam Johnson)."""
+    def setUp(self):
+        self.d = tempfile.mkdtemp(); self.fx = fixtures(self.d)
+        b = json.load(open(self.fx["board"])); L = json.load(open(self.fx["league_state"]))
+        z = {c: 0.1 for c in ["FG%", "FT%", "3PM", "PTS", "REB", "AST", "STL", "BLK", "TOV"]}
+        for i, n in enumerate(["Jaren Jackson Jr", "Cam Johnson", "Darius Acuff", "Jusuf Nurkic Twin"]):
+            b["board"].append(dict(rank=10 + i, name=n, team="UTA", pos="C", gp=70.0, z_adj=0.5, z_total=0.5, z=z))
+        b["held"] = ["Jusuf Nurkic"]
+        L["teams"][1]["players"] = [dict(player="Jaren Jackson Jr.", slot="C", status=None),
+                                    dict(player="Cameron Johnson", slot="SF", status=None),
+                                    dict(player="Darius Acuff Jr.", slot="PG", status=None),
+                                    dict(player="Jusuf Nurkić", slot="IL", status="O")]
+        json.dump(b, open(self.fx["board"], "w")); json.dump(L, open(self.fx["league_state"], "w"))
+
+    def test_spelling_variants_resolve_to_their_board_rows(self):
+        html, data, rec = SD.build(self.fx, date="2026-10-21")
+        rows = {r["name"]: r for r in data["board"]["board"]}
+        for n in ["Jaren Jackson Jr", "Cam Johnson", "Darius Acuff"]:
+            self.assertEqual(rows[n]["owner"], "THEM", n); self.assertFalse(rows[n]["fa"], n)
+        self.assertTrue(rows["Free Agent"]["fa"])
+
+    def test_rosters_embedded_in_board_spelling_with_off_board_listed(self):
+        html, data, rec = SD.build(self.fx, date="2026-10-21")
+        r = data["league"]["rosters"]["THEM"]
+        self.assertEqual(sorted(r["players"]), ["Cam Johnson", "Darius Acuff", "Jaren Jackson Jr"])
+        self.assertEqual(r["off_board"], ["Jusuf Nurkic"])
+        self.assertEqual(rec["join"]["rostered"], 6); self.assertEqual(rec["join"]["unresolved"], 0)
+
+    def test_unresolvable_rostered_name_halts(self):
+        L = json.load(open(self.fx["league_state"]))
+        L["teams"][1]["players"].append(dict(player="Nobody Atall", slot="BN", status=None))
+        json.dump(L, open(self.fx["league_state"], "w"))
+        with self.assertRaises(SD.DeckError): SD.build(self.fx, date="2026-10-21")
+
+    def test_two_rostered_names_on_one_row_halts(self):
+        L = json.load(open(self.fx["league_state"]))
+        L["teams"][0]["players"].append(dict(player="Jaren Jackson Jr", slot="BN", status=None))
+        json.dump(L, open(self.fx["league_state"], "w"))
+        with self.assertRaises(SD.DeckError): SD.build(self.fx, date="2026-10-21")
 
 
 class Morning(unittest.TestCase):

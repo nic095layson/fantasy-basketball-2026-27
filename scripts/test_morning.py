@@ -20,7 +20,7 @@ PY = sys.executable
 class Steps(unittest.TestCase):
     def test_steps_in_order_with_dates(self):
         st = M.steps("2026-10-21", fetch=True, seasons=10000)
-        self.assertEqual([s["name"] for s in st], ["box scores 2026-10-20", "season lines", "season board", "status feed", "daily brief"])
+        self.assertEqual([s["name"] for s in st], ["box scores 2026-10-20", "season lines", "season board", "status feed", "daily brief", "season deck"])
         self.assertIn("--date", st[0]["cmd"]); self.assertIn("2026-10-20", st[0]["cmd"])
         self.assertIn("2026-10-21", st[4]["cmd"])
         self.assertTrue(all(s["pass_re"] for s in st))
@@ -31,7 +31,7 @@ class Steps(unittest.TestCase):
 
     def test_brief_runs_on_the_season_pool(self):
         st = M.steps("2026-10-21", fetch=True, seasons=10000)
-        brief = st[-1]
+        brief = next(s for s in st if s["name"] == "daily brief")
         self.assertTrue(brief["env"]["SEASON_POOL"].endswith(os.path.join("data", "season", "pool_season.csv")))
 
 
