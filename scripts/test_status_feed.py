@@ -67,5 +67,13 @@ class Probable(unittest.TestCase):
             SF.tier("ZZ")
 
 
+class NotActive(unittest.TestCase):
+    """2026-10-20: Yahoo's NA (not active) letter appeared on the owner's rosters paste (Kevin Porter Jr.); tiered
+    0.00 like O, a stated default (D-IS-7). It is a flagged letter, so the dated-receipt check covers it."""
+    def test_na_is_tiered_out_and_needs_a_dated_receipt(self):
+        self.assertEqual(SF.tier("NA"), ("not active", 0.00))
+        self.assertEqual(len(SF.check([{"player": "X", "yahoo_status": "NA", "availability": 0.0, "receipts": []}])), 1)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

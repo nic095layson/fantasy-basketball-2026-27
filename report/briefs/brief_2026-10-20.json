@@ -5,8 +5,8 @@
   "2026-10-20",
   "2026-10-25"
  ],
- "league_state_as_of": "2026-10-19",
- "status_file": "status_2026-10-21.json",
+ "league_state_as_of": "2026-10-20",
+ "status_file": "status_2026-10-20.json",
  "lines": "v69",
  "opponent": "KEVIN ELEVEN DOUBLES",
  "today": [
@@ -126,33 +126,33 @@
   ]
  ],
  "bench": [],
- "waiver_base_ecw": 5.2257,
- "waiver_positive_pairs": 8,
+ "waiver_base_ecw": 5.1975,
+ "waiver_positive_pairs": 7,
  "waiver_pairs_scored": 520,
  "waiver_top": [
   {
    "add": "Draymond Green",
    "add_team": "GSW",
    "drop": "Christian Braun",
-   "d_ecw": 0.0551,
-   "title_seed2026": 26.82,
-   "d_title_seed2026": 1.85
+   "d_ecw": 0.0569,
+   "title_seed2026": 25.56,
+   "d_title_seed2026": 1.72
   },
   {
    "add": "Bobby Portis",
    "add_team": "MIA",
    "drop": "Christian Braun",
-   "d_ecw": 0.0285,
-   "title_seed2026": 25.9,
-   "d_title_seed2026": 0.93
+   "d_ecw": 0.0289,
+   "title_seed2026": 25.1,
+   "d_title_seed2026": 1.26
   },
   {
    "add": "Jrue Holiday",
    "add_team": "POR",
    "drop": "Christian Braun",
-   "d_ecw": 0.0091,
-   "title_seed2026": 25.52,
-   "d_title_seed2026": 0.55
+   "d_ecw": 0.0104,
+   "title_seed2026": 24.59,
+   "d_title_seed2026": 0.75
   }
  ],
  "streaming": [],
@@ -162,12 +162,61 @@
   "value_per_game": -2.43
  },
  "title": {
-  "2026": 24.97,
-  "2027": 24.56
+  "2026": 23.84,
+  "2027": 23.07
  },
  "playoffs": {
-  "2026": 99.26,
-  "2027": 99.4
+  "2026": 99.08,
+  "2027": 99.26
  },
- "seasons": 10000
+ "seasons": 10000,
+ "transactions": {
+  "window": [
+   "2026-10-18",
+   "2026-10-20"
+  ],
+  "ok": true,
+  "hits": [
+   {
+    "date": "2026-10-19",
+    "nba_team": "CHA",
+    "description": "Signed G Brandon Miller to a multiyear contract extension.",
+    "player": "Brandon Miller",
+    "fantasy_team": "Podz save the league",
+    "seat": 9
+   },
+   {
+    "date": "2026-10-19",
+    "nba_team": "OKC",
+    "description": "Re-signed G Cason Wallace to a rookie-scale contract extension.",
+    "player": "Cason Wallace",
+    "fantasy_team": "Thompson Telepathy",
+    "seat": 12
+   },
+   {
+    "date": "2026-10-19",
+    "nba_team": "MIL",
+    "description": "Waived G Kevin Porter Jr.",
+    "player": "Kevin Porter Jr.",
+    "fantasy_team": "KEVIN ELEVEN DOUBLES",
+    "seat": 11
+   },
+   {
+    "date": "2026-10-19",
+    "nba_team": "PHX",
+    "description": "Signed F Oso Ighodaro to a multiyear contract extension. Claimed F Drew Timme off waivers. Converted C Duop Reath's contract to a two-way contract. Waived F CJ Huntley and G Koby Brea.",
+    "player": "Oso Ighodaro",
+    "fantasy_team": null,
+    "seat": null
+   },
+   {
+    "date": "2026-10-19",
+    "nba_team": "LAL",
+    "description": "Waived F Dalton Knecht.",
+    "player": "Dalton Knecht",
+    "fantasy_team": null,
+    "seat": null
+   }
+  ]
+ }
 }

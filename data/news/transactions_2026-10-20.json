@@ -1,0 +1,61 @@
+{
+ "date": "2026-10-20",
+ "window": [
+  "2026-10-18",
+  "2026-10-20"
+ ],
+ "league_state_as_of": "2026-10-20",
+ "source": {
+  "attempted": "2026-10-20T17:16:57Z",
+  "ok": true,
+  "pages": [
+   {
+    "url": "https://site.web.api.espn.com/apis/site/v2/sports/basketball/nba/transactions?limit=100&page=1",
+    "http": 200
+   }
+  ]
+ },
+ "items_in_window": 9,
+ "hits": [
+  {
+   "date": "2026-10-19",
+   "nba_team": "CHA",
+   "description": "Signed G Brandon Miller to a multiyear contract extension.",
+   "player": "Brandon Miller",
+   "fantasy_team": "Podz save the league",
+   "seat": 9
+  },
+  {
+   "date": "2026-10-19",
+   "nba_team": "OKC",
+   "description": "Re-signed G Cason Wallace to a rookie-scale contract extension.",
+   "player": "Cason Wallace",
+   "fantasy_team": "Thompson Telepathy",
+   "seat": 12
+  },
+  {
+   "date": "2026-10-19",
+   "nba_team": "MIL",
+   "description": "Waived G Kevin Porter Jr.",
+   "player": "Kevin Porter Jr.",
+   "fantasy_team": "KEVIN ELEVEN DOUBLES",
+   "seat": 11
+  },
+  {
+   "date": "2026-10-19",
+   "nba_team": "PHX",
+   "description": "Signed F Oso Ighodaro to a multiyear contract extension. Claimed F Drew Timme off waivers. Converted C Duop Reath's contract to a two-way contract. Waived F CJ Huntley and G Koby Brea.",
+   "player": "Oso Ighodaro",
+   "fantasy_team": null,
+   "seat": null
+  },
+  {
+   "date": "2026-10-19",
+   "nba_team": "LAL",
+   "description": "Waived F Dalton Knecht.",
+   "player": "Dalton Knecht",
+   "fantasy_team": null,
+   "seat": null
+  }
+ ]
+}

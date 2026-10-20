@@ -1,14 +1,14 @@
 {
- "as_of": "2026-10-19",
+ "as_of": "2026-10-20",
  "sources": {
   "paste": {
-   "file": "data/source/yahoo-starting-rosters-2026-10-19-paste.txt",
-   "sha256": "1feed47328d9df954f6df5ae5140956931f22752a8937b66a6653aecb5e5739e",
+   "file": "data/source/yahoo-starting-rosters-2026-10-20-paste.txt",
+   "sha256": "778c5df1ace903251556970878cb32e2765bcf15874d46ee41011a6f64cd6499",
    "view": "Yahoo Starting Rosters page, pasted as text by the owner"
   },
   "transcription": {
-   "file": "data/source/yahoo-starting-rosters-2026-10-19-paste.transcribed.csv",
-   "sha256": "c6b8de9040bcaad2f1dc12934a3638ca574c94b199f6e1878c82db0b43c93060",
+   "file": "data/source/yahoo-starting-rosters-2026-10-20-paste.transcribed.csv",
+   "sha256": "a978e69500d14fbb128831877a507cd706b8bb8a71e1dcd81e2bd3a4c794fae1",
    "method": "league_intake.parse_paste (mechanical)"
   },
   "draft_board": "report/after-reports/draft-league-2026-10-14/recap.json",
@@ -134,7 +134,7 @@
       "SG",
       "SF"
      ],
-     "status": "Q"
+     "status": null
     },
     {
      "player": "RJ Barrett",
@@ -336,7 +336,7 @@
      "positions": [
       "PG"
      ],
-     "status": "Q"
+     "status": null
     },
     {
      "player": "Fred VanVleet",
@@ -442,7 +442,7 @@
       "PF",
       "C"
      ],
-     "status": "Q"
+     "status": null
     },
     {
      "player": "Jalen Green",
@@ -528,15 +528,15 @@
      "status": null
     },
     {
-     "player": "Ben Simmons",
-     "yahoo_name": "Ben Simmons",
+     "player": "Keaton Wagler",
+     "yahoo_name": "Keaton Wagler",
      "slot": "BN",
-     "yahoo_nba_team": "SAC",
-     "pool_team": "SAC",
+     "yahoo_nba_team": "LAC",
+     "pool_team": "LAC",
      "positions": [
-      "PG"
+      "SG"
      ],
-     "status": "O"
+     "status": null
     },
     {
      "player": "Kristaps Porzingis",
@@ -556,7 +556,7 @@
    "manager": "Oblena",
    "draft_overlap": 13,
    "added_since_draft": [
-    "Ben Simmons"
+    "Keaton Wagler"
    ],
    "dropped_since_draft": []
   },
@@ -1179,7 +1179,7 @@
       "SG",
       "SF"
      ],
-     "status": "Q"
+     "status": null
     },
     {
      "player": "Egor Demin",
@@ -1361,7 +1361,7 @@
       "PG",
       "SG"
      ],
-     "status": null
+     "status": "Q"
     },
     {
      "player": "Sandro Mamukelashvili",
@@ -1549,7 +1549,7 @@
      "positions": [
       "SF"
      ],
-     "status": "Q"
+     "status": "O"
     },
     {
      "player": "Darryn Peterson",
@@ -1668,7 +1668,7 @@
       "SF",
       "PF"
      ],
-     "status": "Q"
+     "status": "P"
     },
     {
      "player": "Joel Embiid",
@@ -1737,7 +1737,7 @@
       "PG",
       "SG"
      ],
-     "status": null
+     "status": "NA"
     },
     {
      "player": "Gui Santos",
@@ -1946,14 +1946,13 @@
      "status": "O"
     },
     {
-     "player": "Isaiah Stewart",
-     "yahoo_name": "Isaiah Stewart",
+     "player": "Tobias Harris",
+     "yahoo_name": "Tobias Harris",
      "slot": "IL",
-     "yahoo_nba_team": "MEM",
-     "pool_team": "MEM",
+     "yahoo_nba_team": "SAS",
+     "pool_team": "SAS",
      "positions": [
-      "PF",
-      "C"
+      "PF"
      ],
      "status": "O"
     }
@@ -1964,8 +1963,8 @@
    "manager": "Me",
    "draft_overlap": 13,
    "added_since_draft": [
-    "Isaiah Stewart",
-    "Max Strus"
+    "Max Strus",
+    "Tobias Harris"
    ],
    "dropped_since_draft": []
   },

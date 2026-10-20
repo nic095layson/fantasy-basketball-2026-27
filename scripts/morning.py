@@ -6,7 +6,8 @@ failed step stops the run and later steps are SKIPPED):
   1 box scores for yesterday      scripts/box_pull.py --date <yesterday>        (ESPN + Basketball-Reference)
   2 season lines                  scripts/season_lines.py --date <today>        (preseason line + actuals, priors registered)
   3 season board                  scripts/season_board.py --date <today>
-  4 status feed                   scripts/status_feed.py --date <today> then --check (Yahoo letters + ESPN feed, receipts)
+  4 status feed                   scripts/status_feed.py --date <today> then --check on that day's file (Yahoo letters + ESPN feed, receipts)
+  4b transactions (fetch only)    scripts/transactions.py --date <today>        (ESPN transactions feed, last 3 days; owner 2026-10-20)
   5 daily brief on the season pool  SEASON_POOL=data/season/pool_season.csv scripts/daily_brief.py --date <today>
 
 Writes report/briefs/morning_<date>.json (every step's command, exit, PASS line, tail) and prints
@@ -39,8 +40,13 @@ def steps(date, fetch=True, seasons=10000):
     st += [dict(name="season lines", cmd=[PY, os.path.join(HERE, "season_lines.py"), "--date", date], cwd=KIT, pass_re=r"^SEASON LINES: PASS", env={}),
            dict(name="season board", cmd=[PY, os.path.join(HERE, "season_board.py"), "--date", date], cwd=KIT, pass_re=r"^SEASON BOARD: PASS", env={}),
            dict(name="status feed", cmd=["bash", "-c", f"{shlex.quote(PY)} {shlex.quote(os.path.join(HERE, 'status_feed.py'))} --date {date} && "
-                                                  f"{shlex.quote(PY)} {shlex.quote(os.path.join(HERE, 'status_feed.py'))} --check"],
-                cwd=KIT, pass_re=r"^STATUS GATE: PASS", env={}),
+                                                  f"{shlex.quote(PY)} {shlex.quote(os.path.join(HERE, 'status_feed.py'))} --check "
+                                                  f"{shlex.quote(os.path.join(KIT, 'data', 'status', f'status_{date}.json'))}"],
+                cwd=KIT, pass_re=r"^STATUS GATE: PASS", env={})]
+    if fetch:  # owner 2026-10-20: waivers and signings (Kevin Porter Jr.) reach the brief; an unreachable feed is recorded, not fatal
+        st.append(dict(name="transactions", cmd=[PY, os.path.join(HERE, "transactions.py"), "--date", date], cwd=KIT,
+                       pass_re=r"^TRANSACTIONS: PASS", env={}))
+    st += [
            dict(name="daily brief", cmd=[PY, os.path.join(HERE, "daily_brief.py"), "--date", date, "--seasons", str(seasons)], cwd=KIT,
                 pass_re=r"^wrote report/briefs/brief_", env={"SEASON_POOL": season_pool}),
            dict(name="season deck", cmd=[PY, os.path.join(HERE, "season_deck.py"), "--date", date], cwd=KIT,

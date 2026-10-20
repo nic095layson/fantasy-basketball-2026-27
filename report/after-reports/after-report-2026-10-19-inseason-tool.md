@@ -122,6 +122,9 @@ Near misses (the 🎯 in 5+ mocks, under 25 places): Jamal Murray (18 mocks, val
 | D-IS-4 | waiver verdicts with bands: (a) the brief's top pairs re-run at shock 0 and 0.12 (about a minute), robust ones marked; (b) shipped engine only | (a) |
 | D-IS-5 | the morning task's branch: (a) `season/daily` under one standing draft PR you merge weekly; (b) a PR per day | (a) |
 | D-IS-6 | the P (probable) status tier at 0.75 (stated default, shipped 10/19 evening): (a) keep; (b) another value | (a) |
+| D-IS-7 | the NA (not active) status tier at 0.00, like O (stated default, shipped 10/20 on Kevin Porter Jr.): (a) keep; (b) another value | (a) |
+| D-IS-8 | IL players in the title-odds simulation | **decided by the owner 2026-10-20:** "Keep IL players as '0' value unless they are on active roster" — the shipped behaviour, now pinned by `test_daily_brief.InjuredList`; the season-long IL horizon item of the 10/20 Council proposal is closed |
+| D-IS-9 | Yahoo status letters in the odds (Council 4–1, 10/20): (a) stay out of the season simulation (shipped); (b) apply them to the current week's matchup only — proposal, not built | (a) until the owner says (b) |
 
 ## Provenance
 
