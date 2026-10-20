@@ -131,6 +131,34 @@ class Deck(unittest.TestCase):
                     "sgn(m.d[c])", "sgn(m.net)", "+sgn(v)"]:
             self.assertNotIn(raw, html, raw + " renders a z-score without zv()")
 
+    def test_board_search_box_survives_rerender_and_board_has_reset(self):
+        # owner 2026-10-20: typing in the Board search lost focus on every character, because render() rebuilt the
+        # input; it is now built once, outside render(), and only the table holder is replaced. Plus a Reset button.
+        html, data, rec = self.build()
+        board = html.split('$("#pane-board")')[1].split("// ---- Movers")[0]
+        before_render = board.split("function render(){")[0]
+        self.assertIn('id:"bd-q"', before_render)
+        self.assertIn('id:"bd-fa"', before_render)
+        self.assertNotIn("box.replaceChildren", board)
+        self.assertIn('id:"bd-reset"', board)
+        self.assertNotIn("tbl.replaceChildren(\n      h(", board)  # a bare null child prints "null" (Chromium-checked)
+
+    def test_my_held_players_are_named_on_trade_and_fa(self):
+        # owner 2026-10-20: "I have Max Strus on my IL but he is not showing up" -> option (b): my side of the Trade
+        # and FA panes names my rostered players held off the board (display only; the line already exists for theirs)
+        html, data, rec = self.build()
+        self.assertIn("function myHeld(", html)
+        trade = html.split('$("#pane-trade")')[1].split('$("#pane-fa")')[0]
+        fa = html.split('$("#pane-fa")')[1].split("// ---- Board")[0]
+        self.assertIn("myHeld()", trade); self.assertIn("myHeld()", fa)
+
+    def test_odds_tiles_show_the_two_run_average_not_seed_labels(self):
+        # owner 2026-10-20: "Please relabel them, or just provide the average"
+        html, data, rec = self.build()
+        shell = re.sub(r'<script id="deck-data".*?</script>', "", html, flags=re.S)
+        self.assertNotIn('"seed "', shell)
+        self.assertIn("const avg2=", shell)
+
     def test_no_hand_typed_figures_outside_data(self):
         # the static shell (html with the data block stripped) carries no decimal figures from the records
         html, data, rec = self.build()
@@ -192,6 +220,18 @@ class Morning(unittest.TestCase):
         s = next(s for s in st if s["name"] == "season deck")
         self.assertIn("season_deck.py", " ".join(s["cmd"])); self.assertTrue(s["pass_re"].startswith("^SEASON DECK: PASS"))
 
+
+
+class WeekTabCurrentNames(Deck):
+    """Owner 2026-10-20 ("Merge 145 to correct to KEVIN", option a): the Week tab shows each
+    opponent's CURRENT team name (by seat, from the live board), while the ledger record itself
+    stays frozen as written."""
+
+    def test_week_rows_resolve_the_opponent_name_by_seat(self):
+        html, data, rec = self.build()
+        self.assertIn("seatName", html)
+        # the row no longer prints the frozen name directly
+        self.assertNotIn('h("td",{},w.opponent_team+" ("', html)
 
 if __name__ == "__main__":
     unittest.main()

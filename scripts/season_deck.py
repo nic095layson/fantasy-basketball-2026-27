@@ -255,6 +255,8 @@ function h(tag, attrs, ...kids){ const el=document.createElement(tag);
   for(const k of kids.flat()){ if(k==null) continue; el.append(k.nodeType?k:document.createTextNode(k)); } return el; }
 const f1=(x)=>(x==null?"—":(Math.round(x*10)/10).toFixed(1)), f2=(x)=>(x==null?"—":x.toFixed(2)), pct=(x)=>(x==null?"—":(x*100).toFixed(1)+"%");
 const sgn=(x,d)=>((x>=0?"+":"")+x.toFixed(d==null?2:d));
+// owner 2026-10-20: odds shown as the average of the two seeded runs (the seed labels read as years)
+const avg2=(xs)=>{ const v=xs.filter(x=>x!=null); return v.length? v.reduce((a,b)=>a+b,0)/v.length : null; };
 // owner 2026-10-20: negative z-scores in red font; a value that rounds to 0.00 stays uncolored
 function zv(x, signed){ const t=signed? sgn(x) : f2(x); return h("span",(x!=null && Math.round(x*100)<0)?{class:"zneg"}:{},t); }
 /*SWAP_MATH_BEGIN*/
@@ -276,12 +278,12 @@ function statusChip(letter){ if(!letter) return null; const cls=letter==="O"?"cr
 (function(){ const b=D.brief, p=$("#pane-today");
   $("#hdate").textContent=D.date;
   $("#hsub").textContent=T(D.my_team)+" · week "+b.week+" vs "+T(b.opponent)+" · lines "+b.lines+" · rosters as-of "+D.league.as_of;
-  const seeds=Object.keys(b.title);
+  const runs="avg of 2 runs × "+b.seasons.toLocaleString()+" seasons", BS=D.matchup.by_seed;
   const tiles=h("div",{class:"tiles"},
-    h("div",{class:"tile"},h("div",{class:"v"},pct((D.matchup.by_seed?D.matchup.by_seed[seeds[0]].p_win:null))),h("div",{class:"l"},"win week "+b.week),h("div",{class:"e"},D.matchup.by_seed?("seed "+seeds[1]+": "+pct(D.matchup.by_seed[seeds[1]].p_win)):"")),
-    h("div",{class:"tile"},h("div",{class:"v"},f1(b.title[seeds[0]])+"%"),h("div",{class:"l"},"title odds"),h("div",{class:"e"},"seed "+seeds[1]+": "+f1(b.title[seeds[1]])+"% · "+b.seasons.toLocaleString()+" seasons")),
-    h("div",{class:"tile"},h("div",{class:"v"},f1(b.playoffs[seeds[0]])+"%"),h("div",{class:"l"},"playoffs"),h("div",{class:"e"},"seed "+seeds[1]+": "+f1(b.playoffs[seeds[1]])+"%")));
-  const catRows = D.matchup.by_seed? Object.entries(D.matchup.by_seed[seeds[0]].cat_p) : [];
+    h("div",{class:"tile"},h("div",{class:"v"},pct(BS?avg2(Object.values(BS).map(x=>x.p_win)):null)),h("div",{class:"l"},"win week "+b.week),h("div",{class:"e"},BS?"avg of 2 runs":"")),
+    h("div",{class:"tile"},h("div",{class:"v"},f1(avg2(Object.values(b.title)))+"%"),h("div",{class:"l"},"title odds"),h("div",{class:"e"},runs)),
+    h("div",{class:"tile"},h("div",{class:"v"},f1(avg2(Object.values(b.playoffs)))+"%"),h("div",{class:"l"},"playoffs"),h("div",{class:"e"},runs)));
+  const catRows = BS? Object.keys(Object.values(BS)[0].cat_p).map(c=>[c, avg2(Object.values(BS).map(x=>x.cat_p[c]))]) : [];
   const catTbl = catRows.length? h("div",{class:"tablebox"},h("table",{},
       h("tr",{},h("th",{},"category"),h("th",{class:"num"},"P(win cat)"),h("th",{},"")),
       catRows.map(([c,v])=>h("tr",{},h("td",{},c),h("td",{class:"num"},pct(v)),
@@ -336,6 +338,9 @@ function buildStrip(id, deltas, active){ const after=active? leagueRanks(deltas)
       : "Current build; picking a move shows before → after. ")
       +"IL players count 0 (owner rule D-IS-8) · z screen only — not the simulator."));
 }
+// owner 2026-10-20 (Strus on IL "not showing up"): my rostered players held off the board, named under my list
+function myHeld(){ const ob=(D.league.rosters[D.my_team]||{}).off_board||[];
+  return ob.length? h("p",{class:"note"},"You also roster, off the board (held, no z line): "+ob.join(", ")) : null; }
 function myField(){ return h("div",{class:"field static",title:T(D.my_team)},T(D.my_team)+" · "+MINE.length+" on the board"); }
 function pickList(rows, set, rerender, empty){ return h("div",{class:"plist"}, rows.length? rows.map(r=>h("label",{},
   h("input",{type:"checkbox",...(set.has(r.name)?{checked:""}:{}),onchange:(e)=>{e.target.checked?set.add(r.name):set.delete(r.name);rerender();}}),
@@ -362,7 +367,7 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
       h("div",{class:"h2row"},h("h2",{},"Trade Analyzer"),
         h("button",{id:"tr-reset",class:"resetbtn",onclick:()=>{out.clear();inc.clear();render();}},"Reset")),
       h("div",{class:"pick"},
-        h("div",{},h("h2",{},"I send"),myField(),pickList(MINE,out,render,"No players of yours on the board.")),
+        h("div",{},h("h2",{},"I send"),myField(),pickList(MINE,out,render,"No players of yours on the board."),myHeld()),
         h("div",{},h("h2",{},"I receive"),
           h("select",{id:"tr-team",class:"field",onchange:(e)=>{team=e.target.value;inc.clear();render();}},teams.map(t=>h("option",{value:t,...(t===team?{selected:""}:{})},T(t)))),
           pickList(theirs,inc,render,"No board rows on this roster."))),
@@ -382,7 +387,7 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
         h("button",{id:"fa-reset",class:"resetbtn",onclick:()=>{drop.clear();add.clear();search="";inp.value="";render();}},"Reset")),
       h("p",{class:"note"},nfa+" unrostered players on today's board, matched to all 12 rosters as of "+D.league.as_of+"."),
       h("div",{class:"pick"},
-        h("div",{},h("h2",{},"I drop"),myField(),pickList(MINE,drop,render,"No players of yours on the board.")),
+        h("div",{},h("h2",{},"I drop"),myField(),pickList(MINE,drop,render,"No players of yours on the board."),myHeld()),
         h("div",{},h("h2",{},"I add"),
           inp,
           pickList(pool,add,render,"No free agents match."))),
@@ -398,6 +403,16 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
   let ca=null, cb=null;
   const box=h("div",{class:"card"}), cmp=h("div",{class:"card"});
   p.append(box,cmp);
+  // owner 2026-10-20: the search box and filter are built once (rebuilding them on each keystroke dropped focus);
+  // render() replaces only the table holder
+  const inp=h("input",{type:"search",id:"bd-q",placeholder:"Search player or team",oninput:(e)=>{q=e.target.value;render();}});
+  const faBox=h("input",{type:"checkbox",id:"bd-fa",onchange:(e)=>{fa=e.target.checked;render();}});
+  const tbl=h("div",{});
+  box.append(h("div",{class:"h2row"},h("h2",{},"Season board — "+rows.length+" ranked players"),
+      h("button",{id:"bd-reset",class:"resetbtn",onclick:()=>{q="";inp.value="";fa=false;faBox.checked=false;key="rank";asc=true;ca=null;cb=null;render();}},"Reset")),
+    h("p",{class:"note"},"Blended season lines ("+D.season_lines.players_with_games+" players with regular-season games so far). Held off the board: "+(D.board.held.length?D.board.held.join(", "):"none")+"."),
+    h("div",{class:"pick"},inp,h("label",{style:"display:flex;align-items:center;gap:6px"},faBox,"free agents only")),
+    tbl);
   function cmpRender(){ const a=ca&&rows.find(r=>r.name===ca), b=cb&&rows.find(r=>r.name===cb);
     const sel=(id,val,on)=>h("select",{id:id,onchange:(e)=>on(e.target.value)},h("option",{value:""},"pick a player"),
       rows.map(r=>h("option",{value:r.name,...(r.name===val?{selected:""}:{})},r.rank+". "+r.name)));
@@ -415,16 +430,12 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
     rs.sort((x,y)=>{ const a=key==="name"?x.name:(key==="owner"?(x.owner||"zzFA"):(key in x? x[key] : x.z[key])); const b=key==="name"?y.name:(key==="owner"?(y.owner||"zzFA"):(key in y? y[key] : y.z[key]));
       return (a<b?-1:a>b?1:0)*(asc?1:-1); });
     const hd=(label,k,num)=>h("th",{class:"sort"+(num?" num":""),onclick:()=>{asc=(key===k)?!asc:(k==="rank"||k==="name"||k==="owner"); key=k; render();}},label+(key===k?(asc?" ↑":" ↓"):""));
-    box.replaceChildren(h("h2",{},"Season board — "+rows.length+" ranked players"),
-      h("p",{class:"note"},"Blended season lines ("+D.season_lines.players_with_games+" players with regular-season games so far). Held off the board: "+(D.board.held.length?D.board.held.join(", "):"none")+"."),
-      h("div",{class:"pick"},
-        h("input",{type:"search",id:"bd-q",placeholder:"Search player or team",value:q,oninput:(e)=>{q=e.target.value;render();}}),
-        h("label",{style:"display:flex;align-items:center;gap:6px"},h("input",{type:"checkbox",id:"bd-fa",...(fa?{checked:""}:{}),onchange:(e)=>{fa=e.target.checked;render();}}),"free agents only")),
+    tbl.replaceChildren(h("div",{},  // h() skips the null note; replaceChildren alone would print "null"
       h("div",{class:"tablebox"},h("table",{},
         h("tr",{},hd("#","rank",true),hd("player","name"),h("th",{},"pos"),hd("owner","owner"),hd("z adj","z_adj",true),CATS.map(c=>hd(c,c,true))),
         rs.slice(0,200).map(r=>h("tr",{},h("td",{class:"num"},String(r.rank)),h("td",{},r.name+" · "+r.team),h("td",{},r.pos),
           h("td",{},ownChip(r)),h("td",{class:"num"},zv(r.z_adj)),CATS.map(c=>h("td",{class:"num"},zv(r.z[c]))))))),
-      rs.length>200?h("p",{class:"note"},"Showing the first 200 of "+rs.length+" rows; narrow with search."):null);
+      rs.length>200?h("p",{class:"note"},"Showing the first 200 of "+rs.length+" rows; narrow with search."):null));
     cmpRender();
   }
   render();
@@ -444,12 +455,15 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
 
 // ---- Week / ledger ----
 (function(){ const p=$("#pane-week"); const b=D.brief; const weeks=Object.values(D.ledger).sort((a,z)=>a.week-z.week);
+  // owner 2026-10-20 (option a): show each opponent's CURRENT team name by seat; the ledger record stays frozen
+  const seatName={}; for(const r of D.board.board){ if(r.seat!=null) seatName[r.seat]=r.owner; }
   p.append(h("div",{class:"card"},h("h2",{},"Week "+b.week+" — "+(b.week_window?b.week_window.join(" to "):"")),
     h("p",{class:"note"},"Each week's prediction is recorded before the week starts and never rewritten; results land when you paste the scoreboard."),
     weeks.length? h("div",{class:"tablebox"},h("table",{},
       h("tr",{},h("th",{class:"num"},"wk"),h("th",{},"opponent"),h("th",{class:"num"},"P(win)"),h("th",{class:"num"},"exp cats"),h("th",{},"recorded on rosters"),h("th",{},"result")),
-      weeks.map(w=>{ const sd=Object.keys(w.by_seed||{}); const pw=sd.length?w.by_seed[sd[0]].p_win:null, ec=sd.length?w.by_seed[sd[0]].exp_cats:null;
-        return h("tr",{},h("td",{class:"num"},String(w.week)),h("td",{},w.opponent_team+" ("+(w.opponent_manager||"?")+")"),
+      weeks.map(w=>{ const sd=Object.values(w.by_seed||{}); const pw=sd.length?avg2(sd.map(x=>x.p_win)):null, ec=sd.length?avg2(sd.map(x=>x.exp_cats)):null;
+        const oname=seatName[w.opponent_seat]||w.opponent_team;
+        return h("tr",{},h("td",{class:"num"},String(w.week)),h("td",{},oname+" ("+(w.opponent_manager||"?")+")"),
           h("td",{class:"num"},pct(pw)),h("td",{class:"num"},f2(ec)),h("td",{},w.rosters_as_of||"—"),h("td",{},w.result||"pending"));})))
       : h("div",{class:"zero"},"No weeks recorded yet.")));
 })();

@@ -68,11 +68,13 @@ class Streaming(unittest.TestCase):
 
 
 class Note(unittest.TestCase):
-    def test_odds_line_carries_both_seeds_and_the_error(self):
+    def test_odds_line_is_the_two_run_average_with_its_error(self):
+        # owner 2026-10-20: "just provide the average" — the seed labels read as years; one averaged figure
         line = DB.odds_line(21.81, 21.60, 10000)
-        self.assertIn("21.81", line)
-        self.assertIn("21.60", line)
+        self.assertIn("21.7%", line)
         self.assertIn("±", line)
+        self.assertNotIn("seed", line.lower())
+        self.assertNotIn("21.81", line)
 
 
 class Band(unittest.TestCase):
@@ -149,6 +151,31 @@ class InjuredList(unittest.TestCase):
         state["teams"][0]["players"][2]["slot"] = "Util"
         self.assertEqual([p["player"] for p in CG.rosters(state, by)[10]], ["A", "B", "C"])
 
+
+
+class LeagueMoves(unittest.TestCase):
+    """Owner 2026-10-20 item 2: a league-moves line in the brief — adds/drops/IL since yesterday."""
+
+    def test_moves_render_per_team_with_adds_drops_and_il(self):
+        rec = {"old_as_of": "2026-10-19", "new_as_of": "2026-10-20", "moves": [
+            {"team": "T", "seat": 1, "added": ["D Man"], "dropped": ["A Man"], "to_il": ["C Man"], "from_il": []}]}
+        out = "\n".join(DB.league_moves_lines(rec, "Me"))
+        self.assertIn("D Man", out)
+        self.assertIn("added", out)
+        self.assertIn("A Man", out)
+        self.assertIn("dropped", out)
+        self.assertIn("C Man", out)
+        self.assertIn("IL", out)
+
+    def test_no_record_says_so_instead_of_staying_silent(self):
+        out = "\n".join(DB.league_moves_lines(None, "Me"))
+        self.assertIn("No league-moves record", out)
+
+    def test_my_team_is_marked_yours(self):
+        rec = {"old_as_of": "2026-10-19", "new_as_of": "2026-10-20", "moves": [
+            {"team": "Me", "seat": 10, "added": ["X"], "dropped": [], "to_il": [], "from_il": []}]}
+        out = "\n".join(DB.league_moves_lines(rec, "Me"))
+        self.assertIn("yours", out)
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

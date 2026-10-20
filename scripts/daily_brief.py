@@ -8,7 +8,7 @@ data/status/status_*.json (availability tiers with receipts), report/schedule/ga
 Sections: the owner's players with games; the lineup by the daily-fill rule; the waiver scan
 (co_gm.waiver_pairs, lifted from waiver_moves.py, against the league state; the top 3 pairs
 checked in the league simulator on the real schedule); streaming candidates by games left
-this week; title odds on the real schedule (two seeds, the error stated).
+this week; title odds on the real schedule (the average of two seeded runs, the error stated).
 
     python3 scripts/daily_brief.py --date 2026-10-21 [--seasons 10000]
 Writes report/briefs/brief_<date>.md and brief_<date>.json (the numbers behind the note).
@@ -49,7 +49,8 @@ def band_line(path=SWEEP):
 def odds_line(a, b, n):
     m = (a + b) / 2
     e = 196 * math.sqrt(m / 100 * (1 - m / 100) / (2 * n))
-    return f"{m:.1f}% ± {e:.1f} (seeds {SEEDS[0]} / {SEEDS[1]}: {a:.2f}% / {b:.2f}%; {n:,} seasons each)"
+    # owner 2026-10-20: one averaged figure; the per-run values stay in the JSON record
+    return f"{m:.1f}% ± {e:.1f} (avg of 2 runs × {n:,} seasons)"
 
 
 def newest_status(date):
@@ -57,6 +58,29 @@ def newest_status(date):
     files = sorted(f for f in glob.glob(os.path.join(CG.KIT, "data", "status", "status_*.json"))
                    if os.path.basename(f)[len("status_"):-len(".json")] <= date)
     return (json.load(open(files[-1], encoding="utf-8")), os.path.basename(files[-1])) if files else ({"rows": []}, None)
+
+
+def league_moves_for(date):
+    """The league-moves record for the brief's date (scripts/league_moves.py; owner 2026-10-20 item 2), or None."""
+    path = os.path.join(CG.KIT, "data", "news", f"league_moves_{date}.json")
+    return json.load(open(path, encoding="utf-8")) if os.path.exists(path) else None
+
+
+def league_moves_lines(rec, my_team):
+    """Adds, drops and IL moves per fantasy team since the previous league state."""
+    if rec is None:
+        return ["No league-moves record for the date (the live pull did not run or had nothing to compare)."]
+    if not rec["moves"]:
+        return [f"No roster changed, {rec['old_as_of']} to {rec['new_as_of']}."]
+    out = [f"Rosters {rec['old_as_of']} to {rec['new_as_of']}:"]
+    for m in sorted(rec["moves"], key=lambda m: (m["team"] != my_team, m["team"])):
+        who = f"**{m['team']}** (yours)" if m["team"] == my_team else f"**{m['team']}**"
+        bits = ([f"added {', '.join(m['added'])}"] if m["added"] else []) \
+            + ([f"dropped {', '.join(m['dropped'])}"] if m["dropped"] else []) \
+            + ([f"to IL: {', '.join(m['to_il'])}"] if m["to_il"] else []) \
+            + ([f"off IL: {', '.join(m['from_il'])}"] if m["from_il"] else [])
+        out.append(f"- {who} — {'; '.join(bits)}")
+    return out
 
 
 def transactions_for(date):
@@ -139,9 +163,11 @@ def main():
     for x in top:
         r2 = {s: list(r) for s, r in ros.items()}
         r2[CG.OWNER_SEAT] = [p for p in r2[CG.OWNER_SEAT] if p["player"] != x["drop"]] + [by[x["add"]]]
-        t = CG.run_league_sim(r2, SEEDS[0], a.seasons, work, tag="w")["teams"][str(CG.OWNER_SEAT)]
-        x["title_seed2026"] = round(t["champ"], 2)
-        x["d_title_seed2026"] = round(t["champ"] - base[SEEDS[0]]["champ"], 2)
+        # owner 2026-10-20: the waiver check runs both seeds, so its title figure is the same two-run average
+        t = {s: CG.run_league_sim(r2, s, a.seasons, work, tag="w")["teams"][str(CG.OWNER_SEAT)]["champ"] for s in SEEDS}
+        x["title_by_seed"] = {str(s): round(t[s], 2) for s in SEEDS}
+        x["title"] = round(sum(t.values()) / len(SEEDS), 2)
+        x["d_title"] = round(x["title"] - sum(base[s]["champ"] for s in SEEDS) / len(SEEDS), 2)
 
     # 4. streaming: free agents by per-game board value x games left this week
     weakest = min((p for p in ros[CG.OWNER_SEAT]), key=lambda p: CG.hoops.adj_value(p, ()))
@@ -150,6 +176,8 @@ def main():
                             "value_per_game": round(CG.hoops.adj_value(p, ()), 2)} for p in fa], weak_games)
 
     tx = transactions_for(a.date)
+
+    lm = league_moves_for(a.date)
     rec = {"date": a.date, "week": wk, "week_window": [wstart, wend], "league_state_as_of": state["as_of"],
            "status_file": status_file, "lines": CG.LINES_TAG, "opponent": opp_team["name"] if opp_team else None,
            "today": rows_today, "lineup": lineup, "bench": bench, "waiver_base_ecw": round(base_ecw, 4),
@@ -157,12 +185,14 @@ def main():
            "streaming_vs": {"player": weakest["player"], "games_left": weak_games,
                             "value_per_game": round(CG.hoops.adj_value(weakest, ()), 2)},
            "title": {str(s): base[s]["champ"] for s in SEEDS}, "playoffs": {str(s): base[s]["playoff"] for s in SEEDS},
-           "seasons": a.seasons, "transactions": tx and {"window": tx["window"], "ok": tx["source"].get("ok"), "hits": tx["hits"]}}
+           "seasons": a.seasons, "transactions": tx and {"window": tx["window"], "ok": tx["source"].get("ok"), "hits": tx["hits"]},
+           "league_moves": lm and lm["moves"]}
     os.makedirs(OUTDIR, exist_ok=True)
     json.dump(rec, open(os.path.join(OUTDIR, f"brief_{a.date}.json"), "w", encoding="utf-8"), indent=1, ensure_ascii=False)
 
     L = [f"# Daily brief — {a.date} (week {wk}, {wstart} to {wend})", ""]
-    L.append(f"Opponent this week: **{rec['opponent']}**. Rosters as of {state['as_of']} (owner's Yahoo page); "
+    L.append(f"Opponent this week: **{rec['opponent']}**. Rosters as of {state['as_of']} "
+             f"({'FantasyBot live pull' if 'fantasybot' in (state.get('sources') or {}) else chr(39).join(['owner', 's Yahoo page'])}); "
              f"statuses from `{status_file}`; lines {CG.LINES_TAG}.")
     L += ["", "## Your players today", "", "| player | NBA | game | status | availability | games left this week |", "|---|---|---|---|---|---|"]
     for n, t, g, s, av, gl in rows_today:
@@ -174,13 +204,14 @@ def main():
     idle = [n for n, t, g, s, av, gl in rows_today if not g]
     if idle:
         L.append(f"- No game today: {', '.join(idle)}")
+    L += ["", "## League moves", ""] + league_moves_lines(lm, me["name"])
     L += ["", "## Transactions", ""] + transactions_lines(tx, me["name"], rec["opponent"])
     L += ["", "## Waiver scan", ""]
     if top:
         L.append(f"{len(pos)} of {len(pairs)} add/drop pairs raise expected weekly category wins (base {base_ecw:.3f}). "
-                 f"Best three, checked in the simulator (seed {SEEDS[0]}, {a.seasons:,} seasons, real schedule):")
+                 f"Best three, checked in the simulator (avg of 2 runs × {a.seasons:,} seasons, real schedule):")
         L += [f"- Add **{x['add']}** ({x['add_team']}), drop {x['drop']}: {x['d_ecw']:+.3f} cats/week; "
-              f"title {x['title_seed2026']:.2f}% ({x['d_title_seed2026']:+.2f} vs {base[SEEDS[0]]['champ']:.2f}%)" for x in top]
+              f"title {x['title']:.1f}% ({x['d_title']:+.1f})" for x in top]
     else:
         L.append(f"No add/drop pair raises expected weekly category wins ({len(pairs)} scored). Stand pat.")
     L += ["", f"## Streaming ({a.date} to {wend})", "",
