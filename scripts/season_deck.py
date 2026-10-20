@@ -317,8 +317,12 @@ const RANKS0=leagueRanks(null), NTEAMS=Object.keys(D.league.rosters).length;
 function buildStrip(id, deltas, active){ const after=active? leagueRanks(deltas) : null;
   return h("div",{id:id},h("h2",{},"Your build — rank 1–"+NTEAMS+" vs the league"),
     h("div",{class:"build"},CATS.map(c=>{ const b=RANKS0[c], a=after? after[c] : null, moved=(a!==null&&a!==b);
+      /* owner 2026-10-20: heat by rank — blue excellent, grey mid-pack, red worst (Draft Deck's grading);
+         colored by the after-rank when a move is picked */
+      const shown=(a===null? b : a), mid=(NTEAMS+1)/2, hi=Math.round(Math.abs(mid-shown)/(mid-1)*45);
       return h("span",{class:"bchip"+(moved?(a<b?" up":" down"):""),
-        title:c+": rank "+(a===null?b:a)+" of "+NTEAMS+(moved?" (was "+b+")":"")},
+        style:"background:color-mix(in srgb, var(--"+(shown<mid?"pos":"neg")+") "+hi+"%, var(--chip))",
+        title:c+": rank "+shown+" of "+NTEAMS+(moved?" (was "+b+")":"")},
         h("span",{class:"bn"},c==="TOV"?"TO↑":c),
         h("span",{class:"br"},moved? b+"→"+a : String(a===null?b:a))); })),
     h("p",{class:"note"},(active? "Before → after the picked move; summed board z per category, ranked against the other "+(NTEAMS-1)+" teams. "
