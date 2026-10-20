@@ -114,6 +114,8 @@ class Deck(unittest.TestCase):
         self.assertEqual(data["league"]["rosters"]["THEM"]["il"], [])
         # the ids are made at runtime; the shell carries the two buildStrip calls (DOM checked in Chromium)
         self.assertIn('buildStrip("tr-build"', html); self.assertIn('buildStrip("fa-build"', html)
+        # owner 2026-10-20: a Reset button clears each pane's picks (and the FA search)
+        self.assertIn('id:"tr-reset"', html); self.assertIn('id:"fa-reset"', html)
 
     def test_no_hand_typed_figures_outside_data(self):
         # the static shell (html with the data block stripped) carries no decimal figures from the records

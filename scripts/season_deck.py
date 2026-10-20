@@ -214,6 +214,10 @@ select,input[type=search],input[type=text]{background:var(--surface); color:var(
 .bchip.up .br{color:var(--pos)} .bchip.down .br{color:var(--neg)}
 .verdict{font-family:var(--disp); font-weight:700; font-size:22px; letter-spacing:.03em}
 .verdict.pos{color:var(--pos)} .verdict.neg{color:var(--neg)} .verdict.even{color:var(--ink2)}
+.h2row{display:flex; justify-content:space-between; align-items:center; gap:10px; margin:0 0 8px}
+.h2row h2{margin:0}
+.resetbtn{border:1px solid var(--line); background:var(--surface); color:var(--ink2); border-radius:999px; padding:5px 14px; cursor:pointer; font-size:13px; min-height:32px}
+.resetbtn:hover{background:var(--chip); color:var(--ink)}
 .mode{display:flex; gap:8px; margin-bottom:10px}
 .mode button{border:1px solid var(--line); background:var(--surface); color:var(--ink2); border-radius:999px; padding:7px 14px; cursor:pointer; font-size:13.5px; min-height:38px}
 .mode button[aria-pressed="true"]{background:var(--ink); color:var(--bg); border-color:var(--ink)}
@@ -317,8 +321,12 @@ const RANKS0=leagueRanks(null), NTEAMS=Object.keys(D.league.rosters).length;
 function buildStrip(id, deltas, active){ const after=active? leagueRanks(deltas) : null;
   return h("div",{id:id},h("h2",{},"Your build — rank 1–"+NTEAMS+" vs the league"),
     h("div",{class:"build"},CATS.map(c=>{ const b=RANKS0[c], a=after? after[c] : null, moved=(a!==null&&a!==b);
+      /* owner 2026-10-20: heat by rank — blue excellent, grey mid-pack, red worst (Draft Deck's grading);
+         colored by the after-rank when a move is picked */
+      const shown=(a===null? b : a), mid=(NTEAMS+1)/2, hi=Math.round(Math.abs(mid-shown)/(mid-1)*45);
       return h("span",{class:"bchip"+(moved?(a<b?" up":" down"):""),
-        title:c+": rank "+(a===null?b:a)+" of "+NTEAMS+(moved?" (was "+b+")":"")},
+        style:"background:color-mix(in srgb, var(--"+(shown<mid?"pos":"neg")+") "+hi+"%, var(--chip))",
+        title:c+": rank "+shown+" of "+NTEAMS+(moved?" (was "+b+")":"")},
         h("span",{class:"bn"},c==="TOV"?"TO↑":c),
         h("span",{class:"br"},moved? b+"→"+a : String(a===null?b:a))); })),
     h("p",{class:"note"},(active? "Before → after the picked move; summed board z per category, ranked against the other "+(NTEAMS-1)+" teams. "
@@ -329,7 +337,7 @@ function myField(){ return h("div",{class:"field static",title:T(D.my_team)},T(D
 function pickList(rows, set, rerender, empty){ return h("div",{class:"plist"}, rows.length? rows.map(r=>h("label",{},
   h("input",{type:"checkbox",...(set.has(r.name)?{checked:""}:{}),onchange:(e)=>{e.target.checked?set.add(r.name):set.delete(r.name);rerender();}}),
   r.name+" · "+r.team+" · z "+f2(r.z_adj))) : h("div",{class:"zero"},empty)); }
-function scoreBlock(inRows, outRows){
+function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
   if(!(inRows.length||outRows.length)) return h("p",{class:"zero"},"Pick players on both sides to score a move.");
   const m=swapMath(inRows,outRows,CATS);
   return h("div",{},
@@ -338,7 +346,7 @@ function scoreBlock(inRows, outRows){
       CATS.map(c=>h("tr",{},h("td",{},c),h("td",{class:"num"},sgn(m.d[c])),h("td",{},tier(m.d[c],C.tier_low,C.tier_high)),
         h("td",{},h("span",{class:"bar "+(m.d[c]>=0?"pos":"neg")},h("i",{style:"width:"+Math.min(120,Math.round(Math.abs(m.d[c])*40))+"px"}))))))),
     h("p",{},h("span",{class:"verdict "+(m.net>=C.verdict_edge?"pos":(m.net<=-C.verdict_edge?"neg":"even"))},
-      (m.net>=C.verdict_strong?"STRONG FAVORABLE SCREEN":m.net>=C.verdict_edge?"FAVORABLE SCREEN":m.net<=-C.verdict_strong?"STRONG UNFAVORABLE SCREEN":m.net<=-C.verdict_edge?"UNFAVORABLE SCREEN":"ABOUT EVEN")),
+      (m.net>=C.verdict_strong?"STRONG FAVORABLE "+noun:m.net>=C.verdict_edge?"FAVORABLE "+noun:m.net<=-C.verdict_strong?"STRONG UNFAVORABLE "+noun:m.net<=-C.verdict_edge?"UNFAVORABLE "+noun:"ABOUT EVEN")),
       " ",h("span",{class:"note"},"net Δz "+sgn(m.net)+" · in "+inRows.length+" / out "+outRows.length+" · z screen only — not the simulator")),
     (inRows.length!==outRows.length)? h("p",{class:"note"},"Unequal player counts: the net also prices the empty or extra roster spot at z 0; judge accordingly."):null);
 }
@@ -347,15 +355,17 @@ function scoreBlock(inRows, outRows){
   function render(){ const R=D.league.rosters[team]||{players:[],off_board:[]};
     const theirs=R.players.map(n=>BYNAME[n]).filter(Boolean).sort((a,b)=>a.rank-b.rank);
     inc.forEach(n=>{ if(!R.players.includes(n)) inc.delete(n); });
-    root.replaceChildren(h("h2",{},"Trade Analyzer"),
+    root.replaceChildren(
+      h("div",{class:"h2row"},h("h2",{},"Trade Analyzer"),
+        h("button",{id:"tr-reset",class:"resetbtn",onclick:()=>{out.clear();inc.clear();render();}},"Reset")),
       h("div",{class:"pick"},
         h("div",{},h("h2",{},"I send"),myField(),pickList(MINE,out,render,"No players of yours on the board.")),
         h("div",{},h("h2",{},"I receive"),
           h("select",{id:"tr-team",class:"field",onchange:(e)=>{team=e.target.value;inc.clear();render();}},teams.map(t=>h("option",{value:t,...(t===team?{selected:""}:{})},T(t)))),
           pickList(theirs,inc,render,"No board rows on this roster."))),
       ...(R.off_board.length? [h("p",{class:"note"},T(team)+" also rosters, off the board (held, no z line): "+R.off_board.join(", "))] : []),
-      scoreBlock([...inc].map(n=>BYNAME[n]),[...out].map(n=>BYNAME[n])),
-      buildStrip("tr-build",{[D.my_team]:{out:out,inc:inc},[team]:{out:inc,inc:out}},inc.size||out.size));
+      buildStrip("tr-build",{[D.my_team]:{out:out,inc:inc},[team]:{out:inc,inc:out}},inc.size||out.size),
+      scoreBlock([...inc].map(n=>BYNAME[n]),[...out].map(n=>BYNAME[n]),"TRADE"));
   }
   render();
 })();
@@ -363,15 +373,17 @@ function scoreBlock(inRows, outRows){
   const nfa=BOARD.filter(r=>r.fa).length;
   const inp=h("input",{type:"search",id:"fa-search",class:"field",placeholder:"Search free agents",oninput:()=>{search=inp.value; keepTyping(inp,render);}});
   function render(){ const pool=BOARD.filter(r=>r.fa && (!search || r.name.toLowerCase().includes(search.toLowerCase()))).slice(0,60);
-    root.replaceChildren(h("h2",{},"Free-Agent Adder"),
+    root.replaceChildren(
+      h("div",{class:"h2row"},h("h2",{},"Free-Agent Adder"),
+        h("button",{id:"fa-reset",class:"resetbtn",onclick:()=>{drop.clear();add.clear();search="";inp.value="";render();}},"Reset")),
       h("p",{class:"note"},nfa+" unrostered players on today's board, matched to all 12 rosters as of "+D.league.as_of+"."),
       h("div",{class:"pick"},
         h("div",{},h("h2",{},"I drop"),myField(),pickList(MINE,drop,render,"No players of yours on the board.")),
         h("div",{},h("h2",{},"I add"),
           inp,
           pickList(pool,add,render,"No free agents match."))),
-      scoreBlock([...add].map(n=>BYNAME[n]),[...drop].map(n=>BYNAME[n])),
-      buildStrip("fa-build",{[D.my_team]:{out:drop,inc:add}},add.size||drop.size));
+      buildStrip("fa-build",{[D.my_team]:{out:drop,inc:add}},add.size||drop.size),
+      scoreBlock([...add].map(n=>BYNAME[n]),[...drop].map(n=>BYNAME[n])));
   }
   render();
 })();
