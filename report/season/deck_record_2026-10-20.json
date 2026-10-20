@@ -1,0 +1,78 @@
+{
+ "date": "2026-10-20",
+ "out": "report/season/deck_2026-10-20.html",
+ "inputs": {
+  "brief": {
+   "path": "report/briefs/brief_2026-10-20.json",
+   "sha256": "0e602aa149eb797c480c27480eda4a0ddea9afb24e2b03e67995b8779233c3e4"
+  },
+  "board": {
+   "path": "report/season/board_2026-10-20.json",
+   "sha256": "0fa76c7bfa3411c3dca7ee2ec5041fc7e296babf6bb7bb91bc93eae0dbe71de7"
+  },
+  "status": {
+   "path": "data/status/status_2026-10-20.json",
+   "sha256": "d5a8cf5fd45552bf3c988016d0f7857703204e1ee35b31aa8302f0169fe9c941"
+  },
+  "league_state": {
+   "path": "data/league_state.json",
+   "sha256": "d8e5b2086708a7fcf28dde2d08568ae828b0e5f5a7cd611e8f4fcb17da91389f"
+  },
+  "season_lines": {
+   "path": "data/season/season_lines_2026-10-20.json",
+   "sha256": "3b892501e3a2e85c8d96f44ea5b0f40d7255d6db59cfa9e6ee4cd970388b3688"
+  },
+  "sweep": {
+   "path": "report/after-reports/redteam-2026-10-19/sweep.json",
+   "sha256": "434dc69314419dc0e223623c436afa673f2e16e7a2f69820c8403435e5f49d87"
+  },
+  "calibration": {
+   "path": "report/calibration.json",
+   "sha256": "a5db5a742419084353b86bba3a7be22482aefdc98b7dd9f02546c0ef19146403"
+  }
+ },
+ "board_rows": 313,
+ "status_rows": 24,
+ "panes": 6,
+ "join": {
+  "rostered": 165,
+  "unresolved": 0,
+  "on_board": 161,
+  "off_board": 4,
+  "respelled": [
+   [
+    "Cameron Johnson",
+    "Cam Johnson"
+   ],
+   [
+    "Darius Acuff Jr.",
+    "Darius Acuff"
+   ],
+   [
+    "Jabari Smith Jr.",
+    "Jabari Smith Jr"
+   ],
+   [
+    "Jaime Jaquez Jr.",
+    "Jaime Jaquez Jr"
+   ],
+   [
+    "Jaren Jackson Jr.",
+    "Jaren Jackson Jr"
+   ],
+   [
+    "Kevin Porter Jr.",
+    "Kevin Porter Jr"
+   ],
+   [
+    "Michael Porter Jr.",
+    "Michael Porter Jr"
+   ],
+   [
+    "Wendell Carter Jr.",
+    "Wendell Carter Jr"
+   ]
+  ],
+  "free_agents_on_board": 152
+ }
+}
