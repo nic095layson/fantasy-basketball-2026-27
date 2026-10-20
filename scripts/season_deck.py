@@ -398,6 +398,16 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
   let ca=null, cb=null;
   const box=h("div",{class:"card"}), cmp=h("div",{class:"card"});
   p.append(box,cmp);
+  // owner 2026-10-20: the search box and filter are built once (rebuilding them on each keystroke dropped focus);
+  // render() replaces only the table holder
+  const inp=h("input",{type:"search",id:"bd-q",placeholder:"Search player or team",oninput:(e)=>{q=e.target.value;render();}});
+  const faBox=h("input",{type:"checkbox",id:"bd-fa",onchange:(e)=>{fa=e.target.checked;render();}});
+  const tbl=h("div",{});
+  box.append(h("div",{class:"h2row"},h("h2",{},"Season board — "+rows.length+" ranked players"),
+      h("button",{id:"bd-reset",class:"resetbtn",onclick:()=>{q="";inp.value="";fa=false;faBox.checked=false;key="rank";asc=true;ca=null;cb=null;render();}},"Reset")),
+    h("p",{class:"note"},"Blended season lines ("+D.season_lines.players_with_games+" players with regular-season games so far). Held off the board: "+(D.board.held.length?D.board.held.join(", "):"none")+"."),
+    h("div",{class:"pick"},inp,h("label",{style:"display:flex;align-items:center;gap:6px"},faBox,"free agents only")),
+    tbl);
   function cmpRender(){ const a=ca&&rows.find(r=>r.name===ca), b=cb&&rows.find(r=>r.name===cb);
     const sel=(id,val,on)=>h("select",{id:id,onchange:(e)=>on(e.target.value)},h("option",{value:""},"pick a player"),
       rows.map(r=>h("option",{value:r.name,...(r.name===val?{selected:""}:{})},r.rank+". "+r.name)));
@@ -415,16 +425,12 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
     rs.sort((x,y)=>{ const a=key==="name"?x.name:(key==="owner"?(x.owner||"zzFA"):(key in x? x[key] : x.z[key])); const b=key==="name"?y.name:(key==="owner"?(y.owner||"zzFA"):(key in y? y[key] : y.z[key]));
       return (a<b?-1:a>b?1:0)*(asc?1:-1); });
     const hd=(label,k,num)=>h("th",{class:"sort"+(num?" num":""),onclick:()=>{asc=(key===k)?!asc:(k==="rank"||k==="name"||k==="owner"); key=k; render();}},label+(key===k?(asc?" ↑":" ↓"):""));
-    box.replaceChildren(h("h2",{},"Season board — "+rows.length+" ranked players"),
-      h("p",{class:"note"},"Blended season lines ("+D.season_lines.players_with_games+" players with regular-season games so far). Held off the board: "+(D.board.held.length?D.board.held.join(", "):"none")+"."),
-      h("div",{class:"pick"},
-        h("input",{type:"search",id:"bd-q",placeholder:"Search player or team",value:q,oninput:(e)=>{q=e.target.value;render();}}),
-        h("label",{style:"display:flex;align-items:center;gap:6px"},h("input",{type:"checkbox",id:"bd-fa",...(fa?{checked:""}:{}),onchange:(e)=>{fa=e.target.checked;render();}}),"free agents only")),
+    tbl.replaceChildren(h("div",{},  // h() skips the null note; replaceChildren alone would print "null"
       h("div",{class:"tablebox"},h("table",{},
         h("tr",{},hd("#","rank",true),hd("player","name"),h("th",{},"pos"),hd("owner","owner"),hd("z adj","z_adj",true),CATS.map(c=>hd(c,c,true))),
         rs.slice(0,200).map(r=>h("tr",{},h("td",{class:"num"},String(r.rank)),h("td",{},r.name+" · "+r.team),h("td",{},r.pos),
           h("td",{},ownChip(r)),h("td",{class:"num"},zv(r.z_adj)),CATS.map(c=>h("td",{class:"num"},zv(r.z[c]))))))),
-      rs.length>200?h("p",{class:"note"},"Showing the first 200 of "+rs.length+" rows; narrow with search."):null);
+      rs.length>200?h("p",{class:"note"},"Showing the first 200 of "+rs.length+" rows; narrow with search."):null));
     cmpRender();
   }
   render();

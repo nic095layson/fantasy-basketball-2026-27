@@ -131,6 +131,18 @@ class Deck(unittest.TestCase):
                     "sgn(m.d[c])", "sgn(m.net)", "+sgn(v)"]:
             self.assertNotIn(raw, html, raw + " renders a z-score without zv()")
 
+    def test_board_search_box_survives_rerender_and_board_has_reset(self):
+        # owner 2026-10-20: typing in the Board search lost focus on every character, because render() rebuilt the
+        # input; it is now built once, outside render(), and only the table holder is replaced. Plus a Reset button.
+        html, data, rec = self.build()
+        board = html.split('$("#pane-board")')[1].split("// ---- Movers")[0]
+        before_render = board.split("function render(){")[0]
+        self.assertIn('id:"bd-q"', before_render)
+        self.assertIn('id:"bd-fa"', before_render)
+        self.assertNotIn("box.replaceChildren", board)
+        self.assertIn('id:"bd-reset"', board)
+        self.assertNotIn("tbl.replaceChildren(\n      h(", board)  # a bare null child prints "null" (Chromium-checked)
+
     def test_no_hand_typed_figures_outside_data(self):
         # the static shell (html with the data block stripped) carries no decimal figures from the records
         html, data, rec = self.build()
