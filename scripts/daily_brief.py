@@ -60,6 +60,29 @@ def newest_status(date):
     return (json.load(open(files[-1], encoding="utf-8")), os.path.basename(files[-1])) if files else ({"rows": []}, None)
 
 
+def league_moves_for(date):
+    """The league-moves record for the brief's date (scripts/league_moves.py; owner 2026-10-20 item 2), or None."""
+    path = os.path.join(CG.KIT, "data", "news", f"league_moves_{date}.json")
+    return json.load(open(path, encoding="utf-8")) if os.path.exists(path) else None
+
+
+def league_moves_lines(rec, my_team):
+    """Adds, drops and IL moves per fantasy team since the previous league state."""
+    if rec is None:
+        return ["No league-moves record for the date (the live pull did not run or had nothing to compare)."]
+    if not rec["moves"]:
+        return [f"No roster changed, {rec['old_as_of']} to {rec['new_as_of']}."]
+    out = [f"Rosters {rec['old_as_of']} to {rec['new_as_of']}:"]
+    for m in sorted(rec["moves"], key=lambda m: (m["team"] != my_team, m["team"])):
+        who = f"**{m['team']}** (yours)" if m["team"] == my_team else f"**{m['team']}**"
+        bits = ([f"added {', '.join(m['added'])}"] if m["added"] else []) \
+            + ([f"dropped {', '.join(m['dropped'])}"] if m["dropped"] else []) \
+            + ([f"to IL: {', '.join(m['to_il'])}"] if m["to_il"] else []) \
+            + ([f"off IL: {', '.join(m['from_il'])}"] if m["from_il"] else [])
+        out.append(f"- {who} — {'; '.join(bits)}")
+    return out
+
+
 def transactions_for(date):
     """The transactions record for the brief's date (scripts/transactions.py; owner 2026-10-20), or None."""
     path = os.path.join(CG.KIT, "data", "news", f"transactions_{date}.json")
@@ -153,6 +176,8 @@ def main():
                             "value_per_game": round(CG.hoops.adj_value(p, ()), 2)} for p in fa], weak_games)
 
     tx = transactions_for(a.date)
+
+    lm = league_moves_for(a.date)
     rec = {"date": a.date, "week": wk, "week_window": [wstart, wend], "league_state_as_of": state["as_of"],
            "status_file": status_file, "lines": CG.LINES_TAG, "opponent": opp_team["name"] if opp_team else None,
            "today": rows_today, "lineup": lineup, "bench": bench, "waiver_base_ecw": round(base_ecw, 4),
@@ -160,12 +185,14 @@ def main():
            "streaming_vs": {"player": weakest["player"], "games_left": weak_games,
                             "value_per_game": round(CG.hoops.adj_value(weakest, ()), 2)},
            "title": {str(s): base[s]["champ"] for s in SEEDS}, "playoffs": {str(s): base[s]["playoff"] for s in SEEDS},
-           "seasons": a.seasons, "transactions": tx and {"window": tx["window"], "ok": tx["source"].get("ok"), "hits": tx["hits"]}}
+           "seasons": a.seasons, "transactions": tx and {"window": tx["window"], "ok": tx["source"].get("ok"), "hits": tx["hits"]},
+           "league_moves": lm and lm["moves"]}
     os.makedirs(OUTDIR, exist_ok=True)
     json.dump(rec, open(os.path.join(OUTDIR, f"brief_{a.date}.json"), "w", encoding="utf-8"), indent=1, ensure_ascii=False)
 
     L = [f"# Daily brief — {a.date} (week {wk}, {wstart} to {wend})", ""]
-    L.append(f"Opponent this week: **{rec['opponent']}**. Rosters as of {state['as_of']} (owner's Yahoo page); "
+    L.append(f"Opponent this week: **{rec['opponent']}**. Rosters as of {state['as_of']} "
+             f"({'FantasyBot live pull' if 'fantasybot' in (state.get('sources') or {}) else chr(39).join(['owner', 's Yahoo page'])}); "
              f"statuses from `{status_file}`; lines {CG.LINES_TAG}.")
     L += ["", "## Your players today", "", "| player | NBA | game | status | availability | games left this week |", "|---|---|---|---|---|---|"]
     for n, t, g, s, av, gl in rows_today:
@@ -177,6 +204,7 @@ def main():
     idle = [n for n, t, g, s, av, gl in rows_today if not g]
     if idle:
         L.append(f"- No game today: {', '.join(idle)}")
+    L += ["", "## League moves", ""] + league_moves_lines(lm, me["name"])
     L += ["", "## Transactions", ""] + transactions_lines(tx, me["name"], rec["opponent"])
     L += ["", "## Waiver scan", ""]
     if top:

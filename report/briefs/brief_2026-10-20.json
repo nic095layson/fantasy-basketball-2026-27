@@ -59,14 +59,6 @@
    3
   ],
   [
-   "Kel'el Ware",
-   "MIL",
-   null,
-   null,
-   1.0,
-   3
-  ],
-  [
    "Neemias Queta",
    "BOS",
    "@ DET",
@@ -75,12 +67,12 @@
    2
   ],
   [
-   "Derrick White",
-   "BOS",
-   "@ DET",
+   "Kel'el Ware",
+   "MIL",
+   null,
    null,
    1.0,
-   2
+   3
   ],
   [
    "Kyrie Irving",
@@ -91,16 +83,16 @@
    3
   ],
   [
-   "Ty Jerome",
-   "MEM",
-   null,
+   "Derrick White",
+   "BOS",
+   "@ DET",
    null,
    1.0,
-   3
+   2
   ],
   [
-   "PJ Washington",
-   "DAL",
+   "Ty Jerome",
+   "MEM",
    null,
    null,
    1.0,
@@ -113,6 +105,14 @@
    null,
    1.0,
    2
+  ],
+  [
+   "PJ Washington",
+   "DAL",
+   null,
+   null,
+   1.0,
+   3
   ]
  ],
  "lineup": [
@@ -126,33 +126,33 @@
   ]
  ],
  "bench": [],
- "waiver_base_ecw": 5.1975,
- "waiver_positive_pairs": 7,
+ "waiver_base_ecw": 5.2996,
+ "waiver_positive_pairs": 2,
  "waiver_pairs_scored": 520,
  "waiver_top": [
-  {
-   "add": "Draymond Green",
-   "add_team": "GSW",
-   "drop": "Christian Braun",
-   "d_ecw": 0.0569,
-   "title_seed2026": 25.56,
-   "d_title_seed2026": 1.72
-  },
   {
    "add": "Bobby Portis",
    "add_team": "MIA",
    "drop": "Christian Braun",
-   "d_ecw": 0.0289,
-   "title_seed2026": 25.1,
-   "d_title_seed2026": 1.26
+   "d_ecw": 0.0304,
+   "title_by_seed": {
+    "2026": 25.13,
+    "2027": 24.47
+   },
+   "title": 24.8,
+   "d_title": 0.7
   },
   {
    "add": "Jrue Holiday",
    "add_team": "POR",
    "drop": "Christian Braun",
-   "d_ecw": 0.0104,
-   "title_seed2026": 24.59,
-   "d_title_seed2026": 0.75
+   "d_ecw": 0.0047,
+   "title_by_seed": {
+    "2026": 24.9,
+    "2027": 23.43
+   },
+   "title": 24.16,
+   "d_title": 0.06
   }
  ],
  "streaming": [],
@@ -162,12 +162,12 @@
   "value_per_game": -2.43
  },
  "title": {
-  "2026": 23.84,
-  "2027": 23.07
+  "2026": 24.48,
+  "2027": 23.72
  },
  "playoffs": {
-  "2026": 99.08,
-  "2027": 99.26
+  "2026": 99.61,
+  "2027": 99.68
  },
  "seasons": 10000,
  "transactions": {
@@ -218,5 +218,65 @@
     "seat": null
    }
   ]
- }
+ },
+ "league_moves": [
+  {
+   "team": "Lauri’s Prime Rib",
+   "seat": 3,
+   "added": [
+    "Mikel Brown Jr."
+   ],
+   "dropped": [
+    "Anthony Black"
+   ],
+   "to_il": [],
+   "from_il": []
+  },
+  {
+   "team": "Thompson Telepathy",
+   "seat": 12,
+   "added": [
+    "Dennis Schroder"
+   ],
+   "dropped": [],
+   "to_il": [
+    "Coby White"
+   ],
+   "from_il": []
+  },
+  {
+   "team": "ROOKS FTW",
+   "seat": 2,
+   "added": [
+    "Draymond Green"
+   ],
+   "dropped": [],
+   "to_il": [
+    "AJ Dybantsa"
+   ],
+   "from_il": []
+  },
+  {
+   "team": "KEVIN ELEVEN DOUBLES",
+   "seat": 11,
+   "added": [
+    "Jalen Smith"
+   ],
+   "dropped": [],
+   "to_il": [
+    "Kon Knueppel"
+   ],
+   "from_il": []
+  },
+  {
+   "team": "John's Cool Team",
+   "seat": 7,
+   "added": [],
+   "dropped": [],
+   "to_il": [
+    "Brandon Ingram"
+   ],
+   "from_il": []
+  }
+ ]
 }

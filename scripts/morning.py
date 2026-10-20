@@ -3,6 +3,8 @@
 propose only). Five steps, each a gate in the sense of scripts/gates.py (exit 0 AND its PASS line, or FAIL; a
 failed step stops the run and later steps are SKIPPED):
 
+  0 league live (non-fatal)      scripts/league_live.py --as-of <today>        (FantasyBot rosters from the session transcript;
+                                   a failed pull keeps the last league_state.json and the brief says so — owner 2026-10-20)
   1 box scores for yesterday      scripts/box_pull.py --date <yesterday>        (ESPN + Basketball-Reference)
   2 season lines                  scripts/season_lines.py --date <today>        (preseason line + actuals, priors registered)
   3 season board                  scripts/season_board.py --date <today>
@@ -35,7 +37,9 @@ def steps(date, fetch=True, seasons=10000):
     y = (datetime.date.fromisoformat(date) - datetime.timedelta(days=1)).isoformat()
     season_pool = os.path.join(KIT, "data", "season", "pool_season.csv")
     st = []
-    if fetch:
+    if fetch:  # owner 2026-10-20: live rosters from FantasyBot; non-fatal, the last paste stands on a failed pull
+        st.append(dict(name="league live", cmd=[PY, os.path.join(HERE, "league_live.py"), "--as-of", date], cwd=KIT,
+                       pass_re=r"^LEAGUE LIVE: PASS", env={}, fatal=False))
         st.append(dict(name=f"box scores {y}", cmd=[PY, os.path.join(HERE, "box_pull.py"), "--date", y], cwd=KIT, pass_re=r"^BOX PULL: PASS", env={}))
     st += [dict(name="season lines", cmd=[PY, os.path.join(HERE, "season_lines.py"), "--date", date], cwd=KIT, pass_re=r"^SEASON LINES: PASS", env={}),
            dict(name="season board", cmd=[PY, os.path.join(HERE, "season_board.py"), "--date", date], cwd=KIT, pass_re=r"^SEASON BOARD: PASS", env={}),
@@ -68,7 +72,10 @@ def run_steps(st, out):
         rec["steps"].append(dict(name=s["name"], cmd=" ".join(shlex.quote(c) for c in s["cmd"]), exit=p.returncode,
                                  pass_line=hits[-1] if hits else "", verdict=verdict, tail=[ln for ln in lines if ln.strip()][-6:]))
         if verdict == "FAIL":
-            failed = True; rec["verdict"] = "FAIL"
+            if s.get("fatal", True):
+                failed = True; rec["verdict"] = "FAIL"
+            else:
+                rec["steps"][-1]["verdict"] = "FAIL (non-fatal)"
     os.makedirs(os.path.dirname(out), exist_ok=True)
     with open(out, "w", encoding="utf-8") as f:
         json.dump(rec, f, indent=1, ensure_ascii=False); f.write("\n")
