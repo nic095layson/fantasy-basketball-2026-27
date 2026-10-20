@@ -336,7 +336,7 @@ function buildStrip(id, deltas, active){ const after=active? leagueRanks(deltas)
 function myField(){ return h("div",{class:"field static",title:T(D.my_team)},T(D.my_team)+" · "+MINE.length+" on the board"); }
 function pickList(rows, set, rerender, empty){ return h("div",{class:"plist"}, rows.length? rows.map(r=>h("label",{},
   h("input",{type:"checkbox",...(set.has(r.name)?{checked:""}:{}),onchange:(e)=>{e.target.checked?set.add(r.name):set.delete(r.name);rerender();}}),
-  r.name+" · "+r.team+" · z "+f2(r.z_adj))) : h("div",{class:"zero"},empty)); }
+  r.name+" · "+r.pos+" · "+r.team+" · z "+f2(r.z_adj))) : h("div",{class:"zero"},empty)); }
 function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
   if(!(inRows.length||outRows.length)) return h("p",{class:"zero"},"Pick players on both sides to score a move.");
   const m=swapMath(inRows,outRows,CATS);
@@ -372,7 +372,8 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
 (function(){ const p=$("#pane-fa"); let search=""; const drop=new Set(), add=new Set(); const root=h("div",{class:"card"}); p.append(root, howItWorks());
   const nfa=BOARD.filter(r=>r.fa).length;
   const inp=h("input",{type:"search",id:"fa-search",class:"field",placeholder:"Search free agents",oninput:()=>{search=inp.value; keepTyping(inp,render);}});
-  function render(){ const pool=BOARD.filter(r=>r.fa && (!search || r.name.toLowerCase().includes(search.toLowerCase()))).slice(0,60);
+  function render(){ const pool=BOARD.filter(r=>r.fa && (!search || r.name.toLowerCase().includes(search.toLowerCase())))
+      .sort((a,b)=>b.z_adj-a.z_adj).slice(0,60);  // owner 2026-10-20: free agents by z, descending
     root.replaceChildren(
       h("div",{class:"h2row"},h("h2",{},"Free-Agent Adder"),
         h("button",{id:"fa-reset",class:"resetbtn",onclick:()=>{drop.clear();add.clear();search="";inp.value="";render();}},"Reset")),
