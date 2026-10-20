@@ -106,6 +106,9 @@ def build(paths, date):
     rosters = {t["name"]: dict(seat=t["seat"], manager=t.get("manager"),
                                players=[rmap[p["player"]] for p in t["players"] if rmap[p["player"]] in on_board],
                                off_board=[rmap[p["player"]] for p in t["players"] if rmap[p["player"]] not in on_board],
+                               # owner 2026-10-20 (D-IS-8): IL players count 0 in the build strip; the page needs their names
+                               il=[rmap[p["player"]] for p in t["players"]
+                                   if (p.get("slot") or "").startswith("IL") and rmap[p["player"]] in on_board],
                                added=t.get("added_since_draft") or [], dropped=t.get("dropped_since_draft") or [],
                                unpooled_il=t.get("unpooled_il") or []) for t in league["teams"]}
     respelled = sorted((n, m) for n, m in rmap.items() if n != m)
@@ -204,6 +207,11 @@ select,input[type=search],input[type=text]{background:var(--surface); color:var(
 .plist label{display:flex; gap:8px; align-items:center; padding:6px 8px; border-radius:4px; font-size:13.5px; min-height:32px}
 .plist label:hover{background:var(--chip)}
 .plist input{accent-color:var(--accent)}
+.build{display:flex; flex-wrap:wrap; gap:6px; margin:10px 0 2px}
+.bchip{display:flex; align-items:center; gap:5px; border:1px solid var(--line); border-radius:6px; padding:3px 8px; background:var(--chip)}
+.bchip .bn{color:var(--ink2); font-size:11px; text-transform:uppercase; letter-spacing:.04em}
+.bchip .br{font-weight:600; font-size:13px; font-variant-numeric:tabular-nums}
+.bchip.up .br{color:var(--pos)} .bchip.down .br{color:var(--neg)}
 .verdict{font-family:var(--disp); font-weight:700; font-size:22px; letter-spacing:.03em}
 .verdict.pos{color:var(--pos)} .verdict.neg{color:var(--neg)} .verdict.even{color:var(--ink2)}
 .mode{display:flex; gap:8px; margin-bottom:10px}
@@ -292,6 +300,31 @@ function howItWorks(){ return h("div",{class:"card"},h("h2",{},"How this screen 
   h("p",{class:"note"},"Per-category z-scores come from today's board (the same vectors the rankings sum; the turnover column already credits low turnovers). Gains are the incoming players' z minus the outgoing players' z, tiered low (<"+C.tier_low+"), medium (<"+C.tier_high+"), high (≥"+C.tier_high+"). The verdict is the net z against ±"+C.verdict_edge+" (strong at ±"+C.verdict_strong+") — "+C.thresholds_note+". For the 10,000-season title-odds verdict on a specific move, ask Claude in session.")); }
 function keepTyping(inp, rerender){ const had=document.activeElement===inp, a=inp.selectionStart, b=inp.selectionEnd; rerender();
   if(had){ inp.focus(); try{ inp.setSelectionRange(a,b); }catch(e){} } }
+/* Build strip (owner 2026-10-20): each team's per-category z totals over its ACTIVE on-board roster (IL counts 0,
+   owner rule D-IS-8); your rank = 1 + teams strictly higher. A picked move re-totals the rosters it touches. */
+function activeNames(team, delta){ const R=D.league.rosters[team]||{players:[],il:[]}; const il=new Set(R.il||[]);
+  let ns=R.players.filter(n=>!il.has(n));
+  if(delta){ ns=ns.filter(n=>!delta.out.has(n)); delta.inc.forEach(n=>{ if(ns.indexOf(n)<0) ns.push(n); }); }
+  return ns; }
+function catTotals(names){ const t={}; CATS.forEach(c=>t[c]=0);
+  names.forEach(n=>{ const r=BYNAME[n]; if(r) CATS.forEach(c=>{ t[c]+=r.z[c]; }); }); return t; }
+function leagueRanks(deltas){ const teams=Object.keys(D.league.rosters); const tot={};
+  teams.forEach(t=>{ tot[t]=catTotals(activeNames(t, deltas&&deltas[t])); });
+  const mine=tot[D.my_team], ranks={};
+  CATS.forEach(c=>{ ranks[c]=1; teams.forEach(t=>{ if(t!==D.my_team && tot[t][c]>mine[c]) ranks[c]++; }); });
+  return ranks; }
+const RANKS0=leagueRanks(null), NTEAMS=Object.keys(D.league.rosters).length;
+function buildStrip(id, deltas, active){ const after=active? leagueRanks(deltas) : null;
+  return h("div",{id:id},h("h2",{},"Your build — rank 1–"+NTEAMS+" vs the league"),
+    h("div",{class:"build"},CATS.map(c=>{ const b=RANKS0[c], a=after? after[c] : null, moved=(a!==null&&a!==b);
+      return h("span",{class:"bchip"+(moved?(a<b?" up":" down"):""),
+        title:c+": rank "+(a===null?b:a)+" of "+NTEAMS+(moved?" (was "+b+")":"")},
+        h("span",{class:"bn"},c==="TOV"?"TO↑":c),
+        h("span",{class:"br"},moved? b+"→"+a : String(a===null?b:a))); })),
+    h("p",{class:"note"},(active? "Before → after the picked move; summed board z per category, ranked against the other "+(NTEAMS-1)+" teams. "
+      : "Current build; picking a move shows before → after. ")
+      +"IL players count 0 (owner rule D-IS-8) · z screen only — not the simulator."));
+}
 function myField(){ return h("div",{class:"field static",title:T(D.my_team)},T(D.my_team)+" · "+MINE.length+" on the board"); }
 function pickList(rows, set, rerender, empty){ return h("div",{class:"plist"}, rows.length? rows.map(r=>h("label",{},
   h("input",{type:"checkbox",...(set.has(r.name)?{checked:""}:{}),onchange:(e)=>{e.target.checked?set.add(r.name):set.delete(r.name);rerender();}}),
@@ -321,7 +354,8 @@ function scoreBlock(inRows, outRows){
           h("select",{id:"tr-team",class:"field",onchange:(e)=>{team=e.target.value;inc.clear();render();}},teams.map(t=>h("option",{value:t,...(t===team?{selected:""}:{})},T(t)))),
           pickList(theirs,inc,render,"No board rows on this roster."))),
       ...(R.off_board.length? [h("p",{class:"note"},T(team)+" also rosters, off the board (held, no z line): "+R.off_board.join(", "))] : []),
-      scoreBlock([...inc].map(n=>BYNAME[n]),[...out].map(n=>BYNAME[n])));
+      scoreBlock([...inc].map(n=>BYNAME[n]),[...out].map(n=>BYNAME[n])),
+      buildStrip("tr-build",{[D.my_team]:{out:out,inc:inc},[team]:{out:inc,inc:out}},inc.size||out.size));
   }
   render();
 })();
@@ -336,7 +370,8 @@ function scoreBlock(inRows, outRows){
         h("div",{},h("h2",{},"I add"),
           inp,
           pickList(pool,add,render,"No free agents match."))),
-      scoreBlock([...add].map(n=>BYNAME[n]),[...drop].map(n=>BYNAME[n])));
+      scoreBlock([...add].map(n=>BYNAME[n]),[...drop].map(n=>BYNAME[n])),
+      buildStrip("fa-build",{[D.my_team]:{out:drop,inc:add}},add.size||drop.size));
   }
   render();
 })();
