@@ -96,6 +96,11 @@ class Deck(unittest.TestCase):
             self.assertNotIn(f'id="{gone}"', html)
         self.assertIn("deck-data", html); self.assertIn("<title>", html)
 
+    def test_managers_embedded_for_every_team(self):
+        html, data, rec = self.build()
+        self.assertEqual(data["league"]["managers"], {"MY TEAM": "David", "THEM": "Cayas"})
+        self.assertEqual(set(data["league"]["managers"]), set(data["league"]["rosters"]))
+
     def test_no_hand_typed_figures_outside_data(self):
         # the static shell (html with the data block stripped) carries no decimal figures from the records
         html, data, rec = self.build()

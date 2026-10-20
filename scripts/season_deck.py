@@ -117,7 +117,7 @@ def build(paths, date):
     wk = calib.get("weeks", {}).get(str(brief.get("week"))) or {}
     data = dict(date=date, generated_utc=datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
                 my_team=my_team, my_seat=my_seat, brief=brief, board=board, status=status,
-                league=dict(as_of=league["as_of"], rosters=rosters), season_lines=lines, matchup=wk,
+                league=dict(as_of=league["as_of"], rosters=rosters, managers={t["name"]: t.get("manager") for t in league["teams"]}), season_lines=lines, matchup=wk,
                 ledger=calib.get("weeks", {}), band=band,
                 config=dict(cats=["FG%", "FT%", "3PM", "PTS", "REB", "AST", "STL", "BLK", "TOV"],
                             tier_low=0.3, tier_high=1.0, verdict_edge=0.5, verdict_strong=1.5,
@@ -194,9 +194,13 @@ td.num,th.num{text-align:right}
 .note{color:var(--ink2); font-size:12.5px}
 .zero{color:var(--ink2); padding:14px 0}
 select,input[type=search],input[type=text]{background:var(--surface); color:var(--ink); border:1px solid var(--line); border-radius:6px; padding:8px 10px; font-family:var(--body); font-size:14px; max-width:100%}
-.pick{display:flex; flex-wrap:wrap; gap:12px}
-.pick>div{flex:1 1 240px; min-width:0}
-.plist{border:1px solid var(--line); border-radius:6px; max-height:230px; overflow-y:auto; padding:4px}
+.pick{display:grid; grid-template-columns:1fr; gap:16px}
+@media (min-width:640px){ .pick{grid-template-columns:1fr 1fr} }
+.pick>div{min-width:0; display:flex; flex-direction:column; gap:8px}
+.pick h2{margin:0}
+.field{width:100%; height:40px; box-sizing:border-box}
+.field.static{display:flex; align-items:center; border:1px solid var(--line); border-radius:6px; padding:0 10px; background:var(--chip); color:var(--ink2); font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.plist{border:1px solid var(--line); border-radius:6px; height:230px; overflow-y:auto; padding:4px; box-sizing:border-box}
 .plist label{display:flex; gap:8px; align-items:center; padding:6px 8px; border-radius:4px; font-size:13.5px; min-height:32px}
 .plist label:hover{background:var(--chip)}
 .plist input{accent-color:var(--accent)}
@@ -249,13 +253,14 @@ function swapMath(inRows, outRows, cats){
 /*SWAP_MATH_END*/
 function tier(x, lo, hi){ const a=Math.abs(x); return a<lo?"low":(a<hi?"medium":"high"); }
 function bandLine(){ return D.band.name.replace("arena.","")+" is "+D.band.tier+": "+D.band.variants.map(v=>v.shift+" (shock "+v.label+")").join(" / ")+" title points — engine "+(D.band.engine||"?"); }
-function ownChip(r){ return r.mine? h("span",{class:"chip mine"},"mine") : r.fa? h("span",{class:"chip fa"},"FA") : h("span",{class:"chip"},r.owner); }
+function T(t){ if(t===D.my_team) return t+" (you)"; const m=(D.league.managers||{})[t]; return m? t+" ("+m+")" : t; }
+function ownChip(r){ return r.mine? h("span",{class:"chip mine"},"mine") : r.fa? h("span",{class:"chip fa"},"FA") : h("span",{class:"chip"},T(r.owner)); }
 function statusChip(letter){ if(!letter) return null; const cls=letter==="O"?"crit":(letter==="Q"?"warn":"ok"); return h("span",{class:"chip "+cls},letter); }
 
 // ---- Today ----
 (function(){ const b=D.brief, p=$("#pane-today");
   $("#hdate").textContent=D.date;
-  $("#hsub").textContent=D.my_team+" · week "+b.week+" vs "+b.opponent+" · lines "+b.lines+" · rosters as-of "+D.league.as_of;
+  $("#hsub").textContent=T(D.my_team)+" · week "+b.week+" vs "+T(b.opponent)+" · lines "+b.lines+" · rosters as-of "+D.league.as_of;
   const seeds=Object.keys(b.title);
   const tiles=h("div",{class:"tiles"},
     h("div",{class:"tile"},h("div",{class:"v"},pct((D.matchup.by_seed?D.matchup.by_seed[seeds[0]].p_win:null))),h("div",{class:"l"},"win week "+b.week),h("div",{class:"e"},D.matchup.by_seed?("seed "+seeds[1]+": "+pct(D.matchup.by_seed[seeds[1]].p_win)):"")),
@@ -285,6 +290,7 @@ const BOARD=D.board.board, BYNAME={}; BOARD.forEach(r=>BYNAME[r.name]=r);
 const MINE=BOARD.filter(r=>r.mine);
 function howItWorks(){ return h("div",{class:"card"},h("h2",{},"How this screen works"),
   h("p",{class:"note"},"Per-category z-scores come from today's board (the same vectors the rankings sum; the turnover column already credits low turnovers). Gains are the incoming players' z minus the outgoing players' z, tiered low (<"+C.tier_low+"), medium (<"+C.tier_high+"), high (≥"+C.tier_high+"). The verdict is the net z against ±"+C.verdict_edge+" (strong at ±"+C.verdict_strong+") — "+C.thresholds_note+". For the 10,000-season title-odds verdict on a specific move, ask Claude in session.")); }
+function myField(){ return h("div",{class:"field static",title:T(D.my_team)},T(D.my_team)+" · "+MINE.length+" on the board"); }
 function pickList(rows, set, rerender, empty){ return h("div",{class:"plist"}, rows.length? rows.map(r=>h("label",{},
   h("input",{type:"checkbox",...(set.has(r.name)?{checked:""}:{}),onchange:(e)=>{e.target.checked?set.add(r.name):set.delete(r.name);rerender();}}),
   r.name+" · "+r.team+" · z "+f2(r.z_adj))) : h("div",{class:"zero"},empty)); }
@@ -308,11 +314,11 @@ function scoreBlock(inRows, outRows){
     inc.forEach(n=>{ if(!R.players.includes(n)) inc.delete(n); });
     root.replaceChildren(h("h2",{},"Trade Analyzer"),
       h("div",{class:"pick"},
-        h("div",{},h("h2",{},"I send"),pickList(MINE,out,render,"No players of yours on the board.")),
+        h("div",{},h("h2",{},"I send"),myField(),pickList(MINE,out,render,"No players of yours on the board.")),
         h("div",{},h("h2",{},"I receive"),
-          h("select",{id:"tr-team",onchange:(e)=>{team=e.target.value;inc.clear();render();}},teams.map(t=>h("option",{value:t,...(t===team?{selected:""}:{})},t))),
-          pickList(theirs,inc,render,"No board rows on this roster."),
-          R.off_board.length? h("p",{class:"note"},"Also rostered, off the board (held, no z line): "+R.off_board.join(", ")) : null)),
+          h("select",{id:"tr-team",class:"field",onchange:(e)=>{team=e.target.value;inc.clear();render();}},teams.map(t=>h("option",{value:t,...(t===team?{selected:""}:{})},T(t)))),
+          pickList(theirs,inc,render,"No board rows on this roster."))),
+      ...(R.off_board.length? [h("p",{class:"note"},T(team)+" also rosters, off the board (held, no z line): "+R.off_board.join(", "))] : []),
       scoreBlock([...inc].map(n=>BYNAME[n]),[...out].map(n=>BYNAME[n])));
   }
   render();
@@ -323,9 +329,9 @@ function scoreBlock(inRows, outRows){
     root.replaceChildren(h("h2",{},"Free-Agent Adder"),
       h("p",{class:"note"},nfa+" unrostered players on today's board, matched to all 12 rosters as of "+D.league.as_of+"."),
       h("div",{class:"pick"},
-        h("div",{},h("h2",{},"I drop"),pickList(MINE,drop,render,"No players of yours on the board.")),
+        h("div",{},h("h2",{},"I drop"),myField(),pickList(MINE,drop,render,"No players of yours on the board.")),
         h("div",{},h("h2",{},"I add"),
-          h("input",{type:"search",id:"fa-search",placeholder:"Search free agents",value:search,oninput:(e)=>{search=e.target.value;render();}}),
+          h("input",{type:"search",id:"fa-search",class:"field",placeholder:"Search free agents",value:search,oninput:(e)=>{search=e.target.value;render();}}),
           pickList(pool,add,render,"No free agents match."))),
       scoreBlock([...add].map(n=>BYNAME[n]),[...drop].map(n=>BYNAME[n])));
   }
