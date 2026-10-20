@@ -52,9 +52,34 @@ def odds_line(a, b, n):
     return f"{m:.1f}% ± {e:.1f} (seeds {SEEDS[0]} / {SEEDS[1]}: {a:.2f}% / {b:.2f}%; {n:,} seasons each)"
 
 
-def newest_status():
-    files = sorted(glob.glob(os.path.join(CG.KIT, "data", "status", "status_*.json")))
+def newest_status(date):
+    # the newest file dated on or before the brief: a later-dated file (a test run of tomorrow) must not shadow today's
+    files = sorted(f for f in glob.glob(os.path.join(CG.KIT, "data", "status", "status_*.json"))
+                   if os.path.basename(f)[len("status_"):-len(".json")] <= date)
     return (json.load(open(files[-1], encoding="utf-8")), os.path.basename(files[-1])) if files else ({"rows": []}, None)
+
+
+def transactions_for(date):
+    """The transactions record for the brief's date (scripts/transactions.py; owner 2026-10-20), or None."""
+    path = os.path.join(CG.KIT, "data", "news", f"transactions_{date}.json")
+    return json.load(open(path, encoding="utf-8")) if os.path.exists(path) else None
+
+
+def transactions_lines(rec, my_team, opp_team):
+    """Rostered players first (yours, then this week's opponent, then the league), then board players on no roster."""
+    if rec is None:
+        return ["Not read this morning (no transactions record for the date)."]
+    if not rec["source"].get("ok"):
+        return [f"ESPN's transactions feed was NOT read ({rec['source'].get('detail')}); waivers and signings unseen."]
+    start, end = rec["window"]
+    head = f"ESPN transactions feed, {start} to {end}: {rec['items_in_window']} moves, {len(rec['hits'])} naming a board player."
+    rank = lambda h: (0 if h["fantasy_team"] == my_team else 1 if h["fantasy_team"] == opp_team else 2 if h["fantasy_team"] else 3, h["date"])
+    out = [head]
+    for h in sorted(rec["hits"], key=rank):
+        who = ("yours" if h["fantasy_team"] == my_team else f"{h['fantasy_team']}, your opponent this week" if h["fantasy_team"] == opp_team
+               else h["fantasy_team"] or "on no roster")
+        out.append(f"- **{h['player']}** ({who}) — {h['nba_team']} {h['date']}: {h['description']}")
+    return out
 
 
 def main():
@@ -64,7 +89,7 @@ def main():
     a = ap.parse_args()
     state = json.load(open(CG.STATE, encoding="utf-8"))
     sched = json.load(open(CG.SCHEDULE, encoding="utf-8"))
-    status, status_file = newest_status()
+    status, status_file = newest_status(a.date)
     avail = {r["player"]: r for r in status["rows"]}
     P, by = CG.load_pool()
     ros = CG.rosters(state, by)
@@ -124,6 +149,7 @@ def main():
     stream = CG.streaming([{"player": p["player"], "team": p["team"], "games_left": left.get(p["team"], 0),
                             "value_per_game": round(CG.hoops.adj_value(p, ()), 2)} for p in fa], weak_games)
 
+    tx = transactions_for(a.date)
     rec = {"date": a.date, "week": wk, "week_window": [wstart, wend], "league_state_as_of": state["as_of"],
            "status_file": status_file, "lines": CG.LINES_TAG, "opponent": opp_team["name"] if opp_team else None,
            "today": rows_today, "lineup": lineup, "bench": bench, "waiver_base_ecw": round(base_ecw, 4),
@@ -131,7 +157,7 @@ def main():
            "streaming_vs": {"player": weakest["player"], "games_left": weak_games,
                             "value_per_game": round(CG.hoops.adj_value(weakest, ()), 2)},
            "title": {str(s): base[s]["champ"] for s in SEEDS}, "playoffs": {str(s): base[s]["playoff"] for s in SEEDS},
-           "seasons": a.seasons}
+           "seasons": a.seasons, "transactions": tx and {"window": tx["window"], "ok": tx["source"].get("ok"), "hits": tx["hits"]}}
     os.makedirs(OUTDIR, exist_ok=True)
     json.dump(rec, open(os.path.join(OUTDIR, f"brief_{a.date}.json"), "w", encoding="utf-8"), indent=1, ensure_ascii=False)
 
@@ -148,6 +174,7 @@ def main():
     idle = [n for n, t, g, s, av, gl in rows_today if not g]
     if idle:
         L.append(f"- No game today: {', '.join(idle)}")
+    L += ["", "## Transactions", ""] + transactions_lines(tx, me["name"], rec["opponent"])
     L += ["", "## Waiver scan", ""]
     if top:
         L.append(f"{len(pos)} of {len(pairs)} add/drop pairs raise expected weekly category wins (base {base_ecw:.3f}). "
@@ -164,7 +191,7 @@ def main():
     L += ["", "## Title odds (real schedule)", "", f"- Title: {odds_line(base[SEEDS[0]]['champ'], base[SEEDS[1]]['champ'], a.seasons)}",
           f"- Playoffs: {(base[SEEDS[0]]['playoff'] + base[SEEDS[1]]['playoff']) / 2:.1f}%",
           f"- {band_line()}", "",
-          "_Cannot see: news after the rosters/status paste; ESPN injuries (network-denied); minutes limits; "
+          "_Cannot see: news after the rosters/status paste beyond ESPN's transactions feed; ESPN injuries (network-denied); minutes limits; "
           "other managers' pending claims. Q counts as a coin flip._"]
     path = os.path.join(OUTDIR, f"brief_{a.date}.md")
     open(path, "w", encoding="utf-8").write("\n".join(L) + "\n")

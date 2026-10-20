@@ -20,14 +20,21 @@ PY = sys.executable
 class Steps(unittest.TestCase):
     def test_steps_in_order_with_dates(self):
         st = M.steps("2026-10-21", fetch=True, seasons=10000)
-        self.assertEqual([s["name"] for s in st], ["box scores 2026-10-20", "season lines", "season board", "status feed", "daily brief", "season deck"])
+        self.assertEqual([s["name"] for s in st], ["box scores 2026-10-20", "season lines", "season board", "status feed", "transactions", "daily brief", "season deck"])
         self.assertIn("--date", st[0]["cmd"]); self.assertIn("2026-10-20", st[0]["cmd"])
-        self.assertIn("2026-10-21", st[4]["cmd"])
+        self.assertIn("2026-10-21", st[5]["cmd"])
         self.assertTrue(all(s["pass_re"] for s in st))
 
     def test_no_fetch_skips_the_box_score_step(self):
         st = M.steps("2026-10-21", fetch=False, seasons=10000)
         self.assertEqual(st[0]["name"], "season lines")
+        self.assertNotIn("transactions", [s["name"] for s in st])
+
+    def test_status_gate_checks_the_runs_own_dated_file(self):
+        # 2026-10-20: --check with no file read the newest-dated file (a test run's 10/21), not the morning's own
+        st = M.steps("2026-10-20", fetch=False, seasons=10000)
+        gate = next(s for s in st if s["name"] == "status feed")["cmd"][-1]
+        self.assertIn("--check", gate); self.assertTrue(gate.endswith("status_2026-10-20.json"))
 
     def test_brief_runs_on_the_season_pool(self):
         st = M.steps("2026-10-21", fetch=True, seasons=10000)

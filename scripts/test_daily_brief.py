@@ -101,5 +101,43 @@ class SeasonPool(unittest.TestCase):
         self.assertTrue(CG.hoops.DATA_PATH.endswith(f"players_{CG.LINES_TAG}.csv"))
 
 
+class StatusFile(unittest.TestCase):
+    """2026-10-20: a status file dated after the brief (a test run of tomorrow's morning) shadowed the day's own
+    file, so the brief read yesterday's rosters' letters. The brief reads the newest file dated on or before it."""
+    def test_a_later_dated_file_does_not_shadow_the_brief_date(self):
+        import json, tempfile
+        d = tempfile.mkdtemp()
+        os.makedirs(os.path.join(d, "data", "status"))
+        for day in ("2026-10-19", "2026-10-20", "2026-10-21"):
+            json.dump({"rows": [{"player": day}]}, open(os.path.join(d, "data", "status", f"status_{day}.json"), "w"))
+        kit, CG.KIT = CG.KIT, d
+        try:
+            st, name = DB.newest_status("2026-10-20")
+            self.assertEqual(name, "status_2026-10-20.json"); self.assertEqual(st["rows"][0]["player"], "2026-10-20")
+            self.assertEqual(DB.newest_status("2026-10-25")[1], "status_2026-10-21.json")
+            self.assertIsNone(DB.newest_status("2026-10-18")[1])
+        finally:
+            CG.KIT = kit
+
+
+class Transactions(unittest.TestCase):
+    """2026-10-20 (owner): Kevin Porter Jr. waived by MIL on 10/19 reaches the brief; yours first, then the opponent."""
+    REC = {"window": ["2026-10-18", "2026-10-20"], "items_in_window": 9, "source": {"ok": True}, "hits": [
+        {"date": "2026-10-19", "nba_team": "LAL", "description": "Waived F Dalton Knecht.", "player": "Dalton Knecht", "fantasy_team": None, "seat": None},
+        {"date": "2026-10-19", "nba_team": "MIL", "description": "Waived G Kevin Porter Jr.", "player": "Kevin Porter Jr.", "fantasy_team": "THEM", "seat": 11},
+        {"date": "2026-10-18", "nba_team": "SAS", "description": "Signed F Tobias Harris.", "player": "Tobias Harris", "fantasy_team": "ME", "seat": 10}]}
+
+    def test_order_and_labels(self):
+        L = DB.transactions_lines(self.REC, "ME", "THEM")
+        self.assertIn("9 moves, 3 naming a board player", L[0])
+        self.assertTrue(L[1].startswith("- **Tobias Harris** (yours)"))
+        self.assertIn("THEM, your opponent this week", L[2]); self.assertIn("Waived G Kevin Porter Jr.", L[2])
+        self.assertIn("on no roster", L[3])
+
+    def test_unread_feed_and_missing_record_say_so(self):
+        self.assertIn("NOT read", DB.transactions_lines({**self.REC, "source": {"ok": False, "detail": "timed out"}}, "ME", "THEM")[0])
+        self.assertIn("Not read", DB.transactions_lines(None, "ME", "THEM")[0])
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
