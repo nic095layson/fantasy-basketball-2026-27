@@ -143,6 +143,15 @@ class Deck(unittest.TestCase):
         self.assertIn('id:"bd-reset"', board)
         self.assertNotIn("tbl.replaceChildren(\n      h(", board)  # a bare null child prints "null" (Chromium-checked)
 
+    def test_my_held_players_are_named_on_trade_and_fa(self):
+        # owner 2026-10-20: "I have Max Strus on my IL but he is not showing up" -> option (b): my side of the Trade
+        # and FA panes names my rostered players held off the board (display only; the line already exists for theirs)
+        html, data, rec = self.build()
+        self.assertIn("function myHeld(", html)
+        trade = html.split('$("#pane-trade")')[1].split('$("#pane-fa")')[0]
+        fa = html.split('$("#pane-fa")')[1].split("// ---- Board")[0]
+        self.assertIn("myHeld()", trade); self.assertIn("myHeld()", fa)
+
     def test_no_hand_typed_figures_outside_data(self):
         # the static shell (html with the data block stripped) carries no decimal figures from the records
         html, data, rec = self.build()

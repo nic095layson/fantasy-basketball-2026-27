@@ -336,6 +336,9 @@ function buildStrip(id, deltas, active){ const after=active? leagueRanks(deltas)
       : "Current build; picking a move shows before → after. ")
       +"IL players count 0 (owner rule D-IS-8) · z screen only — not the simulator."));
 }
+// owner 2026-10-20 (Strus on IL "not showing up"): my rostered players held off the board, named under my list
+function myHeld(){ const ob=(D.league.rosters[D.my_team]||{}).off_board||[];
+  return ob.length? h("p",{class:"note"},"You also roster, off the board (held, no z line): "+ob.join(", ")) : null; }
 function myField(){ return h("div",{class:"field static",title:T(D.my_team)},T(D.my_team)+" · "+MINE.length+" on the board"); }
 function pickList(rows, set, rerender, empty){ return h("div",{class:"plist"}, rows.length? rows.map(r=>h("label",{},
   h("input",{type:"checkbox",...(set.has(r.name)?{checked:""}:{}),onchange:(e)=>{e.target.checked?set.add(r.name):set.delete(r.name);rerender();}}),
@@ -362,7 +365,7 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
       h("div",{class:"h2row"},h("h2",{},"Trade Analyzer"),
         h("button",{id:"tr-reset",class:"resetbtn",onclick:()=>{out.clear();inc.clear();render();}},"Reset")),
       h("div",{class:"pick"},
-        h("div",{},h("h2",{},"I send"),myField(),pickList(MINE,out,render,"No players of yours on the board.")),
+        h("div",{},h("h2",{},"I send"),myField(),pickList(MINE,out,render,"No players of yours on the board."),myHeld()),
         h("div",{},h("h2",{},"I receive"),
           h("select",{id:"tr-team",class:"field",onchange:(e)=>{team=e.target.value;inc.clear();render();}},teams.map(t=>h("option",{value:t,...(t===team?{selected:""}:{})},T(t)))),
           pickList(theirs,inc,render,"No board rows on this roster."))),
@@ -382,7 +385,7 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
         h("button",{id:"fa-reset",class:"resetbtn",onclick:()=>{drop.clear();add.clear();search="";inp.value="";render();}},"Reset")),
       h("p",{class:"note"},nfa+" unrostered players on today's board, matched to all 12 rosters as of "+D.league.as_of+"."),
       h("div",{class:"pick"},
-        h("div",{},h("h2",{},"I drop"),myField(),pickList(MINE,drop,render,"No players of yours on the board.")),
+        h("div",{},h("h2",{},"I drop"),myField(),pickList(MINE,drop,render,"No players of yours on the board."),myHeld()),
         h("div",{},h("h2",{},"I add"),
           inp,
           pickList(pool,add,render,"No free agents match."))),
