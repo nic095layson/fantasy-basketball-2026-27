@@ -144,18 +144,18 @@ SHELL = r"""<title>Season Deck 2026-27</title>
 /* layout: sticky scoreboard header with a scrollable tab rail; one column on phones, two for the Today pane on desktop */
 :root{
   --bg:#F4F5F3; --surface:#FFFFFF; --ink:#1B2630; --ink2:#5B6670; --line:#DEE2E0; --chip:#ECEEEC;
-  --accent:#C45A21; --mine:#077FA6; --pos:#2766A8; --neg:#C13F2E;
+  --accent:#C45A21; --mine:#077FA6; --pos:#2766A8; --neg:#C13F2E; --negtx:#B83A2A;
   --ok:#2E7D4F; --warn:#B26A00; --crit:#B3261E;
   --disp:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;
   --body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
 }
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
   --bg:#11161B; --surface:#1A222A; --ink:#E7EAEC; --ink2:#9AA4AD; --line:#2A343D; --chip:#232D36;
-  --accent:#D06B2A; --mine:#1E97AD; --pos:#4484C8; --neg:#CE5240;
+  --accent:#D06B2A; --mine:#1E97AD; --pos:#4484C8; --neg:#CE5240; --negtx:#E2735F;
   --ok:#5BB77F; --warn:#D9A04C; --crit:#E07069; color-scheme:dark } }
 :root[data-theme="dark"]{
   --bg:#11161B; --surface:#1A222A; --ink:#E7EAEC; --ink2:#9AA4AD; --line:#2A343D; --chip:#232D36;
-  --accent:#D06B2A; --mine:#1E97AD; --pos:#4484C8; --neg:#CE5240;
+  --accent:#D06B2A; --mine:#1E97AD; --pos:#4484C8; --neg:#CE5240; --negtx:#E2735F;
   --ok:#5BB77F; --warn:#D9A04C; --crit:#E07069; color-scheme:dark }
 body{background:var(--bg); color:var(--ink); font-family:var(--body); margin:0; font-size:15px; line-height:1.45}
 .wrap{max-width:1060px; margin:0 auto; padding-left:max(16px,env(safe-area-inset-left,0px)); padding-right:max(16px,env(safe-area-inset-right,0px)); padding-block:0 48px}
@@ -214,6 +214,7 @@ select,input[type=search],input[type=text]{background:var(--surface); color:var(
 .bchip.up .br{color:var(--pos)} .bchip.down .br{color:var(--neg)}
 .verdict{font-family:var(--disp); font-weight:700; font-size:22px; letter-spacing:.03em}
 .verdict.pos{color:var(--pos)} .verdict.neg{color:var(--neg)} .verdict.even{color:var(--ink2)}
+.zneg{color:var(--negtx)}  /* text red: 4.5:1+ on surface, bg and chip in both themes (--neg is for fills) */
 .h2row{display:flex; justify-content:space-between; align-items:center; gap:10px; margin:0 0 8px}
 .h2row h2{margin:0}
 .resetbtn{border:1px solid var(--line); background:var(--surface); color:var(--ink2); border-radius:999px; padding:5px 14px; cursor:pointer; font-size:13px; min-height:32px}
@@ -254,6 +255,8 @@ function h(tag, attrs, ...kids){ const el=document.createElement(tag);
   for(const k of kids.flat()){ if(k==null) continue; el.append(k.nodeType?k:document.createTextNode(k)); } return el; }
 const f1=(x)=>(x==null?"—":(Math.round(x*10)/10).toFixed(1)), f2=(x)=>(x==null?"—":x.toFixed(2)), pct=(x)=>(x==null?"—":(x*100).toFixed(1)+"%");
 const sgn=(x,d)=>((x>=0?"+":"")+x.toFixed(d==null?2:d));
+// owner 2026-10-20: negative z-scores in red font; a value that rounds to 0.00 stays uncolored
+function zv(x, signed){ const t=signed? sgn(x) : f2(x); return h("span",(x!=null && Math.round(x*100)<0)?{class:"zneg"}:{},t); }
 /*SWAP_MATH_BEGIN*/
 function swapMath(inRows, outRows, cats){
   const d={}; let net=0;
@@ -336,18 +339,18 @@ function buildStrip(id, deltas, active){ const after=active? leagueRanks(deltas)
 function myField(){ return h("div",{class:"field static",title:T(D.my_team)},T(D.my_team)+" · "+MINE.length+" on the board"); }
 function pickList(rows, set, rerender, empty){ return h("div",{class:"plist"}, rows.length? rows.map(r=>h("label",{},
   h("input",{type:"checkbox",...(set.has(r.name)?{checked:""}:{}),onchange:(e)=>{e.target.checked?set.add(r.name):set.delete(r.name);rerender();}}),
-  r.name+" · "+r.pos+" · "+r.team+" · z "+f2(r.z_adj))) : h("div",{class:"zero"},empty)); }
+  r.name+" · "+r.pos+" · "+r.team+" · z ",zv(r.z_adj))) : h("div",{class:"zero"},empty)); }
 function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
   if(!(inRows.length||outRows.length)) return h("p",{class:"zero"},"Pick players on both sides to score a move.");
   const m=swapMath(inRows,outRows,CATS);
   return h("div",{},
     h("div",{class:"tablebox"},h("table",{},
       h("tr",{},h("th",{},"category"),h("th",{class:"num"},"Δz"),h("th",{},"size"),h("th",{},"")),
-      CATS.map(c=>h("tr",{},h("td",{},c),h("td",{class:"num"},sgn(m.d[c])),h("td",{},tier(m.d[c],C.tier_low,C.tier_high)),
+      CATS.map(c=>h("tr",{},h("td",{},c),h("td",{class:"num"},zv(m.d[c],true)),h("td",{},tier(m.d[c],C.tier_low,C.tier_high)),
         h("td",{},h("span",{class:"bar "+(m.d[c]>=0?"pos":"neg")},h("i",{style:"width:"+Math.min(120,Math.round(Math.abs(m.d[c])*40))+"px"}))))))),
     h("p",{},h("span",{class:"verdict "+(m.net>=C.verdict_edge?"pos":(m.net<=-C.verdict_edge?"neg":"even"))},
       (m.net>=C.verdict_strong?"STRONG FAVORABLE "+noun:m.net>=C.verdict_edge?"FAVORABLE "+noun:m.net<=-C.verdict_strong?"STRONG UNFAVORABLE "+noun:m.net<=-C.verdict_edge?"UNFAVORABLE "+noun:"ABOUT EVEN")),
-      " ",h("span",{class:"note"},"net Δz "+sgn(m.net)+" · in "+inRows.length+" / out "+outRows.length+" · z screen only — not the simulator")),
+      " ",h("span",{class:"note"},"net Δz ",zv(m.net,true)," · in "+inRows.length+" / out "+outRows.length+" · z screen only — not the simulator")),
     (inRows.length!==outRows.length)? h("p",{class:"note"},"Unequal player counts: the net also prices the empty or extra roster spot at z 0; judge accordingly."):null);
 }
 (function(){ const p=$("#pane-trade"); const teams=Object.keys(D.league.rosters).filter(t=>t!==D.my_team).sort();
@@ -401,11 +404,11 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
     cmp.replaceChildren(h("h2",{},"Compare"),
       h("div",{class:"pick"},h("div",{},sel("cmp-a",ca,v=>{ca=v;cmpRender();})),h("div",{},sel("cmp-b",cb,v=>{cb=v;cmpRender();}))),
       (a&&b)? h("div",{},
-        h("p",{class:"note"},a.name+" (z "+f2(a.z_adj)+", left bars) vs "+b.name+" (z "+f2(b.z_adj)+", right bars)"),
+        h("p",{class:"note"},a.name+" (z ",zv(a.z_adj),", left bars) vs "+b.name+" (z ",zv(b.z_adj),", right bars)"),
         h("div",{class:"cmp"},CATS.map(c=>[
-          h("div",{class:"cl"},h("i",{style:"width:"+Math.min(110,Math.round(Math.max(0,a.z[c]+2)*22))+"px"}),h("b",{style:"font-size:11px;margin-left:4px"},f2(a.z[c]))),
+          h("div",{class:"cl"},h("i",{style:"width:"+Math.min(110,Math.round(Math.max(0,a.z[c]+2)*22))+"px"}),h("b",{style:"font-size:11px;margin-left:4px"},zv(a.z[c]))),
           h("div",{class:"cc"},c),
-          h("div",{class:"cr"},h("b",{style:"font-size:11px;margin-right:4px"},f2(b.z[c])),h("i",{style:"width:"+Math.min(110,Math.round(Math.max(0,b.z[c]+2)*22))+"px"}))]).flat())
+          h("div",{class:"cr"},h("b",{style:"font-size:11px;margin-right:4px"},zv(b.z[c])),h("i",{style:"width:"+Math.min(110,Math.round(Math.max(0,b.z[c]+2)*22))+"px"}))]).flat())
       ) : h("p",{class:"zero"},"Pick two players."));
   }
   function render(){ let rs=rows.filter(r=>(!q||r.name.toLowerCase().includes(q.toLowerCase())||(r.owner||"FA").toLowerCase().includes(q.toLowerCase()))&&(!fa||r.fa));
@@ -420,7 +423,7 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
       h("div",{class:"tablebox"},h("table",{},
         h("tr",{},hd("#","rank",true),hd("player","name"),h("th",{},"pos"),hd("owner","owner"),hd("z adj","z_adj",true),CATS.map(c=>hd(c,c,true))),
         rs.slice(0,200).map(r=>h("tr",{},h("td",{class:"num"},String(r.rank)),h("td",{},r.name+" · "+r.team),h("td",{},r.pos),
-          h("td",{},ownChip(r)),h("td",{class:"num"},f2(r.z_adj)),CATS.map(c=>h("td",{class:"num"},f2(r.z[c]))))))),
+          h("td",{},ownChip(r)),h("td",{class:"num"},zv(r.z_adj)),CATS.map(c=>h("td",{class:"num"},zv(r.z[c]))))))),
       rs.length>200?h("p",{class:"note"},"Showing the first 200 of "+rs.length+" rows; narrow with search."):null);
     cmpRender();
   }
@@ -434,7 +437,7 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
     L.movers.length? h("div",{class:"tablebox"},h("table",{},
       h("tr",{},h("th",{},"player"),h("th",{class:"num"},"games"),h("th",{},"moved")),
       L.movers.map(m=>h("tr",{},h("td",{},m.name),h("td",{class:"num"},String(m.games)),
-        h("td",{},Object.entries(m.moved).map(([c,v])=>h("span",{class:"chip",style:"margin-right:4px"},c+" "+sgn(v))))))))
+        h("td",{},Object.entries(m.moved).map(([c,v])=>h("span",{class:"chip",style:"margin-right:4px"},c+" ",zv(v,true))))))))
       : h("div",{class:"zero"},"No movers yet — the first regular-season games land 2026-10-21."),
     L.unpooled_with_games.length? h("p",{class:"note"},"Unpooled with games: "+L.unpooled_with_games.join(", ")):null));
 })();
