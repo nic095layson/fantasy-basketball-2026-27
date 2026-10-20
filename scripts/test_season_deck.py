@@ -90,8 +90,10 @@ class Deck(unittest.TestCase):
 
     def test_panes_present(self):
         html, data, rec = self.build()
-        for pane in ["pane-today", "pane-trade", "pane-fa", "pane-board", "pane-movers", "pane-status", "pane-week"]:
+        for pane in ["pane-today", "pane-trade", "pane-fa", "pane-board", "pane-movers", "pane-week"]:
             self.assertIn(f'id="{pane}"', html)
+        for gone in ["pane-status", "pane-waivers", "pane-moves"]:  # removed on the owner's calls 2026-10-19
+            self.assertNotIn(f'id="{gone}"', html)
         self.assertIn("deck-data", html); self.assertIn("<title>", html)
 
     def test_no_hand_typed_figures_outside_data(self):

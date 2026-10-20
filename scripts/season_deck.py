@@ -127,7 +127,7 @@ def build(paths, date):
     record = dict(date=date, out=f"report/season/deck_{date}.html",
                   inputs={k: dict(path=os.path.relpath(p, KIT) if p.startswith(KIT) else p,
                                   sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
-                  board_rows=len(board["board"]), status_rows=len(status["rows"]), panes=7,
+                  board_rows=len(board["board"]), status_rows=len(status["rows"]), panes=6,
                   join=dict(rostered=len(rostered), unresolved=0, on_board=sum(1 for n in rostered if rmap[n] in on_board),
                             off_board=sum(1 for n in rostered if rmap[n] not in on_board), respelled=respelled,
                             free_agents_on_board=sum(1 for r in board["board"] if r["fa"])))
@@ -202,8 +202,6 @@ select,input[type=search],input[type=text]{background:var(--surface); color:var(
 .plist input{accent-color:var(--accent)}
 .verdict{font-family:var(--disp); font-weight:700; font-size:22px; letter-spacing:.03em}
 .verdict.pos{color:var(--pos)} .verdict.neg{color:var(--neg)} .verdict.even{color:var(--ink2)}
-details.rcpt{font-size:12.5px; color:var(--ink2)}
-details.rcpt summary{cursor:pointer}
 .mode{display:flex; gap:8px; margin-bottom:10px}
 .mode button{border:1px solid var(--line); background:var(--surface); color:var(--ink2); border-radius:999px; padding:7px 14px; cursor:pointer; font-size:13.5px; min-height:38px}
 .mode button[aria-pressed="true"]{background:var(--ink); color:var(--bg); border-color:var(--ink)}
@@ -227,7 +225,6 @@ footer{color:var(--ink2); font-size:12px; margin-top:28px; border-top:1px solid 
   <section class="pane" id="pane-fa" role="tabpanel" hidden></section>
   <section class="pane" id="pane-board" role="tabpanel" hidden></section>
   <section class="pane" id="pane-movers" role="tabpanel" hidden></section>
-  <section class="pane" id="pane-status" role="tabpanel" hidden></section>
   <section class="pane" id="pane-week" role="tabpanel" hidden></section>
   <footer id="foot"></footer>
 </div></main>
@@ -385,17 +382,6 @@ function scoreBlock(inRows, outRows){
     L.unpooled_with_games.length? h("p",{class:"note"},"Unpooled with games: "+L.unpooled_with_games.join(", ")):null));
 })();
 
-// ---- Status ----
-(function(){ const p=$("#pane-status"); const s=D.status;
-  p.append(h("div",{class:"card"},h("h2",{},"Status flags — "+s.rows.length+" rostered players"),
-    h("p",{class:"note"},"Tiers: "+Object.entries(s.tiers).map(([k,v])=>((k==="None"||k===null)?"healthy":k)+" → "+v[1]).join(" · ")+" (P is a stated default, D-IS-6)."),
-    h("div",{class:"tablebox"},h("table",{},
-      h("tr",{},h("th",{},"player"),h("th",{},"fantasy team"),h("th",{},"slot"),h("th",{},"letter"),h("th",{},"tier"),h("th",{class:"num"},"avail"),h("th",{},"receipt")),
-      s.rows.map(r=>h("tr",{},h("td",{},r.player),h("td",{},r.fantasy_team+(r.seat===D.my_seat?" (me)":"")),h("td",{},r.slot),
-        h("td",{},statusChip(r.yahoo_status)||"—"),h("td",{},r.tier),h("td",{class:"num"},f2(r.availability)),
-        h("td",{},r.receipts&&r.receipts.length? h("details",{class:"rcpt"},h("summary",{},r.receipts[0].source+" · "+r.receipts[0].captured),r.receipts.map(x=>h("div",{},x.text||""))) : "—")))))));
-})();
-
 // ---- Week / ledger ----
 (function(){ const p=$("#pane-week"); const b=D.brief; const weeks=Object.values(D.ledger).sort((a,z)=>a.week-z.week);
   p.append(h("div",{class:"card"},h("h2",{},"Week "+b.week+" — "+(b.week_window?b.week_window.join(" to "):"")),
@@ -409,7 +395,7 @@ function scoreBlock(inRows, outRows){
 })();
 
 // ---- tabs, footer ----
-(function(){ const defs=[["today","Today"],["trade","Trade Analyzer"],["fa","Free Agents"],["board","Board"],["movers","Movers"],["status","Status"],["week","Week"]];
+(function(){ const defs=[["today","Today"],["trade","Trade Analyzer"],["fa","Free Agents"],["board","Board"],["movers","Movers"],["week","Week"]];
   const tabs=$("#tabs"); let cur="today";
   try{ const s=localStorage.getItem("deck-tab"); if(s&&defs.some(d=>d[0]===s)) cur=s; }catch(e){}
   const hash=(location.hash||"").replace("#",""); if(defs.some(d=>d[0]===hash)) cur=hash;
@@ -438,7 +424,7 @@ def main():
     outdir = os.path.join(KIT, "report", "season"); os.makedirs(outdir, exist_ok=True)
     op = os.path.join(outdir, f"deck_{a.date}.html"); open(op, "w", encoding="utf-8").write(html)
     rp = os.path.join(outdir, f"deck_record_{a.date}.json"); json.dump(record, open(rp, "w", encoding="utf-8"), indent=1)
-    print(f"SEASON DECK: PASS — {a.date}: report/season/deck_{a.date}.html (7 panes, {record['board_rows']} board rows, "
+    print(f"SEASON DECK: PASS — {a.date}: report/season/deck_{a.date}.html ({record['panes']} panes, {record['board_rows']} board rows, "
           f"{record['status_rows']} status rows; record deck_record_{a.date}.json pins {len(record['inputs'])} inputs)")
 
 
