@@ -87,7 +87,7 @@ arena simulations, and any future recovery-tagged player stashed on a bench inst
 
 **Verification.** Red-first: two recovery tags were added to `test_card.py`'s three-engine
 twin case, and **2 of 103 cases failed** on the old engine (Python and page both returned
-0.6). After the change: test_card **103/103**, test_draft **67/67**, test_gates ⟨GATES⟩,
+0.6). After the change: test_card **103/103**, test_draft **67/67**, test_gates **54/54** (32 min 48 s),
 check_parity **EXACT MATCH** (520 owner turns across 40 committed states, 3,015 z-score cells, 72 hash vectors bit-identical; 38 min 54 s). The constants registry caught the change on its own (`CONSTANTS CHECK:
 FAIL … recovery 0.6 != 0.0`), proving the drift detector works. The registry entry now carries
 the new value, its basis and its in-season effect; check is **PASS 31 = 31**.
@@ -243,7 +243,7 @@ are right. That is the sweep's job (D-RT-STALE).
 | kit suite | **219/219** | 204 + 15 new (`test_run_ledger.py`) |
 | deck test_card / test_draft | **103/103**, **67/67** | red-first 2/103 before the change |
 | deck check_parity | **EXACT** | 520 turns / 40 states |
-| deck test_gates | ⟨GATES⟩ | |
+| deck test_gates | **54/54** | every publish gate seen to fire and to accept, in a scratch copy (32 min 48 s) |
 | A-9 | **PASS** | §5 |
 
 ## Watchlist
@@ -351,8 +351,8 @@ morning task's prompt was not edited before the kit PR is merged.
 
 Session `session_01QjgeRdpDaWgSJmGKRG8fTU`, 2026-10-21. Governors: plan-gate **loaded for this
 task** (full block emitted before the first change); adversarial-verify **loaded for this task**, after the builds and before delivery, with the pass run in full.
-- Criteria: C1, C3, C4, C5 and C6 PASS with the evidence above; C2 PASS once `test_gates`
-  is green (§6).
+- Criteria: **C1 to C6 all PASS** with the evidence above (C2 closed by deck `test_gates`
+  54/54 and parity EXACT).
 - What the refutation found, each fixed before delivery:
   - the headline count (2,129 → 2,174);
   - the shared-seed season test (re-run on independent seeds; the tolerance did not move);
