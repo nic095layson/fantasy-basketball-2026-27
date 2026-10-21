@@ -1,0 +1,1061 @@
+{
+ "fingerprint": {
+  "kit_head": "0cf921e",
+  "deck_head": "80eecdf",
+  "engine_commit": "80eecdf"
+ },
+ "stream_r": 0.2,
+ "inputs": {
+  "data/season/pool_season.csv": "d1d74587c5db",
+  "data/season/projections_season.csv": "07a9ecc2b696",
+  "data/league_state.json": "521138a86b6f"
+ },
+ "pool_rows": 335,
+ "matched": 315,
+ "unmatched": [
+  {
+   "player": "Steven Adams",
+   "tier": "risk"
+  },
+  {
+   "player": "Buddy Hield",
+   "tier": "healthy"
+  },
+  {
+   "player": "Jordan Hawkins",
+   "tier": "healthy"
+  },
+  {
+   "player": "Russell Westbrook",
+   "tier": "out"
+  },
+  {
+   "player": "Malcolm Brogdon",
+   "tier": "out"
+  },
+  {
+   "player": "Lonzo Ball",
+   "tier": "out"
+  },
+  {
+   "player": "Dorian Finney-Smith",
+   "tier": "healthy"
+  },
+  {
+   "player": "Julian Strawther",
+   "tier": "healthy"
+  },
+  {
+   "player": "Jaden Hardy",
+   "tier": "healthy"
+  },
+  {
+   "player": "Jarred Vanderbilt",
+   "tier": "risk"
+  },
+  {
+   "player": "Ochai Agbaji",
+   "tier": "healthy"
+  },
+  {
+   "player": "Trayce Jackson-Davis",
+   "tier": "healthy"
+  },
+  {
+   "player": "Corey Kispert",
+   "tier": "healthy"
+  },
+  {
+   "player": "Gabe Vincent",
+   "tier": "healthy"
+  },
+  {
+   "player": "Tre Mann",
+   "tier": "healthy"
+  },
+  {
+   "player": "Landry Shamet",
+   "tier": "healthy"
+  },
+  {
+   "player": "D'Angelo Russell",
+   "tier": "out"
+  },
+  {
+   "player": "Jordan Clarkson",
+   "tier": "healthy"
+  },
+  {
+   "player": "Jonas Valanciunas",
+   "tier": "out"
+  },
+  {
+   "player": "Nicolas Batum",
+   "tier": "out"
+  }
+ ],
+ "populations": {
+  "pool": {
+   "n": 315,
+   "kit_healthy_median": 0.8634,
+   "sim_healthy": 0.88,
+   "tiers": {
+    "healthy": {
+     "n": 271,
+     "kit_held": 1,
+     "gp": {
+      "n": 271,
+      "mean": 67.6015,
+      "min": 30.0,
+      "max": 79.0
+     },
+     "deck_abs": [
+      1.0
+     ],
+     "sim_abs": [
+      0.88
+     ],
+     "kit_abs": {
+      "n": 270,
+      "mean": 0.8609,
+      "min": 0.4927,
+      "max": 0.9707
+     },
+     "kit_at_or_above_healthy_median": 184,
+     "deck_rel": [
+      1.0
+     ],
+     "sim_rel": [
+      1.0
+     ],
+     "kit_rel": {
+      "n": 270,
+      "mean": 0.9971,
+      "min": 0.5707,
+      "max": 1.1243
+     }
+    },
+    "mild": {
+     "n": 2,
+     "kit_held": 0,
+     "gp": {
+      "n": 2,
+      "mean": 52.5,
+      "min": 45.0,
+      "max": 60.0
+     },
+     "deck_abs": [
+      0.85
+     ],
+     "sim_abs": [
+      0.79
+     ],
+     "kit_abs": {
+      "n": 2,
+      "mean": 0.7122,
+      "min": 0.639,
+      "max": 0.7854
+     },
+     "kit_at_or_above_healthy_median": 0,
+     "deck_rel": [
+      0.85
+     ],
+     "sim_rel": [
+      0.8977
+     ],
+     "kit_rel": {
+      "n": 2,
+      "mean": 0.8249,
+      "min": 0.7401,
+      "max": 0.9097
+     }
+    },
+    "risk": {
+     "n": 31,
+     "kit_held": 0,
+     "gp": {
+      "n": 31,
+      "mean": 60.7097,
+      "min": 45.0,
+      "max": 72.0
+     },
+     "deck_abs": [
+      0.78
+     ],
+     "sim_abs": [
+      0.75
+     ],
+     "kit_abs": {
+      "n": 31,
+      "mean": 0.7923,
+      "min": 0.639,
+      "max": 0.9024
+     },
+     "kit_at_or_above_healthy_median": 7,
+     "deck_rel": [
+      0.78
+     ],
+     "sim_rel": [
+      0.8523
+     ],
+     "kit_rel": {
+      "n": 31,
+      "mean": 0.9176,
+      "min": 0.7401,
+      "max": 1.0452
+     }
+    },
+    "recovery": {
+     "n": 8,
+     "kit_held": 8,
+     "gp": {
+      "n": 8,
+      "mean": 20.375,
+      "min": 15.0,
+      "max": 25.0
+     },
+     "deck_abs": [
+      0.0
+     ],
+     "sim_abs": [
+      0.0
+     ],
+     "kit_abs": {
+      "n": 0
+     },
+     "kit_at_or_above_healthy_median": 0,
+     "deck_rel": [
+      0.0
+     ],
+     "sim_rel": [
+      0.0
+     ],
+     "kit_rel": {
+      "n": 0
+     }
+    },
+    "out": {
+     "n": 3,
+     "kit_held": 3,
+     "gp": {
+      "n": 3,
+      "mean": 25.0,
+      "min": 25.0,
+      "max": 25.0
+     },
+     "deck_abs": [
+      0.0
+     ],
+     "sim_abs": [
+      0.0
+     ],
+     "kit_abs": {
+      "n": 0
+     },
+     "kit_at_or_above_healthy_median": 0,
+     "deck_rel": [
+      0.0
+     ],
+     "sim_rel": [
+      0.0
+     ],
+     "kit_rel": {
+      "n": 0
+     }
+    }
+   },
+   "players": [
+    {
+     "player": "Anthony Davis",
+     "tag": "inj-risk",
+     "tier": "risk",
+     "gp": 55.0,
+     "deck": 0.78,
+     "kit": 0.7366,
+     "kit_held": false,
+     "sim": 0.75,
+     "active": true,
+     "kit_rel": 0.8531,
+     "sim_rel": 0.8523
+    },
+    {
+     "player": "Ja Morant",
+     "tag": "inj-risk",
+     "tier": "risk",
+     "gp": 60.0,
+     "deck": 0.78,
+     "kit": 0.7854,
+     "kit_held": false,
+     "sim": 0.75,
+     "active": true,
+     "kit_rel": 0.9097,
+     "sim_rel": 0.8523
+    },
+    {
+     "player": "Jaren Jackson Jr.",
+     "tag": "inj-knee-risk",
+     "tier": "risk",
+     "gp": 68.0,
+     "deck": 0.78,
+     "kit": 0.8634,
+     "kit_held": false,
+     "sim": 0.75,
+     "active": true,
+     "kit_rel": 1.0,
+     "sim_rel": 0.8523
+    },
+    {
+     "player": "Stephen Curry",
+     "tag": "inj-risk;",
+     "tier": "risk",
+     "gp": 62.0,
+     "deck": 0.78,
+     "kit": 0.8049,
+     "kit_held": false,
+     "sim": 0.75,
+     "active": true,
+     "kit_rel": 0.9322,
+     "sim_rel": 0.8523
+    },
+    {
+     "player": "LeBron James",
+     "tag": "inj-age41-risk",
+     "tier": "risk",
+     "gp": 55.0,
+     "deck": 0.78,
+     "kit": 0.7366,
+     "kit_held": false,
+     "sim": 0.75,
+     "active": true,
+     "kit_rel": 0.8531,
+     "sim_rel": 0.8523
+    },
+    {
+     "player": "Zion Williamson",
+     "tag": "inj-risk;",
+     "tier": "risk",
+     "gp": 50.0,
+     "deck": 0.78,
+     "kit": 0.6878,
+     "kit_held": false,
+     "sim": 0.75,
+     "active": true,
+     "kit_rel": 0.7966,
+     "sim_rel": 0.8523
+    },
+    {
+     "player": "Kawhi Leonard",
+     "tag": "inj-risk",
+     "tier": "risk",
+     "gp": 60.0,
+     "deck": 0.78,
+     "kit": 0.7854,
+     "kit_held": false,
+     "sim": 0.75,
+     "active": true,
+     "kit_rel": 0.9097,
+     "sim_rel": 0.8523
+    },
+    {
+     "player": "Kristaps Porzingis",
+     "tag": "inj-risk;",
+     "tier": "risk",
+     "gp": 54.0,
+     "deck": 0.78,
+     "kit": 0.7268,
+     "kit_held": false,
+     "sim": 0.75,
+     "active": false,
+     "kit_rel": 0.8418,
+     "sim_rel": 0.8523
+    },
+    {
+     "player": "Joel Embiid",
+     "tag": "inj-risk;",
+     "tier": "risk",
+     "gp": 45.0,
+     "deck": 0.78,
+     "kit": 0.639,
+     "kit_held": false,
+     "sim": 0.75,
+     "active": true,
+     "kit_rel": 0.7401,
+     "sim_rel": 0.8523
+    },
+    {
+     "player": "Zach Edey",
+     "tag": "inj-ankle-risk",
+     "tier": "risk",
+     "gp": 70.0,
+     "deck": 0.78,
+     "kit": 0.8829,
+     "kit_held": false,
+     "sim": 0.75,
+     "active": true,
+     "kit_rel": 1.0226,
+     "sim_rel": 0.8523
+    },
+    {
+     "player": "Mitchell Robinson",
+     "tag": "inj-risk",
+     "tier": "risk",
+     "gp": 64.0,
+     "deck": 0.78,
+     "kit": 0.8244,
+     "kit_held": false,
+     "sim": 0.75,
+     "active": true,
+     "kit_rel": 0.9548,
+     "sim_rel": 0.8523
+    },
+    {
+     "player": "Alex Sarr",
+     "tag": "inj-foot-risk",
+     "tier": "risk",
+     "gp": 72.0,
+     "deck": 0.78,
+     "kit": 0.9024,
+     "kit_held": false,
+     "sim": 0.75,
+     "active": true,
+     "kit_rel": 1.0452,
+     "sim_rel": 0.8523
+    },
+    {
+     "player": "Jayson Tatum",
+     "tag": "inj-achilles-risk;",
+     "tier": "risk",
+     "gp": 65.0,
+     "deck": 0.78,
+     "kit": 0.8341,
+     "kit_held": false,
+     "sim": 0.75,
+     "active": true,
+     "kit_rel": 0.9661,
+     "sim_rel": 0.8523
+    },
+    {
+     "player": "Kyrie Irving",
+     "tag": "inj-acl-risk-mild",
+     "tier": "mild",
+     "gp": 60.0,
+     "deck": 0.85,
+     "kit": 0.7854,
+     "kit_held": false,
+     "sim": 0.79,
+     "active": true,
+     "kit_rel": 0.9097,
+     "sim_rel": 0.8977
+    },
+    {
+     "player": "Damian Lillard",
+     "tag": "inj-achilles-risk-mild",
+     "tier": "mild",
+     "gp": 45.0,
+     "deck": 0.85,
+     "kit": 0.639,
+     "kit_held": false,
+     "sim": 0.79,
+     "active": true,
+     "kit_rel": 0.7401,
+     "sim_rel": 0.8977
+    },
+    {
+     "player": "Fred VanVleet",
+     "tag": "inj-acl-risk",
+     "tier": "risk",
+     "gp": 55.0,
+     "deck": 0.78,
+     "kit": 0.7366,
+     "kit_held": false,
+     "sim": 0.75,
+     "active": true,
+     "kit_rel": 0.8531,
+     "sim_rel": 0.8523
+    },
+    {
+     "player": "Dejounte Murray",
+     "tag": "inj-achilles-risk",
+     "tier": "risk",
+     "gp": 62.0,
+     "deck": 0.78,
+     "kit": 0.8049,
+     "kit_held": false,
+     "sim": 0.75,
+     "active": true,
+     "kit_rel": 0.9322,
+     "sim_rel": 0.8523
+    },
+    {
+     "player": "Paul George",
+     "tag": "inj-risk;",
+     "tier": "risk",
+     "gp": 60.0,
+     "deck": 0.78,
+     "kit": 0.7854,
+     "kit_held": false,
+     "sim": 0.75,
+     "active": true,
+     "kit_rel": 0.9097,
+     "sim_rel": 0.8523
+    },
+    {
+     "player": "Brandon Ingram",
+     "tag": "inj-achilles-risk",
+     "tier": "risk",
+     "gp": 48.0,
+     "deck": 0.78,
+     "kit": 0.6683,
+     "kit_held": false,
+     "sim": 0.75,
+     "active": false,
+     "kit_rel": 0.774,
+     "sim_rel": 0.8523
+    },
+    {
+     "player": "Coby White",
+     "tag": "inj-calf-risk",
+     "tier": "risk",
+     "gp": 62.0,
+     "deck": 0.78,
+     "kit": 0.8049,
+     "kit_held": false,
+     "sim": 0.75,
+     "active": false,
+     "kit_rel": 0.9322,
+     "sim_rel": 0.8523
+    },
+    {
+     "player": "De'Anthony Melton",
+     "tag": "inj-risk;",
+     "tier": "risk",
+     "gp": 60.0,
+     "deck": 0.78,
+     "kit": 0.7854,
+     "kit_held": false,
+     "sim": 0.75,
+     "active": false,
+     "kit_rel": 0.9097,
+     "sim_rel": 0.8523
+    },
+    {
+     "player": "Trey Murphy III",
+     "tag": "inj-shoulder-risk",
+     "tier": "risk",
+     "gp": 70.0,
+     "deck": 0.78,
+     "kit": 0.8829,
+     "kit_held": false,
+     "sim": 0.75,
+     "active": true,
+     "kit_rel": 1.0226,
+     "sim_rel": 0.8523
+    },
+    {
+     "player": "Jaylen Wells",
+     "tag": "inj-toe-risk",
+     "tier": "risk",
+     "gp": 72.0,
+     "deck": 0.78,
+     "kit": 0.9024,
+     "kit_held": false,
+     "sim": 0.75,
+     "active": false,
+     "kit_rel": 1.0452,
+     "sim_rel": 0.8523
+    },
+    {
+     "player": "Keegan Murray",
+     "tag": "inj-ankle-risk",
+     "tier": "risk",
+     "gp": 72.0,
+     "deck": 0.78,
+     "kit": 0.9024,
+     "kit_held": false,
+     "sim": 0.75,
+     "active": true,
+     "kit_rel": 1.0452,
+     "sim_rel": 0.8523
+    },
+    {
+     "player": "Isaiah Stewart",
+     "tag": "inj-ankle-risk",
+     "tier": "risk",
+     "gp": 64.0,
+     "deck": 0.78,
+     "kit": 0.8244,
+     "kit_held": false,
+     "sim": 0.75,
+     "active": false,
+     "kit_rel": 0.9548,
+     "sim_rel": 0.8523
+    },
+    {
+     "player": "De'Andre Hunter",
+     "tag": "inj-eye-risk",
+     "tier": "risk",
+     "gp": 70.0,
+     "deck": 0.78,
+     "kit": 0.8829,
+     "kit_held": false,
+     "sim": 0.75,
+     "active": false,
+     "kit_rel": 1.0226,
+     "sim_rel": 0.8523
+    },
+    {
+     "player": "Bradley Beal",
+     "tag": "inj-hip-risk",
+     "tier": "risk",
+     "gp": 55.0,
+     "deck": 0.78,
+     "kit": 0.7366,
+     "kit_held": false,
+     "sim": 0.75,
+     "active": false,
+     "kit_rel": 0.8531,
+     "sim_rel": 0.8523
+    },
+    {
+     "player": "Marcus Smart",
+     "tag": "inj-risk;",
+     "tier": "risk",
+     "gp": 60.0,
+     "deck": 0.78,
+     "kit": 0.7854,
+     "kit_held": false,
+     "sim": 0.75,
+     "active": false,
+     "kit_rel": 0.9097,
+     "sim_rel": 0.8523
+    },
+    {
+     "player": "Maxime Raynaud",
+     "tag": "inj-knee-risk",
+     "tier": "risk",
+     "gp": 66.0,
+     "deck": 0.78,
+     "kit": 0.8439,
+     "kit_held": false,
+     "sim": 0.75,
+     "active": false,
+     "kit_rel": 0.9774,
+     "sim_rel": 0.8523
+    },
+    {
+     "player": "Robert Williams III",
+     "tag": "inj-risk",
+     "tier": "risk",
+     "gp": 60.0,
+     "deck": 0.78,
+     "kit": 0.7854,
+     "kit_held": false,
+     "sim": 0.75,
+     "active": false,
+     "kit_rel": 0.9097,
+     "sim_rel": 0.8523
+    },
+    {
+     "player": "Dylan Cardwell",
+     "tag": "inj-calf-risk",
+     "tier": "risk",
+     "gp": 59.0,
+     "deck": 0.78,
+     "kit": 0.7756,
+     "kit_held": false,
+     "sim": 0.75,
+     "active": false,
+     "kit_rel": 0.8983,
+     "sim_rel": 0.8523
+    },
+    {
+     "player": "Mouhamed Gueye",
+     "tag": "inj-foot-risk",
+     "tier": "risk",
+     "gp": 52.0,
+     "deck": 0.78,
+     "kit": 0.7073,
+     "kit_held": false,
+     "sim": 0.75,
+     "active": false,
+     "kit_rel": 0.8192,
+     "sim_rel": 0.8523
+    },
+    {
+     "player": "Ben Simmons",
+     "tag": "inj-back-risk",
+     "tier": "risk",
+     "gp": 55.0,
+     "deck": 0.78,
+     "kit": 0.7366,
+     "kit_held": false,
+     "sim": 0.75,
+     "active": false,
+     "kit_rel": 0.8531,
+     "sim_rel": 0.8523
+    }
+   ]
+  },
+  "active_rosters": {
+   "n": 155,
+   "kit_healthy_median": 0.8829,
+   "sim_healthy": 0.88,
+   "tiers": {
+    "healthy": {
+     "n": 136,
+     "kit_held": 0,
+     "gp": {
+      "n": 136,
+      "mean": 69.1324,
+      "min": 58.0,
+      "max": 78.0
+     },
+     "deck_abs": [
+      1.0
+     ],
+     "sim_abs": [
+      0.88
+     ],
+     "kit_abs": {
+      "n": 136,
+      "mean": 0.8745,
+      "min": 0.7659,
+      "max": 0.961
+     },
+     "kit_at_or_above_healthy_median": 78,
+     "deck_rel": [
+      1.0
+     ],
+     "sim_rel": [
+      1.0
+     ],
+     "kit_rel": {
+      "n": 136,
+      "mean": 0.9904,
+      "min": 0.8675,
+      "max": 1.0885
+     }
+    },
+    "mild": {
+     "n": 2,
+     "kit_held": 0,
+     "gp": {
+      "n": 2,
+      "mean": 52.5,
+      "min": 45.0,
+      "max": 60.0
+     },
+     "deck_abs": [
+      0.85
+     ],
+     "sim_abs": [
+      0.79
+     ],
+     "kit_abs": {
+      "n": 2,
+      "mean": 0.7122,
+      "min": 0.639,
+      "max": 0.7854
+     },
+     "kit_at_or_above_healthy_median": 0,
+     "deck_rel": [
+      0.85
+     ],
+     "sim_rel": [
+      0.8977
+     ],
+     "kit_rel": {
+      "n": 2,
+      "mean": 0.8067,
+      "min": 0.7238,
+      "max": 0.8896
+     }
+    },
+    "risk": {
+     "n": 17,
+     "kit_held": 0,
+     "gp": {
+      "n": 17,
+      "mean": 61.4706,
+      "min": 45.0,
+      "max": 72.0
+     },
+     "deck_abs": [
+      0.78
+     ],
+     "sim_abs": [
+      0.75
+     ],
+     "kit_abs": {
+      "n": 17,
+      "mean": 0.7997,
+      "min": 0.639,
+      "max": 0.9024
+     },
+     "kit_at_or_above_healthy_median": 4,
+     "deck_rel": [
+      0.78
+     ],
+     "sim_rel": [
+      0.8523
+     ],
+     "kit_rel": {
+      "n": 17,
+      "mean": 0.9058,
+      "min": 0.7238,
+      "max": 1.0221
+     }
+    }
+   },
+   "players": [
+    {
+     "player": "Anthony Davis",
+     "tag": "inj-risk",
+     "tier": "risk",
+     "gp": 55.0,
+     "deck": 0.78,
+     "kit": 0.7366,
+     "kit_held": false,
+     "sim": 0.75,
+     "active": true,
+     "kit_rel": 0.8343,
+     "sim_rel": 0.8523
+    },
+    {
+     "player": "Ja Morant",
+     "tag": "inj-risk",
+     "tier": "risk",
+     "gp": 60.0,
+     "deck": 0.78,
+     "kit": 0.7854,
+     "kit_held": false,
+     "sim": 0.75,
+     "active": true,
+     "kit_rel": 0.8896,
+     "sim_rel": 0.8523
+    },
+    {
+     "player": "Jaren Jackson Jr.",
+     "tag": "inj-knee-risk",
+     "tier": "risk",
+     "gp": 68.0,
+     "deck": 0.78,
+     "kit": 0.8634,
+     "kit_held": false,
+     "sim": 0.75,
+     "active": true,
+     "kit_rel": 0.9779,
+     "sim_rel": 0.8523
+    },
+    {
+     "player": "Stephen Curry",
+     "tag": "inj-risk;",
+     "tier": "risk",
+     "gp": 62.0,
+     "deck": 0.78,
+     "kit": 0.8049,
+     "kit_held": false,
+     "sim": 0.75,
+     "active": true,
+     "kit_rel": 0.9117,
+     "sim_rel": 0.8523
+    },
+    {
+     "player": "LeBron James",
+     "tag": "inj-age41-risk",
+     "tier": "risk",
+     "gp": 55.0,
+     "deck": 0.78,
+     "kit": 0.7366,
+     "kit_held": false,
+     "sim": 0.75,
+     "active": true,
+     "kit_rel": 0.8343,
+     "sim_rel": 0.8523
+    },
+    {
+     "player": "Zion Williamson",
+     "tag": "inj-risk;",
+     "tier": "risk",
+     "gp": 50.0,
+     "deck": 0.78,
+     "kit": 0.6878,
+     "kit_held": false,
+     "sim": 0.75,
+     "active": true,
+     "kit_rel": 0.779,
+     "sim_rel": 0.8523
+    },
+    {
+     "player": "Kawhi Leonard",
+     "tag": "inj-risk",
+     "tier": "risk",
+     "gp": 60.0,
+     "deck": 0.78,
+     "kit": 0.7854,
+     "kit_held": false,
+     "sim": 0.75,
+     "active": true,
+     "kit_rel": 0.8896,
+     "sim_rel": 0.8523
+    },
+    {
+     "player": "Joel Embiid",
+     "tag": "inj-risk;",
+     "tier": "risk",
+     "gp": 45.0,
+     "deck": 0.78,
+     "kit": 0.639,
+     "kit_held": false,
+     "sim": 0.75,
+     "active": true,
+     "kit_rel": 0.7238,
+     "sim_rel": 0.8523
+    },
+    {
+     "player": "Zach Edey",
+     "tag": "inj-ankle-risk",
+     "tier": "risk",
+     "gp": 70.0,
+     "deck": 0.78,
+     "kit": 0.8829,
+     "kit_held": false,
+     "sim": 0.75,
+     "active": true,
+     "kit_rel": 1.0,
+     "sim_rel": 0.8523
+    },
+    {
+     "player": "Mitchell Robinson",
+     "tag": "inj-risk",
+     "tier": "risk",
+     "gp": 64.0,
+     "deck": 0.78,
+     "kit": 0.8244,
+     "kit_held": false,
+     "sim": 0.75,
+     "active": true,
+     "kit_rel": 0.9337,
+     "sim_rel": 0.8523
+    },
+    {
+     "player": "Alex Sarr",
+     "tag": "inj-foot-risk",
+     "tier": "risk",
+     "gp": 72.0,
+     "deck": 0.78,
+     "kit": 0.9024,
+     "kit_held": false,
+     "sim": 0.75,
+     "active": true,
+     "kit_rel": 1.0221,
+     "sim_rel": 0.8523
+    },
+    {
+     "player": "Jayson Tatum",
+     "tag": "inj-achilles-risk;",
+     "tier": "risk",
+     "gp": 65.0,
+     "deck": 0.78,
+     "kit": 0.8341,
+     "kit_held": false,
+     "sim": 0.75,
+     "active": true,
+     "kit_rel": 0.9447,
+     "sim_rel": 0.8523
+    },
+    {
+     "player": "Kyrie Irving",
+     "tag": "inj-acl-risk-mild",
+     "tier": "mild",
+     "gp": 60.0,
+     "deck": 0.85,
+     "kit": 0.7854,
+     "kit_held": false,
+     "sim": 0.79,
+     "active": true,
+     "kit_rel": 0.8896,
+     "sim_rel": 0.8977
+    },
+    {
+     "player": "Damian Lillard",
+     "tag": "inj-achilles-risk-mild",
+     "tier": "mild",
+     "gp": 45.0,
+     "deck": 0.85,
+     "kit": 0.639,
+     "kit_held": false,
+     "sim": 0.79,
+     "active": true,
+     "kit_rel": 0.7238,
+     "sim_rel": 0.8977
+    },
+    {
+     "player": "Fred VanVleet",
+     "tag": "inj-acl-risk",
+     "tier": "risk",
+     "gp": 55.0,
+     "deck": 0.78,
+     "kit": 0.7366,
+     "kit_held": false,
+     "sim": 0.75,
+     "active": true,
+     "kit_rel": 0.8343,
+     "sim_rel": 0.8523
+    },
+    {
+     "player": "Dejounte Murray",
+     "tag": "inj-achilles-risk",
+     "tier": "risk",
+     "gp": 62.0,
+     "deck": 0.78,
+     "kit": 0.8049,
+     "kit_held": false,
+     "sim": 0.75,
+     "active": true,
+     "kit_rel": 0.9117,
+     "sim_rel": 0.8523
+    },
+    {
+     "player": "Paul George",
+     "tag": "inj-risk;",
+     "tier": "risk",
+     "gp": 60.0,
+     "deck": 0.78,
+     "kit": 0.7854,
+     "kit_held": false,
+     "sim": 0.75,
+     "active": true,
+     "kit_rel": 0.8896,
+     "sim_rel": 0.8523
+    },
+    {
+     "player": "Trey Murphy III",
+     "tag": "inj-shoulder-risk",
+     "tier": "risk",
+     "gp": 70.0,
+     "deck": 0.78,
+     "kit": 0.8829,
+     "kit_held": false,
+     "sim": 0.75,
+     "active": true,
+     "kit_rel": 1.0,
+     "sim_rel": 0.8523
+    },
+    {
+     "player": "Keegan Murray",
+     "tag": "inj-ankle-risk",
+     "tier": "risk",
+     "gp": 72.0,
+     "deck": 0.78,
+     "kit": 0.9024,
+     "kit_held": false,
+     "sim": 0.75,
+     "active": true,
+     "kit_rel": 1.0221,
+     "sim_rel": 0.8523
+    }
+   ]
+  }
+ }
+}

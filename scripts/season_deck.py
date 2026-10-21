@@ -117,16 +117,21 @@ def build(paths, date):
                                added=t.get("added_since_draft") or [], dropped=t.get("dropped_since_draft") or [],
                                unpooled_il=t.get("unpooled_il") or []) for t in league["teams"]}
     respelled = sorted((n, m) for n, m in rmap.items() if n != m)
-    shock = sweep["constants"]["arena.TEAM_WEEK_SHOCK"]
-    band = dict(name="arena.TEAM_WEEK_SHOCK", tier=shock["tier"], engine=sweep.get("engine_commit") or sweep.get("engine"),
-                variants=[dict(label=v.get("label"), shift=v.get("shift_mean_1dp", f"{v['shift_mean']:+.1f}"))
-                          for v in shock["variants"]])
-    if shock["tier"] == "FRAGILE" and not band["variants"]: raise DeckError("FRAGILE band with no variants")
+    # every constant the standing sweep tiers FRAGILE, as daily_brief.band_line quotes them (2026-10-21: two since
+    # deck 80eecdf, TEAM_WEEK_SHOCK and weekly_availability); a record without the list falls back to the tiers
+    fragile = sweep.get("fragile") or [k for k, c in sweep["constants"].items() if c.get("tier") == "FRAGILE"]
+    bands = []
+    for key in fragile:
+        c = sweep["constants"][key]
+        bands.append(dict(name=key, tier=c["tier"], variants=[
+            dict(label=v.get("label"), shift=v.get("shift_mean_1dp", f"{v['shift_mean']:+.1f}")) for v in c["variants"]]))
+        if not bands[-1]["variants"]: raise DeckError(f"FRAGILE band {key} with no variants")
+    band_engine = sweep.get("engine_commit") or sweep.get("engine")
     wk = calib.get("weeks", {}).get(str(brief.get("week"))) or {}
     data = dict(date=date, generated_utc=datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
                 my_team=my_team, my_seat=my_seat, brief=brief, board=board, status=status,
                 league=dict(as_of=league["as_of"], rosters=rosters, managers={t["name"]: t.get("manager") for t in league["teams"]}), season_lines=lines, matchup=wk,
-                ledger=calib.get("weeks", {}), band=band, matchup_live=matchup_live,
+                ledger=calib.get("weeks", {}), bands=bands, band_engine=band_engine, matchup_live=matchup_live,
                 config=dict(cats=["FG%", "FT%", "3PM", "PTS", "REB", "AST", "STL", "BLK", "TOV"],
                             tier_low=0.3, tier_high=1.0, verdict_edge=0.5, verdict_strong=1.5,
                             thresholds_note="stated defaults, D-SD-1 (owner re-tunes); z screen only, not the simulator"))
@@ -274,7 +279,7 @@ function swapMath(inRows, outRows, cats){
 }
 /*SWAP_MATH_END*/
 function tier(x, lo, hi){ const a=Math.abs(x); return a<lo?"low":(a<hi?"medium":"high"); }
-function bandLine(){ return D.band.name.replace("arena.","")+" is "+D.band.tier+": "+D.band.variants.map(v=>v.shift+" (shock "+v.label+")").join(" / ")+" title points — engine "+(D.band.engine||"?"); }
+function bandLine(){ if(!D.bands.length) return "no FRAGILE constant — engine "+(D.band_engine||"?"); return D.bands.map(b=>b.name.replace("arena.","")+" is "+b.tier+": "+b.variants.map(v=>v.shift+" ("+v.label+")").join(" / ")).join("; ")+" title points — engine "+(D.band_engine||"?"); }
 function T(t){ if(t===D.my_team) return t+" (you)"; const m=(D.league.managers||{})[t]; return m? t+" ("+m+")" : t; }
 function ownChip(r){ return r.mine? h("span",{class:"chip mine"},"mine") : r.fa? h("span",{class:"chip fa"},"FA") : h("span",{class:"chip"},T(r.owner)); }
 function statusChip(letter){ if(!letter) return null; const cls=letter==="O"?"crit":(letter==="Q"?"warn":"ok"); return h("span",{class:"chip "+cls},letter); }
@@ -496,7 +501,7 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
   }
   for(const [id,label] of defs) tabs.append(h("button",{role:"tab","aria-selected":"false",onclick:()=>show(id)},label));
   show(cur);
-  $("#foot").textContent="Built "+D.generated_utc+" from the morning records — lines "+D.brief.lines+", league state as-of "+D.league.as_of+", engine "+(D.band.engine||"?")+". The page proposes; it changes nothing. Record: report/season/deck_record_"+D.date+".json";
+  $("#foot").textContent="Built "+D.generated_utc+" from the morning records — lines "+D.brief.lines+", league state as-of "+D.league.as_of+", engine "+(D.band_engine||"?")+". The page proposes; it changes nothing. Record: report/season/deck_record_"+D.date+".json";
 })();
 </script>
 """

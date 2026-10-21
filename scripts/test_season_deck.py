@@ -83,6 +83,27 @@ class Deck(unittest.TestCase):
         self.assertIn("No movers", html)
         self.assertIn("TEAM_WEEK_SHOCK", html); self.assertIn("+3.4", html); self.assertIn("-2.3", html.replace("−", "-"))
 
+    def test_every_fragile_band_is_on_the_page(self):
+        # 2026-10-21 (owner "implement fixes", decision 2): the sweep on deck 80eecdf tiers two constants FRAGILE;
+        # the page must carry every one the record names, not a hardcoded TEAM_WEEK_SHOCK (daily_brief's rule).
+        two = dict(engine_commit="80eecdf", fragile=["arena.TEAM_WEEK_SHOCK", "arena.weekly_availability"],
+                   constants={"arena.TEAM_WEEK_SHOCK": dict(tier="FRAGILE", variants=[
+                                  dict(label="no shared games shock (0.0)", shift_mean=2.71),
+                                  dict(label="shared games shock doubled (0.12)", shift_mean=-3.62)]),
+                              "arena.weekly_availability": dict(tier="FRAGILE", variants=[
+                                  dict(label="no in-sim injury discount", shift_mean=-2.68),
+                                  dict(label="harsher risk tier (0.65)", shift_mean=0.47)]),
+                              "arena.PCT_MIX_INFL": dict(tier="SENSITIVE", variants=[
+                                  dict(label="inflation 1.30", shift_mean=-1.06)])})
+        json.dump(two, open(self.fx["sweep"], "w"))
+        html, data, rec = self.build()
+        m = re.search(r'<script id="deck-data" type="application/json">(.*?)</script>', html, re.S)
+        emb = json.loads(m.group(1))
+        self.assertEqual([b["name"] for b in emb["bands"]], ["arena.TEAM_WEEK_SHOCK", "arena.weekly_availability"])
+        self.assertEqual([v["shift"] for v in emb["bands"][1]["variants"]], ["-2.7", "+0.5"])
+        self.assertNotIn("PCT_MIX_INFL", json.dumps(emb["bands"]))
+        self.assertIn("D.bands", html)
+
     def test_record_pins_every_input(self):
         html, data, rec = self.build()
         for k, p in self.fx.items():

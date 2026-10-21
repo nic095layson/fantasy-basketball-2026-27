@@ -83,7 +83,7 @@ if __name__=="__main__":
     jobs=[(n,p,sd) for n,p in VARIANTS.items() for sd in SEEDS]
     with ProcessPoolExecutor(4) as ex: R=list(ex.map(run,jobs))
     # harness self-check: the baseline must reproduce league_sim's 10,000-season figures within 3 SE on both seeds
-    ref={sd:json.load(open(f"{DECK}/arena/results/m100_league_sim_10k_s{sd}_w17r.json"))["teams"]["10"]["champ"] for sd in SEEDS}
+    ref={sd:json.load(open(f"{DECK}/arena/results/m100_league_sim_10k_s{sd}_w17r_av0.json"))["teams"]["10"]["champ"] for sd in SEEDS}  # the live engine's reference (_av0: recovery/out 0.0, 2026-10-21)
     ref_old={sd:json.load(open(f"{DECK}/arena/results/m100_league_sim_10k_s{sd}.json"))["teams"]["10"]["champ"] for sd in SEEDS}
     out={}
     for n,sd,c,p,allc in R: out.setdefault(n,{})[sd]=dict(title=round(c,2),playoff=round(p,2),all=allc)

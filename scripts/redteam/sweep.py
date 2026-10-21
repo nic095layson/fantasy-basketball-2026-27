@@ -31,7 +31,10 @@ DECK = os.path.abspath(os.environ.get("DECK_REPO") or os.path.join(KIT, "..", "y
 REGISTRY = os.path.join(HERE, "constants_registry.json")
 STATE = "arena/data/states/draft_state_100.json"
 POOL = "arena/results/players_v69.csv"
-REFERENCE = "arena/results/m100_league_sim_10k_s{seed}_w17r.json"
+# The 10k reference of the engine the sweep runs on (league_sim.py --verify, 17 weeks, reseeded). Regenerated when the
+# engine moves the reference: _av0 = recovery and out-* at 0.0 (2026-10-21); the _w17r files keep the 0.60-recovery
+# engine's figures that earlier reports cite.
+REFERENCE = "arena/results/m100_league_sim_10k_s{seed}_w17r_av0.json"
 OWNER_SEAT = 10
 TIERS = ((1.0, "ROBUST"), (2.0, "SENSITIVE"))
 

@@ -75,8 +75,7 @@ def read_live(deck=DECK):
                 live[(modname, name)] = val
     live[("hoops", "CATS")] = hoops.CATS
     live[("hoops", "availability")] = {t: hoops.availability({"note": n}) for t, n in TIER_NOTES.items()}
-    live[("arena", "weekly_availability")] = {t: arena.weekly_availability({"note": n})
-                                              for t, n in TIER_NOTES.items() if t != "out"}
+    live[("arena", "weekly_availability")] = {t: arena.weekly_availability({"note": n}) for t, n in TIER_NOTES.items()}
     src = inspect.getsource(arena.team_week_model)
     m = re.search(r"\bg\s*=\s*([0-9.]+)\s*\*\s*a\b", src)
     live[("arena", "GAMES_PER_WEEK")] = float(m.group(1)) if m else None
