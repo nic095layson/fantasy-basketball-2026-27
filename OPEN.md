@@ -29,10 +29,6 @@ repo's `OPEN.md`; this kit copy is the master.
 | D-INT-2 | Commit the two lagging tools as standing versions | after the draft | `after-report-2026-10-14-integrity.md` |
 | D-SF-1..4 | Scope-fence follow-ups (analysis-session prompt, lessons entry, Hashtag parse, usage dry run) | (a)/(b)/(b)/(a) | `after-report-2026-10-13-scope-fence.md` |
 | D-MC-1 | #156 and #29 are Global Operations' to merge (owner, 10/21 at about 20:10Z: "Global merges #156 now"); #155 and #157 were merged by the kit session. Playwright in the runner's setup script is optional until #156 merges, required after | Global Ops merges | `after-report-2026-10-21-pickups-file.md` |
-| D-PF-1 | Merge the pickups-file PR (Drummond in `data/pool_additions.csv`) before 12:53Z on 10/22, so the morning intake reads him | not merged: the intake halts on Drummond, the last league state stands | `after-report-2026-10-21-pickups-file.md` |
-| D-RD-1 | Seven frozen deck rows drifted since the lock (Bradley NYK→UTA; Porter Jr., Agbaji, Sochan, Knecht, Broome, Brown waived): (a) record only (Yahoo NA already zeroes the two in the league), (b) a kit-side corrections file for frozen rows, on your go, (c) rebuild the draft page with reconciled rosters | (a) | `after-report-2026-10-21-pickups-file.md` §1 |
-| D-SIM-1 | The season simulator (deck `league_sim.py`, frozen v69 pool) and in-season pickups: (a) leave them out of the simulation, named in the brief (built, the IL rule D-IS-8); (b) a deck change so the simulator reads the kit's additions file (deck commit: attack records STALE until re-run) | (a) | `after-report-2026-10-21-pickups-file.md` §2 item 6 |
-| D-TX-1 | `transactions.py` reads the additions file too (today it covers rostered additions through the owners list only) | not built | `after-report-2026-10-21-pickups-file.md` §2 |
 
 ## Owner inputs requested, not yet received
 

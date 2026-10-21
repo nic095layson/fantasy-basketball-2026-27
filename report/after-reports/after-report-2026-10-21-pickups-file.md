@@ -193,6 +193,14 @@ Near misses (the 🎯 in 5+ mocks, under 25 places): Jamal Murray (18 mocks, val
 
 ## Decision sheet
 
+*Decided by the owner at about 20:55Z on 10/21 (clicked):*
+- *1, merge #158 now;*
+- *D-RD-1 (a), record only;*
+- *D-SIM-1 (a), leave such pickups out of the simulation, named;*
+- *D-TX-1, not now.*
+
+*The kit session merges #158 on that word.*
+
 1. **Merge this PR before 12:53Z on 10/22** (05:53 PT). The intake needs it to read Drummond tomorrow.
    - Default if you're silent: not merged, and tomorrow's intake halts on him as it did today.
 2. **D-RD-1, the seven stale deck rows.**
