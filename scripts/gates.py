@@ -163,6 +163,24 @@ def claims_gate():
             "cmd": [sys.executable, os.path.join(KIT, "scripts", "check_claims.py"), "--gate"]}
 
 
+def audit_gates(report, replay=False, last=3):
+    """Independent-audit adoption (owner 2026-10-21; library skill claude-core-skills independent-audit):
+    claim receipts on the report — ADVISORY, it lists 'it runs / it changes nothing' sentences with no receipt and
+    never fails the build (precision 3 of 7 on the kit's own 10/19–10/21 reports, below the 0.5 gate bar) — and,
+    with replay=True (`--replay`), the Season Deck rebuilt and render-checked on the last `last` real mornings that
+    produced a deck. Replayed on the real 10/21 records, the code before #152 and before #154 both FAIL."""
+    ia = os.path.join(KIT, "scripts", "independent_audit")
+    specs = [{"name": "claim receipts", "cwd": KIT, "pass_re": r"^CLAIM RECEIPTS: (PASS|ADVISORY)",
+              "cmd": [sys.executable, os.path.join(ia, "claim_receipts.py"), report]}]
+    if replay:
+        specs.append({"name": "deck replay", "cwd": KIT, "pass_re": r"^REPLAY: PASS",
+                      "cmd": [sys.executable, os.path.join(ia, "replay_gate.py"), "--last", str(last),
+                              "--inputs", os.path.join(KIT, "report", "season", "deck_record_*.json"),
+                              "--cmd", f"bash {os.path.join(KIT, 'scripts', 'replay_deck.sh')} {{input_date}}",
+                              "--pass-re", r"^SEASON DECK: PASS"]})
+    return specs
+
+
 def parse_gate(text, deck):
     parts = text.split("::", 3)
     if len(parts) != 4 or parts[1] not in ("kit", "deck"):
@@ -181,6 +199,8 @@ def main():
     ap.add_argument("--deck", default=DECK_DEFAULT)
     ap.add_argument("--redteam", metavar="SWEEP_JSON",
                     help="add the three red-team gates (constants, bands vs this sweep record, attacks)")
+    ap.add_argument("--replay", action="store_true",
+                    help="also rebuild and render-check the Season Deck on the last 3 real mornings (independent-audit, 2026-10-21)")
     ap.add_argument("--no-claims", action="store_true",
                     help="omit the claim-registry gate (it is on by default, D-CLAIM-1)")
     ap.add_argument("--ledger", default=run_ledger.LEDGER,
@@ -209,7 +229,7 @@ def main():
     inputs = [os.path.abspath(p) for p in a.input]
     if a.report:
         report = os.path.abspath(a.report)
-        specs = report_gates(report, deck) + specs
+        specs = report_gates(report, deck) + audit_gates(report, replay=a.replay) + specs
         inputs = [report] + inputs
     if a.redteam:
         if not a.report:
