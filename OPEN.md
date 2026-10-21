@@ -28,6 +28,9 @@ repo's `OPEN.md`; this kit copy is the master.
 | D-INT-1 / D-S1-6 | Provenance re-dating pass (320 rows over 14 days) — BLOCKED: the environment denies site.api.espn.com; owner to allow the host | Session 1 item 3, when the host is allowed | `after-report-2026-10-15-co-gm-session1.md` |
 | D-INT-2 | Commit the two lagging tools as standing versions | after the draft | `after-report-2026-10-14-integrity.md` |
 | D-SF-1..4 | Scope-fence follow-ups (analysis-session prompt, lessons entry, Hashtag parse, usage dry run) | (a)/(b)/(b)/(a) | `after-report-2026-10-13-scope-fence.md` |
+| D-IS-10 | Yahoo's D (doubtful, owner 2026-10-21) availability tier 0.25 | 0.25 until calibration, with D-S1-7 | `after-report-2026-10-21-merge-check.md` |
+| D-DR-1 | Andre Drummond's deck pool row (deck PR #129): (a) stamp the pool change and rebuild the draft page; (b) a kit-side in-season additions file read by the intake and the season lines; (c) wait | (c): the intake halts on him and the last league state stands | `after-report-2026-10-21-merge-check.md` |
+| D-MC-1 | Merge order for the pending PRs, and Python playwright in the runner environment's setup script before #156 | the order in the report; merging is the owner's word | `after-report-2026-10-21-merge-check.md` |
 
 ## Owner inputs requested, not yet received
 

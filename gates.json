@@ -1,53 +1,47 @@
 {
- "ran_at_utc": "2026-10-21T18:27:33Z",
+ "ran_at_utc": "2026-10-21T19:37:49Z",
  "inputs": {
-  "report/after-reports/after-report-2026-10-21-flaim.md": "97d91d00a46cbf51de35c7a326e238bf18f344f1382d971772be87fbd247b171",
-  "scripts/flaim_live.py": "597858a508e5d67dbd3f5178cb7edfcca8c3cc042624814abdf98251ea832c2f",
-  "scripts/league_live.py": "3ee686852beb2abec271f49741187bcacf7b5a637b47716fda318df9cc4c4909",
-  "scripts/status_feed.py": "801eacf50478bbf2d29ed4380bc7f5250719363807f16cce976fba19b977dbf6",
-  "scripts/week_matchup.py": "c7dbaf0c7add4fc7a00e9944f495db766ef45d9fb118fcae39b8807dd3aacdd5",
-  "scripts/season_deck.py": "474b8acfcdcf3684c9e4371b12493e350f769975270152c2f795f2de706c9bbf",
-  "data/source/flaim/pull_2026-10-21.json": "adbb3deef280c0b2a7c5ef6cd95a6a41aa67b4b4d9d33c4045422e9b2ad7932f",
+  "report/after-reports/after-report-2026-10-21-merge-check.md": "1a8988d63681a45fad950d317f05736eb58ca279b7f2b2983191d9c695891bd1",
   "report/after-reports/redteam-2026-10-19/sweep.json": "92531c209df0044f54bfbcfbb65f8a812dc44d85fc0525314c9a5c2102109298"
  },
  "gates": [
   {
    "name": "kit check_report",
-   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-21-flaim.md",
+   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-21-merge-check.md",
    "cwd": ".",
    "pass_re": "^REPORT GATE: PASS",
    "exit": 0,
-   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-10-21-flaim.md (structure, publication rule, pull-log row)",
+   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-10-21-merge-check.md (structure, publication rule, pull-log row)",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "REPORT GATE: PASS \u2014 after-report-2026-10-21-flaim.md (structure, publication rule, pull-log row)"
+    "REPORT GATE: PASS \u2014 after-report-2026-10-21-merge-check.md (structure, publication rule, pull-log row)"
    ]
   },
   {
    "name": "deck judgment_open_items --check-report",
-   "cmd": "/usr/local/bin/python3 scripts/judgment_open_items.py --check-report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-21-flaim.md",
+   "cmd": "/usr/local/bin/python3 scripts/judgment_open_items.py --check-report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-21-merge-check.md",
    "cwd": "../yahoo-fantasy-basketball",
    "pass_re": "^receipts check PASS",
    "exit": 0,
-   "pass_line": "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-10-21-flaim.md",
+   "pass_line": "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-10-21-merge-check.md",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-10-21-flaim.md"
+    "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-10-21-merge-check.md"
    ]
   },
   {
    "name": "deck repeat_market_check --check-report",
-   "cmd": "/usr/local/bin/python3 scripts/repeat_market_check.py --check-report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-21-flaim.md",
+   "cmd": "/usr/local/bin/python3 scripts/repeat_market_check.py --check-report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-21-merge-check.md",
    "cwd": "../yahoo-fantasy-basketball",
    "pass_re": "^REPEAT-NAME CHECK: PASS",
    "exit": 0,
-   "pass_line": "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-10-21-flaim.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)",
+   "pass_line": "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-10-21-merge-check.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-10-21-flaim.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)"
+    "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-10-21-merge-check.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)"
    ]
   },
   {
@@ -65,7 +59,7 @@
   },
   {
    "name": "redteam bands",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/redteam/check_bands.py --report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-21-flaim.md --sweep /home/user/fantasy-basketball-2026-27/report/after-reports/redteam-2026-10-19/sweep.json",
+   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/redteam/check_bands.py --report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-21-merge-check.md --sweep /home/user/fantasy-basketball-2026-27/report/after-reports/redteam-2026-10-19/sweep.json",
    "cwd": ".",
    "pass_re": "^BANDS CHECK: PASS",
    "exit": 0,
@@ -105,5 +99,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "07105548583461cb377346955b807564656a23b5"
+ "base_commit": "168cfbd0267f3a12d42164725a743c968b5309e6"
 }
