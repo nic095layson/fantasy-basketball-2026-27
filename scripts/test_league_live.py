@@ -187,17 +187,10 @@ class FlaimFirst(unittest.TestCase):
 
     @unittest.skipUnless(os.path.exists(PIN), "no pinned Flaim pull")
     def test_the_pinned_pull_builds_every_team_with_yahoo_slots_letters_and_drummond(self):
-        # owner 2026-10-21: "Drummond, pull data from both sources to add a projection for him". His deck pool row sits
-        # on a deck branch whose merge waits on the owner (the deck's publish gate wants a stamped rebuild): until the
-        # deck pool beside the kit carries him, the real 10/21 pull halts on his name and writes nothing; once it does,
-        # the same pull builds all twelve teams with him on Podz save the league's bench. Both are known answers.
+        # owner 2026-10-21 option (b): Drummond's row lives in the kit's data/pool_additions.csv, so the real 10/21 pull
+        # builds all twelve teams with him on Podz save the league's bench whatever the deck pool beside the kit carries
+        # (before the additions file it halted on his name against deck main)
         p, out, tdir = self.run_live("--source", "flaim", "--pull", self.PIN)
-        pooled = any(r["player"] == "Andre Drummond" for r in csv.DictReader(open(LI.POOL, encoding="utf-8")))
-        if not pooled:
-            self.assertIn("LEAGUE LIVE: HALT", p.stdout, p.stdout + p.stderr)
-            self.assertIn("Andre Drummond", p.stdout)
-            self.assertFalse(os.path.exists(out))
-            return
         self.assertIn("LEAGUE LIVE: PASS — rosters from Flaim", p.stdout, p.stdout + p.stderr)
         state = json.load(open(out, encoding="utf-8"))
         self.assertEqual(len(state["teams"]), 12)

@@ -249,7 +249,11 @@ def main():
         f.write("\n")
     src = os.path.join(pin_dir, f"rosters_{a.as_of}.transcribed.csv")
     league_intake.write_rows(rows, src)
-    pool = list(__import__("csv").DictReader(open(league_intake.POOL, encoding="utf-8")))
+    try:
+        pool = league_intake.load_pool()  # the deck pool, then the kit's in-season additions (owner 2026-10-21, option (b))
+    except ValueError as e:
+        print(f"LEAGUE LIVE: HALT — pool additions: {e}; league_state.json not touched (last paste stands)")
+        return 1
     recap = json.load(open(league_intake.RECAP, encoding="utf-8"))
     abbr = {p["abbr"]: p["player"] for p in recap}
     draft, managers = {}, {}
@@ -262,13 +266,13 @@ def main():
                                  view="Flaim connector (Yahoo, read-only): get_roster per team (current), get_matchups, get_free_agents"),
                    "transcription": {"file": rel(src), "sha256": sha(src),
                                      "method": "flaim_live.to_rows (mechanical; Yahoo slots and status letters for every team)"},
-                   "draft_board": rel(league_intake.RECAP), "pool": "deck data/players.csv"}
+                   "draft_board": rel(league_intake.RECAP), "pool": league_intake.POOL_LABEL}
     else:
         sources = {"fantasybot": dict(src_note, pull_file=rel(pin), pull_sha256=sha(pin),
                                       view="FantasyBot connector: get_my_roster + get_league_team per rival team"),
                    "transcription": {"file": rel(src), "sha256": sha(src),
                                      "method": "league_live.to_rows (mechanical; rival slots BN/IL only)"},
-                   "draft_board": rel(league_intake.RECAP), "pool": "deck data/players.csv"}
+                   "draft_board": rel(league_intake.RECAP), "pool": league_intake.POOL_LABEL}
     unpooled = (json.load(open(league_intake.UNPOOLED, encoding="utf-8"))["players"]
                 if os.path.exists(league_intake.UNPOOLED) else {})
     old = json.load(open(a.out, encoding="utf-8")) if os.path.exists(a.out) else None
