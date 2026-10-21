@@ -159,12 +159,17 @@ def main():
 
     # 5. title odds (and the waiver check) on the real schedule
     work = tempfile.mkdtemp()
-    base = {s: CG.run_league_sim(ros, s, a.seasons, work)["teams"][str(CG.OWNER_SEAT)] for s in SEEDS}
+    sims = {s: CG.run_league_sim(ros, s, a.seasons, work) for s in SEEDS}
+    base = {s: sims[s]["teams"][str(CG.OWNER_SEAT)] for s in SEEDS}
+    absent = sims[SEEDS[0]]["absent_from_sim"]
     for x in top:
         r2 = {s: list(r) for s, r in ros.items()}
         r2[CG.OWNER_SEAT] = [p for p in r2[CG.OWNER_SEAT] if p["player"] != x["drop"]] + [by[x["add"]]]
         # owner 2026-10-20: the waiver check runs both seeds, so its title figure is the same two-run average
-        t = {s: CG.run_league_sim(r2, s, a.seasons, work, tag="w")["teams"][str(CG.OWNER_SEAT)]["champ"] for s in SEEDS}
+        sw = {s: CG.run_league_sim(r2, s, a.seasons, work, tag="w") for s in SEEDS}
+        t = {s: sw[s]["teams"][str(CG.OWNER_SEAT)]["champ"] for s in SEEDS}
+        if sw[SEEDS[0]]["absent_from_sim"] != absent:
+            x["absent_from_sim"] = sw[SEEDS[0]]["absent_from_sim"]
         x["title_by_seed"] = {str(s): round(t[s], 2) for s in SEEDS}
         x["title"] = round(sum(t.values()) / len(SEEDS), 2)
         x["d_title"] = round(x["title"] - sum(base[s]["champ"] for s in SEEDS) / len(SEEDS), 2)
@@ -185,7 +190,7 @@ def main():
            "streaming_vs": {"player": weakest["player"], "games_left": weak_games,
                             "value_per_game": round(CG.hoops.adj_value(weakest, ()), 2)},
            "title": {str(s): base[s]["champ"] for s in SEEDS}, "playoffs": {str(s): base[s]["playoff"] for s in SEEDS},
-           "seasons": a.seasons, "transactions": tx and {"window": tx["window"], "ok": tx["source"].get("ok"), "hits": tx["hits"]},
+           "seasons": a.seasons, "absent_from_sim": absent, "transactions": tx and {"window": tx["window"], "ok": tx["source"].get("ok"), "hits": tx["hits"]},
            "league_moves": lm and lm["moves"]}
     os.makedirs(OUTDIR, exist_ok=True)
     json.dump(rec, open(os.path.join(OUTDIR, f"brief_{a.date}.json"), "w", encoding="utf-8"), indent=1, ensure_ascii=False)
@@ -221,12 +226,21 @@ def main():
     L += [f"- {r['player']} ({r['team']}): {r['games_left']} games, {r['value_per_game']:+.2f} per game" for r in stream] or ["- none"]
     L += ["", "## Title odds (real schedule)", "", f"- Title: {odds_line(base[SEEDS[0]]['champ'], base[SEEDS[1]]['champ'], a.seasons)}",
           f"- Playoffs: {(base[SEEDS[0]]['playoff'] + base[SEEDS[1]]['playoff']) / 2:.1f}%",
-          f"- {band_line()}", "",
+          f"- {band_line()}"] + ([f"- {sim_absent_line(absent)}"] if absent else []) + ["",
           "_Cannot see: news after the morning FantasyBot pull (or the last paste) beyond ESPN's transactions feed; ESPN injuries (network-denied); minutes limits; "
           "other managers' pending claims. Q counts as a coin flip._"]
     path = os.path.join(OUTDIR, f"brief_{a.date}.md")
     open(path, "w", encoding="utf-8").write("\n".join(L) + "\n")
     print(f"wrote {os.path.relpath(path, CG.KIT)}")
+
+
+def sim_absent_line(names):
+    """The title odds' caveat when the season simulator could not play a rostered player (owner option (b),
+    2026-10-21: a pickup in data/pool_additions.csv is not in the simulator's frozen v69 pool)."""
+    if not names:
+        return None
+    return (f"{', '.join(names)}: left out of the season simulation (not in its frozen {CG.LINES_TAG} pool; the rule "
+            f"for IL players, D-IS-8); the waiver scan still counts {'him' if len(names) == 1 else 'them'}.")
 
 
 if __name__ == "__main__":

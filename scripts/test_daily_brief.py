@@ -177,5 +177,27 @@ class LeagueMoves(unittest.TestCase):
         out = "\n".join(DB.league_moves_lines(rec, "Me"))
         self.assertIn("yours", out)
 
+class SimulatorPool(unittest.TestCase):
+    """2026-10-21 (owner option (b), the kit's pickups file): the season simulator runs on the frozen v69 pool, so a
+    rostered pickup it lacks (Andre Drummond, 10/21) stopped the brief, a fatal morning step. Such a player is left out
+    of the simulation, the rule the brief applies to IL players (D-IS-8), and the brief names him."""
+    def test_a_rostered_player_the_simulator_pool_lacks_is_left_out_and_named(self):
+        import json
+        import tempfile
+        P, by = CG.load_pool()
+        ros = CG.rosters(json.load(open(CG.STATE, encoding="utf-8")), by)
+        rival = next(s for s in sorted(ros) if s != CG.OWNER_SEAT)
+        ros[rival] = ros[rival] + [dict(ros[rival][0], player="Pickup Nobody")]
+        rec = CG.run_league_sim(ros, 2026, 20, tempfile.mkdtemp())
+        self.assertEqual(rec["absent_from_sim"], ["Pickup Nobody"])
+        self.assertIn(str(CG.OWNER_SEAT), rec["teams"])
+
+    def test_the_brief_names_who_the_simulation_left_out(self):
+        self.assertEqual(DB.sim_absent_line([]), None)
+        line = DB.sim_absent_line(["Andre Drummond"])
+        self.assertIn("Andre Drummond", line)
+        self.assertIn("left out of the season simulation", line)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

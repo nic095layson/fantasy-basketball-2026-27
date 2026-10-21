@@ -34,7 +34,7 @@ IGNORE = {"arena": {"ARENA_DIR", "REPO", "DATA", "CATS", "BASE_POS", "STRATEGIES
           "hoops": {"DATA_PATH", "FRESH_PATH", "STATE_PATH", "POSITIONAL_SLOTS", "COUNT_COLS", "MUST_HAVE",
                     "NUMERIC_COLS", "DECK_HTML", "NICKNAMES", "NAME_SUFFIXES"},
           # the kit's in-season blend (2026-10-19): paths and column maps are not judgment constants
-          "season_lines": {"HERE", "KIT", "DECK", "KIT_CSV", "DECK_CSV", "ACTUALS", "OUT", "KIT_COLS", "DECK_COLS", "DEC"}}
+          "season_lines": {"HERE", "KIT", "DECK", "KIT_CSV", "DECK_CSV", "ADDITIONS", "ACTUALS", "OUT", "KIT_COLS", "DECK_COLS", "DEC"}}
 TIER_NOTES = {"healthy": "", "mild": "inj-acl-mild", "risk": "inj-knee-risk", "recovery": "inj-achilles-recovery",
               "out": "out-season"}
 

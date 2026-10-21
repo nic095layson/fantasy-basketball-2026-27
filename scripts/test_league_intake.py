@@ -134,5 +134,54 @@ class Paste(unittest.TestCase):
             LI.parse_paste(text)
 
 
+class PoolAdditions(unittest.TestCase):
+    """Owner 2026-10-21 (option (b), clicked): in-season pickups the draft deck's pool lacks live in the kit's
+    data/pool_additions.csv (deck schema), read after the deck pool by the roster intake and the season lines. The draft
+    page stays frozen at the lock; a name in both files is refused, never silently duplicated."""
+    FIELDS = ["player", "team", "pos", "note"]
+
+    def files(self, d, deck, adds):
+        paths = []
+        for name, rows in (("deck.csv", deck), ("adds.csv", adds)):
+            p = os.path.join(d, name)
+            with open(p, "w", newline="", encoding="utf-8") as f:
+                w = csv.DictWriter(f, fieldnames=self.FIELDS); w.writeheader()
+                for r in rows:
+                    w.writerow(dict(player=r, team="NYK", pos="C", note=""))
+            paths.append(p)
+        return paths
+
+    def test_load_pool_appends_the_additions_after_the_deck_rows(self):
+        with tempfile.TemporaryDirectory() as d:
+            deck, adds = self.files(d, ["Deck Man"], ["Pickup Man"])
+            self.assertEqual([r["player"] for r in LI.load_pool(deck, adds)], ["Deck Man", "Pickup Man"])
+
+    def test_a_name_in_both_files_is_refused(self):
+        with tempfile.TemporaryDirectory() as d:
+            deck, adds = self.files(d, ["Same Man"], ["Same Man"])
+            with self.assertRaisesRegex(ValueError, "Same Man"):
+                LI.load_pool(deck, adds)
+
+    def test_no_additions_file_is_the_deck_pool_alone(self):
+        with tempfile.TemporaryDirectory() as d:
+            deck, _ = self.files(d, ["Deck Man"], [])
+            self.assertEqual([r["player"] for r in LI.load_pool(deck, os.path.join(d, "missing.csv"))], ["Deck Man"])
+
+    def test_every_addition_equals_its_kit_plane_twin(self):
+        # the kit plane (report/projections-2026-27.csv) and the additions file carry the same line, so the season lines
+        # blend one projection whichever plane a script reads
+        kit = {r["name"]: r for r in csv.DictReader(open(os.path.join(LI.KIT, "report", "projections-2026-27.csv"),
+                                                          encoding="utf-8"))}
+        adds = list(csv.DictReader(open(LI.ADDITIONS, encoding="utf-8")))
+        self.assertIn("Andre Drummond", [a["player"] for a in adds])
+        pairs = dict(fg_pct="fgp", fga="fga", ft_pct="ftp", fta="fta", tpm="tpm", pts="pts", reb="reb", ast="ast",
+                     stl="stl", blk="blk", tov="tov", team="team", pos="pos")
+        for a in adds:
+            k = kit.get(a["player"])
+            self.assertIsNotNone(k, f"{a['player']} has no kit-plane line")
+            for deck_col, kit_col in pairs.items():
+                self.assertEqual(a[deck_col], k[kit_col], f"{a['player']} {deck_col}")
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

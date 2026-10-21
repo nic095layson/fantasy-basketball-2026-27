@@ -156,7 +156,18 @@ def sim_state(ros):
     return {"teams": len(ros), "picks": [{"slot": s, "player": p["player"]} for s, r in sorted(ros.items()) for p in r]}
 
 
+def sim_pool_names(tag=LINES_TAG):
+    """The names the deck's season simulator can play: it loads only its frozen players_<tag>.csv."""
+    with open(os.path.join(DECK, "arena", "results", f"players_{tag}.csv"), encoding="utf-8") as f:
+        return {r["player"] for r in csv.DictReader(f)}
+
+
 def run_league_sim(ros, seed, seasons, workdir, tag="cur"):
+    # 2026-10-21 (owner option (b), data/pool_additions.csv): a rostered pickup the simulator's frozen pool lacks is left
+    # out of the simulation, as an IL player is (D-IS-8), and named in the record's absent_from_sim
+    known = sim_pool_names()
+    absent = sorted(p["player"] for r in ros.values() for p in r if p["player"] not in known)
+    ros = {s: [p for p in r if p["player"] in known] for s, r in ros.items()}
     sp = os.path.join(workdir, f"_state_{tag}_{seed}.json")
     op = os.path.join(workdir, f"_sim_{tag}_{seed}.json")
     json.dump(sim_state(ros), open(sp, "w", encoding="utf-8"), ensure_ascii=False)
@@ -165,4 +176,5 @@ def run_league_sim(ros, seed, seasons, workdir, tag="cur"):
     rec = json.load(open(op, encoding="utf-8"))
     os.remove(sp)
     os.remove(op)
+    rec["absent_from_sim"] = absent
     return rec

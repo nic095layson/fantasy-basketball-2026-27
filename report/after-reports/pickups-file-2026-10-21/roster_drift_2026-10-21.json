@@ -1,0 +1,190 @@
+{
+ "date": "2026-10-21",
+ "window": "2026-10-14 to 2026-10-21 (Version 68 lock date onward; stated before the run)",
+ "method": "WebSearch (standard), one search per name plus one follow-up for a claim or signing where the first found a waiver; ESPN's 30-roster feed of 10/21 as the mechanical second source",
+ "espn_record": "report/after-reports/flaim-2026-10-21/roster_verification_2026-10-21_accidental.json",
+ "fetch_attempt": "WebFetch of rotoballer.com, eurohoops.net, yardbarker.com, urbanmilwaukee.com at ~20:20Z 10/21: all getaddrinfo ENOTFOUND (the environment's DNS); outlet titles, URLs and dates are the search index's, the pages were not read",
+ "pool_change": "none (owner 10/21: research and report only)",
+ "players": [
+  {
+   "player": "Tony Bradley",
+   "pool_team": "NYK",
+   "espn_2026_10_21": "UTA (mismatch)",
+   "finding": "waived by the Knicks (reported Thu 10/15 with Agbaji and Eubanks), claimed off waivers by Utah (reported 10/17-10/18, ESPN's Shams Charania per the outlets), non-guaranteed",
+   "outlets": [
+    {
+     "outlet": "Deseret News",
+     "title": "tony bradley reportedly signing with utah jazz",
+     "url": "https://www.deseret.com/sports/2026/10/17/tony-bradley-reportedly-signing-with-utah-jazz/",
+     "date": "2026-10-17 (in the URL)"
+    },
+    {
+     "outlet": "RotoBaller",
+     "title": "Jazz Claim Tony Bradley Off Waivers",
+     "url": "https://www.rotoballer.com/?p=1969436",
+     "date": "10/17-10/18 per the search summary"
+    }
+   ],
+   "query": "Tony Bradley Jazz signed October 2026",
+   "grade": "two outlets + ESPN feed agree"
+  },
+  {
+   "player": "Kevin Porter Jr.",
+   "pool_team": "MIL",
+   "espn_2026_10_21": "on no ESPN roster",
+   "finding": "waived by Milwaukee Mon 10/19 to reach 15 (ESPN's Shams Charania per the outlets); no claim or signing found in a second search",
+   "outlets": [
+    {
+     "outlet": "Eurohoops",
+     "title": "lakers waive dalton knecht bucks part ways with kevin porter jr",
+     "url": "https://www.eurohoops.net/en/nba-news/2023273/lakers-waive-dalton-knecht-bucks-part-ways-with-kevin-porter-jr/",
+     "date": "2026-10-19 per the search summary"
+    },
+    {
+     "outlet": "Yardbarker (Hoops Rumors)",
+     "title": "bucks cut kevin porter jr",
+     "url": "https://www.yardbarker.com/nba/articles/bucks_cut_kevin_porter_jr/s1_14822_44448482",
+     "date": "undated in the result"
+    },
+    {
+     "outlet": "Bleacher Report",
+     "title": "kevin porter jr waived bucks new nba rumors top landing spots guard",
+     "url": "https://bleacherreport.com/articles/25513316-kevin-porter-jr-waived-bucks-new-nba-rumors-top-landing-spots-guard",
+     "date": "undated in the result"
+    }
+   ],
+   "query": "Kevin Porter Jr. Bucks waived October 2026; Kevin Porter Jr. signs claimed after Bucks waiver",
+   "league": "rostered in the owner's league: MAXEY-MUM OVERDRIVE, PG slot, Yahoo status NA (data/source/flaim/rosters_2026-10-21.transcribed.csv line 129); NA is scored 0.00 by status_feed",
+   "grade": "two outlets + ESPN feed agree on the waiver; the date rests on one outlet's summary"
+  },
+  {
+   "player": "Ochai Agbaji",
+   "pool_team": "NYK",
+   "espn_2026_10_21": "on no ESPN roster",
+   "finding": "waived by the Knicks, confirmed Thu 10/15 with Bradley and Eubanks (Exhibit 9 camp deal)",
+   "outlets": [
+    {
+     "outlet": "BVM Sports",
+     "title": "knicks waiving drew eubanks tony bradley ochai agbaji",
+     "url": "https://bvmsports.com/2026/10/15/knicks-waiving-drew-eubanks-tony-bradley-ochai-agbaji/",
+     "date": "2026-10-15 (in the URL)"
+    },
+    {
+     "outlet": "Yardbarker",
+     "title": "knicks waiving tony bradley ochai agbaji",
+     "url": "https://www.yardbarker.com/nba/articles/knicks_waiving_tony_bradley_ochai_agbaji/s1_14822_44432313",
+     "date": "undated in the result"
+    }
+   ],
+   "query": "Ochai Agbaji Knicks waived October 2026",
+   "grade": "two outlets + ESPN feed agree"
+  },
+  {
+   "player": "Jeremy Sochan",
+   "pool_team": "POR",
+   "espn_2026_10_21": "on no ESPN roster",
+   "finding": "waived by Portland Sat 10/17 (non-guaranteed camp deal); no claiming team found",
+   "outlets": [
+    {
+     "outlet": "Eurohoops",
+     "title": "Trail Blazers waive Jeremy Sochan",
+     "url": "https://www.eurohoops.net/en/nba-news/2022357/trail-blazers-waive-jeremy-sochan/",
+     "date": "10/17 per the search summary"
+    },
+    {
+     "outlet": "RotoBaller",
+     "title": "Trail Blazers Waive Jeremy Sochan",
+     "url": "https://www.rotoballer.com/?p=1969452",
+     "date": "undated in the result"
+    },
+    {
+     "outlet": "Yardbarker",
+     "title": "blazers waive jeremy sochan ahead of regular season opener",
+     "url": "https://www.yardbarker.com/nba/articles/blazers_waive_jeremy_sochan_ahead_of_regular_season_opener/s1_16763_44440543",
+     "date": "undated in the result"
+    }
+   ],
+   "query": "Jeremy Sochan Trail Blazers waived October 2026; Jeremy Sochan clears waivers signs (returned February 2026 items only)",
+   "grade": "two outlets + ESPN feed agree"
+  },
+  {
+   "player": "Dalton Knecht",
+   "pool_team": "LAL",
+   "espn_2026_10_21": "on no ESPN roster",
+   "finding": "waived by the Lakers on a Monday (10/19) to reach 15 after failed trade talks; no claim or signing found",
+   "outlets": [
+    {
+     "outlet": "TSN",
+     "title": "lakers waive former first round pick knecht",
+     "url": "https://www.tsn.ca/nba/article/lakers-waive-former-first-round-pick-knecht-n1-50221792/",
+     "date": "undated in the result"
+    },
+    {
+     "outlet": "Yardbarker (Hoops Rumors)",
+     "title": "lakers waive dalton knecht",
+     "url": "https://www.yardbarker.com/nba/articles/lakers_waive_dalton_knecht/s1_14822_44448452",
+     "date": "undated in the result"
+    },
+    {
+     "outlet": "Eurohoops",
+     "title": "lakers waive dalton knecht bucks part ways with kevin porter jr",
+     "url": "https://www.eurohoops.net/en/nba-news/2023273/lakers-waive-dalton-knecht-bucks-part-ways-with-kevin-porter-jr/",
+     "date": "2026-10-19 per the Porter search summary"
+    }
+   ],
+   "query": "Dalton Knecht Lakers traded waived October 2026; Dalton Knecht claimed off waivers signs",
+   "grade": "two outlets + ESPN feed agree on the waiver; the date rests on one outlet's summary"
+  },
+  {
+   "player": "Johni Broome",
+   "pool_team": "MIL",
+   "espn_2026_10_21": "on no ESPN roster",
+   "finding": "waived by Milwaukee ~10/17 with Pete Nance and Jake Stephens (Exhibit 10); expected to join the Wisconsin Herd (G League), assignment not confirmed",
+   "outlets": [
+    {
+     "outlet": "Yardbarker (Hoops Rumors)",
+     "title": "bucks waive pete nance johni broome jake stephens",
+     "url": "https://www.yardbarker.com/nba/articles/bucks_waive_pete_nance_johni_broome_jake_stephens/s1_14822_44440949",
+     "date": "undated in the result"
+    },
+    {
+     "outlet": "BVM Sports (citing Hoops Rumors)",
+     "title": "bvmsports.com",
+     "url": "https://bvmsports.com/?p=7377580",
+     "date": "~10/17 per the search summary"
+    }
+   ],
+   "query": "Johni Broome Bucks waived October 2026; Johni Broome Wisconsin Herd",
+   "grade": "two outlets + ESPN feed agree on the waiver; the Herd assignment is a single expectation, not a report"
+  },
+  {
+   "player": "Bruce Brown",
+   "pool_team": "NYK",
+   "espn_2026_10_21": "on no ESPN roster",
+   "finding": "waived by the Knicks Sat 10/17 (reported 10/18, ESPN's Shams Charania per the outlets), Wiseman kept; no claim or signing found",
+   "outlets": [
+    {
+     "outlet": "Eurohoops",
+     "title": "Knicks waived Bruce Brown, retained James Wiseman",
+     "url": "https://www.eurohoops.net/en/nba-news/2022718/knicks-waived-bruce-brown-retained-james-wiseman/",
+     "date": "undated in the result"
+    },
+    {
+     "outlet": "TSN",
+     "title": "sources knicks waiving brown keeping wiseman",
+     "url": "https://www.tsn.ca/nba/article/sources-knicks-waiving-brown-keeping-wiseman-n1-50204321/",
+     "date": "undated in the result"
+    },
+    {
+     "outlet": "RotoBaller",
+     "title": "Bruce Brown Waived by Knicks",
+     "url": "https://www.rotoballer.com/?p=1969443",
+     "date": "10/18 per the search summary"
+    }
+   ],
+   "query": "Bruce Brown Knicks waived October 2026; Bruce Brown clears waivers signs with",
+   "league": "on the Flaim free-agent list (data/source/flaim/pull_2026-10-21.json free_agents[99])",
+   "grade": "two outlets + ESPN feed agree"
+  }
+ ]
+}

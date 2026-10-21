@@ -101,6 +101,42 @@ class Run(unittest.TestCase):
             self.assertEqual(open(os.path.join(d, "pool_season.csv")).read().replace("\r", ""),
                              open(deck).read().replace("\r", ""))
 
+    def test_additions_join_the_deck_plane_after_the_snapshot_rows(self):
+        # owner 2026-10-21 option (b): the frozen Version 69 snapshot stays untouched; in-season pickups follow it
+        with tempfile.TemporaryDirectory() as d:
+            kit = os.path.join(d, "kit.csv"); deck = os.path.join(d, "deck.csv"); adds = os.path.join(d, "adds.csv")
+            with open(kit, "w", newline="") as f:
+                w = csv.DictWriter(f, fieldnames=list(KIT_ROW)); w.writeheader(); w.writerow(KIT_ROW)
+            for path, name in ((deck, DECK_ROW["player"]), (adds, "Pickup Center")):
+                with open(path, "w", newline="") as f:
+                    w = csv.DictWriter(f, fieldnames=list(DECK_ROW)); w.writeheader(); w.writerow(dict(DECK_ROW, player=name))
+            S.run(date="2026-10-20", actuals=[], kit_csv=kit, deck_csv=deck, out_dir=d, additions_csv=adds)
+            names = [r["player"] for r in csv.DictReader(open(os.path.join(d, "pool_season.csv")))]
+            self.assertEqual(names, [DECK_ROW["player"], "Pickup Center"])
+
+    def test_an_addition_already_in_the_snapshot_is_refused(self):
+        # written after the code (green from the start, stated): a pickup the snapshot already carries would be two lines
+        with tempfile.TemporaryDirectory() as d:
+            kit = os.path.join(d, "kit.csv"); deck = os.path.join(d, "deck.csv"); adds = os.path.join(d, "adds.csv")
+            with open(kit, "w", newline="") as f:
+                w = csv.DictWriter(f, fieldnames=list(KIT_ROW)); w.writeheader(); w.writerow(KIT_ROW)
+            for path in (deck, adds):
+                with open(path, "w", newline="") as f:
+                    w = csv.DictWriter(f, fieldnames=list(DECK_ROW)); w.writeheader(); w.writerow(DECK_ROW)
+            with self.assertRaisesRegex(ValueError, DECK_ROW["player"]):
+                S.run(date="2026-10-20", actuals=[], kit_csv=kit, deck_csv=deck, out_dir=d, additions_csv=adds)
+            self.assertFalse(os.path.exists(os.path.join(d, "pool_season.csv")))
+
+    def test_the_command_line_run_reads_the_kits_additions_file(self):
+        # end to end on the real inputs, written to a scratch folder: Drummond's pickup row reaches pool_season.csv
+        import subprocess
+        with tempfile.TemporaryDirectory() as d:
+            p = subprocess.run([sys.executable, os.path.join(HERE, "season_lines.py"), "--date", "2026-10-21", "--out", d],
+                               capture_output=True, text=True)
+            self.assertIn("SEASON LINES: PASS", p.stdout, p.stdout + p.stderr)
+            names = [r["player"] for r in csv.DictReader(open(os.path.join(d, "pool_season.csv"), encoding="utf-8"))]
+            self.assertIn("Andre Drummond", names)
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

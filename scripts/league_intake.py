@@ -15,6 +15,10 @@ One recorded exception (Council 2026-10-15, 4-1): a name listed in data/unpooled
 passes ONLY while it sits in an IL slot, carried as `unpooled_il` with no line; on any
 other slot it halts like every other miss.
 
+The pool is the deck's data/players.csv (frozen at the draft lock) followed by the kit's data/pool_additions.csv:
+in-season pickups the draft pool never carried, one deck-schema row each (owner 2026-10-21, option (b)). A name
+in both files is refused (load_pool raises), never carried twice.
+
     python3 scripts/league_intake.py [--as-of YYYY-MM-DD]
 
 Exit 0 = written. Exit 1 = halted, misses listed.
@@ -37,6 +41,8 @@ SRC = os.path.join(KIT, "data", "source", "yahoo-starting-rosters-2026-10-20-vie
 PDF = os.path.join(KIT, "data", "source", "yahoo-starting-rosters-2026-10-20-view.pdf")
 RECAP = os.path.join(KIT, "report", "after-reports", "draft-league-2026-10-14", "recap.json")
 POOL = os.path.join(DECK, "data", "players.csv")
+ADDITIONS = os.path.join(KIT, "data", "pool_additions.csv")
+POOL_LABEL = "deck data/players.csv + kit data/pool_additions.csv"
 OUT = os.path.join(KIT, "data", "league_state.json")
 UNPOOLED = os.path.join(KIT, "data", "unpooled_il.json")
 EMPTY = "(Empty)"
@@ -114,6 +120,20 @@ def resolve(names, pool, abbr):
         else:
             miss.append(n)
     return res, miss
+
+
+def load_pool(pool_path=POOL, additions_path=ADDITIONS):
+    """The deck pool's rows, then the kit's in-season additions (none when the file is absent). Raises ValueError
+    naming every addition whose folded name the deck pool already carries."""
+    pool = list(csv.DictReader(open(pool_path, encoding="utf-8")))
+    if not os.path.exists(additions_path):
+        return pool
+    adds = list(csv.DictReader(open(additions_path, encoding="utf-8")))
+    have = {norm(p["player"]) for p in pool}
+    dup = [a["player"] for a in adds if norm(a["player"]) in have]
+    if dup:
+        raise ValueError(f"already in the deck pool, remove from {os.path.relpath(additions_path, KIT)}: {', '.join(dup)}")
+    return pool + adds
 
 
 def sha(path):
@@ -199,7 +219,10 @@ def main():
             print(f"LEAGUE INTAKE: HALT — paste not parsed: {e}"); sys.exit(1)
         src = os.path.splitext(a.paste)[0] + ".transcribed.csv"
         write_rows(rows, src); pdf = None
-    pool = list(csv.DictReader(open(POOL, encoding="utf-8")))
+    try:
+        pool = load_pool()
+    except ValueError as e:
+        print(f"LEAGUE INTAKE: HALT — pool additions: {e}"); sys.exit(1)
     recap = json.load(open(RECAP, encoding="utf-8"))
     abbr = {p["abbr"]: p["player"] for p in recap}
     draft, managers = {}, {}
@@ -209,12 +232,12 @@ def main():
     if a.paste:
         sources = {"paste": {"file": os.path.relpath(a.paste, KIT), "sha256": sha(a.paste), "view": "Yahoo Starting Rosters page, pasted as text by the owner"},
                    "transcription": {"file": os.path.relpath(src, KIT), "sha256": sha(src), "method": "league_intake.parse_paste (mechanical)"},
-                   "draft_board": os.path.relpath(RECAP, KIT), "pool": "deck data/players.csv"}
+                   "draft_board": os.path.relpath(RECAP, KIT), "pool": POOL_LABEL}
     else:
         sources = {"pdf": {"file": os.path.relpath(pdf, KIT), "sha256": sha(pdf), "view": "Yahoo Starting Rosters, Tue Oct 20 tab"},
                    "transcription": {"file": os.path.relpath(src, KIT), "sha256": sha(src),
                                      "method": "agent transcription of the page images (no text layer)"},
-                   "draft_board": os.path.relpath(RECAP, KIT), "pool": "deck data/players.csv"}
+                   "draft_board": os.path.relpath(RECAP, KIT), "pool": POOL_LABEL}
     unpooled = json.load(open(UNPOOLED, encoding="utf-8"))["players"] if os.path.exists(UNPOOLED) else {}
     sys.exit(run(src, OUT, pool, abbr, draft, a.as_of, managers, sources, unpooled))
 
