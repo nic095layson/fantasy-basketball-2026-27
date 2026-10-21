@@ -10,7 +10,10 @@ failed step stops the run and later steps are SKIPPED):
   3 season board                  scripts/season_board.py --date <today>
   4 status feed                   scripts/status_feed.py --date <today> then --check on that day's file (Yahoo letters + ESPN feed, receipts)
   4b transactions (fetch only)    scripts/transactions.py --date <today>        (ESPN transactions feed, last 3 days; owner 2026-10-20)
+  4c matchup live (non-fatal)     scripts/matchup_live.py --date <today>       (FantasyBot matchup pin; owner 2026-10-20 item 2)
   5 daily brief on the season pool  SEASON_POOL=data/season/pool_season.csv scripts/daily_brief.py --date <today>
+
+  5b trade finder (non-fatal)     scripts/trade_finder.py --date <today>       (1-for-1 sweep + sims; owner 2026-10-20 item 1)
 
 Writes report/briefs/morning_<date>.json (every step's command, exit, PASS line, tail) and prints
 'MORNING: PASS — ...' / 'MORNING: FAIL' with the first failing step. Nothing here changes a projection line, a
@@ -40,6 +43,8 @@ def steps(date, fetch=True, seasons=10000):
     if fetch:  # owner 2026-10-20: live rosters from FantasyBot; non-fatal, the last paste stands on a failed pull
         st.append(dict(name="league live", cmd=[PY, os.path.join(HERE, "league_live.py"), "--as-of", date], cwd=KIT,
                        pass_re=r"^LEAGUE LIVE: PASS", env={}, fatal=False))
+        st.append(dict(name="matchup live", cmd=[PY, os.path.join(HERE, "matchup_live.py"), "--date", date], cwd=KIT,
+                       pass_re=r"^MATCHUP LIVE: PASS", env={}, fatal=False))
         st.append(dict(name=f"box scores {y}", cmd=[PY, os.path.join(HERE, "box_pull.py"), "--date", y], cwd=KIT, pass_re=r"^BOX PULL: PASS", env={}))
     st += [dict(name="season lines", cmd=[PY, os.path.join(HERE, "season_lines.py"), "--date", date], cwd=KIT, pass_re=r"^SEASON LINES: PASS", env={}),
            dict(name="season board", cmd=[PY, os.path.join(HERE, "season_board.py"), "--date", date], cwd=KIT, pass_re=r"^SEASON BOARD: PASS", env={}),
@@ -53,6 +58,9 @@ def steps(date, fetch=True, seasons=10000):
     st += [
            dict(name="daily brief", cmd=[PY, os.path.join(HERE, "daily_brief.py"), "--date", date, "--seasons", str(seasons)], cwd=KIT,
                 pass_re=r"^wrote report/briefs/brief_", env={"SEASON_POOL": season_pool}),
+           # owner 2026-10-20 item 1: the 1-for-1 trade sweep on the live rosters; non-fatal, ~5 min of sims
+           dict(name="trade finder", cmd=[PY, os.path.join(HERE, "trade_finder.py"), "--date", date, "--seasons", str(seasons)], cwd=KIT,
+                pass_re=r"^TRADE FINDER: PASS", env={"SEASON_POOL": season_pool}, fatal=False),
            dict(name="season deck", cmd=[PY, os.path.join(HERE, "season_deck.py"), "--date", date], cwd=KIT,
                 pass_re=r"^SEASON DECK: PASS", env={})]
     return st

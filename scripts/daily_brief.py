@@ -60,6 +60,29 @@ def newest_status(date):
     return (json.load(open(files[-1], encoding="utf-8")), os.path.basename(files[-1])) if files else ({"rows": []}, None)
 
 
+def trades_for(date):
+    """The trade-finder record for the brief's date (scripts/trade_finder.py; owner 2026-10-20 item 1), or None."""
+    path = os.path.join(CG.KIT, "data", "news", f"trades_{date}.json")
+    return json.load(open(path, encoding="utf-8")) if os.path.exists(path) else None
+
+
+def trades_lines(rec):
+    if rec is None:
+        return ["No trade-finder record for the date (scripts/trade_finder.py writes it)."]
+    if not rec["trades"]:
+        return [f"{rec['pairs_swept']:,} one-for-one pairs swept: none raises my expected category wins "
+                "without lowering the other side's. Stand pat."]
+    out = [f"{rec['pairs_swept']:,} one-for-one pairs swept on the live rosters; {rec['proposable']} proposable "
+           "(my cats/week up, theirs not down — the engine's acceptability proxy, not their judgment). Top:"]
+    for t in rec["trades"][:3]:
+        line = (f"- Send **{t['i_send']}** to {t.get('team') or t['seat']} for **{t['i_get']}**: "
+                f"{t['d_ecw_me']:+.3f} cats/wk me, {t['d_ecw_them']:+.3f} them")
+        if t.get("title") is not None:
+            line += f"; title {t['title']:.1f}% ({t['d_title']:+.1f})"
+        out.append(line)
+    return out
+
+
 def league_moves_for(date):
     """The league-moves record for the brief's date (scripts/league_moves.py; owner 2026-10-20 item 2), or None."""
     path = os.path.join(CG.KIT, "data", "news", f"league_moves_{date}.json")
@@ -178,6 +201,7 @@ def main():
     tx = transactions_for(a.date)
 
     lm = league_moves_for(a.date)
+    tf = trades_for(a.date)
     rec = {"date": a.date, "week": wk, "week_window": [wstart, wend], "league_state_as_of": state["as_of"],
            "status_file": status_file, "lines": CG.LINES_TAG, "opponent": opp_team["name"] if opp_team else None,
            "today": rows_today, "lineup": lineup, "bench": bench, "waiver_base_ecw": round(base_ecw, 4),
@@ -186,7 +210,8 @@ def main():
                             "value_per_game": round(CG.hoops.adj_value(weakest, ()), 2)},
            "title": {str(s): base[s]["champ"] for s in SEEDS}, "playoffs": {str(s): base[s]["playoff"] for s in SEEDS},
            "seasons": a.seasons, "transactions": tx and {"window": tx["window"], "ok": tx["source"].get("ok"), "hits": tx["hits"]},
-           "league_moves": lm and lm["moves"]}
+           "league_moves": lm and lm["moves"],
+           "trade_finder": tf and {"pairs_swept": tf["pairs_swept"], "proposable": tf["proposable"], "trades": tf["trades"][:3]}}
     os.makedirs(OUTDIR, exist_ok=True)
     json.dump(rec, open(os.path.join(OUTDIR, f"brief_{a.date}.json"), "w", encoding="utf-8"), indent=1, ensure_ascii=False)
 
@@ -206,6 +231,7 @@ def main():
         L.append(f"- No game today: {', '.join(idle)}")
     L += ["", "## League moves", ""] + league_moves_lines(lm, me["name"])
     L += ["", "## Transactions", ""] + transactions_lines(tx, me["name"], rec["opponent"])
+    L += ["", "## Trades worth proposing", ""] + trades_lines(tf)
     L += ["", "## Waiver scan", ""]
     if top:
         L.append(f"{len(pos)} of {len(pairs)} add/drop pairs raise expected weekly category wins (base {base_ecw:.3f}). "
@@ -222,7 +248,7 @@ def main():
     L += ["", "## Title odds (real schedule)", "", f"- Title: {odds_line(base[SEEDS[0]]['champ'], base[SEEDS[1]]['champ'], a.seasons)}",
           f"- Playoffs: {(base[SEEDS[0]]['playoff'] + base[SEEDS[1]]['playoff']) / 2:.1f}%",
           f"- {band_line()}", "",
-          "_Cannot see: news after the rosters/status paste beyond ESPN's transactions feed; ESPN injuries (network-denied); minutes limits; "
+          "_Cannot see: news after the morning FantasyBot pull (or the last paste) beyond ESPN's transactions feed; ESPN injuries (network-denied); minutes limits; "
           "other managers' pending claims. Q counts as a coin flip._"]
     path = os.path.join(OUTDIR, f"brief_{a.date}.md")
     open(path, "w", encoding="utf-8").write("\n".join(L) + "\n")
