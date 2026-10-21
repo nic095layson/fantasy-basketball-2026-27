@@ -13,8 +13,6 @@ failed step stops the run and later steps are SKIPPED):
   4c matchup live (non-fatal)     scripts/matchup_live.py --date <today>       (FantasyBot matchup pin; owner 2026-10-20 item 2)
   5 daily brief on the season pool  SEASON_POOL=data/season/pool_season.csv scripts/daily_brief.py --date <today>
 
-  5b trade finder (non-fatal)     scripts/trade_finder.py --date <today>       (1-for-1 sweep + sims; owner 2026-10-20 item 1)
-
 Writes report/briefs/morning_<date>.json (every step's command, exit, PASS line, tail) and prints
 'MORNING: PASS — ...' / 'MORNING: FAIL' with the first failing step. Nothing here changes a projection line, a
 tag or a roster: the season files are derived, the brief proposes.
@@ -58,9 +56,6 @@ def steps(date, fetch=True, seasons=10000):
     st += [
            dict(name="daily brief", cmd=[PY, os.path.join(HERE, "daily_brief.py"), "--date", date, "--seasons", str(seasons)], cwd=KIT,
                 pass_re=r"^wrote report/briefs/brief_", env={"SEASON_POOL": season_pool}),
-           # owner 2026-10-20 item 1: the 1-for-1 trade sweep on the live rosters; non-fatal, ~5 min of sims
-           dict(name="trade finder", cmd=[PY, os.path.join(HERE, "trade_finder.py"), "--date", date, "--seasons", str(seasons)], cwd=KIT,
-                pass_re=r"^TRADE FINDER: PASS", env={"SEASON_POOL": season_pool}, fatal=False),
            dict(name="season deck", cmd=[PY, os.path.join(HERE, "season_deck.py"), "--date", date], cwd=KIT,
                 pass_re=r"^SEASON DECK: PASS", env={})]
     return st

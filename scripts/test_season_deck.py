@@ -238,27 +238,21 @@ class FantasyBotCards(Deck):
     """Owner 2026-10-20 ("1, 2, 5 build"): the Trades-worth-proposing card and the This-week-live
     card render from data/news records when present, and FantasyBot's verdict text never appears."""
 
-    def test_trades_card_and_live_card_render_from_optional_records(self):
+    def test_live_card_renders_from_the_optional_record(self):
         import json as J
-        self.fx["trades"] = os.path.join(self.d, "trades.json")
-        J.dump({"date": "2026-10-21", "pairs_swept": 10, "proposable": 1, "base_title": 24.1,
-                "trades": [{"seat": 12, "team": "T12", "i_send": "Beta Man", "i_get": "Alpha Man",
-                             "d_ecw_me": 0.1, "d_ecw_them": 0.01, "title": 30.0, "d_title": 5.9}]},
-               open(self.fx["trades"], "w"))
         self.fx["matchup_live"] = os.path.join(self.d, "ml.json")
         J.dump({"date": "2026-10-21", "week": 1, "my_left_to_play": 30, "opp_left_to_play": 37,
                 "games_in_progress": False, "opp_team": "OPP", "my_team": "ME",
                 "my_starters": [], "opp_starters": []}, open(self.fx["matchup_live"], "w"))
         html, data, rec = self.build()
-        self.assertIn("Trades worth proposing", html)
         self.assertIn("This week", html)
-        self.assertEqual(data["trades"]["trades"][0]["i_get"], "Alpha Man")
         self.assertEqual(data["matchup_live"]["opp_left_to_play"], 37)
+        # owner veto 2026-10-20: no hypothetical-trade card, ever
+        self.assertNotIn("Trades worth proposing", html)
         self.assertNotIn("7% to win", html)
 
     def test_missing_records_render_nothing_and_do_not_halt(self):
         html, data, rec = self.build()
-        self.assertIsNone(data["trades"])
         self.assertIsNone(data["matchup_live"])
 
 if __name__ == "__main__":

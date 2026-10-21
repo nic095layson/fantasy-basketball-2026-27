@@ -41,8 +41,7 @@ def default_paths(date):
                 season_lines=os.path.join(KIT, "data", "season", f"season_lines_{date}.json"),
                 sweep=os.path.join(KIT, "report", "after-reports", "redteam-2026-10-19", "sweep.json"),
                 calibration=os.path.join(KIT, "report", "calibration.json"),
-                # optional (owner 2026-10-20 "1, 2, 5 build"): absent files render nothing, never halt
-                trades=os.path.join(KIT, "data", "news", f"trades_{date}.json"),
+                # optional (owner 2026-10-20; trade finder removed on the owner's veto 2026-10-20): absent renders nothing
                 matchup_live=os.path.join(KIT, "data", "news", f"matchup_live_{date}.json"))
 
 
@@ -90,7 +89,7 @@ def build(paths, date):
     calib = _load(paths["calibration"], "calibration")
     opt = lambda k: (json.load(open(paths[k], encoding="utf-8"))
                      if paths.get(k) and os.path.exists(paths[k]) else None)
-    trades = opt("trades"); matchup_live = opt("matchup_live")
+    matchup_live = opt("matchup_live")
     for k in ("date", "opponent", "title", "lineup"):
         if k not in brief: raise DeckError(f"brief lacks {k}")
     if brief["date"] != date: raise DeckError(f"brief is for {brief['date']}, not {date}")
@@ -127,7 +126,7 @@ def build(paths, date):
     data = dict(date=date, generated_utc=datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
                 my_team=my_team, my_seat=my_seat, brief=brief, board=board, status=status,
                 league=dict(as_of=league["as_of"], rosters=rosters, managers={t["name"]: t.get("manager") for t in league["teams"]}), season_lines=lines, matchup=wk,
-                ledger=calib.get("weeks", {}), band=band, trades=trades, matchup_live=matchup_live,
+                ledger=calib.get("weeks", {}), band=band, matchup_live=matchup_live,
                 config=dict(cats=["FG%", "FT%", "3PM", "PTS", "REB", "AST", "STL", "BLK", "TOV"],
                             tier_low=0.3, tier_high=1.0, verdict_edge=0.5, verdict_strong=1.5,
                             thresholds_note="stated defaults, D-SD-1 (owner re-tunes); z screen only, not the simulator"))
@@ -365,24 +364,6 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
     (inRows.length!==outRows.length)? h("p",{class:"note"},"Unequal player counts: the net also prices the empty or extra roster spot at z 0; judge accordingly."):null);
 }
 (function(){ const p=$("#pane-trade"); const teams=Object.keys(D.league.rosters).filter(t=>t!==D.my_team).sort();
-  // owner 2026-10-20 item 1: the morning sweep's proposable trades; d_ecw>=0 both sides is the engine's
-  // acceptability proxy, not a model of the rival manager's judgment
-  if(D.trades && D.trades.trades && D.trades.trades.length){
-    const T=D.trades;
-    p.append(h("div",{class:"card"},h("h2",{},"Trades worth proposing"),
-      h("p",{class:"note"},T.pairs_swept.toLocaleString()+" one-for-one pairs swept on the live rosters ("+T.date+"); "
-        +T.proposable+" raise my expected weekly category wins without lowering the other side's (engine proxy, not their judgment). Top by my gain:"),
-      h("div",{class:"tablebox"},h("table",{},
-        h("tr",{},h("th",{},"send"),h("th",{},"get"),h("th",{},"to"),h("th",{class:"num"},"Δcats/wk me"),h("th",{class:"num"},"Δcats/wk them"),h("th",{class:"num"},"title %"),h("th",{class:"num"},"Δtitle")),
-        T.trades.map(t=>h("tr",{},h("td",{},t.i_send),h("td",{},t.i_get),h("td",{},t.team||("seat "+t.seat)),
-          h("td",{class:"num"},zv(t.d_ecw_me,true)),h("td",{class:"num"},zv(t.d_ecw_them,true)),
-          h("td",{class:"num"},t.title!=null?t.title.toFixed(1):"—"),
-          h("td",{class:"num"},t.d_title!=null?zv(t.d_title,true):"—"))))),
-      h("p",{class:"note"},"Simulator-checked rows show title % (avg of 2 runs × "+(T.seasons?T.seasons.toLocaleString():"10,000")+" seasons, base "+(T.base_title!=null?T.base_title.toFixed(1):"—")+"%). Propose nothing without David's word.")));
-  } else if(D.trades){
-    p.append(h("div",{class:"card"},h("h2",{},"Trades worth proposing"),
-      h("p",{class:"note"},D.trades.pairs_swept.toLocaleString()+" pairs swept ("+D.trades.date+"): none raises my expected category wins without lowering the other side's. Stand pat.")));
-  }
   let team=teams[0]; const out=new Set(), inc=new Set(); const root=h("div",{class:"card"}); p.append(root, howItWorks());
   function render(){ const R=D.league.rosters[team]||{players:[],off_board:[]};
     const theirs=R.players.map(n=>BYNAME[n]).filter(Boolean).sort((a,b)=>a.rank-b.rank);

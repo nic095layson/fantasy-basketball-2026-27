@@ -177,23 +177,5 @@ class LeagueMoves(unittest.TestCase):
         out = "\n".join(DB.league_moves_lines(rec, "Me"))
         self.assertIn("yours", out)
 
-
-class TradeFinderLines(unittest.TestCase):
-    """Owner 2026-10-20 item 1: the brief names the top proposable trades, or says stand pat."""
-
-    def test_trades_render_with_both_deltas_and_title(self):
-        rec = {"pairs_swept": 1846, "proposable": 2, "trades": [
-            {"seat": 12, "team": "T", "i_send": "A", "i_get": "B", "d_ecw_me": 0.2, "d_ecw_them": 0.01,
-             "title": 33.1, "d_title": 9.0}]}
-        out = "\n".join(DB.trades_lines(rec))
-        self.assertIn("Send **A** to T for **B**", out)
-        self.assertIn("+0.200", out)
-        self.assertIn("33.1%", out)
-        self.assertIn("not their judgment", out)
-
-    def test_zero_proposable_says_stand_pat(self):
-        out = "\n".join(DB.trades_lines({"pairs_swept": 1846, "proposable": 0, "trades": []}))
-        self.assertIn("Stand pat", out)
-
 if __name__ == "__main__":
     unittest.main(verbosity=2)

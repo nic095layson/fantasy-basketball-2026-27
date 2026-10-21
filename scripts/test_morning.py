@@ -20,7 +20,7 @@ PY = sys.executable
 class Steps(unittest.TestCase):
     def test_steps_in_order_with_dates(self):
         st = M.steps("2026-10-21", fetch=True, seasons=10000)
-        self.assertEqual([s["name"] for s in st], ["league live", "matchup live", "box scores 2026-10-20", "season lines", "season board", "status feed", "transactions", "daily brief", "trade finder", "season deck"])
+        self.assertEqual([s["name"] for s in st], ["league live", "matchup live", "box scores 2026-10-20", "season lines", "season board", "status feed", "transactions", "daily brief", "season deck"])
         self.assertIn("2026-10-20", st[2]["cmd"])
         self.assertIn("2026-10-21", st[7]["cmd"])
         self.assertTrue(all(s["pass_re"] for s in st))
@@ -66,7 +66,7 @@ class NonFatal(unittest.TestCase):
 
     def test_league_live_is_marked_non_fatal(self):
         st = M.steps("2026-10-21", fetch=True, seasons=10000)
-        for name in ("league live", "matchup live", "trade finder"):
+        for name in ("league live", "matchup live"):
             step = next(s for s in st if s["name"] == name)
             self.assertFalse(step.get("fatal", True), name)
 
