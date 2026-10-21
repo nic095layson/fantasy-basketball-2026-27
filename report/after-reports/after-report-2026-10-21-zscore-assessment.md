@@ -1,12 +1,16 @@
 # Z-scores and the Season tool: what decides what, the pasted claims checked, and two measurements — 2026-10-21 (night)
 
-Pull window: 2026-10-21 → 2026-10-21. No league or market pull. Two attempts to read the G-score paper failed (§4), and one web search read the paper's listing. Everything else is local: the pinned 10/21 Flaim league state, the 10/21 season pool, and the deck's `weekly_matchups_2025-26.csv`.
+Pull window: 2026-10-21 → 2026-10-21. No league or market pull. Two attempts to read the G-score paper failed (§4), and one web search read the paper's listing. You then uploaded the paper (about 21:21Z). It is pinned at `data/source/papers/rosenof-2307.02188v5.pdf`, with its pdfplumber text and 17 page-cited quotes checked against that text (`.quotes.json`). Everything else is local: the pinned 10/21 Flaim league state, the 10/21 season pool, and the deck's `weekly_matchups_2025-26.csv`.
 
 **Owner's request** (2026-10-21, verbatim): "A thought for you to consider- if our computation model is heavily favoring zscores in projections for the Season tool, may we need to consider a pivot or adjustment?" This was followed by a pasted summary arguing that z-scores are not the most efficient way to win 9-category leagues. The summary cites Reddit, Medium and arXiv 2307.02188, and names G-scores, category-win-probability boards and Hashtag-style adjusted z-scores.
 
 Your decisions on the assessment (clicked, about 21:05Z):
 - direction: **"Measure first"**;
 - adjustment, if one follows: **"Fit the weekly variance first"**.
+
+Then, at about 21:20Z:
+- D-ZS-1: **"Stress-test, then game logs"**;
+- D-ZS-2: **"I'll paste/upload the paper"**, which you did.
 
 **What was analyzed.**
 - Kit main `9b00fc1` and deck main `80eecdf`.
@@ -29,8 +33,9 @@ Your decisions on the assessment (clicked, about 21:05Z):
   - roster changes;
   - games-played errors.
   
-  If the model's weekly spread is too narrow, its win probabilities are too confident. The red-team sweep tested that constant only at ×0.8 and ×1.2.
-- **The G-score claim** is supported by the paper's own abstract, as the search index shows it, but I could not read the paper here. A G-score board was not built: it would have to be written from memory.
+  If the model's weekly spread is too narrow, its win probabilities are too confident.
+- **Your title odds barely care.** The stress test raised the per-game variation to ×1.5 and ×2.0. The title share moved −0.36 and −0.61 points against a baseline of 23.77% / 24.20%, with the simulation's own noise at 0.54. ROBUST at every step (§4).
+- **The G-score paper (your upload) supports the claim on its own terms.** In its simulated head-to-head leagues, a G-score drafter against a field of Z-score drafters won 21.4% of each-category seasons, against an 8.33% baseline (p. 6–7). Its 2022-23 table weights steals at 44% of their Z-score value and assists at 75% (p. 9). A G-score column needs each player's week-to-week variance, which the game-log pull you chose would supply. It is not built; it waits for your go.
 
 ## 1. Roster changes
 
@@ -53,7 +58,7 @@ None. No pool row, line, tag or roster changed.
 
 | claim | grade | evidence |
 |---|---|---|
-| z-scores are not the most efficient method for head-to-head 9-cat | PARTIAL | The paper's abstract, as the search index shows it (arXiv 2307.02188, Rosenof, "Static quantification of player value for fantasy basketball"), describes Z-score as the special case of the G-score where future performances are known exactly, and reports simulated head-to-head seasons in which G-scores outperform Z-scores. The paper itself could not be read (§4). "Most efficient" goes beyond it; the same author's later H-scoring paper (arXiv 2409.09884) reports a dynamic method beating static lists. |
+| z-scores are not the most efficient method for head-to-head 9-cat | SUPPORTED as the paper states it; "most efficient" goes beyond it | Primary source, your upload (`data/source/papers/rosenof-2307.02188v5.pdf`):<br>p. 4: "G-scores are the same as Z-scores except the denominators are modified to add period-to-period variance".<br>p. 6–7: G against a Z field won "21.4% of simulated Each Category seasons"; Table 6 aggregate "0.4% 0.5% 32.5% 21.4%".<br>The paper's own limits: p. 8, "choosing players via a static ranking list is fundamentally sub-optimal", and expected categories won "is not a perfect proxy".<br>The same author's later H-scoring paper (arXiv 2409.09884) reports a dynamic method beating static lists; that one was not read. |
 | a 5-4 week is worth the same as 9-0 | wrong for this league's regular season; right for its playoffs | `data/league_settings.json` scoring_type "Head-to-Head - Categories"; the deck simulator builds standings from category records (`arena.py`: "Yahoo H2H-each-cat standings accumulate the CATEGORY record"); a playoff matchup is won with 5 or more categories |
 | skewed categories let one elite blocker inflate his z | PARTIAL, plausible | standardizing over the top 156 limits it; the size on our board was not measured (did not check) |
 | linear z-scores bury poor free-throw shooters | PARTIAL | volume-weighted FT% impact is the standard team contribution (`hoops.zscores`). Punting is a strategy question already tested in the draft rooms: it beat the plain card in 2 of 9 turns, averaging −0.32 (D75-2), and stayed advice-only. |
@@ -99,9 +104,40 @@ The observed spread contains five things:
 
 So the result is that the model's weekly spread is narrower than observed, by at most these ratios. It is not a fitted `arena.CV`.
 
-For scale: the red-team sweep moved this constant only to ×0.8 and ×1.2, which shifted the title share by +0.11 and −0.45 points (ROBUST, `sweep.json`). How the title odds respond beyond ×1.2 was not run (did not check).
+**Stress test (your "Stress-test, then game logs", step 1).** (`zscore-assessment-2026-10-21/sweep_cv_stress.json`, `.log`, `registry_cv_stress.json`)
 
-**The G-score paper.** WebFetch of arxiv.org failed (`getaddrinfo ENOTFOUND`, about 21:00Z). `curl` to arxiv.org, export.arxiv.org and semanticscholar.org returned no response (000). The search index lists versions v1–v5 and shows the abstract. A G-score board needs the paper's formula, which I would otherwise be writing from memory, so it was not built.
+Setup:
+- the standing red-team sweep (`scripts/redteam/sweep.py`) on deck `80eecdf`;
+- the 10/14 league draft rosters, pool v69;
+- 6,000 seasons on each of seeds 2026 and 2027;
+- the baseline lands within 3 standard errors of the 10k reference runs on both seeds.
+
+Only the per-game variation (`arena.CV`) moved, through a scratch registry. The standing `sweep.json` and its gate are untouched.
+
+| per-game variation | title share, seed 2026 / 2027 | mean shift | tier |
+|---|---|---|---|
+| as set (×1.0) | 23.77% / 24.20% | baseline | |
+| ×1.2 | 22.88% / 24.20% | −0.45 | ROBUST |
+| ×1.5 | 23.02% / 24.22% | −0.36 | ROBUST |
+| ×2.0 | 23.23% / 23.52% | −0.61 | ROBUST |
+
+The simulation's own noise is ±0.54 points. Up to ×2.0, which covers most of the gap measured above, the title odds stay within about one unit of that noise. The fit therefore matters for the size of swap values and for a G-score column, not for the title figure.
+
+**The G-score paper (your upload).**
+- *Before the upload:* WebFetch of arxiv.org failed (`getaddrinfo ENOTFOUND`, about 21:00Z), and `curl` to arxiv.org, export.arxiv.org and semanticscholar.org got no response (000).
+- *The upload:* `data/source/papers/rosenof-2307.02188v5.pdf`, 17 pages, sha256 `e3b7151f84b7…`, read with pdfplumber page by page.
+- *Definition (p. 4–5).* The G-score is the Z-score with each category's denominator widened from the spread of players' means (σ²) to σ² + κ·τ². Here τ² is the average week-to-week variance of a player's weekly line, and κ = 2N/(2N−1). The paper's simulation "approximated [κ] at 1" (p. 6).
+- *Result (p. 6–7, Table 6), aggregate row:*
+  - Z against a G field won 0.4% of most-categories seasons and 0.5% of each-category seasons;
+  - G against a Z field won 32.5% and 21.4%;
+  - the baseline is 1 in 12, or 8.33%.
+- *Weights (p. 9, Table 8, 2022-23).* Each category's G-score as a fraction of its Z-score:
+
+| steals | FG% | FT% | turnovers | points | blocks | rebounds | threes | assists |
+|---|---|---|---|---|---|---|---|---|
+| 44% | 56% | 58% | 62% | 65% | 68% | 69% | 72% | 75% |
+
+- *What a G-score column here would need:* each player's week-to-week variance (τ) per category, from weekly lines. Season totals don't give it. The 2025-26 game logs you chose as step 2 would, aggregated to Yahoo weeks. Both sources answered HTTP 200 from here at about 21:30Z: Basketball-Reference game logs and the ESPN athlete game-log API. Not built.
 
 **Structural bands, carried for the gate.** This report quotes no simulator figure. The standing sweep's bands are carried verbatim:
 - TEAM_WEEK_SHOCK is FRAGILE: +2.7 (no shock) / −3.6 (shock doubled).
@@ -110,6 +146,7 @@ For scale: the red-team sweep moved this constant only to ×0.8 and ×1.2, which
 ## 5. Errors and surprises, stated plainly
 
 - **I first described the spread gap too narrowly.** I said it showed that the hand-set variance was too small. Checking it found a cause the model omits: the schedule mix (one week your big man plays four games, another week two), on top of per-game noise. The record and this report now say the gap is not attributable to `arena.CV` alone.
+- **A label in the standing registry says "variance" but means CV.** Its `arena.CV` variants are labeled "per-game variance ×0.8 / ×1.2", but the sweep multiplies the per-game variation (CV, the standard-deviation scale), not the variance. Flagged, not changed; the scratch registry here labels its variants "per-game CV". Not fixing it now is deliberate (scope).
 - **The paste's "5-4 = 9-0" claim does not hold for your regular season.** It is true in the playoffs, where a matchup is won with 5 or more categories.
 
 ## Watchlist
@@ -156,12 +193,14 @@ Near misses (the 🎯 in 5+ mocks, under 25 places): Jamal Murray (18 mocks, val
 
 ## Decision sheet
 
-1. **D-ZS-1: data for the weekly-variance fit** (your chosen adjustment).
-   - **(a)** Your 2025-26 weekly totals, with the draft rosters and season moves to split out unequal players and roster changes. Local data, but one team and 17 weeks.
-   - **(b)** 2025-26 per-game logs from Basketball-Reference for the rostered players and the top free agents. This is the direct definition of per-game variance; it is a network pull of about 170 pages with a pull-log row.
-   - **(c)** First re-run the red-team sweep with this constant at ×1.5 and ×2.0, to see whether the title odds care before fitting anything. Local, about 20 minutes.
-   - Recommendation: (c), then (b). Default: none run.
-2. **D-ZS-2: G-score board.** It needs the paper's formula. You can paste the PDF or its G-score section, or allow arxiv.org in the environment's network settings. Default: not built.
+1. **D-ZS-1: the weekly-variance fit.** You chose "Stress-test, then game logs".
+   - Step 1 is done: ROBUST up to ×2.0.
+   - Step 2 is the 2025-26 game-log pull: about 170 player pages, logged, from Basketball-Reference, or ESPN's game-log API as the second outlet. It would fit the per-game variation and also give the week-to-week variance a G-score needs.
+   - With the title odds insensitive, its value is in swap sizes and in the G-score column.
+   - Default: waits for your word.
+2. **D-ZS-2: G-score comparison column.** The paper is now in hand, quoted by page above.
+   - Build: the formula exactly as the paper's Table 5 gives it, with τ from step 2's weekly lines, shown beside the z-score on the season board. Comparison only, changing no ranking.
+   - Default: not built until your go.
 3. **Unchanged:** z-scores keep ranking the board, lineup and streaming until a fit or a G-score comparison shows a difference.
 
 ## Bounds
@@ -173,9 +212,10 @@ Near misses (the 🎯 in 5+ mocks, under 25 places): Jamal Murray (18 mocks, val
 
 **In scope and unverified.**
 - How the five sources split the observed spread: UNVERIFIABLE with this file, which holds one team's totals with no weekly rosters.
-- How the title odds respond to a wider variance: NOT-ATTEMPTED. Option (c) would measure it.
+- How the title odds respond to a wider variance: measured (the stress test above).
 - The skew effect on the board: did not check.
-- The G-score formula: ATTEMPTED-FAILED (above).
+- The G-score formula: read from your upload (above). Its 2022-23 weights are the paper's figures, not recomputed for our pool.
+- The paper's later companion (H-scoring, arXiv 2409.09884): did not check.
 
 ## Provenance
 
@@ -186,9 +226,12 @@ Near misses (the 🎯 in 5+ mocks, under 25 places): Jamal Murray (18 mocks, val
   - `data/league_settings.json`.
   - The deck's `weekly_matchups_2025-26.csv` and its README.
   - The search index listing of arXiv 2307.02188 ([v5 page](https://arxiv.org/html/2307.02188v5)).
+  - The paper itself, uploaded by you and pinned with page-cited quotes.
+  - The stress-test record.
 - **Re-verify.**
   - `python3 report/after-reports/zscore-assessment-2026-10-21/waiver_shortlist_audit.py`
   - `python3 report/after-reports/zscore-assessment-2026-10-21/weekly_spread_check.py`
+  - `python3 scripts/redteam/sweep.py --registry report/after-reports/zscore-assessment-2026-10-21/registry_cv_stress.json --out <file>`
 
 ## In plain language
 
@@ -198,4 +241,6 @@ I checked whether ranking by z-score made the waiver scan miss a good pickup tod
 
 The bigger finding is how swingy real weeks are. Last season your team's weeks varied more than the model assumes: about twice as much, at most. Part of that is schedule luck the model ignores. If the model underestimates swings, it's a bit overconfident about who wins a category. That's the fit you picked, and the next step is choosing its data.
 
-The article's "G-score" idea is real and the paper backs it, but I couldn't open the paper from here, so I didn't build one from memory.
+Then I made the model's weekly swings twice as wild and re-ran your title odds. They barely moved: from about 24% to about 23.4%, which is inside the simulation's own noise. So your title chances don't hinge on this setting.
+
+The paper you uploaded backs the G-score idea on its own terms. In its simulated leagues, a G-score drafter beat a room of z-score drafters far more often than chance: 21.4% of seasons won, where 8.3% is chance. It counts steals at less than half their usual weight, because steals swing so much week to week. To build a G-score column for our players I need each player's week-to-week swings. That comes from last season's game logs, the step you chose next, which waits for your word.
