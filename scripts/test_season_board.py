@@ -12,6 +12,7 @@ import unittest
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import season_board as SB  # noqa: E402
+import season_lines as SL  # noqa: E402
 
 KIT = os.path.dirname(HERE)
 PRE = os.path.join(KIT, "report", "projections-2026-27.csv")
@@ -19,8 +20,14 @@ PRE = os.path.join(KIT, "report", "projections-2026-27.csv")
 
 class Board(unittest.TestCase):
     def test_identity_board_matches_the_preseason_order(self):
+        # zero regular-season games -> season lines equal the preseason lines -> the same board. Built here from a
+        # zero-game season_lines run, not read from data/season/: from the first real games (10/20) the committed
+        # season lines move by design, and a test that read them failed on every in-season record (owner 2026-10-21).
         b_pre = SB.build(PRE)
-        b_season = SB.build(os.path.join(KIT, "data", "season", "projections_season.csv"))
+        with tempfile.TemporaryDirectory() as d:
+            rec = SL.run(date="2026-10-19", actuals=[], kit_csv=PRE, out_dir=d)
+            self.assertEqual(rec["players_with_games"], 0)
+            b_season = SB.build(os.path.join(d, "projections_season.csv"))
         self.assertEqual([r["name"] for r in b_pre["board"]][:200], [r["name"] for r in b_season["board"]][:200])
         self.assertEqual(b_pre["n_held"], b_season["n_held"])
 
