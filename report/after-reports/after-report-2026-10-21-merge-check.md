@@ -158,6 +158,37 @@ None. This section covers the conflict analysis for the PRs waiting on a merge. 
   - With the deck back on main (`80eecdf`) all 7 pass.
   - The engine files are untouched by #129, which only adds a CSV row. Even so, merging #129 will mark the attack records STALE until the attacks re-run (watchlist).
 
+## 5. The owner's decisions at about 19:50Z, and what followed
+
+**The owner's answers (clicked):**
+- merges "#29 + #155 + #157";
+- #156 "Setup script, then merge";
+- Drummond "(a) Rebuild draft page";
+- "D" "0.25 + add mapping".
+
+- **#157 merged, after its head was checked.**
+  - Checks on the head: suite 250 of 250; `gates.py --verify` PASS.
+  - Merge commit `aafd650` on main.
+  - Before the run I predicted 274 tests. 274 was an earlier count from #155's branch, not main's. #157 changes no test files, so 250 is main's own count.
+- **"Doubtful" maps to "D" in FantasyBot's label map** (`league_live.STATUS_OF`), built on top of #157's "Questionable" line after merging main into this branch.
+  - Red first: `doubtful_label_red.txt` shows "unknown FantasyBot injury label 'Doubtful'"; then 19 of 19 (`doubtful_label_green.txt`).
+  - #157 shipped "Questionable" with no test. One now pins it, though it can only pass from the start.
+  - Suite: 306 of 306, twice.
+- **#29 and #156 are Global Operations' to merge.**
+  - #29 is in a repository this session can only read.
+  - #156 waits on the owner adding Python playwright to the runner environment's setup script.
+- **Drummond's (a) is held. I told the owner it was "one rebuild"; that was wrong.**
+  - The deck's build refuses to run unless today's roster check is clean. Today's check is not:
+    - ESPN's live rosters (2026-10-21, all 30 teams) list Tony Bradley on UTA while the pool has NYK (a mismatch) [SINGLE-SOURCE: ESPN roster API].
+    - Six pool players are on no ESPN roster: Kevin Porter Jr., Ochai Agbaji, Jeremy Sochan, Dalton Knecht, Johni Broome, Bruce Brown.
+  - Rebuilding the draft page therefore needs a full roster reconciliation first: a sourced team change for Bradley and a researched reason for each of the six. That is a daily pull's work, not a row.
+  - The option is put back to the owner with that cost.
+  - Evidence: `flaim-2026-10-21/roster_verification_2026-10-21_accidental.json`.
+- **How that roster check came to run: a second "script ran for real" error today.**
+  - I ran `verify_rosters.py --help` to read its options. It has no help flag, so it ran: it fetched all 30 ESPN rosters, re-authored the deck's `data/rosters_official.json` and wrote `data/roster_verification.json`. Both were on the local deck checkout, on main, uncommitted and unpushed.
+  - Both files were inspected, copied to scratch, and restored from main (`git checkout`). The deck tree is clean on `80eecdf`.
+  - It is the same failure as this morning's `morning.py` run. The rule I now follow: read a script's argument parser in the file, never probe it by running it.
+
 ## Watchlist
 
 - **Tomorrow's 05:53 PT run** reads the stored prompt, which has no Flaim steps (decision 3).
@@ -208,6 +239,8 @@ Rule (owner, 2026-10-08, D-RN-1): the card's 🎯 in 5+ of the graded mocks, rep
 Near misses (the 🎯 in 5+ mocks, under 25 places): Jamal Murray (18 mocks, value 9, market 18); Derrick White (17 mocks, value 27, market 45); Lauri Markkanen (15 mocks, value 21, market 37); Tyrese Haliburton (13 mocks, value 7, market 12); Tyrese Maxey (11 mocks, value 5, market 9); Kel'el Ware (10 mocks, value 57, market 77); Tyler Herro (9 mocks, value 51, market 69); Karl-Anthony Towns (8 mocks, value 12, market 15); Miles Bridges (5 mocks, value 96, market 98).
 
 ## Decision sheet
+
+*Decided at about 19:50Z (§5): items 1, 4 and 5 as recommended, and #156 after the setup script. Item 2 was chosen as (a) and is held for a corrected re-decision.*
 
 1. **Merges.** In the order in §1: #29, #155, then #156 once playwright is in the runner environment's setup script, #157 any time, and deck #129 after decision 2.
    - Setting up playwright: open the runner's cloud environment from the session's title bar, choose Edit, and add `pip install playwright==1.56.0` under Setup script. 1.56.0 is the version the runner installed today.

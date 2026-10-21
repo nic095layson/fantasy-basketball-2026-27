@@ -62,6 +62,18 @@ class RowsFromPull(unittest.TestCase):
         with self.assertRaises(league_live.PullError):
             league_live.to_rows(pull)
 
+    def test_questionable_maps_to_q(self):
+        # the runner's 10/21 re-run (owner go, #157): FantasyBot's 'Questionable' on Deni Avdija, Yahoo's 'Q' via Flaim
+        # the same day. The mapping shipped in #157 without a test; this one pins it (green from the start).
+        pull = {"mine": None, "teams": {"T": team("T", [("A Player", "POR", "SF", True, None, "Questionable")])}}
+        self.assertEqual(league_live.to_rows(pull)[0]["status"], "Q")
+
+    def test_doubtful_maps_to_d(self):
+        # owner 2026-10-21: "Stewart's 'D' means 'Doubtful'" (status_feed.TIERS D, 0.25, D-IS-10) and, clicked the same
+        # evening, "0.25 + add mapping": FantasyBot's spelling of the same status lands on Yahoo's letter
+        pull = {"mine": None, "teams": {"T": team("T", [("A Player", "DET", "PF", True, None, "Doubtful")])}}
+        self.assertEqual(league_live.to_rows(pull)[0]["status"], "D")
+
     def test_the_niederhauser_alias_lands_on_the_unpooled_key(self):
         pull = {"mine": None, "teams": {"T": team("T", [
             ("Yanic Konan Niederhäuser", "PHI", "C", False, "ir", "Out")])}}

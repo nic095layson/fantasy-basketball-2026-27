@@ -44,7 +44,8 @@ MY_TEAM = "KEL'EL YAXEL HALQUETA"
 N_TEAMS = 12
 PIN_DIR = os.path.join(KIT, "data", "source", "fantasybot")
 TRANSCRIPTS = os.path.expanduser("~/.claude/projects/-home-user-fantasy-basketball-2026-27")
-STATUS_OF = {None: "", "Out": "O", "Day-to-day": "Q", "Questionable": "Q"}
+STATUS_OF = {None: "", "Out": "O", "Day-to-day": "Q", "Questionable": "Q",
+             "Doubtful": "D"}  # owner 2026-10-21: D means doubtful (status_feed.TIERS, 0.25, D-IS-10)
 ALIASES = {"Yanic Konan Niederhäuser": "Y. Konan Niederhäuser"}
 
 
