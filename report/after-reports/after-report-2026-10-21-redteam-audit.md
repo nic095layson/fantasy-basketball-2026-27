@@ -42,6 +42,13 @@ Its three independent choices — population SD, volume-weighted pool percentage
 (`Σ pct×att / Σ att`), TOV negated — all match the engine, which was written separately.
 Reading the engine afterwards confirms the same three.
 
+**Independence is evidenced behaviourally, not just by the subagent's word for it.** Its
+180-player pool contains **5 players the engine's `exclude_held()` removes** (Lively,
+DiVincenzo, Butler, Nurkic, Mark Williams). Had it read the engine or any board output
+it would have inherited that exclusion. It did not — which is also why the comparison
+fed the engine *its* pool, so the 1,800-cell result tests the z-score computation, not
+board membership.
+
 **In plain language:** somebody who had never seen your code, working only from your
 written description of the method, built the same calculator and got the same answers
 to six decimal places on every player in every category. That is the real test, and it
@@ -92,17 +99,38 @@ multiplier (healthy = 1.00), the other an absolute weekly probability (healthy =
 because healthy players miss games too). So the raw gap on all 168 rostered players is
 expected, not a bug.
 
-The real test is whether they agree **relative to their own healthy baseline**:
+**[CORRECTED by the adversarial-verify pass, same day — read this before the table.]**
+My first version divided each tier by its own healthy baseline and reported a "relative
+gap" of -0.072 at risk and -0.048 at mild, concluding the board punishes injury risk
+about 7 points harder. **That conclusion is WITHDRAWN — it was not a valid comparison.**
+The board applies *two separate* factors: the injury-tier multiplier
+(`hoops.availability`: 1.00 / 0.85 / 0.78) **and**, independently, an expected-games
+factor `avail(gp) = gp/82 + (1 - gp/82) * 0.20` (72 games -> 0.902, 65 -> 0.834). The
+simulator's `weekly_availability` carries **both jobs in one number** — healthy 0.88
+already reflects that healthy players miss games. So I divided a tier-only ratio by a
+tier-plus-games ratio. Different kinds of quantity; the subtraction meant nothing.
 
-| tier | board | simulator | board ÷ healthy | sim ÷ healthy | **relative gap** |
-|---|---|---|---|---|---|
-| healthy | 1.00 | 0.88 | 1.000 | 1.000 | 0.000 |
-| mild | 0.85 | 0.79 | 0.850 | 0.898 | **−0.048** |
-| risk | 0.78 | 0.75 | 0.780 | 0.852 | **−0.072** |
+What **is** established, measured:
 
-**The board punishes injury risk harder than the simulator does** — about 7 points
-harder at the risk tier. Both cannot be right. Exposure today: **27 rostered players on
-a risk tier, 5 on mild**, including Kawhi Leonard and Kyrie Irving on your own team.
+| tier | board tier multiplier | simulator weekly availability |
+|---|---|---|
+| healthy | 1.00 | 0.88 |
+| mild | 0.85 | 0.79 |
+| risk | 0.78 | 0.75 |
+| recovery | 0.0 (excluded from the board) | 0.60 (priced) |
+
+Two instruments carry two different tier tables for related concepts; the registry
+already flags this as **D-PM-4**. That much stands. **Whether they disagree in effect is
+NOT established by this audit** — settling it needs the board's composed figure
+(tier x `avail(gp)`, which is player-specific) set against the simulator's single
+number, per player. That comparison is `NOT-ATTEMPTED` and is what D-PM-4 should
+actually ask for.
+
+The one divergence needing no normalisation to be real: **recovery** — the board
+excludes (0.0), the simulator prices (0.60). Exposure measured with the live
+`note_tag` / `availability` / `weekly_availability` functions rather than a
+reimplementation: **27 rostered players on risk, 5 on mild, 5 on recovery/out**
+(Strus, Mark Williams, Suggs, Butler, Nurkic).
 
 This is already on the sheet as **D-PM-4** ("reconcile 0.78 vs 0.75, 1.0 vs 0.88"). What
 this audit adds is the relative framing, which makes it a real inconsistency rather than
@@ -148,6 +176,7 @@ Assembled from commits and tool output, not recollection.
 | 6 | "Still only yours: attach the FantasyBot connector" | the owner had already attached it; the evidence was in a tool result I had read one minute earlier | the owner |
 | 7 | `check_claims` detector | blind to writers routed through an argparse default — would have under-reported writers repo-wide | its own known-answer control |
 | 8 | tonight's roster join | read field `name`; the field is `player` → 0 of 168 matched [SINGLE-SOURCE] (this session's own tool output) | implausible result |
+| 10 | **this report's own Provenance section** | claimed adversarial-verify was loaded for this task; it was not — loaded earlier that evening for a different task [SINGLE-SOURCE] (the Stop hook) | the governance Stop hook |
 | 9 | tonight's tier classifier | substring-matched whole notes → Haliburton scored "mild" off his injury history [SINGLE-SOURCE] (this session's own tool output) | implausible result |
 
 **The pattern.** Nine errors, and not one is arithmetic. Every single one is a confident
@@ -224,8 +253,14 @@ name can collide. The standing check ran clean tonight (9 near-misses, none new)
 
 ## Provenance
 
-Session `session_01QjgeRdpDaWgSJmGKRG8fTU`, 2026-10-21. Governors loaded: red-team,
-plan-gate (full block, pre-work), adversarial-verify. Separate attacker: one subagent,
+Session `session_01QjgeRdpDaWgSJmGKRG8fTU`, 2026-10-21. Governors: red-team **loaded**,
+plan-gate **loaded** (full block, pre-work), adversarial-verify **NOT loaded during the
+work**. The first version of this line claimed all three. It was false: adversarial-verify
+had been loaded earlier the same evening for a different task, and re-attached context
+does not count as loaded. The Stop hook caught it, the pass was then run properly, and it
+withdrew this report's headline new finding (section 4) and added the behavioural
+independence evidence (section 1). Logged as error #10 below — the same failure pattern
+this report diagnoses, committed inside the report that diagnoses it. Separate attacker: one subagent,
 spec-only, 64k tokens, 7 tool calls. Kit ec803bb, deck d33942f. No projection line, tag,
 roster or engine constant was changed by this audit; `git diff` over both planes is empty
 but for this report and its pull-log row.
