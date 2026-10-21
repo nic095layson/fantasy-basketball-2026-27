@@ -262,7 +262,7 @@ are right. That is the sweep's job (D-RT-STALE).
 |---|---|---|
 | PR #147 | **MERGED** | `09acd70`, after three passages were corrected (§1) |
 | D-PM-4 recovery | **BUILT** | 0.60 → 0.0, Python and JS; red-first 2/103 → 103/103; registry PASS |
-| D-PM-4 risk/mild | carried | needs the composed per-player comparison (tier × `avail(gp)` vs simulator) |
+| D-PM-4 risk/mild | carried | needs a per-player comparison against the simulator. *Corrected before merge:* this row first said "tier × `avail(gp)`", but no instrument composes the two — the deck board applies the tier only (`hoops.adj_value`), the kit board `avail(gp)` only (`rank_engine`) |
 | D-CLAIM-1 | **BUILT (b)** | `check_claims --gate` is the last gate in `gates.py` |
 | run-ledger | **BUILT** | `scripts/run_ledger.py`; three producers; `ledger_pass` consumer; 16 tests |
 | A-9 simulator attack | **PASS, registered** | `report/after-reports/redteam-sim-2026-10-21/rt_sim.json` |
