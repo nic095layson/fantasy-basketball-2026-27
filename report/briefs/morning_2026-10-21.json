@@ -1,6 +1,36 @@
 {
- "ran_at_utc": "2026-10-21T14:57:03Z",
+ "ran_at_utc": "2026-10-21T18:34:01Z",
  "steps": [
+  {
+   "name": "league live",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/league_live.py --as-of 2026-10-21 --since 2026-10-21T18:33:05Z",
+   "exit": 1,
+   "pass_line": "",
+   "verdict": "FAIL (non-fatal)",
+   "tail": [
+    "LEAGUE LIVE: HALT — unknown FantasyBot injury label 'Questionable' on Deni Avdija: add it to STATUS_OF, do not guess; league_state.json not touched (last paste stands)"
+   ]
+  },
+  {
+   "name": "matchup live",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/matchup_live.py --date 2026-10-21 --since 2026-10-21T18:33:05Z",
+   "exit": 0,
+   "pass_line": "MATCHUP LIVE: PASS — week 1, games left 30 mine / 34 MAXEY-MUM OVERDRIVE; wrote data/news/matchup_live_2026-10-21.json",
+   "verdict": "PASS",
+   "tail": [
+    "MATCHUP LIVE: PASS — week 1, games left 30 mine / 34 MAXEY-MUM OVERDRIVE; wrote data/news/matchup_live_2026-10-21.json"
+   ]
+  },
+  {
+   "name": "box scores 2026-10-20",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/box_pull.py --date 2026-10-20",
+   "exit": 0,
+   "pass_line": "BOX PULL: PASS — 2026-10-20: 3 games, 84 player lines, 58 in the pool, 26 unpooled; two outlets: 84 matched, 0 cells differ, 0 ESPN-only, 0 bref-only; written data/actuals/2026-10-20.json",
+   "verdict": "PASS",
+   "tail": [
+    "BOX PULL: PASS — 2026-10-20: 3 games, 84 player lines, 58 in the pool, 26 unpooled; two outlets: 84 matched, 0 cells differ, 0 ESPN-only, 0 bref-only; written data/actuals/2026-10-20.json"
+   ]
+  },
   {
    "name": "season lines",
    "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/season_lines.py --date 2026-10-21",
@@ -35,6 +65,16 @@
    ]
   },
   {
+   "name": "transactions",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/transactions.py --date 2026-10-21",
+   "exit": 0,
+   "pass_line": "TRANSACTIONS: PASS — 2026-10-21: 9 feed item(s) 2026-10-19 to 2026-10-21; 5 name a pool player, 3 rostered: Brandon Miller (Podz save the league): Signed G Brandon Miller to a multiyear contract extension.; Cason Wallace (Thompson Telepathy): Re-signed G Cason Wallace to a rookie-scale contract extension.; Kevin Porter Jr. (KEVIN ELEVEN DOUBLES): Waived G Kevin Porter Jr.; wrote data/news/transactions_2026-10-21.json",
+   "verdict": "PASS",
+   "tail": [
+    "TRANSACTIONS: PASS — 2026-10-21: 9 feed item(s) 2026-10-19 to 2026-10-21; 5 name a pool player, 3 rostered: Brandon Miller (Podz save the league): Signed G Brandon Miller to a multiyear contract extension.; Cason Wallace (Thompson Telepathy): Re-signed G Cason Wallace to a rookie-scale contract extension.; Kevin Porter Jr. (KEVIN ELEVEN DOUBLES): Waived G Kevin Porter Jr.; wrote data/news/transactions_2026-10-21.json"
+   ]
+  },
+  {
    "name": "daily brief",
    "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/daily_brief.py --date 2026-10-21 --seasons 10000",
    "exit": 0,
@@ -51,12 +91,7 @@
    "pass_line": "",
    "verdict": "FAIL",
    "tail": [
-    "    html, data, record = build(paths, a.date)",
-    "                         ~~~~~^^^^^^^^^^^^^^^",
-    "  File \"/home/user/fantasy-basketball-2026-27/scripts/season_deck.py\", line 142, in build",
-    "    sha256=hashlib.sha256(open(p, \"rb\").read()).hexdigest()) for k, p in paths.items()},",
-    "                          ~~~~^^^^^^^^^",
-    "FileNotFoundError: [Errno 2] No such file or directory: '/home/user/fantasy-basketball-2026-27/data/news/matchup_live_2026-10-21.json'"
+    "SEASON DECK: FAIL — 2026-10-21: render UNAVAILABLE: playwright not importable: No module named 'playwright' (page kept as deck_2026-10-21.failed.html; deck_2026-10-21.html not written)"
    ]
   }
  ],

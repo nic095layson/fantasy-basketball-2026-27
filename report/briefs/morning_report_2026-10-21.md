@@ -1,15 +1,17 @@
-# Morning report 2026-10-21 (catch-up run)
+# Morning report 2026-10-21 (scheduled run, T0 2026-10-21T18:33:05Z)
 
 - MORNING: FAIL — 2026-10-21: step 'season deck' failed (exit 1); later steps skipped; record report/briefs/morning_2026-10-21.json
-- T0: 2026-10-21T14:56:43Z. Step 4 path: no-fetch fallback (morning.py has no --since; step 3 skipped by the catch-up instruction). Rosters and matchup are the last saved state (brief line 1: "Rosters as of 2026-10-20 (FantasyBot live pull)").
-- Repos: kit already attached (origin https://github.com/nic095layson/fantasy-basketball-2026-27); deck repo cloned fresh to /home/user/yahoo-fantasy-basketball.
-- FantasyBot: no call made (step 3 skipped). Tools present only under UUID prefix mcp__fc659f00-abbe-421b-bbf7-230cf9e631c7__*, not mcp__FantasyBot__*. 0 of 14 calls.
-- League moves: no record (live pull did not run).
-- Matchup live games-left: no record for 2026-10-21 (matchup_live not run). Brief shows games left this week per player (3 for most of the lineup).
+- Step 4 path: `--since 2026-10-21T18:33:05Z` (morning.py lists --since).
+- Repos: kit already attached; deck repo already present (pull: up to date). Branch: origin/season/daily, merged origin/main (55f950c, fast-forward), no stash.
+- Flaim: tools present; league ANTI MARTIN MARTIN CLUB = 478.l.36464 (matches). 12 of 12 roster calls returned data; matchups returned (week 1); available-player list returned (100). scripts/flaim_live.py is not in the kit, so nothing reads the Flaim pull yet.
+- FantasyBot: tools present; 14 of 14 calls returned data (outlook + my roster + team list + 11 rivals).
+- LEAGUE LIVE: HALT — unknown FantasyBot injury label 'Questionable' on Deni Avdija: add it to STATUS_OF, do not guess; league_state.json not touched (last paste stands)
+- WEEK MATCHUP: no line — morning.py has no week-matchup step yet.
+- League moves: no record (league live halted).
+- MATCHUP LIVE: PASS — week 1, games left 30 mine / 34 MAXEY-MUM OVERDRIVE
 - AVAILABILITY CALIBRATION: INSUFFICIENT — median team games 1 < 15; 5 risk-tagged with games < 10 (population 155: healthy 136, mild 2, risk 17; regular-season team-games on file 6); first verdict expected near 2026-11-17. No value changed.
-- Deck: NOT built, NOT published. season_deck.py treats data/news/matchup_live_<date>.json as optional when loading it but hashes every input path unconditionally (scripts/season_deck.py line 142), so with no matchup_live file it raises FileNotFoundError. Engine not touched, per rules. The artifact still holds the 12:54Z publish.
-- Brief: lineup PG Ty Jerome, SG Kevin Durant, G Kawhi Leonard, SF Jaden McDaniels, PF Yaxel Lendeborg, F Miles Bridges, C PJ Washington, C Kel'el Ware, Util Haliburton, Util Irving. Top waiver pair: add Bobby Portis, drop Christian Braun, +0.029 cats/week; title 24.8% (+0.7). Title odds 24.1% ± 0.6 (sampling); structural band: TEAM_WEEK_SHOCK and weekly_availability are FRAGILE (see brief).
-- Movers: 43 lines moved by 0.25+ (e.g. Wembanyama pts 25.6→24.5, Tatum pts 27.5→26.4).
-- Unpooled with games (12): Bennett Stirtz, Brooks Barnhizer, Carter Bryant, David Jones Garcia, Hugo Gonzalez, Ja'Kobi Gillespie, Jabari Walker, Jordan Clarkson, Kenrich Williams, Landry Shamet, Maliq Brown, Tarris Reed Jr.
-- Passing steps: box pull (2026-10-20: 3 games, 84 lines), transactions (9 items), season lines, season board, status feed, daily brief.
-- Stash: none.
+- Deck: NOT published. SEASON DECK: FAIL — render UNAVAILABLE: playwright not importable: No module named 'playwright' (page kept as deck_2026-10-21.failed.html; deck_2026-10-21.html not written). The deck_2026-10-21.html on disk is the earlier run's file and was not republished. Python playwright is not installed in this container (Chromium is, at /opt/pw-browsers); nothing installed, per the rules.
+- Brief (rosters are the last saved state, as of 2026-10-20): lineup PG Ty Jerome, SG Kevin Durant, G Kawhi Leonard, SF Jaden McDaniels, PF Yaxel Lendeborg, F Miles Bridges, C PJ Washington, C Kel'el Ware, Util Tyrese Haliburton, Util Kyrie Irving. Top waiver pair: add Bobby Portis, drop Christian Braun, +0.029 cats/week; title 24.8% (+0.7). Title 24.1% ± 0.6; TEAM_WEEK_SHOCK and weekly_availability FRAGILE (bands in the brief).
+- Stale-state flag: the brief names the opponent KEVIN ELEVEN DOUBLES; today's Yahoo matchup and FantasyBot both name team 10 MAXEY-MUM OVERDRIVE.
+- Movers: 43 lines moved by 0.25+. Unpooled with games (12): Bennett Stirtz, Brooks Barnhizer, Carter Bryant, David Jones Garcia, Hugo Gonzalez, Ja'Kobi Gillespie, Jabari Walker, Jordan Clarkson, Kenrich Williams, Landry Shamet, Maliq Brown, Tarris Reed Jr.
+- Scoreboard intake: no weekly CSV in data/weeks (TEMPLATE.csv only).
