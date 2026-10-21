@@ -249,6 +249,13 @@ are right. That is the sweep's job (D-RT-STALE).
 | D-RT-STALE | carried | the sweep is not re-run (owner's call); CL-6 now tracks it |
 | D-INT-1 | carried | provenance writer not built (owner's call) |
 
+The flagged-name receipts are carried forward from the lock report. This build pulled
+nothing and researched no player, so they were not re-queried (did not check).
+
+| item | query run (2026-10-14) | dated finding |
+|---|---|---|
+| Brandon Ingram, Kristaps Porzingis, Kawhi Leonard, Cam Thomas, Jaden Ivey, Jeremy Sochan, Lonzo Ball, Rob Dillingham, Bennedict Mathurin, Ryan Rollins | the lock report, same day (`after-report-2026-10-14-lock.md`, receipts dated 10/14) | as recorded there; not re-queried for this build (did not check) |
+
 ## Repeat-name market check
 
 Not applicable: no market source was pulled and no pool row changed, so no new name can
