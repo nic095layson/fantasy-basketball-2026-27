@@ -29,6 +29,8 @@ repo's `OPEN.md`; this kit copy is the master.
 | D-INT-2 | Commit the two lagging tools as standing versions | after the draft | `after-report-2026-10-14-integrity.md` |
 | D-SF-1..4 | Scope-fence follow-ups (analysis-session prompt, lessons entry, Hashtag parse, usage dry run) | (a)/(b)/(b)/(a) | `after-report-2026-10-13-scope-fence.md` |
 | D-MC-1 | #156 and #29 are Global Operations' to merge (owner, 10/21 at about 20:10Z: "Global merges #156 now"); #155 and #157 were merged by the kit session. Playwright in the runner's setup script is optional until #156 merges, required after | Global Ops merges | `after-report-2026-10-21-pickups-file.md` |
+| D-ZS-1 | Weekly-variance fit data (owner's chosen adjustment, 10/21): (a) the owner's 2025-26 weekly totals + rosters; (b) 2025-26 Basketball-Reference per-game logs (~170 pages); (c) first re-sweep arena.CV at x1.5/x2.0 | none run (recommended (c) then (b)) | `after-report-2026-10-21-zscore-assessment.md` |
+| D-ZS-2 | G-score board: needs the paper's formula (owner pastes the PDF/section, or allows arxiv.org in the environment) | not built | `after-report-2026-10-21-zscore-assessment.md` §4 |
 
 ## Owner inputs requested, not yet received
 
