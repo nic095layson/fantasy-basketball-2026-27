@@ -4,6 +4,7 @@ halts on a missing record, joins ownership mechanically, and shows the structura
 import json, os, re, sys, tempfile, unittest
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import season_deck as SD
+import deck_render_check as DRC
 
 CATS = ["FG%", "FT%", "3PM", "PTS", "REB", "AST", "STL", "BLK", "TO"]
 
@@ -286,6 +287,101 @@ class FantasyBotCards(Deck):
         self.assertIsNone(rec["inputs"]["matchup_live"]["sha256"])
         self.assertIs(rec["inputs"]["board"]["present"], True)
         self.assertEqual(len(rec["inputs"]["board"]["sha256"]), 64)
+
+def real_movers_lines(d):
+    """The movers record as season_lines.py writes it, not a hand-typed copy: one pooled player, three big
+    regular-season games, run through season_lines.run. Each mover's `moved` is {stat: [preseason, season]} strings.
+    The 10/21 crash came from a fixture that never had a mover (after-report-2026-10-21-board-test.md §3)."""
+    import csv
+    import season_lines as SL
+    kit, deck = os.path.join(d, "kit.csv"), os.path.join(d, "deck.csv")
+    for path, row in ((kit, dict(name="Alpha Man", team="DEN", pos="C", gp="72", mpg="34.0", fgp="0.550", fga="16.0",
+                                  ftp="0.800", fta="5.0", tpm="1.0", pts="25.0", reb="12.0", ast="9.0", stl="1.5",
+                                  blk="0.8", tov="3.0")),
+                      (deck, dict(player="Alpha Man", team="DEN", pos="C", fg_pct="0.550", fga="16.0", ft_pct="0.800",
+                                  fta="5.0", tpm="1.0", pts="25.0", reb="12.0", ast="9.0", stl="1.5", blk="0.8",
+                                  tov="3.0", note=""))):
+        with open(path, "w", newline="") as f:
+            w = csv.DictWriter(f, fieldnames=list(row)); w.writeheader(); w.writerow(row)
+    game = dict(min=36, pts=40, fgm=15, fga=22, tpm=3, tpa=6, ftm=7, fta=8, reb=16, ast=12, tov=6, stl=3, blk=2)
+    rec = dict(date="2026-10-21", games=[dict(espn_id=str(i), season_type=2) for i in range(3)],
+               players=[dict(game, name="Alpha Man", pool_name="Alpha Man", team="DEN", dnp=False, game=str(i))
+                        for i in range(3)])
+    out = SL.run(date="2026-10-21", actuals=[rec], kit_csv=kit, deck_csv=deck, out_dir=d)
+    return os.path.join(d, "season_lines_2026-10-21.json"), out
+
+
+RENDER_OK, RENDER_WHY = DRC.available()
+
+
+@unittest.skipUnless(RENDER_OK, RENDER_WHY)
+class RealMoversRender(unittest.TestCase):
+    """Decision A (owner 2026-10-21): with real movers the page draws all six tabs and each moved stat reads
+    preseason → season under its category name."""
+    def setUp(self):
+        self.d = tempfile.mkdtemp(); self.fx = fixtures(self.d)
+        self.fx["season_lines"], self.lines = real_movers_lines(self.d)
+        self.assertTrue(self.lines["movers"])  # the producer really wrote movers
+
+    def test_the_page_draws_itself_with_real_movers(self):
+        html, data, rec = SD.build(self.fx, date="2026-10-21")
+        p = os.path.join(self.d, "deck.html")
+        with open(p, "w", encoding="utf-8") as f:
+            f.write(html)
+        res = DRC.check(p)
+        self.assertEqual(res["status"], "PASS", res["reasons"])
+        movers = res["panes"]["movers"]
+        self.assertIn("Alpha Man", movers)
+        moved = self.lines["movers"][0]["moved"]
+        labels = {"pts": "PTS", "fgp": "FG%", "reb": "REB", "ast": "AST", "tov": "TOV"}
+        for col, label in labels.items():
+            self.assertIn(col, moved)
+            x, y = moved[col]
+            self.assertIn(f"{label} {x} → {y}", movers)
+        self.assertNotIn(" z and over", movers)
+
+
+@unittest.skipUnless(RENDER_OK, RENDER_WHY)
+class PublishOnlyWhatDraws(unittest.TestCase):
+    """Decision B (owner 2026-10-21): main() writes deck_<date>.html only after the page drew itself; a page that fails
+    is kept as deck_<date>.failed.html and the step FAILs, so the morning run has nothing broken to publish."""
+    def setUp(self):
+        self.d = tempfile.mkdtemp(); self.fx = fixtures(self.d); self.out = os.path.join(self.d, "out")
+        self._build = SD.build
+
+    def tearDown(self):
+        SD.build = self._build
+
+    def run_main(self):
+        argv = sys.argv
+        sys.argv = ["season_deck.py", "--date", "2026-10-21", "--out", self.out]
+        try:
+            SD.main()
+        finally:
+            sys.argv = argv
+
+    def test_a_page_that_cannot_draw_itself_is_never_written_as_the_deck(self):
+        html, data, rec = self._build(self.fx, date="2026-10-21")
+        broken = html.replace("// ---- tabs, footer ----", "null.toFixed(); // ---- tabs, footer ----")
+        self.assertNotEqual(broken, html)
+        SD.build = lambda paths, date: (broken, data, rec)
+        with self.assertRaises(SystemExit) as cm:
+            self.run_main()
+        self.assertEqual(cm.exception.code, 1)
+        self.assertFalse(os.path.exists(os.path.join(self.out, "deck_2026-10-21.html")))
+        self.assertTrue(os.path.exists(os.path.join(self.out, "deck_2026-10-21.failed.html")))
+        self.assertFalse(os.path.exists(os.path.join(self.out, "deck_2026-10-21.check.html")))
+
+    def test_a_page_that_draws_itself_is_written_and_its_render_recorded(self):
+        built = self._build(self.fx, date="2026-10-21")
+        SD.build = lambda paths, date: built
+        self.run_main()
+        self.assertTrue(os.path.exists(os.path.join(self.out, "deck_2026-10-21.html")))
+        rec = json.load(open(os.path.join(self.out, "deck_record_2026-10-21.json")))
+        self.assertEqual(rec["render"]["status"], "PASS")
+        self.assertEqual(rec["render"]["tabs"], DRC.TABS)
+        self.assertEqual(rec["render"]["page_errors"], 0)
+
 
 if __name__ == "__main__":
     unittest.main()

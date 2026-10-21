@@ -16,7 +16,9 @@ carries no figure. The one derivation here is a mechanical join: each board row 
 The Trade Analyzer and Free-Agent Adder tabs (owner pitch 2026-10-19 evening; split into two tabs and the Waivers tab
 removed on the owner's audit the same night) do z-score arithmetic on the board's own vectors in the page; its tier thresholds are stated defaults (D-SD-1), carried in the embedded config,
 and the pane labels itself a screen — the sim-graded verdict (title odds) stays a session ask.
-Writes report/season/deck_<date>.html and deck_record_<date>.json (sha256 of every input).
+Writes report/season/deck_<date>.html and deck_record_<date>.json (sha256 of every input), but only after the page
+drew itself in a headless browser (deck_render_check.py, owner 2026-10-21 decision B); otherwise it keeps the page as
+deck_<date>.failed.html and prints SEASON DECK: FAIL.
 """
 import argparse, datetime, hashlib, json, os, sys
 HERE = os.path.dirname(os.path.abspath(__file__)); KIT = os.path.dirname(HERE)
@@ -458,12 +460,16 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
 
 // ---- Movers ----
 (function(){ const p=$("#pane-movers"); const L=D.season_lines;
-  p.append(h("div",{class:"card"},h("h2",{},"Season-line movers (±"+L.threshold+" z and over)"),
+  // season_lines.py records each moved stat as [preseason, season] per-game strings under its kit column (owner
+  // 2026-10-21, decision A: shown as "PTS 25.6 → 24.5"; formatting the pair as a number threw and took the tab bar down)
+  const ML={fgp:"FG%",ftp:"FT%",fga:"FGA",fta:"FTA",tpm:"3PM",pts:"PTS",reb:"REB",ast:"AST",stl:"STL",blk:"BLK",tov:"TOV"};
+  const mv=(c,v)=>(ML[c]||c)+" "+(Array.isArray(v)?v[0]+" → "+v[1]:String(v));
+  p.append(h("div",{class:"card"},h("h2",{},"Season-line movers (per-game line moved "+L.threshold+"+; FG%/FT% 0.01+)"),
     h("p",{class:"note"},L.players_with_games+" pool players with regular-season games; each category's season line = the preseason line carried as a per-category prior (games: "+CATS.map(c=>{const k=(c==="TOV"?"TO":(c==="STL"?"STL":c)); return k+" "+(L.prior_games[k]!=null?L.prior_games[k]:"—");}).join(", ")+") blended with what the games show."),
     L.movers.length? h("div",{class:"tablebox"},h("table",{},
       h("tr",{},h("th",{},"player"),h("th",{class:"num"},"games"),h("th",{},"moved")),
       L.movers.map(m=>h("tr",{},h("td",{},m.name),h("td",{class:"num"},String(m.games)),
-        h("td",{},Object.entries(m.moved).map(([c,v])=>h("span",{class:"chip",style:"margin-right:4px"},c+" ",zv(v,true))))))))
+        h("td",{},Object.entries(m.moved).map(([c,v])=>h("span",{class:"chip",style:"margin-right:4px"},mv(c,v))))))))
       : h("div",{class:"zero"},"No movers yet — the first regular-season games land 2026-10-21."),
     L.unpooled_with_games.length? h("p",{class:"note"},"Unpooled with games: "+L.unpooled_with_games.join(", ")):null));
 })();
@@ -515,17 +521,33 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--date", default=datetime.date.today().isoformat())
+    ap.add_argument("--out", default=os.path.join(KIT, "report", "season"), help="output folder (default report/season)")
     a = ap.parse_args()
     paths = default_paths(a.date)
     try:
         html, data, record = build(paths, a.date)
     except DeckError as e:
         print(f"SEASON DECK: FAIL — {a.date}: {e}"); sys.exit(1)
-    outdir = os.path.join(KIT, "report", "season"); os.makedirs(outdir, exist_ok=True)
-    op = os.path.join(outdir, f"deck_{a.date}.html"); open(op, "w", encoding="utf-8").write(html)
+    outdir = a.out; os.makedirs(outdir, exist_ok=True)
+    # owner 2026-10-21, decision B: the page takes its published name only after it drew itself in a headless browser
+    # (deck_render_check.py). On 10/21 a page whose script threw was published with no tabs; a page that fails, or
+    # that no browser could check, is kept as deck_<date>.failed.html and the step FAILs, leaving nothing to publish.
+    import deck_render_check as DRC
+    op = os.path.join(outdir, f"deck_{a.date}.html"); tmp = os.path.join(outdir, f"deck_{a.date}.check.html")
+    with open(tmp, "w", encoding="utf-8") as f:
+        f.write(html)
+    res = DRC.check(tmp)
+    if res["status"] != "PASS":
+        failed = os.path.join(outdir, f"deck_{a.date}.failed.html"); os.replace(tmp, failed)
+        print(f"SEASON DECK: FAIL — {a.date}: render {res['status']}: {'; '.join(res['reasons'])} "
+              f"(page kept as deck_{a.date}.failed.html; deck_{a.date}.html not written)")
+        sys.exit(1)
+    os.replace(tmp, op)
+    record["render"] = dict(status="PASS", tabs=res["tabs"], page_errors=0, browser=res["browser"])
     rp = os.path.join(outdir, f"deck_record_{a.date}.json"); json.dump(record, open(rp, "w", encoding="utf-8"), indent=1)
     print(f"SEASON DECK: PASS — {a.date}: report/season/deck_{a.date}.html ({record['panes']} panes, {record['board_rows']} board rows, "
-          f"{record['status_rows']} status rows; record deck_record_{a.date}.json pins {len(record['inputs'])} inputs)")
+          f"{record['status_rows']} status rows; record deck_record_{a.date}.json pins {len(record['inputs'])} inputs; "
+          f"render: {len(res['tabs'])} tabs, 0 page errors)")
 
 
 if __name__ == "__main__":
