@@ -1,0 +1,34 @@
+/home/user/fantasy-basketball-2026-27/scripts/test_league_live.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp09efjlu3/league_state.json' mode='r' encoding='utf-8'>
+  state = json.load(open(out, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./home/user/fantasy-basketball-2026-27/scripts/test_league_live.py:246: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpf6mlh347/pull_2026-10-21.json' mode='r' encoding='utf-8'>
+  pinned = json.load(open(os.path.join(tdir, "pull_2026-10-21.json"), encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./home/user/fantasy-basketball-2026-27/scripts/test_league_live.py:215: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/fantasy-basketball-2026-27/data/source/flaim/pull_2026-10-21.json' mode='r' encoding='utf-8'>
+  pull = json.load(open(self.PIN, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+../home/user/fantasy-basketball-2026-27/scripts/test_league_live.py:195: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/fantasy-basketball-2026-27/../yahoo-fantasy-basketball/data/players.csv' mode='r' encoding='utf-8'>
+  pooled = any(r["player"] == "Andre Drummond" for r in csv.DictReader(open(LI.POOL, encoding="utf-8")))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+....E..........
+======================================================================
+ERROR: test_doubtful_maps_to_d (scripts.test_league_live.RowsFromPull.test_doubtful_maps_to_d)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/fantasy-basketball-2026-27/scripts/test_league_live.py", line 75, in test_doubtful_maps_to_d
+    self.assertEqual(league_live.to_rows(pull)[0]["status"], "D")
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/fantasy-basketball-2026-27/scripts/league_live.py", line 166, in to_rows
+    rows.append(_row(name, slot, p["name"], p.get("team"), p.get("positions"), p.get("injury")))
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/fantasy-basketball-2026-27/scripts/league_live.py", line 145, in _row
+    status=_status(injury, name))
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/fantasy-basketball-2026-27/scripts/league_live.py", line 138, in _status
+    raise PullError(f"unknown FantasyBot injury label {injury!r} on {who}: add it to STATUS_OF, do not guess")
+league_live.PullError: unknown FantasyBot injury label 'Doubtful' on A Player: add it to STATUS_OF, do not guess
+
+----------------------------------------------------------------------
+Ran 19 tests in 1.158s
+
+FAILED (errors=1)

@@ -383,5 +383,171 @@ class PublishOnlyWhatDraws(unittest.TestCase):
         self.assertEqual(rec["render"]["page_errors"], 0)
 
 
+WM_CATS = ["FG%", "FT%", "3PTM", "PTS", "REB", "AST", "ST", "BLK", "TO"]
+
+
+def week_matchup_record(pickups=None):
+    """A week_matchup.py-shaped record (owner 2026-10-21): to-date actuals, projected finals, leaders, pickups."""
+    cats = [dict(cat=c, me_to_date=(0.5 if "%" in c else 20 + i), opp_to_date=(0.388 if "%" in c else 30 + i),
+                 me_final=(0.493 if "%" in c else 500.5 + i), opp_final=(0.455 if "%" in c else 600.5 + i),
+                 leader_to_date="opp", leader=("me" if c in ("FG%", "TO") else "opp"), margin=1.0)
+            for i, c in enumerate(WM_CATS)]
+    return dict(date="2026-10-21", week=1, window=["2026-10-20", "2026-10-25"], me=dict(name="MY TEAM", seat=10),
+                opponent=dict(name="THEM", seat=11), to_date_days=["2026-10-20"], missing_days=[],
+                remaining_days=["2026-10-21", "2026-10-22"], status_file="status_2026-10-21.json", cats=cats,
+                projected=dict(wins=2, losses=7, ties=0),
+                games=dict(me=dict(to_date_counted=2, remaining_started=32, remaining_uncapped=33),
+                           opp=dict(to_date_counted=5, remaining_started=36, remaining_uncapped=36)),
+                pickups=pickups or dict(status="no finished low-value player", drop_candidates=[], top=[], pool_size=0,
+                                        drop=None, next_finish=[dict(player="Bench Guy", team="BOS", last_game="2026-10-23", value=-1.49)]),
+                method=dict(to_date="reconstructed from box scores"))
+
+
+RAN = dict(status="ran", pool_size=154, next_finish=[],
+           drop=dict(player="Bench Guy", team="BOS", value=-1.49, value_rank=10, of=13),
+           drop_candidates=[dict(player="Bench Guy", team="BOS", value=-1.49, value_rank=10, of=13)],
+           top=[dict(add="Free Agent", team="GSW", value=0.4, games_left=3, starts=3, net=1.0, flips_to_win=["BLK"],
+                     flips_to_loss=[], gap_closed=1.0, missed=None),
+                dict(add="Hurt Guy", team="DEN", value=0.1, games_left=2, starts=2, net=0.0, flips_to_win=[],
+                     flips_to_loss=[], gap_closed=0.4, missed="2026-10-20")])
+
+
+def today_dom(html_path):
+    """The Today pane's faded cells and text, read in the browser (the card is drawn by the page's script)."""
+    from playwright.sync_api import sync_playwright
+    with sync_playwright() as p:
+        b, exe, tried = DRC._launch(p)
+        try:
+            pg = b.new_page(); errs = []
+            pg.on("pageerror", lambda e: errs.append(str(e)))
+            pg.route(re.compile(r"^https?://"), lambda r: r.abort())
+            pg.goto("file://" + os.path.abspath(html_path), wait_until="load")
+            return dict(errors=errs, text=pg.evaluate("() => document.getElementById('pane-today').textContent"),
+                        proj=pg.evaluate("() => document.querySelectorAll('#pane-today td.proj').length"),
+                        first=pg.evaluate("() => { const c=document.querySelector('#pane-today .card'); return c? c.querySelector('h2').textContent : null }"),
+                        proj_color=pg.evaluate("() => { const t=document.querySelector('#pane-today td.proj'); return t? getComputedStyle(t).color : null }"),
+                        ink_color=pg.evaluate("() => { const t=document.querySelector('#pane-today td.actual'); return t? getComputedStyle(t).color : null }"))
+        finally:
+            b.close()
+
+
+class WeekMatchupData(unittest.TestCase):
+    """Owner 2026-10-21: the Today tab carries the week's categories; the record is an optional input."""
+    def setUp(self):
+        self.d = tempfile.mkdtemp(); self.fx = fixtures(self.d)
+
+    def build(self):
+        return SD.build(self.fx, date="2026-10-21")
+
+    def test_default_paths_name_the_days_week_matchup_record(self):
+        self.assertTrue(SD.default_paths("2026-10-22")["week_matchup"].endswith(
+            os.path.join("report", "briefs", "week_matchup_2026-10-22.json")))
+
+    def test_the_record_is_embedded_verbatim(self):
+        self.fx["week_matchup"] = os.path.join(self.d, "wm.json")
+        with open(self.fx["week_matchup"], "w") as f:
+            json.dump(week_matchup_record(), f)
+        html, data, rec = self.build()
+        self.assertEqual(data["week_matchup"]["cats"][3]["me_final"], 503.5)
+        self.assertIs(rec["inputs"]["week_matchup"]["present"], True)
+
+    def test_absent_record_builds_with_none(self):
+        self.fx["week_matchup"] = os.path.join(self.d, "none.json")
+        html, data, rec = self.build()
+        self.assertIsNone(data["week_matchup"])
+
+
+@unittest.skipUnless(RENDER_OK, RENDER_WHY)
+class WeekMatchupCard(unittest.TestCase):
+    def setUp(self):
+        self.d = tempfile.mkdtemp(); self.fx = fixtures(self.d)
+
+    def page(self, record):
+        if record is not None:
+            self.fx["week_matchup"] = os.path.join(self.d, "wm.json")
+            with open(self.fx["week_matchup"], "w") as f:
+                json.dump(record, f)
+        html, data, rec = SD.build(self.fx, date="2026-10-21")
+        p = os.path.join(self.d, "deck.html")
+        with open(p, "w", encoding="utf-8") as f:
+            f.write(html)
+        return p
+
+    def test_the_card_leads_today_with_actuals_and_faded_projections(self):
+        p = self.page(week_matchup_record())
+        self.assertEqual(DRC.check(p)["status"], "PASS")
+        dom = today_dom(p)
+        self.assertEqual(dom["errors"], [])
+        self.assertIn("Week 1 categories", dom["first"])
+        self.assertEqual(dom["proj"], 18)                       # my final and their final, nine categories
+        self.assertNotEqual(dom["proj_color"], dom["ink_color"])  # faded: the projection wears its own color
+        for s in ("FG%", "BLK", "TO", "0.493", "503.5", "THEM", "2–7–0", "through 2026-10-20"):
+            self.assertIn(s, dom["text"])
+        self.assertIn("Bench Guy", dom["text"])                 # who finishes next, while nobody has
+        self.assertIn("2026-10-23", dom["text"])
+
+    def test_pickups_name_the_drop_the_adds_their_flips_and_a_missed_game(self):
+        dom = today_dom(self.page(week_matchup_record(RAN)))
+        self.assertEqual(dom["errors"], [])
+        for s in ("Bench Guy", "Free Agent", "BLK", "Hurt Guy", "2026-10-20", "154"):
+            self.assertIn(s, dom["text"])
+
+    def test_an_active_player_with_no_pool_row_is_named_as_not_counted(self):
+        r = week_matchup_record(); r["unpooled_active"] = ["Nobody Pooled"]
+        dom = today_dom(self.page(r))
+        self.assertIn("Not counted", dom["text"]); self.assertIn("Nobody Pooled", dom["text"])
+
+    def test_no_record_says_so_and_the_page_still_draws(self):
+        p = self.page(None)
+        self.assertEqual(DRC.check(p)["status"], "PASS")
+        self.assertIn("No week-to-date record", today_dom(p)["text"])
+
+    # ---- A and D (owner 2026-10-21): the card says where its to-date column and its pickup pool came from
+    def test_yahoos_totals_are_named_as_the_source_and_the_rebuild_agreement_is_stated(self):
+        r = week_matchup_record()
+        r["to_date_source"] = dict(source="yahoo", reason=None, rebuild_agrees=True, differences=[],
+                                   yahoo_games_remaining=dict(me=32, opp=33))
+        dom = today_dom(self.page(r))
+        self.assertEqual(dom["errors"], [])
+        self.assertIn("Yahoo's scoreboard", dom["text"])
+        self.assertIn("rebuild agrees on all 11", dom["text"])
+        self.assertIn("Yahoo's own count of games left: you 32, them 33", dom["text"])
+        self.assertNotIn("rebuilt from box scores", dom["text"])
+
+    def test_a_rebuild_difference_is_named_stat_by_stat(self):
+        r = week_matchup_record()
+        r["to_date_source"] = dict(source="yahoo", reason=None, rebuild_agrees=False,
+                                   differences=[dict(side="me", stat="pts", yahoo=15, rebuild=13)],
+                                   yahoo_games_remaining=dict(me=32, opp=33))
+        self.assertIn("you PTS Yahoo 15, rebuild 13", today_dom(self.page(r))["text"])
+
+    def test_a_rebuild_fallback_says_why(self):
+        r = week_matchup_record()
+        r["to_date_source"] = dict(source="rebuild", reason="no Yahoo pull file (pull_2026-10-21.json)",
+                                   rebuild_agrees=None, differences=[], yahoo_games_remaining=None)
+        text = today_dom(self.page(r))["text"]
+        self.assertIn("rebuilt from box scores", text); self.assertIn("no Yahoo pull file", text)
+
+    def test_the_yahoo_pool_names_every_player_it_did_not_score(self):
+        k = dict(RAN, pool=dict(source="yahoo", listed=100, ordering="platform_rostered_rate_desc",
+                                out=[dict(name="Out Man", team="ORL", status="O")],
+                                unknown_status=[dict(name="Letter Man", team="MEM", status="D")],
+                                not_projected=[dict(name="New Guy", team="BOS", status=None)],
+                                skipped=[dict(name="Held Man", team="BOS", status=None, reason="rostered in the league state")],
+                                kit_pool_not_listed=67))
+        k["top"] = [dict(k["top"][0], status="Q")] + k["top"][1:]
+        text = today_dom(self.page(week_matchup_record(k)))["text"]
+        for s in ("Yahoo's available-player list", "100 listed", "Out Man", "Letter Man (D)", "not tiered",
+                  "New Guy", "Held Man", "67", "Free Agent (GSW) · Q"):
+            self.assertIn(s, text)
+
+    def test_a_malformed_record_shows_its_error_on_the_card_and_every_tab_still_draws(self):
+        bad = week_matchup_record(); bad["cats"] = None
+        p = self.page(bad)
+        res = DRC.check(p)
+        self.assertEqual(res["status"], "PASS", res["reasons"])
+        self.assertIn("could not be drawn", today_dom(p)["text"])
+
+
 if __name__ == "__main__":
     unittest.main()

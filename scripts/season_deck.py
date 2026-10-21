@@ -44,7 +44,9 @@ def default_paths(date):
                 sweep=os.path.join(KIT, "report", "after-reports", "redteam-2026-10-19", "sweep.json"),
                 calibration=os.path.join(KIT, "report", "calibration.json"),
                 # optional (owner 2026-10-20; trade finder removed on the owner's veto 2026-10-20): absent renders nothing
-                matchup_live=os.path.join(KIT, "data", "news", f"matchup_live_{date}.json"))
+                matchup_live=os.path.join(KIT, "data", "news", f"matchup_live_{date}.json"),
+                # optional (owner 2026-10-21): the week's categories to date and projected (week_matchup.py)
+                week_matchup=os.path.join(KIT, "report", "briefs", f"week_matchup_{date}.json"))
 
 
 def resolve_rostered(rostered, board_names, held_names, aliases):
@@ -91,7 +93,7 @@ def build(paths, date):
     calib = _load(paths["calibration"], "calibration")
     opt = lambda k: (json.load(open(paths[k], encoding="utf-8"))
                      if paths.get(k) and os.path.exists(paths[k]) else None)
-    matchup_live = opt("matchup_live")
+    matchup_live = opt("matchup_live"); week_matchup = opt("week_matchup")
     for k in ("date", "opponent", "title", "lineup"):
         if k not in brief: raise DeckError(f"brief lacks {k}")
     if brief["date"] != date: raise DeckError(f"brief is for {brief['date']}, not {date}")
@@ -134,6 +136,7 @@ def build(paths, date):
                 my_team=my_team, my_seat=my_seat, brief=brief, board=board, status=status,
                 league=dict(as_of=league["as_of"], rosters=rosters, managers={t["name"]: t.get("manager") for t in league["teams"]}), season_lines=lines, matchup=wk,
                 ledger=calib.get("weeks", {}), bands=bands, band_engine=band_engine, matchup_live=matchup_live,
+                week_matchup=week_matchup,
                 config=dict(cats=["FG%", "FT%", "3PM", "PTS", "REB", "AST", "STL", "BLK", "TOV"],
                             tier_low=0.3, tier_high=1.0, verdict_edge=0.5, verdict_strong=1.5,
                             thresholds_note="stated defaults, D-SD-1 (owner re-tunes); z screen only, not the simulator"))
@@ -162,18 +165,18 @@ SHELL = r"""<title>Season Deck 2026-27</title>
 :root{
   --bg:#F4F5F3; --surface:#FFFFFF; --ink:#1B2630; --ink2:#5B6670; --line:#DEE2E0; --chip:#ECEEEC;
   --accent:#C45A21; --mine:#077FA6; --pos:#2766A8; --neg:#C13F2E; --negtx:#B83A2A;
-  --ok:#2E7D4F; --warn:#B26A00; --crit:#B3261E;
+  --ok:#2E7D4F; --warn:#B26A00; --crit:#B3261E; --fade:#6A7680;
   --disp:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;
   --body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
 }
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
   --bg:#11161B; --surface:#1A222A; --ink:#E7EAEC; --ink2:#9AA4AD; --line:#2A343D; --chip:#232D36;
   --accent:#D06B2A; --mine:#1E97AD; --pos:#4484C8; --neg:#CE5240; --negtx:#E2735F;
-  --ok:#5BB77F; --warn:#D9A04C; --crit:#E07069; color-scheme:dark } }
+  --ok:#5BB77F; --warn:#D9A04C; --crit:#E07069; --fade:#838E97; color-scheme:dark } }
 :root[data-theme="dark"]{
   --bg:#11161B; --surface:#1A222A; --ink:#E7EAEC; --ink2:#9AA4AD; --line:#2A343D; --chip:#232D36;
   --accent:#D06B2A; --mine:#1E97AD; --pos:#4484C8; --neg:#CE5240; --negtx:#E2735F;
-  --ok:#5BB77F; --warn:#D9A04C; --crit:#E07069; color-scheme:dark }
+  --ok:#5BB77F; --warn:#D9A04C; --crit:#E07069; --fade:#838E97; color-scheme:dark }
 body{background:var(--bg); color:var(--ink); font-family:var(--body); margin:0; font-size:15px; line-height:1.45}
 .wrap{max-width:1060px; margin:0 auto; padding-left:max(16px,env(safe-area-inset-left,0px)); padding-right:max(16px,env(safe-area-inset-right,0px)); padding-block:0 48px}
 body::before{content:""; position:fixed; inset:0 0 auto; height:env(safe-area-inset-top,0px); z-index:10; background:var(--bg)}
@@ -231,6 +234,9 @@ select,input[type=search],input[type=text]{background:var(--surface); color:var(
 .bchip.up .br{color:var(--pos)} .bchip.down .br{color:var(--neg)}
 .verdict{font-family:var(--disp); font-weight:700; font-size:22px; letter-spacing:.03em}
 .verdict.pos{color:var(--pos)} .verdict.neg{color:var(--neg)} .verdict.even{color:var(--ink2)}
+/* week card (owner 2026-10-21): projections faded — their own token (4.6:1+ on surface in both themes) and italic */
+.proj{color:var(--fade); font-style:italic} .wk td.actual{color:var(--ink)} .wk th.projh{color:var(--fade); font-style:italic}
+.wk th,.wk td{padding:5px 6px}  /* six columns fit a 400px phone without a sideways scroll */
 .zneg{color:var(--negtx)}  /* text red: 4.5:1+ on surface, bg and chip in both themes (--neg is for fills) */
 .h2row{display:flex; justify-content:space-between; align-items:center; gap:10px; margin:0 0 8px}
 .h2row h2{margin:0}
@@ -291,6 +297,71 @@ function T(t){ if(t===D.my_team) return t+" (you)"; const m=(D.league.managers||
 function ownChip(r){ return r.mine? h("span",{class:"chip mine"},"mine") : r.fa? h("span",{class:"chip fa"},"FA") : h("span",{class:"chip"},T(r.owner)); }
 function statusChip(letter){ if(!letter) return null; const cls=letter==="O"?"crit":(letter==="Q"?"warn":"ok"); return h("span",{class:"chip "+cls},letter); }
 
+// ---- Week categories card (owner 2026-10-21): to date from box scores in full ink, projected final faded ----
+function weekCard(){ const W=D.week_matchup, wk=D.brief.week;
+  if(!W) return h("div",{class:"card wk"},h("h2",{},"Week "+wk+" categories"),
+    h("div",{class:"zero"},"No week-to-date record for "+D.date+" (week_matchup.py did not run, or failed, this morning)."));
+  try{
+    const isPct=(c)=>c.indexOf("%")>=0;
+    const fv=(c,x,fin)=>x==null?"—":(isPct(c)? x.toFixed(3) : (fin? (Math.round(x*10)/10).toFixed(1) : String(Math.round(x))));
+    const chip=(l)=>l==="me"?h("span",{class:"chip ok"},"W"):(l==="opp"?h("span",{class:"chip crit"},"L"):h("span",{class:"chip"},"T"));
+    const P=W.projected, G=W.games, last=(a)=>a[a.length-1];
+    const S=W.to_date_source||{source:"rebuild",reason:null}, yahoo=S.source==="yahoo";
+    const SL={fgm:"FGM",fga:"FGA",ftm:"FTM",fta:"FTA",tpm:"3PTM",pts:"PTS",reb:"REB",ast:"AST",stl:"ST",blk:"BLK",tov:"TO"};
+    const through=yahoo? "Yahoo's scoreboard at this morning's pull" : (W.to_date_days.length? "box scores through "+last(W.to_date_days) : "no games played yet this week");
+    const rebuilt="To date is rebuilt from box scores"+(S.reason?" ("+S.reason+")":" because Yahoo's daily lineups are not in any record")+
+      ": every non-IL player who played, at most ten a day, so it can differ from Yahoo's scoreboard. ";
+    const srcLine=yahoo? h("p",{class:"note"+(S.rebuild_agrees?"":" zneg")},"To date is Yahoo's scoreboard (read through Flaim at the morning pull); "+
+      (S.rebuild_agrees? "the box-score rebuild agrees on all 11 stats." :
+        "the box-score rebuild differs: "+(S.differences||[]).map(x=>(x.side==="me"?"you ":"them ")+(SL[x.stat]||x.stat)+" Yahoo "+x.yahoo+", rebuild "+x.rebuild).join("; ")+". Yahoo's figure is the column.")) : null;
+    const tbl=h("div",{class:"tablebox"},h("table",{},
+      h("tr",{},h("th",{},"cat"),h("th",{class:"num"},"you"),h("th",{class:"num projh"},"proj"),h("th",{class:"num"},"them"),h("th",{class:"num projh"},"proj"),h("th",{},"")),
+      W.cats.map(r=>h("tr",{},h("td",{},r.cat),
+        h("td",{class:"num actual"},fv(r.cat,r.me_to_date,false)),h("td",{class:"num proj"},fv(r.cat,r.me_final,true)),
+        h("td",{class:"num actual"},fv(r.cat,r.opp_to_date,false)),h("td",{class:"num proj"},fv(r.cat,r.opp_final,true)),
+        h("td",{},chip(r.leader))))));
+    const sat=(g)=>g.remaining_uncapped-g.remaining_started;
+    const games="Games left: you "+G.me.remaining_started+" of "+G.me.remaining_uncapped+" scheduled"+(sat(G.me)?" (the daily ten-slot fill sits "+sat(G.me)+")":"")+
+      ", them "+G.opp.remaining_started+" of "+G.opp.remaining_uncapped+(sat(G.opp)?" (fill sits "+sat(G.opp)+")":"")+"."+
+      (yahoo&&S.yahoo_games_remaining? " Yahoo's own count of games left: you "+S.yahoo_games_remaining.me+", them "+S.yahoo_games_remaining.opp+".":"");
+    const poolLine=(PO,n)=>{ if(!PO) return null;
+      if(PO.source!=="yahoo") return h("p",{class:"note"},"Pool: every pooled free agent in the kit ("+(PO.reason||"no Yahoo list")+").");
+      const nm=(a)=>a.map(x=>x.name+(x.status?" ("+x.status+")":"")).join(", "), parts=["Pool: Yahoo's available-player list ("+PO.listed+" listed, most-owned across Yahoo first); "+n+" scored."];
+      if(PO.out.length) parts.push("Out (O or NA): "+nm(PO.out)+".");
+      if(PO.unknown_status.length) parts.push("Status letter not tiered by the kit, so not scored: "+nm(PO.unknown_status)+".");
+      if(PO.not_projected.length) parts.push("No season-pool line, so not projected: "+nm(PO.not_projected)+".");
+      if(PO.skipped.length) parts.push("Skipped: "+PO.skipped.map(x=>x.name+" ("+x.reason+")").join(", ")+".");
+      if(PO.kit_pool_not_listed) parts.push(PO.kit_pool_not_listed+" pooled free agents outside Yahoo's list are not scored.");
+      return h("p",{class:"note"},parts.join(" ")); };
+    const K=W.pickups; let pk;
+    if(K.status==="ran"){ const d=K.drop;
+      pk=[h("p",{},h("b",{},"Pickup scan. "),d.player+" ("+d.team+") has no games left this week and ranks "+d.value_rank+" of "+d.of+" by board value ("+f2(d.value)+"). Free agents in his place from today, by projected category wins gained ("+K.pool_size+" scored):"),
+        K.top.length? h("div",{class:"tablebox"},h("table",{},
+          h("tr",{},h("th",{},"add"),h("th",{class:"num"},"games"),h("th",{class:"num"},"starts"),h("th",{class:"num"},"cats"),h("th",{},"flips"),h("th",{class:"num"},"gaps closed"),h("th",{class:"num"},"value")),
+          K.top.map(r=>h("tr",{},h("td",{},r.add+" ("+r.team+")"+(r.status?" · "+r.status:"")+(r.missed?" · sat out "+r.missed:"")),
+            h("td",{class:"num"},String(r.games_left)),h("td",{class:"num"},String(r.starts)),h("td",{class:"num"},sgn(r.net,1)),
+            h("td",{},(r.flips_to_win.length?"+"+r.flips_to_win.join(", "):"")+(r.flips_to_loss.length?" −"+r.flips_to_loss.join(", "):"")||"none"),
+            h("td",{class:"num"},f2(r.gap_closed)),h("td",{class:"num"},zv(r.value)))))) : h("div",{class:"zero"},"No free agent changes a projected category."),
+        poolLine(K.pool, K.pool_size),
+        h("p",{class:"note"},"cats = projected category wins gained (a tie counts half); gaps closed = over the categories you are projected to lose, the share of each gap he closes, summed (1.00 = one whole gap); value = his season board value, the rest-of-season cost of the move. The league allows 4 adds a week. Projections are single estimates: a category won or lost by a hair flips with almost anyone.")];
+    } else {
+      const nx=(K.next_finish||[]).slice(0,3).map(x=>x.player+" ("+x.team+") after "+x.last_game).join("; ");
+      pk=[h("p",{class:"note"},"Pickup scan: none of your lower-valued players has finished his games this week."+(nx?" Next to finish: "+nx+".":""))];
+    }
+    return h("div",{class:"card wk"},h("h2",{},"Week "+W.week+" categories"),
+      h("p",{class:"note"},"You vs "+T(W.opponent.name)+" · to date: "+through+" · ",
+        h("span",{class:"proj"},"faded = projected final through "+W.window[1])),
+      tbl, srcLine,
+      h("p",{},"Projected "+P.wins+"–"+P.losses+"–"+P.ties+" (W–L–T). "+games),
+      W.missing_days.length? h("p",{class:"note zneg"},"No box scores on file for "+W.missing_days.join(", ")+(yahoo? ": the rebuild cross-check lacks those days." : ": those days are not in the to-date totals.")):null,
+      (W.unpooled_active||[]).length? h("p",{class:"note zneg"},"Not counted (no pool row, so no box-score join or projection): "+W.unpooled_active.join(", ")+"."):null,
+      pk,
+      h("p",{class:"note"},(yahoo?"":rebuilt)+"Projected = each player's season line × his games left × today's availability, ten a day. The card further down, recorded before the week, assumes 3.5 games per player; this one uses the real schedule."));
+  } catch(e){
+    return h("div",{class:"card wk"},h("h2",{},"Week "+wk+" categories"),h("div",{class:"zero"},"Week categories could not be drawn: "+e.message));
+  }
+}
+
 // ---- Today ----
 (function(){ const b=D.brief, p=$("#pane-today");
   $("#hdate").textContent=D.date;
@@ -305,6 +376,7 @@ function statusChip(letter){ if(!letter) return null; const cls=letter==="O"?"cr
       h("tr",{},h("th",{},"category"),h("th",{class:"num"},"P(win cat)"),h("th",{},"")),
       catRows.map(([c,v])=>h("tr",{},h("td",{},c),h("td",{class:"num"},pct(v)),
         h("td",{},h("span",{class:"bar "+(v>=0.5?"pos":"neg")},h("i",{style:"width:"+Math.round(Math.abs(v-0.5)*160)+"px"}))))))) : h("div",{class:"zero"},"No matchup record yet.");
+  p.append(weekCard());
   p.append(
     h("div",{class:"cols"},
       h("div",{class:"card span2"},h("h2",{},"Odds"),tiles,h("p",{class:"note"},"Structural band (standing sweep): "+bandLine())),

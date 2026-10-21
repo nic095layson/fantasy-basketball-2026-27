@@ -75,5 +75,32 @@ class NotActive(unittest.TestCase):
         self.assertEqual(len(SF.check([{"player": "X", "yahoo_status": "NA", "availability": 0.0, "receipts": []}])), 1)
 
 
+class Doubtful(unittest.TestCase):
+    """2026-10-21: Yahoo's D letter appeared on the Flaim available-player list (Isaiah Stewart); the owner: "Stewart's
+    'D' means 'Doubtful'". Tiered 0.25 as a stated default (D-IS-10), halfway between Q (0.50) and O (0.00), as P (0.75)
+    sits above Q. It is a flagged letter, so the dated-receipt check covers it. An unknown letter still refuses."""
+    def test_d_is_tiered_doubtful_and_needs_a_dated_receipt(self):
+        self.assertEqual(SF.tier("D"), ("doubtful", 0.25))
+        self.assertEqual(len(SF.check([{"player": "X", "yahoo_status": "D", "availability": 1.0, "receipts": []}])), 1)
+        with self.assertRaises(ValueError):
+            SF.tier("ZZ")
+
+
+class FlaimReceipts(unittest.TestCase):
+    """Owner 2026-10-21 ("Build A, B, C, D"): when the rosters came from Flaim, every flagged player's receipt names
+    the Yahoo read through Flaim and the pinned pull, with its sha256 — not an owner upload that never happened."""
+    def test_a_flaim_state_receipts_name_flaim_and_the_pull(self):
+        state = {"as_of": "2026-10-21", "sources": {"flaim": {"pull_file": "data/source/flaim/pull_2026-10-21.json",
+                                                              "pull_sha256": "cd" * 32}},
+                 "teams": [{"name": "MAXEY-MUM OVERDRIVE", "seat": 11, "players": [
+                     {"player": "Kevin Porter Jr.", "slot": "PG", "status": "NA"}]}]}
+        rows = SF.build(state)
+        r = rows[0]["receipts"][0]
+        self.assertIn("Flaim", r["source"])
+        self.assertEqual((r["file"], r["sha256"], r["captured"]), ("data/source/flaim/pull_2026-10-21.json", "cd" * 32, "2026-10-21"))
+        self.assertEqual(rows[0]["availability"], 0.0)
+        self.assertEqual(SF.check(rows), [])
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

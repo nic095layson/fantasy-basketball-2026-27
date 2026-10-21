@@ -35,7 +35,10 @@ TIERS = {None: ("healthy", 1.00), "Q": ("questionable", 0.50), "O": ("out", 0.00
          # 2026-10-19: P (probable) seen on the owner's rosters paste (Curry); 0.75 is a stated default, D-IS-6
          "P": ("probable", 0.75),
          # 2026-10-20: NA (not active) seen on the owner's rosters paste (Kevin Porter Jr.); 0.00 like O, a stated default, D-IS-7
-         "NA": ("not active", 0.00)}
+         "NA": ("not active", 0.00),
+         # 2026-10-21: D seen on the Flaim available-player list (Isaiah Stewart); the owner: "Stewart's 'D' means
+         # 'Doubtful'". 0.25 is a stated default, halfway between Q and O as P sits above Q, D-IS-10
+         "D": ("doubtful", 0.25)}
 
 
 def tier(letter):
@@ -53,8 +56,19 @@ def try_espn(timeout=15):
         return None, {"attempted": at, "ok": False, "url": ESPN_INJURIES, "detail": f"{type(e).__name__}: {e}"}
 
 
+def receipt_source(state):
+    """(label, file, sha256) of the roster source the letters came from (owner 2026-10-21: Flaim first)."""
+    s = state.get("sources", {})
+    if "flaim" in s:
+        return "Yahoo roster read through Flaim (get_roster, read-only)", s["flaim"].get("pull_file"), s["flaim"].get("pull_sha256")
+    if "fantasybot" in s:
+        return "FantasyBot roster pull", s["fantasybot"].get("pull_file"), s["fantasybot"].get("pull_sha256")
+    src = s.get("pdf", {})
+    return "Yahoo Starting Rosters page (owner upload)", src.get("file"), src.get("sha256")
+
+
 def build(state, espn=None, espn_attempt=None, overrides=None):
-    src = state.get("sources", {}).get("pdf", {})
+    label, src_file, src_sha = receipt_source(state)
     rows = []
     for team in state["teams"]:
         for p in team["players"]:
@@ -64,8 +78,8 @@ def build(state, espn=None, espn_attempt=None, overrides=None):
             rows.append({
                 "player": p["player"], "fantasy_team": team.get("name"), "seat": team.get("seat"),
                 "slot": p.get("slot"), "yahoo_status": p["status"], "tier": name, "availability": avail,
-                "receipts": [{"source": "Yahoo Starting Rosters page (owner upload)", "file": src.get("file"),
-                              "sha256": src.get("sha256"), "captured": state["as_of"],
+                "receipts": [{"source": label, "file": src_file,
+                              "sha256": src_sha, "captured": state["as_of"],
                               "text": f"{p['status']} beside {p['player']} ({team.get('name')}, {p.get('slot')})"}],
                 "espn": espn_attempt or {"ok": False, "detail": "not attempted"},
             })
@@ -82,7 +96,7 @@ def build(state, espn=None, espn_attempt=None, overrides=None):
 def check(rows):
     problems = []
     for r in rows:
-        if r.get("yahoo_status") not in ("Q", "O", "P", "NA"):
+        if r.get("yahoo_status") not in ("Q", "O", "P", "NA", "D"):
             continue
         dated = [x for x in r.get("receipts", []) if x.get("captured") or x.get("date")]
         if r["availability"] >= 1.0 and not dated:

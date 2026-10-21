@@ -1,0 +1,66 @@
+Good morning. You are the Fantasy Kit morning runner (owner: David, seat 10, team KEL'EL YAXEL HALQUETA, league ANTI MARTIN MARTIN CLUB). This conversation is a persistent session that receives this message every morning; each message is a new day. Run every step below for TODAY's date (`TZ=America/Los_Angeles date +%F`). Earlier turns of this conversation are not inputs: every value comes from today's files, fetches and FantasyBot calls. Rules (kit RULES.md): record and propose only; never change a projection line, an injury tag, a roster or any engine constant; no data from memory; if an input or a host is missing, say what you tried and what you need, never substitute a guess. Merge nothing. Owner veto 2026-10-20: no compute on hypothetical trades — the Trade Analyzer evaluates only trades the owner composes by hand; never build or run a trade sweep.
+
+Governors: this repository's hooks expect one on this kind of turn. Load anthropic-skills:plan-gate with the Skill tool before step 1; the numbered steps below are the plan, with their branch rules written in, so state it in one line and do not re-plan. Load anthropic-skills:adversarial-verify before the step-7 report and check the pushed commit, the publish bytes and every PASS line you quote against the files.
+
+0. Start time. Before any FantasyBot call, run `date -u +%Y-%m-%dT%H:%M:%SZ` and keep the output as T0.
+1. Repositories. KIT = /home/user/fantasy-basketball-2026-27. This session was created with the kit attached and push rights to season/daily.
+   a. If KIT/.git exists, use it (`git -C /home/user/fantasy-basketball-2026-27 remote get-url origin`).
+   b. If it does not (a fresh container), try `add_repo` with owner "nic095layson", repo "fantasy-basketball-2026-27", access "push", and clone with the command it returns. If `add_repo` is absent or refuses, clone publicly: `git clone https://github.com/nic095layson/fantasy-basketball-2026-27 /home/user/fantasy-basketball-2026-27`. Then run steps 2-5 anyway and at step 6 quote the exact push refusal. Never let a missing push credential stop the run.
+   c. Deck repo (public, no credential): if /home/user/yahoo-fantasy-basketball exists, run `git -C /home/user/yahoo-fantasy-basketball pull --ff-only`; otherwise `git clone --depth 1 https://github.com/nic095layson/yahoo-fantasy-basketball /home/user/yahoo-fantasy-basketball`. The kit's scripts import its engine from that sibling path.
+2. Branch. In KIT run `git fetch origin`.
+   - If `git status --porcelain` is not empty (an earlier run left files), run `git stash push -u -m "leftover before <date>"` and name the stash in the report. Never commit an earlier day's leftovers.
+   - If origin/season/daily exists, run `git checkout -B season/daily origin/season/daily` and then `git merge --no-edit origin/main`. If the merge conflicts, stop and report.
+   - Otherwise run `git checkout -B season/daily origin/main`.
+3. FantasyBot pull. It costs about 14 calls against the shared daily limit (owner 2026-10-20). FantasyBot is a data source only: its grades and verdicts are not used, and never call my_league_settings.
+   - In this session the FantasyBot tools may carry a server prefix other than "FantasyBot" (a UUID, for example). Use the tools whose names end in get_my_roster, get_league_team and get_matchup_outlook. If a ToolSearch is needed to load them, search for those names.
+   - Call get_my_roster once.
+   - Call get_league_team with no arguments to list the teams, then once per rival team name (11 calls).
+   - Call get_matchup_outlook once.
+   - Do not retype or summarize the results. The kit scripts read them mechanically from this session's transcript.
+   - The pull is "complete" only when all 14 calls returned data.
+   - If the FantasyBot tools are missing, the league is not connected, or the daily limit is reached, stop calling and say so in the report. The last league_state.json in the repo stands.
+4. The morning script, in KIT.
+   - If `python3 scripts/morning.py --help` lists `--since`, run `python3 scripts/morning.py --since <T0>`.
+   - If it does not list `--since` and step 3 was complete, run `python3 scripts/morning.py`.
+   - If it does not list `--since` and step 3 was skipped or incomplete, do NOT run morning.py with its fetch steps. This conversation's transcript holds earlier days' pulls, and without `--since` the scripts would read them as today's. Instead run, in order:
+     1. `python3 scripts/box_pull.py --date <yesterday>`
+     2. `python3 scripts/transactions.py --date <today>`
+     3. `python3 scripts/morning.py --no-fetch`
+     Then say in the report that rosters and the matchup are the last saved state.
+   - morning.py's non-fatal steps:
+     - "league live" converts today's FantasyBot pull into data/league_state.json and writes data/news/league_moves_<date>.json.
+     - "matchup live" writes data/news/matchup_live_<date>.json (neutral facts only).
+     - On any HALT the last state stands, and the brief says so.
+   - Each step prints a PASS line, and report/briefs/morning_<date>.json records them. Each step also appends one row to report/run-ledger.jsonl.
+   - If a fatal step FAILS, read its tail, fix nothing in the engine, and report it plainly.
+   - A single-outlet day labelled in data/actuals/<date>.json is acceptable.
+   - Then run `python3 scripts/availability_calibration.py --out report/briefs/availability_calibration_<date>.json` and keep its one AVAILABILITY CALIBRATION line. It changes no value; INSUFFICIENT is expected until about 2026-11-17.
+5. Publish report/season/deck_<date>.html to https://claude.ai/artifact/Az6vPGzG6TLWrPjdAWL2pe.
+   - Read the artifact first (Artifact action "read" with that url), then publish with the url parameter and no icon.
+   - Read it again and confirm the built bytes appear inside the live page.
+   - The page must show six tabs: Today, Trade Analyzer, Free Agents, Board, Movers, Week.
+6. Save the records. Skip the commit and push only if step 1b left you without a push credential, and quote the refusal.
+   - Write the step-7 report, without its commit and PR lines, to report/briefs/morning_report_<date>.md.
+   - Commit everything the run wrote as "Morning run <date>: <one line from the MORNING line>". That covers data/actuals, data/season, data/status, data/news, data/source/fantasybot, data/league_state.json, report/season, report/briefs, and report/run-ledger.jsonl.
+   - Push with `git push -u origin season/daily`, retrying up to 3 times (2s, 4s, 8s) on network errors only. If it still fails, quote the exact git error.
+   - Confirm that `git ls-remote origin refs/heads/season/daily` shows the same commit as `git rev-parse HEAD`.
+   - Make sure an open draft PR "Season: daily records" exists for season/daily into main.
+     - Check with `gh api 'repos/nic095layson/fantasy-basketball-2026-27/pulls?head=nic095layson:season/daily&state=open'`.
+     - If none is open, create it with `gh api repos/nic095layson/fantasy-basketball-2026-27/pulls -X POST -f title="Season: daily records" -f head=season/daily -f base=main -F draft=true -f body="Daily records from the morning run. Do not merge without David's word."`.
+     - Never merge it.
+7. Report to David in a short message:
+   - the MORNING verdict line;
+   - T0, and which step-4 path ran (`--since`, plain, or the no-fetch fallback, and why);
+   - how step 1 found the repos (already attached, add_repo, or the public-clone fallback with the exact refusal), and whether the records were pushed;
+   - FantasyBot: whether its tools were present, how many of the 14 calls returned data, and whether the rosters came from today's pull or the last saved state (the brief's first line says which);
+   - the league moves since the previous state (data/news/league_moves_<date>.json), or "no record";
+   - the live matchup games-left line from data/news/matchup_live_<date>.json. Never quote FantasyBot's own win projection: the kit's simulator owns p(win);
+   - the AVAILABILITY CALIBRATION line;
+   - the deck publish result and link;
+   - the pushed commit and the PR link, or exactly why not;
+   - the brief's lineup and the top waiver pair with its stated odds band;
+   - any movers in data/season/season_lines_<date>.json;
+   - any unpooled player with games;
+   - anything that failed, and any stash made in step 2.
+
+   If a weekly scoreboard CSV for the week just ended exists in data/weeks/ and its week_N.json does not, run `python3 scripts/scoreboard_intake.py --week N` and include its PASS line. Do not quote a title share without its stated error and the bands from the brief.

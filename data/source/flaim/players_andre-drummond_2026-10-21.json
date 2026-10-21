@@ -1,0 +1,40 @@
+{
+ "captured_utc": "2026-10-21T18:45:39.367Z",
+ "input": {
+  "count": 5,
+  "league_id": "478.l.36464",
+  "platform": "yahoo",
+  "query": "Andre Drummond",
+  "season_year": 2026,
+  "sport": "basketball"
+ },
+ "response": {
+  "data": {
+   "count": 1,
+   "leagueKey": "478.l.36464",
+   "leagueName": "ANTI MARTIN MARTIN CLUB",
+   "players": [
+    {
+     "id": "5015",
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "league_owner_name": "kevin",
+     "league_status": "ROSTERED",
+     "league_team_name": "Podz save the league",
+     "market_percent_owned": 19,
+     "name": "Andre Drummond",
+     "ownership_scope": "platform_global",
+     "position": "C",
+     "team": "NYK"
+    }
+   ],
+   "query": "Andre Drummond"
+  },
+  "success": true
+ },
+ "source_transcript_sha256": "d974db119e67bb6b",
+ "tool": "mcp__Flaim_Fantasy__get_players"
+}
