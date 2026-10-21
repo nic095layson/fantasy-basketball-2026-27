@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """The morning run (in-season tool; Council 2026-10-19 decisions 6 and 7: a fresh session each morning, record and
-propose only). Five steps, each a gate in the sense of scripts/gates.py (exit 0 AND its PASS line, or FAIL; a
+propose only). The steps, each a gate in the sense of scripts/gates.py (exit 0 AND its PASS line, or FAIL; a
 failed step stops the run and later steps are SKIPPED):
 
+  - preflight (fatal)            scripts/independent_audit/preflight.py --spec scripts/independent_audit/morning_preflight.json
+                                   (owner 2026-10-21: the run's preconditions — checkout, deck repo, playwright, briefs, remote)
   0 league live (non-fatal)      scripts/league_live.py --as-of <today>        (FantasyBot rosters from the session transcript;
                                    a failed pull keeps the last league_state.json and the brief says so — owner 2026-10-20)
   1 box scores for yesterday      scripts/box_pull.py --date <yesterday>        (ESPN + Basketball-Reference)
@@ -40,10 +42,16 @@ PY = sys.executable
 BRIEFS = os.path.join(KIT, "report", "briefs")
 
 
+PREFLIGHT_SPEC = os.path.join(HERE, "independent_audit", "morning_preflight.json")
+
+
 def steps(date, fetch=True, seasons=10000, since=None):
     y = (datetime.date.fromisoformat(date) - datetime.timedelta(days=1)).isoformat()
     season_pool = os.path.join(KIT, "data", "season", "pool_season.csv")
-    st = []
+    # step 0, fatal (owner 2026-10-21, independent-audit adoption): the run's preconditions first, so a missing deck repo,
+    # browser or remote prints one FAIL line instead of a silent half-run (10/21 runner: "deck still missing").
+    st = [dict(name="preflight", cmd=[PY, os.path.join(HERE, "independent_audit", "preflight.py"), "--spec", PREFLIGHT_SPEC],
+               cwd=KIT, pass_re=r"^PREFLIGHT: PASS", env={})]
     tail = ["--since", since] if since else []
     if fetch:  # owner 2026-10-20: live rosters from FantasyBot; non-fatal, the last paste stands on a failed pull
         st.append(dict(name="league live", cmd=[PY, os.path.join(HERE, "league_live.py"), "--as-of", date] + tail, cwd=KIT,

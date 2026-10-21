@@ -1,0 +1,16 @@
+{
+ "name": "kit morning run",
+ "_about": "Preconditions of the unattended morning run (scripts/morning.py step 0, fatal). Paths are relative to the kit root, which morning.py uses as the working directory. Library skill: claude-core-skills .claude/skills/independent-audit/. Owner 2026-10-21.",
+ "checks": [
+  {"name": "kit checkout", "cmd": "git rev-parse --is-inside-work-tree && test -f scripts/morning.py",
+   "hint": "the run is not inside the fantasy-basketball-2026-27 checkout; clone it and run from its root"},
+  {"name": "deck repo beside the kit", "cmd": "python3 -c \"import os,sys; d=os.environ.get('DECK_REPO') or '../yahoo-fantasy-basketball'; sys.exit(0 if os.path.isfile(os.path.join(d,'scripts','hoops.py')) else 1)\"",
+   "hint": "the season board and deck import hoops.py from the deck repo; attach nic095layson/yahoo-fantasy-basketball beside the kit or set DECK_REPO"},
+  {"name": "render browser (playwright)", "cmd": "python3 -c \"import playwright\"",
+   "hint": "the deck's render check needs the playwright module (pip install playwright); without it no deck is published"},
+  {"name": "briefs writable", "writable": "report/briefs",
+   "hint": "report/briefs must exist and be writable"},
+  {"name": "git remote reachable", "cmd": "git ls-remote --exit-code origin HEAD",
+   "hint": "the run cannot reach origin, so its records will not be pushed; check the session's GitHub access"}
+ ]
+}
