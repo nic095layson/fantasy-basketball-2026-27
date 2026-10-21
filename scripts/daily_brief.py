@@ -222,7 +222,7 @@ def main():
     L += ["", "## Title odds (real schedule)", "", f"- Title: {odds_line(base[SEEDS[0]]['champ'], base[SEEDS[1]]['champ'], a.seasons)}",
           f"- Playoffs: {(base[SEEDS[0]]['playoff'] + base[SEEDS[1]]['playoff']) / 2:.1f}%",
           f"- {band_line()}", "",
-          "_Cannot see: news after the rosters/status paste beyond ESPN's transactions feed; ESPN injuries (network-denied); minutes limits; "
+          "_Cannot see: news after the morning FantasyBot pull (or the last paste) beyond ESPN's transactions feed; ESPN injuries (network-denied); minutes limits; "
           "other managers' pending claims. Q counts as a coin flip._"]
     path = os.path.join(OUTDIR, f"brief_{a.date}.md")
     open(path, "w", encoding="utf-8").write("\n".join(L) + "\n")

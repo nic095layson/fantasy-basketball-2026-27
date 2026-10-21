@@ -40,7 +40,9 @@ def default_paths(date):
                 league_state=os.path.join(KIT, "data", "league_state.json"),
                 season_lines=os.path.join(KIT, "data", "season", f"season_lines_{date}.json"),
                 sweep=os.path.join(KIT, "report", "after-reports", "redteam-2026-10-19", "sweep.json"),
-                calibration=os.path.join(KIT, "report", "calibration.json"))
+                calibration=os.path.join(KIT, "report", "calibration.json"),
+                # optional (owner 2026-10-20; trade finder removed on the owner's veto 2026-10-20): absent renders nothing
+                matchup_live=os.path.join(KIT, "data", "news", f"matchup_live_{date}.json"))
 
 
 def resolve_rostered(rostered, board_names, held_names, aliases):
@@ -85,6 +87,9 @@ def build(paths, date):
     status = _load(paths["status"], "status"); league = _load(paths["league_state"], "league state")
     lines = _load(paths["season_lines"], "season lines"); sweep = _load(paths["sweep"], "sweep")
     calib = _load(paths["calibration"], "calibration")
+    opt = lambda k: (json.load(open(paths[k], encoding="utf-8"))
+                     if paths.get(k) and os.path.exists(paths[k]) else None)
+    matchup_live = opt("matchup_live")
     for k in ("date", "opponent", "title", "lineup"):
         if k not in brief: raise DeckError(f"brief lacks {k}")
     if brief["date"] != date: raise DeckError(f"brief is for {brief['date']}, not {date}")
@@ -121,7 +126,7 @@ def build(paths, date):
     data = dict(date=date, generated_utc=datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
                 my_team=my_team, my_seat=my_seat, brief=brief, board=board, status=status,
                 league=dict(as_of=league["as_of"], rosters=rosters, managers={t["name"]: t.get("manager") for t in league["teams"]}), season_lines=lines, matchup=wk,
-                ledger=calib.get("weeks", {}), band=band,
+                ledger=calib.get("weeks", {}), band=band, matchup_live=matchup_live,
                 config=dict(cats=["FG%", "FT%", "3PM", "PTS", "REB", "AST", "STL", "BLK", "TOV"],
                             tier_low=0.3, tier_high=1.0, verdict_edge=0.5, verdict_strong=1.5,
                             thresholds_note="stated defaults, D-SD-1 (owner re-tunes); z screen only, not the simulator"))
@@ -455,6 +460,17 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
 
 // ---- Week / ledger ----
 (function(){ const p=$("#pane-week"); const b=D.brief; const weeks=Object.values(D.ledger).sort((a,z)=>a.week-z.week);
+  // owner 2026-10-20 item 2: neutral live-matchup facts from the FantasyBot pin; p(win) stays OURS
+  // (the ledger's simulator record) — FantasyBot's verdict never renders (owner rule)
+  if(D.matchup_live){ const L=D.matchup_live, BS2=(D.matchup&&D.matchup.by_seed)?Object.values(D.matchup.by_seed):[];
+    const pw2=BS2.length?avg2(BS2.map(x=>x.p_win)):null;
+    p.append(h("div",{class:"card"},h("h2",{},"This week — live"),
+      h("div",{class:"tiles"},
+        h("div",{class:"tile"},h("div",{class:"v"},String(L.my_left_to_play)),h("div",{class:"l"},"my player-games left")),
+        h("div",{class:"tile"},h("div",{class:"v"},String(L.opp_left_to_play)),h("div",{class:"l"},(L.opp_team||"opponent")+" left")),
+        pw2!=null?h("div",{class:"tile"},h("div",{class:"v"},pct(pw2)),h("div",{class:"l"},"P(win week) — our simulator")):null),
+      h("p",{class:"note"},"Counts from the FantasyBot matchup pull ("+L.date+(L.games_in_progress?", games in progress":"")+"); the win probability is the kit's own record, not FantasyBot's.")));
+  }
   // owner 2026-10-20 (option a): show each opponent's CURRENT team name by seat; the ledger record stays frozen
   const seatName={}; for(const r of D.board.board){ if(r.seat!=null) seatName[r.seat]=r.owner; }
   p.append(h("div",{class:"card"},h("h2",{},"Week "+b.week+" — "+(b.week_window?b.week_window.join(" to "):"")),
