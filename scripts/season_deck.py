@@ -138,8 +138,13 @@ def build(paths, date):
     payload = json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
     html = SHELL.replace("__DATA__", payload)
     record = dict(date=date, out=f"report/season/deck_{date}.html",
-                  inputs={k: dict(path=os.path.relpath(p, KIT) if p.startswith(KIT) else p,
-                                  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()) for k, p in paths.items()},
+                  # an optional input named but absent today (matchup_live on a morning with no matchup pull) is
+                  # recorded as absent, not hashed: hashing it crashed the 10/21 runner (GAUNTLET decision 4).
+                  # Required inputs never reach here missing; _load halts on them above.
+                  inputs={k: dict(path=os.path.relpath(p, KIT) if p and p.startswith(KIT) else p,
+                                  present=bool(p) and os.path.exists(p),
+                                  sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()
+                                  if p and os.path.exists(p) else None) for k, p in paths.items()},
                   board_rows=len(board["board"]), status_rows=len(status["rows"]), panes=6,
                   join=dict(rostered=len(rostered), unresolved=0, on_board=sum(1 for n in rostered if rmap[n] in on_board),
                             off_board=sum(1 for n in rostered if rmap[n] not in on_board), respelled=respelled,

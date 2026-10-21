@@ -276,5 +276,16 @@ class FantasyBotCards(Deck):
         html, data, rec = self.build()
         self.assertIsNone(data["matchup_live"])
 
+    def test_a_named_but_absent_optional_input_builds_and_is_recorded_absent(self):
+        # GAUNTLET 2026-10-21 decision 4: the real morning names data/news/matchup_live_<date>.json via
+        # default_paths even when no matchup pull ran; the record hashed every path and the build crashed
+        self.fx["matchup_live"] = os.path.join(self.d, "no_matchup_live_today.json")
+        html, data, rec = self.build()
+        self.assertIsNone(data["matchup_live"])
+        self.assertIs(rec["inputs"]["matchup_live"]["present"], False)
+        self.assertIsNone(rec["inputs"]["matchup_live"]["sha256"])
+        self.assertIs(rec["inputs"]["board"]["present"], True)
+        self.assertEqual(len(rec["inputs"]["board"]["sha256"]), 64)
+
 if __name__ == "__main__":
     unittest.main()
