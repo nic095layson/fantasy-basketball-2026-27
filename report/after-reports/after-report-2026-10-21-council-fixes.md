@@ -88,7 +88,7 @@ arena simulations, and any future recovery-tagged player stashed on a bench inst
 **Verification.** Red-first: two recovery tags were added to `test_card.py`'s three-engine
 twin case, and **2 of 103 cases failed** on the old engine (Python and page both returned
 0.6). After the change: test_card **103/103**, test_draft **67/67**, test_gates ⟨GATES⟩,
-check_parity ⟨PARITY⟩. The constants registry caught the change on its own (`CONSTANTS CHECK:
+check_parity **EXACT MATCH** (520 owner turns across 40 committed states, 3,015 z-score cells, 72 hash vectors bit-identical; 38 min 54 s). The constants registry caught the change on its own (`CONSTANTS CHECK:
 FAIL … recovery 0.6 != 0.0`), proving the drift detector works. The registry entry now carries
 the new value, its basis and its in-season effect; check is **PASS 31 = 31**.
 
@@ -230,7 +230,21 @@ are right. That is the sweep's job (D-RT-STALE).
 
 ## 6. Every gate, pass or fail
 
-⟨GATES-TABLE⟩
+| gate | verdict | evidence |
+|---|---|---|
+| kit `check_report` | **PASS** | structure, publication rule, pull-log row |
+| deck `judgment_open_items --check-report` | **PASS** | all 10 flagged names carry a receipts row (carried, did not check) |
+| deck `repeat_market_check --check-report` | **PASS** | 12 flagged, each with a row; 33 of 33 mocks replayed on the changed page |
+| kit `check_claims --gate` (new, D-CLAIM-1) | **PASS** | 7 of 7 as expected; CL-6 FALSIFIED *because* the latest `run_attacks` row is FAIL (4 stale); CL-7 SUPPORTED from the report gate's row |
+| `gates.json` | **PASS** | ran 2026-10-21T03:40Z on base `78ab8c6`, then re-run on the final bytes of this report (§ Provenance) |
+| run-ledger | **5 rows** | the four gates above plus `run_attacks` (FAIL, by design); all on engine `bcf9ed9` |
+| redteam constants | **PASS** | 31 registered = 31 live (recovery 0.0) |
+| redteam attacks | FAIL (known) | A-1/A-5/A-7/A-8 STALE on the new engine (D-RT-STALE); **A-9 CURRENT** |
+| kit suite | **219/219** | 204 + 15 new (`test_run_ledger.py`) |
+| deck test_card / test_draft | **103/103**, **67/67** | red-first 2/103 before the change |
+| deck check_parity | **EXACT** | 520 turns / 40 states |
+| deck test_gates | ⟨GATES⟩ | |
+| A-9 | **PASS** | §5 |
 
 ## Watchlist
 
@@ -336,6 +350,19 @@ morning task's prompt was not edited before the kit PR is merged.
 ## Provenance
 
 Session `session_01QjgeRdpDaWgSJmGKRG8fTU`, 2026-10-21. Governors: plan-gate **loaded for this
-task** (full block emitted before the first change); adversarial-verify ⟨AV⟩. Separate
+task** (full block emitted before the first change); adversarial-verify **loaded for this task**, after the builds and before delivery, with the pass run in full.
+- Criteria: C1, C3, C4, C5 and C6 PASS with the evidence above; C2 PASS once `test_gates`
+  is green (§6).
+- What the refutation found, each fixed before delivery:
+  - the headline count (2,129 → 2,174);
+  - the shared-seed season test (re-run on independent seeds; the tolerance did not move);
+  - an unmeasured claim that the change "governs the draft simulations" (now measured: 6 of
+    429 turns);
+  - a reformatted `attacks.json` (restored, so the change is a 2-line diff).
+- Checked behaviourally rather than argued:
+  - the in-season zero-effect claim (0 of 216 numbers differ);
+  - the comparator catching 7 of 7 planted errors;
+  - the attacker's quoted facts (137 of 335 date-led notes; the 3 rostered notes);
+  - CL-7 able to fail (it returned FALSIFIED before the ledger had a row).. Separate
 attacker: one subagent, spec and fixture only, about 106k tokens, 17 tool calls, 6 minutes. Kit base `09acd70`, deck base
 `d33942f`.
