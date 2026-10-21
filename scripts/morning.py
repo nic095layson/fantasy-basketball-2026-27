@@ -4,7 +4,8 @@ propose only). The steps, each a gate in the sense of scripts/gates.py (exit 0 A
 failed step stops the run and later steps are SKIPPED):
 
   - preflight (fatal)            scripts/independent_audit/preflight.py --spec scripts/independent_audit/morning_preflight.json
-                                   (owner 2026-10-21: the run's preconditions — checkout, deck repo, playwright, briefs, remote)
+                                   (owner 2026-10-21: the run's preconditions — checkout, deck repo, briefs, remote; not playwright,
+                                   which only the deck step needs and which fails that step closed)
   0 league live (non-fatal)      scripts/league_live.py --as-of <today>        (FantasyBot rosters from the session transcript;
                                    a failed pull keeps the last league_state.json and the brief says so — owner 2026-10-20)
   1 box scores for yesterday      scripts/box_pull.py --date <yesterday>        (ESPN + Basketball-Reference)

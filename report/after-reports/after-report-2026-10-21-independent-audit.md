@@ -11,7 +11,7 @@ Pull window: 2026-10-21 → 2026-10-21 (build only; no roster pull, no box score
 - each piece red-first against a recorded incident, then a red team (library `results/2026-10-21/independent-audit/REPORT.md`).
 
 **Headline.**
-- **The morning run now checks its own preconditions first.** Step 0 is a preflight (`scripts/independent_audit/morning_preflight.json`): kit checkout, the deck repo beside the kit, the render browser, writable briefs, a reachable remote. A missing one prints one FAIL line and stops the run, instead of a half-run that publishes no deck (the 10/21 runner reported "deck still missing").
+- **The morning run now checks its own preconditions first.** Step 0 is a preflight (`scripts/independent_audit/morning_preflight.json`): kit checkout, the deck repo beside the kit, writable briefs, a reachable remote. A missing one prints one FAIL line and stops the run, instead of a half-run that publishes no deck (the 10/21 runner reported "deck still missing").
 - **Every after-report's claims are linted (advisory).** `gates.py` adds a `claim receipts` gate that lists sentences saying something runs or changes nothing with no receipt beside them. It never fails the build: its precision on this kit's own reports was 3 of 7 when first measured, under the 0.5 bar set beforehand.
 - **`gates.py --replay` rebuilds the Season Deck on the last 3 real mornings** and opens each in a headless browser. On the real 10/21 morning the deck code from before #152 crashes (no matchup file) and the code from before #154 builds a page with no tabs; today's code passes both mornings.
 - **Not covered by anything here:** the 10/20 no-checkout failure itself. A run with no checkout cannot run `morning.py`, so its guard belongs in the scheduled task's prompt (decision 2).
@@ -33,9 +33,13 @@ None. This build changes no roster, line, tag or engine constant.
 
 Two existing tests in `test_morning.py` pinned the step order; they were updated, with a dated note, because step 0 moved every index by one.
 
+## 3. Correction, the same evening: playwright left the preflight
+
+The kit session's merge check (PR #155, 2026-10-21 evening) found the runner's container had no Python playwright at 18:34Z. Every step through the daily brief still passed; only the deck failed, closed (run-ledger rows 18:34:01Z–18:35:49Z; commit `3b38a73` "FAIL at season deck (playwright not importable)"). As first built, this PR made playwright a fatal step-0 check, which would have stopped that whole morning: a one-step dependency widened into a no-run morning. Red-first: a test asserting no fatal check names playwright failed, then the check was removed and it passes; the preflight now holds 4 checks, only what the whole run needs. Installing playwright in the runner's setup script is still worth doing, for the deck — the kit session's proposal stands.
+
 ## Watchlist
 
-- **Tomorrow's 05:53 PT runner fire** runs the preflight first once this merges. If its container lacks the deck repo or playwright, the run now stops at step 0 with a named FAIL instead of publishing no deck.
+- **Tomorrow's 05:53 PT runner fire** runs the preflight first once this merges. If its container lacks the deck repo, the run now stops at step 0 with a named FAIL. Playwright is deliberately NOT a preflight check (corrected the same evening, see §3): without it only the deck step fails, closed, and the rest of the morning still runs.
 
 ## Open-item receipts
 

@@ -42,8 +42,14 @@ class MorningPreflight(unittest.TestCase):
     def test_spec_declares_what_the_run_assumes(self):
         spec = json.load(open(SPEC))
         names = [c["name"] for c in spec["checks"]]
-        for want in ("kit checkout", "deck repo beside the kit", "render browser (playwright)", "briefs writable"):
+        for want in ("kit checkout", "deck repo beside the kit", "briefs writable"):
             self.assertIn(want, names)
+        # 2026-10-21 (kit session's merge check of #155/#156): the runner had no playwright at 18:34Z and every
+        # step through the brief still passed; only the deck failed, closed. A fatal preflight on playwright would
+        # have stopped the whole morning. The preflight holds only what the WHOLE run needs; a dependency of one
+        # step stays that step's own fail-closed check.
+        self.assertFalse(any("playwright" in (c.get("cmd", "") + c["name"]).lower() for c in spec["checks"]),
+                         "a one-step dependency must not stop the whole morning")
         self.assertTrue(all(c.get("hint") for c in spec["checks"]), "every check says what to do when it fails")
 
     def test_spec_fails_loudly_outside_the_kit(self):
