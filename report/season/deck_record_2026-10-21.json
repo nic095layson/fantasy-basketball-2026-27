@@ -4,40 +4,52 @@
  "inputs": {
   "brief": {
    "path": "report/briefs/brief_2026-10-21.json",
-   "sha256": "f2963bed327fa6bc5a7d9c6fd19e6ac92353818c10665c911ffeb85b9f5a2b40"
+   "present": true,
+   "sha256": "2562b1daed6e7bcc6179b29c9886047e89a99d100fd78cb86e9ad8589e988db4"
   },
   "board": {
    "path": "report/season/board_2026-10-21.json",
-   "sha256": "27d6273aa1b71be90d099f4c134bfd0d292153c1a11ab9acbae49af4a5e14b36"
+   "present": true,
+   "sha256": "fda1ac364ab1e35a1d12817633c0f92b6e491008aa3322eb992033c14186db64"
   },
   "status": {
    "path": "data/status/status_2026-10-21.json",
-   "sha256": "5cf702049a460c16b1070446c8c1931bf8b4b6f6d42a62661267fa07da97473a"
+   "present": true,
+   "sha256": "05bd072d8bfea6e4230f725390078f5f0529a58e6b7e2a40781894f647fb5f1c"
   },
   "league_state": {
    "path": "data/league_state.json",
-   "sha256": "d8e5b2086708a7fcf28dde2d08568ae828b0e5f5a7cd611e8f4fcb17da91389f"
+   "present": true,
+   "sha256": "521138a86b6fa4b070127147bdf9761cc2ae158ef400be4830f720c2f7467252"
   },
   "season_lines": {
    "path": "data/season/season_lines_2026-10-21.json",
-   "sha256": "bb15cda567fb9f97d1f483368e1faa2854f444166b71b9c259f83faa395d1fc5"
+   "present": true,
+   "sha256": "180537b2b86b277fac5ed9b2fec21ecca97fe81c6e292cc620e0a4a31a7db223"
   },
   "sweep": {
    "path": "report/after-reports/redteam-2026-10-19/sweep.json",
-   "sha256": "434dc69314419dc0e223623c436afa673f2e16e7a2f69820c8403435e5f49d87"
+   "present": true,
+   "sha256": "92531c209df0044f54bfbcfbb65f8a812dc44d85fc0525314c9a5c2102109298"
   },
   "calibration": {
    "path": "report/calibration.json",
+   "present": true,
    "sha256": "a5db5a742419084353b86bba3a7be22482aefdc98b7dd9f02546c0ef19146403"
+  },
+  "matchup_live": {
+   "path": "data/news/matchup_live_2026-10-21.json",
+   "present": true,
+   "sha256": "7f52c9c2f2b43dddb563dafed90e043aa3076a23fadf4708162e854511342d3e"
   }
  },
  "board_rows": 313,
- "status_rows": 24,
+ "status_rows": 16,
  "panes": 6,
  "join": {
-  "rostered": 165,
+  "rostered": 168,
   "unresolved": 0,
-  "on_board": 161,
+  "on_board": 164,
   "off_board": 4,
   "respelled": [
    [
@@ -69,10 +81,27 @@
     "Michael Porter Jr"
    ],
    [
+    "Mikel Brown Jr.",
+    "Mikel Brown"
+   ],
+   [
     "Wendell Carter Jr.",
     "Wendell Carter Jr"
    ]
   ],
-  "free_agents_on_board": 152
+  "free_agents_on_board": 149
+ },
+ "render": {
+  "status": "PASS",
+  "tabs": [
+   "Today",
+   "Trade Analyzer",
+   "Free Agents",
+   "Board",
+   "Movers",
+   "Week"
+  ],
+  "page_errors": 0,
+  "browser": "141.0.7390.37 (playwright default)"
  }
 }
