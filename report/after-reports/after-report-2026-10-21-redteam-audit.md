@@ -129,19 +129,20 @@ actually ask for.
 The one divergence needing no normalisation to be real: **recovery** — the board
 excludes (0.0), the simulator prices (0.60). Exposure measured with the live
 `note_tag` / `availability` / `weekly_availability` functions rather than a
-reimplementation: **27 rostered players on risk, 5 on mild, 5 on recovery/out**
-(Strus, Mark Williams, Suggs, Butler, Nurkic).
+reimplementation: **22 rostered players on risk, 2 on mild, 4 on recovery** (Strus,
+Mark Williams, Butler, Nurkic) — all 168 rostered players joined, both pools (preseason v69
+and the 10/21 season pool) give the same counts. `[CORRECTED 2026-10-21, before merge]` The
+first version said 27 / 5 / 5 and listed Suggs; Suggs carries no injury tag (healthy at
+both scales), and the 27 / 5 / 5 could not be reproduced from any pool on re-measure.
 
-This is already on the sheet as **D-PM-4** ("reconcile 0.78 vs 0.75, 1.0 vs 0.88"). What
-this audit adds is the relative framing, which makes it a real inconsistency rather than
-a cosmetic one, and the count of players it currently touches. It is a judgment call
-which number is right — that is yours, not mine.
-
-There is also a separate divergence at the recovery tier: the board **excludes**
-recovery players (0.0), the simulator **prices** them at 0.60. Five rostered players are
-on a recovery/out tag right now (Strus, Mark Williams, Suggs, Butler, Nurkić). Since the
-board excludes them they never reach a board ranking, but the league simulator reads
-real league rosters — so it does see them, at 0.60.
+`[CORRECTED 2026-10-21, before merge]` The first version went on to claim that "the
+relative framing makes it a real inconsistency" and that the league simulator "does see"
+the recovery players at 0.60. Both were false. The relative framing is the withdrawn
+comparison above. And all four recovery-tagged rostered players sit in an **IL slot**,
+which the owner's D-IS-8 rule (2026-10-20) already counts as zero in every in-season
+simulation — so today the simulator's 0.60 reaches **no rostered player**. It still
+governs the draft and arena simulations, and any recovery-tagged player held on a bench
+instead of IL. Which number is right is the owner's call (D-PM-4).
 
 ## 5. Every tool and gate, pass or fail
 
@@ -176,12 +177,16 @@ Assembled from commits and tool output, not recollection.
 | 6 | "Still only yours: attach the FantasyBot connector" | the owner had already attached it; the evidence was in a tool result I had read one minute earlier | the owner |
 | 7 | `check_claims` detector | blind to writers routed through an argparse default — would have under-reported writers repo-wide | its own known-answer control |
 | 8 | tonight's roster join | read field `name`; the field is `player` → 0 of 168 matched [SINGLE-SOURCE] (this session's own tool output) | implausible result |
-| 10 | **this report's own Provenance section** | claimed adversarial-verify was loaded for this task; it was not — loaded earlier that evening for a different task [SINGLE-SOURCE] (the Stop hook) | the governance Stop hook |
 | 9 | tonight's tier classifier | substring-matched whole notes → Haliburton scored "mild" off his injury history [SINGLE-SOURCE] (this session's own tool output) | implausible result |
+| 10 | **this report's own Provenance section** | claimed adversarial-verify was loaded for this task; it was not — loaded earlier that evening for a different task [SINGLE-SOURCE] (the Stop hook) | the governance Stop hook |
+| 11 | this report's first §4 headline: "the board punishes injury risk ~7 points harder" | an invalid comparison — a tier-only ratio divided by a tier-plus-games ratio; withdrawn [SINGLE-SOURCE] (this session's own re-derivation) | adversarial-verify |
+| 12 | this report, pre-merge text: "27 risk / 5 mild / 5 recovery/out (… Suggs …)" and "the league simulator does see them, at 0.60" | 22 / 2 / 4; Suggs carries no injury tag; all 4 recovery players are on IL, which D-IS-8 already counts as zero, so the 0.60 reaches no rostered player in-season [SINGLE-SOURCE] (this session's own re-measure) | re-measuring before building the D-PM-4 fix |
 
-**The pattern.** Nine errors, and not one is arithmetic. Every single one is a confident
-claim about **whether a mechanism runs** — a script, a tool, a control, a connector, a
-checkout. The part of this system that is exercised daily (the maths, the gates, the
+**The pattern.** Twelve errors (rows 11 and 12 added before merge), and not one is
+arithmetic. Eleven are a confident claim about **whether a mechanism runs** or what a
+mechanism touches; row 11 is the exception — an invalid comparison, a method error, the
+day's only analytic one. The eleven concern a script, a tool, a control, a connector, a
+checkout, or a roster rule. The part of this system that is exercised daily (the maths, the gates, the
 byte-for-byte reproduction) is flawless. The part that is *described* rather than
 exercised is where everything went wrong.
 
@@ -213,8 +218,9 @@ item that attacks the pattern rather than one instance of it.
 
 ## Watchlist
 
-- **`availability` tier mismatch (§4)** — 27 risk + 5 mild rostered players priced
-  differently by the two instruments. D-PM-4.
+- **`availability` tier mismatch (§4)** — 22 risk + 2 mild rostered players sit under two
+  different tier tables; whether they are priced differently in effect is unmeasured
+  (corrected before merge from "27 + 5 priced differently"). D-PM-4.
 - **Red team stale** — every band quoted anywhere is formally stale until the sweep
   re-runs. D-RT-STALE (new).
 - **`roster-provenance.csv`** — all 325 rows past the limit from 2026-10-22. D-INT-1.
@@ -229,7 +235,7 @@ item that attacks the pattern rather than one instance of it.
 | arithmetic integrity | **CLEAN** | 1,800/1,800 cells, independent spec implementation, rank order identical |
 | constants drift | **CLEAN** | 31 registered = 31 live on d33942f |
 | engine untouched today | **CONFIRMED** | diff of ec803bb vs 7c6a05a over engine paths: 3 pinned JSON only |
-| D-PM-4 availability | **re-put with new evidence** | relative gap −0.072 risk / −0.048 mild; 32 rostered players exposed |
+| D-PM-4 availability | **re-put** | two tier tables differ; effect NOT-ATTEMPTED (needs tier × `avail(gp)` per player); recovery 0.0 vs 0.60 is real but touches 0 rostered players in-season (4 of 4 on IL, D-IS-8) |
 | D-RT-STALE | **new** | run_attacks FAIL, 4 records on 259c630; arena.py and hoops.py byte-identical |
 | D-INT-1 | carried | 322/325 stale, no writer exists |
 | D-CLAIM-1 | carried, dated | decide by 2026-10-24 |
@@ -241,10 +247,11 @@ name can collide. The standing check ran clean tonight (9 near-misses, none new)
 
 ## Decision sheet
 
-1. **D-PM-4 — reconcile the two availability scales.** (a) move the simulator to match
-   the board's relative penalty; (b) move the board to match the simulator's; (c) declare
-   them deliberately different and document why. *Recommended: (c) first — write down
-   which is which — then decide (a) or (b) with a sweep, because this moves title odds.*
+1. **D-PM-4 — reconcile the two availability scales.** Recovery: pick one number (the
+   board's 0.0 or the simulator's 0.60). Risk and mild: measure the composed per-player
+   comparison first, then decide. *Recommended: recovery now; the rest after the
+   measurement.* `[CORRECTED 2026-10-21, before merge]` The first version offered "match
+   the board's relative penalty", which rested on the withdrawn comparison.
 2. **D-RT-STALE — re-run the assumption sweep** to un-stale the bands. *Recommended: yes,
    but scheduled, not now; the simulator hasn't moved, so nothing is urgent.*
 3. **D-CLAIM-1 — wire `check_claims` into `gates.py`.** *Recommended: yes. It is the only
