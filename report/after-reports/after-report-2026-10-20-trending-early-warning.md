@@ -1,5 +1,7 @@
 # After-report — Trending-players early-warning: how to build it (research only)
 
+Pull window: 2026-10-20 → 2026-10-20 (research only; one FantasyBot trending call, no roster pull, no plane change).
+
 **Owner's request (2026-10-20):** "4, research more - then provide a report on how to
 computationally build." Item 4 of the FantasyBot proposals: a breakout early-warning that
 crosses platform-wide add/drop trends against the kit's engine. This report designs the build;
@@ -119,3 +121,32 @@ Produced 2026-10-20 (owner-local) in session session_01QjgeRdpDaWgSJmGKRG8fTU fr
 `get_trending_players` call (raw pinned beside this report's data path) and the session's own
 cross (command + output in the session transcript). Re-verify: rerun the cross against
 `data/source/fantasybot/trending_sample_2026-10-20.json` and today's `data/league_state.json`.
+
+## Watchlist
+
+- **D-TW-1..3 undecided** since 2026-10-20 — the staleness detector is designed and
+  unbuilt. While it is unbuilt, a role change that the market sees before our
+  sources do reaches the board only at the next WO-5 pass.
+- **`get_trending_players` lookback caps at 168 hours** (7 days, schema read
+  2026-10-21). Any detector built on it inherits a one-week memory; a slower
+  role change will not register as a trend at all.
+- **The naive screen fires 0 of 15** on the one live sample taken. One sample is
+  an anecdote, not a rate — a second sample on a different day is owed before
+  that figure is quoted as the screen's behaviour.
+
+## Open-item receipts
+
+| Item | Status | Receipt |
+|---|---|---|
+| D-TW-1 (build the staleness detector) | **open** | designed in this report; nothing built |
+| D-TW-2 (thresholds) | **open** | depends on D-TW-1 |
+| D-TW-3 (include the drops side) | **open** | depends on D-TW-1 |
+| FantasyBot = data source only | **held** | only `get_trending_players` called; no grade, verdict, boardRank or categoryValuePerGame used |
+| D-TF-1 (no compute on hypothetical trades) | **held** | this item proposes no sweep of any kind |
+
+## Repeat-name market check
+
+Not run and not applicable: this item pulled no market ranking source and changed
+no pool row, so there is no new or re-used name to collide. The standing check's
+last run is the 2026-10-14 lock refresh (32/32, 12 flagged), unaffected by
+anything here.

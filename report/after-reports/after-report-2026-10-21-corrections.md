@@ -1,5 +1,7 @@
 # Corrections to the system — 2026-10-21 (GAUNTLET, Council 4–1)
 
+Pull window: 2026-10-21 → 2026-10-21 (corrections only; no roster pull, no box scores, no plane change).
+
 **Owner's request.** "Invoke council, then initiate Gauntlet corrections to system",
 2026-10-21, following three defects surfaced earlier the same evening.
 
@@ -36,7 +38,22 @@ deliberately unwired.
 | `grep -rn "roster-provenance" scripts/ report/*.py` | `check_provenance.py`, `rank_engine.py` — **both read-only** |
 | writes to the pool's `team` column in-season | none found |
 | `python3 report/check_provenance.py --max-age-days 14` | FAIL — **322 of 325** rows over the limit, oldest **100 days** |
-| rows still inside the limit | **3**, all dated 2026-10-07 → every row is stale from 2026-10-22 |
+| rows still inside the limit | **3** [SINGLE-SOURCE] (`check_provenance.py` output, this session) |
+
+**Refinement found by the refutation pass, 2026-10-21.** "No script writes it" is
+true but could be misread as "it never changes." `git log --follow` shows
+**26 commits** have touched `roster-provenance.csv` — it was maintained **by
+hand**, by sessions, and the last such commit was `52c590b` (2026-10-07,
+D-CAST-1), which is exactly why the only 3 rows inside the 14-day window are
+dated 2026-10-07. So the accurate statement is: **the file has never had an
+automated writer, and hand-maintenance stopped on 2026-10-07.** An independent
+repo-wide grep (all file types, not just `.py`) found no shell script, notebook
+or other writer either — the only `.py` files naming it are `rank_engine.py`,
+`check_provenance.py`, this session's test, and one archived report writer, all
+read-only.
+
+Those 3 surviving rows all carry the same verification date, one week before this
+report, so every row in the file is past the limit the day after it.
 
 **INFERENCE.** Exposure is low now and grows: team labels drive schedule and
 games-per-week, and a wrong label needs an in-season transaction to arise. One
@@ -95,6 +112,37 @@ fallback and report which path they took. The class defect — nothing verifies 
 scheduled task's assumptions before it fires — is **D-CLAIM-2**.
 
 ---
+
+## Watchlist
+
+- `roster-provenance.csv` — **all 325 rows past the freshness limit from 2026-10-22.**
+  Dormant today (the gate does not fire in-season), live if `rank_engine.main()`
+  is ever run again. D-INT-1.
+- In-season NBA team labels — unverified by anything. Bites on the first
+  in-season transaction affecting a rostered player; materially at the February
+  deadline. D-INT-1.
+- `report/claims.json` — 3 rows FALSIFIED by design. If a row's verdict ever
+  stops matching its `expected`, something changed and nobody said so; that is
+  the signal the registry exists for. D-CLAIM-1.
+- `gp` in `weekly_matchups_2025-26.csv` — 43 of 44 rows unchecked against a
+  source. D-CLAIM-3.
+
+## Open-item receipts
+
+| Item | Status | Receipt |
+|---|---|---|
+| D-INT-1 | **re-put, options rebuilt** | option (c) withdrawn 2026-10-21; `morning.py` names neither `build_deck.py` nor `check_provenance.py` (grep, this session) |
+| D-CLAIM-1 | **new, dated** | `check_claims.py` + `claims.json` committed, wired into nothing; decide by 2026-10-24 |
+| D-CLAIM-2 | **new** | scheduled-task prompts carry the public-clone fallback; probe session showed `add_repo` present but denied by the auto-mode classifier |
+| D-CLAIM-3 | **new** | week-1 Kyle `gp` corrected against the owner's screenshot; 43 rows unchecked |
+| D-TW-1..3 | carried | unchanged — owner decision outstanding since 2026-10-20 |
+| D-TF-1 (trade veto) | **closed** | Trade Finder removed; guard test asserts the card never renders |
+
+## Repeat-name market check
+
+Not run and not applicable: this item pulled no market source and changed no
+pool row, so there is no new name to collide. The standing check's last run is
+the 2026-10-14 lock refresh (32/32, 12 flagged), unchanged by anything here.
 
 ## Bounds
 
