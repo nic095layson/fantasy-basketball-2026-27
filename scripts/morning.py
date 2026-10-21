@@ -3,8 +3,9 @@
 propose only). Five steps, each a gate in the sense of scripts/gates.py (exit 0 AND its PASS line, or FAIL; a
 failed step stops the run and later steps are SKIPPED):
 
-  0 league live (non-fatal)      scripts/league_live.py --as-of <today>        (FantasyBot rosters from the session transcript;
-                                   a failed pull keeps the last league_state.json and the brief says so — owner 2026-10-20)
+  0 league live (non-fatal)      scripts/league_live.py --as-of <today>        (rosters from the session transcript: Flaim's
+                                   Yahoo read first, FantasyBot when it is missing or incomplete — owner 2026-10-21; a failed
+                                   pull keeps the last league_state.json and the brief says so — owner 2026-10-20)
   1 box scores for yesterday      scripts/box_pull.py --date <yesterday>        (ESPN + Basketball-Reference)
   2 season lines                  scripts/season_lines.py --date <today>        (preseason line + actuals, priors registered)
   3 season board                  scripts/season_board.py --date <today>
@@ -12,7 +13,8 @@ failed step stops the run and later steps are SKIPPED):
   4b transactions (fetch only)    scripts/transactions.py --date <today>        (ESPN transactions feed, last 3 days; owner 2026-10-20)
   4c matchup live (non-fatal)     scripts/matchup_live.py --date <today>       (FantasyBot matchup pin; owner 2026-10-20 item 2)
   5 daily brief on the season pool  SEASON_POOL=data/season/pool_season.csv scripts/daily_brief.py --date <today>
-  5b week matchup (non-fatal)     scripts/week_matchup.py --date <today>       (categories to date + projected; owner 2026-10-21)
+  5b week matchup (non-fatal)     scripts/week_matchup.py --date <today>       (Yahoo's totals to date + projected, Yahoo's
+                                   available-player list for the pickup scan; owner 2026-10-21)
   6 season deck                   scripts/season_deck.py --date <today>        (render-checked before it is written)
 
 Writes report/briefs/morning_<date>.json (every step's command, exit, PASS line, tail), appends each step's verdict to

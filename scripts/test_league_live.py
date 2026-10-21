@@ -148,7 +148,7 @@ class EndToEnd(unittest.TestCase):
         tdir = tempfile.mkdtemp()
         out = os.path.join(tdir, "league_state.json")
         p = subprocess.run([sys.executable, os.path.join(HERE, "league_live.py"),
-                            "--as-of", "2026-10-20", "--out", out,
+                            "--as-of", "2026-10-20", "--out", out, "--source", "fantasybot",
                             "--pin-dir", tdir], capture_output=True, text=True)
         self.assertIn("LEAGUE INTAKE: PASS", p.stdout, p.stdout + p.stderr)
         self.assertIn("LEAGUE LIVE: PASS", p.stdout, p.stdout + p.stderr)
@@ -157,6 +157,68 @@ class EndToEnd(unittest.TestCase):
         self.assertIn("fantasybot", state["sources"])
         pin = os.path.join(tdir, "pull_2026-10-20.json")
         self.assertTrue(os.path.exists(pin), "raw pull not pinned")
+
+
+class FlaimFirst(unittest.TestCase):
+    """Owner 2026-10-21 ("Build A, B, C, D"): rosters come from Flaim (every team's Yahoo slot and status letter);
+    FantasyBot is the fallback when the Flaim pull is missing or incomplete."""
+    PIN = os.path.join(os.path.dirname(HERE), "data", "source", "flaim", "pull_2026-10-21.json")
+
+    def run_live(self, *args):
+        tdir = tempfile.mkdtemp()
+        out = os.path.join(tdir, "league_state.json")
+        p = subprocess.run([sys.executable, os.path.join(HERE, "league_live.py"), "--as-of", "2026-10-21", "--out", out,
+                            "--pin-dir", tdir, "--flaim-pin-dir", tdir] + list(args), capture_output=True, text=True)
+        return p, out, tdir
+
+    @unittest.skipUnless(os.path.exists(PIN), "no pinned Flaim pull")
+    def test_the_pinned_pull_halts_on_the_one_unpooled_active_player_and_writes_nothing(self):
+        # 2026-10-21: Andre Drummond (Podz save the league, BN) has no pool row; whether to add one or carry him as
+        # not counted is the owner's decision, so the intake's existing halt stands
+        p, out, tdir = self.run_live("--source", "flaim", "--pull", self.PIN)
+        self.assertIn("Andre Drummond", p.stdout)
+        self.assertIn("LEAGUE LIVE: HALT", p.stdout)
+        self.assertFalse(os.path.exists(out))
+
+    @unittest.skipUnless(os.path.exists(PIN), "no pinned Flaim pull")
+    def test_the_pinned_flaim_pull_builds_every_team_with_yahoo_slots_and_letters(self):
+        pull = json.load(open(self.PIN, encoding="utf-8"))
+        for r in pull["rosters"].values():
+            r["players"] = [pl for pl in r["players"] if pl["name"] != "Andre Drummond"]
+        fd, pin = tempfile.mkstemp(suffix=".json")
+        with os.fdopen(fd, "w", encoding="utf-8") as f:
+            json.dump(pull, f)
+        p, out, tdir = self.run_live("--source", "flaim", "--pull", pin)
+        self.assertIn("LEAGUE LIVE: PASS — rosters from Flaim", p.stdout, p.stdout + p.stderr)
+        state = json.load(open(out, encoding="utf-8"))
+        self.assertEqual(len(state["teams"]), 12)
+        self.assertIn("flaim", state["sources"])
+        slots = {pl["slot"] for t in state["teams"] if t["seat"] != 10 for pl in t["players"]}
+        self.assertTrue(slots - {"BN", "IL"}, "rival teams carry only BN/IL: Yahoo slots were lost")
+        porter = [pl for t in state["teams"] for pl in t["players"] if pl["player"] == "Kevin Porter Jr."]
+        self.assertEqual([pl["status"] for pl in porter], ["NA"])
+
+    def test_an_incomplete_flaim_pull_falls_back_to_fantasybot_and_says_so(self):
+        fd, tr = tempfile.mkstemp(suffix=".jsonl")
+        with os.fdopen(fd, "w", encoding="utf-8") as f:
+            f.write(transcript_line("2026-10-22T12:55:00Z", mine([("PG", "Old Guy", "BOS", "PG", None)], [], [])))
+        p, out, tdir = self.run_live("--transcript", tr)
+        self.assertIn("Flaim pull not used", p.stdout, p.stdout)
+        self.assertIn("LEAGUE LIVE: HALT", p.stdout, p.stdout)  # the FantasyBot fallback is incomplete too
+        self.assertFalse(os.path.exists(out))
+
+    def test_a_flaim_pull_without_twelve_rosters_still_pins_its_matchup_and_list_for_the_week_card(self):
+        import test_flaim_live as TFL
+        fd, tr = tempfile.mkstemp(suffix=".jsonl")
+        with os.fdopen(fd, "w", encoding="utf-8") as f:
+            for i in range(1, 12):
+                f.write(TFL.line("2026-10-22T12:55:00Z", TFL.roster(i, f"T{i}", [("A", "BOS", "PG", "PG", None)])))
+            f.write(TFL.line("2026-10-22T12:55:30Z", TFL.matchups(1, [(TFL.side(1, "T1", 1, 1, 1, 1, (0,) * 7, 1),
+                                                                        TFL.side(2, "T2", 1, 1, 1, 1, (0,) * 7, 1))])))
+        p, out, tdir = self.run_live("--transcript", tr)
+        self.assertIn("Flaim pull not used", p.stdout, p.stdout)
+        pinned = json.load(open(os.path.join(tdir, "pull_2026-10-21.json"), encoding="utf-8"))
+        self.assertEqual((pinned["source"], sorted(pinned["matchups"])), ("flaim", ["1"]))
 
 
 if __name__ == "__main__":

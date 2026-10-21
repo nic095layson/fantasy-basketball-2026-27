@@ -502,6 +502,45 @@ class WeekMatchupCard(unittest.TestCase):
         self.assertEqual(DRC.check(p)["status"], "PASS")
         self.assertIn("No week-to-date record", today_dom(p)["text"])
 
+    # ---- A and D (owner 2026-10-21): the card says where its to-date column and its pickup pool came from
+    def test_yahoos_totals_are_named_as_the_source_and_the_rebuild_agreement_is_stated(self):
+        r = week_matchup_record()
+        r["to_date_source"] = dict(source="yahoo", reason=None, rebuild_agrees=True, differences=[],
+                                   yahoo_games_remaining=dict(me=32, opp=33))
+        dom = today_dom(self.page(r))
+        self.assertEqual(dom["errors"], [])
+        self.assertIn("Yahoo's scoreboard", dom["text"])
+        self.assertIn("rebuild agrees on all 11", dom["text"])
+        self.assertIn("Yahoo's own count of games left: you 32, them 33", dom["text"])
+        self.assertNotIn("rebuilt from box scores", dom["text"])
+
+    def test_a_rebuild_difference_is_named_stat_by_stat(self):
+        r = week_matchup_record()
+        r["to_date_source"] = dict(source="yahoo", reason=None, rebuild_agrees=False,
+                                   differences=[dict(side="me", stat="pts", yahoo=15, rebuild=13)],
+                                   yahoo_games_remaining=dict(me=32, opp=33))
+        self.assertIn("you PTS Yahoo 15, rebuild 13", today_dom(self.page(r))["text"])
+
+    def test_a_rebuild_fallback_says_why(self):
+        r = week_matchup_record()
+        r["to_date_source"] = dict(source="rebuild", reason="no Yahoo pull file (pull_2026-10-21.json)",
+                                   rebuild_agrees=None, differences=[], yahoo_games_remaining=None)
+        text = today_dom(self.page(r))["text"]
+        self.assertIn("rebuilt from box scores", text); self.assertIn("no Yahoo pull file", text)
+
+    def test_the_yahoo_pool_names_every_player_it_did_not_score(self):
+        k = dict(RAN, pool=dict(source="yahoo", listed=100, ordering="platform_rostered_rate_desc",
+                                out=[dict(name="Out Man", team="ORL", status="O")],
+                                unknown_status=[dict(name="Letter Man", team="MEM", status="D")],
+                                not_projected=[dict(name="New Guy", team="BOS", status=None)],
+                                skipped=[dict(name="Held Man", team="BOS", status=None, reason="rostered in the league state")],
+                                kit_pool_not_listed=67))
+        k["top"] = [dict(k["top"][0], status="Q")] + k["top"][1:]
+        text = today_dom(self.page(week_matchup_record(k)))["text"]
+        for s in ("Yahoo's available-player list", "100 listed", "Out Man", "Letter Man (D)", "not tiered",
+                  "New Guy", "Held Man", "67", "Free Agent (GSW) · Q"):
+            self.assertIn(s, text)
+
     def test_a_malformed_record_shows_its_error_on_the_card_and_every_tab_still_draws(self):
         bad = week_matchup_record(); bad["cats"] = None
         p = self.page(bad)

@@ -53,8 +53,19 @@ def try_espn(timeout=15):
         return None, {"attempted": at, "ok": False, "url": ESPN_INJURIES, "detail": f"{type(e).__name__}: {e}"}
 
 
+def receipt_source(state):
+    """(label, file, sha256) of the roster source the letters came from (owner 2026-10-21: Flaim first)."""
+    s = state.get("sources", {})
+    if "flaim" in s:
+        return "Yahoo roster read through Flaim (get_roster, read-only)", s["flaim"].get("pull_file"), s["flaim"].get("pull_sha256")
+    if "fantasybot" in s:
+        return "FantasyBot roster pull", s["fantasybot"].get("pull_file"), s["fantasybot"].get("pull_sha256")
+    src = s.get("pdf", {})
+    return "Yahoo Starting Rosters page (owner upload)", src.get("file"), src.get("sha256")
+
+
 def build(state, espn=None, espn_attempt=None, overrides=None):
-    src = state.get("sources", {}).get("pdf", {})
+    label, src_file, src_sha = receipt_source(state)
     rows = []
     for team in state["teams"]:
         for p in team["players"]:
@@ -64,8 +75,8 @@ def build(state, espn=None, espn_attempt=None, overrides=None):
             rows.append({
                 "player": p["player"], "fantasy_team": team.get("name"), "seat": team.get("seat"),
                 "slot": p.get("slot"), "yahoo_status": p["status"], "tier": name, "availability": avail,
-                "receipts": [{"source": "Yahoo Starting Rosters page (owner upload)", "file": src.get("file"),
-                              "sha256": src.get("sha256"), "captured": state["as_of"],
+                "receipts": [{"source": label, "file": src_file,
+                              "sha256": src_sha, "captured": state["as_of"],
                               "text": f"{p['status']} beside {p['player']} ({team.get('name')}, {p.get('slot')})"}],
                 "espn": espn_attempt or {"ok": False, "detail": "not attempted"},
             })

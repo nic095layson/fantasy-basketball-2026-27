@@ -306,7 +306,14 @@ function weekCard(){ const W=D.week_matchup, wk=D.brief.week;
     const fv=(c,x,fin)=>x==null?"—":(isPct(c)? x.toFixed(3) : (fin? (Math.round(x*10)/10).toFixed(1) : String(Math.round(x))));
     const chip=(l)=>l==="me"?h("span",{class:"chip ok"},"W"):(l==="opp"?h("span",{class:"chip crit"},"L"):h("span",{class:"chip"},"T"));
     const P=W.projected, G=W.games, last=(a)=>a[a.length-1];
-    const through=W.to_date_days.length? "box scores through "+last(W.to_date_days) : "no games played yet this week";
+    const S=W.to_date_source||{source:"rebuild",reason:null}, yahoo=S.source==="yahoo";
+    const SL={fgm:"FGM",fga:"FGA",ftm:"FTM",fta:"FTA",tpm:"3PTM",pts:"PTS",reb:"REB",ast:"AST",stl:"ST",blk:"BLK",tov:"TO"};
+    const through=yahoo? "Yahoo's scoreboard at this morning's pull" : (W.to_date_days.length? "box scores through "+last(W.to_date_days) : "no games played yet this week");
+    const rebuilt="To date is rebuilt from box scores"+(S.reason?" ("+S.reason+")":" because Yahoo's daily lineups are not in any record")+
+      ": every non-IL player who played, at most ten a day, so it can differ from Yahoo's scoreboard. ";
+    const srcLine=yahoo? h("p",{class:"note"+(S.rebuild_agrees?"":" zneg")},"To date is Yahoo's scoreboard (read through Flaim at the morning pull); "+
+      (S.rebuild_agrees? "the box-score rebuild agrees on all 11 stats." :
+        "the box-score rebuild differs: "+(S.differences||[]).map(x=>(x.side==="me"?"you ":"them ")+(SL[x.stat]||x.stat)+" Yahoo "+x.yahoo+", rebuild "+x.rebuild).join("; ")+". Yahoo's figure is the column.")) : null;
     const tbl=h("div",{class:"tablebox"},h("table",{},
       h("tr",{},h("th",{},"cat"),h("th",{class:"num"},"you"),h("th",{class:"num projh"},"proj"),h("th",{class:"num"},"them"),h("th",{class:"num projh"},"proj"),h("th",{},"")),
       W.cats.map(r=>h("tr",{},h("td",{},r.cat),
@@ -315,16 +322,27 @@ function weekCard(){ const W=D.week_matchup, wk=D.brief.week;
         h("td",{},chip(r.leader))))));
     const sat=(g)=>g.remaining_uncapped-g.remaining_started;
     const games="Games left: you "+G.me.remaining_started+" of "+G.me.remaining_uncapped+" scheduled"+(sat(G.me)?" (the daily ten-slot fill sits "+sat(G.me)+")":"")+
-      ", them "+G.opp.remaining_started+" of "+G.opp.remaining_uncapped+(sat(G.opp)?" (fill sits "+sat(G.opp)+")":"")+".";
+      ", them "+G.opp.remaining_started+" of "+G.opp.remaining_uncapped+(sat(G.opp)?" (fill sits "+sat(G.opp)+")":"")+"."+
+      (yahoo&&S.yahoo_games_remaining? " Yahoo's own count of games left: you "+S.yahoo_games_remaining.me+", them "+S.yahoo_games_remaining.opp+".":"");
+    const poolLine=(PO,n)=>{ if(!PO) return null;
+      if(PO.source!=="yahoo") return h("p",{class:"note"},"Pool: every pooled free agent in the kit ("+(PO.reason||"no Yahoo list")+").");
+      const nm=(a)=>a.map(x=>x.name+(x.status?" ("+x.status+")":"")).join(", "), parts=["Pool: Yahoo's available-player list ("+PO.listed+" listed, most-owned across Yahoo first); "+n+" scored."];
+      if(PO.out.length) parts.push("Out (O or NA): "+nm(PO.out)+".");
+      if(PO.unknown_status.length) parts.push("Status letter not tiered by the kit, so not scored: "+nm(PO.unknown_status)+".");
+      if(PO.not_projected.length) parts.push("No season-pool line, so not projected: "+nm(PO.not_projected)+".");
+      if(PO.skipped.length) parts.push("Skipped: "+PO.skipped.map(x=>x.name+" ("+x.reason+")").join(", ")+".");
+      if(PO.kit_pool_not_listed) parts.push(PO.kit_pool_not_listed+" pooled free agents outside Yahoo's list are not scored.");
+      return h("p",{class:"note"},parts.join(" ")); };
     const K=W.pickups; let pk;
     if(K.status==="ran"){ const d=K.drop;
       pk=[h("p",{},h("b",{},"Pickup scan. "),d.player+" ("+d.team+") has no games left this week and ranks "+d.value_rank+" of "+d.of+" by board value ("+f2(d.value)+"). Free agents in his place from today, by projected category wins gained ("+K.pool_size+" scored):"),
         K.top.length? h("div",{class:"tablebox"},h("table",{},
           h("tr",{},h("th",{},"add"),h("th",{class:"num"},"games"),h("th",{class:"num"},"starts"),h("th",{class:"num"},"cats"),h("th",{},"flips"),h("th",{class:"num"},"gaps closed"),h("th",{class:"num"},"value")),
-          K.top.map(r=>h("tr",{},h("td",{},r.add+" ("+r.team+")"+(r.missed?" · sat out "+r.missed:"")),
+          K.top.map(r=>h("tr",{},h("td",{},r.add+" ("+r.team+")"+(r.status?" · "+r.status:"")+(r.missed?" · sat out "+r.missed:"")),
             h("td",{class:"num"},String(r.games_left)),h("td",{class:"num"},String(r.starts)),h("td",{class:"num"},sgn(r.net,1)),
             h("td",{},(r.flips_to_win.length?"+"+r.flips_to_win.join(", "):"")+(r.flips_to_loss.length?" −"+r.flips_to_loss.join(", "):"")||"none"),
             h("td",{class:"num"},f2(r.gap_closed)),h("td",{class:"num"},zv(r.value)))))) : h("div",{class:"zero"},"No free agent changes a projected category."),
+        poolLine(K.pool, K.pool_size),
         h("p",{class:"note"},"cats = projected category wins gained (a tie counts half); gaps closed = over the categories you are projected to lose, the share of each gap he closes, summed (1.00 = one whole gap); value = his season board value, the rest-of-season cost of the move. The league allows 4 adds a week. Projections are single estimates: a category won or lost by a hair flips with almost anyone.")];
     } else {
       const nx=(K.next_finish||[]).slice(0,3).map(x=>x.player+" ("+x.team+") after "+x.last_game).join("; ");
@@ -333,12 +351,12 @@ function weekCard(){ const W=D.week_matchup, wk=D.brief.week;
     return h("div",{class:"card wk"},h("h2",{},"Week "+W.week+" categories"),
       h("p",{class:"note"},"You vs "+T(W.opponent.name)+" · to date: "+through+" · ",
         h("span",{class:"proj"},"faded = projected final through "+W.window[1])),
-      tbl,
+      tbl, srcLine,
       h("p",{},"Projected "+P.wins+"–"+P.losses+"–"+P.ties+" (W–L–T). "+games),
-      W.missing_days.length? h("p",{class:"note zneg"},"No box scores on file for "+W.missing_days.join(", ")+": those days are not in the to-date totals."):null,
+      W.missing_days.length? h("p",{class:"note zneg"},"No box scores on file for "+W.missing_days.join(", ")+(yahoo? ": the rebuild cross-check lacks those days." : ": those days are not in the to-date totals.")):null,
       (W.unpooled_active||[]).length? h("p",{class:"note zneg"},"Not counted (no pool row, so no box-score join or projection): "+W.unpooled_active.join(", ")+"."):null,
       pk,
-      h("p",{class:"note"},"To date is rebuilt from box scores (every non-IL player who played, at most ten a day) because Yahoo's daily lineups are not in any record, so it can differ from Yahoo's scoreboard. Projected = each player's season line × his games left × today's availability, ten a day. The card further down, recorded before the week, assumes 3.5 games per player; this one uses the real schedule."));
+      h("p",{class:"note"},(yahoo?"":rebuilt)+"Projected = each player's season line × his games left × today's availability, ten a day. The card further down, recorded before the week, assumes 3.5 games per player; this one uses the real schedule."));
   } catch(e){
     return h("div",{class:"card wk"},h("h2",{},"Week "+wk+" categories"),h("div",{class:"zero"},"Week categories could not be drawn: "+e.message));
   }

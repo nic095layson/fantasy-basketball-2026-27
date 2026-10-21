@@ -16,6 +16,7 @@ import unittest
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import week_matchup as WM  # noqa: E402
+import test_flaim_live as TFL  # noqa: E402  (the Flaim response shapes)
 
 ALLPOS = ["PG", "SG", "SF", "PF", "C"]
 
@@ -228,11 +229,107 @@ class Record(unittest.TestCase):
         out = os.path.join(self.d, "out")
         p = subprocess.run([sys.executable, os.path.join(HERE, "week_matchup.py"), "--date", "2026-10-21", "--out-dir", out,
                             "--state", self.state, "--schedule", self.sched, "--games", self.paths["games"],
-                            "--actuals", self.paths["actuals"], "--status-dir", self.paths["status"]],
+                            "--actuals", self.paths["actuals"], "--status-dir", self.paths["status"],
+                            "--yahoo-pull", os.path.join(self.d, "no_pull.json")],
                            capture_output=True, text=True, env=dict(os.environ))
         self.assertEqual(p.returncode, 0, p.stdout + p.stderr)
         self.assertRegex(p.stdout, r"(?m)^WEEK MATCHUP: PASS")
         self.assertTrue(os.path.exists(os.path.join(out, "week_matchup_2026-10-21.json")))
+
+    # ---- A: Yahoo's own week totals for the to-date column, the rebuild kept as the cross-check (owner 2026-10-21)
+    def pull(self, me_pts=13, names=("MINE", "THEIRS"), fas=None):
+        """A Flaim pull: the week-1 matchup between `names` (MINE's line is White's 10/20 box score with PTS
+        `me_pts`; THEIRS's is Maxey's) and, when given, Yahoo's available-player list."""
+        me = TFL.side(11, names[0], 9, 4, 2, 2, (3, me_pts, 4, 5, 2, 1, 1), 2)
+        opp = TFL.side(10, names[1], 21, 10, 7, 6, (4, 30, 3, 6, 1, 0, 2), 1)
+        p = dict(source="flaim", matchups={"1": TFL.matchups(1, [(opp, me)])["data"]}, rosters={},
+                 free_agents=TFL.free_agents(fas)["data"] if fas is not None else None)
+        return dump(p, os.path.join(self.d, f"pull_{me_pts}_{names[0]}.json"))
+
+    def test_yahoos_totals_are_the_to_date_column_and_a_rebuild_difference_is_listed(self):
+        rec = WM.build("2026-10-21", dict(self.paths, yahoo_pull=self.pull(me_pts=15)))
+        cats = {c["cat"]: c for c in rec["cats"]}
+        self.assertEqual(cats["PTS"]["me_to_date"], 15)                      # Yahoo's figure, not the rebuild's 13
+        self.assertEqual(cats["PTS"]["opp_to_date"], 30)
+        src = rec["to_date_source"]
+        self.assertEqual(src["source"], "yahoo")
+        self.assertFalse(src["rebuild_agrees"])
+        self.assertEqual(src["differences"], [dict(side="me", stat="pts", yahoo=15, rebuild=13)])
+        self.assertEqual(src["yahoo_games_remaining"], dict(me=2, opp=1))
+        self.assertEqual(rec["totals"]["me"]["to_date"]["pts"], 15)
+        self.assertEqual(rec["totals"]["me"]["rebuild_to_date"]["pts"], 13)
+        # the final adds the projection to Yahoo's figure: 15 + Jokic's expected points
+        self.assertAlmostEqual(cats["PTS"]["me_final"], round(15 + rec["totals"]["me"]["remaining"]["pts"], 1), places=1)
+
+    def test_when_the_rebuild_matches_yahoo_on_every_stat_the_record_says_so(self):
+        src = WM.build("2026-10-21", dict(self.paths, yahoo_pull=self.pull()))["to_date_source"]
+        self.assertEqual((src["source"], src["rebuild_agrees"], src["differences"]), ("yahoo", True, []))
+
+    def test_no_pull_file_falls_back_to_the_rebuild_and_says_why(self):
+        rec = WM.build("2026-10-21", dict(self.paths, yahoo_pull=os.path.join(self.d, "absent.json")))
+        self.assertEqual(rec["to_date_source"]["source"], "rebuild")
+        self.assertIn("no Yahoo pull", rec["to_date_source"]["reason"])
+        self.assertEqual({c["cat"]: c for c in rec["cats"]}["PTS"]["me_to_date"], 13)
+
+    def test_an_unreadable_pull_falls_back_and_the_card_still_builds(self):
+        bad = os.path.join(self.d, "torn.json")
+        with open(bad, "w") as f:
+            f.write('{"source": "flaim", "matchups": {')
+        rec = WM.build("2026-10-21", dict(self.paths, yahoo_pull=bad))
+        self.assertEqual(rec["to_date_source"]["source"], "rebuild")
+        self.assertIn("unreadable", rec["to_date_source"]["reason"])
+        self.assertEqual(rec["pickups"]["pool"]["source"], "kit")
+
+    def test_a_matchup_that_does_not_name_both_teams_falls_back_and_names_them(self):
+        src = WM.build("2026-10-21", dict(self.paths, yahoo_pull=self.pull(names=("Renamed", "THEIRS"))))["to_date_source"]
+        self.assertEqual(src["source"], "rebuild")
+        self.assertIn("MINE", src["reason"]); self.assertIn("THEIRS", src["reason"])
+
+    def test_a_team_renamed_on_yahoo_is_found_by_its_roster_in_the_pull(self):
+        p = json.load(open(self.pull(names=("Renamed", "THEIRS"))))
+        p["rosters"] = {"t11": TFL.roster(11, "Renamed", [("Nikola Jokić", "DEN", "C", "C", None),
+                                                          ("Derrick White", "BOS", "PG,SG", "Util", None),
+                                                          ("Max Strus", "LAC", "SF", "IL", None)])["data"]}
+        src = WM.build("2026-10-21", dict(self.paths, yahoo_pull=dump(p, os.path.join(self.d, "renamed.json"))))["to_date_source"]
+        self.assertEqual((src["source"], src["yahoo_names"]), ("yahoo", dict(me="Renamed", opp="THEIRS")))
+
+    # ---- D: Yahoo's available-player list is the pickup pool (owner 2026-10-21)
+    def test_yahoos_free_agent_list_is_the_pickup_pool_and_every_exclusion_is_named(self):
+        fas = [("Jrue Holiday", "POR", "PG,SG", None), ("Not In The Pool", "BOS", "C", None),
+               ("Isaiah Stewart", "MEM", "PF,C", "D"), ("Anthony Black", "ORL", "PG,SG,SF", "O"),
+               ("Derrick White", "BOS", "PG,SG", None)]
+        rec = WM.build("2026-10-21", dict(self.paths, yahoo_pull=self.pull(fas=fas)))
+        pk = rec["pickups"]
+        self.assertEqual(pk["status"], "ran")
+        pool = pk["pool"]
+        self.assertEqual((pool["source"], pool["listed"], pk["pool_size"]), ("yahoo", 5, 1))
+        self.assertEqual([r["add"] for r in pk["top"]], ["Jrue Holiday"])
+        self.assertEqual([x["name"] for x in pool["unknown_status"]], ["Isaiah Stewart"])   # "D": never guessed
+        self.assertEqual([x["name"] for x in pool["out"]], ["Anthony Black"])
+        self.assertEqual([x["name"] for x in pool["not_projected"]], ["Not In The Pool"])
+        self.assertEqual([x["name"] for x in pool["skipped"]], ["Derrick White"])           # rostered in the state
+        self.assertGreater(pool["kit_pool_not_listed"], 300)
+
+    def test_without_a_yahoo_list_the_pool_is_the_kits_and_says_so(self):
+        pk = WM.build("2026-10-21", dict(self.paths, yahoo_pull=self.pull()))["pickups"]
+        self.assertEqual(pk["pool"]["source"], "kit")
+        self.assertGreater(pk["pool_size"], 300)
+
+
+class YahooFreeAgents(unittest.TestCase):
+    def test_letters_tier_names_resolve_and_unknowns_are_set_aside(self):
+        pool = [dict(player="Jrue Holiday"), dict(player="Nikola Vucevic"), dict(player="Max Strus")]
+        entries = [dict(name="Jrue Holiday", team="POR", position="PG,SG"),
+                   dict(name="Nikola Vučević", team="ORL", position="C", status="Q"),
+                   dict(name="Max Strus", team="CLE", position="SF", status="NA"),
+                   dict(name="Isaiah Stewart", team="MEM", position="PF,C", status="D"),
+                   dict(name="Hugo González", team="BOS", position="SF")]
+        scored, out, unknown, notp = WM.yahoo_free_agents(entries, pool)
+        self.assertEqual([(s["player"], s["availability"], s["positions"]) for s in scored],
+                         [("Jrue Holiday", 1.0, ["PG", "SG"]), ("Nikola Vucevic", 0.5, ["C"])])
+        self.assertEqual([x["name"] for x in out], ["Max Strus"])
+        self.assertEqual([x["name"] for x in unknown], ["Isaiah Stewart"])
+        self.assertEqual([x["name"] for x in notp], ["Hugo González"])
 
 
 if __name__ == "__main__":

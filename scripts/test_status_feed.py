@@ -75,5 +75,21 @@ class NotActive(unittest.TestCase):
         self.assertEqual(len(SF.check([{"player": "X", "yahoo_status": "NA", "availability": 0.0, "receipts": []}])), 1)
 
 
+class FlaimReceipts(unittest.TestCase):
+    """Owner 2026-10-21 ("Build A, B, C, D"): when the rosters came from Flaim, every flagged player's receipt names
+    the Yahoo read through Flaim and the pinned pull, with its sha256 — not an owner upload that never happened."""
+    def test_a_flaim_state_receipts_name_flaim_and_the_pull(self):
+        state = {"as_of": "2026-10-21", "sources": {"flaim": {"pull_file": "data/source/flaim/pull_2026-10-21.json",
+                                                              "pull_sha256": "cd" * 32}},
+                 "teams": [{"name": "MAXEY-MUM OVERDRIVE", "seat": 11, "players": [
+                     {"player": "Kevin Porter Jr.", "slot": "PG", "status": "NA"}]}]}
+        rows = SF.build(state)
+        r = rows[0]["receipts"][0]
+        self.assertIn("Flaim", r["source"])
+        self.assertEqual((r["file"], r["sha256"], r["captured"]), ("data/source/flaim/pull_2026-10-21.json", "cd" * 32, "2026-10-21"))
+        self.assertEqual(rows[0]["availability"], 0.0)
+        self.assertEqual(SF.check(rows), [])
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

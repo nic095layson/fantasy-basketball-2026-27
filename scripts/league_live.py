@@ -19,6 +19,11 @@ morning run treats the step as non-fatal and the brief says the last paste still
     python3 scripts/league_live.py --as-of 2026-10-20 [--transcript FILE | --pull FILE] [--since ISO-TIME]
 --since (GAUNTLET 2026-10-21 item 7): only transcript entries stamped at or after this instant count. The persistent
 morning runner keeps every day's pulls in one transcript; without it a skipped pull would pass yesterday's off as today's.
+
+Flaim first (owner 2026-10-21, "Build A, B, C, D"): with --source auto (the default) the rosters come from the Flaim
+connector's Yahoo read (scripts/flaim_live.py: every team's real Yahoo slot and status letter), pinned under
+data/source/flaim/; FantasyBot is the fallback when the Flaim pull is missing or incomplete, and the run says why.
+--source flaim / fantasybot forces one.
 """
 import argparse
 import datetime
@@ -181,29 +186,67 @@ def main():
     ap.add_argument("--since", help="count only transcript entries at or after this ISO time (the run's start)")
     ap.add_argument("--out", default=league_intake.OUT)
     ap.add_argument("--pin-dir", default=PIN_DIR)
+    ap.add_argument("--flaim-pin-dir", default=os.path.join(KIT, "data", "source", "flaim"))
+    ap.add_argument("--source", choices=("auto", "flaim", "fantasybot"), default="auto",
+                    help="auto (default): Flaim first, FantasyBot when the Flaim pull is missing or incomplete")
     a = ap.parse_args()
-    try:
-        if a.pull:
-            pull = json.load(open(a.pull, encoding="utf-8"))
-            src_note = {"file": os.path.relpath(a.pull, KIT), "method": "saved FantasyBot pull file"}
-        else:
-            tr = a.transcript or newest_transcript()
-            pull = extract_pull(tr, a.since)
-            src_note = {"transcript": os.path.basename(tr),
-                        "method": "mechanical json extraction of FantasyBot tool results from the session transcript"}
-            if a.since:
-                src_note["since"] = a.since
-        check_pull(pull)
-        rows = to_rows(pull)
-    except (PullError, OSError, KeyError) as e:
-        print(f"LEAGUE LIVE: HALT — {e}; league_state.json not touched (last paste stands)")
-        return 1
-    os.makedirs(a.pin_dir, exist_ok=True)
-    pin = os.path.join(a.pin_dir, f"pull_{a.as_of}.json")
+    import flaim_live as FL
+    used, pull, rows, src_note = None, None, None, None
+    tr = None
+    if a.source in ("auto", "flaim"):
+        try:
+            if a.pull:
+                pull = json.load(open(a.pull, encoding="utf-8"))
+                if pull.get("source") != "flaim":
+                    raise FL.PullError(f"{a.pull} is not a Flaim pull")
+                src_note = {"file": os.path.relpath(a.pull, KIT) if a.pull.startswith(KIT) else a.pull, "method": "saved Flaim pull file"}
+            else:
+                tr = a.transcript or newest_transcript()
+                pull = FL.extract_pull(tr, a.since)
+                src_note = {"transcript": os.path.basename(tr),
+                            "method": "mechanical json extraction of Flaim (Yahoo) tool results from the session transcript"}
+                if a.since:
+                    src_note["since"] = a.since
+            FL.check_pull(pull)
+            rows, used = FL.to_rows(pull), "flaim"
+        except (FL.PullError, PullError, OSError, KeyError, ValueError) as e:
+            if a.source == "flaim":
+                print(f"LEAGUE LIVE: HALT — Flaim: {e}; league_state.json not touched (last paste stands)")
+                return 1
+            print(f"LEAGUE LIVE: Flaim pull not used — {e}; trying FantasyBot")
+            if not a.pull and isinstance(pull, dict) and (pull.get("matchups") or pull.get("free_agents")):
+                # the week card reads Yahoo's matchup totals and available-player list from this pin (A, D)
+                os.makedirs(a.flaim_pin_dir, exist_ok=True)
+                fpin = os.path.join(a.flaim_pin_dir, f"pull_{a.as_of}.json")
+                with open(fpin, "w", encoding="utf-8") as f:
+                    json.dump(pull, f, indent=1, ensure_ascii=False, sort_keys=True)
+                    f.write("\n")
+                print(f"LEAGUE LIVE: Flaim matchup/available-player responses pinned for the week card, "
+                      f"{os.path.relpath(fpin, KIT) if fpin.startswith(KIT) else fpin}")
+    if used is None:
+        try:
+            if a.pull:
+                pull = json.load(open(a.pull, encoding="utf-8"))
+                src_note = {"file": os.path.relpath(a.pull, KIT) if a.pull.startswith(KIT) else a.pull, "method": "saved FantasyBot pull file"}
+            else:
+                tr = tr or a.transcript or newest_transcript()
+                pull = extract_pull(tr, a.since)
+                src_note = {"transcript": os.path.basename(tr),
+                            "method": "mechanical json extraction of FantasyBot tool results from the session transcript"}
+                if a.since:
+                    src_note["since"] = a.since
+            check_pull(pull)
+            rows, used = to_rows(pull), "fantasybot"
+        except (PullError, OSError, KeyError) as e:
+            print(f"LEAGUE LIVE: HALT — {e}; league_state.json not touched (last paste stands)")
+            return 1
+    pin_dir = a.flaim_pin_dir if used == "flaim" else a.pin_dir
+    os.makedirs(pin_dir, exist_ok=True)
+    pin = os.path.join(pin_dir, f"pull_{a.as_of}.json")
     with open(pin, "w", encoding="utf-8") as f:
         json.dump(pull, f, indent=1, ensure_ascii=False, sort_keys=True)
         f.write("\n")
-    src = os.path.join(a.pin_dir, f"rosters_{a.as_of}.transcribed.csv")
+    src = os.path.join(pin_dir, f"rosters_{a.as_of}.transcribed.csv")
     league_intake.write_rows(rows, src)
     pool = list(__import__("csv").DictReader(open(league_intake.POOL, encoding="utf-8")))
     recap = json.load(open(league_intake.RECAP, encoding="utf-8"))
@@ -212,11 +255,19 @@ def main():
     for p in recap:
         draft.setdefault(p["slot"], []).append(p["player"])
         managers[p["slot"]] = p["manager"]
-    sources = {"fantasybot": dict(src_note, pull_file=os.path.relpath(pin, KIT), pull_sha256=sha(pin),
-                                  view="FantasyBot connector: get_my_roster + get_league_team per rival team"),
-               "transcription": {"file": os.path.relpath(src, KIT), "sha256": sha(src),
-                                 "method": "league_live.to_rows (mechanical; rival slots BN/IL only)"},
-               "draft_board": os.path.relpath(league_intake.RECAP, KIT), "pool": "deck data/players.csv"}
+    rel = lambda p: os.path.relpath(p, KIT) if p.startswith(KIT) else p
+    if used == "flaim":
+        sources = {"flaim": dict(src_note, pull_file=rel(pin), pull_sha256=sha(pin),
+                                 view="Flaim connector (Yahoo, read-only): get_roster per team (current), get_matchups, get_free_agents"),
+                   "transcription": {"file": rel(src), "sha256": sha(src),
+                                     "method": "flaim_live.to_rows (mechanical; Yahoo slots and status letters for every team)"},
+                   "draft_board": rel(league_intake.RECAP), "pool": "deck data/players.csv"}
+    else:
+        sources = {"fantasybot": dict(src_note, pull_file=rel(pin), pull_sha256=sha(pin),
+                                      view="FantasyBot connector: get_my_roster + get_league_team per rival team"),
+                   "transcription": {"file": rel(src), "sha256": sha(src),
+                                     "method": "league_live.to_rows (mechanical; rival slots BN/IL only)"},
+                   "draft_board": rel(league_intake.RECAP), "pool": "deck data/players.csv"}
     unpooled = (json.load(open(league_intake.UNPOOLED, encoding="utf-8"))["players"]
                 if os.path.exists(league_intake.UNPOOLED) else {})
     old = json.load(open(a.out, encoding="utf-8")) if os.path.exists(a.out) else None
@@ -230,7 +281,7 @@ def main():
         n = sum(len(m["added"]) + len(m["dropped"]) + len(m["to_il"]) + len(m["from_il"]) for m in rec["moves"])
         print(f"LEAGUE MOVES: PASS — {len(rec['moves'])} team(s) changed, {n} move(s), "
               f"{old['as_of']} to {new['as_of']}; wrote {os.path.relpath(outp, KIT)}")
-    print(f"LEAGUE LIVE: PASS — rosters from FantasyBot, pinned {os.path.relpath(pin, KIT)}")
+    print(f"LEAGUE LIVE: PASS — rosters from {'Flaim (Yahoo)' if used == 'flaim' else 'FantasyBot'}, pinned {rel(pin)}")
     return 0
 
 

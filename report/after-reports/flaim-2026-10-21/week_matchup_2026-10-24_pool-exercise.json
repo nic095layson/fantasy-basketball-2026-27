@@ -1,0 +1,522 @@
+{
+ "date": "2026-10-24",
+ "week": 1,
+ "window": [
+  "2026-10-20",
+  "2026-10-25"
+ ],
+ "me": {
+  "name": "KEL'EL YAXEL HALQUETA",
+  "seat": 10
+ },
+ "opponent": {
+  "name": "MAXEY-MUM OVERDRIVE",
+  "seat": 11
+ },
+ "league_state_as_of": "2026-10-21",
+ "to_date_days": [
+  "2026-10-20"
+ ],
+ "missing_days": [
+  "2026-10-21",
+  "2026-10-22",
+  "2026-10-23"
+ ],
+ "to_date_source": {
+  "source": "yahoo",
+  "reason": null,
+  "rebuild_agrees": true,
+  "differences": [],
+  "yahoo_games_remaining": {
+   "me": 32,
+   "opp": 33
+  },
+  "yahoo_names": {
+   "me": "KEL'EL YAXEL HALQUETA",
+   "opp": "MAXEY-MUM OVERDRIVE"
+  }
+ },
+ "remaining_days": [
+  "2026-10-24",
+  "2026-10-25"
+ ],
+ "status_file": "status_2026-10-21.json",
+ "cats": [
+  {
+   "cat": "FG%",
+   "me_to_date": 0.5,
+   "opp_to_date": 0.388,
+   "me_final": 0.492,
+   "opp_final": 0.447,
+   "leader_to_date": "me",
+   "leader": "me",
+   "margin": 0.045
+  },
+  {
+   "cat": "FT%",
+   "me_to_date": 0.5,
+   "opp_to_date": 0.75,
+   "me_final": 0.818,
+   "opp_final": 0.818,
+   "leader_to_date": "opp",
+   "leader": "opp",
+   "margin": -0.0
+  },
+  {
+   "cat": "3PTM",
+   "me_to_date": 3,
+   "opp_to_date": 9,
+   "me_final": 23.3,
+   "opp_final": 36.4,
+   "leader_to_date": "opp",
+   "leader": "opp",
+   "margin": -13.1
+  },
+  {
+   "cat": "PTS",
+   "me_to_date": 20,
+   "opp_to_date": 79,
+   "me_final": 210.2,
+   "opp_final": 351.9,
+   "leader_to_date": "opp",
+   "leader": "opp",
+   "margin": -141.7
+  },
+  {
+   "cat": "REB",
+   "me_to_date": 5,
+   "opp_to_date": 37,
+   "me_final": 65.6,
+   "opp_final": 117.7,
+   "leader_to_date": "opp",
+   "leader": "opp",
+   "margin": -52.1
+  },
+  {
+   "cat": "AST",
+   "me_to_date": 10,
+   "opp_to_date": 15,
+   "me_final": 50.6,
+   "opp_final": 76.9,
+   "leader_to_date": "opp",
+   "leader": "opp",
+   "margin": -26.3
+  },
+  {
+   "cat": "ST",
+   "me_to_date": 2,
+   "opp_to_date": 7,
+   "me_final": 13.9,
+   "opp_final": 22.7,
+   "leader_to_date": "opp",
+   "leader": "opp",
+   "margin": -8.8
+  },
+  {
+   "cat": "BLK",
+   "me_to_date": 2,
+   "opp_to_date": 9,
+   "me_final": 9.6,
+   "opp_final": 18.7,
+   "leader_to_date": "opp",
+   "leader": "opp",
+   "margin": -9.1
+  },
+  {
+   "cat": "TO",
+   "me_to_date": 5,
+   "opp_to_date": 10,
+   "me_final": 23.6,
+   "opp_final": 40.5,
+   "leader_to_date": "me",
+   "leader": "me",
+   "margin": 16.9
+  }
+ ],
+ "projected": {
+  "wins": 2,
+  "losses": 7,
+  "ties": 0
+ },
+ "totals": {
+  "me": {
+   "to_date": {
+    "fgm": 8,
+    "fga": 16,
+    "ftm": 1,
+    "fta": 2,
+    "tpm": 3,
+    "pts": 20,
+    "reb": 5,
+    "ast": 10,
+    "stl": 2,
+    "blk": 2,
+    "tov": 5
+   },
+   "rebuild_to_date": {
+    "fgm": 8,
+    "fga": 16,
+    "ftm": 1,
+    "fta": 2,
+    "tpm": 3,
+    "pts": 20,
+    "reb": 5,
+    "ast": 10,
+    "stl": 2,
+    "blk": 2,
+    "tov": 5
+   },
+   "remaining": {
+    "fgm": 69.66,
+    "fga": 141.8,
+    "ftm": 30.58,
+    "fta": 36.6,
+    "tpm": 20.3,
+    "pts": 190.2,
+    "reb": 60.6,
+    "ast": 40.6,
+    "stl": 11.9,
+    "blk": 7.6,
+    "tov": 18.6
+   }
+  },
+  "opp": {
+   "to_date": {
+    "fgm": 26,
+    "fga": 67,
+    "ftm": 18,
+    "fta": 24,
+    "tpm": 9,
+    "pts": 79,
+    "reb": 37,
+    "ast": 15,
+    "stl": 7,
+    "blk": 9,
+    "tov": 10
+   },
+   "rebuild_to_date": {
+    "fgm": 26,
+    "fga": 67,
+    "ftm": 18,
+    "fta": 24,
+    "tpm": 9,
+    "pts": 79,
+    "reb": 37,
+    "ast": 15,
+    "stl": 7,
+    "blk": 9,
+    "tov": 10
+   },
+   "remaining": {
+    "fgm": 95.23,
+    "fga": 204.2,
+    "ftm": 56.63,
+    "fta": 67.2,
+    "tpm": 27.4,
+    "pts": 272.9,
+    "reb": 80.7,
+    "ast": 61.9,
+    "stl": 15.7,
+    "blk": 9.7,
+    "tov": 30.5
+   }
+  }
+ },
+ "games": {
+  "me": {
+   "to_date_counted": 2,
+   "to_date_benched": [],
+   "remaining_uncapped": 11,
+   "remaining_started": 11,
+   "remaining_by_player": {
+    "Kyrie Irving": 1,
+    "Christian Braun": 1,
+    "Kevin Durant": 1,
+    "PJ Washington": 1,
+    "Yaxel Lendeborg": 1,
+    "Kel'el Ware": 1,
+    "Miles Bridges": 1,
+    "Ty Jerome": 1,
+    "Tyrese Haliburton": 1,
+    "Kawhi Leonard": 1,
+    "Jaden McDaniels": 1
+   }
+  },
+  "opp": {
+   "to_date_counted": 5,
+   "to_date_benched": [],
+   "remaining_uncapped": 15,
+   "remaining_started": 15,
+   "remaining_by_player": {
+    "Kevin Porter Jr.": 1,
+    "Devin Vassell": 1,
+    "Tyrese Maxey": 2,
+    "Gui Santos": 1,
+    "Jalen Smith": 1,
+    "Myles Turner": 1,
+    "Joel Embiid": 2,
+    "Darius Acuff Jr.": 1,
+    "Keyonte George": 1,
+    "Immanuel Quickley": 1,
+    "Jalen Williams": 1,
+    "Franz Wagner": 1,
+    "Karl-Anthony Towns": 1
+   }
+  }
+ },
+ "pickups": {
+  "status": "ran",
+  "drop_candidates": [
+   {
+    "player": "Neemias Queta",
+    "team": "BOS",
+    "value": -1.49,
+    "value_rank": 10,
+    "of": 13
+   }
+  ],
+  "next_finish": [
+   {
+    "player": "PJ Washington",
+    "team": "DAL",
+    "last_game": "2026-10-24",
+    "value": -2.44
+   },
+   {
+    "player": "Christian Braun",
+    "team": "DEN",
+    "last_game": "2026-10-24",
+    "value": -1.69
+   },
+   {
+    "player": "Yaxel Lendeborg",
+    "team": "GSW",
+    "last_game": "2026-10-24",
+    "value": -1.59
+   },
+   {
+    "player": "Miles Bridges",
+    "team": "PHX",
+    "last_game": "2026-10-24",
+    "value": -1.22
+   },
+   {
+    "player": "Jaden McDaniels",
+    "team": "MIN",
+    "last_game": "2026-10-25",
+    "value": 0.22
+   }
+  ],
+  "top": [
+   {
+    "add": "Anfernee Simons",
+    "team": "PHI",
+    "value": -4.52,
+    "games_left": 2,
+    "starts": 2,
+    "net": 1.0,
+    "flips_to_win": [
+     "FT%"
+    ],
+    "flips_to_loss": [],
+    "gap_closed": 2.007,
+    "missed": null,
+    "status": null
+   },
+   {
+    "add": "Julian Champagnie",
+    "team": "SAS",
+    "value": -2.14,
+    "games_left": 1,
+    "starts": 1,
+    "net": 1.0,
+    "flips_to_win": [
+     "FT%"
+    ],
+    "flips_to_loss": [],
+    "gap_closed": 1.552,
+    "missed": null,
+    "status": null
+   },
+   {
+    "add": "Max Christie",
+    "team": "DAL",
+    "value": -3.8,
+    "games_left": 1,
+    "starts": 1,
+    "net": 1.0,
+    "flips_to_win": [
+     "FT%"
+    ],
+    "flips_to_loss": [],
+    "gap_closed": 1.521,
+    "missed": null,
+    "status": null
+   },
+   {
+    "add": "Cam Spencer",
+    "team": "MEM",
+    "value": -3.17,
+    "games_left": 1,
+    "starts": 1,
+    "net": 1.0,
+    "flips_to_win": [
+     "FT%"
+    ],
+    "flips_to_loss": [],
+    "gap_closed": 1.515,
+    "missed": null,
+    "status": null
+   },
+   {
+    "add": "Al Horford",
+    "team": "GSW",
+    "value": -3.52,
+    "games_left": 1,
+    "starts": 1,
+    "net": 1.0,
+    "flips_to_win": [
+     "FT%"
+    ],
+    "flips_to_loss": [],
+    "gap_closed": 1.497,
+    "missed": null,
+    "status": null
+   }
+  ],
+  "pool_size": 86,
+  "drop": {
+   "player": "Neemias Queta",
+   "team": "BOS",
+   "value": -1.49,
+   "value_rank": 10,
+   "of": 13
+  },
+  "pool": {
+   "source": "yahoo",
+   "reason": null,
+   "listed": 100,
+   "ordering": "platform_rostered_rate_desc",
+   "out": [
+    {
+     "name": "Anthony Black",
+     "team": "ORL",
+     "status": "O"
+    },
+    {
+     "name": "Aaron Nesmith",
+     "team": "IND",
+     "status": "O"
+    },
+    {
+     "name": "Shaedon Sharpe",
+     "team": "POR",
+     "status": "O"
+    },
+    {
+     "name": "Dereck Lively II",
+     "team": "DAL",
+     "status": "O"
+    },
+    {
+     "name": "Donte DiVincenzo",
+     "team": "MIN",
+     "status": "O"
+    },
+    {
+     "name": "Dylan Cardwell",
+     "team": "SAC",
+     "status": "O"
+    },
+    {
+     "name": "Moses Moody",
+     "team": "GSW",
+     "status": "O"
+    },
+    {
+     "name": "T.J. McConnell",
+     "team": "IND",
+     "status": "O"
+    },
+    {
+     "name": "Russell Westbrook",
+     "team": "SAC",
+     "status": "NA"
+    },
+    {
+     "name": "Bruce Brown",
+     "team": "NYK",
+     "status": "NA"
+    }
+   ],
+   "unknown_status": [
+    {
+     "name": "Isaiah Stewart",
+     "team": "MEM",
+     "status": "D"
+    }
+   ],
+   "not_projected": [
+    {
+     "name": "Hugo González",
+     "team": "BOS",
+     "status": null
+    },
+    {
+     "name": "Morez Johnson Jr.",
+     "team": "DAL",
+     "status": null
+    },
+    {
+     "name": "Brice Sensabaugh",
+     "team": "UTA",
+     "status": null
+    }
+   ],
+   "skipped": [],
+   "kit_pool_not_listed": 67
+  }
+ },
+ "unpooled_active": [],
+ "method": {
+  "to_date": "Yahoo's week totals (get_matchups through Flaim, the morning pull); the box-score rebuild is the cross-check",
+  "projection": "season-pool per-game line x each remaining game x today's status availability; ten-slot daily fill; IL counts 0",
+  "percentages": "total makes / total attempts, actual plus projected",
+  "drop": "no game left this week and board value below the active roster's median",
+  "pickups": "Yahoo's available-player list (100 listed, Yahoo-wide ownership order), each from today on at his Yahoo letter's availability, ranked by projected category wins gained, then gap closed"
+ },
+ "inputs": {
+  "state": {
+   "path": "/tmp/claude-0/-home-user-fantasy-basketball-2026-27/3cdbbd9b-02dd-585e-8d00-b8a370128fae/scratchpad/flaim/state_minus_unpooled.json",
+   "sha256": "366da971cfadb1f19b40aaec5eb1983c7ede802ac6b34a3cfe066ae9e8275237"
+  },
+  "schedule": {
+   "path": "data/league_schedule.json",
+   "sha256": "3b916455b1d8f9a67a578a3a6cb1ba67093b1aaf5792e1329825150c3d029bce"
+  },
+  "games": {
+   "path": "report/schedule/games-2026-27.csv",
+   "sha256": "7421f6cb9e69f4500df7cf2ff129dbe1718e91a2975f127e1996c96df9806687"
+  },
+  "actuals": {
+   "path": "data/actuals",
+   "sha256": null
+  },
+  "status": {
+   "path": "data/status",
+   "sha256": null
+  },
+  "yahoo_pull": {
+   "path": "data/source/flaim/pull_2026-10-21.json",
+   "sha256": "adbb3deef280c0b2a7c5ef6cd95a6a41aa67b4b4d9d33c4045422e9b2ad7932f"
+  },
+  "status_file": {
+   "path": "data/status/status_2026-10-21.json",
+   "sha256": "bcc300ae0d14ebd6b70e0271d6d081797ec671559e38f78ec913b04ad54d5643"
+  },
+  "pool": {
+   "path": "data/season/pool_season.csv",
+   "sha256": "f7b15c0cba307cfa980bd150db598302467bf452933aa5ccc0711db819459b53"
+  }
+ }
+}
