@@ -15,7 +15,9 @@ judgment constants with a declared band (scripts/redteam/constants_registry.json
 
 The preseason line is never edited: report/projections-2026-27.csv (kit schema) and the deck's players_v69.csv
 (deck schema) are read, and data/season/projections_season.csv and pool_season.csv are written beside a dated
-movers record. With no regular-season games the outputs equal the inputs byte for byte.
+movers record. The deck plane is the frozen snapshot followed by the kit's data/pool_additions.csv (in-season pickups
+the draft pool never carried, deck schema; owner 2026-10-21, option (b)); a name already in the snapshot is refused.
+With no regular-season games the outputs equal the inputs byte for byte (the snapshot, then the additions' rows).
 
     python3 scripts/season_lines.py --date 2026-10-21 [--actuals data/actuals] [--out data/season] [--threshold 0.25]
 Prints 'SEASON LINES: PASS — ...' and exits 0, or FAIL (an unreadable record) and exits 1.
@@ -33,6 +35,7 @@ KIT = os.path.dirname(HERE)
 DECK = os.environ.get("DECK_REPO") or os.path.join(KIT, "..", "yahoo-fantasy-basketball")
 KIT_CSV = os.path.join(KIT, "report", "projections-2026-27.csv")
 DECK_CSV = os.path.join(DECK, "arena", "results", "players_v69.csv")
+ADDITIONS = os.path.join(KIT, "data", "pool_additions.csv")
 ACTUALS = os.path.join(KIT, "data", "actuals")
 OUT = os.path.join(KIT, "data", "season")
 # Year-over-year Spearman rho, mean of the three transitions 2022-23..2025-26 (after-report-2026-10-09-market.md).
@@ -125,10 +128,24 @@ def _write(path, rows, fields):
         w = csv.DictWriter(f, fieldnames=fields, lineterminator="\n"); w.writeheader(); w.writerows(rows)
 
 
-def run(date, actuals, kit_csv=KIT_CSV, deck_csv=DECK_CSV, out_dir=OUT, threshold=0.25):
+def _with_additions(deck_rows, deck_fields, additions_csv):
+    if not additions_csv or not os.path.exists(additions_csv):
+        return deck_rows
+    adds, fields = _read(additions_csv)
+    if fields != deck_fields:
+        raise ValueError(f"{additions_csv}: columns {fields} differ from the deck plane's {deck_fields}")
+    have = {fold(r["player"]) for r in deck_rows}
+    dup = [a["player"] for a in adds if fold(a["player"]) in have]
+    if dup:
+        raise ValueError(f"already in the deck plane, remove from {additions_csv}: {', '.join(dup)}")
+    return deck_rows + adds
+
+
+def run(date, actuals, kit_csv=KIT_CSV, deck_csv=DECK_CSV, out_dir=OUT, threshold=0.25, additions_csv=None):
     tot = totals(actuals)
     by_fold = {fold(k): v for k, v in tot.items()}
     kit_rows, kit_fields = _read(kit_csv); deck_rows, deck_fields = _read(deck_csv)
+    deck_rows = _with_additions(deck_rows, deck_fields, additions_csv)
     movers, n_games = [], 0
     out_kit = []
     for r in kit_rows:
@@ -147,7 +164,8 @@ def run(date, actuals, kit_csv=KIT_CSV, deck_csv=DECK_CSV, out_dir=OUT, threshol
     rec = dict(date=date, records=len(actuals), players_with_games=n_games, prior_games=PRIOR_GAMES, season_games=SEASON_GAMES,
                threshold=threshold, movers=sorted(movers, key=lambda m: -m["games"]),
                unpooled_with_games=sorted(k for k, v in tot.items() if v["unpooled"]),
-               inputs=dict(kit=os.path.relpath(kit_csv, KIT), deck=deck_csv))
+               inputs=dict(kit=os.path.relpath(kit_csv, KIT), deck=deck_csv,
+                           additions=os.path.relpath(additions_csv, KIT) if additions_csv and os.path.exists(additions_csv) else None))
     with open(os.path.join(out_dir, f"season_lines_{date}.json"), "w", encoding="utf-8") as f:
         json.dump(rec, f, indent=1, ensure_ascii=False); f.write("\n")
     return rec
@@ -164,7 +182,10 @@ def main():
         recs = load_actuals(a.actuals)
     except ValueError as e:
         print(f"SEASON LINES: FAIL — unreadable actuals record: {e}"); return 1
-    rec = run(a.date, recs, out_dir=a.out, threshold=a.threshold)
+    try:
+        rec = run(a.date, recs, out_dir=a.out, threshold=a.threshold, additions_csv=ADDITIONS)
+    except ValueError as e:
+        print(f"SEASON LINES: FAIL — pool additions: {e}"); return 1
     print(f"SEASON LINES: PASS — {a.date}: {rec['records']} box-score records, {rec['players_with_games']} pool players with "
           f"regular-season games, {len(rec['movers'])} lines moved by {a.threshold}+ (priors in games: "
           + ", ".join(f"{c} {k}" for c, k in PRIOR_GAMES.items()) + f"); {len(rec['unpooled_with_games'])} unpooled players with games")

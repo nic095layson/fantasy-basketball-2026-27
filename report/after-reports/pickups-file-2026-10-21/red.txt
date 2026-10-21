@@ -1,0 +1,18 @@
+# red run before the pickups file: kit cec4eae + the new tests, deck main 80eecdf, 2026-10-21T20:10:05Z
+ERROR: test_a_name_in_both_files_is_refused (test_league_intake.PoolAdditions.test_a_name_in_both_files_is_refused)
+AttributeError: module 'league_intake' has no attribute 'load_pool'
+ERROR: test_every_addition_equals_its_kit_plane_twin (test_league_intake.PoolAdditions.test_every_addition_equals_its_kit_plane_twin)
+AttributeError: module 'league_intake' has no attribute 'ADDITIONS'
+ERROR: test_load_pool_appends_the_additions_after_the_deck_rows (test_league_intake.PoolAdditions.test_load_pool_appends_the_additions_after_the_deck_rows)
+AttributeError: module 'league_intake' has no attribute 'load_pool'
+ERROR: test_no_additions_file_is_the_deck_pool_alone (test_league_intake.PoolAdditions.test_no_additions_file_is_the_deck_pool_alone)
+AttributeError: module 'league_intake' has no attribute 'load_pool'
+ERROR: test_additions_join_the_deck_plane_after_the_snapshot_rows (test_season_lines.Run.test_additions_join_the_deck_plane_after_the_snapshot_rows)
+TypeError: run() got an unexpected keyword argument 'additions_csv'
+FAIL: test_the_command_line_run_reads_the_kits_additions_file (test_season_lines.Run.test_the_command_line_run_reads_the_kits_additions_file)
+AssertionError: 'Andre Drummond' not found in ['Nikola Jokic', 'Victor Wembanyama', 'Shai Gilgeous-Alexander', 'Luka Doncic', 'Giannis Antetokounmpo', 'Anthony Davis', 'Cade Cunningham', 'Anthony Edwards', 'Kevin Durant', 'Jalen Williams', 'Chet Holmgren', 'Evan Mobley', 'Donovan Mitchell', 'Devin Booker', 'Tyrese Maxey', 'Karl-Anthony Towns', 'Domantas Sabonis', 'Alperen Sengun', 'Jalen Brunson',
+FAIL: test_the_pinned_pull_builds_every_team_with_yahoo_slots_letters_and_drummond (test_league_live.FlaimFirst.test_the_pinned_pull_builds_every_team_with_yahoo_slots_letters_and_drummond)
+AssertionError: 'LEAGUE LIVE: PASS — rosters from Flaim' not found in 'LEAGUE INTAKE: HALT — 1 name(s) not in the pool; nothing written:\n  - Andre Drummond (Podz save the league, BN, NYK, status -)\nLEAGUE LIVE: HALT — intake refused the pull; league_state.json not touched (last paste stands)\n' : LEAGUE INTAKE: HALT — 1 name(s) not in the pool; nothing written:
+LEAGUE LIVE: HALT — intake refused the pull; league_state.json not touched (last paste stands)
+Ran 8 tests in 0.246s
+FAILED (failures=2, errors=5)

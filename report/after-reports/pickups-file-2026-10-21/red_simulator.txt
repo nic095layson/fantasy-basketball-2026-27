@@ -1,0 +1,8 @@
+# red before the simulator fix: kit working tree, deck main 80eecdf, 2026-10-21T20:34:52Z
+ERROR: test_a_rostered_player_the_simulator_pool_lacks_is_left_out_and_named (test_daily_brief.SimulatorPool.test_a_rostered_player_the_simulator_pool_lacks_is_left_out_and_named)
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/usr/local/bin/python3', '/home/user/fantasy-basketball-2026-27/../yahoo-fantasy-basketball/arena/mocks/league_sim.py', '/tmp/tmp30ah9fv9/_state_cur_2026.json', 'v69', '20', '2026', '/tmp/tmp30ah9fv9/_sim_cur_2026.json', '--schedule', '/home/user/fantasy-bas
+ERROR: test_the_brief_names_who_the_simulation_left_out (test_daily_brief.SimulatorPool.test_the_brief_names_who_the_simulation_left_out)
+AttributeError: module 'daily_brief' has no attribute 'sim_absent_line'
+Ran 2 tests in 0.085s
+FAILED (errors=2)
