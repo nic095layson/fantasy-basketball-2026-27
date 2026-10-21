@@ -12,6 +12,15 @@ Pre-registered before the attacker's output was read (2026-10-21, stated to the 
   - season (stochastic, different random streams): title and playoff share per seat, |z| <= 3 with the binomial
     standard error of the difference.
 
+Found on the first run and handled without moving a tolerance: the engine side had been seeded 20261021 and the
+attacker chose the same seed AND, independently, the same draw order through the regular season and seeding, so the
+two samples shared one random stream (all 12 playoff shares identical to the digit) — not the independent samples
+the |z| test assumes, under which it is too lenient. The pre-registered test now runs the engine on an independent
+seed (ENGINE_SEED); the same-seed run is kept as a separate, stronger check ("stream"): with one shared stream, every
+regular season, standings table and seeding must match exactly, so the playoff shares must be equal seat for seat.
+Title shares may still differ there: the two sides list the final's teams in a different order (SPEC.md left it
+open; distributionally equivalent).
+
     python3 report/after-reports/redteam-sim-2026-10-21/compare.py --attacker PATH/attacker_out.json
 Writes rt_sim.json beside this file.
 """
@@ -29,7 +38,7 @@ import co_gm as CG  # noqa: E402
 import run_ledger  # noqa: E402
 
 A, H = CG.arena, CG.hoops
-SEASONS, SEED = 20000, 20261021
+SEASONS, ENGINE_SEED = 20000, 1021
 TOL = 1e-9
 
 
@@ -45,6 +54,7 @@ def engine_player(r):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--attacker", required=True)
+    ap.add_argument("--out", default=os.path.join(HERE, "rt_sim.json"))
     a = ap.parse_args()
     fx = json.load(open(os.path.join(HERE, "fixture.json"), encoding="utf-8"))
     at = json.load(open(a.attacker, encoding="utf-8"))
@@ -105,8 +115,16 @@ def main():
 
     # season (stochastic)
     ids = {int(s): r for s, r in ros.items()}
-    champs, plays = A.simulate_seasons(ids, SEASONS, random.Random(SEED))
     n2 = at["season"]["seasons"]
+    aseed = at["season"].get("seed")
+    stream = None
+    if aseed is not None and n2 == SEASONS:
+        _, splays = A.simulate_seasons(ids, SEASONS, random.Random(aseed))
+        eq = [s for s in ros if splays[int(s)] / SEASONS == at["season"]["playoffs"][s]]
+        stream = {"seed": aseed, "playoff_shares_identical": len(eq), "of": len(ros)}
+    if ENGINE_SEED == aseed:
+        raise SystemExit("engine seed equals the attacker's: the samples would share a stream")
+    champs, plays = A.simulate_seasons(ids, SEASONS, random.Random(ENGINE_SEED))
     rows, worst = [], 0.0
     for s in ros:
         for lab, eng, att in (("title", champs[int(s)] / SEASONS, at["season"]["title"][s]),
@@ -116,16 +134,18 @@ def main():
             z = (eng - att) / se
             worst = max(worst, abs(z))
             rows.append({"seat": s, "share": lab, "engine": round(eng, 5), "attacker": round(att, 5), "z": round(z, 2)})
-    sec["season"] = {"engine_seasons": SEASONS, "engine_seed": SEED, "attacker_seasons": n2,
+    sec["season"] = {"engine_seasons": SEASONS, "engine_seed": ENGINE_SEED, "attacker_seasons": n2,
+                     "same_seed_stream_check": stream,
                      "attacker_seed": at["season"].get("seed"), "rows": rows, "max_abs_z": round(worst, 2),
                      "n_over_3": sum(1 for r in rows if abs(r["z"]) > 3), "pass": worst <= 3}
     out["attacker_choices"] = at.get("choices", [])
     out["verdict"] = "PASS" if all(v["pass"] for v in sec.values()) else "FAIL"
-    with open(os.path.join(HERE, "rt_sim.json"), "w", encoding="utf-8") as f:
+    with open(a.out, "w", encoding="utf-8") as f:
         json.dump(out, f, ensure_ascii=False, indent=1)
     for k, v in sec.items():
         extra = (f" out-* predicted diffs {len(v['diff_out_predicted'])}" if k == "availability" else "") + \
-                (f" max|z| {v['max_abs_z']}" if k == "season" else "") + (f" n_diff {v.get('n_diff', len(v.get('diff', [])))}" if k != "season" else "")
+                (f" max|z| {v['max_abs_z']}" if k == "season" else "") + (f" n_diff {len(v['diff_non_out'])}" if k == "availability" else
+                 f" n_diff {v.get('n_diff', len(v.get('diff', [])))}" if k != "season" else "")
         print(f"  {k}: {'PASS' if v['pass'] else 'FAIL'} (n={v.get('n', '')}){extra}")
     print(f"A-9 SIM ATTACK: {out['verdict']} — engine {out['fingerprint']['engine_commit']}")
     return 0 if out["verdict"] == "PASS" else 1

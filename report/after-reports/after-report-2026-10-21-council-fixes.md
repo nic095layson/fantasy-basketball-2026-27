@@ -24,7 +24,20 @@ season pool of 10/21, `scripts/gates.py`, `scripts/check_claims.py`, `scripts/mo
   season Monte Carlo, compared within |z| ≤ 3. Tolerances were committed before the attacker's
   output was read.
 
-**Headline.** ⟨HEADLINE⟩
+**Headline.** All four of the Council's fixes are built and tested, and #147 is merged. Making the
+first fix exposed three more false passages in #147, all corrected before the merge.
+- **The recovery number is now 0.0 in the simulator.** It changes no current in-season
+  number, because all four recovery players are on IL, which your D-IS-8 rule already zeroes.
+- **`check_claims` is a gate.** A claim fails the build only when its truth changes.
+- **The run-ledger exists.** "Ran and passed" is now a recorded fact rather than a
+  recollection, and on its first run it showed that today's "stale engine" was the same
+  engine under a different deck HEAD.
+- **The simulator survived its first separate-attacker test.** An agent that never saw the
+  code rebuilt it from a written spec. It agrees bit-for-bit on every deterministic number
+  (2,174 of them: hashes, start weights, team models, category probabilities, expected wins), and within noise on title and playoff odds (max |z| 2.06 over 24).
+- **It diverged in exactly the one place I predicted beforehand:** the 9 `out-*` tags,
+  which the simulator prices as healthy, contrary to its own comment. That is flagged, not
+  fixed.
 
 ---
 
@@ -60,7 +73,10 @@ lifts him to 0.75.
 
 **Effect today: none on any in-season number.** All four recovery-tagged rostered players
 (Strus, M. Williams, Butler, Nurkić) are in IL slots, and the simulator already drops them
-(measured with `co_gm.rosters` on league_state 2026-10-20). The change governs the draft and
+(measured with `co_gm.rosters` on league_state 2026-10-20). Checked behaviourally, not
+argued: all 12 in-season team models were built under 0.60 and under 0.0, and **0 of 216**
+numbers differ. No caller passes `include_il=True`, and the free-agent scan filters on the
+board's availability, which is unchanged. The change governs the draft and
 arena simulations, and any future recovery-tagged player stashed on a bench instead of IL.
 
 **Verification.** Red-first: two recovery tags were added to `test_card.py`'s three-engine
@@ -86,7 +102,7 @@ truth *changes*, in either direction, does block it until the registry is update
 `scripts/gates.py` now runs it as its **last gate on every invocation**, unless `--no-claims`
 is passed.
 
-- Live: `CLAIM GATE: 7 claim(s), 7 as expected` ⟨confirm at gate time⟩.
+- Live: see §6. The gate runs last in `gates.py`, after the report gate has written its ledger row (CL-7).
 - Tests: `gate_code` returns 0 when all rows are as expected, 1 when one has changed, and 1 on
   an empty registry.
 
@@ -125,7 +141,7 @@ it, and that row was discarded before the file's first commit.
 **Verification.**
 - Red-first: against `main`'s `gates.py`, `morning.py` and `check_claims.py`, the new tests
   give 6 errors (plus one environment failure from running outside the repo). Green: 16/16.
-- Kit suite **⟨SUITE⟩**. The suite never touches the real ledger: tests pass a temp path, and
+- Kit suite ****219/219****. The suite never touches the real ledger: tests pass a temp path, and
   `report/run-ledger.jsonl` did not exist after a full run.
 
 **Bound.** A scheduled run cloned without a push credential (the documented fallback) leaves
@@ -134,7 +150,77 @@ gap is named in `check_claims`'s docstring.
 
 ## 5. A-9: a separate attacker re-implements the simulator
 
-⟨A9⟩
+**What it is.** The board engine's arithmetic was verified this way on 2026-10-21 (1,800 of
+1,800 cells). The simulator, the part that produces title odds and the weekly matchup
+probabilities, had never been attacked like that. I wrote `SPEC.md` from the simulator's
+docstrings and comments, and `fixture.json` from the real inputs. One subagent was given those
+two files only and forbidden the source. It reports opening only them (EVIDENCE: its hand-back
+lists every file it opened). It wrote `attacker.py` (stdlib only), and `compare.py` runs the live
+engine on the same fixture. All four artifacts sit beside the record in
+`report/after-reports/redteam-sim-2026-10-21/`.
+
+**Inputs (M4, stated before the run).** The 12 real league rosters as the in-season simulator
+sees them: league_state 2026-10-20, IL slots excluded per D-IS-8, 155 players, lines from the
+10/21 season pool, `z_sum` from the verified board engine. Plus all 335 distinct pool notes and
+603 hash vectors.
+
+**Result, engine `bcf9ed9` (EVIDENCE: `rt_sim.json`).**
+
+| layer | compared | result |
+|---|---|---|
+| weekly availability tiers | 335 notes | **326 exact**; the 9 `out-*` notes differ, **as pre-registered** (below) |
+| daily-fill hash | 603 vectors | **603 bit-identical** |
+| daily-fill start weights | 155 players | **155 exact** |
+| team weekly model (mean, variance) | 216 numbers | **216 bit-identical** (max difference 0) |
+| head-to-head category probability | 1,188 | **1,188 identical** (max difference 0) |
+| expected categories won (`pwins`) | 12 | **12 identical** |
+| season title and playoff shares, independent streams | 24 (12 seats × 2) | **max \|z\| 2.06, none above 3** (20,000 seasons each side); a second engine seed (2027): **max \|z\| 2.40, none above 3** |
+| season, shared stream (same seed) | 12 playoff shares | **12 of 12 identical to the digit** |
+
+**The predicted divergence happened exactly where predicted, and nowhere else.** The
+simulator's own comment says its tiers "mirror hoops.availability", and hoops excludes `out-*`
+at 0.0. The code has no `out-*` branch and returns 0.88. The spec followed the documented
+intent, so I predicted a divergence on exactly the `out-*` tags. That is what happened: 9 notes,
+all `out-*` (EVIDENCE: `diff_out_predicted`). It confirms the §2 flag, and it is behavioural
+evidence of independence: an attacker who had read the code would have reproduced the 0.88.
+
+**A surprise, handled without moving a tolerance.** On the first run, both sides happened to
+seed Python's generator with 20261021. The attacker had also independently chosen the same draw
+order through the regular season and seeding. So the two samples shared one random stream:
+**all 12 playoff shares were identical**. That is not the independent sampling the |z| test
+assumes, and under shared streams the test is too lenient. The pre-registered method said
+"different random streams", so the engine side was re-run on an independent seed (1021). That
+gives the |z| row above. Switching made the result look *worse* (max |z| 1.15 → 2.06, and
+2.40 on a second seed), and no tolerance moved, so this was not tuning. The shared-stream
+result is kept as a separate and stronger check:
+with one stream, 20,000 seasons of standings and seedings matched exactly on both sides. Title
+shares still differ under the shared stream because the two sides list the final's teams in a
+different order. `SPEC.md` left that open; the outcome is distributionally equivalent.
+
+**The comparator was itself tested.** A broadly passing checker is suspect too
+(adversarial-verify rule 9). One error was planted per section, for example a model mean off by
+one part in a million, a hash value off by 1e-12, or a title share off by 0.03. All seven
+sections FAILed, the season at |z| 7.25.
+
+**Registered.** This is attack **A-9** on the standing list (`scripts/redteam/attacks.json`),
+CURRENT on `bcf9ed9`.
+
+**What the attacker's notes add** (its six spec gaps, none impossible):
+- 137 of 335 notes begin with a date, so their tag is the date and they score healthy. Three
+  rostered notes carry injury words after the tag (Kessler, Murray, Haliburton), and all three
+  record that the tag was removed. So the healthy reading is intended there.
+- Bare tags like `unsigned` and `waived` do not start with `out-`, and score 0.88 even under
+  the intended rule.
+- §3's "last available day" fallback can never fire, because the hash is always below 1.
+- §6 never says whether the 0.06 shock is a standard deviation or a variance. It is a standard
+  deviation in the engine, and the attacker read it that way.
+
+None of these changes a number. The `unsigned` and `waived` point joins the §2 flag.
+
+**Bound.** I wrote the spec, and I had read the code. So A-9 tests the code against its *own
+documented intent*. It does not test that intent against the world. It is the right test for
+implementation bugs, and it says nothing about whether 0.06, 3.5 games a week, or the CV values
+are right. That is the sweep's job (D-RT-STALE).
 
 ## 6. Every gate, pass or fail
 
@@ -159,7 +245,7 @@ gap is named in `check_claims`'s docstring.
 | D-PM-4 risk/mild | carried | needs the composed per-player comparison (tier × `avail(gp)` vs simulator) |
 | D-CLAIM-1 | **BUILT (b)** | `check_claims --gate` is the last gate in `gates.py` |
 | run-ledger | **BUILT** | `scripts/run_ledger.py`; three producers; `ledger_pass` consumer; 16 tests |
-| A-9 simulator attack | ⟨A9-RECEIPT⟩ | `report/after-reports/redteam-sim-2026-10-21/rt_sim.json` |
+| A-9 simulator attack | **PASS, registered** | `report/after-reports/redteam-sim-2026-10-21/rt_sim.json` |
 | D-RT-STALE | carried | the sweep is not re-run (owner's call); CL-6 now tracks it |
 | D-INT-1 | carried | provenance writer not built (owner's call) |
 
@@ -171,6 +257,9 @@ collide.
 ## Decision sheet
 
 1. **Merge the two PRs** (kit and deck). Merging is your word.
+   - **Veto line on M1:** if you prefer the measured 0.09 to 0.0 for recovery, it is a
+     one-value change in both engines and the registry. Today it changes nothing either way,
+     because all four recovery players are on IL.
 2. **The `out-*` branch** (§2): add `out-*` → 0.0 to the simulator and its JS twin, so it
    matches its own comment and the board. *Recommended: yes, one line each; zero effect on
    today's numbers.*
@@ -188,11 +277,21 @@ collide.
 branch, and any change to risk or mild values. No new scheduled task was created, and the
 morning task's prompt was not edited before the kit PR is merged.
 
-**In scope and unverified.** ⟨BOUNDS⟩
+**In scope and unverified.** - **Deck page not republished.** The JS twin changed in `docs/draft-deck.html`, but the draft
+  deck artifact was not rebuilt or republished: the draft is over, and nobody asked for it.
+  The page's next build will carry it.
+- **The 155 players are today's active rosters.** A-9 compares on this fixture only. A layer
+  these rosters never reach (an `out-*` or recovery player on an active roster, a five-game
+  week drawn on every day) is exercised by the 335-note tier check and the hash vectors, not
+  by a roster.
+- **The morning task was not run end to end with the ledger.** `test_morning` covers
+  `run_steps` writing rows, and the real morning run at 5:53am PT is the first live exercise.
+  It runs on `season/daily`, built from `main`, which does not carry this code until the PR is
+  merged. So tomorrow's run is unaffected either way.
 
 ## Provenance
 
 Session `session_01QjgeRdpDaWgSJmGKRG8fTU`, 2026-10-21. Governors: plan-gate **loaded for this
 task** (full block emitted before the first change); adversarial-verify ⟨AV⟩. Separate
-attacker: one subagent, spec and fixture only, ⟨A9-COST⟩. Kit base `09acd70`, deck base
+attacker: one subagent, spec and fixture only, about 106k tokens, 17 tool calls, 6 minutes. Kit base `09acd70`, deck base
 `d33942f`.
