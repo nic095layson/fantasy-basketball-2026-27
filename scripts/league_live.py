@@ -16,7 +16,9 @@ Mapping, stated 2026-10-20 (plan-gate A2/A3/A4):
 On any failure nothing is written over data/league_state.json and the exit is nonzero; the
 morning run treats the step as non-fatal and the brief says the last paste still stands.
 
-    python3 scripts/league_live.py --as-of 2026-10-20 [--transcript FILE | --pull FILE]
+    python3 scripts/league_live.py --as-of 2026-10-20 [--transcript FILE | --pull FILE] [--since ISO-TIME]
+--since (GAUNTLET 2026-10-21 item 7): only transcript entries stamped at or after this instant count. The persistent
+morning runner keeps every day's pulls in one transcript; without it a skipped pull would pass yesterday's off as today's.
 """
 import argparse
 import datetime
@@ -52,9 +54,39 @@ def _loads(x):
         return None
 
 
-def extract_pull(transcript):
+def instant(s):
+    """An ISO-8601 time (a trailing Z allowed) as an aware datetime, UTC when no zone is given; None if unreadable."""
+    try:
+        d = datetime.datetime.fromisoformat(str(s).replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    return d if d.tzinfo else d.replace(tzinfo=datetime.timezone.utc)
+
+
+def since_instant(since):
+    """--since as an instant, or None when not given; an unreadable value halts rather than reading everything."""
+    if since is None:
+        return None
+    t = instant(since)
+    if t is None:
+        raise PullError(f"--since {since!r} is not an ISO-8601 time")
+    return t
+
+
+def recent(o, since):
+    """True when transcript entry o counts under since: always without since; with it, only an entry stamped at
+    or after since (an entry with no readable stamp cannot be shown to be today's, so it does not count)."""
+    if since is None:
+        return True
+    t = instant(o.get("timestamp")) if isinstance(o, dict) else None
+    return t is not None and t >= since
+
+
+def extract_pull(transcript, since=None):
     """Walk a session transcript jsonl for FantasyBot responses naming this league: the latest
-    get_league_team per team (mode=="team", found) and the latest get_my_roster ("starters")."""
+    get_league_team per team (mode=="team", found) and the latest get_my_roster ("starters").
+    since: only entries stamped at or after this ISO time count (see --since)."""
+    since = since_instant(since)
     teams, mine = {}, None
 
     def walk(x):
@@ -79,7 +111,7 @@ def extract_pull(transcript):
             if LEAGUE not in line:
                 continue
             o = _loads(line)
-            if o is not None:
+            if o is not None and recent(o, since):
                 walk(o)
     return {"teams": teams, "mine": mine}
 
@@ -146,6 +178,7 @@ def main():
     ap.add_argument("--as-of", default=datetime.date.today().isoformat())
     ap.add_argument("--transcript", help="session transcript jsonl (default: the newest in the project dir)")
     ap.add_argument("--pull", help="a saved raw pull file instead of a transcript")
+    ap.add_argument("--since", help="count only transcript entries at or after this ISO time (the run's start)")
     ap.add_argument("--out", default=league_intake.OUT)
     ap.add_argument("--pin-dir", default=PIN_DIR)
     a = ap.parse_args()
@@ -155,9 +188,11 @@ def main():
             src_note = {"file": os.path.relpath(a.pull, KIT), "method": "saved FantasyBot pull file"}
         else:
             tr = a.transcript or newest_transcript()
-            pull = extract_pull(tr)
+            pull = extract_pull(tr, a.since)
             src_note = {"transcript": os.path.basename(tr),
                         "method": "mechanical json extraction of FantasyBot tool results from the session transcript"}
+            if a.since:
+                src_note["since"] = a.since
         check_pull(pull)
         rows = to_rows(pull)
     except (PullError, OSError, KeyError) as e:
