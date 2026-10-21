@@ -1,0 +1,107 @@
+{
+ "checked_at_utc": "2026-10-22T03:12:01Z",
+ "live_engine_commit": "048efb6",
+ "attacks": [
+  {
+   "id": "A-1",
+   "name": "known-answer re-implementation of the category math",
+   "question": "Does a from-scratch z-score, availability, board and weekly FG%/PTS model reproduce the engine to the last digit?",
+   "script": "report/after-reports/postmortem-2026-10-19/rt_math.py",
+   "record": "report/after-reports/postmortem-2026-10-19/rt_math.json",
+   "status": "CURRENT",
+   "why": "",
+   "record_sha256": "a34fa60f0c4b",
+   "engine_commit": "048efb6"
+  },
+  {
+   "id": "A-2",
+   "name": "kit vs deck line join",
+   "question": "Do the two planes carry the same lines for the same players, with no alias or surname false pairing?",
+   "script": "report/after-reports/postmortem-2026-10-19/rt_join.py",
+   "record": "report/after-reports/postmortem-2026-10-19/rt_join.json",
+   "status": "UNFINGERPRINTED",
+   "why": "",
+   "record_sha256": "c180a3bd0839"
+  },
+  {
+   "id": "A-3",
+   "name": "card measure vs simulator realized rates",
+   "question": "Does the card's ECW rank the same as the seasons' title share, and are the category edges it quotes the ones the seasons realize?",
+   "script": "report/after-reports/postmortem-2026-10-19/rt_consistency.py",
+   "record": "report/after-reports/postmortem-2026-10-19/rt_consistency.json",
+   "status": "UNFINGERPRINTED",
+   "why": "",
+   "record_sha256": "f0ed1c8c66d8"
+  },
+  {
+   "id": "A-4",
+   "name": "integer ties the simulator cannot produce",
+   "question": "How often does a real weekly category tie, and does the continuous model see any of it?",
+   "script": "report/after-reports/postmortem-2026-10-19/rt_ties.py",
+   "record": "report/after-reports/postmortem-2026-10-19/rt_ties.json",
+   "status": "UNFINGERPRINTED",
+   "why": "",
+   "record_sha256": "bb38f9d734e9"
+  },
+  {
+   "id": "A-5",
+   "name": "structural sensitivity (format and tiers)",
+   "question": "Does the title share survive the format assumptions one at a time: weeks, bracket, standings rule, tiers, shock, variance, category independence?",
+   "script": "report/after-reports/postmortem-2026-10-19/rt_sensitivity.py",
+   "record": "report/after-reports/postmortem-2026-10-19/rt_sensitivity.json",
+   "status": "CURRENT",
+   "why": "",
+   "record_sha256": "5d1c3b0c39cf",
+   "engine_commit": "048efb6"
+  },
+  {
+   "id": "A-6",
+   "name": "decision robustness",
+   "question": "Do the two headline swap verdicts stay positive under every A-5 variant?",
+   "script": "report/after-reports/postmortem-2026-10-19/rt_decisions.py",
+   "record": "report/after-reports/postmortem-2026-10-19/rt_decisions.json",
+   "status": "UNFINGERPRINTED",
+   "why": "",
+   "record_sha256": "88b84feead74"
+  },
+  {
+   "id": "A-7",
+   "name": "constants registry vs live engine",
+   "question": "Does every judgment constant the engine runs on still equal its registered value, carry a calibration status, and name what vouches for it?",
+   "script": "scripts/redteam/check_constants.py",
+   "record": "report/after-reports/redteam-2026-10-19/constants.json",
+   "status": "CURRENT",
+   "why": "",
+   "record_sha256": "cb42c3b91023",
+   "engine_commit": "048efb6"
+  },
+  {
+   "id": "A-8",
+   "name": "assumption sweep from the registry",
+   "question": "Which hand-set constants move the title share by 2 points or more, and does every report quote those bands?",
+   "script": "scripts/redteam/sweep.py",
+   "record": "report/after-reports/redteam-2026-10-19/sweep.json",
+   "status": "CURRENT",
+   "why": "",
+   "record_sha256": "e5e5bd86dcf8",
+   "engine_commit": "048efb6"
+  },
+  {
+   "id": "A-9",
+   "name": "separate-attacker re-implementation of the season simulator",
+   "question": "Does a from-spec implementation, written by an agent that never saw arena.py, reproduce the simulator's availability tiers, daily-fill hash and start weights, weekly team model, category probabilities and season title/playoff shares?",
+   "script": "report/after-reports/redteam-sim-2026-10-21/compare.py",
+   "record": "report/after-reports/redteam-sim-2026-10-21/rt_sim.json",
+   "status": "CURRENT",
+   "why": "",
+   "record_sha256": "04574562c51e",
+   "engine_commit": "048efb6"
+  }
+ ],
+ "by_status": {
+  "CURRENT": 5,
+  "UNFINGERPRINTED": 4
+ },
+ "problems": [],
+ "verdict": "PASS"
+}

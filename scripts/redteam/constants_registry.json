@@ -114,20 +114,26 @@
     "BLK": 0.75,
     "TO": 0.5
    },
-   "role": "per-game coefficient of variation by counting category",
-   "status": "declared_band",
-   "record": "deck analysis_2026-08-09_findings_table.md F39 'hand-set with no fit'; band: postmortem rt_sensitivity.json 'per-game variance x0.8 / x1.2'",
-   "decision": "deck N1 refit (weekly_matchups_2025-26_README.md registers the fit data)",
-   "band": [
-    {
-     "label": "per-game variance x0.8",
-     "cv": 0.8
-    },
-    {
-     "label": "per-game variance x1.2",
-     "cv": 1.2
-    }
-   ]
+   "role": "per-game coefficient of variation by counting category, draft engine only (the draft page's port of team_week_model, check_parity.py)",
+   "status": "uncalibrated",
+   "record": "deck analysis_2026-08-09_findings_table.md F39 'hand-set with no fit'; band: postmortem rt_sensitivity.json 'per-game variance x0.8 / x1.2'; superseded for the season tools by SEASON_CV (2026-10-21)",
+   "decision": "none needed: draft engine only, frozen with the draft page (owner 2026-10-21, D-ZS-3 'Season tools only')"
+  },
+  {
+   "module": "arena",
+   "name": "SEASON_CV",
+   "value": {
+    "PTS": 0.395,
+    "REB": 0.445,
+    "AST": 0.496,
+    "3PTM": 0.717,
+    "ST": 0.945,
+    "BLK": 1.072,
+    "TO": 0.668
+   },
+   "role": "per-game coefficient of variation for the season tools: waiver swaps, week preview, title-odds sim, the standing sweep",
+   "status": "measured",
+   "record": "kit report/after-reports/zscore-assessment-2026-10-21/gamelogs/gscore_weights_2025-26.json cv_fit (2025-26 game logs, the 10/21 board's top 180 with 20+ games); after-report-2026-10-22-season-cv.md"
   },
   {
    "module": "arena",

@@ -131,13 +131,16 @@ def free_agents(P, state, n=WAIVER_CANDIDATES):
 
 
 def waiver_pairs(ros, fa, owner=OWNER_SEAT):
-    opp = [arena.team_week_model(r) for s, r in ros.items() if s != owner]
+    # the season tools run on arena.SEASON_CV, the per-game variation fitted to the 2025-26 game logs (D-ZS-3, owner
+    # 2026-10-21 "Season tools only"); the draft engine's arena.CV stays frozen with the draft page
+    cv = arena.SEASON_CV
+    opp = [arena.team_week_model(r, cv) for s, r in ros.items() if s != owner]
     mine = ros[owner]
-    base = pwins(arena.team_week_model(mine), opp)
+    base = pwins(arena.team_week_model(mine, cv), opp)
     pairs = []
     for a in fa:
         for d in mine:
-            m = arena.team_week_model([x for x in mine if x is not d] + [a])
+            m = arena.team_week_model([x for x in mine if x is not d] + [a], cv)
             pairs.append({"add": a["player"], "add_team": a["team"], "drop": d["player"],
                           "d_ecw": round(pwins(m, opp) - base, 4)})
     pairs.sort(key=lambda x: -x["d_ecw"])
@@ -172,7 +175,7 @@ def run_league_sim(ros, seed, seasons, workdir, tag="cur"):
     op = os.path.join(workdir, f"_sim_{tag}_{seed}.json")
     json.dump(sim_state(ros), open(sp, "w", encoding="utf-8"), ensure_ascii=False)
     subprocess.run([sys.executable, os.path.join(DECK, "arena", "mocks", "league_sim.py"), sp, LINES_TAG,
-                    str(seasons), str(seed), op, "--schedule", SCHEDULE], check=True, capture_output=True)
+                    str(seasons), str(seed), op, "--schedule", SCHEDULE, "--season-cv"], check=True, capture_output=True)
     rec = json.load(open(op, encoding="utf-8"))
     os.remove(sp)
     os.remove(op)

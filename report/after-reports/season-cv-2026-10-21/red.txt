@@ -1,0 +1,69 @@
+/home/user/kit-scv/scripts/test_season_cv.py:47: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/kit-scv/data/league_state.json' mode='r' encoding='utf-8'>
+  cls.state = json.load(open(CG.STATE, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+test_the_registry_holds_the_fit_and_freezes_the_draft_cv (__main__.SeasonTools.test_the_registry_holds_the_fit_and_freezes_the_draft_cv) ... /home/user/kit-scv/scripts/test_season_cv.py:81: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/kit-scv/scripts/redteam/constants_registry.json' mode='r' encoding='utf-8'>
+  reg = {(e["module"], e["name"]): e for e in json.load(open(REG, encoding="utf-8"))["constants"]}
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ERROR
+test_the_standing_sweep_runs_on_the_season_cv (__main__.SeasonTools.test_the_standing_sweep_runs_on_the_season_cv) ... FAIL
+test_the_title_odds_simulator_runs_on_the_season_cv (__main__.SeasonTools.test_the_title_odds_simulator_runs_on_the_season_cv) ... /home/user/kit-scv/scripts/co_gm.py:173: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpqt9zub0b/_state_cur_2026.json' mode='w' encoding='utf-8'>
+  json.dump(sim_state(ros), open(sp, "w", encoding="utf-8"), ensure_ascii=False)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/kit-scv/scripts/co_gm.py:176: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpqt9zub0b/_sim_cur_2026.json' mode='r' encoding='utf-8'>
+  rec = json.load(open(op, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+FAIL
+test_the_weekly_preview_uses_the_season_cv (__main__.SeasonTools.test_the_weekly_preview_uses_the_season_cv) ... /home/user/kit-scv/scripts/weekly_preview.py:60: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/kit-scv/data/league_state.json' mode='r' encoding='utf-8'>
+  state = json.load(open(CG.STATE, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/kit-scv/scripts/weekly_preview.py:61: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/kit-scv/data/league_schedule.json' mode='r' encoding='utf-8'>
+  sched = json.load(open(CG.SCHEDULE, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+FAIL
+test_waiver_swaps_use_the_season_cv (__main__.SeasonTools.test_waiver_swaps_use_the_season_cv) ... FAIL
+
+======================================================================
+ERROR: test_the_registry_holds_the_fit_and_freezes_the_draft_cv (__main__.SeasonTools.test_the_registry_holds_the_fit_and_freezes_the_draft_cv)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/kit-scv/scripts/test_season_cv.py", line 82, in test_the_registry_holds_the_fit_and_freezes_the_draft_cv
+    scv = reg[("arena", "SEASON_CV")]
+          ~~~^^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: ('arena', 'SEASON_CV')
+
+======================================================================
+FAIL: test_the_standing_sweep_runs_on_the_season_cv (__main__.SeasonTools.test_the_standing_sweep_runs_on_the_season_cv)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/kit-scv/scripts/test_season_cv.py", line 69, in test_the_standing_sweep_runs_on_the_season_cv
+    self.assertIn("_scv", S.REFERENCE)
+AssertionError: '_scv' not found in 'arena/results/m100_league_sim_10k_s{seed}_w17r_av0.json'
+
+======================================================================
+FAIL: test_the_title_odds_simulator_runs_on_the_season_cv (__main__.SeasonTools.test_the_title_odds_simulator_runs_on_the_season_cv)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/kit-scv/scripts/test_season_cv.py", line 66, in test_the_title_odds_simulator_runs_on_the_season_cv
+    self.assertEqual(rec.get("cv"), "season")
+AssertionError: None != 'season'
+
+======================================================================
+FAIL: test_the_weekly_preview_uses_the_season_cv (__main__.SeasonTools.test_the_weekly_preview_uses_the_season_cv)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/kit-scv/scripts/test_season_cv.py", line 61, in test_the_weekly_preview_uses_the_season_cv
+    self.assertTrue(all(c is arena.SEASON_CV for c in s.cvs))
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_waiver_swaps_use_the_season_cv (__main__.SeasonTools.test_waiver_swaps_use_the_season_cv)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/kit-scv/scripts/test_season_cv.py", line 55, in test_waiver_swaps_use_the_season_cv
+    self.assertTrue(all(c is arena.SEASON_CV for c in s.cvs), set(map(id, s.cvs)))
+AssertionError: False is not true : {9604480}
+
+----------------------------------------------------------------------
+Ran 5 tests in 1.661s
+
+FAILED (failures=4, errors=1)
