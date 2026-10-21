@@ -130,6 +130,12 @@ Nothing was merged, and no roster, projection line, tag or engine constant chang
 
 Nothing was changed in the simulator; decision 5 holds the option.
 
+**The 60.6% is a simulator figure, so it carries the standing sweep's structural bands.** These come from `report/after-reports/redteam-2026-10-19/sweep.json`, engine `80eecdf`. The sweep measured them on title share in points, not on the weekly win figure, which no sweep has measured.
+- **TEAM_WEEK_SHOCK is FRAGILE:** +2.7 (no shock) / −3.6 (shock doubled).
+- **weekly_availability is FRAGILE:** −2.7 (no in-sim injury discount) / +0.5 (harsher risk tier 0.65) / −1.5 (healthy plays 0.95) / +1.0 (healthy plays 0.80).
+
+The new card's projections are single estimates from the season lines and the schedule. They don't use the simulator, so these bands don't apply to them; their own limit is decision 3.
+
 ## Watchlist
 
 - **First live card:** the 2026-10-22 05:53 PT run, if this PR has merged. Its to-date column will cover 10/20–10/21.
