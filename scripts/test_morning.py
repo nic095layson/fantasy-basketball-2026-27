@@ -20,7 +20,7 @@ PY = sys.executable
 class Steps(unittest.TestCase):
     def test_steps_in_order_with_dates(self):
         st = M.steps("2026-10-21", fetch=True, seasons=10000)
-        self.assertEqual([s["name"] for s in st], ["league live", "matchup live", "box scores 2026-10-20", "season lines", "season board", "status feed", "transactions", "daily brief", "season deck"])
+        self.assertEqual([s["name"] for s in st], ["league live", "matchup live", "box scores 2026-10-20", "season lines", "season board", "status feed", "transactions", "daily brief", "week matchup", "season deck"])
         self.assertIn("2026-10-20", st[2]["cmd"])
         self.assertIn("2026-10-21", st[7]["cmd"])
         self.assertTrue(all(s["pass_re"] for s in st))
@@ -52,6 +52,17 @@ class Steps(unittest.TestCase):
         brief = next(s for s in st if s["name"] == "daily brief")
         self.assertTrue(brief["env"]["SEASON_POOL"].endswith(os.path.join("data", "season", "pool_season.csv")))
 
+
+    def test_week_matchup_runs_on_the_season_pool_before_the_deck_and_never_stops_the_run(self):
+        # owner 2026-10-21: the Today tab's week card; a failure leaves the deck without the card, never without a deck
+        for fetch in (True, False):
+            names = [s["name"] for s in M.steps("2026-10-22", fetch=fetch, seasons=10000)]
+            self.assertLess(names.index("daily brief"), names.index("week matchup"))
+            self.assertLess(names.index("week matchup"), names.index("season deck"))
+        wm = next(s for s in M.steps("2026-10-22", fetch=True, seasons=10000) if s["name"] == "week matchup")
+        self.assertIs(wm["fatal"], False)
+        self.assertIn("2026-10-22", wm["cmd"]); self.assertEqual(wm["pass_re"], r"^WEEK MATCHUP: PASS")
+        self.assertTrue(wm["env"]["SEASON_POOL"].endswith(os.path.join("data", "season", "pool_season.csv")))
 
 class Run(unittest.TestCase):
     def test_a_failing_step_fails_the_morning_and_later_steps_do_not_run(self):
