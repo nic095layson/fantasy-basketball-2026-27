@@ -1,0 +1,51 @@
+{
+ "actuals_files": 3,
+ "check_date": "2026-11-17",
+ "instruments": {
+  "mild": {
+   "deck": 0.85,
+   "kit_mean": 0.8066,
+   "simulator": 0.8977
+  },
+  "risk": {
+   "deck": 0.78,
+   "kit_mean": 0.9058,
+   "simulator": 0.8523
+  }
+ },
+ "league_state_as_of": "2026-10-20",
+ "median_team_games": 1.0,
+ "min_risk": 10,
+ "min_team_games": 15,
+ "population": 155,
+ "ratio": {
+  "risk": 1.0
+ },
+ "team_games": {
+  "BOS": 1,
+  "DET": 1,
+  "NYK": 1,
+  "OKC": 1,
+  "PHI": 1,
+  "SAS": 1
+ },
+ "tiers": {
+  "healthy": {
+   "mean_share": 1.0,
+   "n": 136,
+   "n_measured": 28
+  },
+  "mild": {
+   "mean_share": null,
+   "n": 2,
+   "n_measured": 0
+  },
+  "risk": {
+   "mean_share": 1.0,
+   "n": 17,
+   "n_measured": 5
+  }
+ },
+ "verdict": "INSUFFICIENT",
+ "why": "median team games 1 < 15; 5 risk-tagged with games < 10"
+}

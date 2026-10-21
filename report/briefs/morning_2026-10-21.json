@@ -1,42 +1,42 @@
 {
- "ran_at_utc": "2026-10-19T23:02:53Z",
+ "ran_at_utc": "2026-10-21T14:57:03Z",
  "steps": [
   {
    "name": "season lines",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/season_lines.py --date 2026-10-21",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/season_lines.py --date 2026-10-21",
    "exit": 0,
-   "pass_line": "SEASON LINES: PASS — 2026-10-21: 1 box-score records, 0 pool players with regular-season games, 0 lines moved by 0.25+ (priors in games: FG% 26.0, FT% 37.5, 3PM 9.5, PTS 11.7, REB 12.4, AST 11.7, STL 21.7, BLK 14.5, TO 14.0); 0 unpooled players with games",
+   "pass_line": "SEASON LINES: PASS — 2026-10-21: 3 box-score records, 56 pool players with regular-season games, 43 lines moved by 0.25+ (priors in games: FG% 26.0, FT% 37.5, 3PM 9.5, PTS 11.7, REB 12.4, AST 11.7, STL 21.7, BLK 14.5, TO 14.0); 12 unpooled players with games",
    "verdict": "PASS",
    "tail": [
-    "SEASON LINES: PASS — 2026-10-21: 1 box-score records, 0 pool players with regular-season games, 0 lines moved by 0.25+ (priors in games: FG% 26.0, FT% 37.5, 3PM 9.5, PTS 11.7, REB 12.4, AST 11.7, STL 21.7, BLK 14.5, TO 14.0); 0 unpooled players with games"
+    "SEASON LINES: PASS — 2026-10-21: 3 box-score records, 56 pool players with regular-season games, 43 lines moved by 0.25+ (priors in games: FG% 26.0, FT% 37.5, 3PM 9.5, PTS 11.7, REB 12.4, AST 11.7, STL 21.7, BLK 14.5, TO 14.0); 12 unpooled players with games"
    ]
   },
   {
    "name": "season board",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/season_board.py --date 2026-10-21",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/season_board.py --date 2026-10-21",
    "exit": 0,
-   "pass_line": "SEASON BOARD: PASS — 2026-10-21: report/season/board_2026-10-21.md (0 movers listed)",
+   "pass_line": "SEASON BOARD: PASS — 2026-10-21: report/season/board_2026-10-21.md (43 movers listed)",
    "verdict": "PASS",
    "tail": [
-    "SEASON BOARD: PASS — 2026-10-21: report/season/board_2026-10-21.md (0 movers listed)"
+    "SEASON BOARD: PASS — 2026-10-21: report/season/board_2026-10-21.md (43 movers listed)"
    ]
   },
   {
    "name": "status feed",
-   "cmd": "bash -c '/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/status_feed.py --date 2026-10-21 && /usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/status_feed.py --check'",
+   "cmd": "bash -c '/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/status_feed.py --date 2026-10-21 && /usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/status_feed.py --check /home/user/fantasy-basketball-2026-27/data/status/status_2026-10-21.json'",
    "exit": 0,
-   "pass_line": "STATUS GATE: PASS — status_2026-10-21.json: 24 flagged row(s), each tiered with a dated receipt",
+   "pass_line": "STATUS GATE: PASS — status_2026-10-21.json: 16 flagged row(s), each tiered with a dated receipt",
    "verdict": "PASS",
    "tail": [
-    "status: 24 flagged row(s) league-wide; yours: Isaiah Stewart O→0.00, Max Strus O→0.00",
+    "status: 16 flagged row(s) league-wide; yours: Max Strus O→0.00, Tobias Harris O→0.00",
     "ESPN injuries: read",
     "wrote data/status/status_2026-10-21.json",
-    "STATUS GATE: PASS — status_2026-10-21.json: 24 flagged row(s), each tiered with a dated receipt"
+    "STATUS GATE: PASS — status_2026-10-21.json: 16 flagged row(s), each tiered with a dated receipt"
    ]
   },
   {
    "name": "daily brief",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/daily_brief.py --date 2026-10-21 --seasons 10000",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/daily_brief.py --date 2026-10-21 --seasons 10000",
    "exit": 0,
    "pass_line": "wrote report/briefs/brief_2026-10-21.md",
    "verdict": "PASS",
@@ -46,14 +46,19 @@
   },
   {
    "name": "season deck",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/season_deck.py --date 2026-10-21",
-   "exit": 0,
-   "pass_line": "SEASON DECK: PASS — 2026-10-21: report/season/deck_2026-10-21.html (6 panes, 313 board rows, 24 status rows; record deck_record_2026-10-21.json pins 7 inputs)",
-   "verdict": "PASS",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/season_deck.py --date 2026-10-21",
+   "exit": 1,
+   "pass_line": "",
+   "verdict": "FAIL",
    "tail": [
-    "SEASON DECK: PASS — 2026-10-21: report/season/deck_2026-10-21.html (6 panes, 313 board rows, 24 status rows; record deck_record_2026-10-21.json pins 7 inputs)"
+    "    html, data, record = build(paths, a.date)",
+    "                         ~~~~~^^^^^^^^^^^^^^^",
+    "  File \"/home/user/fantasy-basketball-2026-27/scripts/season_deck.py\", line 142, in build",
+    "    sha256=hashlib.sha256(open(p, \"rb\").read()).hexdigest()) for k, p in paths.items()},",
+    "                          ~~~~^^^^^^^^^",
+    "FileNotFoundError: [Errno 2] No such file or directory: '/home/user/fantasy-basketball-2026-27/data/news/matchup_live_2026-10-21.json'"
    ]
   }
  ],
- "verdict": "PASS"
+ "verdict": "FAIL"
 }
