@@ -76,7 +76,13 @@ lifts him to 0.75.
 (measured with `co_gm.rosters` on league_state 2026-10-20). Checked behaviourally, not
 argued: all 12 in-season team models were built under 0.60 and under 0.0, and **0 of 216**
 numbers differ. No caller passes `include_il=True`, and the free-agent scan filters on the
-board's availability, which is unchanged. The change governs the draft and
+board's availability, which is unchanged.
+
+It *does* move the retired draft card a little. Replayed over the 33 graded mocks, the 🎯
+changed at 6 of 429 owner turns, all in rounds 9 to 12, and no row's ΔECW moved by more than
+0.021 categories a week (§ Repeat-name market check). My first statement of this section said
+the change "governs the draft and arena simulations" without measuring that; it is now
+measured. The change governs the draft and
 arena simulations, and any future recovery-tagged player stashed on a bench instead of IL.
 
 **Verification.** Red-first: two recovery tags were added to `test_card.py`'s three-engine
@@ -260,7 +266,18 @@ nothing and researched no player, so they were not re-queried (did not check).
 
 Re-run fresh, because this build changed the page (`weeklyAvail`, §2): the 33 graded mocks
 were replayed on the changed page (sha256 a7185d96286f). The output is pasted below.
-⟨RN-DIFF⟩
+**What the page change did to the card.** The same 33 mocks were also replayed on the page
+before this change (`main` `d33942f`, sha256 beb243ef57af, which is the page the 10/19 report
+replayed). That replay reproduces the 10/19 counts exactly, so the replay is deterministic and
+the differences below are this change alone (EVIDENCE: both replays' saved cards):
+- The 🎯 changed at **6 of 429 owner turns**, all late: picks 106–135, rounds 9 to 12.
+- The top-5 order changed at 41 of 429.
+- The largest shift in any row's ΔECW was **0.021 categories a week**.
+- Three flagged counts moved: Podziemski 11 → 9, Vassell 6 → 7, Collins 12 → 11.
+
+The mechanism: cast rosters in those rooms hold recovery-tagged players, and those players now
+contribute 0 instead of 0.60 to the room's weekly model. The graded mock records were not
+re-graded (they are dated records), and the draft deck was not republished.
 
 Rule (owner, 2026-10-08, D-RN-1): the card's 🎯 in 5+ of the graded mocks, replayed on this page (sha256 a7185d96286f), with 25+ places between the value rank and the market rank the card prints (or no Yahoo price), gets an outside-source check at every refresh. Replays: 33 of 33 mocks. Outside ranks: Yahoo Rank `yahoo-proj-2026-10-14.csv`, Hashtag `hashtag-2026-10-14.csv`, Rotoworld `rotoworld-9cat-2026-10-05.csv`, RotoBaller `rotoballer-2026-10-13.csv`. Cells: our per-game line against `yahoo-proj-2026-10-14.csv`, `hashtag-2026-10-14.csv`, `rotoballer-2026-10-13.csv` (outside all three; tolerance .005 on percentages, 5% with a 0.1 floor on counting stats). Spellings resolved through the kit's alias table (`build_market.py`, 6 players).
 
