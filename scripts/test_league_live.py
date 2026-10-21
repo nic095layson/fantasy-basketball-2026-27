@@ -67,6 +67,68 @@ class RowsFromPull(unittest.TestCase):
         self.assertEqual(rows[0]["player"], "Y. Konan Niederhäuser")
 
 
+def transcript_line(ts, payload):
+    """One transcript jsonl line carrying a FantasyBot tool result; ts None leaves the timestamp off."""
+    d = {"type": "user", "message": {"role": "user", "content": [
+        {"type": "tool_result", "content": [{"type": "text", "text": json.dumps(payload)}]}]}}
+    if ts is not None:
+        d["timestamp"] = ts
+    return json.dumps(d) + "\n"
+
+
+class SinceGuard(unittest.TestCase):
+    """GAUNTLET 2026-10-21 item 7: a persistent runner session keeps every day's pulls in one transcript. With
+    --since, only entries at or after the run's start count, so a skipped or partial pull halts instead of
+    passing yesterday's rosters off as today's. Without --since, nothing changes."""
+
+    def setUp(self):
+        fd, self.tr = tempfile.mkstemp(suffix=".jsonl")
+        with os.fdopen(fd, "w", encoding="utf-8") as f:
+            f.write(transcript_line("2026-10-21T12:55:00.250Z", mine([("PG", "Old Guy", "BOS", "PG", None)], [], [])))
+            f.write(transcript_line("2026-10-21T12:55:01Z", team("Rival A", [("Old Rival", "BOS", "PG", True, None, None)])))
+            f.write(transcript_line("2026-10-22T12:55:00.250Z", mine([("PG", "New Guy", "NYK", "PG", None)], [], [])))
+            f.write(transcript_line(None, mine([("PG", "Untimed Guy", "MIA", "PG", None)], [], [])))
+
+    def tearDown(self):
+        os.remove(self.tr)
+
+    def names(self, pull):
+        return [s["player"]["name"] for s in (pull["mine"] or {}).get("starters", [])]
+
+    def test_without_since_the_latest_in_file_order_wins_as_before(self):
+        pull = league_live.extract_pull(self.tr)
+        self.assertEqual(self.names(pull), ["Untimed Guy"])
+        self.assertIn("Rival A", pull["teams"])
+
+    def test_since_keeps_only_entries_at_or_after_the_run_start(self):
+        pull = league_live.extract_pull(self.tr, since="2026-10-22T12:53:00Z")
+        self.assertEqual(self.names(pull), ["New Guy"])
+        self.assertEqual(pull["teams"], {})  # yesterday's rival pull does not count today
+
+    def test_sub_second_timestamps_compare_as_instants_not_strings(self):
+        pull = league_live.extract_pull(self.tr, since="2026-10-22T12:55:00Z")
+        self.assertEqual(self.names(pull), ["New Guy"])
+
+    def test_since_after_every_pull_finds_nothing_and_the_check_halts(self):
+        pull = league_live.extract_pull(self.tr, since="2026-10-23T00:00:00Z")
+        self.assertIsNone(pull["mine"])
+        with self.assertRaises(league_live.PullError):
+            league_live.check_pull(pull)
+
+    def test_an_unreadable_since_halts(self):
+        with self.assertRaises(league_live.PullError):
+            league_live.extract_pull(self.tr, since="yesterday")
+
+    def test_the_cli_halts_on_a_stale_only_transcript_and_writes_nothing(self):
+        out = os.path.join(tempfile.mkdtemp(), "state.json")
+        r = subprocess.run([sys.executable, os.path.join(HERE, "league_live.py"), "--as-of", "2026-10-23",
+                            "--transcript", self.tr, "--since", "2026-10-23T00:00:00Z", "--out", out,
+                            "--pin-dir", tempfile.mkdtemp()], capture_output=True, text=True)
+        self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
+        self.assertIn("LEAGUE LIVE: HALT", r.stdout)
+        self.assertFalse(os.path.exists(out))
+
+
 class PullChecks(unittest.TestCase):
     def test_a_wrong_league_name_halts(self):
         bad = team("T", [])

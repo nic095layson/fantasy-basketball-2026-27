@@ -8,7 +8,8 @@ kept in the pinned raw JSON as data but is never shown on the deck and never eva
 response carries NO per-category live score (plan-gate A6) — if in-game pins later show real
 tallies, wiring them is a separate, flagged step.
 
-    python3 scripts/matchup_live.py --date 2026-10-20 [--transcript FILE | --pull FILE]
+    python3 scripts/matchup_live.py --date 2026-10-20 [--transcript FILE | --pull FILE] [--since ISO-TIME]
+--since: only transcript entries stamped at or after this instant count (league_live.py --since; GAUNTLET 2026-10-21).
 Writes data/news/matchup_live_<date>.json; non-fatal in the morning run.
 """
 import argparse
@@ -22,14 +23,16 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 KIT = os.path.dirname(HERE)
 sys.path.insert(0, HERE)
-from league_live import LEAGUE, TRANSCRIPTS, PullError, _loads, newest_transcript  # noqa: E402
+from league_live import LEAGUE, TRANSCRIPTS, PullError, _loads, newest_transcript, recent, since_instant  # noqa: E402
 
 PIN_DIR = os.path.join(KIT, "data", "source", "fantasybot")
 OUTDIR = os.path.join(KIT, "data", "news")
 
 
-def extract_outlook(transcript):
-    """The LAST get_matchup_outlook response naming this league in the transcript."""
+def extract_outlook(transcript, since=None):
+    """The LAST get_matchup_outlook response naming this league in the transcript (with since: the last one
+    stamped at or after it)."""
+    since = since_instant(since)
     found = None
 
     def walk(x):
@@ -51,7 +54,7 @@ def extract_outlook(transcript):
             if LEAGUE not in line or "myLeftToPlay" not in line:
                 continue
             o = _loads(line)
-            if o is not None:
+            if o is not None and recent(o, since):
                 walk(o)
     return found
 
@@ -74,6 +77,7 @@ def main():
     ap.add_argument("--date", default=datetime.date.today().isoformat())
     ap.add_argument("--transcript")
     ap.add_argument("--pull", help="a saved outlook JSON instead of a transcript")
+    ap.add_argument("--since", help="count only transcript entries at or after this ISO time (the run's start)")
     ap.add_argument("--out-dir", default=OUTDIR)
     ap.add_argument("--pin-dir", default=PIN_DIR)
     a = ap.parse_args()
@@ -81,7 +85,7 @@ def main():
         if a.pull:
             outlook = json.load(open(a.pull, encoding="utf-8"))
         else:
-            outlook = extract_outlook(a.transcript or newest_transcript())
+            outlook = extract_outlook(a.transcript or newest_transcript(), a.since)
         if outlook is None:
             raise PullError("no get_matchup_outlook response in the transcript")
         rec = record(outlook)
