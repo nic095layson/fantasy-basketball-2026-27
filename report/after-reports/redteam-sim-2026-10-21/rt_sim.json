@@ -1,0 +1,310 @@
+{
+ "tolerances": {
+  "exact": [
+   "hash",
+   "weights",
+   "availability (non out-*)"
+  ],
+  "abs_or_rel": 1e-09,
+  "season_z": 3
+ },
+ "fingerprint": {
+  "kit_head": "21e4038",
+  "deck_head": "bcf9ed9",
+  "engine_commit": "bcf9ed9"
+ },
+ "sections": {
+  "availability": {
+   "n": 335,
+   "diff_non_out": [],
+   "diff_out_predicted": [
+    {
+     "note": "out-china (agreed with the Shanghai Sharks 2026-09-30 — HoopsHype, SI Mavericks)",
+     "engine": 0.88,
+     "attacker": 0.0
+    },
+    {
+     "note": "out-europe (waived by DEN July 2026; signed Zalgiris — Yahoo still lists DEN); 1",
+     "engine": 0.88,
+     "attacker": 0.0
+    },
+    {
+     "note": "out-retired (announced 2026-08-12 after 18 seasons); 10/12: WO-5 line — 2025-26 ",
+     "engine": 0.88,
+     "attacker": 0.0
+    },
+    {
+     "note": "out-retired (announced 2026-09-21 after LAC declined his option); 10/12: WO-5 li",
+     "engine": 0.88,
+     "attacker": 0.0
+    },
+    {
+     "note": "out-retired; 10/12: WO-5 line — 2023-24 base at 28.7 min (Basketball-Reference)",
+     "engine": 0.88,
+     "attacker": 0.0
+    },
+    {
+     "note": "out-unsigned (D-CAST-1, owner 2026-10-07: unsigned free agent after camp opened,",
+     "engine": 0.88,
+     "attacker": 0.0
+    },
+    {
+     "note": "out-unsigned (D-CAST-1, owner 2026-10-07: unsigned free agent after camp opened,",
+     "engine": 0.88,
+     "attacker": 0.0
+    },
+    {
+     "note": "out-unsigned (D-CAST-1, owner 2026-10-07: unsigned free agent after camp opened,",
+     "engine": 0.88,
+     "attacker": 0.0
+    },
+    {
+     "note": "out-unsigned (D-CAST-1, owner 2026-10-07: unsigned free agent after camp opened,",
+     "engine": 0.88,
+     "attacker": 0.0
+    }
+   ],
+   "pass": true
+  },
+  "hash": {
+   "n": 603,
+   "diff": [],
+   "n_diff": 0,
+   "pass": true
+  },
+  "weights": {
+   "n": 155,
+   "diff": [],
+   "n_diff": 0,
+   "pass": true
+  },
+  "models": {
+   "n": 216,
+   "diff": [],
+   "n_diff": 0,
+   "pass": true
+  },
+  "pcat": {
+   "n": 1188,
+   "diff": [],
+   "n_diff": 0,
+   "pass": true
+  },
+  "pwins": {
+   "n": 12,
+   "diff": [],
+   "pass": true
+  },
+  "season": {
+   "engine_seasons": 20000,
+   "engine_seed": 1021,
+   "attacker_seasons": 20000,
+   "same_seed_stream_check": {
+    "seed": 20261021,
+    "playoff_shares_identical": 12,
+    "of": 12
+   },
+   "attacker_seed": 20261021,
+   "rows": [
+    {
+     "seat": "1",
+     "share": "title",
+     "engine": 0.12505,
+     "attacker": 0.1183,
+     "z": 2.06
+    },
+    {
+     "seat": "1",
+     "share": "playoffs",
+     "engine": 0.92335,
+     "attacker": 0.9223,
+     "z": 0.39
+    },
+    {
+     "seat": "2",
+     "share": "title",
+     "engine": 0.1275,
+     "attacker": 0.1255,
+     "z": 0.6
+    },
+    {
+     "seat": "2",
+     "share": "playoffs",
+     "engine": 0.92495,
+     "attacker": 0.9241,
+     "z": 0.32
+    },
+    {
+     "seat": "3",
+     "share": "title",
+     "engine": 0.1268,
+     "attacker": 0.12735,
+     "z": -0.17
+    },
+    {
+     "seat": "3",
+     "share": "playoffs",
+     "engine": 0.92905,
+     "attacker": 0.92975,
+     "z": -0.27
+    },
+    {
+     "seat": "4",
+     "share": "title",
+     "engine": 0.0531,
+     "attacker": 0.05385,
+     "z": -0.33
+    },
+    {
+     "seat": "4",
+     "share": "playoffs",
+     "engine": 0.7516,
+     "attacker": 0.7543,
+     "z": -0.63
+    },
+    {
+     "seat": "5",
+     "share": "title",
+     "engine": 0.05215,
+     "attacker": 0.05605,
+     "z": -1.72
+    },
+    {
+     "seat": "5",
+     "share": "playoffs",
+     "engine": 0.7648,
+     "attacker": 0.7672,
+     "z": -0.57
+    },
+    {
+     "seat": "6",
+     "share": "title",
+     "engine": 0.1793,
+     "attacker": 0.18065,
+     "z": -0.35
+    },
+    {
+     "seat": "6",
+     "share": "playoffs",
+     "engine": 0.96765,
+     "attacker": 0.97045,
+     "z": -1.62
+    },
+    {
+     "seat": "7",
+     "share": "title",
+     "engine": 0.00055,
+     "attacker": 0.00035,
+     "z": 0.94
+    },
+    {
+     "seat": "7",
+     "share": "playoffs",
+     "engine": 0.05135,
+     "attacker": 0.0547,
+     "z": -1.49
+    },
+    {
+     "seat": "8",
+     "share": "title",
+     "engine": 0.03195,
+     "attacker": 0.0326,
+     "z": -0.37
+    },
+    {
+     "seat": "8",
+     "share": "playoffs",
+     "engine": 0.62655,
+     "attacker": 0.62375,
+     "z": 0.58
+    },
+    {
+     "seat": "9",
+     "share": "title",
+     "engine": 0.00185,
+     "attacker": 0.00195,
+     "z": -0.23
+    },
+    {
+     "seat": "9",
+     "share": "playoffs",
+     "engine": 0.113,
+     "attacker": 0.10805,
+     "z": 1.58
+    },
+    {
+     "seat": "10",
+     "share": "title",
+     "engine": 0.2438,
+     "attacker": 0.2456,
+     "z": -0.42
+    },
+    {
+     "seat": "10",
+     "share": "playoffs",
+     "engine": 0.99485,
+     "attacker": 0.99445,
+     "z": 0.55
+    },
+    {
+     "seat": "11",
+     "share": "title",
+     "engine": 0.05435,
+     "attacker": 0.0539,
+     "z": 0.2
+    },
+    {
+     "seat": "11",
+     "share": "playoffs",
+     "engine": 0.76765,
+     "attacker": 0.77285,
+     "z": -1.24
+    },
+    {
+     "seat": "12",
+     "share": "title",
+     "engine": 0.0036,
+     "attacker": 0.0039,
+     "z": -0.49
+    },
+    {
+     "seat": "12",
+     "share": "playoffs",
+     "engine": 0.1852,
+     "attacker": 0.1781,
+     "z": 1.84
+    }
+   ],
+   "max_abs_z": 2.06,
+   "n_over_3": 0,
+   "pass": true
+  }
+ },
+ "attacker_choices": [
+  "S1 tag: note.lower(), then cut at the first character c with c.isspace() or c == '(' (Python str.isspace = Unicode whitespace); no strip of leading whitespace; in this fixture every cut lands on an ASCII space or '('.",
+  "S1 tag: punctuation left in the tag is kept, so 'inj-risk;' fails rule 4 (does not end with '-risk', does not equal 'inj-risk') and lands on rule 6 (contains 'risk') = 0.75; 'out-retired;' still starts with 'out-' = 0.0; 'acl-recovery-jan26' fails rule 3 and lands on rule 5 = 0.0.",
+  "S1 tag: notes that begin with a date ('10/8: ...', '9/30: ...') have the date as their tag, which matches no rule, so a = 0.88 regardless of any injury wording later in the note (taken literally: everything after the cut is prose).",
+  "S1 tags such as 'unsigned', 'waived', 'traded' do not start with 'out-' and get 0.88 (rule 1 tests the prefix only, not the prose meaning).",
+  "S2 hash: k and salt reduced mod 2^32 before imul (all fixture values are small non-negative ints); the string is hashed exactly as it appears in the JSON (no Unicode normalization), as UTF-16LE code units (surrogate pairs would be two units).",
+  "S3 games: sequential if/elif on u: u<0.08 -> 2, elif u<0.63 -> 3, elif u<0.98 -> 4, else 5.",
+  "S3 day pick: the 'sum of W over the days still available' and the cumulative walk are both float sums in ascending day order; strict r < cumulative; fallback to the last available day only if no day qualifies.",
+  "S3 every player listed in the roster takes part in the daily fill (a = 0 players draw games but never play, so they get w = 1.0 and contribute 0 to S4 because g = 0).",
+  "S3 'played' counts every played game whether or not the player started; slots are reset every day of every trial; the z_sum-desc/name-asc order uses Python string comparison (code point order) for name ties.",
+  "S3 specific slots are scanned in the listed order PG, SG, G, SF, PF, F, C, C (eligibility PG={PG}, SG={SG}, G={PG,SG}, SF={SF}, PF={PF}, F={SF,PF}, C={C}); then Util, Util.",
+  "S4 every roster player is summed (no lineup cap beyond w); arithmetic evaluated left to right as written, squares computed as t*t (not pow), 1.15^2 as 1.15*1.15, gvar as (3.5*a)*(1-a).",
+  "S4 FG%/FT%: the 'FGA = 1 if it is 0' substitution is applied to the team (weighted, games-scaled) attempt total, in both p and var.",
+  "S5 pcat['A|B'][TO] = 1 - Phi(d) with d = (mu_A - mu_B)/sqrt(var_A+var_B), i.e. the probability A has fewer turnovers; Phi via math.erf; sqrt == 0 replaced by 1e-9.",
+  "S5 pwins: summed over opponents in seat order, categories in S0 order, using the TO-flipped value, divided by 11.",
+  "S6 RNG: Python random.Random(seed) (Mersenne Twister); normals via random.gauss; Normal(1, 0.06) read as mean 1, standard deviation 0.06; Normal(mean, sigma) with sigma the standard deviation.",
+  "S6 TO is a counting category, so its mean IS multiplied by the games shock; FG% and FT% are not. sigma is never scaled by the shock.",
+  "S6 sigma_c = sqrt(var_c) if that is > 0, else 1e-6.",
+  "S6 per matchup draw order: s_a, s_b, then for each category in S0 order X_a then X_b (affects only the random stream, not the distribution).",
+  "S6 an exact tie X_a == X_b (probability zero) counts as a win for neither in wins_a, so b is credited via 9 - wins_a.",
+  "S6 weekly pairing: random.shuffle of the seat list ['1'..'12'] then pairs (0,1),(2,3),...,(10,11); standings are total category wins over the 17 regular weeks only.",
+  "S6 seeding tie-break: each team gets an independent U(0,1) key each season; sort by (-record, key), equivalent to a uniformly random order among tied teams.",
+  "S6 playoffs use the same matchup model as the regular season (fresh shocks and draws); the first-listed team (higher seed) advances on wins_a >= 5, otherwise the other team advances.",
+  "S6 reseed: the four QF winners sorted by original seed s1<s2<s3<s4; semis s1 v s4 and s2 v s3 (higher seed first); final with the higher original seed listed first.",
+  "S6 shares are fractions of N seasons (title count / N, playoff appearances / N), not percentages."
+ ],
+ "verdict": "PASS"
+}

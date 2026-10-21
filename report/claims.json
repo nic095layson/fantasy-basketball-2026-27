@@ -1,64 +1,87 @@
 {
-  "_doc": "Claims the system makes ABOUT ITSELF, each with a mechanical check. Seeded 2026-10-21 (GAUNTLET, Council 4-1) after three such claims were found false in one night. 'expected' records the verdict known at seeding, so a CHANGE is visible, not just a failure. Run: python3 scripts/check_claims.py",
-  "seeded": "2026-10-21",
-  "claims": [
-    {
-      "id": "CL-1",
-      "claim": "roster-provenance.csv is kept current by the weekly in-season pull",
-      "asserted_in": "report/plans/co-gm-self-audit-2026-10-15.md (A2, corrected 2026-10-21)",
-      "check": {
-        "kind": "writer_exists",
-        "path": "report/roster-provenance.csv"
-      },
-      "expected": "FALSIFIED",
-      "note": "No writer exists in either repo. Fixing this is D-INT-1, still an owner decision."
-    },
-    {
-      "id": "CL-2",
-      "claim": "the provenance freshness gate runs during the morning run",
-      "asserted_in": "report/after-reports/after-report-2026-10-14-integrity.md",
-      "check": {
-        "kind": "invoked_by",
-        "script": "check_provenance.py",
-        "caller": "scripts/morning.py"
-      },
-      "expected": "FALSIFIED",
-      "note": "season_board.py imports rank_engine's functions, never its main(), so the gate is dormant in-season."
-    },
-    {
-      "id": "CL-3",
-      "claim": "the deck's live ESPN roster verification is the in-season control for team labels",
-      "asserted_in": "D-INT-1 options (b) and (c); after-report-2026-10-14-integrity.md",
-      "check": {
-        "kind": "invoked_by",
-        "script": "build_deck.py",
-        "caller": "scripts/morning.py"
-      },
-      "expected": "FALSIFIED",
-      "note": "The kit imports only verify_rosters.norm (the name fold), not the verification. This is why D-INT-1 option (c) was withdrawn on 2026-10-21."
-    },
-    {
-      "id": "CL-4",
-      "claim": "the Season Deck is rebuilt by the morning run",
-      "asserted_in": "scripts/morning.py step list; the morning scheduled task",
-      "check": {
-        "kind": "invoked_by",
-        "script": "season_deck.py",
-        "caller": "scripts/morning.py"
-      },
-      "expected": "SUPPORTED",
-      "note": "Known-answer control: the detector must be able to return SUPPORTED (adversarial-verify rule 9)."
-    },
-    {
-      "id": "CL-5",
-      "claim": "gates.json is written by scripts/gates.py",
-      "asserted_in": "report/plans/co-gm-self-audit-2026-10-15.md (D3)",
-      "check": {
-        "kind": "writer_exists",
-        "path": "gates.json"
-      },
-      "expected": "SUPPORTED",
-      "note": "Known-answer control for writer_exists. gates.py writes it via open(a.out, 'w') where --out's default carries the path; the detector failed this case on first run (2026-10-21) and was generalized to follow argparse defaults. Regression guard."
-    }
-  ]
+ "_doc": "Claims the system makes ABOUT ITSELF, each with a mechanical check. Seeded 2026-10-21 (GAUNTLET, Council 4-1) after three such claims were found false in one night. 'expected' records the verdict known at seeding, so a CHANGE is visible, not just a failure. Run: python3 scripts/check_claims.py Kind 'ledger_pass' (added 2026-10-21 with the run-ledger, scripts/run_ledger.py) asks whether a gate actually RAN and passed, from rows only a running gate writes. Wired into scripts/gates.py as its last gate (D-CLAIM-1 option b): the gate passes when every verdict equals 'expected'.",
+ "seeded": "2026-10-21",
+ "claims": [
+  {
+   "id": "CL-1",
+   "claim": "roster-provenance.csv is kept current by the weekly in-season pull",
+   "asserted_in": "report/plans/co-gm-self-audit-2026-10-15.md (A2, corrected 2026-10-21)",
+   "check": {
+    "kind": "writer_exists",
+    "path": "report/roster-provenance.csv"
+   },
+   "expected": "FALSIFIED",
+   "note": "No writer exists in either repo. Fixing this is D-INT-1, still an owner decision."
+  },
+  {
+   "id": "CL-2",
+   "claim": "the provenance freshness gate runs during the morning run",
+   "asserted_in": "report/after-reports/after-report-2026-10-14-integrity.md",
+   "check": {
+    "kind": "invoked_by",
+    "script": "check_provenance.py",
+    "caller": "scripts/morning.py"
+   },
+   "expected": "FALSIFIED",
+   "note": "season_board.py imports rank_engine's functions, never its main(), so the gate is dormant in-season."
+  },
+  {
+   "id": "CL-3",
+   "claim": "the deck's live ESPN roster verification is the in-season control for team labels",
+   "asserted_in": "D-INT-1 options (b) and (c); after-report-2026-10-14-integrity.md",
+   "check": {
+    "kind": "invoked_by",
+    "script": "build_deck.py",
+    "caller": "scripts/morning.py"
+   },
+   "expected": "FALSIFIED",
+   "note": "The kit imports only verify_rosters.norm (the name fold), not the verification. This is why D-INT-1 option (c) was withdrawn on 2026-10-21."
+  },
+  {
+   "id": "CL-4",
+   "claim": "the Season Deck is rebuilt by the morning run",
+   "asserted_in": "scripts/morning.py step list; the morning scheduled task",
+   "check": {
+    "kind": "invoked_by",
+    "script": "season_deck.py",
+    "caller": "scripts/morning.py"
+   },
+   "expected": "SUPPORTED",
+   "note": "Known-answer control: the detector must be able to return SUPPORTED (adversarial-verify rule 9)."
+  },
+  {
+   "id": "CL-5",
+   "claim": "gates.json is written by scripts/gates.py",
+   "asserted_in": "report/plans/co-gm-self-audit-2026-10-15.md (D3)",
+   "check": {
+    "kind": "writer_exists",
+    "path": "gates.json"
+   },
+   "expected": "SUPPORTED",
+   "note": "Known-answer control for writer_exists. gates.py writes it via open(a.out, 'w') where --out's default carries the path; the detector failed this case on first run (2026-10-21) and was generalized to follow argparse defaults. Regression guard."
+  },
+  {
+   "id": "CL-6",
+   "claim": "the red team's attack records describe the live engine",
+   "asserted_in": "any report that quotes a structural band (red-team skill rule 4: fingerprint or STALE)",
+   "check": {
+    "kind": "ledger_pass",
+    "name": "run_attacks",
+    "live_engine": true
+   },
+   "expected": "FALSIFIED",
+   "note": "The red-team fingerprint check as a query on the ledger (Council 2026-10-21). FALSIFIED at seeding: the four attack records were made on 259c630 and the engine changed on 2026-10-21 (D-PM-4 recovery). Flips to SUPPORTED only when run_attacks --check passes on the live engine, i.e. after the sweep is re-run (D-RT-STALE) — the gate then fails until this row's 'expected' is updated, which is the point."
+  },
+  {
+   "id": "CL-7",
+   "claim": "the kit report gate has run and passed through scripts/gates.py",
+   "asserted_in": "every PR body that quotes gates.json",
+   "check": {
+    "kind": "ledger_pass",
+    "name": "kit check_report"
+   },
+   "expected": "SUPPORTED",
+   "note": "Known-answer control for ledger_pass (adversarial-verify rule 9): the detector must be able to return SUPPORTED. gates.py writes this row before check_claims runs in the same invocation."
+  }
+ ]
 }

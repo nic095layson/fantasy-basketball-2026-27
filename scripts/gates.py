@@ -8,7 +8,9 @@ refuses a gates.json that is failing, missing, or older than the files it vouche
 
 Default gates for an after-report (the three report gates the kit's after-report contract
 names): kit report/check_report.py, deck judgment_open_items.py --check-report, deck
-repeat_market_check.py --check-report. Item-specific checks are added with --gate.
+repeat_market_check.py --check-report. Item-specific checks are added with --gate. The claim
+registry (scripts/check_claims.py --gate, D-CLAIM-1) runs last on every invocation unless
+--no-claims. Every gate's verdict is also appended to the run-ledger (scripts/run_ledger.py).
 
     python3 scripts/gates.py --report report/after-reports/X.md \\
         [--gate 'NAME::kit|deck::PASS_REGEX::COMMAND' ...] [--input PATH ...] [--redteam SWEEP_JSON] \\
@@ -27,6 +29,9 @@ import re
 import shlex
 import subprocess
 import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import run_ledger  # noqa: E402
 
 KIT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DECK_DEFAULT = os.environ.get("DECK_REPO") or os.path.join(KIT, "..", "yahoo-fantasy-basketball")
@@ -57,8 +62,15 @@ def run_gate(spec):
             "tail": [ln for ln in lines if ln.strip()][-3:]}
 
 
-def run_all(specs, inputs, root):
-    gates = [run_gate(s) for s in specs]
+def run_all(specs, inputs, root, ledger=None):
+    """Run every gate in order. With `ledger` (the run-ledger path; main passes run_ledger.LEDGER), each gate's
+    verdict is appended as it finishes, so a later gate in the same run (check_claims) can read it."""
+    gates = []
+    for s in specs:
+        g = run_gate(s)
+        gates.append(g)
+        if ledger:
+            run_ledger.safe_record(g["name"], g["verdict"], g["pass_line"] or g["why"], ledger=ledger)
     rec = {
         "ran_at_utc": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "inputs": {os.path.relpath(p, root): sha256(p) for p in inputs},
@@ -143,6 +155,14 @@ def redteam_gates(report, sweep, deck):
     ]
 
 
+def claims_gate():
+    """D-CLAIM-1 (b), owner "build council's fixes" 2026-10-21: the claim registry as a gate — it passes only when
+    every claim's verdict equals its recorded `expected`, so a known-false claim does not block, a CHANGE does. Runs
+    last, so its ledger_pass claims can read the rows this run's earlier gates just wrote."""
+    return {"name": "kit check_claims --gate", "cwd": KIT, "pass_re": r"^CLAIM GATE: PASS",
+            "cmd": [sys.executable, os.path.join(KIT, "scripts", "check_claims.py"), "--gate"]}
+
+
 def parse_gate(text, deck):
     parts = text.split("::", 3)
     if len(parts) != 4 or parts[1] not in ("kit", "deck"):
@@ -161,6 +181,10 @@ def main():
     ap.add_argument("--deck", default=DECK_DEFAULT)
     ap.add_argument("--redteam", metavar="SWEEP_JSON",
                     help="add the three red-team gates (constants, bands vs this sweep record, attacks)")
+    ap.add_argument("--no-claims", action="store_true",
+                    help="omit the claim-registry gate (it is on by default, D-CLAIM-1)")
+    ap.add_argument("--ledger", default=run_ledger.LEDGER,
+                    help="run-ledger to append each gate's verdict to ('' to skip)")
     ap.add_argument("--quote", action="store_true")
     ap.add_argument("--verify", action="store_true")
     a = ap.parse_args()
@@ -197,7 +221,9 @@ def main():
     if not specs:
         print("no gates: pass --report and/or --gate")
         sys.exit(2)
-    rec = run_all(specs, inputs, root)
+    if not a.no_claims:
+        specs = specs + [claims_gate()]
+    rec = run_all(specs, inputs, root, ledger=a.ledger or None)
     with open(a.out, "w", encoding="utf-8") as f:
         json.dump(rec, f, indent=1)
         f.write("\n")

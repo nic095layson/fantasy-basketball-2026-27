@@ -13,7 +13,8 @@ failed step stops the run and later steps are SKIPPED):
   4c matchup live (non-fatal)     scripts/matchup_live.py --date <today>       (FantasyBot matchup pin; owner 2026-10-20 item 2)
   5 daily brief on the season pool  SEASON_POOL=data/season/pool_season.csv scripts/daily_brief.py --date <today>
 
-Writes report/briefs/morning_<date>.json (every step's command, exit, PASS line, tail) and prints
+Writes report/briefs/morning_<date>.json (every step's command, exit, PASS line, tail), appends each step's verdict to
+the run-ledger report/run-ledger.jsonl as 'morning: <step>' (scripts/run_ledger.py, 2026-10-21), and prints
 'MORNING: PASS — ...' / 'MORNING: FAIL' with the first failing step. Nothing here changes a projection line, a
 tag or a roster: the season files are derived, the brief proposes.
 
@@ -29,6 +30,9 @@ import subprocess
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+import run_ledger  # noqa: E402
+
 KIT = os.path.dirname(HERE)
 PY = sys.executable
 BRIEFS = os.path.join(KIT, "report", "briefs")
@@ -61,7 +65,9 @@ def steps(date, fetch=True, seasons=10000):
     return st
 
 
-def run_steps(st, out):
+def run_steps(st, out, ledger=None):
+    """Run the steps in order; with `ledger` (main passes run_ledger.LEDGER) each step's verdict is appended to the
+    run-ledger as 'morning: <step>' — non-fatally: a ledger that cannot be written never fails the morning run."""
     rec = dict(ran_at_utc=datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), steps=[], verdict="PASS")
     failed = False
     for s in st:
@@ -79,6 +85,8 @@ def run_steps(st, out):
                 failed = True; rec["verdict"] = "FAIL"
             else:
                 rec["steps"][-1]["verdict"] = "FAIL (non-fatal)"
+        if ledger:
+            run_ledger.safe_record("morning: " + s["name"], verdict, rec["steps"][-1]["pass_line"], ledger=ledger)
     os.makedirs(os.path.dirname(out), exist_ok=True)
     with open(out, "w", encoding="utf-8") as f:
         json.dump(rec, f, indent=1, ensure_ascii=False); f.write("\n")
@@ -90,7 +98,8 @@ def main():
     ap.add_argument("--date", default=datetime.date.today().isoformat())
     ap.add_argument("--no-fetch", action="store_true"); ap.add_argument("--seasons", type=int, default=10000)
     a = ap.parse_args()
-    rec = run_steps(steps(a.date, not a.no_fetch, a.seasons), os.path.join(BRIEFS, f"morning_{a.date}.json"))
+    rec = run_steps(steps(a.date, not a.no_fetch, a.seasons), os.path.join(BRIEFS, f"morning_{a.date}.json"),
+                    ledger=run_ledger.LEDGER)
     for s in rec["steps"]:
         print(f"- {s['verdict']} · {s['name']}" + (f" · {s['pass_line']}" if s.get("pass_line") else "") +
               ("" if s["verdict"] != "FAIL" else " · " + " | ".join(s["tail"][-2:])))

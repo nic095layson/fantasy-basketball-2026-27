@@ -14,10 +14,13 @@ asserted, and a MECHANICAL check. This script runs them and prints a verdict
 per row. Exit 1 if any row is FALSIFIED.
 
     python3 scripts/check_claims.py [--json]
+    python3 scripts/check_claims.py --gate    # exit 0 iff every verdict == its 'expected'
 
-NOT wired into scripts/gates.py --- deliberately (Council 2026-10-21, Executor:
-no new gate surface inside 12 hours of a scheduled run). Wiring it is an owner
-decision, D-CLAIM-1.
+Wired into scripts/gates.py as its last gate (D-CLAIM-1 option (b), owner "build
+council's fixes" 2026-10-21): --gate passes when every row's verdict equals its
+recorded `expected`, so a claim KNOWN to be false does not block a build --- a
+claim whose truth CHANGED does, in either direction, until the registry is
+updated to say so.
 
 Bounds of the two checks, stated because a checker nobody distrusts is the
 dangerous kind:
@@ -31,6 +34,13 @@ dangerous kind:
   invoked_by     plain substring of the script's basename in the caller's
                  source. A caller that builds the name dynamically is not
                  seen. Same asymmetry.
+  ledger_pass    the run-ledger (scripts/run_ledger.py) has a latest row for
+                 the named gate that PASSED --- optionally within
+                 max_age_hours and on the live engine commit. This is the one
+                 kind that tests "it RAN", not "it is wired": a row is only
+                 written by a gate that actually executed. It sees only runs
+                 whose ledger rows reached this checkout (a scheduled run
+                 without a push credential leaves none).
 Both are validated on a known-answer SUPPORTED row so the detector is never
 trusted while failing everything (adversarial-verify rule 9).
 """
@@ -44,7 +54,7 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 KIT = os.path.dirname(HERE)
 REGISTRY = os.path.join("report", "claims.json")
-KINDS = ("writer_exists", "invoked_by")
+KINDS = ("writer_exists", "invoked_by", "ledger_pass")
 SKIP_DIRS = {".git", "__pycache__", "node_modules", ".venv"}
 
 _WRITE_PATTERNS = (
@@ -132,6 +142,16 @@ def invoked_by(root, script_basename, caller_relpath):
     }
 
 
+def ledger_pass(root, name, max_age_hours=None, live_engine=False):
+    """Did the gate `name` run and pass, per the run-ledger under `root`?"""
+    sys.path.insert(0, HERE)
+    import run_ledger  # noqa: E402
+    ok, why = run_ledger.check(name, max_age_hours=max_age_hours, live_engine=live_engine,
+                               ledger=os.path.join(root, "report", "run-ledger.jsonl"))
+    return {"kind": "ledger_pass", "target": name,
+            "verdict": "SUPPORTED" if ok else "FALSIFIED", "detail": why}
+
+
 def load_registry(root):
     path = os.path.join(root, REGISTRY)
     return json.load(io.open(path, encoding="utf-8"))["claims"]
@@ -145,6 +165,9 @@ def run(root):
             res = writer_exists(root, c["path"])
         elif c["kind"] == "invoked_by":
             res = invoked_by(root, c["script"], c["caller"])
+        elif c["kind"] == "ledger_pass":
+            res = ledger_pass(root, c["name"], c.get("max_age_hours"),
+                              bool(c.get("live_engine")))
         else:
             res = {"kind": c["kind"], "verdict": "FALSIFIED",
                    "detail": "unknown check kind"}
@@ -160,11 +183,28 @@ def exit_code(results):
     return 1 if any(r["verdict"] == "FALSIFIED" for r in results) else 0
 
 
+def gate_code(results):
+    """D-CLAIM-1 (b): 0 iff every row came out as its registry says it should."""
+    return 0 if results and all(r["as_expected"] for r in results) else 1
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--json", action="store_true")
+    ap.add_argument("--gate", action="store_true",
+                    help="pass iff every verdict equals its recorded 'expected'")
     a = ap.parse_args()
     res = run(KIT)
+    if a.gate:
+        off = [r for r in res if not r["as_expected"]]
+        print("CLAIM GATE: %d claim(s), %d as expected, %d changed"
+              % (len(res), len(res) - len(off), len(off)))
+        for r in off:
+            print(" - %s expected %s, now %s :: %s" % (
+                r["id"], r["expected"], r["verdict"], r["claim"]))
+            print("     %s" % r["detail"])
+        print("CLAIM GATE: %s" % ("PASS" if res and not off else "FAIL"))
+        return gate_code(res)
     if a.json:
         print(json.dumps(res, indent=1))
     else:
