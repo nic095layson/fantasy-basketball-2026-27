@@ -37,6 +37,16 @@ class Steps(unittest.TestCase):
         gate = next(s for s in st if s["name"] == "status feed")["cmd"][-1]
         self.assertIn("--check", gate); self.assertTrue(gate.endswith("status_2026-10-20.json"))
 
+    def test_since_reaches_both_transcript_readers_and_only_them(self):
+        # GAUNTLET 2026-10-21 item 7: the persistent runner passes its start time so yesterday's pull never counts
+        st = M.steps("2026-10-21", fetch=True, seasons=10000, since="2026-10-21T12:53:00Z")
+        for s in st:
+            has = "--since" in s["cmd"]
+            self.assertEqual(has, s["name"] in ("league live", "matchup live"), s["name"])
+            if has:
+                self.assertEqual(s["cmd"][s["cmd"].index("--since") + 1], "2026-10-21T12:53:00Z")
+        self.assertFalse(any("--since" in s["cmd"] for s in M.steps("2026-10-21", fetch=True, seasons=10000)))
+
     def test_brief_runs_on_the_season_pool(self):
         st = M.steps("2026-10-21", fetch=True, seasons=10000)
         brief = next(s for s in st if s["name"] == "daily brief")

@@ -18,7 +18,9 @@ the run-ledger report/run-ledger.jsonl as 'morning: <step>' (scripts/run_ledger.
 'MORNING: PASS — ...' / 'MORNING: FAIL' with the first failing step. Nothing here changes a projection line, a
 tag or a roster: the season files are derived, the brief proposes.
 
-    python3 scripts/morning.py [--date YYYY-MM-DD] [--no-fetch] [--seasons 10000]
+    python3 scripts/morning.py [--date YYYY-MM-DD] [--no-fetch] [--seasons 10000] [--since ISO-TIME]
+--since (GAUNTLET 2026-10-21 item 7) goes to the two transcript readers, league live and matchup live: the persistent
+runner passes its start time so an earlier day's FantasyBot pull in the same transcript never counts as today's.
 """
 import argparse
 import datetime
@@ -38,14 +40,15 @@ PY = sys.executable
 BRIEFS = os.path.join(KIT, "report", "briefs")
 
 
-def steps(date, fetch=True, seasons=10000):
+def steps(date, fetch=True, seasons=10000, since=None):
     y = (datetime.date.fromisoformat(date) - datetime.timedelta(days=1)).isoformat()
     season_pool = os.path.join(KIT, "data", "season", "pool_season.csv")
     st = []
+    tail = ["--since", since] if since else []
     if fetch:  # owner 2026-10-20: live rosters from FantasyBot; non-fatal, the last paste stands on a failed pull
-        st.append(dict(name="league live", cmd=[PY, os.path.join(HERE, "league_live.py"), "--as-of", date], cwd=KIT,
+        st.append(dict(name="league live", cmd=[PY, os.path.join(HERE, "league_live.py"), "--as-of", date] + tail, cwd=KIT,
                        pass_re=r"^LEAGUE LIVE: PASS", env={}, fatal=False))
-        st.append(dict(name="matchup live", cmd=[PY, os.path.join(HERE, "matchup_live.py"), "--date", date], cwd=KIT,
+        st.append(dict(name="matchup live", cmd=[PY, os.path.join(HERE, "matchup_live.py"), "--date", date] + tail, cwd=KIT,
                        pass_re=r"^MATCHUP LIVE: PASS", env={}, fatal=False))
         st.append(dict(name=f"box scores {y}", cmd=[PY, os.path.join(HERE, "box_pull.py"), "--date", y], cwd=KIT, pass_re=r"^BOX PULL: PASS", env={}))
     st += [dict(name="season lines", cmd=[PY, os.path.join(HERE, "season_lines.py"), "--date", date], cwd=KIT, pass_re=r"^SEASON LINES: PASS", env={}),
@@ -97,8 +100,9 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--date", default=datetime.date.today().isoformat())
     ap.add_argument("--no-fetch", action="store_true"); ap.add_argument("--seasons", type=int, default=10000)
+    ap.add_argument("--since", help="the run's start (ISO time): league live and matchup live read only later transcript entries")
     a = ap.parse_args()
-    rec = run_steps(steps(a.date, not a.no_fetch, a.seasons), os.path.join(BRIEFS, f"morning_{a.date}.json"),
+    rec = run_steps(steps(a.date, not a.no_fetch, a.seasons, a.since), os.path.join(BRIEFS, f"morning_{a.date}.json"),
                     ledger=run_ledger.LEDGER)
     for s in rec["steps"]:
         print(f"- {s['verdict']} · {s['name']}" + (f" · {s['pass_line']}" if s.get("pass_line") else "") +
