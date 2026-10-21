@@ -110,6 +110,8 @@ simulator's `weekly_availability` carries **both jobs in one number** — health
 already reflects that healthy players miss games. So I divided a tier-only ratio by a
 tier-plus-games ratio. Different kinds of quantity; the subtraction meant nothing.
 
+**[SECOND CORRECTION, added 2026-10-21 later the same day (owner "implement fixes"); read this too.]** The premise of the correction above is itself false. No board applies both factors. The deck board (`hoops.adj_value`) multiplies by the injury tier only, and the kit board (`rank_engine`) by `avail(gp)` only. EVIDENCE, code read 2026-10-21: `hoops.py` has no games term and pool v69 has no `gp` column; the kit CSV has no note column. So the withdrawal's reason was wrong. The deck-board-vs-simulator comparison (risk 0.78 vs 0.852, mild 0.85 vs 0.898) is like-for-like after all, and stands as measured in `after-report-2026-10-21-proceed.md` §4 (per player: `proceed-2026-10-21/dpm4.json`). It does not hold for the kit board, which discounts risk less (mean ×0.918). This is error #13 of the day's inventory. The paragraph above is left as written, so the record shows both steps.
+
 What **is** established, measured:
 
 | tier | board tier multiplier | simulator weekly availability |
@@ -179,7 +181,7 @@ Assembled from commits and tool output, not recollection.
 | 8 | tonight's roster join | read field `name`; the field is `player` → 0 of 168 matched [SINGLE-SOURCE] (this session's own tool output) | implausible result |
 | 9 | tonight's tier classifier | substring-matched whole notes → Haliburton scored "mild" off his injury history [SINGLE-SOURCE] (this session's own tool output) | implausible result |
 | 10 | **this report's own Provenance section** | claimed adversarial-verify was loaded for this task; it was not — loaded earlier that evening for a different task [SINGLE-SOURCE] (the Stop hook) | the governance Stop hook |
-| 11 | this report's first §4 headline: "the board punishes injury risk ~7 points harder" | an invalid comparison — a tier-only ratio divided by a tier-plus-games ratio; withdrawn [SINGLE-SOURCE] (this session's own re-derivation) | adversarial-verify |
+| 11 | this report's first §4 headline: "the board punishes injury risk ~7 points harder" | an invalid comparison — a tier-only ratio divided by a tier-plus-games ratio; withdrawn [SINGLE-SOURCE] (this session's own re-derivation); *2026-10-21 later: the withdrawal's reason was itself wrong (error #13), see the SECOND CORRECTION in §4* | adversarial-verify |
 | 12 | this report, pre-merge text: "27 risk / 5 mild / 5 recovery/out (… Suggs …)" and "the league simulator does see them, at 0.60" | 22 / 2 / 4; Suggs carries no injury tag; all 4 recovery players are on IL, which D-IS-8 already counts as zero, so the 0.60 reaches no rostered player in-season [SINGLE-SOURCE] (this session's own re-measure) | re-measuring before building the D-PM-4 fix |
 
 **The pattern.** Twelve errors (rows 11 and 12 added before merge), and not one is

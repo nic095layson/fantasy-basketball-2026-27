@@ -24,6 +24,8 @@ sys.path.insert(0, DECK + "/scripts"); sys.path.insert(0, DECK + "/arena"); sys.
 import hoops, arena
 SEEDS = (2026, 2027); SEASONS = 10000; BAND_SEASONS = 6000; NL = 0.5; TOPK = 3; SLOT = 10; BAND = (0.0, 0.12)
 POOL = f"{DECK}/arena/results/players_v69.csv"; STATE = f"{DECK}/arena/data/states/draft_state_100.json"
+# 2026-10-21 (owner "implement fixes", decision 5 (a)): pinned by design to the _w17r references of the 0.60-recovery
+# engine this retro studied; the live engine's references are the _w17r_av0 files (deck #128).
 REF = {sd: f"{DECK}/arena/results/m100_league_sim_10k_s{sd}_w17r.json" for sd in SEEDS}
 hoops.DATA_PATH = POOL
 P = hoops.zscores(hoops.load_players()); BY = {p["player"]: p for p in P}
