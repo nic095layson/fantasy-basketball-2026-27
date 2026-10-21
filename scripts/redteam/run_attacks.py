@@ -21,6 +21,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 KIT = os.path.dirname(os.path.dirname(HERE))
 DECK = os.path.abspath(os.environ.get("DECK_REPO") or os.path.join(KIT, "..", "yahoo-fantasy-basketball"))
 ATTACKS = os.path.join(HERE, "attacks.json")
+sys.path.insert(0, os.path.dirname(HERE))
+import run_ledger  # noqa: E402
 
 
 def live_commit(deck=DECK):
@@ -103,6 +105,8 @@ def main():
     ap.add_argument("--attacks", default=ATTACKS)
     ap.add_argument("--deck", default=DECK)
     ap.add_argument("--out")
+    ap.add_argument("--ledger", default=run_ledger.LEDGER,
+                    help="run-ledger to append this check's verdict to as 'run_attacks' ('' to skip)")
     a = ap.parse_args()
     with open(a.attacks, encoding="utf-8") as f:
         attacks = json.load(f)
@@ -118,6 +122,10 @@ def main():
         print("ATTACKS CHECK: FAIL")
         for p in rec["problems"]:
             print("  " + p)
+    if a.check and a.ledger:
+        run_ledger.safe_record("run_attacks", rec["verdict"],
+                               "; ".join(f"{k} {v}" for k, v in sorted(rec["by_status"].items())),
+                               ledger=a.ledger, deck=os.path.abspath(a.deck))
     return 0 if rec["verdict"] == "PASS" else 1
 
 
