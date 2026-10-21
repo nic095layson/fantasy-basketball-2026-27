@@ -1,0 +1,262 @@
+{
+ "captured_utc": "2026-10-21T18:45:34.530Z",
+ "input": {
+  "player_name": "Andre Drummond",
+  "sport": "nba"
+ },
+ "response": {
+  "player": {
+   "adp": null,
+   "age": 33,
+   "ageRisk": null,
+   "board": {
+    "blurb": "strong TO, solid REB, costs you PTS",
+    "mode": "ros",
+    "rank": 76,
+    "week": null
+   },
+   "college": "UConn",
+   "currentMatchup": null,
+   "experience": 14,
+   "expertRank": null,
+   "finishedWeek": null,
+   "firstName": "Andre",
+   "id": "1131",
+   "imageUrl": "https://api.fantasybot.ai/img/player/1131.webp?sport=nba",
+   "injury": null,
+   "keyStats": {},
+   "lastName": "Drummond",
+   "name": "Andre Drummond",
+   "nba": {
+    "asOfDate": "2026-10-21",
+    "categories": {
+     "aboveReplacement": -120.8,
+     "drivers": "strong TO, solid REB, costs you PTS",
+     "expectedGames": 57.8,
+     "key": "nine_cat",
+     "label": "9-cat H2H",
+     "perGame": -5.33,
+     "posRank": 76,
+     "position": "C",
+     "rank": 319,
+     "replacement": -3.24,
+     "replacementGames": 62.59166666666667,
+     "replacementScores": [
+      {
+       "stat": "fg_pct",
+       "z": -0.24000000000000002
+      },
+      {
+       "stat": "ft_pct",
+       "z": 0.007500000000000009
+      },
+      {
+       "stat": "tpm",
+       "z": -0.42500000000000004
+      },
+      {
+       "stat": "pts",
+       "z": -1.345
+      },
+      {
+       "stat": "reb",
+       "z": -0.7225
+      },
+      {
+       "stat": "ast",
+       "z": -0.8424999999999998
+      },
+      {
+       "stat": "stl",
+       "z": -0.3558333333333333
+      },
+      {
+       "stat": "blk",
+       "z": -0.2933333333333333
+      },
+      {
+       "stat": "tov",
+       "z": 0.9775
+      }
+     ],
+     "scores": [
+      {
+       "label": "FG%",
+       "stat": "fg_pct",
+       "z": -0.2
+      },
+      {
+       "label": "FT%",
+       "stat": "ft_pct",
+       "z": -0.55
+      },
+      {
+       "label": "3PM",
+       "stat": "tpm",
+       "z": -1.59
+      },
+      {
+       "label": "PTS",
+       "stat": "pts",
+       "z": -2.6
+      },
+      {
+       "label": "REB",
+       "stat": "reb",
+       "z": 0.95
+      },
+      {
+       "label": "AST",
+       "stat": "ast",
+       "z": -1.81
+      },
+      {
+       "label": "STL",
+       "stat": "stl",
+       "z": -0.65
+      },
+      {
+       "label": "BLK",
+       "stat": "blk",
+       "z": -0.29
+      },
+      {
+       "label": "TO",
+       "stat": "tov",
+       "z": 1.41
+      }
+     ],
+     "total": -307.9,
+     "unit": "value"
+    },
+    "expectedGames": 57.8,
+    "healthyRate": 0.73,
+    "leagueLens": null,
+    "market": {
+     "adp": 422.6,
+     "espnRank": 253,
+     "percentOwned": 7.12
+    },
+    "marketNote": null,
+    "nextGame": {
+     "backToBack": false,
+     "date": "2026-10-23",
+     "home": false,
+     "opponent": "BOS",
+     "tipEt": "7:00 PM ET",
+     "tipUtc": "2026-10-23T23:00:00.000Z"
+    },
+    "notes": [
+     "Schedule not final until the NBA Cup knockouts are set (after Nov 27); games-remaining counts may rise by one or two"
+    ],
+    "points": {
+     "aboveReplacement": -389.4,
+     "drivers": "18.7 fantasy points a game, mostly REB and PTS; FGA costs 4.9",
+     "expectedGames": 57.8,
+     "key": "espn_points",
+     "label": "ESPN default points",
+     "perGame": 18.7,
+     "posRank": 74,
+     "position": "C",
+     "rank": 324,
+     "replacement": 25.49,
+     "total": 1083.8,
+     "unit": "fpts"
+    },
+    "preTipOff": false,
+    "projected": {
+     "ast": 1.1,
+     "blk": 0.6,
+     "fgPct": 45.5,
+     "ftPct": 62.9,
+     "min": 19,
+     "pts": 5.6,
+     "reb": 8,
+     "stl": 0.8,
+     "tov": 1,
+     "tpm": 0.4
+    },
+    "recent": [
+     {
+      "days": 7,
+      "fptsPerGame": 41,
+      "games": 1
+     },
+     {
+      "days": 15,
+      "fptsPerGame": 41,
+      "games": 1
+     },
+     {
+      "days": 30,
+      "fptsPerGame": 41,
+      "games": 1
+     }
+    ],
+    "recentSeason": "2026",
+    "season": "2026",
+    "seasonFptsPerGame": null,
+    "seasonGames": 0,
+    "seasonLine": null,
+    "statsSeason": "2026",
+    "status": null,
+    "teamGamesLeft": 79,
+    "week": {
+     "backToBacks": [],
+     "dates": [
+      "2026-10-20",
+      "2026-10-23",
+      "2026-10-25"
+     ],
+     "end": "2026-10-25",
+     "games": 3,
+     "gamesLeft": 2,
+     "kind": "this_week",
+     "label": "Oct 19 – Oct 25",
+     "start": "2026-10-19"
+    }
+   },
+   "news": [],
+   "newsReport": null,
+   "newsText": "",
+   "offseason": false,
+   "position": "C",
+   "positionCompetition": [],
+   "positions": [
+    "C"
+   ],
+   "projection": {
+    "points": 18.7,
+    "rank": 74
+   },
+   "qbRisk": null,
+   "season": "2026",
+   "seasonAvg": {
+    "gamesPlayed": 0,
+    "halfPpr": 0,
+    "ppg": 0,
+    "ppr": 0,
+    "standard": 0,
+    "totalPoints": 0
+   },
+   "seasonStats": {},
+   "sport": "nba",
+   "statsSeason": "2026",
+   "statusTag": null,
+   "statusText": "",
+   "strengthOfSchedule": null,
+   "team": "NYK",
+   "trend": {
+    "consistency": 1,
+    "direction": "stable",
+    "last3Avg": 41,
+    "last5Avg": 41
+   },
+   "week": null,
+   "weeklyLog": [],
+   "yearOverYear": null
+  }
+ },
+ "source_transcript_sha256": "d974db119e67bb6b",
+ "tool": "mcp__FantasyBot__get_player_value"
+}

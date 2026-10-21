@@ -114,6 +114,10 @@ class Extract(unittest.TestCase):
         with self.assertRaisesRegex(FL.PullError, "11 of 12"):
             FL.check_pull(pull)
 
+    def test_d_doubtful_is_a_known_letter_and_does_not_halt(self):
+        # owner 2026-10-21: "Stewart's 'D' means 'Doubtful'" (status_feed.TIERS, D-IS-10)
+        FL.check_pull(FL.extract_pull(self.write(twelve("2026-10-22T12:55:00Z", letters={4: "D"}))))
+
     def test_an_unknown_status_letter_halts_and_is_named(self):
         pull = FL.extract_pull(self.write(twelve("2026-10-22T12:55:00Z", letters={4: "ZZZ"})))
         with self.assertRaisesRegex(FL.PullError, "ZZZ"):

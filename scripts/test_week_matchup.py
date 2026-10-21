@@ -297,14 +297,15 @@ class Record(unittest.TestCase):
     def test_yahoos_free_agent_list_is_the_pickup_pool_and_every_exclusion_is_named(self):
         fas = [("Jrue Holiday", "POR", "PG,SG", None), ("Not In The Pool", "BOS", "C", None),
                ("Isaiah Stewart", "MEM", "PF,C", "D"), ("Anthony Black", "ORL", "PG,SG,SF", "O"),
-               ("Derrick White", "BOS", "PG,SG", None)]
+               ("Derrick White", "BOS", "PG,SG", None), ("A Made-Up Letter", "BOS", "C", "ZZ")]
         rec = WM.build("2026-10-21", dict(self.paths, yahoo_pull=self.pull(fas=fas)))
         pk = rec["pickups"]
         self.assertEqual(pk["status"], "ran")
         pool = pk["pool"]
-        self.assertEqual((pool["source"], pool["listed"], pk["pool_size"]), ("yahoo", 5, 1))
-        self.assertEqual([r["add"] for r in pk["top"]], ["Jrue Holiday"])
-        self.assertEqual([x["name"] for x in pool["unknown_status"]], ["Isaiah Stewart"])   # "D": never guessed
+        self.assertEqual((pool["source"], pool["listed"], pk["pool_size"]), ("yahoo", 6, 2))
+        self.assertEqual(sorted(r["add"] for r in pk["top"]), ["Isaiah Stewart", "Jrue Holiday"])
+        self.assertEqual({r["add"]: r["status"] for r in pk["top"]}["Isaiah Stewart"], "D")  # doubtful, scored at 0.25
+        self.assertEqual([x["name"] for x in pool["unknown_status"]], ["A Made-Up Letter"])  # unknown: never guessed
         self.assertEqual([x["name"] for x in pool["out"]], ["Anthony Black"])
         self.assertEqual([x["name"] for x in pool["not_projected"]], ["Not In The Pool"])
         self.assertEqual([x["name"] for x in pool["skipped"]], ["Derrick White"])           # rostered in the state
@@ -323,12 +324,15 @@ class YahooFreeAgents(unittest.TestCase):
                    dict(name="Nikola Vučević", team="ORL", position="C", status="Q"),
                    dict(name="Max Strus", team="CLE", position="SF", status="NA"),
                    dict(name="Isaiah Stewart", team="MEM", position="PF,C", status="D"),
+                   dict(name="A Made-Up Letter", team="BOS", position="C", status="ZZ"),
                    dict(name="Hugo González", team="BOS", position="SF")]
+        pool.append(dict(player="Isaiah Stewart"))
         scored, out, unknown, notp = WM.yahoo_free_agents(entries, pool)
         self.assertEqual([(s["player"], s["availability"], s["positions"]) for s in scored],
-                         [("Jrue Holiday", 1.0, ["PG", "SG"]), ("Nikola Vucevic", 0.5, ["C"])])
+                         [("Jrue Holiday", 1.0, ["PG", "SG"]), ("Nikola Vucevic", 0.5, ["C"]),
+                          ("Isaiah Stewart", 0.25, ["PF", "C"])])                # D = doubtful (owner 2026-10-21)
         self.assertEqual([x["name"] for x in out], ["Max Strus"])
-        self.assertEqual([x["name"] for x in unknown], ["Isaiah Stewart"])
+        self.assertEqual([x["name"] for x in unknown], ["A Made-Up Letter"])
         self.assertEqual([x["name"] for x in notp], ["Hugo González"])
 
 

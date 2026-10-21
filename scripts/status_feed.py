@@ -35,7 +35,10 @@ TIERS = {None: ("healthy", 1.00), "Q": ("questionable", 0.50), "O": ("out", 0.00
          # 2026-10-19: P (probable) seen on the owner's rosters paste (Curry); 0.75 is a stated default, D-IS-6
          "P": ("probable", 0.75),
          # 2026-10-20: NA (not active) seen on the owner's rosters paste (Kevin Porter Jr.); 0.00 like O, a stated default, D-IS-7
-         "NA": ("not active", 0.00)}
+         "NA": ("not active", 0.00),
+         # 2026-10-21: D seen on the Flaim available-player list (Isaiah Stewart); the owner: "Stewart's 'D' means
+         # 'Doubtful'". 0.25 is a stated default, halfway between Q and O as P sits above Q, D-IS-10
+         "D": ("doubtful", 0.25)}
 
 
 def tier(letter):
@@ -93,7 +96,7 @@ def build(state, espn=None, espn_attempt=None, overrides=None):
 def check(rows):
     problems = []
     for r in rows:
-        if r.get("yahoo_status") not in ("Q", "O", "P", "NA"):
+        if r.get("yahoo_status") not in ("Q", "O", "P", "NA", "D"):
             continue
         dated = [x for x in r.get("receipts", []) if x.get("captured") or x.get("date")]
         if r["availability"] >= 1.0 and not dated:

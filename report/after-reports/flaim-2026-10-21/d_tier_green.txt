@@ -1,0 +1,371 @@
+............................./home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:309: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp0fgduhpt/state.json' mode='r' encoding='utf-8'>
+  state = json.load(open(paths["state"], encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:310: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp0fgduhpt/sched.json' mode='r' encoding='utf-8'>
+  sched_rec = json.load(open(paths["schedule"], encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/co_gm.py:86: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp0fgduhpt/games.csv' mode='r' encoding='utf-8'>
+  return [(r["date"], r["visitor"], r["home"]) for r in csv.DictReader(open(path, encoding="utf-8"))]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:342: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp0fgduhpt/actuals/2026-10-20.json' mode='r' encoding='utf-8'>
+  boxes[d] = played(json.load(open(f, encoding="utf-8"))); read.append(d)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:222: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp0fgduhpt/pull_13_Renamed.json' mode='r' encoding='utf-8'>
+  pull = json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:293: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp0fgduhpt/status/status_2026-10-21.json' mode='r' encoding='utf-8'>
+  return (json.load(open(files[-1], encoding="utf-8")), files[-1]) if files else ({"rows": []}, None)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:466: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp0fgduhpt/actuals/2026-10-20.json' mode='r' encoding='utf-8'>
+  rec = json.load(open(f, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp0fgduhpt/state.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp0fgduhpt/sched.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp0fgduhpt/games.csv'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp0fgduhpt/pull_13_Renamed.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp0fgduhpt/status/status_2026-10-21.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/home/user/fantasy-basketball-2026-27/data/season/pool_season.csv'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./home/user/fantasy-basketball-2026-27/scripts/test_week_matchup.py:289: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpvr5sfe2b/pull_13_Renamed.json' mode='r' encoding='utf-8'>
+  p = json.load(open(self.pull(names=("Renamed", "THEIRS"))))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:309: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpvr5sfe2b/state.json' mode='r' encoding='utf-8'>
+  state = json.load(open(paths["state"], encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:310: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpvr5sfe2b/sched.json' mode='r' encoding='utf-8'>
+  sched_rec = json.load(open(paths["schedule"], encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/co_gm.py:86: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpvr5sfe2b/games.csv' mode='r' encoding='utf-8'>
+  return [(r["date"], r["visitor"], r["home"]) for r in csv.DictReader(open(path, encoding="utf-8"))]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:342: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpvr5sfe2b/actuals/2026-10-20.json' mode='r' encoding='utf-8'>
+  boxes[d] = played(json.load(open(f, encoding="utf-8"))); read.append(d)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:222: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpvr5sfe2b/renamed.json' mode='r' encoding='utf-8'>
+  pull = json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:293: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpvr5sfe2b/status/status_2026-10-21.json' mode='r' encoding='utf-8'>
+  return (json.load(open(files[-1], encoding="utf-8")), files[-1]) if files else ({"rows": []}, None)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:466: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpvr5sfe2b/actuals/2026-10-20.json' mode='r' encoding='utf-8'>
+  rec = json.load(open(f, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpvr5sfe2b/state.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpvr5sfe2b/sched.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpvr5sfe2b/games.csv'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpvr5sfe2b/renamed.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpvr5sfe2b/status/status_2026-10-21.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:309: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp2yocy_i3/state.json' mode='r' encoding='utf-8'>
+  state = json.load(open(paths["state"], encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:310: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp2yocy_i3/sched.json' mode='r' encoding='utf-8'>
+  sched_rec = json.load(open(paths["schedule"], encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/co_gm.py:86: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp2yocy_i3/games.csv' mode='r' encoding='utf-8'>
+  return [(r["date"], r["visitor"], r["home"]) for r in csv.DictReader(open(path, encoding="utf-8"))]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:342: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp2yocy_i3/actuals/2026-10-20.json' mode='r' encoding='utf-8'>
+  boxes[d] = played(json.load(open(f, encoding="utf-8"))); read.append(d)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:293: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp2yocy_i3/status/status_2026-10-21.json' mode='r' encoding='utf-8'>
+  return (json.load(open(files[-1], encoding="utf-8")), files[-1]) if files else ({"rows": []}, None)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:466: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp2yocy_i3/actuals/2026-10-20.json' mode='r' encoding='utf-8'>
+  rec = json.load(open(f, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp2yocy_i3/state.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp2yocy_i3/sched.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp2yocy_i3/games.csv'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp2yocy_i3/status/status_2026-10-21.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:309: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp0041b5wv/state.json' mode='r' encoding='utf-8'>
+  state = json.load(open(paths["state"], encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:310: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp0041b5wv/sched.json' mode='r' encoding='utf-8'>
+  sched_rec = json.load(open(paths["schedule"], encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/co_gm.py:86: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp0041b5wv/games.csv' mode='r' encoding='utf-8'>
+  return [(r["date"], r["visitor"], r["home"]) for r in csv.DictReader(open(path, encoding="utf-8"))]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:342: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp0041b5wv/actuals/2026-10-20.json' mode='r' encoding='utf-8'>
+  boxes[d] = played(json.load(open(f, encoding="utf-8"))); read.append(d)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:224: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp0041b5wv/torn.json' mode='r' encoding='utf-8'>
+  return None, f"{os.path.basename(path)} is unreadable ({type(e).__name__})"
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:293: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp0041b5wv/status/status_2026-10-21.json' mode='r' encoding='utf-8'>
+  return (json.load(open(files[-1], encoding="utf-8")), files[-1]) if files else ({"rows": []}, None)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:466: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp0041b5wv/actuals/2026-10-20.json' mode='r' encoding='utf-8'>
+  rec = json.load(open(f, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp0041b5wv/state.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp0041b5wv/sched.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp0041b5wv/games.csv'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp0041b5wv/torn.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp0041b5wv/status/status_2026-10-21.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:309: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpvheuzq5v/state.json' mode='r' encoding='utf-8'>
+  state = json.load(open(paths["state"], encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:310: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpvheuzq5v/sched.json' mode='r' encoding='utf-8'>
+  sched_rec = json.load(open(paths["schedule"], encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/co_gm.py:86: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpvheuzq5v/games.csv' mode='r' encoding='utf-8'>
+  return [(r["date"], r["visitor"], r["home"]) for r in csv.DictReader(open(path, encoding="utf-8"))]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpvheuzq5v/state.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpvheuzq5v/sched.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpvheuzq5v/games.csv'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+../home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:309: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpb435hj4j/state.json' mode='r' encoding='utf-8'>
+  state = json.load(open(paths["state"], encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:310: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpb435hj4j/sched.json' mode='r' encoding='utf-8'>
+  sched_rec = json.load(open(paths["schedule"], encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/co_gm.py:86: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpb435hj4j/games.csv' mode='r' encoding='utf-8'>
+  return [(r["date"], r["visitor"], r["home"]) for r in csv.DictReader(open(path, encoding="utf-8"))]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:342: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpb435hj4j/actuals/2026-10-20.json' mode='r' encoding='utf-8'>
+  boxes[d] = played(json.load(open(f, encoding="utf-8"))); read.append(d)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:293: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpb435hj4j/status/status_2026-10-21.json' mode='r' encoding='utf-8'>
+  return (json.load(open(files[-1], encoding="utf-8")), files[-1]) if files else ({"rows": []}, None)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:466: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpb435hj4j/actuals/2026-10-20.json' mode='r' encoding='utf-8'>
+  rec = json.load(open(f, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpb435hj4j/state.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpb435hj4j/sched.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpb435hj4j/games.csv'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpb435hj4j/status/status_2026-10-21.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:309: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpyl902_we/state.json' mode='r' encoding='utf-8'>
+  state = json.load(open(paths["state"], encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:310: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpyl902_we/sched.json' mode='r' encoding='utf-8'>
+  sched_rec = json.load(open(paths["schedule"], encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/co_gm.py:86: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpyl902_we/games.csv' mode='r' encoding='utf-8'>
+  return [(r["date"], r["visitor"], r["home"]) for r in csv.DictReader(open(path, encoding="utf-8"))]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:342: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpyl902_we/actuals/2026-10-20.json' mode='r' encoding='utf-8'>
+  boxes[d] = played(json.load(open(f, encoding="utf-8"))); read.append(d)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:293: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpyl902_we/status/status_2026-10-21.json' mode='r' encoding='utf-8'>
+  return (json.load(open(files[-1], encoding="utf-8")), files[-1]) if files else ({"rows": []}, None)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:466: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpyl902_we/actuals/2026-10-20.json' mode='r' encoding='utf-8'>
+  rec = json.load(open(f, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpyl902_we/state.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpyl902_we/sched.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpyl902_we/games.csv'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpyl902_we/status/status_2026-10-21.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:309: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp38x_6y0d/state.json' mode='r' encoding='utf-8'>
+  state = json.load(open(paths["state"], encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:310: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp38x_6y0d/sched.json' mode='r' encoding='utf-8'>
+  sched_rec = json.load(open(paths["schedule"], encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/co_gm.py:86: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp38x_6y0d/games.csv' mode='r' encoding='utf-8'>
+  return [(r["date"], r["visitor"], r["home"]) for r in csv.DictReader(open(path, encoding="utf-8"))]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:342: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp38x_6y0d/actuals/2026-10-20.json' mode='r' encoding='utf-8'>
+  boxes[d] = played(json.load(open(f, encoding="utf-8"))); read.append(d)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:222: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp38x_6y0d/pull_13_MINE.json' mode='r' encoding='utf-8'>
+  pull = json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:293: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp38x_6y0d/status/status_2026-10-21.json' mode='r' encoding='utf-8'>
+  return (json.load(open(files[-1], encoding="utf-8")), files[-1]) if files else ({"rows": []}, None)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:466: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp38x_6y0d/actuals/2026-10-20.json' mode='r' encoding='utf-8'>
+  rec = json.load(open(f, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp38x_6y0d/state.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp38x_6y0d/sched.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp38x_6y0d/games.csv'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp38x_6y0d/pull_13_MINE.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp38x_6y0d/status/status_2026-10-21.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:309: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpkp8gyev5/state.json' mode='r' encoding='utf-8'>
+  state = json.load(open(paths["state"], encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:310: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpkp8gyev5/sched.json' mode='r' encoding='utf-8'>
+  sched_rec = json.load(open(paths["schedule"], encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/co_gm.py:86: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpkp8gyev5/games.csv' mode='r' encoding='utf-8'>
+  return [(r["date"], r["visitor"], r["home"]) for r in csv.DictReader(open(path, encoding="utf-8"))]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:342: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpkp8gyev5/actuals/2026-10-20.json' mode='r' encoding='utf-8'>
+  boxes[d] = played(json.load(open(f, encoding="utf-8"))); read.append(d)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:222: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpkp8gyev5/pull_13_MINE.json' mode='r' encoding='utf-8'>
+  pull = json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:293: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpkp8gyev5/status/status_2026-10-21.json' mode='r' encoding='utf-8'>
+  return (json.load(open(files[-1], encoding="utf-8")), files[-1]) if files else ({"rows": []}, None)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:466: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpkp8gyev5/actuals/2026-10-20.json' mode='r' encoding='utf-8'>
+  rec = json.load(open(f, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpkp8gyev5/state.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpkp8gyev5/sched.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpkp8gyev5/games.csv'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpkp8gyev5/pull_13_MINE.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpkp8gyev5/status/status_2026-10-21.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:309: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmppbugeem_/state.json' mode='r' encoding='utf-8'>
+  state = json.load(open(paths["state"], encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:310: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmppbugeem_/sched.json' mode='r' encoding='utf-8'>
+  sched_rec = json.load(open(paths["schedule"], encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/co_gm.py:86: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmppbugeem_/games.csv' mode='r' encoding='utf-8'>
+  return [(r["date"], r["visitor"], r["home"]) for r in csv.DictReader(open(path, encoding="utf-8"))]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:342: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmppbugeem_/actuals/2026-10-20.json' mode='r' encoding='utf-8'>
+  boxes[d] = played(json.load(open(f, encoding="utf-8"))); read.append(d)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:222: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmppbugeem_/pull_13_MINE.json' mode='r' encoding='utf-8'>
+  pull = json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:293: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmppbugeem_/status/status_2026-10-21.json' mode='r' encoding='utf-8'>
+  return (json.load(open(files[-1], encoding="utf-8")), files[-1]) if files else ({"rows": []}, None)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:466: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmppbugeem_/actuals/2026-10-20.json' mode='r' encoding='utf-8'>
+  rec = json.load(open(f, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmppbugeem_/state.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmppbugeem_/sched.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmppbugeem_/games.csv'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmppbugeem_/pull_13_MINE.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmppbugeem_/status/status_2026-10-21.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:309: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp0kougcof/state.json' mode='r' encoding='utf-8'>
+  state = json.load(open(paths["state"], encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:310: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp0kougcof/sched.json' mode='r' encoding='utf-8'>
+  sched_rec = json.load(open(paths["schedule"], encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/co_gm.py:86: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp0kougcof/games.csv' mode='r' encoding='utf-8'>
+  return [(r["date"], r["visitor"], r["home"]) for r in csv.DictReader(open(path, encoding="utf-8"))]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:342: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp0kougcof/actuals/2026-10-20.json' mode='r' encoding='utf-8'>
+  boxes[d] = played(json.load(open(f, encoding="utf-8"))); read.append(d)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:222: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp0kougcof/pull_15_MINE.json' mode='r' encoding='utf-8'>
+  pull = json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:293: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp0kougcof/status/status_2026-10-21.json' mode='r' encoding='utf-8'>
+  return (json.load(open(files[-1], encoding="utf-8")), files[-1]) if files else ({"rows": []}, None)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:466: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp0kougcof/actuals/2026-10-20.json' mode='r' encoding='utf-8'>
+  rec = json.load(open(f, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp0kougcof/state.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp0kougcof/sched.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp0kougcof/games.csv'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp0kougcof/pull_15_MINE.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/fantasy-basketball-2026-27/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp0kougcof/status/status_2026-10-21.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+......
+----------------------------------------------------------------------
+Ran 46 tests in 0.732s
+
+OK

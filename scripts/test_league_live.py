@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Red-first tests for league_live.py (owner 2026-10-20: "Build all 3"): the FantasyBot pull
 to league_state.json, through league_intake's name checks, with a halt instead of a bad write."""
+import csv
 import json
 import os
 import subprocess
@@ -11,6 +12,7 @@ import unittest
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import league_live  # noqa: E402
+import league_intake as LI  # noqa: E402
 
 
 def team(name, players):
@@ -172,23 +174,18 @@ class FlaimFirst(unittest.TestCase):
         return p, out, tdir
 
     @unittest.skipUnless(os.path.exists(PIN), "no pinned Flaim pull")
-    def test_the_pinned_pull_halts_on_the_one_unpooled_active_player_and_writes_nothing(self):
-        # 2026-10-21: Andre Drummond (Podz save the league, BN) has no pool row; whether to add one or carry him as
-        # not counted is the owner's decision, so the intake's existing halt stands
+    def test_the_pinned_pull_builds_every_team_with_yahoo_slots_letters_and_drummond(self):
+        # owner 2026-10-21: "Drummond, pull data from both sources to add a projection for him". His deck pool row sits
+        # on a deck branch whose merge waits on the owner (the deck's publish gate wants a stamped rebuild): until the
+        # deck pool beside the kit carries him, the real 10/21 pull halts on his name and writes nothing; once it does,
+        # the same pull builds all twelve teams with him on Podz save the league's bench. Both are known answers.
         p, out, tdir = self.run_live("--source", "flaim", "--pull", self.PIN)
-        self.assertIn("Andre Drummond", p.stdout)
-        self.assertIn("LEAGUE LIVE: HALT", p.stdout)
-        self.assertFalse(os.path.exists(out))
-
-    @unittest.skipUnless(os.path.exists(PIN), "no pinned Flaim pull")
-    def test_the_pinned_flaim_pull_builds_every_team_with_yahoo_slots_and_letters(self):
-        pull = json.load(open(self.PIN, encoding="utf-8"))
-        for r in pull["rosters"].values():
-            r["players"] = [pl for pl in r["players"] if pl["name"] != "Andre Drummond"]
-        fd, pin = tempfile.mkstemp(suffix=".json")
-        with os.fdopen(fd, "w", encoding="utf-8") as f:
-            json.dump(pull, f)
-        p, out, tdir = self.run_live("--source", "flaim", "--pull", pin)
+        pooled = any(r["player"] == "Andre Drummond" for r in csv.DictReader(open(LI.POOL, encoding="utf-8")))
+        if not pooled:
+            self.assertIn("LEAGUE LIVE: HALT", p.stdout, p.stdout + p.stderr)
+            self.assertIn("Andre Drummond", p.stdout)
+            self.assertFalse(os.path.exists(out))
+            return
         self.assertIn("LEAGUE LIVE: PASS — rosters from Flaim", p.stdout, p.stdout + p.stderr)
         state = json.load(open(out, encoding="utf-8"))
         self.assertEqual(len(state["teams"]), 12)
@@ -197,6 +194,23 @@ class FlaimFirst(unittest.TestCase):
         self.assertTrue(slots - {"BN", "IL"}, "rival teams carry only BN/IL: Yahoo slots were lost")
         porter = [pl for t in state["teams"] for pl in t["players"] if pl["player"] == "Kevin Porter Jr."]
         self.assertEqual([pl["status"] for pl in porter], ["NA"])
+        drummond = [(t["name"], pl["slot"]) for t in state["teams"] for pl in t["players"] if pl["player"] == "Andre Drummond"]
+        self.assertEqual(drummond, [("Podz save the league", "BN")])
+
+    @unittest.skipUnless(os.path.exists(PIN), "no pinned Flaim pull")
+    def test_an_active_player_with_no_pool_row_still_halts_and_writes_nothing(self):
+        # the intake's halt stands for any rostered, non-IL name the pool lacks (a made-up name added to a copy)
+        pull = json.load(open(self.PIN, encoding="utf-8"))
+        team = sorted(pull["rosters"])[7]
+        pull["rosters"][team]["players"].append(dict(name="Not A Pool Player", playerKey="478.p.999999", team="NYK",
+                                                     position="C", selectedPosition="BN"))
+        fd, pin = tempfile.mkstemp(suffix=".json")
+        with os.fdopen(fd, "w", encoding="utf-8") as f:
+            json.dump(pull, f)
+        p, out, tdir = self.run_live("--source", "flaim", "--pull", pin)
+        self.assertIn("Not A Pool Player", p.stdout)
+        self.assertIn("LEAGUE LIVE: HALT", p.stdout)
+        self.assertFalse(os.path.exists(out))
 
     def test_an_incomplete_flaim_pull_falls_back_to_fantasybot_and_says_so(self):
         fd, tr = tempfile.mkstemp(suffix=".jsonl")
