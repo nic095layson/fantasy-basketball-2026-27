@@ -311,12 +311,13 @@
     "healthy": 0.88,
     "mild": 0.79,
     "risk": 0.75,
-    "recovery": 0.0
+    "recovery": 0.0,
+    "out": 0.0
    },
    "role": "in-sim share of games played by tier (g = 3.5 a, Var[G] = 3.5 a (1-a))",
    "status": "declared_band",
-   "record": "deck analysis_2026-08-09_findings_table.md F39 hand-set; 0.79 derived 2026-10-13 as the mild share of the healthy-to-risk gap; band: postmortem rt_sensitivity.json healthy 0.95/0.80, risk 0.88/0.65 (no-discount SENSITIVE -1.3/-1.5); recovery 0.60 -> 0.0 on 2026-10-21 (owner \"build council's fixes\", Council 4-1 D-PM-4 recovery part): the board's exclusion (hoops.availability, owner ruling 2026-07-12), real 2025-26 recovery players ~9% of games (deck LESSONS item 5), returnees re-tagged -risk; in-season effect at the change: 0 rostered players (4 of 4 on IL, D-IS-8)",
-   "decision": "D-PM-4 reconcile with hoops.availability (recovery reconciled 2026-10-21; risk/mild after the composed per-player comparison)",
+   "record": "deck analysis_2026-08-09_findings_table.md F39 hand-set; 0.79 derived 2026-10-13 as the mild share of the healthy-to-risk gap; band: postmortem rt_sensitivity.json healthy 0.95/0.80, risk 0.88/0.65 (no-discount SENSITIVE -1.3/-1.5); recovery 0.60 -> 0.0 on 2026-10-21 (owner \"build council's fixes\", Council 4-1 D-PM-4 recovery part): the board's exclusion (hoops.availability, owner ruling 2026-07-12), real 2025-26 recovery players ~9% of games (deck LESSONS item 5), returnees re-tagged -risk; in-season effect at the change: 0 rostered players (4 of 4 on IL, D-IS-8); draft-day effect measured 2026-10-21: seat 10 title 21.10/21.33 -> 23.27/24.07 on the 10k references (Nurkic seat 2, Butler seat 12; decomposed exactly by re-running at 0.60). out 0.0 on 2026-10-21 (owner \"proceed with all\", decision-sheet item 2): the branch hoops.availability already had; before it out-* fell through to the healthy 0.88 (A-9 pre-registered divergence); 0 rostered or drafted out-* players at the change",
+   "decision": "D-PM-4 reconcile with hoops.availability (recovery and out reconciled 2026-10-21; risk/mild after the composed per-player comparison)",
    "band": [
     {
      "label": "no in-sim injury discount (risk 0.88 like healthy)",

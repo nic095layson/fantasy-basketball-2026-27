@@ -1,14 +1,14 @@
 {
  "verdict": "PASS",
- "engine_commit": "259c630",
- "registered": 28,
- "live": 28,
+ "engine_commit": "80eecdf",
+ "registered": 31,
+ "live": 31,
  "by_status": {
   "settings": 7,
   "structural": 4,
   "declared_band": 6,
-  "measured": 4,
-  "uncalibrated": 7
+  "measured": 6,
+  "uncalibrated": 8
  },
  "uncalibrated": [
   "arena.GRAD_K",
@@ -17,7 +17,8 @@
   "arena.MKT_PIN",
   "hoops.PAIR_MIN_GAIN",
   "hoops.PAIR_WAIT_MIN",
-  "hoops.availability"
+  "hoops.availability",
+  "season_lines.SEASON_GAMES"
  ],
  "declared_band": [
   "arena.BENCH_WEIGHT",

@@ -69,8 +69,8 @@
     "name": "run_attacks",
     "live_engine": true
    },
-   "expected": "FALSIFIED",
-   "note": "The red-team fingerprint check as a query on the ledger (Council 2026-10-21). FALSIFIED at seeding: the four attack records were made on 259c630 and the engine changed on 2026-10-21 (D-PM-4 recovery). Flips to SUPPORTED only when run_attacks --check passes on the live engine, i.e. after the sweep is re-run (D-RT-STALE) — the gate then fails until this row's 'expected' is updated, which is the point."
+   "expected": "SUPPORTED",
+   "note": "The red-team fingerprint check as a query on the ledger (Council 2026-10-21). SUPPORTED since 2026-10-21 06:20Z: the five fingerprinted records (A-1, A-5, A-7, A-8, A-9) re-run on deck 80eecdf (owner \"proceed with all\", D-RT-STALE) and run_attacks --check passed. It goes FALSIFIED again at the next deck commit (run_attacks keys on the deck HEAD), and the gate then fails until the attacks are re-run. History: FALSIFIED at seeding: the four attack records were made on 259c630 and the engine changed on 2026-10-21 (D-PM-4 recovery). Flips to SUPPORTED only when run_attacks --check passes on the live engine, i.e. after the sweep is re-run (D-RT-STALE) — the gate then fails until this row's 'expected' is updated, which is the point."
   },
   {
    "id": "CL-7",
