@@ -1,0 +1,39 @@
+{
+ "command": "DECK_REPO=... python3 scripts/box_pull.py --date 2026-10-21 --out <scratch> (fixed code, live fetch)",
+ "fetched_at_utc": "2026-10-22T15:00:02Z",
+ "repull_sha256": "172469b3052d3608b013577f6a783b5b81838756e16acb237b0875e47fea9d26",
+ "compared_to": "season/daily e7b69bb data/actuals/2026-10-21.json (fetched 2026-10-22T14:48:40Z)",
+ "players": [
+  301,
+  301
+ ],
+ "same_espn_ids": true,
+ "stat_cells_differing": 0,
+ "pool_name_changes": [
+  {
+   "name": "Mikel Brown Jr.",
+   "before": null,
+   "after": "Mikel Brown"
+  },
+  {
+   "name": "Kelly Oubre Jr.",
+   "before": null,
+   "after": "Kelly Oubre"
+  },
+  {
+   "name": "Darius Acuff Jr.",
+   "before": null,
+   "after": "Darius Acuff"
+  }
+ ],
+ "n_pooled": [
+  204,
+  207
+ ],
+ "unpooled": [
+  97,
+  94
+ ],
+ "reconciliation_equal": true,
+ "games_equal": true
+}

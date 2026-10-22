@@ -1,0 +1,305 @@
+{
+ "records_from": "/home/user/wtmorn",
+ "reresolve": {
+  "records": 4,
+  "lines": 838,
+  "changes": [
+   {
+    "date": "2026-10-16",
+    "name": "Labaron Philon Jr.",
+    "before": null,
+    "after": "Labaron Philon",
+    "dnp": false,
+    "regular": false
+   },
+   {
+    "date": "2026-10-16",
+    "name": "Kelly Oubre Jr.",
+    "before": null,
+    "after": "Kelly Oubre",
+    "dnp": false,
+    "regular": false
+   },
+   {
+    "date": "2026-10-16",
+    "name": "Darius Acuff Jr.",
+    "before": null,
+    "after": "Darius Acuff",
+    "dnp": false,
+    "regular": false
+   },
+   {
+    "date": "2026-10-20",
+    "name": "Labaron Philon Jr.",
+    "before": null,
+    "after": "Labaron Philon",
+    "dnp": true,
+    "regular": true
+   },
+   {
+    "date": "2026-10-21",
+    "name": "Mikel Brown Jr.",
+    "before": null,
+    "after": "Mikel Brown",
+    "dnp": false,
+    "regular": true
+   },
+   {
+    "date": "2026-10-21",
+    "name": "Kelly Oubre Jr.",
+    "before": null,
+    "after": "Kelly Oubre",
+    "dnp": false,
+    "regular": true
+   },
+   {
+    "date": "2026-10-21",
+    "name": "Darius Acuff Jr.",
+    "before": null,
+    "after": "Darius Acuff",
+    "dnp": false,
+    "regular": true
+   }
+  ]
+ },
+ "week_card": {
+  "source": "yahoo",
+  "rebuild_agrees": false,
+  "differences": [
+   {
+    "side": "opp",
+    "stat": "fgm",
+    "yahoo": 67,
+    "rebuild": 62
+   },
+   {
+    "side": "opp",
+    "stat": "fga",
+    "yahoo": 163,
+    "rebuild": 153
+   },
+   {
+    "side": "opp",
+    "stat": "ftm",
+    "yahoo": 40,
+    "rebuild": 39
+   },
+   {
+    "side": "opp",
+    "stat": "fta",
+    "yahoo": 57,
+    "rebuild": 55
+   },
+   {
+    "side": "opp",
+    "stat": "tpm",
+    "yahoo": 22,
+    "rebuild": 21
+   },
+   {
+    "side": "opp",
+    "stat": "pts",
+    "yahoo": 196,
+    "rebuild": 184
+   },
+   {
+    "side": "opp",
+    "stat": "reb",
+    "yahoo": 71,
+    "rebuild": 66
+   },
+   {
+    "side": "opp",
+    "stat": "stl",
+    "yahoo": 15,
+    "rebuild": 14
+   }
+  ],
+  "rebuild": {
+   "me": {
+    "fgm": 77,
+    "fga": 146,
+    "ftm": 37,
+    "fta": 48,
+    "tpm": 19,
+    "pts": 210,
+    "reb": 52,
+    "ast": 41,
+    "stl": 15,
+    "blk": 7,
+    "tov": 25
+   },
+   "opp": {
+    "fgm": 62,
+    "fga": 153,
+    "ftm": 39,
+    "fta": 55,
+    "tpm": 21,
+    "pts": 184,
+    "reb": 66,
+    "ast": 39,
+    "stl": 14,
+    "blk": 11,
+    "tov": 22
+   }
+  },
+  "yahoo": {
+   "me": {
+    "fgm": 77,
+    "fga": 146,
+    "ftm": 37,
+    "fta": 48,
+    "tpm": 19,
+    "pts": 210,
+    "reb": 52,
+    "ast": 41,
+    "stl": 15,
+    "blk": 7,
+    "tov": 25
+   },
+   "opp": {
+    "fgm": 67,
+    "fga": 163,
+    "ftm": 40,
+    "fta": 57,
+    "tpm": 22,
+    "pts": 196,
+    "reb": 71,
+    "ast": 39,
+    "stl": 15,
+    "blk": 11,
+    "tov": 22
+   }
+  }
+ },
+ "season_lines": {
+  "projections_season.csv": {
+   "rows": 325,
+   "same_names": true,
+   "changed": {
+    "Mikel Brown": {
+     "fgp": [
+      "0.429",
+      "0.424"
+     ],
+     "fga": [
+      "11.6",
+      "11.5"
+     ],
+     "ftp": [
+      "0.794",
+      "0.796"
+     ],
+     "tpm": [
+      "1.6",
+      "1.5"
+     ],
+     "pts": [
+      "13.5",
+      "12.9"
+     ],
+     "ast": [
+      "4.3",
+      "4.2"
+     ],
+     "tov": [
+      "2.2",
+      "2.1"
+     ]
+    },
+    "Kelly Oubre": {
+     "fgp": [
+      "0.464",
+      "0.463"
+     ],
+     "fga": [
+      "9.5",
+      "9.3"
+     ],
+     "fta": [
+      "2.5",
+      "2.4"
+     ],
+     "tpm": [
+      "1.3",
+      "1.2"
+     ],
+     "pts": [
+      "12.0",
+      "11.4"
+     ],
+     "reb": [
+      "4.5",
+      "4.3"
+     ],
+     "ast": [
+      "1.4",
+      "1.5"
+     ]
+    },
+    "Darius Acuff": {
+     "fgp": [
+      "0.441",
+      "0.426"
+     ],
+     "fga": [
+      "13.6",
+      "14.0"
+     ],
+     "ftp": [
+      "0.808",
+      "0.792"
+     ],
+     "tpm": [
+      "1.8",
+      "1.6"
+     ],
+     "pts": [
+      "16.5",
+      "16.1"
+     ],
+     "ast": [
+      "5.3",
+      "5.1"
+     ],
+     "stl": [
+      "1.0",
+      "1.1"
+     ],
+     "tov": [
+      "2.4",
+      "2.5"
+     ]
+    }
+   }
+  },
+  "pool_season.csv": {
+   "rows": 336,
+   "same_names": true,
+   "changed": {
+    "Herbert Jones": {
+     "fg_pct": [
+      "0.404",
+      "0.406"
+     ],
+     "fga": [
+      "8.5",
+      "8.3"
+     ],
+     "pts": [
+      "9.1",
+      "8.8"
+     ],
+     "reb": [
+      "3.4",
+      "3.3"
+     ],
+     "ast": [
+      "2.7",
+      "2.5"
+     ]
+    }
+   }
+  }
+ }
+}
