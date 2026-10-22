@@ -3,9 +3,11 @@ stored prompt is yours to change. Insert after the line "Call get_matchups once 
 
       - Then call get_roster twice more with as_of_date set to yesterday's date (`date -u -d yesterday +%F`): once for
         team_id "11" (your team) and once for this week's opponent (the team facing team 11 in the get_matchups result).
-        That is 2 calls. "league live" pins them in data/source/flaim/pull_<date>.json, and "week matchup" counts each
+        That is 2 calls. "league live" pins them in data/source/flaim/pull_<date>.json (the afternoon check's rewrite of
+        that file keeps them), and "week matchup" counts each
         past day's active Yahoo slots from the lineups pinned this week; a day with no pinned lineup falls back to
         today's roster, and the card's record names it (rebuild_rosters). These two calls are not part of "Flaim complete": if they fail, say so
         in the report and carry on.
 
-Cost: 2 calls a morning, 14 a week. A day the runner misses stays on the fallback rule (the record says which days).
+Cost: 2 calls a morning, 14 a week; Monday's two fetch Sunday's lineups, which no card reads, so 12 are used. A day the
+runner misses stays on the fallback rule (the record says which days).

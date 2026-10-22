@@ -7,12 +7,12 @@ Pull window: 2026-10-20 → 2026-10-22. The pull is four Flaim `get_roster` call
 **Owner's request.** Asked how the week card's cross-check should treat a player dropped after playing (Gui Santos), the owner chose "Read daily rosters (Recommended)", 2026-10-22 ~15:30Z: build it on its own draft PR, with the rebuild reading Yahoo's roster for each day through Flaim, at most 14 extra calls a week.
 
 **What was analyzed.**
-- Kit `main` `16d0113` (with #168's name fix); this branch `claude/week-card-daily-rosters`.
+- Kit `main` `16d0113` (with #168's name fix), merged forward to `03069b5` (#167); this branch `claude/week-card-daily-rosters`.
 - The committed records of `season/daily` `e7b69bb` (the 14:44Z morning run of 10/22).
 
 **Method, stated to the owner before the build.**
 - For each past day of the week, the rebuild counts the box lines of the players Yahoo had **in an active slot that day** (not BN, IL or IL+), read from Flaim `get_roster` with `as_of_date`.
-- Each day's lineup is pinned once per team. A morning fetches only yesterday's lineup, for you and the opponent: 2 calls a day, 14 a week. Lineups pinned by earlier runs that week are read too, and the latest pin of a day wins.
+- Each day's lineup is pinned once per team. A morning fetches only yesterday's lineup, for you and the opponent: 2 calls a day, 14 a week. Lineups pinned by earlier runs that week are read too, and the latest pin of a day wins. A later run for the same date (the afternoon check) keeps the lineups already pinned in that day's file; for the same team and day its own response wins (stated to the owner before the fix, 2026-10-22).
 - A day with no pinned lineup falls back to today's roster and the ten-slot rule, and the card's record names those days (`rebuild_rosters` in `week_matchup_<date>.json`; the Season Deck page does not show it).
 - Basis: the 10/20–10/21 reconciliation of the opponent-gap assessment (actual lineups reproduced Yahoo on all 11 stats for both teams). That is two days, not yet a season.
 - Red-first: the seven new tests were run on `main`'s code first and all seven failed (4 errors, 3 failures; `daily-rosters-2026-10-22/red_first.txt`). Then the code was written (`green.txt`).
@@ -21,6 +21,7 @@ Pull window: 2026-10-20 → 2026-10-22. The pull is four Flaim `get_roster` call
 - **With Yahoo's daily lineups, the 10/22 card's rebuild equals Yahoo on all 11 stats for both teams.** All four team-days read Yahoo's lineup, and no benched player scored.
 - **Without them** (today's rule, on `main` with the name fix), the opponent's rebuild differs from Yahoo on 8 stats, exactly Gui Santos's 10/21 line (5-10 FG, 1-2 FT, 1 3PM, 12 PTS, 5 REB, 1 STL): he was dropped this morning after playing.
 - **The runner does not fetch the lineups yet.** The two morning calls are proposed text (`daily-rosters-2026-10-22/runner-step-proposed.txt`), not applied. Until they are, every day falls back to today's rule, as before this change.
+- **A second run for the same date keeps the lineups already pinned.** The afternoon check runs `league_live.py` for the morning's date and rewrote that day's pull file, which would have erased the morning's lineups: the card would have read only yesterday's, never an earlier day's. Found by the verify pass and fixed on this branch (§2, "The afternoon check").
 
 ---
 
@@ -28,15 +29,17 @@ Pull window: 2026-10-20 → 2026-10-22. The pull is four Flaim `get_roster` call
 
 | File | Change |
 |---|---|
-| `scripts/flaim_live.py` | `extract_pull` keeps dated `get_roster` responses under `daily`, by team and date (the latest response wins); a dated response is still never read as today's roster. `league_live.py` pins the whole pull, so the lineups are pinned with no change there. |
+| `scripts/flaim_live.py` | `extract_pull` keeps dated `get_roster` responses under `daily`, by team and date (the latest response wins); a dated response is still never read as today's roster. `keep_daily()` carries an earlier pin's lineups into a later pin for the same date. |
+| `scripts/league_live.py` | Both places that write the Flaim pin call `keep_daily()`, so a second run for the same date keeps the lineups already pinned; a Flaim pull short of twelve rosters still pins its dated lineups for the card, as it already did its matchup and available-player list. |
 | `scripts/week_matchup.py` | `to_date()` counts a day's active Yahoo slots when that day's lineup is given, reading box lines under the lineup's spelling; `week_lineups()` gathers the week's pinned lineups (earlier pulls first, the run's own last); `build()` passes each team's lineups and records each day's source in `rebuild_rosters`; the method text says which rule ran. |
-| tests | 7 new: 3 in `test_flaim_live.py` (`Extract`), 4 in `test_week_matchup.py` (`Record`). |
+| tests | 12 new: 6 in `test_flaim_live.py` (`Extract`), 4 in `test_week_matchup.py` (`Record`), 2 in `test_league_live.py` (`FlaimFirst`). |
 
 ## 2. Evidence (all EVIDENCE: measured on this branch, records named)
 
 **Tests.**
 - New tests on `main`'s code: 7 of 7 fail (`red_first.txt`). With the change, all 45 tests in the two files pass (`green.txt`).
-- Full suite: 349 tests, two runs, identical results (`suite.txt`). 347 pass, 1 is skipped, and 1 fails: `test_matchup_live.Record.test_todays_transcript_yields_todays_outlook`.
+- The five tests of the afternoon fix on the code before it (`99b24e9`): 5 of 5 fail, 3 errors (`keep_daily` absent), 1 error (a lineup-only pull pinned nothing) and 1 failure (the second run's pin had lost the first run's lineup: `{}`) (`red_pin_fix.txt`). With the fix, `test_flaim_live.py` 17, `test_league_live.py` 21 and `test_week_matchup.py` 31 all pass (`green_pin_fix.txt`).
+- Full suite on the fix: 354 tests, two runs, identical results (`suite_pin_fix.txt`, which names the command). 352 pass, 1 is skipped, and 1 fails: `test_matchup_live.Record.test_todays_transcript_yields_todays_outlook`. Before the fix: 349, the same one failure (`suite.txt`).
 - That failure is pre-existing. It fails identically on `main` (the name-fix after-report recorded it on `af625a8`). It reads today's live session transcript and expects a fixed opponent name from an earlier date. It is unrelated to this change and was left untouched.
 
 **The 10/22 card on the `e7b69bb` records** (`daily-rosters-2026-10-22/evidence.py`, two runs, identical `evidence.json`):
@@ -45,6 +48,11 @@ Pull window: 2026-10-20 → 2026-10-22. The pull is four Flaim `get_roster` call
 |---|---|---|
 | without lineups (the run's own pull) | 8 opponent stats differ: FGM 62/67, FGA 153/163, FTM 39/40, FTA 55/57, 3PM 21/22, PTS 184/196, REB 66/71, STL 14/15 | 0 of 4 |
 | with the 10/20–10/21 lineups | 0 differ, both sides | 4 of 4 |
+
+**The afternoon check** (found by the verify pass, 2026-10-22 ~15:48Z, while the gates ran on `0d8e1d2`).
+- The cause: `league_live.py` writes `data/source/flaim/pull_<date>.json` afresh on every run. The afternoon check (stored at 3:00 PM Pacific, first run 22:04Z today) runs it for the morning's UTC date with a pull that has no dated lineup, so each afternoon would have erased the lineup the morning pinned. The next morning's card reads earlier days from those files: it would have found only yesterday's lineup, and every earlier day would have fallen back to today's roster. The record would have said so (`today` in `rebuild_rosters`), but the build would not have done what you chose.
+- The test on real data (`daily-rosters-2026-10-22/afternoon.py`, output `afternoon.txt`): the morning of 10/22 pins the four 10/20–10/21 lineups; the afternoon check runs on the `e7b69bb` run's own pull; the 10/23 card then gathers the week's lineups. Code before the fix: 0 lineups, twice. With the fix: 4 (both teams, 10/20 and 10/21), twice.
+- What the fix keeps: only the dated lineups. Today's rosters, the matchup and the available-player list in that file are still the latest run's, as before.
 
 ## 3. Bounds
 
@@ -66,11 +74,14 @@ Pull window: 2026-10-20 → 2026-10-22. The pull is four Flaim `get_roster` call
 
 1. **Merge this PR?** It is a draft; gates are run on it before any merge (RULES 7).
 2. **Store the runner step?** The two morning calls in `runner-step-proposed.txt`, in the runner's own conversation. Without them the change does nothing on its own.
+3. **The afternoon rewrite of the morning's pull file (older than this PR, not changed here).** The afternoon check replaces the morning's matchup and available-player list in `pull_<date>.json`. The week card records that file's sha256, so after 3 PM the recorded hash no longer matches the file on `season/daily`; the morning's bytes stay in git at the morning commit. Options: (a) leave it, the morning commit is the record; (b) have the afternoon check pin under its own name, a separate PR on your word. Recommended: (a); the morning commit keeps the card's inputs exact, and nothing reads that file after 3 PM today.
 
 ## Watchlist
 
 - **The first morning after both merge and the runner step is stored:** its record's `rebuild_rosters` should read `yahoo` for yesterday, both teams, and the cross-check should agree with Yahoo unless a game was still in progress at the pull.
 - **A day the runner misses** shows as `today` in the record's `rebuild_rosters` for the rest of the week (the page does not show it).
+- **The first afternoon check after the merge:** `pull_<date>.json` on `season/daily` should still carry the morning's lineups under `daily`.
+- **Monday's two calls fetch Sunday's lineups, which no card reads** (Sunday is never a past day of the current week, and the old week's card is done). 12 of the 14 weekly calls are used.
 - **Week 1 ends 10/25**, the first week a whole set of lineups could be pinned.
 
 ## Open-item receipts

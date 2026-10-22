@@ -178,8 +178,8 @@ class FlaimFirst(unittest.TestCase):
     FantasyBot is the fallback when the Flaim pull is missing or incomplete."""
     PIN = os.path.join(os.path.dirname(HERE), "data", "source", "flaim", "pull_2026-10-21.json")
 
-    def run_live(self, *args):
-        tdir = tempfile.mkdtemp()
+    def run_live(self, *args, tdir=None):
+        tdir = tdir or tempfile.mkdtemp()
         out = os.path.join(tdir, "league_state.json")
         p = subprocess.run([sys.executable, os.path.join(HERE, "league_live.py"), "--as-of", "2026-10-21", "--out", out,
                             "--pin-dir", tdir, "--flaim-pin-dir", tdir] + list(args), capture_output=True, text=True)
@@ -201,6 +201,21 @@ class FlaimFirst(unittest.TestCase):
         self.assertEqual([pl["status"] for pl in porter], ["NA"])
         drummond = [(t["name"], pl["slot"]) for t in state["teams"] for pl in t["players"] if pl["player"] == "Andre Drummond"]
         self.assertEqual(drummond, [("Podz save the league", "BN")])
+
+    @unittest.skipUnless(os.path.exists(PIN), "no pinned Flaim pull")
+    def test_a_second_run_for_the_same_date_keeps_the_dated_lineups_the_first_pinned(self):
+        # owner 2026-10-22 ("Read daily rosters"): the afternoon check runs league live for the morning's date with no
+        # dated lineup in its pull; the week card reads the morning's lineups from this file on later days
+        tdir = tempfile.mkdtemp()
+        morning = json.load(open(self.PIN, encoding="utf-8"))
+        team = sorted(morning["rosters"])[0]
+        morning["daily"] = {team: {"2026-10-20": dict(morning["rosters"][team], snapshot={"type": "date", "date": "2026-10-20"})}}
+        with open(os.path.join(tdir, "pull_2026-10-21.json"), "w", encoding="utf-8") as f:
+            json.dump(morning, f)
+        p, out, _ = self.run_live("--source", "flaim", "--pull", self.PIN, tdir=tdir)
+        self.assertIn("LEAGUE LIVE: PASS", p.stdout, p.stdout + p.stderr)
+        pinned = json.load(open(os.path.join(tdir, "pull_2026-10-21.json"), encoding="utf-8"))
+        self.assertEqual({t: sorted(d) for t, d in (pinned.get("daily") or {}).items()}, {team: ["2026-10-20"]})
 
     @unittest.skipUnless(os.path.exists(PIN), "no pinned Flaim pull")
     def test_an_active_player_with_no_pool_row_still_halts_and_writes_nothing(self):
@@ -238,6 +253,19 @@ class FlaimFirst(unittest.TestCase):
         self.assertIn("Flaim pull not used", p.stdout, p.stdout)
         pinned = json.load(open(os.path.join(tdir, "pull_2026-10-21.json"), encoding="utf-8"))
         self.assertEqual((pinned["source"], sorted(pinned["matchups"])), ("flaim", ["1"]))
+
+    def test_a_flaim_pull_without_twelve_rosters_still_pins_its_dated_lineups_for_the_week_card(self):
+        # owner 2026-10-22 ("Read daily rosters"): a past day's lineup is pinned even when today's rosters fall short
+        import test_flaim_live as TFL
+        fd, tr = tempfile.mkstemp(suffix=".jsonl")
+        with os.fdopen(fd, "w", encoding="utf-8") as f:
+            for i in range(1, 12):
+                f.write(TFL.line("2026-10-22T12:55:00Z", TFL.roster(i, f"T{i}", [("A", "BOS", "PG", "PG", None)])))
+            f.write(TFL.line("2026-10-22T12:55:30Z", TFL.roster(11, "T11", [("A", "BOS", "PG", "PG", None)], snapshot="2026-10-20")))
+        p, out, tdir = self.run_live("--transcript", tr)
+        self.assertIn("Flaim pull not used", p.stdout, p.stdout)
+        pinned = json.load(open(os.path.join(tdir, "pull_2026-10-21.json"), encoding="utf-8"))
+        self.assertEqual({t: sorted(d) for t, d in pinned["daily"].items()}, {f"{TFL.KEY}.t.11": ["2026-10-20"]})
 
 
 if __name__ == "__main__":

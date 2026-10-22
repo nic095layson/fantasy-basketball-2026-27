@@ -13,7 +13,8 @@ FantasyBot: nothing is retyped.
 
 Responses are told apart by shape and kept only for this league (LEAGUE_KEY): a roster has data.teamKey under the
 league, data.snapshot.type == "current" and data.players (a dated snapshot is history, never today's roster — it is
-kept apart, under daily, by team and date); a matchup response has data.matchups; an available-player list has
+kept apart, under daily, by team and date, and a later pin for the same date keeps it: keep_daily); a matchup
+response has data.matchups; an available-player list has
 data.freeAgents. With since (the run's start), only transcript entries stamped at or after it count.
 
 league_live.py uses this first and FantasyBot only when the Flaim pull is missing or incomplete; history() pins
@@ -93,6 +94,20 @@ def extract_pull(transcript, since=None):
                 walk(o.get("message") if isinstance(o, dict) and "message" in o else o)
     return {"source": "flaim", "league_key": LEAGUE_KEY, "rosters": rosters, "daily": daily, "matchups": weeks,
             "free_agents": fa}
+
+
+def keep_daily(pull, path):
+    """The pull to pin at path, carrying the dated lineups an earlier pin there holds. A later run for the same date
+    (the afternoon check) rewrites the morning's file with a pull that has none, and the week card reads the morning's
+    on later days; a past day's lineup is history, so it is kept. For the same team and day the later pull wins."""
+    if not os.path.exists(path):
+        return pull
+    with open(path, encoding="utf-8") as f:
+        earlier = json.load(f).get("daily") or {}
+    daily = {team: dict(days) for team, days in earlier.items()}
+    for team, days in (pull.get("daily") or {}).items():
+        daily.setdefault(team, {}).update(days)
+    return dict(pull, daily=daily)
 
 
 def check_pull(pull):

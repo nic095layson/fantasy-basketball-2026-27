@@ -1,0 +1,9 @@
+# python3 -m unittest discover -s scripts -p 'test_*.py'  (kit root, working tree = 99b24e9 + the pin fix), two runs, 2026-10-22T15:53:12Z
+## run 1
+FAIL: test_todays_transcript_yields_todays_outlook (test_matchup_live.Record.test_todays_transcript_yields_todays_outlook)
+Ran 354 tests in 41.356s
+FAILED (failures=1, skipped=1)
+## run 2
+FAIL: test_todays_transcript_yields_todays_outlook (test_matchup_live.Record.test_todays_transcript_yields_todays_outlook)
+Ran 354 tests in 39.645s
+FAILED (failures=1, skipped=1)

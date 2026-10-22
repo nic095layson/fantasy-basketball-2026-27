@@ -114,6 +114,32 @@ class Extract(unittest.TestCase):
         other["data"]["teamKey"] = "466.l.17544.t.5"
         self.assertEqual(FL.extract_pull(self.write(line("2026-10-22T12:57:00Z", other)))["daily"], {})
 
+    def test_a_later_pin_for_the_same_date_keeps_an_earlier_pins_lineups(self):
+        # the afternoon check rewrites the morning's pull file and fetches no dated lineup; the week card reads the
+        # morning's on later days (found by the verify pass, 2026-10-22)
+        morning = roster(3, "Team 3", [("Played", "BOS", "PG", "PG", None)], snapshot="2026-10-20")["data"]
+        pull = FL.keep_daily({"source": "flaim", "daily": {}}, self.pin({f"{KEY}.t.3": {"2026-10-20": morning}}))
+        self.assertEqual(pull["daily"][f"{KEY}.t.3"]["2026-10-20"]["players"][0]["name"], "Played")
+
+    def test_the_later_pin_wins_for_a_team_and_day_and_keeps_the_other_days(self):
+        old = roster(3, "Team 3", [("Old", "BOS", "PG", "PG", None)], snapshot="2026-10-20")["data"]
+        kept = roster(3, "Team 3", [("Kept", "BOS", "PG", "PG", None)], snapshot="2026-10-21")["data"]
+        new = roster(3, "Team 3", [("New", "BOS", "PG", "PG", None)], snapshot="2026-10-20")["data"]
+        pull = FL.keep_daily({"source": "flaim", "daily": {f"{KEY}.t.3": {"2026-10-20": new}}},
+                             self.pin({f"{KEY}.t.3": {"2026-10-20": old, "2026-10-21": kept}}))
+        self.assertEqual({d: r["players"][0]["name"] for d, r in pull["daily"][f"{KEY}.t.3"].items()},
+                         {"2026-10-20": "New", "2026-10-21": "Kept"})
+
+    def test_with_no_earlier_pin_the_pull_is_pinned_as_it_is(self):
+        pull = {"source": "flaim", "daily": {}}
+        self.assertEqual(FL.keep_daily(dict(pull), os.path.join(tempfile.mkdtemp(), "pull_2026-10-22.json")), pull)
+
+    def pin(self, daily):
+        fd, p = tempfile.mkstemp(suffix=".json")
+        with os.fdopen(fd, "w", encoding="utf-8") as f:
+            json.dump({"source": "flaim", "daily": daily}, f)
+        return p
+
     def test_another_leagues_rosters_are_ignored(self):
         other = roster(5, "Elsewhere", [("Ghost", "BOS", "PG", "PG", None)])
         other["data"]["teamKey"] = "466.l.17544.t.5"
