@@ -1,0 +1,88 @@
+{
+ "state": "data/league_state.json",
+ "shortlist": 40,
+ "pairs": 520,
+ "expected_categories": {
+  "before": 5.2996,
+  "after": 5.2251
+ },
+ "positive_swaps": {
+  "before": [
+   [
+    "Bobby Portis",
+    "Christian Braun",
+    0.0304
+   ],
+   [
+    "Jrue Holiday",
+    "Christian Braun",
+    0.0047
+   ]
+  ],
+  "after": [
+   [
+    "Bobby Portis",
+    "Christian Braun",
+    0.0257
+   ]
+  ]
+ },
+ "top5_before_with_after": [
+  {
+   "add": "Bobby Portis",
+   "drop": "Christian Braun",
+   "before": 0.0304,
+   "after": 0.0257
+  },
+  {
+   "add": "Jrue Holiday",
+   "drop": "Christian Braun",
+   "before": 0.0047,
+   "after": -0.0042
+  },
+  {
+   "add": "Aaron Nesmith",
+   "drop": "Christian Braun",
+   "before": -0.0039,
+   "after": -0.0103
+  },
+  {
+   "add": "Nikola Vucevic",
+   "drop": "Christian Braun",
+   "before": -0.0129,
+   "after": -0.0096
+  },
+  {
+   "add": "Anthony Black",
+   "drop": "Christian Braun",
+   "before": -0.0145,
+   "after": -0.0355
+  }
+ ],
+ "title_odds": {
+  "before": {
+   "2026": {
+    "title": 24.48,
+    "playoffs": 99.61,
+    "cats_per_week": 5.310935294117647
+   },
+   "2027": {
+    "title": 23.72,
+    "playoffs": 99.68,
+    "cats_per_week": 5.31295294117647
+   }
+  },
+  "after": {
+   "2026": {
+    "title": 24.69,
+    "playoffs": 99.27,
+    "cats_per_week": 5.2347
+   },
+   "2027": {
+    "title": 22.94,
+    "playoffs": 99.39,
+    "cats_per_week": 5.237147058823529
+   }
+  }
+ }
+}

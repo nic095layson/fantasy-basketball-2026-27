@@ -32,9 +32,10 @@ REGISTRY = os.path.join(HERE, "constants_registry.json")
 STATE = "arena/data/states/draft_state_100.json"
 POOL = "arena/results/players_v69.csv"
 # The 10k reference of the engine the sweep runs on (league_sim.py --verify, 17 weeks, reseeded). Regenerated when the
-# engine moves the reference: _av0 = recovery and out-* at 0.0 (2026-10-21); the _w17r files keep the 0.60-recovery
-# engine's figures that earlier reports cite.
-REFERENCE = "arena/results/m100_league_sim_10k_s{seed}_w17r_av0.json"
+# engine moves the reference: _av0 = recovery and out-* at 0.0 (2026-10-21); _scv = the same on arena.SEASON_CV, the
+# season tools' per-game variation fitted to the 2025-26 game logs (D-ZS-3, 2026-10-21); the _w17r and _av0 files keep
+# the figures that earlier reports cite.
+REFERENCE = "arena/results/m100_league_sim_10k_s{seed}_w17r_av0_scv.json"
 OWNER_SEAT = 10
 TIERS = ((1.0, "ROBUST"), (2.0, "SENSITIVE"))
 
@@ -85,7 +86,8 @@ def _job(args):
         arena.weekly_availability = lambda p, h=h, r=r, orig=orig: (
             r if orig(p) == 0.75 else h if orig(p) == 0.88 else orig(p))
     if "cv" in patch:
-        arena.CV = {c: v * patch["cv"] for c, v in arena.CV.items()}
+        # the season headline's per-game variation is SEASON_CV since D-ZS-3 (arena.CV is the frozen draft engine's)
+        arena.SEASON_CV = {c: v * patch["cv"] for c, v in arena.SEASON_CV.items()}
     if "games" in patch:
         # the 3.5 games/week is a literal inside team_week_model, not a module constant: re-compile the
         # function with the literal replaced, in arena's own namespace
@@ -97,7 +99,7 @@ def _job(args):
         ns = vars(arena)
         exec(compile(new, arena.__file__, "exec"), ns)
     rng = random.Random(seed)
-    champ, po = arena.simulate_seasons(ros, seasons, rng)
+    champ, po = arena.simulate_seasons(ros, seasons, rng, cv=arena.SEASON_CV)
     return label, seed, 100 * champ[OWNER_SEAT] / seasons, 100 * po[OWNER_SEAT] / seasons
 
 

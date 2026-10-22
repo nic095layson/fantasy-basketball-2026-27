@@ -1,16 +1,17 @@
 {
  "verdict": "PASS",
- "engine_commit": "80eecdf",
- "registered": 31,
- "live": 31,
+ "engine_commit": "048efb6",
+ "registered": 32,
+ "live": 32,
  "by_status": {
   "settings": 7,
   "structural": 4,
-  "declared_band": 6,
-  "measured": 6,
-  "uncalibrated": 8
+  "declared_band": 5,
+  "uncalibrated": 9,
+  "measured": 7
  },
  "uncalibrated": [
+  "arena.CV",
   "arena.GRAD_K",
   "arena.GRAD_SCALE",
   "arena.MKT_W",
@@ -22,7 +23,6 @@
  ],
  "declared_band": [
   "arena.BENCH_WEIGHT",
-  "arena.CV",
   "arena.PCT_MIX_INFL",
   "arena.TEAM_WEEK_SHOCK",
   "arena.weekly_availability",

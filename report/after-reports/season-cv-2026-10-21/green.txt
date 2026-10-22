@@ -1,0 +1,31 @@
+/home/user/kit-scv/scripts/test_season_cv.py:47: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/kit-scv/data/league_state.json' mode='r' encoding='utf-8'>
+  cls.state = json.load(open(CG.STATE, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+test_the_registry_holds_the_fit_and_freezes_the_draft_cv (__main__.SeasonTools.test_the_registry_holds_the_fit_and_freezes_the_draft_cv) ... /home/user/kit-scv/scripts/test_season_cv.py:81: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/kit-scv/scripts/redteam/constants_registry.json' mode='r' encoding='utf-8'>
+  reg = {(e["module"], e["name"]): e for e in json.load(open(REG, encoding="utf-8"))["constants"]}
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_the_standing_sweep_runs_on_the_season_cv (__main__.SeasonTools.test_the_standing_sweep_runs_on_the_season_cv) ... /home/user/kit-scv/scripts/test_season_cv.py:75: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/kit-scv/../yahoo-fantasy-basketball/arena/data/states/draft_state_100.json' mode='r' encoding='utf-8'>
+  for pk in json.load(open(os.path.join(CG.DECK, S.STATE), encoding="utf-8"))["picks"]:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_the_title_odds_simulator_runs_on_the_season_cv (__main__.SeasonTools.test_the_title_odds_simulator_runs_on_the_season_cv) ... /home/user/kit-scv/scripts/co_gm.py:176: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpfmb4ci8b/_state_cur_2026.json' mode='w' encoding='utf-8'>
+  json.dump(sim_state(ros), open(sp, "w", encoding="utf-8"), ensure_ascii=False)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/kit-scv/scripts/co_gm.py:179: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpfmb4ci8b/_sim_cur_2026.json' mode='r' encoding='utf-8'>
+  rec = json.load(open(op, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_the_weekly_preview_uses_the_season_cv (__main__.SeasonTools.test_the_weekly_preview_uses_the_season_cv) ... /home/user/kit-scv/scripts/weekly_preview.py:60: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/kit-scv/data/league_state.json' mode='r' encoding='utf-8'>
+  state = json.load(open(CG.STATE, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/kit-scv/scripts/weekly_preview.py:61: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/kit-scv/data/league_schedule.json' mode='r' encoding='utf-8'>
+  sched = json.load(open(CG.SCHEDULE, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_waiver_swaps_use_the_season_cv (__main__.SeasonTools.test_waiver_swaps_use_the_season_cv) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 2.944s
+
+OK
