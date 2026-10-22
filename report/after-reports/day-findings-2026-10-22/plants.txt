@@ -1,6 +1,6 @@
 Known-answer test of trace.py (2026-10-22): five wrong figures planted, one at a time, into a copy of the report
-(TRACE_REPORT=<copy>); each run must FAIL. All five did; the unplanted report PASSES (752 figures, 0 unmatched,
-70 of 70 checks), and two runs write byte-identical trace.json.
+(TRACE_REPORT=<copy>); each run must FAIL. All five did; the unplanted report PASSES (804 figures, 0 unmatched,
+77 of 77 checks after the 05:54 PT update), and two runs write byte-identical trace.json.
 
 plant                                              trace verdict on the copy
 5.2996 -> 5.2969 (expected categories, before)     FAIL: 1 unmatched ['5.2969']
@@ -16,3 +16,5 @@ History, stated plainly:
   order varies with hash randomization; it now iterates in sorted order.
 - After this file was written, two plants passed: the trace read this file as a source, and this file names the
   planted values. It is now excluded from the sources, and all five plants fail again.
+- 2026-10-22 05:54 PT update: a sixth plant ("split 6 and 7" -> "split 7 and 6") fails on the new binding check; the
+  5.2996 and "Seven reached" plants were re-run and still fail.

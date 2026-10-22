@@ -1,0 +1,106 @@
+{
+ "commit": "51cf6b3",
+ "file": "report/briefs/week_matchup_2026-10-22.json",
+ "yahoo_pull_input": {
+  "path": "data/source/flaim/pull_2026-10-22.json",
+  "sha256": "4900ea890f891f3819bc7c5d8a41994bda041d6c773bb1fe0d66548ccca480d5"
+ },
+ "to_date_source": {
+  "source": "yahoo",
+  "reason": null,
+  "rebuild_agrees": false,
+  "differences": [
+   {
+    "side": "me",
+    "stat": "fgm",
+    "yahoo": 74,
+    "rebuild": 77
+   },
+   {
+    "side": "me",
+    "stat": "fga",
+    "yahoo": 139,
+    "rebuild": 146
+   },
+   {
+    "side": "me",
+    "stat": "ftm",
+    "yahoo": 36,
+    "rebuild": 37
+   },
+   {
+    "side": "me",
+    "stat": "fta",
+    "yahoo": 45,
+    "rebuild": 48
+   },
+   {
+    "side": "me",
+    "stat": "pts",
+    "yahoo": 203,
+    "rebuild": 210
+   },
+   {
+    "side": "me",
+    "stat": "reb",
+    "yahoo": 48,
+    "rebuild": 52
+   },
+   {
+    "side": "opp",
+    "stat": "fga",
+    "yahoo": 149,
+    "rebuild": 139
+   },
+   {
+    "side": "opp",
+    "stat": "ftm",
+    "yahoo": 39,
+    "rebuild": 38
+   },
+   {
+    "side": "opp",
+    "stat": "fta",
+    "yahoo": 55,
+    "rebuild": 52
+   },
+   {
+    "side": "opp",
+    "stat": "pts",
+    "yahoo": 185,
+    "rebuild": 184
+   },
+   {
+    "side": "opp",
+    "stat": "ast",
+    "yahoo": 39,
+    "rebuild": 36
+   },
+   {
+    "side": "opp",
+    "stat": "stl",
+    "yahoo": 14,
+    "rebuild": 12
+   },
+   {
+    "side": "opp",
+    "stat": "tov",
+    "yahoo": 20,
+    "rebuild": 18
+   }
+  ],
+  "yahoo_games_remaining": {
+   "me": 22,
+   "opp": 26
+  },
+  "yahoo_names": {
+   "me": "KEL'EL YAXEL HALQUETA",
+   "opp": "MAXEY-MUM OVERDRIVE"
+  }
+ },
+ "n_differences": 13,
+ "n_me": 6,
+ "n_opp": 7,
+ "me_rebuild_higher_in_all": true,
+ "opp_yahoo_higher_in_all": true
+}

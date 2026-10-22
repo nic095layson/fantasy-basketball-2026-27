@@ -34,7 +34,8 @@ Pull window: 2026-10-21 → 2026-10-22. No league or market pull and no web sear
 - **Everything merged today has now run once, but on part of a day's games.**
   - The runner ran a morning at 20:43 PT on your pasted prompt, on main `af625a8` (§3).
   - At that hour only 8 of Tuesday's 11 games were final; the three West Coast games were not.
-  - The run still passed, its records are dated 2026-10-22, and the live Season Deck now shows that partial picture.
+  - The run still passed, its records are dated 2026-10-22, and the live Season Deck showed that partial picture until the next run.
+  - **Update, 05:54 PT 10/22:** the scheduled run rebuilt everything on all 11 games and republished. Its week card still shows the mid-game Yahoo figures as "to date", and my explanation of the 21-stat gap held for your side only (§3).
   - The same run was Yahoo-through-Flaim's first live morning:
     - Yahoo's matchup came back, so the week card's to-date column is Yahoo's;
     - only 4 of 12 rosters and no free-agent list arrived (a Yahoo sign-in refresh error), so rosters came from FantasyBot.
@@ -160,9 +161,23 @@ The runner's commit `847748e`, "Morning run 2026-10-22", landed on `season/daily
   - deck render 6 tabs, 0 page errors, published as version 1792640745-5b2e.
 - **The stored prompt is unchanged.** `updated_at` is 2026-10-21T14:48:41Z, read tonight, and its step 3 is "FantasyBot pull" with no Flaim step (`stored_prompt_read.json`). So tonight's run used your pasted text. The 05:53 PT scheduled run reads the stored text.
 
-**What this means (INFERENCE).**
+**What this means (INFERENCE, as first written on the evening of 10/21).**
 - The live Season Deck, the brief and the season lines now rest on 8 of Tuesday's 11 games.
 - The 05:53 PT run will also be dated 2026-10-22 (the same UTC rule). It should re-pull 10/21 with all games final and rewrite these records. Watch that its box line says 11 games (Watchlist).
+
+**Update, 2026-10-22 05:54 PT: the scheduled run (`51cf6b3`), pinned in `runner-2026-10-22/*_0554PT.*`.** EVIDENCE:
+- **The partial day is replaced.**
+  - ESPN listed 11 events and 11 final; the box record holds 11 games from two outlets (`box_2026-10-21_sources_0554PT.json`).
+  - The deck was republished as version 1792673766-2b1d, render 6 tabs, 0 page errors. This session's render check of the live page agrees.
+- **The week card still shows the 03:43Z Yahoo figures as "to date".**
+  - The stored prompt made no Flaim call, so the card read the same Yahoo pin as the evening run. Both runs record the same sha256, 4900ea890f89.
+  - The card says "rebuild differs on 13 stat(s)", but nothing on it says the Yahoo figures were read mid-game.
+- **The inference above held for your side only.** Against the complete rebuild, the 13 differences split 6 and 7 (`week_card_to_date_0554PT.json`):
+  - **Your side:** the rebuild is higher on all 6 (PTS 210 against Yahoo's 203). That is what unfinished games at 03:43Z predict.
+  - **The opponent's side:** Yahoo's mid-game figure is higher than the complete rebuild on all 7 (FGA 149 against 139).
+    - Unfinished games cannot explain that.
+    - The rebuild undercounts the opponent for some other reason; the card's method M2 (current roster, ten-slot rule) is the first candidate.
+    - Not diagnosed here.
 
 ## 4. Gaps found, still open
 
@@ -273,6 +288,7 @@ Taken from each report's own errors section, plus four found while writing this 
 - **The 05:53 PT run (12:53Z) reads the stored prompt, which has no Flaim step,** unless you store the new one first. It will also be dated 2026-10-22. Check that:
   - its box line says 11 games for 10/21;
   - it rewrites tonight's partial records and republishes the deck.
+  - *Observed at 05:54 PT:* both happened (`51cf6b3`, §3 update). The week card's to-date column still reads the 03:43Z Yahoo pin.
 - **Week 1 ends 10/25.** It is the first chance to score a prediction: the pre-week 60.6 % against the week card's 3–6–0.
 - **Attack records** are CURRENT on 048efb6. Any deck commit marks them STALE until the attacks are re-run.
 - **#164 and #166:** the second to merge needs main merged in first.
@@ -337,7 +353,10 @@ Near misses (the 🎯 in 5+ mocks, under 25 places): Jamal Murray (18 mocks, val
 
 **In scope and unverified:**
 - **How much the draft-day lines move today's title odds** (§4 item 1). NOT-ATTEMPTED: measuring it is decision D-DAY-1 (b). The finding itself does not depend on the size.
-- **Why Yahoo exceeds the rebuild on 21 stats tonight** (§3). Labelled INFERENCE: three games not final. Comparing tonight's Yahoo figures game by game was not attempted. The 05:53 PT run's two-day comparison, with every game final, will test it.
+- **Why Yahoo exceeds the rebuild on 21 stats tonight** (§3). Labelled INFERENCE: three games not final.
+  - Comparing tonight's Yahoo figures game by game was not attempted.
+  - Tested by the 05:54 PT run, against a complete rebuild: it holds for your side (6 of 6) and fails for the opponent's (7 of 7 still lower in the rebuild).
+  - So the opponent-side gap has another cause, not diagnosed (NOT-ATTEMPTED). A fresh Yahoo pull with every game final would separate the two.
 - **Whether every report's errors section is complete.** Each report wrote its own; this report adds four it found (A7, A8, A9, S1). A full re-audit was not attempted.
 - **How tight the trace is.**
   - `trace.py` finds each number in *a* cited source, not necessarily in the one named beside it. A distinctive figure (5.2996, #165) is effectively pinned; a small number like 3 is not.

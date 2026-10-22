@@ -189,6 +189,19 @@ def counts(text, src):
     check("the three named games are absent from the 10/21 box record", True,
           not any(n in g for g in box["games_in_record"] for n in named))
 
+    # the 05:54 PT update (§3): the scheduled run's record, bound to the prose
+    wk2 = json.loads(src[os.path.join("runner-2026-10-22", "week_card_to_date_0554PT.json")])
+    box2 = json.loads(src[os.path.join("runner-2026-10-22", "box_2026-10-21_sources_0554PT.json")])
+    c2 = src[os.path.join("runner-2026-10-22", "commit_0554PT.txt")]
+    check("05:54 run: ESPN events and finals", (11, 11), (box2["espn_events"], box2["espn_final"]))
+    says("05:54 run box line", f"ESPN listed {box2['espn_events']} events and {box2['espn_final']} final")
+    says("05:54 run split", f"the {wk2['n_differences']} differences split {wk2['n_me']} and {wk2['n_opp']}")
+    check("05:54 run: rebuild higher on every one of yours", True, wk2["me_rebuild_higher_in_all"])
+    check("05:54 run: Yahoo higher on every one of theirs", True, wk2["opp_yahoo_higher_in_all"])
+    sha = wk2["yahoo_pull_input"]["sha256"]
+    check("both runs read the same Yahoo pin", True, f"847748e (20:46 PT run): {sha}" in c2)
+    says("the shared pin's sha256 prefix", sha[:12])
+
     # R1: each of the 20 reports is cited outside the commit-time table
     table_start = text.index("**The 20 reports, by commit time**")
     table_end = text.index("## 2. Did the data model improve?")

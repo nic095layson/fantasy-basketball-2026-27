@@ -30,15 +30,19 @@
   "report_commit_times.txt",
   "request.json",
   "runner-2026-10-22/box_2026-10-21_sources.json",
+  "runner-2026-10-22/box_2026-10-21_sources_0554PT.json",
   "runner-2026-10-22/commit.txt",
+  "runner-2026-10-22/commit_0554PT.txt",
   "runner-2026-10-22/morning_report_2026-10-22.md",
+  "runner-2026-10-22/morning_report_2026-10-22_0554PT.md",
   "runner-2026-10-22/schedule_2026-10-21.csv",
   "runner-2026-10-22/stored_prompt_read.json",
   "runner-2026-10-22/week_card_to_date.json",
+  "runner-2026-10-22/week_card_to_date_0554PT.json",
   "runner-2026-10-22/west_coast_players.json",
   "scripts/co_gm.py"
  ],
- "tokens": 752,
+ "tokens": 804,
  "unmatched": [],
  "count_checks": [
   {
@@ -275,6 +279,54 @@
   },
   {
    "check": "the three named games are absent from the 10/21 box record",
+   "claimed": true,
+   "actual": true,
+   "ok": true
+  },
+  {
+   "check": "05:54 run: ESPN events and finals",
+   "claimed": [
+    11,
+    11
+   ],
+   "actual": [
+    11,
+    11
+   ],
+   "ok": true
+  },
+  {
+   "check": "prose states: 05:54 run box line",
+   "claimed": true,
+   "actual": true,
+   "ok": true
+  },
+  {
+   "check": "prose states: 05:54 run split",
+   "claimed": true,
+   "actual": true,
+   "ok": true
+  },
+  {
+   "check": "05:54 run: rebuild higher on every one of yours",
+   "claimed": true,
+   "actual": true,
+   "ok": true
+  },
+  {
+   "check": "05:54 run: Yahoo higher on every one of theirs",
+   "claimed": true,
+   "actual": true,
+   "ok": true
+  },
+  {
+   "check": "both runs read the same Yahoo pin",
+   "claimed": true,
+   "actual": true,
+   "ok": true
+  },
+  {
+   "check": "prose states: the shared pin's sha256 prefix",
    "claimed": true,
    "actual": true,
    "ok": true
@@ -809,6 +861,36 @@
   {
    "token": "2026-10-22",
    "kind": "date",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "05:54",
+   "kind": "clock",
+   "source": "runner-2026-10-22/commit_0554PT.txt"
+  },
+  {
+   "token": "10",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "22",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "11",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "21",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "3",
+   "kind": "num",
    "source": "after-report-2026-10-21-board-test.md"
   },
   {
@@ -2412,6 +2494,16 @@
    "source": "after-report-2026-10-21-board-test.md"
   },
   {
+   "token": "10",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "21",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
    "token": "8",
    "kind": "num",
    "source": "after-report-2026-10-21-board-test.md"
@@ -2443,6 +2535,181 @@
   },
   {
    "token": "11",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "2026-10-22",
+   "kind": "date",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "05:54",
+   "kind": "clock",
+   "source": "runner-2026-10-22/commit_0554PT.txt"
+  },
+  {
+   "token": "51cf6b3",
+   "kind": "hash",
+   "source": "runner-2026-10-22/box_2026-10-21_sources_0554PT.json"
+  },
+  {
+   "token": "-2026",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "-10",
+   "kind": "num",
+   "source": "after-report-2026-10-21-merge-check.md"
+  },
+  {
+   "token": "-22",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "0554",
+   "kind": "num",
+   "source": "runner-2026-10-22/commit_0554PT.txt"
+  },
+  {
+   "token": "11",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "11",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "11",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "2026-10-21",
+   "kind": "date",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "0554",
+   "kind": "num",
+   "source": "runner-2026-10-22/commit_0554PT.txt"
+  },
+  {
+   "token": "1792673766",
+   "kind": "num",
+   "source": "runner-2026-10-22/morning_report_2026-10-22_0554PT.md"
+  },
+  {
+   "token": "-2",
+   "kind": "num",
+   "source": "after-report-2026-10-21-corrections.md"
+  },
+  {
+   "token": "1",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "6",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "0",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "03",
+   "kind": "num",
+   "source": "after-report-2026-10-21-council-fixes.md"
+  },
+  {
+   "token": "43",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "256",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "4900ea890f89",
+   "kind": "hash",
+   "source": "runner-2026-10-22/commit_0554PT.txt"
+  },
+  {
+   "token": "13",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "13",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "6",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "7",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "0554",
+   "kind": "num",
+   "source": "runner-2026-10-22/commit_0554PT.txt"
+  },
+  {
+   "token": "6",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "210",
+   "kind": "num",
+   "source": "runner-2026-10-22/week_card_to_date_0554PT.json"
+  },
+  {
+   "token": "203",
+   "kind": "num",
+   "source": "runner-2026-10-22/week_card_to_date.json"
+  },
+  {
+   "token": "03",
+   "kind": "num",
+   "source": "after-report-2026-10-21-council-fixes.md"
+  },
+  {
+   "token": "43",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "7",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "149",
+   "kind": "num",
+   "source": "after-report-2026-10-21-gauntlet.md"
+  },
+  {
+   "token": "139",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "2",
    "kind": "num",
    "source": "after-report-2026-10-21-board-test.md"
   },
@@ -3537,6 +3804,31 @@
    "source": "after-report-2026-10-21-board-test.md"
   },
   {
+   "token": "05:54",
+   "kind": "clock",
+   "source": "runner-2026-10-22/commit_0554PT.txt"
+  },
+  {
+   "token": "51cf6b3",
+   "kind": "hash",
+   "source": "runner-2026-10-22/box_2026-10-21_sources_0554PT.json"
+  },
+  {
+   "token": "3",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "03",
+   "kind": "num",
+   "source": "after-report-2026-10-21-council-fixes.md"
+  },
+  {
+   "token": "43",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
    "token": "1",
    "kind": "num",
    "source": "after-report-2026-10-21-board-test.md"
@@ -3897,8 +4189,28 @@
    "source": "after-report-2026-10-21-board-test.md"
   },
   {
-   "token": "05:53",
+   "token": "05:54",
    "kind": "clock",
+   "source": "runner-2026-10-22/commit_0554PT.txt"
+  },
+  {
+   "token": "6",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "6",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "7",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "7",
+   "kind": "num",
    "source": "after-report-2026-10-21-board-test.md"
   },
   {
@@ -4044,12 +4356,12 @@
   {
    "token": "−3.4",
    "kind": "num",
-   "source": "runner-2026-10-22/morning_report_2026-10-22.md"
+   "source": "runner-2026-10-22/morning_report_2026-10-22_0554PT.md"
   },
   {
    "token": "−2.0",
    "kind": "num",
-   "source": "runner-2026-10-22/morning_report_2026-10-22.md"
+   "source": "runner-2026-10-22/morning_report_2026-10-22_0554PT.md"
   },
   {
    "token": "+0.8",
@@ -4064,7 +4376,7 @@
   {
    "token": "−1.5",
    "kind": "num",
-   "source": "runner-2026-10-22/morning_report_2026-10-22.md"
+   "source": "runner-2026-10-22/morning_report_2026-10-22_0554PT.md"
   },
   {
    "token": "0.95",
