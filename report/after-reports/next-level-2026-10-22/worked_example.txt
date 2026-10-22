@@ -1,0 +1,16 @@
+# python3 report/after-reports/next-level-2026-10-22/worked_example.py --deck <deck at 048efb6>, 2026-10-22; two runs, identical
+ILLUSTRATIVE numbers (made up): me PTS 560 vs 500, BLK 22 vs 24, FG% to date 170/360 with 60 attempts left
+SEASON_CV PTS 0.395, BLK 1.072; PCT_MIX_INFL 1.15
+
+Free agent S (scorer): 3 playable games, per game {'PTS': 18.0, 'BLK': 0.3} on 15.0 FGA at 0.420
+   PTS  P(win) 0.856 -> 0.976   change +0.120
+   BLK  P(win) 0.319 -> 0.399   change +0.080
+   FG%  P(win) 0.568 -> 0.441   change -0.127
+   expected categories won, these three: change +0.073 (= the sum of the three changes above)
+Free agent R (rim protector): 3 playable games, per game {'PTS': 7.0, 'BLK': 2.0} on 5.0 FGA at 0.600
+   PTS  P(win) 0.856 -> 0.923   change +0.068
+   BLK  P(win) 0.319 -> 0.761   change +0.442
+   FG%  P(win) 0.568 -> 0.671   change +0.103
+   expected categories won, these three: change +0.613 (= the sum of the three changes above)
+
+R over S: +0.540 expected categories this week
