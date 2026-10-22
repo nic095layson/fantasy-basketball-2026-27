@@ -1,21 +1,16 @@
-# Morning report 2026-10-22 (on-demand run, T0 2026-10-22T14:15:13Z)
+# Morning report 2026-10-22 (owner "Run now", T0 2026-10-22T14:31:49Z; first run on the Flaim-first prompt)
 
 - MORNING: PASS — 2026-10-22: 11 steps; brief report/briefs/brief_2026-10-22.md; record report/briefs/morning_2026-10-22.json
-- Why this run: the owner, 2026-10-22 ~14:13Z, "Please run this morning". Run in the owner's own session (worktree on season/daily). It is not the persistent runner: firing the scheduled task on demand starts a fresh session with no repository and no Flaim or FantasyBot tools (that session was interrupted; nothing was published or pushed from it). This run regenerates the 2026-10-22 records the 12:54Z scheduled run wrote at 51cf6b3; that run's report is in history at 51cf6b3.
-- Step 4 path: `--since 2026-10-22T14:15:13Z` (only pulls made after T0 are read from the session transcript).
-- Flaim (Yahoo), all successful: get_user_session, get_league_info, get_roster for all 12 teams (every snapshot "current"), get_matchups (week 1), get_free_agents (100), get_transactions (team 11, 5 rows). FantasyBot: get_matchup_outlook only (its projection is not used or quoted).
-- LEAGUE LIVE: PASS — rosters from Flaim (Yahoo), pinned data/source/flaim/pull_2026-10-22.json (sha256 b5bcdc245362…).
-- League moves: KEL'EL YAXEL HALQUETA dropped Max Strus and Tobias Harris. Yahoo's transaction log (via Flaim) has both: Strus at 2026-10-22T13:43:47Z, Harris at 13:45:11Z.
-- WEEK MATCHUP: PASS — week 1 vs MAXEY-MUM OVERDRIVE; to date from Yahoo, now read from the 14:15Z Flaim pin (b5bcdc245362…, replacing the 03:43Z pin 4900ea890f89…); projected 3-6-0 (the kit's week card).
-  - Your side: Yahoo and the box-score rebuild agree on all 11 stats (FGM/A 77/146, FTM/A 37/48, 3PM 19, PTS 210, REB 52, AST 41, STL 15, BLK 7, TO 25). The six differences on your side in the 12:54Z run came from Yahoo's mid-game figure; they are gone now that every 10/21 game is final.
-  - Opponent: differs on 9 stats, the rebuild lower on every one — FGM 67 vs 62, FGA 163 vs 139, FTM 40 vs 38, FTA 57 vs 52, PTS 196 vs 184, REB 71 vs 68, AST 39 vs 36, STL 15 vs 12, TO 22 vs 18; 3PM (22) and BLK (11) agree. The rebuild is unchanged from the 12:54Z run (FGA 139, PTS 184) while Yahoo's figure grew (FGA 149 to 163), so the gap is not a mid-game effect. Not diagnosed here.
-  - Yahoo's category state: 4–4–1 (you lead FG%, FT%, PTS, AST; they lead 3PM, REB, BLK, TO; STL tied 15–15).
-  - Games left, three counts in today's records: Yahoo 19 yours / 26 theirs (week card, from Flaim); MATCHUP LIVE 21 / 26 (FantasyBot's count); the brief's per-player games left sum to 23 for your 13. Recorded, not reconciled.
+- Step 4 path: `--since 2026-10-22T14:31:49Z`.
+- Repos: kit already attached; deck repo present (up to date); origin/main already merged; no stash.
+- Flaim: tools present; league 478.l.36464 (matches). 12 of 12 roster calls returned data; matchups returned; available-player list returned (100). Flaim complete.
+- FantasyBot: tools present; outlook only (1 call), as Flaim was complete.
+- LEAGUE LIVE: PASS — rosters from Flaim (Yahoo), pinned data/source/flaim/pull_2026-10-22.json
+- WEEK MATCHUP: PASS — week 1 vs MAXEY-MUM OVERDRIVE; to date from Yahoo (rebuild differs on 9 stat(s)); to date 2 day(s), 0 missing; projected 3-6-0
+- League moves: none recorded (previous state 2026-10-22 from the 12:54Z run). Note: Flaim lists Max Strus and Tobias Harris as available players, no longer on David's roster; neither appears in the saved league_state before or after, so the moves record cannot show the drop. A 14:20Z deck from another session did show "dropped Max Strus, Tobias Harris".
 - MATCHUP LIVE: PASS — week 1, games left 21 mine / 26 MAXEY-MUM OVERDRIVE
 - AVAILABILITY CALIBRATION: INSUFFICIENT — median team games 1 < 15 (population 156: healthy 138, mild 2, risk 16; regular-season team-games on file 28); first verdict expected near 2026-11-17. No value changed.
-- Box pull 2026-10-21: ESPN 11 events, 11 final; two outlets, 298 matched, 3 cells differ.
-- Deck: SEASON DECK: PASS (6 tabs, 0 page errors). Published to https://claude.ai/artifact/Az6vPGzG6TLWrPjdAWL2pe (version 1792678882-7e4b, generated 2026-10-22T14:20:05Z); built bytes found inside the live page (offset 531); the served copy rendered twice in headless Chromium, 6 tabs, 0 page errors, every pane drawn.
-- Brief: lineup today SG Christian Braun only (no game today for the other twelve). Top waiver pair: add Julian Champagnie, drop Christian Braun, +0.002 cats/week; title 23.5% (-0.2) — the only positive pair of 520. Title 23.8% ± 0.6 (23.92 / 23.59 by seed, the same as the 12:54Z run); playoffs 99.4%; TEAM_WEEK_SHOCK FRAGILE +2.3/-3.4, weekly_availability FRAGILE -2.0/+0.8/-1.5/+0.9.
-- Brief label (recorded, not changed): line 1 reads "Rosters as of 2026-10-22 (owner's Yahoo page)"; the rosters came from Flaim (data/league_state.json sources.flaim). scripts/daily_brief.py:200 names every source other than FantasyBot "owner's Yahoo page".
+- Deck: SEASON DECK: PASS (6 tabs, 0 page errors). Published to https://claude.ai/artifact/Az6vPGzG6TLWrPjdAWL2pe (version 1792679671-9758), replacing a 14:20Z version from another session; built bytes confirmed inside the live page.
+- Brief: lineup today SG Christian Braun only. Top waiver pair: add Julian Champagnie, drop Christian Braun, +0.002 cats/week; title 23.5% (-0.2). Title 23.8% ± 0.6; TEAM_WEEK_SHOCK and weekly_availability FRAGILE (bands in the brief).
 - Movers: 194. Unpooled with games: 73 (data/season/season_lines_2026-10-22.json).
 - Scoreboard intake: no weekly CSV in data/weeks.
