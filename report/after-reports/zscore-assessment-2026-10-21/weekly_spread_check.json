@@ -1,0 +1,74 @@
+{
+ "weeks": [
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  13,
+  14,
+  15,
+  16,
+  18
+ ],
+ "gp_mean": 41.71,
+ "categories": {
+  "PTS": {
+   "cv_hand": 0.3,
+   "model_rate_cv": 0.0465,
+   "observed_rate_cv": 0.0887,
+   "ratio": 1.91,
+   "implied_cv_pg_upper": 0.573
+  },
+  "REB": {
+   "cv_hand": 0.35,
+   "model_rate_cv": 0.0542,
+   "observed_rate_cv": 0.1291,
+   "ratio": 2.38,
+   "implied_cv_pg_upper": 0.834
+  },
+  "AST": {
+   "cv_hand": 0.4,
+   "model_rate_cv": 0.0619,
+   "observed_rate_cv": 0.1098,
+   "ratio": 1.77,
+   "implied_cv_pg_upper": 0.709
+  },
+  "3PTM": {
+   "cv_hand": 0.55,
+   "model_rate_cv": 0.0852,
+   "observed_rate_cv": 0.1449,
+   "ratio": 1.7,
+   "implied_cv_pg_upper": 0.936
+  },
+  "ST": {
+   "cv_hand": 0.7,
+   "model_rate_cv": 0.1084,
+   "observed_rate_cv": 0.1657,
+   "ratio": 1.53,
+   "implied_cv_pg_upper": 1.07
+  },
+  "BLK": {
+   "cv_hand": 0.75,
+   "model_rate_cv": 0.1161,
+   "observed_rate_cv": 0.2858,
+   "ratio": 2.46,
+   "implied_cv_pg_upper": 1.846
+  },
+  "TO": {
+   "cv_hand": 0.5,
+   "model_rate_cv": 0.0774,
+   "observed_rate_cv": 0.1443,
+   "ratio": 1.86,
+   "implied_cv_pg_upper": 0.932
+  }
+ },
+ "note": "observed spread includes per-game noise, unequal players (D), the week's schedule mix (which players' games make up the week; the model gives every player 3.5 games), roster changes and gp transcription error; D=1 is a lower bound on the model side, so implied_cv_pg is an UPPER bound on per-game CV and the observed/model ratio is not attributable to arena.CV alone"
+}

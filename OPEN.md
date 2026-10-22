@@ -29,6 +29,8 @@ repo's `OPEN.md`; this kit copy is the master.
 | D-INT-2 | Commit the two lagging tools as standing versions | after the draft | `after-report-2026-10-14-integrity.md` |
 | D-SF-1..4 | Scope-fence follow-ups (analysis-session prompt, lessons entry, Hashtag parse, usage dry run) | (a)/(b)/(b)/(a) | `after-report-2026-10-13-scope-fence.md` |
 | D-MC-1 | #156 and #29 are Global Operations' to merge (owner, 10/21 at about 20:10Z: "Global merges #156 now"); #155 and #157 were merged by the kit session. Playwright in the runner's setup script is optional until #156 merges, required after | Global Ops merges | `after-report-2026-10-21-pickups-file.md` |
+| D-ZS-2 | G-score comparison column on the season board — owner 10/21 "Build it" (paper's Table 5, comparison only, no ranking change, test-first, own PR); built test-first as a separate change, tau from D-ZS-1 step 2 (closed 10/21 by the owner's "Run it" and Measurement 3 of the record) | how it ships (this session pushes to one branch) waits for the owner | `after-report-2026-10-21-zscore-assessment.md` decision sheet |
+| D-ZS-3 | Per-game variation fit: hand-set `arena.CV` is 24-43% below 2025-26 (game logs, 157 players) — (a) adopt the fitted values (deck engine PR, sweep + title odds restated) / (b) keep, widen the registry band to x1.24-x1.43 / (c) leave | (c), flagged; recommendation (a) | `after-report-2026-10-21-zscore-assessment.md` §4 Measurement 3 |
 
 ## Owner inputs requested, not yet received
 

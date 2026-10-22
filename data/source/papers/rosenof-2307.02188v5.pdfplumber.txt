@@ -1,0 +1,1151 @@
+--- page 1 ---
+Static quantification of player value for fantasy basketball
+Zach Rosenof
+September 10, 2024
+Abstract
+Fantasybasketballhasarichunderlyingmathematicalstructurewhichmakesoptimaldraftingstrategy
+unclear. A central issue for category leagues is how to aggregate a player’s statistics from all categories
+into a single number representing general value. It is shown that under a simplified model of fantasy
+basketball, a novel metric dubbed the “G-score” is appropriate for this purpose. The traditional metric
+used by analysts, “Z-score”, is a special case of the G-score under the condition that future player
+performances are known exactly. The distinction between Z-score and G-score is particularly meaningful
+for head-to-head formats, because there is a large degree of uncertainty in player performance from one
+week to another. Simulated fantasy basketball seasons with head-to-head scoring provide evidence that
+G-scores do in fact outperform Z-scores in that context.
+1 Introduction
+Fantasy basketball is a game in which participants manage virtual basketball teams linked to the
+performances of real players. According to numbers from the Fantasy Sports & Gaming Association,
+approximately 20 million Americans and Canadians played fantasy basketball in 2022 (FSGA, 2023).
+Most fantasy basketball leagues have category-based scoring (Bartilotta, 2023). Despite the broad
+popularity of fantasy basketball, the literature on so-called category leagues is scant. Quantitatively, the
+fantasy basketball community relies on a heuristic metric called Z-score to estimate the values of different
+players for them (Kelly, 2021). As will be shown, the metric can be justified under certain assumptions,
+but is missing a crucial element
+1
+4202
+peS
+6
+]EM.tats[
+5v88120.7032:viXra
+--- page 2 ---
+1.1 Player selection
+Infantasybasketball,“managers”draftactualplayerstotheir“teams”beforetheNBAorWNBAseason.
+Like in a real sports draft, no player can be selected more than once, and once a player gets picked by
+a manager they are removed from the draft board. Usually, the picks are made in a snaking order as
+depicted in Table 1. Alternatively, players can be chosen via a mock auction for which all managers start
+with the same amount of virtual money (ESPN, 2023).
+Teams all have the same number of players, often thirteen. During the season, managers can swap
+their players with “free agents” or trade them to other managers. The exact rules for how managers are
+allowed to change their team during the season differ from league to league
+Team A Team B Team C Team D Team E Team F
+1 2 3 4 5 6
+12 11 10 9 8 7
+13 14 15 16 17 18
+24 23 22 21 20 19
+Table 1: Draft order for a six-team, four-round snake draft
+1.2 Scoring
+Most fantasy basketball leagues are category leagues, meaning that they score managers based on how
+many categories they win against each other (Bartilotta, 2023). The three main formats for category
+leagues are
+• Rotisserie: Teams are ranked according to aggregate performance in each statistical category over
+the course of a season. The team with the best average ranking across categories wins
+• Head-to-Head: Each Category: Teams are matched up against opponents each week and their
+category-level results are tabulated. E.g. if a team wins six categories, loses two, and ties one, they
+score 6-2-1. Teams are ranked at the end of the season by aggregate records
+• Head-to-Head: Most Categories: Teams are matched up against opponents each week and the team
+that wins a majority of categories wins the week. Teams are ranked at the end of the season by
+number of weeks won (ESPN, 2023)
+Common settings specify nine categories: points, rebounds, assists, steals, blocks, three-pointers, field
+goal %, free throw %, and turnovers. Player performances are aggregated to get overall team metrics for
+each scoring period. Points, rebounds, assists, steals, blocks, three-pointers, and turnovers, henceforth
+dubbed“countingstatistics”areaggregatedbytakingthesum. Fieldgoal%andfreethrow%,henceforth
+dubbed “percentage statistics” are aggregated by taking the total number of successes over the total
+number of attempts for the category. For Rotisserie, player performances are aggregated over the course
+of an entire season. For head-to-head, scoring periods are usually weeks. Categories are won by the team
+with the higher metric, except for the turnovers category which is won by the team with the lower metric.
+Examples of how the scoring system works are included as Tables 2, 3, 4a, and 4b
+1.3 Position rules
+On a daily basis, players must be placed at positions in order for their games to count. In fantasy
+basketball the main positions are center, point guard, shooting guard, power forward, and small forward.
+Each player has a set of positions for which they are eligible. Teams are limited to a certain number of
+players at each position for day, and when no slots are available, players must be placed “on the bench”
+where their games do not count
+2 Z-scores for static value
+A core component of fantasy basketball strategy is having an informed opinion of which players are best
+to draft.
+2
+--- page 3 ---
+Points Turnovers Free throw %
+Team A Player 1 10 1 66% (2/3)
+Player 2 15 2 100% (4/4)
+Player 3 33 2 50% (5/10)
+Aggregate 58 5 64% (11/17)
+Team B Player 4 12 1 50% (1/2)
+Player 5 8 1 0% (0/1)
+Player 6 20 1 80% (8/10)
+Aggregate 40 3 69% (9/14)
+Table 2: Example of how metrics are aggregated and compared. Team A wins points and loses the two other
+categories. It loses turnovers because for that category, the team with the lower total wins
+Points rank Blocks rank Rebounds rank Total Result
+Team A 1 3 3 7 Second
+Team B 2 2 1 5 First
+Team C 3 1 4 8 Third
+Team D 4 4 2 10 Fourth
+Table 3: Example of rotisserie scoring with four teams and three categories. Ranks are calculated by totals
+across a full season- 1 is best, 4 is worst
+Week 1 Week 2 Week 3 Total Result
+Team A 5-4 1-8 4-5 10-17 Fourth
+Team B 4-5 4-5 3-6 11-16 Third
+Team C 3-6 8-1 6-3 17-10 First
+Team D 6-3 5-4 5-4 16-11 Second
+(a) Each Category scoring
+Week 1 Week 2 Week 3 Total Result
+Team A 5-4 (W) 1-8 (L) 4-5 (L) 1-2 Third
+Team B 4-5 (L) 4-5 (L) 3-6 (L) 0-3 Fourth
+Team C 3-6 (L) 8-1 (W) 6-3 (W) 2-1 Second
+Team D 6-3 (W) 5-4 (W) 5-4 (W) 3-0 First
+(b) Most Category scoring
+Table 4: Scoring with four teams, nine categories, and three weeks
+Tothisend,manyfantasybasketballexpertse.g. BasketballMonsterpublishestimatesofplayervalue
+before each season, based on how they expect players to perform (RotoMonster, no date). These value
+estimates do not depend on draft circumstances, which make them convenient and easy to use. Managers
+can apply them during snake drafts by taking players with the highest available values, without needing
+to adjust for previously drafted players. Managers can also use them for auctions, converting them to
+dollar values by subtracting out replacement value (the value of a player that can be added for free after
+theauction)thenre-scalingtotheamountofmoneyavailable(Roberts,2014). Theresultingdollarvalues
+can be used as benchmarks for how much they should be willing to spend on players.
+Naturally, experts who make value estimates often try to do so in a mathematical way. This is
+non-trivial for category leagues, because there is no obvious way to aggregate expected performances
+across categories.
+Z-scoring is the traditional method for static value quantification used by Basketball Monster and
+others (Kelly, 2021). It is a three-step process
+1. For percentage statistics, multiply expected performances by expected volume, divided by average
+3
+--- page 4 ---
+volume
+2. For all categories, subtract out the mean and divide by the standard deviation
+3. Sum up all of the category-level scores to get scores for each player
+This approach is attractive because it ensures that the distributions per category all have a mean of
+zero and standard deviation of one, which intuitively seems reasonable for a scoring system. However,
+being intuitively reasonable is not proof that Z-scores are optimal. Understanding the sense in which
+Z-scores are or are not optimal requires mathematical analysis
+3 Justifying G-scores
+Under a synthetic version of the static value problem which is described in this section„ Z-scores are
+close to optimal but not fully general. A novel metric dubbed G-score fixes Z-score by extending it to
+incorporate uncertainty in player performances
+3.1 Model
+Consider a manager whose turn it is to select a player. Assume that
+• Each managers’ objective V is to have the highest possible expected value of number of categories
+wonagainstanarbitraryopponent,acrossanarbitraryscoringperiod. ThesetofcategoriesisC, of
+size |C|
+• All players on all teams, except for the one being currently selected, are chosen randomly from set
+Q. Q is composed of |Q| players, where |Q| is the number of players that will be drafted into the
+league. E.g. if twelve managers are each picking thirteen players, |Q|=12∗13=156
+• Performances for all players are chosen randomly from a set of possible outcomes W of size |W|.
+The selection process is independent for each player
+• All games played by all chosen players, N per team, count towards team totals
+• A player’s value is proportional to V - V , where V is the objective value given that player p is
+p 0 p
+chosen, and V = |C|, the default objective value
+0 2
+Thequestionishowplayervalueshouldbecalculatedundertheseconditions. Howwelltheconditions
+represent real fantasy basketball is discussed in Section 4.1
+3.2 Solution
+It is posited that G-scores, as defined by Figure 5c, are optimal under the conditions of the simplified
+model of fantasy basketball laid out in Section 3.1. Essentially, G-scores are the same as Z-scores except
+the denominators are modified to add period-to-period variance to the player-to-player-variance already
+included in Z-scores. Z-scores are equivalent to G-scores with |W| =1, removing all period-to-period
+variance
+3.3 Proof
+A detailed proof for why the G-score solves the problem of Section 3.1 is included in the appendix. More
+briefly, all players contribute period-to-period variance τ2 , and all players except the player in question
+M
+contributeplayer-to-playervarianceσ2 . Invokingthecentrallimittheorem,thepointdifferentialbetween
+M
+two teams for a counting statistic can then be written as
+N (cid:0) µ −µ (p),(2N −1)∗σ2 +(2N)∗τ2 (cid:1)
+M M M M
+If this value is below zero, than team A scores more points than team B and therefore wins the
+category. The probability that this value is below zero is its cumulative distribution function at zero.
+Invoking the Taylor Series approximation for the CDF of the normal distribution and some algebraic
+manipulation, that probability is
+ 
+1 1 µ (p)−µ
+2 1+ q
+π∗ (cid:0) N − 1 (cid:1)
+∗ q
+σ2
+M
++ 2N
+M
+∗τ2
+
+2 M 2N−1 M
+4
+--- page 5 ---
+θ (q,w) Performance for player q in w
+M
+P
+µ (q) Mean of θ (q,w) for player q across W: w∈W
+θM(q,w)
+M M |W|
+P
+µ Mean of µ (q) across players: q∈Q
+µM(q)
+M M |Q|
+rP
+σ Standard deviation of µ (q) across Q: q∈Q
+(µM(q)−µM)2
+M M |Q|
+rP
+τ (q) Standard deviation of θ (q,w) across W: w∈W
+(θM(q,w)−µM(q))2
+M M |W|
+rP
+τ Root-mean-square of τ (q): q∈Q
+τM(q)2
+M M |Q|
+κ Kappa factor: 2N
+2N−1
+(a) Definitions for counting statistics, used for G-scores
+θ (q,w) Number of attempts made by player q in w
+A
+θ (q,w) Success rate for player q in w
+R
+P
+µ (q) Mean of θ (q,w) for player q across W: w∈W
+θA(q,w)
+A A |W|
+P
+µ Mean of µ (q) across players: q∈Q
+µA(q)
+A A |Q|
+P
+µ
+R
+(q) Composite success rate for player q across W: wP∈W
+θA(q,w)θR(q,w)
+w∈W
+θA(q,w)
+P
+µ
+R
+Composite success rate across players: Pq∈Q
+aqµR(q)
+q∈Q
+aq
+rP
+σ Standard deviation of µ (q) across Q: q∈Q
+(µR(q)−µR)2
+R R |Q|
+τ (q) Standard deviation of θA(q,w) ∗(θ (q,w)−µ ) across W for player q
+R µA R R
+rP
+τ Root-mean-square of τ (q): q∈Q
+τR(q)2
+R R |Q|
+(b) Definitions for percentage statistics, used for G-scores
+Points/Rebounds/Assists/Steals/Blocks/Threes Turnovers FG % / FT %
+p µM(q)−µM p µM−µM(q) µ a A q √ ∗(µR(q)−µR)
+(σ M 2 +κ∗τ M 2 ) (σ M 2 +κ∗τ M 2 ) r σ 2+κ∗τ R 2
+(c) Definition of G-score per category. The aggregate G-score is the sum across categories
+Table 5: Definitions for G-scoring
+This includes the formula for G-score for counting statistics. Applying the same procedure to the
+percentage statistics is more complicated, but results in the equivalent
+5
+--- page 6 ---
+ 
+1 2 1+ q
+π (cid:0) N
+1
+− 1 (cid:1)
+∗ µA µ q A (p
+σ
+)
+2
+(µ
++
+R (p
+2
+)
+N
+−
+τ
+µ
+2
+R ) 
+2 R 2N−1 R
+Which includes the G-score for percentage statistics. The manager’s objective function V is the sum
+of winning probabilities across categories, so it is
+ 
+1 1 X
+V = 2|C|+ q
+(cid:0) (cid:1)
+∗ G pc
+π∗ N − 1 2 c∈C
+Where G is player p’s G-score for category c. Subtracting out the default expected number of wins
+pc
+yields
+1 X
+V −V′ = ∗ G
+q pc
+2 π∗ (cid:0) N − 1 2 (cid:1) c∈C
+This is player value, as defined in Section 3.1. G-score is clearly proportional to it, so G-score meets
+the criteria for player value as well
+3.4 Simulation
+Simulations were run to test the efficacy of G-scoring. The simulated seasons were twelve-team, thirteen-
+player head-to-head competitions. Each player’s performance in each simulated season was generated by
+randomly sampling twenty weeks from their actual performances, excluding weeks for which they were
+injured. Players were only included if they had at least 10 non-injured weeks. Teams were paired against
+each other and winners were decided by which team had the most points by the end of the twenty week
+season. All games played by all players counted. Managers had access to weekly performance numbers
+for each player, allowing them to calculate all relevant metrics for all players. Z-scores based on the full
+league were used to choose Q, based on which managers calculated Z-scores and G-scores. The κ factor
+was approximated at 1. For the Z vs G matchup, Z-scoring was was tried at each “seat” (position in the
+draft order) of a snake draft, against a field of drafters using G-score. One thousand of the twenty-week
+simulated seasons were run for every draft seat, allowing for robust estimates of how well that strategy
+really would have performed in that situation with error bars no greater than
+p
+1000∗ 1(1− 1)
+2 2 ≈1.6%
+1000
+Thesamewasalsodoneinreverse,withG-scoreasthesingledrafteragainstafieldofZ-scoredrafters.
+TheresultsareshowninTable6. ItdemonstratesthatdraftersselectingplayersviaZ-scoreconsistently
+performed poorly against opponents using G-score, always scoring far below the baseline expected rate of
+1 or 8.33%. In the reverse scenario, G-score performed much better. It won 21.4% of simulated Each
+12
+Category seasons, and 32.5% of Most Categories seasons.
+4 Discussion
+4.1 Model assumptions
+Of course, the model presented in Section 3.1 to justify G-scores is not a perfect replica of how fantasy
+basketball works in practice. The degree to which the model represents true fantasy basketball merits
+discussion
+4.1.1 Players chosen randomly
+While no manager would pick players truly at random, if all managers picked players purely based on a
+single ranking list with no consideration for team fit, it stands to reason that their per-category totals
+wouldbeclosetorandom. Amanager’scategorytotalswouldresultfromthecharacteristicsoftheplayers
+that happened to be at the top of the ranking list for their draft slots.
+The simulation results provide evidence that the assumption of players being chosen randomly was
+not problematic for G-scores, relative to the alternative of managers choosing players via ranking lists.
+6
+--- page 7 ---
+Z vs. G G vs. Z
+Most Categories Each Category Most Categories Each Category
+Aggregate 0.4% 0.5% 32.5% 21.4%
+Seat 0 0.5% 0.8% 41.6% 30.7%
+Seat 1 0.2% 0.3% 21.1% 14.5%
+Seat 2 0.3% 0.8% 33.7% 29.2%
+Seat 3 0.5% 0.7% 30.7% 19.1%
+Seat 4 0.3% 0.4% 22.7% 14.1%
+Seat 5 0.0% 0.1% 25.6% 14.5%
+Seat 6 0.1% 0.4% 30.6% 17.2%
+Seat 7 0.4% 0.1% 53.0% 33.3%
+Seat 8 0.2% 0.0% 48.8% 38.6%
+Seat 9 0.5% 0.0% 33.4% 16.9%
+Seat 10 1.1% 0.8% 22.2% 11.4%
+Seat 11 0.8% 1.4% 26.8% 17.1%
+Table 6: Win rates of Z-scores and G-scores against each other
+Theyhadmanagerschoosingplayersbasedonrankinglistsratherthanrandomly, andtheG-scoremetric
+still worked well.
+Theoretically, one could explicitly model fantasy basketball as a game wherein managers choose
+their own ranking lists and draft players accordingly. It would be possible to determine exactly which
+players each manager would end up with, because the draft process would be entirely deterministic. This
+conception of the game obviates the need to assume that other players are chosen randomly. It is also a
+finite game, so by Nash’s theorem it has a Nash Equilibrium (an equilibrium from which no manager has
+incentive to deviate). However, calculating the equilibrium would be computationally intractable. To
+calculate the Nash equilibrium, it would be necessary to know how each manager would fare under each
+possible strategy profile. Say that there were twelve teams with thirteen picks each, and there were 500
+total candidates. The number of possible rankings of relevant players would be
+500!
+≈10409
+(500−156)!
+Nomoderncomputeriscapableofthismanyoperationsinanyamountoftime. Sowhiletheoretically
+a Nash Equilibrium would exist, it would not be possible to actually calculate it
+4.1.2 Performances sampled from distribution
+The set of possible performances W represents a manager’s belief about the probability distributions
+underlying future performance. |W| can be infinite, making the probability distribution continuous, so
+any belief about player performance can be encoded with this model.
+The only sense in which this distorts real fantasy basketball is that it does not account for players
+having their performance distributions change throughout a season. These changes can be significant,
+particularly if they are due to injury. Future work could consider their effects on value quantification
+4.1.3 No position requirement
+Most leagues have position requirements, which do not factor into the justification for G-scores. For
+fantasy basketball, the omission is not enormously problematic because there are often many flex spots,
+players are eligible for many positions, and value tends to be spread out fairly evenly between positions
+anyway. See Table 7 for the distribution from the 2022-2023 season.
+Ifaleaguehasparticularlytightpositionrequirements,thenavalue-over-replacement(VOR)approach
+across positions may be warranted. VOR adjusts values by estimating how valuable the best player
+available after the draft would be for each position, then subtracts those values from all players of those
+positions. It is commonly used for fantasy football, which has tight position requirement (Fantasy Pros.,
+2017)
+7
+--- page 8 ---
+Center Point Guard Shooting Guard Power Forward Small Forward
+Rank
+1-52 13 12 10 9 8
+53-104 10 11 13 11 6
+105-156 7 10 11 15 8
+Overall 30 34 34 36 22
+Table 7: Top 156 players by G-score in 2023
+4.1.4 Objective is number of categories won
+The expected value of number of categories won is not a perfect proxy for what managers want.
+For one thing, it is obvious that this objective function is not correct for Most Categories. In that
+format, a manager would rather have a 100% chance of winning five categories than a 99% chance of
+winning all of them, even if they would win fewer categories on average.
+Anotherissueisthatmanagersgenerallywanttowintheirleaguesorgetclose,whichisnotequivalent
+to maximizing the expected value of number of categories won. A manager with this preference would
+be inclined towards risky strategies that increase the probability of a strong performance while being
+sub-optimal for expected value.
+Neither of these issues is straightforward to incorporate into a value quantification model. With a
+static ranking list, there is no way of considering which categories a team is already weak or strong in,
+makingitawkwardtostrategizearoundwinningamajorityofcategories. Andcalculatingtheprobability
+of winning a league would be much more complicated than calculating the probability of winning a single
+match-up.
+Expected value of number of categories won is a reasonable compromise, because it gets at the main
+thrust of a managers’ goal while facilitating a straightforward approach to modeling
+4.1.5 Player value is marginal relative to objective
+The idea of a value system is to use it to determine whether a player or group of players has more value
+than another. Ideally this calculation would consider player values in the context of each other, but that
+is impossible with a static system. Therefore, the only sensible way to aggregate value is to add marginal
+impacts of individual players
+4.2 General utility of static ranking lists
+Granting that the model described in Section 4.1 represents the static value problem fairly, it should still
+be kept in mind that choosing players via a static ranking list is fundamentally sub-optimal. Drafting
+that way precludes the possibility of adapting based on draft circumstances, which is often advantageous.
+One common adaptive strategy is called punting. When a manager punts, they strategically sacrifice
+one category in order to gain a consistent edge in others. To punt effectively, a manager needs to adapt
+to the players that happen to be available and form a punting strategy around them (Mamone, 2022).
+For example, if a player like Giannis Antetokounmpo who is generally strong but weak in free throw
+percentage is available, it suggests that punting free throws could be a profitable strategy. The same
+strategy would not work nearly as well if a player like Giannis was not available. It cannot be known
+beforehand whether Giannis will be available to draft, making it impossible to craft an optimal punting
+strategy before the draft has begun. Static ranking lists therefore cannot punt optimally.
+Another limitation of static ranking lists is that they can lead to unbalanced teams. For example,
+if the strongest players available to a drafter always happen to have extremely high rebound numbers,
+the drafter using a static ranking list would take all of them. This might allow them to dominate in
+rebounds but would not be optimal overall, since the team would be weak in other categories. Winning
+one category by a large margin and losing all others would result in a poor overall performance.
+This is not to say that static value quantification is inherently useless. It can be useful for a context
+wherein managers are not capable of applying advanced strategies. Also, it can serve as a starting point
+for managers formulating more advanced strategies
+8
+--- page 9 ---
+4.3 Consequences for head-to-head and Rotisserie
+Even assuming that long-term means are known perfectly, performances are volatile from from one week
+toanother. Thisleadsτ2 tobelargeforheadtoheadformats, re-weightingG-scoresinasignificantway
+M
+relative to Z-scores. Steals in particular are down-weighted heavily as demonstrated by Table 8 based on
+real data from the 2022-2023 season.
+σ2 τ2 Z-score denominator G-score denominator G-score as fraction of Z-score
+M M
+Assists 41.57 31.55 6.45 8.55 75%
+Blocks 2.35 2.70 1.53 2.25 68%
+Field Goal % 0.003 0.007 0.06 0.10 56%
+Free Throw % 0.009 0.018 0.10 0.16 58%
+Points 325.52 448.32 18.04 27.82 65%
+Rebounds 52.01 57.55 7.21 10.47 69%
+Steals 1.01 4.20 1.00 2.28 44%
+Threes 9.52 9.04 3.09 4.31 72%
+Turnovers 5.45 8.85 2.34 3.78 62%
+Table 8: Empirical values for denominators of Z-score and G-score with real data from the 2022-2023 season,
+assuming random sampling from all weeks of the NBA season. Q was calculated as the top 156 players by
+base Z-score, determined across the entire league
+Intuitively,thismakessensebecausevolatilecategorieslikestealsarehardtowinevenwithinvestment.
+Under the Z-score framework, an extra point of steals is not worth as much as an extra point of assists,
+because the value of the investment in steals is diluted by natural variance. G-scores account for this and
+make it so that scores for all categories have equivalent value.
+Z-scores are not as problematic for Rotisserie, because weekly variations wash out to a degree across
+a full season. Still, using Z-scores for Rotisserie is not precisely optimal, since they ignore that some
+categories are harder to forecast for a full season than others
+4.4 Applying of the G-score formula
+4.4.1 Defining Q
+There are a few sensible ways to define Q. One is to find a pseudo-equilibrium state in which Q is
+composed of the top |Q| players by G-score value. This can be accomplished by repeatedly re-calculating
+the top |Q| players by G-score, setting Q to them, and adjusting G-scores accordingly. If Q does not
+change after an iteration, then it is an equilibrium set.
+It is also possible to estimate Q using a popular ranking metric. This might be preferable in practice
+because G-scores are not necessarily reflective of how other managers actually value players
+4.4.2 The κ factor
+The κ factor accounts for the fact that the player currently being chosen contributes additional period-to-
+period variance. This necessitates the inclusion of a small 2N adjustment factor to period-to-period
+2N−1
+variance.
+Most leagues have twelve or thirteen players per team, so the κ factor is generally between 26 =1.040
+25
+and 24 ≈1.043. As a multiplier it is therefore quite small, and can be held constant at 1.04 or removed
+23
+entirely for the sake of simplicity
+5 Conclusion
+G-scores, an extension of Z-scores, are justified via a set of simple assumptions. This improvement is
+especially important for head-to-head formats, because weekly variance can be significant, and ignoring it
+is heavily sub-optimal.
+There are many areas for future work, including optimizing picks dynamically based on drafting
+context. Static ranking lists are fundamentally sub-optimal relative to dynamic strategies so a truly
+sophisticated treatment of fantasy basketball would model some level of adaptation.
+9
+--- page 10 ---
+Disclaimer: The views and opinions expressed in this article are those of the independent author and
+do not represent those of any organization, company or entity
+Appendix- Detailed justification of G-score
+Mathematical assumptions
+Several assumptions are invoked to simplify the justification behind G-scores. They are
+• CategorytotalsforateamcanbeestimatedasNormaldistributionsduetothecentrallimittheorem.
+Since there are usually ≈26 relevant players, whose performances are within some standard range
+(fluctuationsfrom20to40pointspergamearenormal,butnobodyisscoring100),thisisintuitively
+reasonable
+• The error function applied to a category total can be approximated with its first-order Taylor series
+• X can be approximated as a Normal distribution with E (cid:0) X (cid:1) ≈ E(X). This assumes that X
+Y Y E(Y)
+and Y are approximately Normal. independent, positive, and have low coefficient of variations
+(Diaz-Frances, 2012)
+• The variance of a ratio of success over attempts can be estimated as the first three terms in its
+Taylor series
+• The period-to-period variance contribution of a player is approximately equal to the aggregate
+contribution
+τ (p)≈τ (1)
+M M
+τ (p)≈τ (2)
+R R
+• Two quantities are approximately independent. Specifically,
+P θ (q,w) P θ (q,w)θ (q,w)− P θ (q,w)µ
+P (q ( , θ w)∈ ( P q,w A ))+θ (p,k) ⊥ (q,w)∈P A P R θ (q,w q ) ∈TA A R (3)
+(q,w)∈P A A (q,w)∈P A
+• The expected number of free throw attempts by a team where one player is known is approximately
+equal to the number of free throw attempts by an arbitrary team. Mathematically,
+µ ∗(N −1)+µ (p)≈Nµ (4)
+A A A
+• When calculating variance, the expected total number of free throw attempts by a team where one
+player is known is approximately equal to the number of free throws made by an arbitrary team.
+Mathematically,
+(N −1)µ µ +µ (p)µ (p)≈Nµ µ (5)
+A R A R R A
+Counting statistics
+Aweeklytotalforarandomplayerisessentiallyarandomdrawfromatwo-dimensionalsetofplayerand
+weekly performance.
+The mean of this draw is µ . The variance can be calculated as
+M
+Var (θ (q,w))=E (cid:0)(θ (q,w)−µ )2(cid:1)=E (cid:0)E (cid:0)(θ (q,w)−µ )2(cid:1)(cid:1)
+q,w M q,w M M q w M M
+Since E(cid:0) X2 (cid:1)=Var(X)+E(X)2, this translates to
+Var (θ (q,w))=E (cid:0)Var (θ (q,w)−µ )+(E (θ (q,w)−µ ))2(cid:1)
+q,w M q w M M w M M
+=E (cid:0)Var (θ (q,w))+(µ (q)−µ )2(cid:1)
+q w M M M
+=E (τ (q))+Var (µ (q))+E (µ (q)−µ )2
+q M q M q M M
+10
+--- page 11 ---
+=E (τ (q))+Var (µ (q))
+q M q M
+These two terms match the definitions of σ2 and τ2 as defined by 5a, leading to a variance of
+M M
+τ2 +σ2
+M M
+Team B’s N players in aggregate are then distributed with
+• A mean of N ∗µ
+M
+• A variance of N ∗ (cid:0) σ2 +τ2 (cid:1)
+M M
+Keeping in mind that the unchosen player’s performance has mean µ (p) and variance τ (p)2 by
+M M
+definition, team A’s distribution has
+• A mean of (N −1)∗µ +µ (p)
+M M
+• A variance of (N −1)∗ (cid:0) σ2 +τ2 (cid:1)+τ (p)2
+M M M
+Invoking the central limit theorem for team B’s total minus team A’s yields
+D∼N (cid:0) µ −µ (p),(2N −1)∗ (cid:0) σ2 +τ2 (cid:1)+τ (p)2(cid:1)
+M M M M M
+The CDF of this quantity at zero is the probability of team A winning the category. It is
+  
+1 µ (p)−µ
+1+erf M M
+2 q
+2(cid:0)(2N −1)∗(σ2 +τ2 )+τ (p)2(cid:1)
+
+M M M
+Thefirst-orderTaylorapproximation,whichis 2√∗X,canbeusedfortheerrorfunction. Thissimplifies
+π
+the expression to
+ 
+1 2 µ (p)−µ
+2 1+ √
+π
+∗ q
+2(cid:0)(2N −1
+M
+)(σ2 +τ2
+M
+)+τ (p)2(cid:1)
+
+M M M
+Using the approximation of equation 1 that τ (p)≈τ this becomes
+M M
+" #
+1 2 µ (p)−µ
+1+ √ ∗ M M
+2 π p 2((2N −1)∗σ2 +2N ∗τ2 )
+M M
+ 
+1 2 µ (p)−µ
+2 1+ √
+π
+∗ q
+2(2N −1
+M
+))(cid:0) σ2 +
+M
+2N ∗τ2 (cid:1)
+
+M 2N−1 M
+ 
+1 1 µ (p)−µ
+= 2 1+ q
+π∗ (cid:0) N − 1 (cid:1)
+∗ q
+σ
+M
+2 + 2N
+M
+τ2
+
+2 M 2N−1 M
+Percentage statistics
+The percentage statistics are more complicated to model
+Mean of the differential
+Consider P to be a set of pairs (q,w) where q is the chosen player and w is the chosen week. Team B’s
+aggregate performance is a random draw from the two-dimensional distribution of player and scoring
+period
+P θ (q,w)θ (q,w)
+O B = (q, P w)∈P R θ (q, A w)
+(q,w)∈P A
+Each element of the sum is equivalent. So
+11
+--- page 12 ---
+(cid:16) (cid:17)
+O µB = N ∗E N ( ∗ θ R E ( ( q θ , A w ( ) q θ , A w ( ) q ) ,w)) = E(θ R E ( ( q θ , A w ( ) q θ , A w ( ) q ) ,w)) = E P E q (cid:16) ∈ P Q,w∈W θ R (q θ ,w ( ) q θ , A w ( ) q (cid:17) ,w)
+q∈Q,w∈W A
+P
+Since µ (q) is defined as w∈W
+θA(q,w)
+, this can be rewritten to
+A |W|
+(cid:16) (cid:17)
+E P θ (q,w)∗θ (q,w)
+O µB = q E ∈ (cid:16) Q | ,w W ∈ | W ∗ P A µ (q R ) (cid:17)
+q∈Q A
+P P
+θ ( µ q R ,w (q ) ) = is |W de | fi ∗ n µ ed ( a q s )∗µ w∈W ( P q) θ w, R a θ (q A ll ,w o (q w ) , ∗ w i θ n ) A g (q f , o w r ) a or subst w i ∈ tu W t |W i θ o R | n ∗ ( µ q t , A w o ( ) q ∗ ) θA(q,w) . That means P w∈W θ R (q,w)∗
+A A R
+(cid:16) (cid:17) (cid:16) (cid:17)
+E P |W|∗µ (q)∗µ (q) E P µ (q)∗µ (q)
+O µB = E q (cid:16) ∈ | Q W|∗ P A µ (q) R (cid:17) = E q (cid:16) ∈ P Q A µ (q) R (cid:17) =µ R
+q∈Q A q∈Q A
+Consider k to be the randomly sampled week for the unchosen player p’s performance. Then, team
+A’s success rate O is
+A
+P θ (q,w)θ (q,w)+θ (k,p)θ (p,k)
+O A = (q,w)∈P P R θ A (q,w)+θ R (p,k) A
+(q,w)∈P A A
+O can be equivalently rewritten as
+A
+P θ (q,w)(θ (q,w)−µ )+P θ (q,w)µ +θ (p,k)(θ (k,p)−µ )+θ (p,k)µ
+(q,w)∈P A R R (q,w)∈P A R A R R A R
+P µ (q)+θ (p,k)
+(q,w)∈P A A
+Or broken into separate terms
+P θ (q,w)µ +θ (p,k)µ P θ (q,w)(θ (q,w)−µ )
+O A = ( P q,w)∈P A θ (q,w R )+θ A (p,k) R + ( P q,w)∈P A θ (q,w) R +θ (p,k) R
+(q,w)∈P A A (q,w)∈P A A
+θ (p,k)(θ (k,p)−µ )
++ A R R
+P θ (q,w)+θ (p,k)
+(q,w)∈P A A
+The first term can be simplified easily
+P θ (q,w)+θ (p,k) P θ (q,w)(θ (q,w)−µ )
+µ RP (q,w)∈P θ A (q,w)+θ A (p,k) + ( P q,w)∈P A θ (q,w) R +θ (p,k) R
+(q,w)∈P A A (q,w)∈P A A
+θ (p,k)(θ (k,p)−µ )
++ A R R
+P θ (q,w)+θ (p,k)
+(q,w)∈P A A
+=µ
+R
++ P (
+P
+q,w)∈P θ A
+θ
+(q,
+(
+w
+q
+)
+,w
+(θ
+)
+R
++
+(q
+θ
+,w
+(
+)
+p
+−
+,k
+µ
+)
+R ) +
+P
+θ A (p,k)
+θ
+(θ
+(
+R
+q,
+(k
+w
+,
+)
+p
++
+)−
+θ
+µ
+(
+R
+p
+)
+,k)
+(q,w)∈P A A (q,w)∈P A A
+The expected value of team A’s success rate is then
+O µA =µ R +E − P ( P q,w)∈P θ A θ (q, ( w q ) ,w (θ ) R + (q θ ,w ( ) p − ,k µ ) R ) − P θ A (p,k) θ (θ ( R q, (k w , ) p + )− θ µ ( R p ) ,k) !
+(q,w)∈P A A (q,w)∈P A A
+To get the expected value of the differential, it is subtracted from µ , leading to
+R
+12
+--- page 13 ---
+P θ (q,w)θ (q,w)− P θ (q,w)µ !
+D µ =−E (q,w)∈P P A R (θ (q,w))+ ( θ q,w) ( ∈ p P ,k) A R
+(q,w)∈P A A
+!
+θ (p,k)(θ (p,k)−µ )
+−E
+P
+A
+(θ (
+R
+q,w))+θ
+R
+(p,k)
+(q,w)∈P A A
+P θ (q,w) P θ (q,w)θ (q,w)− P θ (q,w)µ !
+=−E P (q ( , θ w)∈ ( P q,w A ))+θ (p,k) ∗ (q,w)∈P A P R θ (q,w (q ) ,w)∈P A R
+(q,w)∈P A A (q,w)∈P A
+!
+θ (p,k)(θ (p,k)−µ )
+−E
+P
+A
+(θ (
+R
+q,w))+θ
+R
+(p,k)
+(q,w)∈P A A
+With the assumption of equation 3, this becomes
+P θ (q,w) !
+D µ =−E P (q ( , θ w)∈ ( P q,w A ))+θ (p,k)
+(q,w)∈P A A
+P θ (q,w)θ (q,w)− P θ (q,w)µ !
+∗E (q,w)∈P A
+P
+R
+θ (q,w
+(q
+)
+,w)∈P A R
+(q,w)∈P A
+" #
+θ (p,k)(θ (p,k)−µ )
+−E
+P
+A
+(θ (
+R
+q,w))+θ
+R
+(p,k)
+(q,w)∈P A A
+P P
+The expected value of (Pq,w)∈P
+θA(q,w)θR(q,w)
+is µ
+R
+as proven for O
+B
+, and Pq∈P
+θA(q,w)µR
+is µ
+R
+(q,w)∈P
+θA(q,w)
+(q,w)∈P
+θA(q,w)
+becauseitcanbepulledoutofthesumasaconstant. Thereforethefirsttermcancelsoutanddisappears.
+All that remains is the original second term,
+! !
+θ (p,k)(θ (k,p)−µ ) θ (p,k)θ (k,p)−θ (p,k)µ
+D µ =−E P A θ ( R q,w)+θ ( R p,k) =−E P A R θ (q,w)+ A θ (p,k) R
+(q,w)∈P A A (q,w)∈P A A
+Again applying that E (cid:0) X (cid:1) ≈ E(X), the expression can be simplified to
+Y E(Y)
+µ (p)
+D =− A (µ (p)−µ )
+µ (N −1)∗µ +µ (p) R R
+A A
+Further invoking the approximation of equation 4,
+µ (p)
+D =− A (µ (p)−µ )
+µ Nµ R R
+A
+Variance of the differential
+The variance requires the Taylor expansion, which is (Benaroya, 2005)
+(cid:16)X(cid:17) Var(X) Cov(X,Y)∗E(X) E(X)2∗Var(Y)
+Var ≈ −2∗ +
+Y E(Y)2 E(Y)3 E(Y)4
+In the free throw case for team B, this becomes
+(cid:16) (cid:17) (cid:16) (cid:17)
+Var P µ (q)µ (q) Cov P µ (q)µ (q), P µ (q) ∗Nµ µ
+O2 = q∈TB A R −2 q∈TB A R q∈TB A A R
+σB (Nµ )2 (Nµ )3
+A A
+(cid:16) (cid:17)
+(Nµ µ )2∗Var P µ (q)
++ R A q∈TB A
+(Nµ )4
+A
+13
+--- page 14 ---
+Or
+(cid:16) (cid:17) (cid:16) (cid:17)
+Var P µ (q)µ (q) Cov P µ (q)µ (q), P µ (q) µ
+O2 = q∈TB A R −2 q∈TB A R q∈TB A R
+σB (Nµ )2 (Nµ )2
+A A
+(cid:16) (cid:17)
+µ2 ∗Var P µ (q)
++ R q∈TB A
+(Nµ )2
+A
+√
+Some basic facts about variance can be applied to the expression. CVar(X) = Var(cid:0) CX (cid:1), and
+√ √
+CCov(X,Y)=Cov(cid:0) CX, CY (cid:1)=Cov(X,CY), so the equation can be simplified to
+(cid:16) (cid:17) (cid:16) (cid:17)
+Var P µA(q)µ (q) 2Cov P µA(q)µ (q), P µA(q)µ
+O2 = q∈TB µA R − q∈TB µA R q∈TB µA R
+σB N2 N2
+(cid:16) (cid:17)
+Var P µA(q)µ
++ q∈TB µA R
+N2
+It is known that Var(X)+Var(Y)−2Cov(X,Y)=Var(X−Y) so this can be rewritten to
+(cid:16) (cid:17)
+Var P µA(q) ∗µ (q)− µA(q) ∗µ
+O2 = q∈TB µA R µA R
+σB N2
+Or
+(cid:16) (cid:17)
+O2 =
+Var P
+q∈TB
+µA
+µA
+(q) ∗(µ
+R
+(q)−µ
+R
+)
+=
+P
+q∈TB
+Var(cid:0)µA
+µA
+(q) ∗(µ
+R
+(q)−µ
+R
+)(cid:1)
+σB N2 N2
+There are N players that contribute identical variance, so this can be rewritten to
+N ∗Var (cid:0)θA(q,w) ∗(θ (q,w)−µ )(cid:1)
+O2 = q∈Q,w∈W µA R R
+σB N2
+For the time being, define
+(cid:18) θ (q,w) (cid:19)
+σ2 =Var A ∗(θ (q,w)−µ )
+q q∈Q,w∈W µ R R
+A
+(cid:18) θ (p,w) (cid:19)
+σ2 =Var A ∗(θ (p,w)−µ )
+p w∈W µ R R
+A
+The variance for team B is then
+N σ2
+O2 = σ2 = q
+σB N2 q N
+For team A, the variance is
+(cid:16) (cid:17)
+Var P µ (q)µ (q)
+O2 = q∈TA A R
+σA ((N −1)µ )2
+A
+(cid:16) (cid:17)
+Cov P µ (q)µ (q), P µ (q) ∗((N −1)µ µ +µ (p)µ (p))
+−2 q∈TA A R q∈TA A A R A R
+(Nµ )3
+A
+(cid:16) (cid:17)
+((N −1)µ µ +µ (p)µ (p))2∗Var P µ (q)
++ A R A R q∈TA A
+(Nµ )4
+A
+Because of the assumption of equation 5 that (N −1)µ µ +µ (p)µ (p)≈Nµ µ , this becomes
+A R A R R A
+14
+--- page 15 ---
+(cid:16) (cid:17) (cid:16) (cid:17)
+Var P µ (q)µ (q) Cov P µ (q)µ (q), P µ (q) ∗µ
+O2 = q∈TA A R −2 q∈TA A R q∈TA A R
+σA (Nµ )2 (Nµ )2
+A A
+(cid:16) (cid:17)
+(Nµ µ )2∗Var P µ (q)
++ A R q∈TA A
+(Nµ )4
+A
+√
+Again some basic facts about variance can be applied to the expression. CVar(X)=Var(cid:0) CX (cid:1),
+√ √
+and CCov(X,Y)=Cov(cid:0) CX, CY (cid:1)=Cov(X,CY), so the equation can be simplified to
+(cid:16) (cid:17)
+Var P µA(q)µ (q)
+O2 = q∈TA µA R
+σA N2
+(cid:16) (cid:17) (cid:16) (cid:17)
+2Cov P µA(q)µ (q), P µA(q)µ Var P µA(q)µ
+− q∈TA µA R q∈TA µA R + q∈TA µA R
+N2 N2
+It is known that Var(X−Y)=Var(X)+Var(Y)−2Cov(X,Y) so this can be rewritten to
+(cid:16) (cid:17)
+Var P µA(q) ∗µ (q)− µA(q) ∗µ
+O2 = q∈TA µA R µA R
+σA N2
+In this case, there are (N −1) players that contribute variance σ2 and one that contributes σ2, so
+q p
+this becomes
+(N −1)∗σ2+σ2
+O2 = q p
+σA N2
+The variance of the differential is the variance of team A’s score plus the variance of team B’s score.
+(N −1)∗σ2+σ2 σ2 (2N −1)σ2+σ2
+D2 = q p + q = q p
+σ N2 N N2
+Now σ2 and σ2 must be calculated. Starting with σ2 , it is
+q p q
+(cid:18) θ (q,w) (cid:19)
+σ2 =Var A (θ (q,w)−µ )
+q q∈Q,w∈W µ R R
+A
+σ2 in this form can be easily computed if W is available as a discrete set. It can also be translated to
+q
+a more understandable form.
+SinceVar(X)=E(cid:0) X2 (cid:1)+E(X)2 andtheexpectedvalueof θA(q,w)(θ (q,w)−µ )=0,thisbecomes
+µA R R
+(cid:18) θ (q,w)2 (cid:19)
+σ2 =E A (θ (q,w)−µ )2
+q q∈Q,w∈W µ2 R R
+A
+(cid:18) (cid:18) θ (q,w)2 (cid:19)(cid:19)
+=E E A (θ (q,w)−µ )2
+q w µ2 R R
+A
+E(cid:0) X2 (cid:1)=Var(X)−E(X)2 so this can be translated into
+(cid:18) θ (q,w) (cid:19) (cid:18) θ (q,w) (cid:19)2 !
+σ2 =E Var A (θ (q,w)−µ ) +E A (θ (q,w)−µ )
+q q w µ R R w µ R R
+A A
+(cid:18) θ (q,w) (cid:19) (cid:18) θ (q,w)θ (q,w) θ (q,w)µ (cid:19)2 !
+= E Var A (θ (q,w)−µ ) +E A R − A R
+q w µ R R w µ µ
+A A A
+(cid:18) θ (q,w) (cid:19) (cid:18) (cid:18) θ (q,w)θ (q,w)(cid:19) (cid:18) θ (q,w)µ (cid:19)(cid:19)2 !
+=E Var A (θ (q,w)−µ ) + E A R −E A R
+q w µ R R w µ w µ
+A A A
+15
+--- page 16 ---
+(cid:18) θ (q,w) (cid:19) (cid:18) µ (q)µ (q) µ (q)µ (cid:19)2 !
+=E Var A (θ (q,w)−µ ) + A R − A R
+q w µ R R µ µ
+A A A
+(cid:18) θ (q,w) (cid:19) (cid:18) µ (q) (cid:19)2 !
+=E Var A (θ (q,w)−µ ) + A (µ (q)−µ )
+q w µ R R µ R R
+A A
+Separating out the two terms yields
+(cid:18) θ (q,w) (cid:19) (cid:18) µ (q) (cid:19)2 !
+σ2 = E Var A (θ (q,w)−µ ) +E A (µ (q)−µ )
+q q w µ R R q µ R R
+A A
+(cid:18) (cid:18) θ (q,w) (cid:19)(cid:19) (cid:18) µ (q) (cid:19)
+=E Var A (θ (q,w)−µ ) N +Var A (µ (q)−µ )
+q w µ R R q µ R R
+A A
+(cid:18) (cid:18) µ (q) (cid:19)(cid:19)2
++ E A (µ (q)−µ )
+µ R R
+A
+Note that E(cid:0)µA(q)(µ (q)−µ )(cid:1)=E(cid:0)µA(q)∗µR(q)(cid:1) −E(cid:0)µA(q)∗µR (cid:1)=µ − µA∗µR =µ −µ =0.
+That leads to a for µ mAof R R µA µA R µA R R
+(cid:18) (cid:18) (cid:18) θ (q,w) (cid:19)(cid:19) (cid:18)(cid:18) µ (q) (cid:19)(cid:19)(cid:19)
+σ2 = E Var A (θ (q,w)−µ ) +Var A (µ (q)−µ )
+q q w µ R R q µ R R
+A A
+The first term matches τ2 and the second term matches σ2. The resulting overall variance is then
+R R
+σ2 =σ2 +τ2
+q R R
+For σ2, because of equation 2
+p
+σ2 =τ (p)2 ≈τ2
+p R R
+And finally
+D2 ==
+(2N −1)σ
+q
+2+σ
+p
+2
+=
+(2N −1)(cid:0) σ
+R
+2 +τ
+R
+2 (cid:1)+τ
+R
+2
+=
+(2N −1)σ
+R
+2 +2Nτ
+R
+2
+σ N2 N2 N2
+Differential distribution
+Now the normal approximation CDF at zero can be written
+  
+1 2 1+erf q µ N A µ ( A p)(µ R (p)−µ R ) 
+2∗ (2N−1)σ R 2+2Nτ R 2
+N2
+Applying the Taylor first-order approximation yields
+ 
+1 2 1+ √ 2
+π
+∗ q µ N A
+2
+µ (
+∗
+A p)
+(
+(
+2
+µ
+N
+R
+−1
+(
+)
+p
+σ
+)
+R 2
+−
++2
+µ
+N
+R
+τ
+)
+R 2
+
+N2
+ 
+= 2 1  1+ √ 2 π ∗ q µ µ A 2 A ( N ∗ p) ( ( 2 µ N R −1 ( ) p σ ) R 2 − +2 µ N R τ ) R 2 
+N2
+ 
+= 1 2 1+ q
+π (cid:0) N
+1
+− 1 (cid:1)
+∗ µA µ q A (p
+σ
+)
+2
+(µ
++
+R (p
+2
+)
+N
+−
+τ
+µ
+2
+R ) 
+2 R 2N−1 R
+16
+--- page 17 ---
+Total across categories
+Adding together the G-scores for all counting statistics percentage statistics yields
+ 
+1 1 X
+2|C|+ q
+(cid:0) (cid:1)
+∗ G c
+π∗ N − 1 2 c
+Where G is the G-score for a category.
+c
+This is player value, as defined in Section 3.1. G-score is clearly proportional to it, with each point of
+G-score being worth
+1
+q
+2 π∗ (cid:0) N − 1 (cid:1)
+2
+So G-score meets the criteria for player value as well
+References
+[1] Bartilotta, J. (2023). Fantasy Basketball 2023-24: Category League
+Strategy. Available at: https://www.rotowire.com/basketball/article/
+fantasy-basketball-2023-24-category-league-strategy-75433. [Accessed 27 Aug. 2024]
+[2] Benaroya, H. and Han, S. (2005). Probability models in engineering and science. Boca Raton, Fla.:
+Taylor & Francis.
+[3] D´ıaz-Franc´es, E. and Rubio, F.J. (2012). On the existence of a normal approximation to the
+distribution of the ratio of two independent normal random variables. Statistical Papers, 54(2),
+pp.309–323. Available at: https://doi.org/10.1007/s00362-012-0429-2.
+[4] ESPN(2023).ESPNFantasyBasketball101: AdjustingtheSettings.Availableat: https: //www.espn.
+com/fantasy/basketball/story/_/id/20800285/adjusting-settings. [Accessed 28 Aug. 2024]
+[5] FantasySports&GamingAssociation(2023).IndustryDemographics.Availableat: https://thefsga.
+org/industry-demographics/. [Accessed 27 Aug. 2024]
+[6] Kelly, L. (2021) Creating Your Rankings? Start with Z-Scores. https://fantasy.fangraphs.com/
+creating-your-rankings-start-with-z-scores/. [Accessed 28 Aug. 2024]
+[7] Mamone, J. (2022). An Introduction to Punting in Fantasy Basketball. Available at
+hashtagbasketball.com/introduction-punting-fantasy-basketball [Accessed June 20,2023]
+[8] Roberts, M. (2014) NBA Auction Strategy Part 2: How auction values are calculated. https://
+www.rotowire.com/basketball/article/nba-auction-strategy-part-2-21393.[Accessed28Aug.
+2024]
+[9] RotoMonster (no date) Questions Answered - Basketball Monster. Available at: https://
+basketballmonster.com/questionsanswered.aspx. [Accessed 27 Aug. 2024]
+[10] FantasyPros.(2017).WhatisValueBasedDrafting? (FantasyFootball).https://www.fantasypros.
+com/2017/06/what-is-value-based-drafting/. [Accessed 28 Aug. 2024]
+17

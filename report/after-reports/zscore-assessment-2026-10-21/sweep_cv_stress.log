@@ -1,0 +1,6 @@
+SWEEP: 6,000 seasons x seeds [2026, 2027] on deck 80eecdf; MC SE 0.54; baseline within 3 SE of the 10k reference: {'2026': True, '2027': True}
+baseline                                              23.77 /  24.20
+per-game CV x1.2                                      22.88 /  24.20   shift -0.45  ROBUST    [arena.CV]
+per-game CV x1.5                                      23.02 /  24.22   shift -0.36  ROBUST    [arena.CV]
+per-game CV x2.0                                      23.23 /  23.52   shift -0.61  ROBUST    [arena.CV]
+FRAGILE: none   SENSITIVE: none
