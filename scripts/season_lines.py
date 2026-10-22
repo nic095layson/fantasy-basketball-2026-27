@@ -35,6 +35,9 @@ import sys
 import unicodedata
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+import box_pull as BP  # noqa: E402
+
 KIT = os.path.dirname(HERE)
 DECK = os.environ.get("DECK_REPO") or os.path.join(KIT, "..", "yahoo-fantasy-basketball")
 KIT_CSV = os.path.join(KIT, "report", "projections-2026-27.csv")
@@ -92,7 +95,8 @@ def totals(records):
                 continue
             key = p.get("pool_name") or p["name"]
             t = out.setdefault(key, dict(games=0, min=0, pts=0, fgm=0, fga=0, tpm=0, tpa=0, ftm=0, fta=0, reb=0, ast=0,
-                                         tov=0, stl=0, blk=0, unpooled=p.get("pool_name") is None))
+                                         tov=0, stl=0, blk=0, unpooled=p.get("pool_name") is None, names=set()))
+            t["names"].add(p["name"])
             t["games"] += 1
             for k in ("min", "pts", "fgm", "fga", "tpm", "tpa", "ftm", "fta", "reb", "ast", "tov", "stl", "blk"):
                 t[k] += p.get(k, 0)
@@ -180,17 +184,36 @@ def _with_tag_overrides(deck_rows, overrides_csv):
     return rows, applied
 
 
+def finder(tot):
+    """A plane row's totals: matched by either spelling a total carries — the kit file's (its pool name) or the box
+    score's — then by the suffix-free key when it names one total only (owner 2026-10-22: the deck plane spells
+    "Darius Acuff Jr." and "Cameron Johnson", the kit file "Darius Acuff" and "Cam Johnson")."""
+    by_fold, by_key = {}, {}
+    for k, v in tot.items():
+        for n in {k, *v.get("names", ())}:
+            by_fold.setdefault(fold(n), k)
+            by_key.setdefault(BP.name_key(n), set()).add(k)
+
+    def find(name):
+        k = by_fold.get(fold(name))
+        if k is None:
+            ks = by_key.get(BP.name_key(name), set())
+            k = next(iter(ks)) if len(ks) == 1 else None
+        return tot.get(k) if k is not None else None
+    return find
+
+
 def run(date, actuals, kit_csv=KIT_CSV, deck_csv=DECK_CSV, out_dir=OUT, threshold=0.25, additions_csv=None,
         overrides_csv=None):
     tot = totals(actuals)
-    by_fold = {fold(k): v for k, v in tot.items()}
+    find = finder(tot)
     kit_rows, kit_fields = _read(kit_csv); deck_rows, deck_fields = _read(deck_csv)
     deck_rows = _with_additions(deck_rows, deck_fields, additions_csv)
     deck_rows, overridden = _with_tag_overrides(deck_rows, overrides_csv)
     movers, n_games = [], 0
     out_kit = []
     for r in kit_rows:
-        t = by_fold.get(fold(r["name"]))
+        t = find(r["name"])
         b = blend_kit(r, t); out_kit.append(b)
         if t:
             n_games += 1
@@ -198,7 +221,7 @@ def run(date, actuals, kit_csv=KIT_CSV, deck_csv=DECK_CSV, out_dir=OUT, threshol
             big = [c for c, (x, y) in moved.items() if abs(float(y) - float(x)) >= (0.01 if c in ("fgp", "ftp") else threshold)]
             if big:
                 movers.append(dict(name=r["name"], games=t["games"], moved={c: moved[c] for c in big}))
-    out_deck = [blend_deck(r, by_fold.get(fold(r["player"]))) for r in deck_rows]
+    out_deck = [blend_deck(r, find(r["player"])) for r in deck_rows]
     os.makedirs(out_dir, exist_ok=True)
     _write(os.path.join(out_dir, "projections_season.csv"), out_kit, kit_fields)
     _write(os.path.join(out_dir, "pool_season.csv"), out_deck, deck_fields)

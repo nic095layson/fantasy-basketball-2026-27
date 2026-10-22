@@ -1,0 +1,707 @@
+{
+ "records_commit": "e7b69bb",
+ "deck_commit": "048efb6",
+ "kit_commit": "d2f2f0f",
+ "schedule": {
+  "games": 1200,
+  "weeks": {
+   "1": {
+    "first": "2026-10-20",
+    "last": "2026-10-25",
+    "teams_by_games": {
+     "2": 5,
+     "3": 24,
+     "4": 1
+    }
+   },
+   "2": {
+    "first": "2026-10-26",
+    "last": "2026-11-01",
+    "teams_by_games": {
+     "2": 1,
+     "3": 20,
+     "4": 9
+    }
+   },
+   "3": {
+    "first": "2026-11-02",
+    "last": "2026-11-08",
+    "teams_by_games": {
+     "3": 12,
+     "4": 18
+    }
+   },
+   "4": {
+    "first": "2026-11-09",
+    "last": "2026-11-15",
+    "teams_by_games": {
+     "2": 2,
+     "3": 14,
+     "4": 14
+    }
+   },
+   "5": {
+    "first": "2026-11-16",
+    "last": "2026-11-22",
+    "teams_by_games": {
+     "2": 1,
+     "3": 16,
+     "4": 13
+    }
+   },
+   "6": {
+    "first": "2026-11-23",
+    "last": "2026-11-29",
+    "teams_by_games": {
+     "2": 3,
+     "3": 18,
+     "4": 9
+    }
+   },
+   "7": {
+    "first": "2026-11-30",
+    "last": "2026-12-13",
+    "teams_by_games": {
+     "2": 4,
+     "3": 26
+    }
+   },
+   "8": {
+    "first": "2026-12-14",
+    "last": "2026-12-20",
+    "teams_by_games": {
+     "2": 1,
+     "3": 8,
+     "4": 21
+    }
+   },
+   "9": {
+    "first": "2026-12-21",
+    "last": "2026-12-27",
+    "teams_by_games": {
+     "2": 2,
+     "3": 10,
+     "4": 18
+    }
+   },
+   "10": {
+    "first": "2026-12-28",
+    "last": "2027-01-03",
+    "teams_by_games": {
+     "2": 2,
+     "3": 12,
+     "4": 16
+    }
+   },
+   "11": {
+    "first": "2027-01-04",
+    "last": "2027-01-10",
+    "teams_by_games": {
+     "3": 13,
+     "4": 16,
+     "5": 1
+    }
+   },
+   "12": {
+    "first": "2027-01-11",
+    "last": "2027-01-17",
+    "teams_by_games": {
+     "2": 3,
+     "3": 11,
+     "4": 15,
+     "5": 1
+    }
+   },
+   "13": {
+    "first": "2027-01-18",
+    "last": "2027-01-24",
+    "teams_by_games": {
+     "2": 1,
+     "3": 14,
+     "4": 15
+    }
+   },
+   "14": {
+    "first": "2027-01-25",
+    "last": "2027-01-31",
+    "teams_by_games": {
+     "3": 12,
+     "4": 18
+    }
+   },
+   "15": {
+    "first": "2027-02-01",
+    "last": "2027-02-07",
+    "teams_by_games": {
+     "3": 12,
+     "4": 18
+    }
+   },
+   "16": {
+    "first": "2027-02-08",
+    "last": "2027-02-14",
+    "teams_by_games": {
+     "2": 2,
+     "3": 11,
+     "4": 16,
+     "5": 1
+    }
+   },
+   "17": {
+    "first": "2027-02-15",
+    "last": "2027-02-28",
+    "teams_by_games": {
+     "3": 3,
+     "4": 20,
+     "5": 7
+    }
+   },
+   "18": {
+    "first": "2027-03-01",
+    "last": "2027-03-07",
+    "teams_by_games": {
+     "2": 2,
+     "3": 18,
+     "4": 10
+    }
+   },
+   "19": {
+    "first": "2027-03-08",
+    "last": "2027-03-14",
+    "teams_by_games": {
+     "3": 14,
+     "4": 16
+    }
+   },
+   "20": {
+    "first": "2027-03-15",
+    "last": "2027-03-21",
+    "teams_by_games": {
+     "2": 1,
+     "3": 14,
+     "4": 15
+    }
+   }
+  }
+ },
+ "settings": {
+  "max_acquisitions_per_week": 4,
+  "roster_positions": [
+   "PG",
+   "SG",
+   "G",
+   "SF",
+   "PF",
+   "F",
+   "C",
+   "C",
+   "Util",
+   "Util",
+   "BN",
+   "BN",
+   "BN",
+   "IL",
+   "IL"
+  ],
+  "playoffs": {
+   "teams": 8,
+   "weeks": [
+    18,
+    19,
+    20
+   ],
+   "ends": "2027-03-21"
+  },
+  "regular_season_weeks": 17,
+  "waivers": {
+   "time_days": 1,
+   "type": "FAB with continual rolling list tiebreak",
+   "mode": "standard",
+   "injured_direct_to_il": true,
+   "post_draft_players": "free agents"
+  },
+  "lineup_deadline": "daily"
+ },
+ "league_schedule_scope": "the owner's own 17 opponents only; the other ten teams' pairings were not supplied",
+ "registry": {
+  "counts": {
+   "settings": 7,
+   "structural": 4,
+   "declared_band": 5,
+   "uncalibrated": 9,
+   "measured": 7
+  },
+  "open": [
+   {
+    "name": "BENCH_WEIGHT",
+    "status": "declared_band",
+    "decision": "D-PM-4 / deck N1 refit"
+   },
+   {
+    "name": "CV",
+    "status": "uncalibrated",
+    "decision": "none needed: draft engine only, frozen with the draft page (owner 2026-10-21, D-ZS-3 'Season tools only')"
+   },
+   {
+    "name": "PCT_MIX_INFL",
+    "status": "declared_band",
+    "decision": "deck N1 refit"
+   },
+   {
+    "name": "TEAM_WEEK_SHOCK",
+    "status": "declared_band",
+    "decision": "D-PM-1 calibrate the shock"
+   },
+   {
+    "name": "GRAD_K",
+    "status": "uncalibrated",
+    "decision": "none needed: draft-time only, no in-season effect"
+   },
+   {
+    "name": "GRAD_SCALE",
+    "status": "uncalibrated",
+    "decision": "none needed: draft-time only, no in-season effect"
+   },
+   {
+    "name": "MKT_W",
+    "status": "uncalibrated",
+    "decision": "none needed: mock rooms only, not the league simulator"
+   },
+   {
+    "name": "MKT_PIN",
+    "status": "uncalibrated",
+    "decision": "none needed for the league simulator; mock rooms only"
+   },
+   {
+    "name": "weekly_availability",
+    "status": "declared_band",
+    "decision": "D-PM-4 reconcile with hoops.availability (recovery and out reconciled 2026-10-21; risk/mild after the composed per-player comparison)"
+   },
+   {
+    "name": "GAMES_PER_WEEK",
+    "status": "declared_band",
+    "decision": "deck N1 refit (schedule-aware games)"
+   },
+   {
+    "name": "PAIR_MIN_GAIN",
+    "status": "uncalibrated",
+    "decision": "none needed: draft-time only"
+   },
+   {
+    "name": "PAIR_WAIT_MIN",
+    "status": "uncalibrated",
+    "decision": "none needed: draft-time only"
+   },
+   {
+    "name": "availability",
+    "status": "uncalibrated",
+    "decision": "D-PM-4 reconcile with arena.weekly_availability (0.78 vs 0.75, 1.0 vs 0.88; recovery reconciled to 0.0 on both 2026-10-21); D-RN-4 review"
+   },
+   {
+    "name": "SEASON_GAMES",
+    "status": "uncalibrated",
+    "decision": "D-IS-1 (in-season after-report 2026-10-19): measure the sample's mean games from actuals_2026-10-09 and replace, or sweep 50 / 80"
+   }
+  ]
+ },
+ "brief": {
+  "keys": [
+   "absent_from_sim",
+   "bench",
+   "date",
+   "league_moves",
+   "league_state_as_of",
+   "lines",
+   "lineup",
+   "opponent",
+   "playoffs",
+   "seasons",
+   "status_file",
+   "streaming",
+   "streaming_vs",
+   "title",
+   "today",
+   "transactions",
+   "waiver_base_ecw",
+   "waiver_pairs_scored",
+   "waiver_positive_pairs",
+   "waiver_top",
+   "week",
+   "week_window"
+  ],
+  "title": {
+   "2026": 22.94,
+   "2027": 22.29
+  },
+  "playoffs": {
+   "2026": 99.24,
+   "2027": 99.33
+  },
+  "seasons": 10000,
+  "lines": "v69",
+  "streaming": [],
+  "waiver_pairs_scored": 520
+ },
+ "calibration": {
+  "1": {
+   "recorded_at": "2026-10-15T20:26:51Z",
+   "scored": false
+  }
+ },
+ "data_weeks": [
+  "TEMPLATE.csv"
+ ],
+ "week_card": {
+  "keys": [
+   "cats",
+   "date",
+   "games",
+   "inputs",
+   "league_state_as_of",
+   "me",
+   "method",
+   "missing_days",
+   "opponent",
+   "pickups",
+   "projected",
+   "remaining_days",
+   "status_file",
+   "to_date_days",
+   "to_date_source",
+   "totals",
+   "unpooled_active",
+   "week",
+   "window"
+  ],
+  "pickups": 7
+ },
+ "owner_roster": {
+  "players": 13,
+  "slots": {
+   "PG": 1,
+   "SG": 1,
+   "G": 1,
+   "SF": 1,
+   "PF": 1,
+   "F": 1,
+   "C": 2,
+   "Util": 2,
+   "BN": 3
+  },
+  "roster_spots": 15
+ },
+ "week2_games_check": {
+  "Lauri’s Prime Rib": {
+   "yahoo": 43,
+   "all_rostered": 50,
+   "non_il": 45,
+   "active_slots": 35,
+   "unknown_codes": []
+  },
+  "MAXEY-MUM OVERDRIVE": {
+   "yahoo": 39,
+   "all_rostered": 43,
+   "non_il": 40,
+   "active_slots": 30,
+   "unknown_codes": []
+  },
+  "KEL'EL YAXEL HALQUETA": {
+   "yahoo": 32,
+   "all_rostered": 44,
+   "non_il": 44,
+   "active_slots": 32,
+   "unknown_codes": []
+  },
+  "John's Cool Team": {
+   "yahoo": 42,
+   "all_rostered": 45,
+   "non_il": 42,
+   "active_slots": 32,
+   "unknown_codes": []
+  },
+  "Booker T Floppers": {
+   "yahoo": 41,
+   "all_rostered": 41,
+   "non_il": 41,
+   "active_slots": 31,
+   "unknown_codes": []
+  },
+  "Looking Cool Joker!": {
+   "yahoo": 29,
+   "all_rostered": 43,
+   "non_il": 39,
+   "active_slots": 29,
+   "unknown_codes": []
+  },
+  "Splash Mountain": {
+   "yahoo": 40,
+   "all_rostered": 44,
+   "non_il": 44,
+   "active_slots": 35,
+   "unknown_codes": []
+  },
+  "Giavaris Jamal Javarison-Lamar": {
+   "yahoo": 40,
+   "all_rostered": 41,
+   "non_il": 41,
+   "active_slots": 33,
+   "unknown_codes": []
+  },
+  "Cade n em": {
+   "yahoo": 42,
+   "all_rostered": 47,
+   "non_il": 44,
+   "active_slots": 35,
+   "unknown_codes": []
+  },
+  "Thompson Telepathy": {
+   "yahoo": 42,
+   "all_rostered": 50,
+   "non_il": 42,
+   "active_slots": 32,
+   "unknown_codes": []
+  },
+  "Podz save the league": {
+   "yahoo": 41,
+   "all_rostered": 50,
+   "non_il": 43,
+   "active_slots": 34,
+   "unknown_codes": []
+  },
+  "ROOKS FTW": {
+   "yahoo": 42,
+   "all_rostered": 49,
+   "non_il": 43,
+   "active_slots": 34,
+   "unknown_codes": []
+  }
+ },
+ "week2_games_definitions": {
+  "all_rostered": [
+   "Booker T Floppers"
+  ],
+  "non_il": [
+   "Booker T Floppers",
+   "John's Cool Team",
+   "Thompson Telepathy"
+  ],
+  "active_slots": [
+   "KEL'EL YAXEL HALQUETA",
+   "Looking Cool Joker!"
+  ]
+ },
+ "receipts": {
+  "co_gm_lines_tag": [
+   [
+    23,
+    "LINES_TAG = \"v69\""
+   ]
+  ],
+  "co_gm_sim_call": [
+   [
+    177,
+    "    subprocess.run([sys.executable, os.path.join(DECK, \"arena\", \"mocks\", \"league_sim.py\"), sp, LINES_TAG,"
+   ]
+  ],
+  "league_sim_argv": [
+   [
+    25,
+    "state_path, tag, SEASONS, SEED, out_path = sys.argv[1], sys.argv[2], int(sys.argv[3]), int(sys.argv[4]), sys.argv[5]"
+   ],
+   [
+    26,
+    "VERIFY = \"--verify\" in sys.argv"
+   ],
+   [
+    27,
+    "CV = arena.SEASON_CV if \"--season-cv\" in sys.argv else None"
+   ],
+   [
+    29,
+    "if \"--schedule\" in sys.argv:"
+   ],
+   [
+    30,
+    "    sched_path = sys.argv[sys.argv.index(\"--schedule\") + 1]"
+   ]
+  ],
+  "league_sim_data_path": [
+   [
+    33,
+    "hoops.DATA_PATH = os.path.join(DECK, \"arena\", \"results\", f\"players_{tag}.csv\")"
+   ]
+  ],
+  "league_sim_team_record": [
+   [
+    125,
+    "    out[\"teams\"][i] = dict(champ=100 * r[\"champ\"] / SEASONS, final=100 * r[\"final\"] / SEASONS, semi=100 * r[\"semi\"] / SEASONS,"
+   ]
+  ],
+  "week_matchup_m5": [
+   [
+    27,
+    "  M5 leader      higher final wins; TO lower wins; equal (or no attempts) is a tie. Point estimates, no probability."
+   ]
+  ],
+  "week_matchup_m6": [
+   [
+    28,
+    "  M6 drop        \"finished\" = 0 NBA games from today through the week's end; \"lower valued\" = board value"
+   ]
+  ],
+  "co_gm_free_agents": [
+   [
+    126,
+    "def free_agents(P, state, n=WAIVER_CANDIDATES):"
+   ],
+   [
+    150,
+    "def streaming(candidates, drop_games, n=5):"
+   ]
+  ],
+  "scoreboard_input": [
+   [
+    5,
+    "totals (the template: week,team,opponent,FG%,FT%,3PTM,PTS,REB,AST,ST,BLK,TO). The owner fills it from Yahoo's"
+   ]
+  ],
+  "team_week_games": [
+   [
+    506,
+    "        g = 3.5 * a"
+   ]
+  ],
+  "pcat": [
+   [
+    116,
+    "def _pcat(m, om, c):"
+   ],
+   [
+    122,
+    "def pwins(my, opps):"
+   ]
+  ],
+  "fa_tab_sort": [
+   [
+    473,
+    "      .sort((a,b)=>b.z_adj-a.z_adj).slice(0,60);  // owner 2026-10-20: free agents by z, descending"
+   ]
+  ],
+  "morning_steps": [
+   [
+    19,
+    "  5b week matchup (non-fatal)     scripts/week_matchup.py --date <today>       (Yahoo's totals to date + projected, Yahoo's"
+   ],
+   [
+    81,
+    "           dict(name=\"week matchup\", cmd=[PY, os.path.join(HERE, \"week_matchup.py\"), \"--date\", date], cwd=KIT,"
+   ]
+  ]
+ },
+ "flaim": {
+  "standings": {
+   "teams": 12,
+   "faab": [
+    500
+   ],
+   "records": [
+    [
+     0,
+     0,
+     0
+    ]
+   ],
+   "fields": [
+    "championshipWon",
+    "faabBalance",
+    "finalRank",
+    "losses",
+    "madePlayoffs",
+    "name",
+    "outcomeConfidence",
+    "percentage",
+    "playoffOutcome",
+    "playoffSeed",
+    "rank",
+    "teamId",
+    "teamKey",
+    "ties",
+    "waiverPriority",
+    "wins"
+   ]
+  },
+  "transactions": {
+   "rows": 25,
+   "first": "2026-10-15",
+   "last": "2026-10-22",
+   "ids": [
+    "478.l.36464.tr.19",
+    "478.l.36464.tr.43"
+   ],
+   "faab_bid_reported": 0,
+   "limitations": {
+    "possibly_truncated": true
+   },
+   "by_team": {
+    "10": 5,
+    "11": 5,
+    "6": 2,
+    "12": 1,
+    "4": 1,
+    "8": 2,
+    "9": 2,
+    "1": 3,
+    "7": 2,
+    "3": 2
+   }
+  },
+  "matchups_week2": {
+   "week": 2,
+   "current_week": 1,
+   "matchups": 6,
+   "status": [
+    "upcoming"
+   ],
+   "games_remaining": {
+    "Lauri’s Prime Rib": 43,
+    "John's Cool Team": 42,
+    "Booker T Floppers": 41,
+    "Splash Mountain": 40,
+    "Looking Cool Joker!": 29,
+    "KEL'EL YAXEL HALQUETA": 32,
+    "Giavaris Jamal Javarison-Lamar": 40,
+    "MAXEY-MUM OVERDRIVE": 39,
+    "Cade n em": 42,
+    "Podz save the league": 41,
+    "Thompson Telepathy": 42,
+    "ROOKS FTW": 42
+   },
+   "pairs": [
+    [
+     "Lauri’s Prime Rib",
+     "John's Cool Team"
+    ],
+    [
+     "Booker T Floppers",
+     "Splash Mountain"
+    ],
+    [
+     "Looking Cool Joker!",
+     "KEL'EL YAXEL HALQUETA"
+    ],
+    [
+     "Giavaris Jamal Javarison-Lamar",
+     "MAXEY-MUM OVERDRIVE"
+    ],
+    [
+     "Cade n em",
+     "Podz save the league"
+    ],
+    [
+     "Thompson Telepathy",
+     "ROOKS FTW"
+    ]
+   ]
+  }
+ }
+}

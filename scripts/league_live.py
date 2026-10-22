@@ -215,14 +215,16 @@ def main():
                 print(f"LEAGUE LIVE: HALT — Flaim: {e}; league_state.json not touched (last paste stands)")
                 return 1
             print(f"LEAGUE LIVE: Flaim pull not used — {e}; trying FantasyBot")
-            if not a.pull and isinstance(pull, dict) and (pull.get("matchups") or pull.get("free_agents")):
-                # the week card reads Yahoo's matchup totals and available-player list from this pin (A, D)
+            if not a.pull and isinstance(pull, dict) and (pull.get("matchups") or pull.get("free_agents") or pull.get("daily")):
+                # the week card reads Yahoo's matchup totals, available-player list and past days' lineups from this
+                # pin (A, D, E); an earlier pin's lineups for this date are kept
                 os.makedirs(a.flaim_pin_dir, exist_ok=True)
                 fpin = os.path.join(a.flaim_pin_dir, f"pull_{a.as_of}.json")
+                keep = FL.keep_daily(pull, fpin)
                 with open(fpin, "w", encoding="utf-8") as f:
-                    json.dump(pull, f, indent=1, ensure_ascii=False, sort_keys=True)
+                    json.dump(keep, f, indent=1, ensure_ascii=False, sort_keys=True)
                     f.write("\n")
-                print(f"LEAGUE LIVE: Flaim matchup/available-player responses pinned for the week card, "
+                print(f"LEAGUE LIVE: Flaim matchup/available-player/lineup responses pinned for the week card, "
                       f"{os.path.relpath(fpin, KIT) if fpin.startswith(KIT) else fpin}")
     if used is None:
         try:
@@ -244,6 +246,8 @@ def main():
     pin_dir = a.flaim_pin_dir if used == "flaim" else a.pin_dir
     os.makedirs(pin_dir, exist_ok=True)
     pin = os.path.join(pin_dir, f"pull_{a.as_of}.json")
+    if used == "flaim":
+        pull = FL.keep_daily(pull, pin)  # a second run for this date (the afternoon check) keeps the morning's lineups
     with open(pin, "w", encoding="utf-8") as f:
         json.dump(pull, f, indent=1, ensure_ascii=False, sort_keys=True)
         f.write("\n")
