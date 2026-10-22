@@ -1,0 +1,13 @@
+Commands behind after-report-2026-10-22-week2-record.md (2026-10-22).
+
+State: git show e7b69bb:data/league_state.json > week2-record-2026-10-22/league_state_e7b69bb.json   (sha256 64eaafe93e13)
+Before: cp report/calibration.json week2-record-2026-10-22/calibration_before.json
+
+Record (SEASON_POOL unset, so the v69 lines; DECK_REPO = deck at 048efb6), output in record.txt:
+  python3 -c 'import sys,os; sys.path.insert(0,"scripts"); sys.argv=["weekly_preview.py","--week","2","--record"];
+              import weekly_preview as WP; WP.CG.STATE=os.path.abspath("<this folder>/league_state_e7b69bb.json"); WP.main()'
+
+Reproduce check (no record): the same state, WP.preview(2) -> by_seed and p_win identical to the ledger row (True, True).
+
+Tests: python3 scripts/test_weekly.py (red on main: 2 errors of 5; green twice: 5 of 5); python3 scripts/test_season_cv.py (OK);
+       python3 -m unittest discover -s scripts -p 'test_*.py' (356 run, 1 failure = test_matchup_live, failing identically on main d2f2f0f).

@@ -61,7 +61,14 @@ def preview(week, n=10000):
     sched = json.load(open(CG.SCHEDULE, encoding="utf-8"))
     o = next(x for x in sched["owner_opponents"] if x["week"] == week)
     P, by = CG.load_pool()
-    ros = CG.rosters(state, by)
+    # 2026-10-22 (week 2): only the two teams in the matchup are modelled; a player without a line on a third team
+    # (Drummond, seat 9, D-DR-1) stopped the record, one on either side of the matchup stops it by name
+    seats = (CG.OWNER_SEAT, o["seat"])
+    unlined = sorted(p["player"] for t in state["teams"] if t["seat"] in seats for p in t["players"]
+                     if p["slot"] != "IL" and p["player"] not in by)
+    if unlined:
+        raise LedgerError(f"week {week}: no {CG.LINES_TAG} line for {', '.join(unlined)} in the matchup")
+    ros = CG.rosters(dict(state, teams=[t for t in state["teams"] if t["seat"] in seats]), by)
     models = {s: CG.arena.team_week_model(r, CG.arena.SEASON_CV) for s, r in ros.items()}  # D-ZS-3: the season CV
     sig = {s: {c: math.sqrt(models[s][1][c]) or 1e-6 for c in CG.CATS} for s in ros}
     runs = {s: simulate(models, sig, CG.OWNER_SEAT, o["seat"], n, s * 100 + week) for s in SEEDS}
