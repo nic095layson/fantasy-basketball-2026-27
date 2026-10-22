@@ -9,8 +9,9 @@ only one outlet has games (preseason is absent from Basketball-Reference) is lab
 For a date: every FINAL event on ESPN's scoreboard, each summary's box score (per player: minutes, points,
 FGM/FGA, 3PM/3PA, FTM/FTA, REB, AST, TOV, STL, BLK, starter, DNP), the same from each Basketball-Reference game
 page, the two reconciled player by player (a differing cell is listed, never averaged), names resolved to the
-kit's pool by the deck's fold plus the kit alias table (a miss is recorded as unpooled with its line kept, never
-guessed), and one dated JSON record with the receipts (URLs, fetch times, HTTP codes).
+kit's pool by the deck's fold plus the kit alias table, then by the suffix-free key when exactly one pool name
+shares it (owner 2026-10-22; a miss is recorded as unpooled with its line kept, never guessed), and one dated JSON
+record with the receipts (URLs, fetch times, HTTP codes).
 
     python3 scripts/box_pull.py --date 2026-10-16 [--out data/actuals/2026-10-16.json] [--cache DIR] [--no-bref]
 Prints 'BOX PULL: PASS — ...' (exit 0) when every FINAL ESPN event yielded a box score and the record was written;
@@ -180,13 +181,10 @@ def load_pool_names(path=POOL_CSV):
 
 
 def resolve_names(rows, pool_names, aliases):
-    by = {fold(n): n for n in pool_names}
-    for canon, variants in (aliases or {}).items():
-        for v in variants:
-            by.setdefault(fold(v), canon)
+    index = name_index(pool_names, aliases)
     out = []
     for r in rows:
-        r = dict(r); r["pool_name"] = by.get(fold(r["name"]))
+        r = dict(r); r["pool_name"] = match_name(r["name"], index)
         out.append(r)
     return out
 
@@ -198,6 +196,30 @@ def name_key(name):
     """Folded name with generational suffixes dropped (Robert Williams III -> robert williams)."""
     toks = [t for t in fold(name).split() if t not in SUFFIXES]
     return " ".join(toks)
+
+
+def name_index(names, aliases=None):
+    """The lookup match_name reads: each folded spelling (the alias table's variants folded to their canonical name)
+    and each suffix-free key with the names that share it."""
+    by = {fold(n): n for n in names}
+    for canon, variants in (aliases or {}).items():
+        for v in variants:
+            by.setdefault(fold(v), canon)
+    keyed = {}
+    for n in names:
+        keyed.setdefault(name_key(n), set()).add(n)
+    return by, keyed
+
+
+def match_name(name, index):
+    """The name `name` folds to; failing that, the one name sharing its suffix-free key (owner 2026-10-22: ESPN's
+    "Darius Acuff Jr." is the kit's "Darius Acuff"); otherwise None. A key two names share matches neither."""
+    by, keyed = index
+    hit = by.get(fold(name))
+    if hit is None:
+        cands = keyed.get(name_key(name), ())
+        hit = next(iter(cands)) if len(cands) == 1 else None
+    return hit
 
 
 def _compatible(a, b):

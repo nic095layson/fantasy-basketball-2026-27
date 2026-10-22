@@ -1,0 +1,18 @@
+Commands behind after-report-2026-10-22-next-level.md (2026-10-22, GAUNTLET "take the tool to the next level").
+
+Flaim, read-only, Yahoo league 478.l.36464, season_year 2026 (T0 2026-10-22T16:19:04Z):
+  get_matchups week 2        -> YAHOO_AUTH_UNAVAILABLE (refresh_temporarily_unavailable: token refresh in progress)
+  get_standings              -> 12 teams
+  get_transactions count 25  -> 25 rows, possibly_truncated
+  get_matchups week 2 (retry)-> 6 matchups, status upcoming
+
+python3 report/after-reports/next-level-2026-10-22/pin.py --transcript <session transcript> --since 2026-10-22T16:19:00Z
+  -> flaim_samples.json (standings, transactions, matchups_week2; raw data objects)
+
+python3 report/after-reports/next-level-2026-10-22/facts.py --records <kit worktree at season/daily e7b69bb> --deck <deck at 048efb6>
+  -> facts.json (two runs, identical)
+
+python3 report/after-reports/next-level-2026-10-22/worked_example.py --deck <deck at 048efb6>
+  -> worked_example.txt (illustrative inputs; two runs, identical)
+
+Report numbers cross-checked mechanically against facts.json and worked_example.txt: 28 of 28 consistent.
