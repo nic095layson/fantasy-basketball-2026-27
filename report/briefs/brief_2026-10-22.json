@@ -122,7 +122,7 @@
   ]
  ],
  "bench": [],
- "waiver_base_ecw": 5.1249,
+ "waiver_base_ecw": 5.0961,
  "waiver_positive_pairs": 1,
  "waiver_pairs_scored": 520,
  "waiver_top": [
@@ -130,13 +130,13 @@
    "add": "Julian Champagnie",
    "add_team": "SAS",
    "drop": "Christian Braun",
-   "d_ecw": 0.0017,
+   "d_ecw": 0.001,
    "title_by_seed": {
-    "2026": 23.75,
-    "2027": 23.29
+    "2026": 23.12,
+    "2027": 22.3
    },
-   "title": 23.52,
-   "d_title": -0.24
+   "title": 22.71,
+   "d_title": 0.09
   }
  ],
  "streaming": [],
@@ -146,12 +146,12 @@
   "value_per_game": -2.77
  },
  "title": {
-  "2026": 23.92,
-  "2027": 23.59
+  "2026": 22.94,
+  "2027": 22.29
  },
  "playoffs": {
-  "2026": 99.36,
-  "2027": 99.42
+  "2026": 99.24,
+  "2027": 99.33
  },
  "seasons": 10000,
  "absent_from_sim": [
@@ -165,5 +165,18 @@
   "ok": true,
   "hits": []
  },
- "league_moves": []
+ "league_moves": [
+  {
+   "team": "MAXEY-MUM OVERDRIVE",
+   "seat": 11,
+   "added": [],
+   "dropped": [
+    "Gui Santos"
+   ],
+   "to_il": [],
+   "from_il": [
+    "Kon Knueppel"
+   ]
+  }
+ ]
 }

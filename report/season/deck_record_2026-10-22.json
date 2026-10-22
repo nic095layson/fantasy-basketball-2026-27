@@ -5,7 +5,7 @@
   "brief": {
    "path": "report/briefs/brief_2026-10-22.json",
    "present": true,
-   "sha256": "bad6f7523e514c676da0b523d3ba93f583521e3fe4c18667b87c5685631c9fd9"
+   "sha256": "7ac4b5088c04c02ba16b5110836b6b8dd3477f226d71a397d7203946d96989c8"
   },
   "board": {
    "path": "report/season/board_2026-10-22.json",
@@ -15,17 +15,17 @@
   "status": {
    "path": "data/status/status_2026-10-22.json",
    "present": true,
-   "sha256": "808fd74b743d2a20869a12de45bca8ba326affecfb94578dd88ff877a7e67f6f"
+   "sha256": "f3ba8592df8c524b557169b2212e6dae33869ba307433cd6262cb6f063909058"
   },
   "league_state": {
    "path": "data/league_state.json",
    "present": true,
-   "sha256": "372662e6269ff6084fe08c3e354f68e2430bc03867ec0b747f90d69b116705ef"
+   "sha256": "64eaafe93e133a66722ab8ead55dc16878d946fe5099135dbc304b30e9dccf29"
   },
   "season_lines": {
    "path": "data/season/season_lines_2026-10-22.json",
    "present": true,
-   "sha256": "27a09349159b9f04dea8b39c7afb41616ea741d9017b7c44b9884250fe3d61f8"
+   "sha256": "207adcdb31d717763dc249bed1981b086eff5872e22b08aab6eb2a4aa12f6af3"
   },
   "sweep": {
    "path": "report/after-reports/redteam-2026-10-19/sweep.json",
@@ -40,21 +40,21 @@
   "matchup_live": {
    "path": "data/news/matchup_live_2026-10-22.json",
    "present": true,
-   "sha256": "de3954559089c4722eb9f9a216a77f09e1c10ce6f304557e4d00048ae312b526"
+   "sha256": "b5390d942b92070a3153ad0bf421487e5bab664ba443a4431ad012ecaa795966"
   },
   "week_matchup": {
    "path": "report/briefs/week_matchup_2026-10-22.json",
    "present": true,
-   "sha256": "f837f90fb58a9c48d0cfe8c22865855c091304fae4fcc3323bc5579ce35aacd1"
+   "sha256": "85f278dfc98cec378a954489e6e452bb771a29c2e84ef12225667070f73cfaae"
   }
  },
  "board_rows": 313,
  "status_rows": 14,
  "panes": 6,
  "join": {
-  "rostered": 168,
+  "rostered": 167,
   "unresolved": 0,
-  "on_board": 165,
+  "on_board": 164,
   "off_board": 3,
   "respelled": [
    [
@@ -94,7 +94,7 @@
     "Wendell Carter Jr"
    ]
   ],
-  "free_agents_on_board": 148
+  "free_agents_on_board": 149
  },
  "render": {
   "status": "PASS",
@@ -107,6 +107,6 @@
    "Week"
   ],
   "page_errors": 0,
-  "browser": "141.0.7390.37 (playwright default)"
+  "browser": "141.0.7390.37 (/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell)"
  }
 }

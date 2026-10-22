@@ -2,16 +2,16 @@
  "as_of": "2026-10-22",
  "sources": {
   "flaim": {
-   "transcript": "f7b74300-8501-5e41-b8c5-d2c75dd06ce4.jsonl",
+   "transcript": "3cdbbd9b-02dd-585e-8d00-b8a370128fae.jsonl",
    "method": "mechanical json extraction of Flaim (Yahoo) tool results from the session transcript",
-   "since": "2026-10-22T14:31:49Z",
+   "since": "2026-10-22T14:44:17Z",
    "pull_file": "data/source/flaim/pull_2026-10-22.json",
-   "pull_sha256": "b5bcdc245362068ae7f8d700b9c00927d51c37287fffabc2162081b4a334f621",
+   "pull_sha256": "47d1e6583bcd7a043af97dc1f24b93e6956fc48fb2ed0956c4e755f736b11241",
    "view": "Flaim connector (Yahoo, read-only): get_roster per team (current), get_matchups, get_free_agents"
   },
   "transcription": {
    "file": "data/source/flaim/rosters_2026-10-22.transcribed.csv",
-   "sha256": "8a417f3ffa94072fdc6f4f4d9f19e1a1bfe92f58d137725494c241282e69320d",
+   "sha256": "923704ddcf419e27c8b0f8320546f5ad7bc67dfc20cc27e1c58b883c62a290bd",
    "method": "flaim_live.to_rows (mechanical; Yahoo slots and status letters for every team)"
   },
   "draft_board": "report/after-reports/draft-league-2026-10-14/recap.json",
@@ -1779,18 +1779,6 @@
      "status": "NA"
     },
     {
-     "player": "Gui Santos",
-     "yahoo_name": "Gui Santos",
-     "slot": "BN",
-     "yahoo_nba_team": "GSW",
-     "pool_team": "GSW",
-     "positions": [
-      "SF",
-      "PF"
-     ],
-     "status": null
-    },
-    {
      "player": "Myles Turner",
      "yahoo_name": "Myles Turner",
      "slot": "BN",
@@ -1804,7 +1792,7 @@
     {
      "player": "Kon Knueppel",
      "yahoo_name": "Kon Knueppel",
-     "slot": "IL",
+     "slot": "BN",
      "yahoo_nba_team": "CHA",
      "pool_team": "CHA",
      "positions": [
@@ -1833,7 +1821,6 @@
    "draft_overlap": 12,
    "added_since_draft": [
     "Bradley Beal",
-    "Gui Santos",
     "Jalen Smith"
    ],
    "dropped_since_draft": [
