@@ -43,6 +43,31 @@ class Weeks(unittest.TestCase):
         self.assertEqual((tw["gp"], tw["il"], tw["active"]), (1, 1, 1))
 
 
+class Status(unittest.TestCase):
+    def test_rule_stated_before_the_run(self):
+        import count_games as G
+        zero = {t: 0 for _, t in G.TOTALS}
+        self.assertEqual(G.status(zero), "ACCEPTED")
+        self.assertEqual(G.status({**zero, "ast": 1}), "NEAR")
+        self.assertEqual(G.status({**zero, "pts": -2, "reb": 2}), "NEAR")
+        self.assertEqual(G.status({**zero, "pts": 3}), "REJECTED")
+
+
+class Diagnosis(unittest.TestCase):
+    def test_count_reproduces_the_five_diagnosed_weeks(self):
+        # the diagnosis (diagnose_daily.py) counted the active-slot games of five team-weeks by its own loop; the general
+        # script must give the same count, and ACCEPTED exactly where the diagnosis found all eleven totals equal
+        import json
+        diag = json.load(open(os.path.join(HERE, "diagnosis_daily.json"), encoding="utf-8"))["cases"]
+        rows = {(r["week"], r["manager"]): r for r in
+                json.load(open(os.path.join(HERE, "player_games_2025-26.json"), encoding="utf-8"))["rows"]}
+        self.assertEqual(len(diag), 5)
+        for c in diag:
+            r = rows[(c["week"], c["manager"])]
+            self.assertEqual(r["player_games"], c["lineup"])
+            self.assertEqual(r["status"] == "ACCEPTED", c["totals_equal"])
+
+
 @unittest.skipUnless(RAW, "needs RAW_DIR")
 class Parser(unittest.TestCase):
     def test_carried_parser_agrees_with_159(self):
