@@ -59,6 +59,26 @@ class BoxScores(unittest.TestCase):
         self.assertEqual(sorted(got), ["A"])
         self.assertEqual(got["A"]["pts"], 10)
 
+    def test_given_the_cards_names_a_line_is_read_under_the_cards_spelling(self):
+        # owner 2026-10-22 (the name-mismatch fix): the box pull files lines under the kit's spelling or none at all;
+        # the card's rosters carry Yahoo's. Acuff's line had no pool name; Cameron Johnson's is filed as "Cam Johnson"
+        rec = dict(games=[dict(espn_id="g1", season_type=2)],
+                   players=[dict(name="Darius Acuff Jr.", pool_name=None, dnp=False, game="g1", **box(pts=12)),
+                            dict(name="Cameron Johnson", pool_name="Cam Johnson", dnp=False, game="g1", **box(pts=9)),
+                            dict(name="A", pool_name="A", dnp=False, game="g1", **box(pts=10)),
+                            dict(name="Nobody Here", pool_name=None, dnp=False, game="g1", **box(pts=7))])
+        got = WM.played(rec, names=["Darius Acuff Jr.", "Cameron Johnson", "A"])
+        self.assertEqual(sorted(got), ["A", "Cameron Johnson", "Darius Acuff Jr."])
+        self.assertEqual((got["Darius Acuff Jr."]["pts"], got["Cameron Johnson"]["pts"]), (12, 9))
+
+    def test_the_recent_box_scores_are_read_under_the_cards_spelling_too(self):
+        with tempfile.TemporaryDirectory() as d:
+            dump(dict(games=[dict(espn_id="g1", season_type=2)],
+                      players=[dict(name="Darius Acuff Jr.", pool_name=None, team="SAC", dnp=False, game="g1", **box(pts=12))]),
+                 os.path.join(d, "2026-10-21.json"))
+            (day, who, teams), = WM._recent_boxes(d, "2026-10-22", names=["Darius Acuff Jr."])
+            self.assertEqual((day, who), ("2026-10-21", {"Darius Acuff Jr.": ("SAC", False)}))
+
 
 class ToDate(unittest.TestCase):
     def test_sums_the_rostered_players_who_played_and_nobody_else(self):
@@ -213,6 +233,19 @@ class Record(unittest.TestCase):
         self.assertEqual(rec["pickups"]["drop"]["player"], "Derrick White")
         self.assertTrue(rec["pickups"]["top"]); self.assertGreater(rec["pickups"]["pool_size"], 300)
         self.assertNotIn("Joel Embiid", [r["add"] for r in rec["pickups"]["top"]])   # rostered (IL) is not a free agent
+
+    def test_a_line_the_kits_file_spells_differently_still_counts_for_its_roster(self):
+        # owner 2026-10-22 (the name-mismatch fix): Darius Acuff Jr.'s 10/21 game was missing from the rebuild because
+        # the box pull left it unpooled ("Darius Acuff" in the kit's file); his 12 points now count for THEIRS
+        st = json.load(open(self.state))
+        st["teams"][1]["players"].append(dict(player="Darius Acuff Jr.", slot="UTIL", yahoo_nba_team="SAC", positions=["PG"], status=None))
+        dump(st, self.state)
+        f = os.path.join(self.paths["actuals"], "2026-10-20.json"); box_rec = json.load(open(f))
+        box_rec["players"].append(dict(name="Darius Acuff Jr.", pool_name=None, team="SAC", dnp=False, game="g1",
+                                       **box(fgm=5, fga=24, ftm=2, fta=5, tpm=0, pts=12, reb=3, ast=3, stl=3, blk=0, tov=4)))
+        dump(box_rec, f)
+        cats = {c["cat"]: c for c in WM.build("2026-10-21", self.paths)["cats"]}
+        self.assertEqual(cats["PTS"]["opp_to_date"], 42)            # Maxey 30 + Acuff 12
 
     def test_before_anyone_finishes_the_scan_says_so_and_names_who_finishes_next(self):
         rec = WM.build("2026-10-20", self.paths)
