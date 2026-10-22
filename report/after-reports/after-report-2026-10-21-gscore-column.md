@@ -129,12 +129,9 @@ Near misses (the 🎯 in 5+ mocks, under 25 places): Jamal Murray (18 mocks, val
 
 ## Decision sheet
 
-1. **How this ships** (it is built for its own PR; this session may push only to its one branch):
-   - (a) merge the z-score assessment (#159) first, after which this goes up as a new PR from that branch;
-   - (b) allow a second branch now;
-   - (c) add it to #159.
-2. **The Season Deck's Board tab**: show G (adj) and G # there too, or leave the deck as it is. Default: leave it.
-3. **D-ZS-3** (unchanged, in the assessment): the per-game variation fit.
+1. **How this ships** — decided. The owner chose (a) "Merge #159, then new PR" on 10/21. On 10/22 the owner then chose "Own branch per PR" for every kit change, and this branch is the result: `claude/gscore-column-2026-10-22`, built on #159's head.
+2. **The Season Deck's Board tab** — decided 10/21: "Leave the deck as is".
+3. **D-ZS-3** — decided 10/21: (a) "Adopt the fitted values", then "Season tools only". It ships as deck PR #130 plus its own kit PR.
 
 ## Bounds
 
@@ -167,4 +164,4 @@ Near misses (the 🎯 in 5+ mocks, under 25 places): Jamal Murray (18 mocks, val
 
 The season board now shows a second number beside each player's z-score: his G-score, the version the paper you uploaded recommends for head-to-head leagues. G counts a category for less when it swings a lot from week to week. The board still sorts by z, so nothing about your rankings, lineup or pickups changes.
 
-On today's board the two mostly agree. The biggest differences are steals specialists: Dyson Daniels drops from 34th to 64th by G, because steals are the swingiest category. Paolo Banchero climbs from 122nd to 94th. The column appears on the board each morning from now on. Whether it should also show in the Season Deck, and whether we should ever rank by it, are your calls.
+On today's board the two mostly agree. The biggest differences are steals specialists: Dyson Daniels drops from 34th to 64th by G, because steals are the swingiest category. Paolo Banchero climbs from 122nd to 94th. Once this PR merges, the column appears on the board each morning. Whether it should also show in the Season Deck, and whether we should ever rank by it, are your calls.
