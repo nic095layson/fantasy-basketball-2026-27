@@ -1,9 +1,12 @@
-# Afternoon check 2026-10-22
+# Afternoon check 2026-10-22 (re-run on the owner's word, after the sequential-call fix)
 
-- T0: 2026-10-22T22:05:10Z. Branch: season/daily from origin/season/daily (3126329) with origin/main merged (8bb2ca6, run-ledger auto-merged, no conflict). No stash.
-- Flaim: tools present, league 478.l.36464 found; 5 of 12 current rosters returned (teams 4, 6, 8, 10, 12). Teams 1, 2, 3, 5, 7, 9, 11 failed with `YAHOO_AUTH_UNAVAILABLE: refresh_temporarily_unavailable: Yahoo token refresh is already in progress` (the 12 calls were made in parallel right after get_user_session). Per the prompt, no further Flaim calls.
-- FantasyBot (fallback): get_my_roster and the team list returned, then 2 rival rosters (Lauri's Prime Rib, Booker T Floppers); the other 9 returned `Daily limit reached` (resets 2026-10-23T00:00Z). Not complete.
-- LEAGUE LIVE: HALT — 2 rival team(s) + mine != 12: ['Booker T Floppers', 'Lauri’s Prime Rib']; league_state.json not touched (last paste stands). Roster validation therefore did not run; the morning state stands.
-- League moves since the morning state: no record (league live halted).
-- Status: STATUS GATE: PASS — status_2026-10-22.json: 14 flagged row(s), each tiered with a dated receipt. Against the morning commit's file: no tier changed on any row (only the ESPN receipt field refreshed). David's roster: no flagged rows. Opponent MAXEY-MUM OVERDRIVE: Bradley Beal out, Kevin Porter Jr. not active, Kon Knueppel questionable — unchanged.
-- Note: the status rows rest on the morning league_state, which still lists Kevin Porter Jr. on MAXEY-MUM OVERDRIVE; Flaim's current roster for that team (one of the 5 that returned) no longer has him and shows Jaylon Tyson added.
+- T0: 2026-10-22T22:12:55Z. Branch: season/daily from origin/season/daily (345d735); `git merge --no-edit origin/main` → already up to date. No stash.
+- Flaim: get_user_session (league 478.l.36464), then get_roster for teams 1–12 one at a time: 12 of 12 returned data, no YAHOO_AUTH_UNAVAILABLE, no retry needed. FantasyBot not needed (and not called).
+- LEAGUE LIVE: PASS — rosters from Flaim (Yahoo), pinned data/source/flaim/pull_2026-10-22.json (LEAGUE INTAKE: PASS — 12 teams, 168 players, 168 of 168 resolved).
+- League moves since the morning state (data/news/league_moves_2026-10-22.json): Giavaris Jamal Javarison-Lamar +Kentavious Caldwell-Pope −Collin Gillespie; MAXEY-MUM OVERDRIVE +Jaylon Tyson −Kevin Porter Jr.; KEL'EL YAXEL HALQUETA +Anthony Black.
+- Status vs the morning commit's status_2026-10-22.json (e7b69bb):
+  - David: Anthony Black (new, IL slot) — out.
+  - Opponent MAXEY-MUM OVERDRIVE: Kon Knueppel questionable → out; Bradley Beal out (unchanged); Kevin Porter Jr. no longer on the roster.
+  - Elsewhere: De'Aaron Fox and Reed Sheppard → questionable; AJ Dybantsa and Coby White questionable → out; Josh Giddey → probable.
+- STATUS GATE: PASS — status_2026-10-22.json: 17 flagged row(s), each tiered with a dated receipt.
+- Supersedes the 22:05Z afternoon report (345d735), which halted on parallel Flaim calls.

@@ -2,16 +2,16 @@
  "as_of": "2026-10-22",
  "sources": {
   "flaim": {
-   "transcript": "3cdbbd9b-02dd-585e-8d00-b8a370128fae.jsonl",
+   "transcript": "f7b74300-8501-5e41-b8c5-d2c75dd06ce4.jsonl",
    "method": "mechanical json extraction of Flaim (Yahoo) tool results from the session transcript",
-   "since": "2026-10-22T14:44:17Z",
+   "since": "2026-10-22T22:12:55Z",
    "pull_file": "data/source/flaim/pull_2026-10-22.json",
-   "pull_sha256": "47d1e6583bcd7a043af97dc1f24b93e6956fc48fb2ed0956c4e755f736b11241",
+   "pull_sha256": "a9acc184c11ffc8c066d5d63b2f9fbd41db4e7abe3ca6b84e78e922aa3d951d6",
    "view": "Flaim connector (Yahoo, read-only): get_roster per team (current), get_matchups, get_free_agents"
   },
   "transcription": {
    "file": "data/source/flaim/rosters_2026-10-22.transcribed.csv",
-   "sha256": "923704ddcf419e27c8b0f8320546f5ad7bc67dfc20cc27e1c58b883c62a290bd",
+   "sha256": "6e689cc5638c32fb59a6fc5405fb0ae902192267c2c785da5c8993866c2ac1d3",
    "method": "flaim_live.to_rows (mechanical; Yahoo slots and status letters for every team)"
   },
   "draft_board": "report/after-reports/draft-league-2026-10-14/recap.json",
@@ -411,7 +411,7 @@
       "PG",
       "SG"
      ],
-     "status": null
+     "status": "P"
     },
     {
      "player": "Keaton Wagler",
@@ -757,7 +757,7 @@
       "PG",
       "SG"
      ],
-     "status": null
+     "status": "Q"
     },
     {
      "player": "Ayo Dosunmu",
@@ -842,26 +842,26 @@
      "status": null
     },
     {
+     "player": "Kentavious Caldwell-Pope",
+     "yahoo_name": "Kentavious Caldwell-Pope",
+     "slot": "UTIL",
+     "yahoo_nba_team": "PHI",
+     "pool_team": "PHI",
+     "positions": [
+      "SG",
+      "SF"
+     ],
+     "status": null
+    },
+    {
      "player": "Toumani Camara",
      "yahoo_name": "Toumani Camara",
-     "slot": "UTIL",
+     "slot": "BN",
      "yahoo_nba_team": "POR",
      "pool_team": "POR",
      "positions": [
       "SF",
       "PF"
-     ],
-     "status": null
-    },
-    {
-     "player": "Collin Gillespie",
-     "yahoo_name": "Collin Gillespie",
-     "slot": "BN",
-     "yahoo_nba_team": "PHX",
-     "pool_team": "PHX",
-     "positions": [
-      "PG",
-      "SG"
      ],
      "status": null
     },
@@ -874,7 +874,7 @@
      "positions": [
       "PG"
      ],
-     "status": null
+     "status": "Q"
     },
     {
      "player": "OG Anunoby",
@@ -893,9 +893,13 @@
    "unpooled_il": [],
    "seat": 5,
    "manager": "Kyle",
-   "draft_overlap": 13,
-   "added_since_draft": [],
-   "dropped_since_draft": []
+   "draft_overlap": 12,
+   "added_since_draft": [
+    "Kentavious Caldwell-Pope"
+   ],
+   "dropped_since_draft": [
+    "Collin Gillespie"
+   ]
   },
   {
    "name": "Cade n em",
@@ -1238,7 +1242,7 @@
       "PG",
       "SG"
      ],
-     "status": "Q"
+     "status": "O"
     },
     {
      "player": "Jimmy Butler",
@@ -1621,7 +1625,7 @@
      "positions": [
       "SF"
      ],
-     "status": "Q"
+     "status": "O"
     },
     {
      "player": "Jusuf Nurkic",
@@ -1697,14 +1701,15 @@
      "status": null
     },
     {
-     "player": "Karl-Anthony Towns",
-     "yahoo_name": "Karl-Anthony Towns",
+     "player": "Jaylon Tyson",
+     "yahoo_name": "Jaylon Tyson",
      "slot": "PF",
-     "yahoo_nba_team": "NYK",
-     "pool_team": "NYK",
+     "yahoo_nba_team": "CLE",
+     "pool_team": "CLE",
      "positions": [
-      "PF",
-      "C"
+      "SG",
+      "SF",
+      "PF"
      ],
      "status": null
     },
@@ -1767,16 +1772,16 @@
      "status": null
     },
     {
-     "player": "Kevin Porter Jr.",
-     "yahoo_name": "Kevin Porter Jr.",
+     "player": "Karl-Anthony Towns",
+     "yahoo_name": "Karl-Anthony Towns",
      "slot": "BN",
-     "yahoo_nba_team": "MIL",
-     "pool_team": "MIL",
+     "yahoo_nba_team": "NYK",
+     "pool_team": "NYK",
      "positions": [
-      "PG",
-      "SG"
+      "PF",
+      "C"
      ],
-     "status": "NA"
+     "status": null
     },
     {
      "player": "Myles Turner",
@@ -1799,7 +1804,7 @@
       "SG",
       "SF"
      ],
-     "status": "Q"
+     "status": "O"
     },
     {
      "player": "Bradley Beal",
@@ -1818,13 +1823,15 @@
    "unpooled_il": [],
    "seat": 11,
    "manager": "Cayas",
-   "draft_overlap": 12,
+   "draft_overlap": 11,
    "added_since_draft": [
     "Bradley Beal",
-    "Jalen Smith"
+    "Jalen Smith",
+    "Jaylon Tyson"
    ],
    "dropped_since_draft": [
-    "Herbert Jones"
+    "Herbert Jones",
+    "Kevin Porter Jr."
    ]
   },
   {
@@ -1982,6 +1989,19 @@
       "SG"
      ],
      "status": null
+    },
+    {
+     "player": "Anthony Black",
+     "yahoo_name": "Anthony Black",
+     "slot": "IL",
+     "yahoo_nba_team": "ORL",
+     "pool_team": "ORL",
+     "positions": [
+      "PG",
+      "SG",
+      "SF"
+     ],
+     "status": "O"
     }
    ],
    "empty_slots": [],
@@ -1989,7 +2009,9 @@
    "seat": 10,
    "manager": "Me",
    "draft_overlap": 13,
-   "added_since_draft": [],
+   "added_since_draft": [
+    "Anthony Black"
+   ],
    "dropped_since_draft": []
   },
   {
