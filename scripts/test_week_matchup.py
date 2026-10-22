@@ -181,6 +181,115 @@ class Pickups(unittest.TestCase):
         self.assertEqual([r["add"] for r in res], ["Blocker", "Bricks", "Idle"])
 
 
+class ThisWeek(unittest.TestCase):
+    """P1 (owner 2026-10-22, "Full build"): each free agent judged by the change in expected categories won this week.
+    Method stated before the build: P(win c) = the normal approximation on the final totals (to date fixed; each
+    remaining started game adds a*(x*cv)^2 + a*(1-a)*x^2, the season CV; FG%/FT% the binomial floor on remaining
+    makes x PCT_MIX_INFL^2); the swap starts tomorrow; drop candidates are the active players below the median value,
+    finished or not. Hand figures below use math.erf, not the code under test."""
+
+    @staticmethod
+    def phi(z):
+        import math
+        return 0.5 * (1 + math.erf(z / math.sqrt(2)))
+
+    def test_remaining_carries_the_per_game_variance_of_what_it_projects(self):
+        cv = WM.CG.arena.SEASON_CV
+        roster = [dict(player="A", team="DEN", positions=["C"], value=1.0)]
+        lines = {"A": line(fg_pct=0.5, fga=10, ft_pct=0.8, fta=5, pts=20, blk=2, tov=2)}
+        r = WM.remaining(roster, {"d1": {"DEN"}, "d2": {"DEN"}}, {"A": 0.5}, lines)
+        self.assertAlmostEqual(r["var"]["PTS"], 2 * (0.5 * (20 * cv["PTS"]) ** 2 + 0.5 * 0.5 * 20 ** 2))
+        self.assertAlmostEqual(r["var"]["BLK"], 2 * (0.5 * (2 * cv["BLK"]) ** 2 + 0.25 * 4))
+        self.assertAlmostEqual(r["var"]["fg_mk"], 2 * 0.5 * 10 * 0.5 * 0.5)
+        self.assertAlmostEqual(r["var"]["ft_mk"], 2 * 0.5 * 5 * 0.8 * 0.2)
+
+    def test_category_chances_are_the_normal_approximation_on_the_final_totals(self):
+        import math
+        infl = WM.CG.arena.PCT_MIX_INFL
+        z = {k: 0.0 for k in ("3PTM", "PTS", "REB", "AST", "ST", "BLK", "TO", "fg_mk", "ft_mk")}
+        me_now, opp_now = box(fgm=170, fga=360, pts=560, blk=22, tov=50), box(fgm=160, fga=350, pts=500, blk=24, tov=40)
+        me_rem = dict(totals=box(fgm=28.5, fga=60.0), var=dict(z, PTS=1600.0, BLK=9.0, TO=4.0, fg_mk=60 * 0.475 * 0.525))
+        opp_rem = dict(totals=box(), var=dict(z, PTS=1600.0, BLK=9.0, TO=4.0))
+        p = WM.cat_chances(me_now, me_rem, opp_now, opp_rem)
+        self.assertAlmostEqual(p["PTS"], self.phi(60 / math.sqrt(3200)))
+        self.assertAlmostEqual(p["BLK"], self.phi(-2 / math.sqrt(18)))
+        self.assertAlmostEqual(p["TO"], 1 - self.phi(10 / math.sqrt(8)))           # fewer turnovers wins
+        mu, var = (170 + 28.5) / 420, infl ** 2 * 60 * 0.475 * 0.525 / 420 ** 2
+        self.assertAlmostEqual(p["FG%"], self.phi((mu - 160 / 350) / math.sqrt(var)))
+        self.assertEqual(p["FT%"], 0.5)                                           # no attempts either side: a tie
+        self.assertEqual(p["REB"], 0.5)                                           # level and nothing left to play
+
+    def _fixture(self):
+        me_now = box(fgm=100, fga=210, ftm=40, fta=50, tpm=20, pts=280, reb=120, ast=60, stl=15, blk=10, tov=30)
+        opp_now = box(fgm=100, fga=210, ftm=40, fta=50, tpm=20, pts=240, reb=120, ast=60, stl=15, blk=13, tov=30)
+        roster = [dict(player="Keeper", team="BOS", positions=["PG"], value=5.0),
+                  dict(player="Scorer", team="DEN", positions=["SF"], value=1.0),
+                  dict(player="Done", team="NYK", positions=["PF"], value=0.5)]
+        lines = {"Keeper": line(pts=20, reb=5, ast=5, fga=15, fg_pct=0.45, tov=2),
+                 "Scorer": line(pts=25, fga=20, fg_pct=0.45, tov=2),
+                 "Done": line(pts=5),
+                 "Rim": line(blk=2.5, reb=8, pts=7, fga=5, fg_pct=0.6, tov=1),
+                 "Gunner": line(pts=18, blk=0.3, fga=15, fg_pct=0.42, tov=2),
+                 "TodayOnly": line(blk=4, pts=10, fga=8, fg_pct=0.5),
+                 "Idle": line(blk=5, pts=30)}
+        sched = {"t0": {"BOS", "DEN", "LAL", "PHX"}, "t1": {"BOS", "DEN", "LAL"}, "t2": {"DEN", "LAL"}}
+        fas = [dict(player=n, team=t, positions=["C"], value=0.0) for n, t in
+               (("Rim", "LAL"), ("Gunner", "LAL"), ("TodayOnly", "PHX"), ("Idle", "MIA"))]
+        return me_now, opp_now, roster, lines, sched, fas
+
+    def scan(self):
+        me_now, opp_now, roster, lines, sched, fas = self._fixture()
+        opp_rem = dict(totals=box(), var={k: 0.0 for k in ("3PTM", "PTS", "REB", "AST", "ST", "BLK", "TO", "fg_mk", "ft_mk")})
+        return WM.scan_this_week(me_now, opp_now, opp_rem, roster, ["Scorer", "Done"], fas, sched, "t0", {}, lines)
+
+    def test_the_category_changes_add_up_to_the_change_in_expected_categories(self):
+        for r in self.scan():
+            self.assertAlmostEqual(sum(r["d_cat"].values()), r["d_exp"], places=12)
+            self.assertEqual(sorted(r["d_cat"]), sorted(WM.CATS))
+
+    def test_a_free_agent_with_no_game_after_today_changes_nothing_when_his_drop_is_done(self):
+        me_now, opp_now, roster, lines, sched, fas = self._fixture()
+        opp_rem = dict(totals=box(), var={k: 0.0 for k in ("3PTM", "PTS", "REB", "AST", "ST", "BLK", "TO", "fg_mk", "ft_mk")})
+        by = {r["add"]: r for r in WM.scan_this_week(me_now, opp_now, opp_rem, roster, ["Done"], fas, sched, "t0", {}, lines)}
+        for n in ("TodayOnly", "Idle"):        # PHX plays only today (the swap starts tomorrow); MIA never
+            self.assertEqual(by[n]["drop"], "Done")
+            self.assertEqual(by[n]["games"], 0)
+            self.assertEqual(by[n]["d_exp"], 0.0)
+
+    def test_the_drop_loses_his_remaining_games(self):
+        me_now, opp_now, roster, lines, sched, fas = self._fixture()
+        opp_rem = dict(totals=box(), var={k: 0.0 for k in ("3PTM", "PTS", "REB", "AST", "ST", "BLK", "TO", "fg_mk", "ft_mk")})
+        r = WM.scan_this_week(me_now, opp_now, opp_rem, roster, ["Scorer"], [fas[3]], sched, "t0", {}, lines)[0]
+        self.assertEqual((r["add"], r["drop"], r["games"]), ("Idle", "Scorer", 0))
+        self.assertLess(r["d_cat"]["PTS"], 0)                  # Scorer's two games after today come off: fewer points,
+        self.assertGreater(r["d_cat"]["TO"], 0)                # fewer turnovers (a better TO chance)
+        # an add with no games contributes nothing: the whole change is the drop's
+        self.assertEqual(r["d_exp_add"], 0.0)
+        self.assertEqual(r["d_exp"], r["d_exp_drop"])
+
+    def test_the_drop_alone_is_reported_so_a_drop_that_helps_on_its_own_is_not_credited_to_the_add(self):
+        # in this fixture Scorer's .45 shooting and turnovers cost more than his points (safe already) gain
+        rows = self.scan()
+        rim = next(r for r in rows if r["add"] == "Rim")
+        self.assertAlmostEqual(rim["d_exp"], rim["d_exp_drop"] + rim["d_exp_add"], places=12)
+        idle = next(r for r in rows if r["add"] == "Idle")
+        self.assertGreater(idle["d_exp_drop"], 0)
+        self.assertEqual(idle["d_exp_add"], 0.0)
+
+    def test_the_rim_protector_outranks_the_scorer_when_points_are_safe_and_blocks_are_close(self):
+        rows = self.scan()
+        names = [r["add"] for r in rows]
+        self.assertLess(names.index("Rim"), names.index("Gunner"))
+        rim = rows[names.index("Rim")]
+        self.assertEqual(rim["games"], 2)                      # LAL on t1 and t2; t0 is before the swap
+        self.assertGreater(rim["d_cat"]["BLK"], 0)
+        self.assertEqual([r["d_exp"] for r in rows], sorted((r["d_exp"] for r in rows), reverse=True))
+
+    def test_swap_candidates_are_the_active_players_below_the_median_finished_or_not(self):
+        roster = [dict(player=n, team="BOS", value=v) for n, v in (("A", 5.0), ("B", 3.0), ("C", 1.0), ("D", 2.0), ("E", 4.0))]
+        self.assertEqual(WM.swap_candidates(roster), ["C", "D"])
+
+
 class Record(unittest.TestCase):
     """End to end on fixture files and the real season pool (names from data/season/pool_season.csv)."""
 
@@ -246,6 +355,22 @@ class Record(unittest.TestCase):
         dump(box_rec, f)
         cats = {c["cat"]: c for c in WM.build("2026-10-21", self.paths)["cats"]}
         self.assertEqual(cats["PTS"]["opp_to_date"], 42)            # Maxey 30 + Acuff 12
+
+    def test_the_card_carries_each_categorys_chance_and_the_this_week_scan_runs_before_anyone_finishes(self):
+        rec = WM.build("2026-10-20", self.paths)
+        ps = [c["p_win"] for c in rec["cats"]]
+        self.assertTrue(all(0.0 <= x <= 1.0 for x in ps))
+        self.assertAlmostEqual(rec["exp_cats"], sum(ps), places=3)    # each p_win is rounded to 4 places on the card
+        tw = rec["pickups"]["this_week"]
+        self.assertEqual(tw["status"], "ran")
+        self.assertEqual(tw["drops"], ["Derrick White"])           # below the median, not finished on 10/20
+        self.assertTrue(tw["rows"])
+        self.assertTrue(all(r["games"] > 0 for r in tw["rows"]))   # no playable game: listed apart, not ranked
+        self.assertIsInstance(tw["no_games"], list)
+        top = tw["rows"][0]
+        self.assertEqual(sorted(top["d_cat"]), sorted(WM.CATS))
+        self.assertIsInstance(top["season_d_ecw"], float)
+        self.assertNotIn("Joel Embiid", [r["add"] for r in tw["rows"]])
 
     def test_before_anyone_finishes_the_scan_says_so_and_names_who_finishes_next(self):
         rec = WM.build("2026-10-20", self.paths)

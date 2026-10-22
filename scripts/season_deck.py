@@ -297,6 +297,24 @@ function T(t){ if(t===D.my_team) return t+" (you)"; const m=(D.league.managers||
 function ownChip(r){ return r.mine? h("span",{class:"chip mine"},"mine") : r.fa? h("span",{class:"chip fa"},"FA") : h("span",{class:"chip"},T(r.owner)); }
 function statusChip(letter){ if(!letter) return null; const cls=letter==="O"?"crit":(letter==="Q"?"warn":"ok"); return h("span",{class:"chip "+cls},letter); }
 
+const swk=(x,d)=>{ const r=Number(x.toFixed(d)); return (r>0?"+":r<0?"−":"")+Math.abs(r).toFixed(d); };  // a true minus; 0 unsigned
+// ---- This week's adds (owner 2026-10-22, P1): free agents by the change in expected categories won this week ----
+function thisWeek(W){ const K=W.pickups, TW=K&&K.this_week; if(!TW) return null;
+  if(TW.status!=="ran") return h("p",{class:"note"},"This week's adds: "+(TW.status==="no drop candidate"?"no lower-valued player to drop.":"no free agent to score."));
+  const moved=(dc)=>Object.keys(dc).filter(c=>Math.abs(dc[c])>=0.005).sort((a,b)=>Math.abs(dc[b])-Math.abs(dc[a])).map(c=>c+" "+swk(dc[c],2)).join(", ")||"none";
+  const da=TW.drop_alone||{}, das=Object.keys(da).map(d=>d+" "+swk(da[d],2));
+  return [h("p",{},h("b",{},"This week's adds. "),"Each free agent from tomorrow in place of the lower-valued player whose drop helps most, by the change in expected categories won against "+W.opponent.name+" ("+TW.pool_size+" scored; best "+Math.min(8,TW.rows.length)+" shown):"),
+    TW.rows.length? h("div",{class:"tablebox"},h("table",{},
+      h("tr",{},h("th",{},"move"),h("th",{class:"num"},"Δ cats"),h("th",{class:"num"},"games"),h("th",{class:"num"},"drop's part"),h("th",{class:"num"},"season"),h("th",{},"categories moved")),
+      TW.rows.slice(0,8).map(r=>h("tr",{},h("td",{style:"white-space:normal;min-width:9em"},r.add+" ("+r.team+")"+(r.status?" · "+r.status:"")+(r.missed?" · sat out "+r.missed:""),
+          h("div",{class:"note"},"for "+r.drop)),
+        h("td",{class:"num"},swk(r.d_exp,2)),h("td",{class:"num"},String(r.games)),h("td",{class:"num"},swk(r.d_exp_drop,2)),
+        h("td",{class:"num"},r.season_d_ecw==null?"—":swk(r.season_d_ecw,3)),h("td",{style:"white-space:normal;min-width:10em"},moved(r.d_cat)))))) : h("div",{class:"zero"},"No free agent has a playable game after today."),
+    das.length? h("p",{class:"note"},"Dropping with nobody added (from tomorrow): "+das.join("; ")+". A positive figure means that player's remaining games cost you categories this week; it is part of every move that drops him.") : null,
+    (TW.no_games||[]).length? h("p",{class:"note"},"No playable game after today, so not ranked: "+TW.no_games.join(", ")+".") : null,
+    h("p",{class:"note"},"Δ cats = the change in expected categories won this week (the sum of the nine changes in each category's chance); categories moved = those changes, largest first; season = the change in expected weekly categories over the season against the other eleven teams, the cost or gain beyond this week. Chances are normal approximations on the projected finals, with the variation of each remaining game (season per-game CV); the league allows 4 adds a week.")];
+}
+
 // ---- Week categories card (owner 2026-10-21): to date from box scores in full ink, projected final faded ----
 function weekCard(){ const W=D.week_matchup, wk=D.brief.week;
   if(!W) return h("div",{class:"card wk"},h("h2",{},"Week "+wk+" categories"),
@@ -315,11 +333,11 @@ function weekCard(){ const W=D.week_matchup, wk=D.brief.week;
       (S.rebuild_agrees? "the box-score rebuild agrees on all 11 stats." :
         "the box-score rebuild differs: "+(S.differences||[]).map(x=>(x.side==="me"?"you ":"them ")+(SL[x.stat]||x.stat)+" Yahoo "+x.yahoo+", rebuild "+x.rebuild).join("; ")+". Yahoo's figure is the column.")) : null;
     const tbl=h("div",{class:"tablebox"},h("table",{},
-      h("tr",{},h("th",{},"cat"),h("th",{class:"num"},"you"),h("th",{class:"num projh"},"proj"),h("th",{class:"num"},"them"),h("th",{class:"num projh"},"proj"),h("th",{},"")),
+      h("tr",{},h("th",{},"cat"),h("th",{class:"num"},"you"),h("th",{class:"num projh"},"proj"),h("th",{class:"num"},"them"),h("th",{class:"num projh"},"proj"),h("th",{},""),h("th",{class:"num"},"chance")),
       W.cats.map(r=>h("tr",{},h("td",{},r.cat),
         h("td",{class:"num actual"},fv(r.cat,r.me_to_date,false)),h("td",{class:"num proj"},fv(r.cat,r.me_final,true)),
         h("td",{class:"num actual"},fv(r.cat,r.opp_to_date,false)),h("td",{class:"num proj"},fv(r.cat,r.opp_final,true)),
-        h("td",{},chip(r.leader))))));
+        h("td",{},chip(r.leader)),h("td",{class:"num"},r.p_win==null?"—":Math.round(r.p_win*100)+"%")))));
     const sat=(g)=>g.remaining_uncapped-g.remaining_started;
     const games="Games left: you "+G.me.remaining_started+" of "+G.me.remaining_uncapped+" scheduled"+(sat(G.me)?" (the daily ten-slot fill sits "+sat(G.me)+")":"")+
       ", them "+G.opp.remaining_started+" of "+G.opp.remaining_uncapped+(sat(G.opp)?" (fill sits "+sat(G.opp)+")":"")+"."+
@@ -352,10 +370,10 @@ function weekCard(){ const W=D.week_matchup, wk=D.brief.week;
       h("p",{class:"note"},"You vs "+T(W.opponent.name)+" · to date: "+through+" · ",
         h("span",{class:"proj"},"faded = projected final through "+W.window[1])),
       tbl, srcLine,
-      h("p",{},"Projected "+P.wins+"–"+P.losses+"–"+P.ties+" (W–L–T). "+games),
+      h("p",{},"Projected "+P.wins+"–"+P.losses+"–"+P.ties+" (W–L–T)."+(W.exp_cats!=null?" Expected categories this week: "+W.exp_cats.toFixed(2)+" of 9.":"")+" "+games),
       W.missing_days.length? h("p",{class:"note zneg"},"No box scores on file for "+W.missing_days.join(", ")+(yahoo? ": the rebuild cross-check lacks those days." : ": those days are not in the to-date totals.")):null,
       (W.unpooled_active||[]).length? h("p",{class:"note zneg"},"Not counted (no pool row, so no box-score join or projection): "+W.unpooled_active.join(", ")+"."):null,
-      pk,
+      pk, thisWeek(W),
       h("p",{class:"note"},(yahoo?"":rebuilt)+"Projected = each player's season line × his games left × today's availability, ten a day. The card further down, recorded before the week, assumes 3.5 games per player; this one uses the real schedule."));
   } catch(e){
     return h("div",{class:"card wk"},h("h2",{},"Week "+wk+" categories"),h("div",{class:"zero"},"Week categories could not be drawn: "+e.message));
@@ -431,9 +449,9 @@ function buildStrip(id, deltas, active){ const after=active? leagueRanks(deltas)
 function myHeld(){ const ob=(D.league.rosters[D.my_team]||{}).off_board||[];
   return ob.length? h("p",{class:"note"},"You also roster, off the board (held, no z line): "+ob.join(", ")) : null; }
 function myField(){ return h("div",{class:"field static",title:T(D.my_team)},T(D.my_team)+" · "+MINE.length+" on the board"); }
-function pickList(rows, set, rerender, empty){ return h("div",{class:"plist"}, rows.length? rows.map(r=>h("label",{},
+function pickList(rows, set, rerender, empty, extra){ return h("div",{class:"plist"}, rows.length? rows.map(r=>h("label",{},
   h("input",{type:"checkbox",...(set.has(r.name)?{checked:""}:{}),onchange:(e)=>{e.target.checked?set.add(r.name):set.delete(r.name);rerender();}}),
-  r.name+" · "+r.pos+" · "+r.team+" · z ",zv(r.z_adj))) : h("div",{class:"zero"},empty)); }
+  r.name+" · "+r.pos+" · "+r.team+" · z ",zv(r.z_adj),extra?extra(r):null)) : h("div",{class:"zero"},empty)); }
 function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
   if(!(inRows.length||outRows.length)) return h("p",{class:"zero"},"Pick players on both sides to score a move.");
   const m=swapMath(inRows,outRows,CATS);
@@ -469,8 +487,20 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
 (function(){ const p=$("#pane-fa"); let search=""; const drop=new Set(), add=new Set(); const root=h("div",{class:"card"}); p.append(root, howItWorks());
   const nfa=BOARD.filter(r=>r.fa).length;
   const inp=h("input",{type:"search",id:"fa-search",class:"field",placeholder:"Search free agents",oninput:()=>{search=inp.value; keepTyping(inp,render);}});
-  function render(){ const pool=BOARD.filter(r=>r.fa && (!search || r.name.toLowerCase().includes(search.toLowerCase())))
-      .sort((a,b)=>b.z_adj-a.z_adj).slice(0,60);  // owner 2026-10-20: free agents by z, descending
+  // owner 2026-10-22 (P1): this week's matchup value beside z; the sort defaults to it when the morning's scan ran
+  const W=D.week_matchup, TWR=((W&&W.pickups&&W.pickups.this_week&&W.pickups.this_week.rows)||[]), TWM={};
+  TWR.forEach(r=>{TWM[r.add]=r;});
+  const onBoard=new Set(BOARD.filter(r=>r.fa).map(r=>r.name)), offBoard=TWR.filter(r=>!onBoard.has(r.add)).map(r=>r.add);
+  let sortBy=TWR.length?"week":"z";
+  const sortSel=h("select",{id:"fa-sort",class:"field",onchange:(e)=>{sortBy=e.target.value;render();}},
+    h("option",{value:"week",...(sortBy==="week"?{selected:""}:{})},"Sort: this week"+(W?" vs "+W.opponent.name:"")),
+    h("option",{value:"z",...(sortBy==="z"?{selected:""}:{})},"Sort: season z"));
+  const wk=(r)=>{ const t=TWM[r.name]; return t? h("span",{class:"note"}," · this week "+swk(t.d_exp,2)+" ("+t.games+" g, for "+t.drop+")") : null; };
+  function render(){ let pool=BOARD.filter(r=>r.fa && (!search || r.name.toLowerCase().includes(search.toLowerCase())))
+      .sort((a,b)=>b.z_adj-a.z_adj);  // owner 2026-10-20: free agents by z, descending
+    if(sortBy==="week") pool=pool.sort((a,b)=>{ const x=TWM[a.name], y=TWM[b.name];  // 2026-10-22: scored ones first, by this week
+      return (x&&y)? y.d_exp-x.d_exp : x? -1 : y? 1 : 0; });                         // the rest keep their z order (stable sort)
+    pool=pool.slice(0,60);
     root.replaceChildren(
       h("div",{class:"h2row"},h("h2",{},"Free-Agent Adder"),
         h("button",{id:"fa-reset",class:"resetbtn",onclick:()=>{drop.clear();add.clear();search="";inp.value="";render();}},"Reset")),
@@ -478,8 +508,10 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
       h("div",{class:"pick"},
         h("div",{},h("h2",{},"I drop"),myField(),pickList(MINE,drop,render,"No players of yours on the board."),myHeld()),
         h("div",{},h("h2",{},"I add"),
-          inp,
-          pickList(pool,add,render,"No free agents match."))),
+          inp, sortSel,
+          TWR.length? h("p",{class:"note"},"This week = the change in expected categories won against "+W.opponent.name+" if you add him from tomorrow in place of the lower-valued player named (Today tab, \"This week's adds\")."+
+            (offBoard.length? " Scored this week but not on this board: "+offBoard.join(", ")+".":"")) : null,
+          pickList(pool,add,render,"No free agents match.",wk))),
       buildStrip("fa-build",{[D.my_team]:{out:drop,inc:add}},add.size||drop.size),
       scoreBlock([...add].map(n=>BYNAME[n]),[...drop].map(n=>BYNAME[n])));
   }
