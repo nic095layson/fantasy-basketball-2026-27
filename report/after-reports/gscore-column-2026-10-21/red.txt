@@ -1,0 +1,87 @@
+test_identity_board_matches_the_preseason_order (__main__.Board.test_identity_board_matches_the_preseason_order) ... ok
+test_render_names_its_inputs_and_date (__main__.Board.test_render_names_its_inputs_and_date) ... ok
+test_write_produces_md_and_json (__main__.Board.test_write_produces_md_and_json) ... ok
+test_a_pin_missing_a_category_is_refused (__main__.GScore.test_a_pin_missing_a_category_is_refused) ... ERROR
+test_counting_g_at_zero_tau_is_the_board_z (__main__.GScore.test_counting_g_at_zero_tau_is_the_board_z) ... ERROR
+test_g_adj_takes_the_same_availability_as_z (__main__.GScore.test_g_adj_takes_the_same_availability_as_z) ... ERROR
+test_g_column_never_moves_the_board (__main__.GScore.test_g_column_never_moves_the_board) ... ERROR
+test_known_answer_on_a_hand_built_pool (__main__.GScore.test_known_answer_on_a_hand_built_pool) ... ERROR
+test_no_pin_file_no_column (__main__.GScore.test_no_pin_file_no_column) ... ERROR
+test_pinned_board_shows_g_beside_z (__main__.GScore.test_pinned_board_shows_g_beside_z) ... ERROR
+test_week_to_week_variance_only_shrinks_a_category (__main__.GScore.test_week_to_week_variance_only_shrinks_a_category) ... ERROR
+
+======================================================================
+ERROR: test_a_pin_missing_a_category_is_refused (__main__.GScore.test_a_pin_missing_a_category_is_refused)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/kit-red/scripts/test_season_board.py", line 140, in test_a_pin_missing_a_category_is_refused
+    SB.build(PRE, gscore_path=pin_file(d, bad))
+TypeError: build() got an unexpected keyword argument 'gscore_path'
+
+======================================================================
+ERROR: test_counting_g_at_zero_tau_is_the_board_z (__main__.GScore.test_counting_g_at_zero_tau_is_the_board_z)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/kit-red/scripts/test_season_board.py", line 81, in test_counting_g_at_zero_tau_is_the_board_z
+    z, g = RE.zscores(rows, pool), SB.gscores(rows, pool, zero)
+                                   ^^^^^^^^^^
+AttributeError: module 'season_board' has no attribute 'gscores'
+
+======================================================================
+ERROR: test_g_adj_takes_the_same_availability_as_z (__main__.GScore.test_g_adj_takes_the_same_availability_as_z)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/kit-red/scripts/test_season_board.py", line 101, in test_g_adj_takes_the_same_availability_as_z
+    b = SB.build(PRE, gscore_path=pin_file(d))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: build() got an unexpected keyword argument 'gscore_path'
+
+======================================================================
+ERROR: test_g_column_never_moves_the_board (__main__.GScore.test_g_column_never_moves_the_board)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/kit-red/scripts/test_season_board.py", line 94, in test_g_column_never_moves_the_board
+    with_g = SB.build(PRE, gscore_path=pin_file(d))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: build() got an unexpected keyword argument 'gscore_path'
+
+======================================================================
+ERROR: test_known_answer_on_a_hand_built_pool (__main__.GScore.test_known_answer_on_a_hand_built_pool)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/kit-red/scripts/test_season_board.py", line 68, in test_known_answer_on_a_hand_built_pool
+    g = SB.gscores(TOY, TOY, PIN)
+        ^^^^^^^^^^
+AttributeError: module 'season_board' has no attribute 'gscores'
+
+======================================================================
+ERROR: test_no_pin_file_no_column (__main__.GScore.test_no_pin_file_no_column)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/kit-red/scripts/test_season_board.py", line 109, in test_no_pin_file_no_column
+    b = SB.build(PRE, gscore_path=os.path.join("no", "such", "file.json"))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: build() got an unexpected keyword argument 'gscore_path'
+
+======================================================================
+ERROR: test_pinned_board_shows_g_beside_z (__main__.GScore.test_pinned_board_shows_g_beside_z)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/kit-red/scripts/test_season_board.py", line 124, in test_pinned_board_shows_g_beside_z
+    b = SB.build(PRE, gscore_path=p)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: build() got an unexpected keyword argument 'gscore_path'
+
+======================================================================
+ERROR: test_week_to_week_variance_only_shrinks_a_category (__main__.GScore.test_week_to_week_variance_only_shrinks_a_category)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/kit-red/scripts/test_season_board.py", line 87, in test_week_to_week_variance_only_shrinks_a_category
+    g0 = SB.gscores(TOY, TOY, dict(PIN, tau={k: 0.0 for k in PIN["tau"]}, tau_r={k: 0.0 for k in PIN["tau_r"]}))
+         ^^^^^^^^^^
+AttributeError: module 'season_board' has no attribute 'gscores'
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.053s
+
+FAILED (errors=8)

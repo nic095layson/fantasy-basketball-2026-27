@@ -1,0 +1,169 @@
+{
+ "lines": "data/season/projections_season.csv",
+ "pin": "data/season/gscore_tau.json",
+ "board_rows": 313,
+ "order_unchanged": true,
+ "agreement": [
+  {
+   "top": 156,
+   "spearman": 0.9808,
+   "moved_10_plus": 44,
+   "same_top_12": 11,
+   "largest": [
+    {
+     "name": "Alex Caruso",
+     "z_rank": 124,
+     "g_rank": 157
+    },
+    {
+     "name": "Scotty Pippen Jr.",
+     "z_rank": 148,
+     "g_rank": 181
+    },
+    {
+     "name": "Cason Wallace",
+     "z_rank": 89,
+     "g_rank": 121
+    },
+    {
+     "name": "Herb Jones",
+     "z_rank": 147,
+     "g_rank": 179
+    },
+    {
+     "name": "Paul Reed",
+     "z_rank": 151,
+     "g_rank": 183
+    },
+    {
+     "name": "Dyson Daniels",
+     "z_rank": 34,
+     "g_rank": 64
+    },
+    {
+     "name": "Paolo Banchero",
+     "z_rank": 122,
+     "g_rank": 94
+    },
+    {
+     "name": "Kevin Porter Jr",
+     "z_rank": 113,
+     "g_rank": 136
+    },
+    {
+     "name": "Ausar Thompson",
+     "z_rank": 79,
+     "g_rank": 101
+    },
+    {
+     "name": "Tari Eason",
+     "z_rank": 131,
+     "g_rank": 149
+    },
+    {
+     "name": "Day'Ron Sharpe",
+     "z_rank": 115,
+     "g_rank": 132
+    },
+    {
+     "name": "Jordan Goodwin",
+     "z_rank": 154,
+     "g_rank": 171
+    }
+   ]
+  },
+  {
+   "top": 180,
+   "spearman": 0.9812,
+   "moved_10_plus": 58,
+   "same_top_12": 11,
+   "largest": [
+    {
+     "name": "Kris Dunn",
+     "z_rank": 166,
+     "g_rank": 201
+    },
+    {
+     "name": "Alex Caruso",
+     "z_rank": 124,
+     "g_rank": 157
+    },
+    {
+     "name": "Scotty Pippen Jr.",
+     "z_rank": 148,
+     "g_rank": 181
+    },
+    {
+     "name": "Cason Wallace",
+     "z_rank": 89,
+     "g_rank": 121
+    },
+    {
+     "name": "Herb Jones",
+     "z_rank": 147,
+     "g_rank": 179
+    },
+    {
+     "name": "Paul Reed",
+     "z_rank": 151,
+     "g_rank": 183
+    },
+    {
+     "name": "Dyson Daniels",
+     "z_rank": 34,
+     "g_rank": 64
+    },
+    {
+     "name": "De'Anthony Melton",
+     "z_rank": 158,
+     "g_rank": 187
+    },
+    {
+     "name": "Marcus Smart",
+     "z_rank": 159,
+     "g_rank": 188
+    },
+    {
+     "name": "Paolo Banchero",
+     "z_rank": 122,
+     "g_rank": 94
+    },
+    {
+     "name": "Javonte Green",
+     "z_rank": 180,
+     "g_rank": 207
+    },
+    {
+     "name": "Kevin Porter Jr",
+     "z_rank": 113,
+     "g_rank": 136
+    }
+   ]
+  }
+ ],
+ "effective_weight": {
+  "tpm": 0.6711,
+  "pts": 0.6208,
+  "reb": 0.6812,
+  "ast": 0.7218,
+  "stl": 0.403,
+  "blk": 0.6552,
+  "tov": 0.5965,
+  "fgp": 0.4855,
+  "ftp": 0.5418
+ },
+ "percentage_definition": {
+  "fgp": {
+   "paper_Z_over_kit_z_median": 0.781,
+   "G_over_paper_Z": 0.6217
+  },
+  "ftp": {
+   "paper_Z_over_kit_z_median": 1.0615,
+   "G_over_paper_Z": 0.5104
+  }
+ },
+ "g_3_5": {
+  "spearman_with_3_0065": 0.9991,
+  "max_rank_change": 8
+ }
+}
