@@ -1,0 +1,15 @@
+Commands behind after-report-2026-10-22-p1-this-week.md (2026-10-22). Kit branch claude/matchup-free-agents-2026-10-22 from main d2f2f0f;
+records = season/daily e7b69bb (the 14:44Z morning run of 10/22); deck 048efb6.
+
+Red (on main's code, the new tests only):  python3 scripts/test_week_matchup.py  -> 8 errors of 39
+                                           python3 -m unittest scripts.test_season_deck -> 3 failures of 69
+Green (twice each):                        test_week_matchup 40 of 40 (after two corrected tests, see the report §2); test_season_deck 69 of 69
+Full suite:                                python3 -m unittest discover -s scripts -p 'test_*.py' -> 366 run, 1 failure (test_matchup_live, fails identically on main)
+
+Real run (twice, byte-identical), M = the records worktree at e7b69bb:
+  SEASON_POOL=$M/data/season/pool_season.csv python3 scripts/week_matchup.py --date 2026-10-22 --out-dir <dir>
+    --state $M/data/league_state.json --schedule $M/data/league_schedule.json --games $M/report/schedule/games-2026-27.csv
+    --actuals $M/data/actuals --status-dir $M/data/status --yahoo-pull $M/data/source/flaim/pull_2026-10-22.json
+  -> week_matchup_2026-10-22.json (copied here)
+Page: season_deck.build on the same records with that week_matchup record; deck_render_check PASS; Chromium at 420 px wide, no
+page error, document scrollWidth 420 (no sideways page scroll); screenshots here.

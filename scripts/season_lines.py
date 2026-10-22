@@ -17,7 +17,10 @@ The preseason line is never edited: report/projections-2026-27.csv (kit schema) 
 (deck schema) are read, and data/season/projections_season.csv and pool_season.csv are written beside a dated
 movers record. The deck plane is the frozen snapshot followed by the kit's data/pool_additions.csv (in-season pickups
 the draft pool never carried, deck schema; owner 2026-10-21, option (b)); a name already in the snapshot is refused.
-With no regular-season games the outputs equal the inputs byte for byte (the snapshot, then the additions' rows).
+Then the kit's data/tag_overrides.csv (owner 2026-10-22, D-RR-1, "Kit season override"): each row replaces one
+player's leading note tag in the season pool, and is refused when the plane's tag is no longer the one it expects.
+With no regular-season games and no overrides the outputs equal the inputs byte for byte (the snapshot, then the
+additions' rows).
 
     python3 scripts/season_lines.py --date 2026-10-21 [--actuals data/actuals] [--out data/season] [--threshold 0.25]
 Prints 'SEASON LINES: PASS — ...' and exits 0, or FAIL (an unreadable record) and exits 1.
@@ -27,15 +30,21 @@ import csv
 import glob
 import json
 import os
+import re
 import sys
 import unicodedata
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+import box_pull as BP  # noqa: E402
+
 KIT = os.path.dirname(HERE)
 DECK = os.environ.get("DECK_REPO") or os.path.join(KIT, "..", "yahoo-fantasy-basketball")
 KIT_CSV = os.path.join(KIT, "report", "projections-2026-27.csv")
 DECK_CSV = os.path.join(DECK, "arena", "results", "players_v69.csv")
 ADDITIONS = os.path.join(KIT, "data", "pool_additions.csv")
+OVERRIDES = os.path.join(KIT, "data", "tag_overrides.csv")
+OVERRIDE_FIELDS = ["player", "tag_from", "tag_to", "decided", "receipt"]
 ACTUALS = os.path.join(KIT, "data", "actuals")
 OUT = os.path.join(KIT, "data", "season")
 # Year-over-year Spearman rho, mean of the three transitions 2022-23..2025-26 (after-report-2026-10-09-market.md).
@@ -61,6 +70,12 @@ def fold(s):
     return "".join(c for c in unicodedata.normalize("NFKD", s.lower()) if not unicodedata.combining(c) and c not in "'’`.").strip()
 
 
+def note_tag(note):
+    """Leading tag of a deck note, the deck's own rule (scripts/hoops.py note_tag): everything from the first space or
+    parenthesis onward is prose."""
+    return re.split(r"[\s(]", (note or "").lower(), 1)[0]
+
+
 def load_actuals(folder=ACTUALS):
     recs = []
     for p in sorted(glob.glob(os.path.join(folder, "*.json"))):
@@ -80,7 +95,8 @@ def totals(records):
                 continue
             key = p.get("pool_name") or p["name"]
             t = out.setdefault(key, dict(games=0, min=0, pts=0, fgm=0, fga=0, tpm=0, tpa=0, ftm=0, fta=0, reb=0, ast=0,
-                                         tov=0, stl=0, blk=0, unpooled=p.get("pool_name") is None))
+                                         tov=0, stl=0, blk=0, unpooled=p.get("pool_name") is None, names=set()))
+            t["names"].add(p["name"])
             t["games"] += 1
             for k in ("min", "pts", "fgm", "fga", "tpm", "tpa", "ftm", "fta", "reb", "ast", "tov", "stl", "blk"):
                 t[k] += p.get(k, 0)
@@ -141,15 +157,63 @@ def _with_additions(deck_rows, deck_fields, additions_csv):
     return deck_rows + adds
 
 
-def run(date, actuals, kit_csv=KIT_CSV, deck_csv=DECK_CSV, out_dir=OUT, threshold=0.25, additions_csv=None):
+def _with_tag_overrides(deck_rows, overrides_csv):
+    """The deck plane with each override's leading tag swapped in; the prose after the tag is kept. Returns the rows
+    and the overrides applied."""
+    if not overrides_csv or not os.path.exists(overrides_csv):
+        return deck_rows, []
+    overrides, fields = _read(overrides_csv)
+    if fields != OVERRIDE_FIELDS:
+        raise ValueError(f"{overrides_csv}: columns {fields}, expected {OVERRIDE_FIELDS}")
+    at = {fold(r["player"]): i for i, r in enumerate(deck_rows)}
+    rows, applied = list(deck_rows), []
+    for o in overrides:
+        i = at.get(fold(o["player"]))
+        if i is None:
+            raise ValueError(f"{overrides_csv}: {o['player']} is not in the deck plane")
+        tag, want, new = note_tag(rows[i]["note"]), o["tag_from"].strip().lower(), o["tag_to"].strip()
+        if tag != want:
+            raise ValueError(f"{overrides_csv}: {o['player']}'s leading tag is now '{tag}', the override expects '{want}'")
+        if not new or note_tag(new) != new.lower():
+            raise ValueError(f"{overrides_csv}: {o['player']}: tag_to '{new}' must be one tag token")
+        if not o["decided"].strip():
+            raise ValueError(f"{overrides_csv}: {o['player']}: an override needs its decided cell (date and decision)")
+        rows[i] = dict(rows[i], note=new + f" [kit tag override {o['decided'].split()[0]}; data/tag_overrides.csv]"
+                       + rows[i]["note"][len(tag):])
+        applied.append(dict(player=rows[i]["player"], tag_from=tag, tag_to=new))
+    return rows, applied
+
+
+def finder(tot):
+    """A plane row's totals: matched by either spelling a total carries — the kit file's (its pool name) or the box
+    score's — then by the suffix-free key when it names one total only (owner 2026-10-22: the deck plane spells
+    "Darius Acuff Jr." and "Cameron Johnson", the kit file "Darius Acuff" and "Cam Johnson")."""
+    by_fold, by_key = {}, {}
+    for k, v in tot.items():
+        for n in {k, *v.get("names", ())}:
+            by_fold.setdefault(fold(n), k)
+            by_key.setdefault(BP.name_key(n), set()).add(k)
+
+    def find(name):
+        k = by_fold.get(fold(name))
+        if k is None:
+            ks = by_key.get(BP.name_key(name), set())
+            k = next(iter(ks)) if len(ks) == 1 else None
+        return tot.get(k) if k is not None else None
+    return find
+
+
+def run(date, actuals, kit_csv=KIT_CSV, deck_csv=DECK_CSV, out_dir=OUT, threshold=0.25, additions_csv=None,
+        overrides_csv=None):
     tot = totals(actuals)
-    by_fold = {fold(k): v for k, v in tot.items()}
+    find = finder(tot)
     kit_rows, kit_fields = _read(kit_csv); deck_rows, deck_fields = _read(deck_csv)
     deck_rows = _with_additions(deck_rows, deck_fields, additions_csv)
+    deck_rows, overridden = _with_tag_overrides(deck_rows, overrides_csv)
     movers, n_games = [], 0
     out_kit = []
     for r in kit_rows:
-        t = by_fold.get(fold(r["name"]))
+        t = find(r["name"])
         b = blend_kit(r, t); out_kit.append(b)
         if t:
             n_games += 1
@@ -157,15 +221,16 @@ def run(date, actuals, kit_csv=KIT_CSV, deck_csv=DECK_CSV, out_dir=OUT, threshol
             big = [c for c, (x, y) in moved.items() if abs(float(y) - float(x)) >= (0.01 if c in ("fgp", "ftp") else threshold)]
             if big:
                 movers.append(dict(name=r["name"], games=t["games"], moved={c: moved[c] for c in big}))
-    out_deck = [blend_deck(r, by_fold.get(fold(r["player"]))) for r in deck_rows]
+    out_deck = [blend_deck(r, find(r["player"])) for r in deck_rows]
     os.makedirs(out_dir, exist_ok=True)
     _write(os.path.join(out_dir, "projections_season.csv"), out_kit, kit_fields)
     _write(os.path.join(out_dir, "pool_season.csv"), out_deck, deck_fields)
     rec = dict(date=date, records=len(actuals), players_with_games=n_games, prior_games=PRIOR_GAMES, season_games=SEASON_GAMES,
                threshold=threshold, movers=sorted(movers, key=lambda m: -m["games"]),
-               unpooled_with_games=sorted(k for k, v in tot.items() if v["unpooled"]),
+               unpooled_with_games=sorted(k for k, v in tot.items() if v["unpooled"]), tag_overrides=overridden,
                inputs=dict(kit=os.path.relpath(kit_csv, KIT), deck=deck_csv,
-                           additions=os.path.relpath(additions_csv, KIT) if additions_csv and os.path.exists(additions_csv) else None))
+                           additions=os.path.relpath(additions_csv, KIT) if additions_csv and os.path.exists(additions_csv) else None,
+                           overrides=os.path.relpath(overrides_csv, KIT) if overrides_csv and os.path.exists(overrides_csv) else None))
     with open(os.path.join(out_dir, f"season_lines_{date}.json"), "w", encoding="utf-8") as f:
         json.dump(rec, f, indent=1, ensure_ascii=False); f.write("\n")
     return rec
@@ -183,12 +248,12 @@ def main():
     except ValueError as e:
         print(f"SEASON LINES: FAIL — unreadable actuals record: {e}"); return 1
     try:
-        rec = run(a.date, recs, out_dir=a.out, threshold=a.threshold, additions_csv=ADDITIONS)
+        rec = run(a.date, recs, out_dir=a.out, threshold=a.threshold, additions_csv=ADDITIONS, overrides_csv=OVERRIDES)
     except ValueError as e:
-        print(f"SEASON LINES: FAIL — pool additions: {e}"); return 1
+        print(f"SEASON LINES: FAIL — pool additions or tag overrides: {e}"); return 1
     print(f"SEASON LINES: PASS — {a.date}: {rec['records']} box-score records, {rec['players_with_games']} pool players with "
           f"regular-season games, {len(rec['movers'])} lines moved by {a.threshold}+ (priors in games: "
-          + ", ".join(f"{c} {k}" for c, k in PRIOR_GAMES.items()) + f"); {len(rec['unpooled_with_games'])} unpooled players with games")
+          + ", ".join(f"{c} {k}" for c, k in PRIOR_GAMES.items()) + f"); {len(rec['unpooled_with_games'])} unpooled players with games; {len(rec['tag_overrides'])} tag override(s)")
     return 0
 
 

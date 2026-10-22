@@ -1,0 +1,45 @@
+{
+ "rows": [
+  336,
+  336
+ ],
+ "cells_differing": [
+  {
+   "player": "De'Andre Hunter",
+   "column": "note",
+   "without": "inj-eye-risk (retinal surgery Feb); 10/9: started the 10/8 game at the Lakers, 18 min / 3 pts / 4 reb / 0 ast / 2 stl / 5 to on 1-6 [SINGLE-SOURCE: box score] (ESPN box score); 10/11: off the bench in the 10/10 game at Golden State, 19 min / 4 pts / 3 reb / 1 ast on 2-8 [SINGLE-SOURCE: box score] (ESPN box score); 10/12: WO-5 line — 2025-26 base at 26.1 min (Basketball-Reference); 10/14: six-way blend (owner call 10/14, council 4–1; the lock re-blend on Yahoo 10/14 and Hashtag 10/14) — each category the equal-weight mean of this line and 3 outside projections (Yahoo, Hashtag, FantasyPros); games, minutes and tags unchanged",
+   "with_": "tag-cleared [kit tag override 2026-10-22; data/tag_overrides.csv] (retinal surgery Feb); 10/9: started the 10/8 game at the Lakers, 18 min / 3 pts / 4 reb / 0 ast / 2 stl / 5 to on 1-6 [SINGLE-SOURCE: box score] (ESPN box score); 10/11: off the bench in the 10/10 game at Golden State, 19 min / 4 pts / 3 reb / 1 ast on 2-8 [SINGLE-SOURCE: box score] (ESPN box score); 10/12: WO-5 line — 2025-26 base at 26.1 min (Basketball-Reference); 10/14: six-way blend (owner call 10/14, council 4–1; the lock re-blend on Yahoo 10/14 and Hashtag 10/14) — each category the equal-weight mean of this line and 3 outside projections (Yahoo, Hashtag, FantasyPros); games, minutes and tags unchanged"
+  }
+ ],
+ "hunter": {
+  "without": {
+   "note_tag": "inj-eye-risk",
+   "availability": 0.78,
+   "weekly_availability": 0.75,
+   "adj_value": -4.2074,
+   "rostered": false,
+   "free_agent_rank": 60,
+   "free_agents": 155,
+   "in_waiver_shortlist": false,
+   "shortlist_cut_adj_value": -3.55
+  },
+  "with": {
+   "note_tag": "tag-cleared",
+   "availability": 1.0,
+   "weekly_availability": 0.88,
+   "adj_value": -4.2074,
+   "rostered": false,
+   "free_agent_rank": 60,
+   "free_agents": 155,
+   "in_waiver_shortlist": false,
+   "shortlist_cut_adj_value": -3.55
+  }
+ },
+ "inputs": {
+  "date": "2026-10-22",
+  "deck": "/home/user/deck-main/arena/results/players_v69.csv",
+  "overrides": "data/tag_overrides.csv",
+  "state": "data/league_state.json",
+  "actuals_records": 3
+ }
+}
