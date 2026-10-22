@@ -8,11 +8,13 @@ FantasyBot: nothing is retyped.
   B  every rostered player's Yahoo status letter; a letter status_feed.TIERS does not know halts, never guessed
   A  this week's Yahoo category totals per team (week_matchup's to-date column)
   D  Yahoo's available-player list (week_matchup's pickup pool)
+  E  a past day's lineup (get_roster with as_of_date): week_matchup's rebuild counts that day's active slots
+     (owner 2026-10-22, "Read daily rosters")
 
 Responses are told apart by shape and kept only for this league (LEAGUE_KEY): a roster has data.teamKey under the
-league, data.snapshot.type == "current" and data.players (a dated snapshot is history, never today's roster); a
-matchup response has data.matchups; an available-player list has data.freeAgents. With since (the run's start), only
-transcript entries stamped at or after it count.
+league, data.snapshot.type == "current" and data.players (a dated snapshot is history, never today's roster — it is
+kept apart, under daily, by team and date); a matchup response has data.matchups; an available-player list has
+data.freeAgents. With since (the run's start), only transcript entries stamped at or after it count.
 
 league_live.py uses this first and FantasyBot only when the Flaim pull is missing or incomplete; history() pins
 past seasons' responses for the record.
@@ -52,15 +54,18 @@ def _ours(key):
 
 
 def extract_pull(transcript, since=None):
-    """Walk the transcript for this league's Flaim responses: the latest current roster per team, the latest matchup
-    response per week, the latest available-player list."""
+    """Walk the transcript for this league's Flaim responses: the latest current roster per team, the latest dated
+    roster per team and day, the latest matchup response per week, the latest available-player list."""
     since = LL.since_instant(since)
-    rosters, weeks, fa = {}, {}, None
+    rosters, daily, weeks, fa = {}, {}, {}, None
 
     def take(d):
         nonlocal fa
-        if "players" in d and _ours(d.get("teamKey")) and (d.get("snapshot") or {}).get("type") == "current":
+        snap = d.get("snapshot") or {}
+        if "players" in d and _ours(d.get("teamKey")) and snap.get("type") == "current":
             rosters[d["teamKey"]] = d
+        elif "players" in d and _ours(d.get("teamKey")) and snap.get("type") == "date" and snap.get("date"):
+            daily.setdefault(d["teamKey"], {})[snap["date"]] = d
         elif "matchups" in d and d.get("leagueKey") == LEAGUE_KEY:
             weeks[str(d.get("matchupWeek") or d.get("currentWeek"))] = d
         elif "freeAgents" in d and d.get("leagueKey") == LEAGUE_KEY:
@@ -86,7 +91,8 @@ def extract_pull(transcript, since=None):
             o = LL._loads(ln)
             if o is not None and LL.recent(o, since):
                 walk(o.get("message") if isinstance(o, dict) and "message" in o else o)
-    return {"source": "flaim", "league_key": LEAGUE_KEY, "rosters": rosters, "matchups": weeks, "free_agents": fa}
+    return {"source": "flaim", "league_key": LEAGUE_KEY, "rosters": rosters, "daily": daily, "matchups": weeks,
+            "free_agents": fa}
 
 
 def check_pull(pull):

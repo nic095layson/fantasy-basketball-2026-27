@@ -94,6 +94,26 @@ class Extract(unittest.TestCase):
         pull = FL.extract_pull(tr)
         self.assertEqual([p["name"] for p in pull["rosters"][f"{KEY}.t.3"]["players"]][0], "P3a")
 
+    def test_a_dated_snapshot_is_kept_as_that_days_lineup(self):
+        # owner 2026-10-22 ("Read daily rosters"): the week card's rebuild counts each past day's real Yahoo lineup
+        tr = self.write(twelve("2026-10-22T12:55:00Z")
+                        + line("2026-10-22T12:56:00Z", roster(3, "Team 3", [("Old Day", "BOS", "PG", "PG", None),
+                                                                            ("Sat Out", "DEN", "C", "BN", None)], snapshot="2026-10-20")))
+        day = FL.extract_pull(tr)["daily"][f"{KEY}.t.3"]["2026-10-20"]
+        self.assertEqual((day["teamName"], [(p["name"], p["selectedPosition"]) for p in day["players"]]),
+                         ("Team 3", [("Old Day", "PG"), ("Sat Out", "BN")]))
+
+    def test_the_latest_response_for_a_team_and_day_wins(self):
+        first = roster(3, "Team 3", [("First", "BOS", "PG", "PG", None)], snapshot="2026-10-20")
+        later = roster(3, "Team 3", [("Later", "BOS", "PG", "PG", None)], snapshot="2026-10-20")
+        pull = FL.extract_pull(self.write(line("2026-10-22T12:56:00Z", first) + line("2026-10-22T12:57:00Z", later)))
+        self.assertEqual(pull["daily"][f"{KEY}.t.3"]["2026-10-20"]["players"][0]["name"], "Later")
+
+    def test_another_leagues_dated_snapshot_is_ignored(self):
+        other = roster(5, "Elsewhere", [("Ghost", "BOS", "PG", "PG", None)], snapshot="2026-10-20")
+        other["data"]["teamKey"] = "466.l.17544.t.5"
+        self.assertEqual(FL.extract_pull(self.write(line("2026-10-22T12:57:00Z", other)))["daily"], {})
+
     def test_another_leagues_rosters_are_ignored(self):
         other = roster(5, "Elsewhere", [("Ghost", "BOS", "PG", "PG", None)])
         other["data"]["teamKey"] = "466.l.17544.t.5"
