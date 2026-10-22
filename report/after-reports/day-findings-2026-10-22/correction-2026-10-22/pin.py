@@ -5,9 +5,10 @@ dropped box score; the report's earlier text stays as it was).
 
 Reads git objects only (the four 10/22 morning runs on season/daily and the name-fix commit of kit draft PR #168):
   - week_cards.json: each run's T0, Yahoo pin sha256 and the week card's Yahoo and rebuild to-date totals per side;
-  - league_moves.json: the opponent's (seat 11, team 10) moves as each run recorded them;
+  - league_moves.json: every team's moves as each run recorded them (the opponent is MAXEY-MUM OVERDRIVE);
   - commits.txt: the runs' commit lines;
-  - name_fix_week_card.json: the fixed code's week card on the 14:44Z records (evidence.json on the #168 branch).
+  - name_fix_week_card.json: the fixed code's week card on the 14:44Z records (evidence.json on the #168 branch);
+  - acuff_spellings.json: Acuff's rows in the 10/21 box record and in the kit's projections file on main.
 recon.py / recon.json beside this file are the lineup reconciliation made in the session at 14:33Z (lineups from
 Flaim get_roster as_of_date, read from the session transcript, which is not committed; its rows carry them).
 
@@ -22,6 +23,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 KIT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(HERE))))
 RUNS = ["51cf6b3", "2f2aea8", "21d815d", "e7b69bb"]  # 05:54 PT scheduled, 14:15Z on-demand, 14:31Z runner, 14:44Z on-demand
 NAME_FIX = "97a1714"
+MAIN = "af625a8"  # kit main, the base of #167 and #168
 
 
 def show(commit, path):
@@ -48,10 +50,17 @@ def main():
     log = subprocess.run(["git", "-C", KIT, "log", "--no-walk", "--format=%h %cI %s", *RUNS],
                          capture_output=True, text=True, check=True).stdout
     open(os.path.join(HERE, "commits.txt"), "w").write(log)
+    # the two spellings: ESPN's in the 10/21 box record the 14:15Z run read, the kit's in the projections file on main
+    box = json.loads(show("2f2aea8", "data/actuals/2026-10-21.json"))
+    kit_rows = [l for l in show(MAIN, "report/projections-2026-27.csv").splitlines() if "acuff" in l.lower()]
+    json.dump(dict(box_record="2f2aea8:data/actuals/2026-10-21.json",
+                   box_rows=[p for p in box["players"] if "acuff" in p["name"].lower()],
+                   kit_file=f"{MAIN}:report/projections-2026-27.csv", kit_rows=kit_rows),
+              open(os.path.join(HERE, "acuff_spellings.json"), "w"), indent=1)
     ev = json.loads(show(NAME_FIX, "report/after-reports/name-fix-2026-10-22/evidence.json"))
     json.dump(dict(commit=NAME_FIX, records_from=ev["records_from"], week_card=ev["week_card"]),
               open(os.path.join(HERE, "name_fix_week_card.json"), "w"), indent=1)
-    print("PIN: wrote week_cards.json, league_moves.json, commits.txt, name_fix_week_card.json")
+    print("PIN: wrote week_cards.json, league_moves.json, commits.txt, acuff_spellings.json, name_fix_week_card.json")
 
 
 if __name__ == "__main__":

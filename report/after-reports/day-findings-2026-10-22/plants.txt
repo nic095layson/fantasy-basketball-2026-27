@@ -25,3 +25,5 @@ History, stated plainly:
     "5-24 FG, 2-5 FT" -> "5-23 FG, 2-5 FT"              FAIL: prose states: correction: Acuff's line
     "5-10 FG, 12 PTS, 5 REB" -> "5-10 FG, 13 PTS, 5 REB" FAIL: prose states: correction: Santos's line
   Without those checks none of the four would fail: the planted 141, 8, 23 and 13 all appear in other cited reports.
+  The verify pass then pinned the two spellings (acuff_spellings.json) and bound them; a fifth plant, the kit's
+  "Darius Acuff" written as "Darius Acuff Jr.", fails on "prose states: correction: the two spellings".

@@ -22,6 +22,7 @@
   "after-report-2026-10-22-risk-rows.md",
   "after-report-2026-10-22-season-cv.md",
   "commands.txt",
+  "correction-2026-10-22/acuff_spellings.json",
   "correction-2026-10-22/commits.txt",
   "correction-2026-10-22/league_moves.json",
   "correction-2026-10-22/name_fix_week_card.json",
@@ -299,6 +300,44 @@
     true,
     null
    ],
+   "ok": true
+  },
+  {
+   "check": "correction: the box record spells him with the suffix, unmatched",
+   "claimed": [
+    [
+     "Darius Acuff Jr.",
+     null
+    ]
+   ],
+   "actual": [
+    [
+     "Darius Acuff Jr.",
+     null
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "check": "correction: the kit's file spells him without it",
+   "claimed": [
+    "Darius Acuff"
+   ],
+   "actual": [
+    "Darius Acuff"
+   ],
+   "ok": true
+  },
+  {
+   "check": "prose states: correction: the two spellings",
+   "claimed": true,
+   "actual": true,
+   "ok": true
+  },
+  {
+   "check": "correction: the box record's line is the reconciliation's line",
+   "claimed": true,
+   "actual": true,
    "ok": true
   },
   {

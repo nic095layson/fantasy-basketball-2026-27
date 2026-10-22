@@ -203,7 +203,14 @@ def counts(text, src):
     complete = c1415["yahoo"]["opp"]
     check("correction: Acuff played on 10/21 and the box pull left him unmatched", (True, None),
           (acuff["played"], acuff["pool_name"]))
+    sp = json.loads(src[os.path.join(C, "acuff_spellings.json")])
+    check("correction: the box record spells him with the suffix, unmatched", [("Darius Acuff Jr.", None)],
+          [(r["name"], r["pool_name"]) for r in sp["box_rows"]])
+    check("correction: the kit's file spells him without it", ["Darius Acuff"], [r.split(",")[0] for r in sp["kit_rows"]])
+    says("correction: the two spellings", f'"{sp["box_rows"][0]["name"]}"; the kit\'s file names him "{sp["kit_rows"][0].split(",")[0]}"')
     a = acuff["line"]
+    check("correction: the box record's line is the reconciliation's line", True,
+          all(sp["box_rows"][0][k] == a[k] for k in STATS))
     says("correction: Acuff's line", f"{a['fgm']}-{a['fga']} FG, {a['ftm']}-{a['fta']} FT, {a['tpm']} 3PM, {a['pts']} PTS, "
                                      f"{a['reb']} REB, {a['ast']} AST, {a['stl']} STL, {a['blk']} BLK, {a['tov']} TO")
     check("correction: the reconciliation read the 14:15Z card's Yahoo totals", (complete, c1415["yahoo"]["me"]),
