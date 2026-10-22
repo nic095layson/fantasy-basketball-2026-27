@@ -1,0 +1,24 @@
+{
+ "paper": "arXiv 2307.02188v5 (data/source/papers/)",
+ "source": "Basketball-Reference 2025-26 regular-season game logs (pull_manifest.json)",
+ "written_by": "report/after-reports/zscore-assessment-2026-10-21/gamelogs/gscore_weights.py",
+ "q": "kit season board top 180 of 2026-10-21 with 10+ counted 2025-26 weeks",
+ "players": 157,
+ "weeks": 22,
+ "n_roster": 13,
+ "kappa": 1.04,
+ "games_per_week": 3.0065,
+ "tau": {
+  "pts": 20.5453,
+  "reb": 7.4281,
+  "ast": 5.5157,
+  "tpm": 3.0484,
+  "stl": 2.0249,
+  "blk": 1.6638,
+  "tov": 3.0193
+ },
+ "tau_r": {
+  "fgp": 0.07785,
+  "ftp": 0.13241
+ }
+}
