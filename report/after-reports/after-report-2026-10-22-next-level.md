@@ -102,6 +102,14 @@ R is worth +0.540 categories more this week, although S has the bigger counting 
 | P6 | **Playoff-schedule view**: games in weeks 18–20 for your roster and for free agents, ahead of the league's last day for deals (2027-03-04, `league_settings.json`) | schedule file | S | Weeks 18–20 range from 2 to 4 games per NBA team (§1) |
 | P7 | **League activity record**: pin the transaction feed daily (Flaim returns a rolling 30 days, flagged `possibly_truncated` in the pinned sample, so rows are lost unless pinned) | `get_transactions` (pinned) | S | Each manager's streaming habits, for the opponent model and for §4 |
 
+**How each is checked, and its risk** (each ships red-first on its own PR):
+- **P2.** A week's six matchups must parse to 12 team rows; a missing team or a non-numeric cell halts, as `scoreboard_intake.py` already does. For your own matchup, the intake's totals must equal the week card's Yahoo column for that week. Risk: Flaim's sign-in can hiccup (the 16:19Z call failed once and the retry worked), so it retries once, then halts and says so, and never fills from memory.
+- **P3.** An identity test: given the preseason lines, no results and random pairings, the new run must reproduce today's odds within simulation error. Both seeds must agree within error, and the standings input must equal Yahoo's W-L-T. Risk: it changes the deck's simulator script (not the frozen draft page), and the title figures must keep carrying the sweep's bands.
+- **P4.** P1's tests, plus the adds counted against the weekly 4 from the transaction feed. Risk: a Monday plan is stale by midweek, so it reruns each morning.
+- **P5.** With the window set to the whole season, the form z must equal the board's z on the same actuals. Risk: 7 days is 3 to 4 games, so a small sample can overreact. The form view shows the games count beside the season line and never orders the board.
+- **P6.** The counts must equal the schedule file's (`facts.py` already computes them). Risk: postponed NBA games, so the schedule is reread each week.
+- **P7.** The record is append-only and de-duplicated by transaction id; rerunning a day adds nothing. Risk: a gap of more than 30 days loses rows, because the feed is a rolling window, so the morning run pins it daily.
+
 Fenced out: no trade sweep (owner veto 2026-10-20); no FantasyBot or Yahoo win projection quoted (Flaim documents a Yahoo `winProbability` field on matchups; it is absent from the pinned week-2 response, and if it appears it is data only, never quoted).
 
 ## 4. The season's data feeding the Draft Deck (owner's addition)
