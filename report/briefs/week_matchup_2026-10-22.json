@@ -25,64 +25,40 @@
   "rebuild_agrees": false,
   "differences": [
    {
-    "side": "me",
+    "side": "opp",
     "stat": "fgm",
-    "yahoo": 74,
-    "rebuild": 77
-   },
-   {
-    "side": "me",
-    "stat": "fga",
-    "yahoo": 139,
-    "rebuild": 146
-   },
-   {
-    "side": "me",
-    "stat": "ftm",
-    "yahoo": 36,
-    "rebuild": 37
-   },
-   {
-    "side": "me",
-    "stat": "fta",
-    "yahoo": 45,
-    "rebuild": 48
-   },
-   {
-    "side": "me",
-    "stat": "pts",
-    "yahoo": 203,
-    "rebuild": 210
-   },
-   {
-    "side": "me",
-    "stat": "reb",
-    "yahoo": 48,
-    "rebuild": 52
+    "yahoo": 67,
+    "rebuild": 62
    },
    {
     "side": "opp",
     "stat": "fga",
-    "yahoo": 149,
+    "yahoo": 163,
     "rebuild": 139
    },
    {
     "side": "opp",
     "stat": "ftm",
-    "yahoo": 39,
+    "yahoo": 40,
     "rebuild": 38
    },
    {
     "side": "opp",
     "stat": "fta",
-    "yahoo": 55,
+    "yahoo": 57,
     "rebuild": 52
    },
    {
     "side": "opp",
     "stat": "pts",
-    "yahoo": 185,
+    "yahoo": 196,
     "rebuild": 184
+   },
+   {
+    "side": "opp",
+    "stat": "reb",
+    "yahoo": 71,
+    "rebuild": 68
    },
    {
     "side": "opp",
@@ -93,18 +69,18 @@
    {
     "side": "opp",
     "stat": "stl",
-    "yahoo": 14,
+    "yahoo": 15,
     "rebuild": 12
    },
    {
     "side": "opp",
     "stat": "tov",
-    "yahoo": 20,
+    "yahoo": 22,
     "rebuild": 18
    }
   ],
   "yahoo_games_remaining": {
-   "me": 22,
+   "me": 19,
    "opp": 26
   },
   "yahoo_names": {
@@ -122,93 +98,93 @@
  "cats": [
   {
    "cat": "FG%",
-   "me_to_date": 0.532,
-   "opp_to_date": 0.416,
-   "me_final": 0.509,
-   "opp_final": 0.451,
+   "me_to_date": 0.527,
+   "opp_to_date": 0.411,
+   "me_final": 0.507,
+   "opp_final": 0.449,
    "leader_to_date": "me",
    "leader": "me",
-   "margin": 0.057
+   "margin": 0.059
   },
   {
    "cat": "FT%",
-   "me_to_date": 0.8,
-   "opp_to_date": 0.709,
-   "me_final": 0.823,
-   "opp_final": 0.797,
+   "me_to_date": 0.771,
+   "opp_to_date": 0.702,
+   "me_final": 0.811,
+   "opp_final": 0.792,
    "leader_to_date": "me",
    "leader": "me",
-   "margin": 0.026
+   "margin": 0.019
   },
   {
    "cat": "3PTM",
    "me_to_date": 19,
    "opp_to_date": 22,
    "me_final": 58.8,
-   "opp_final": 72.7,
+   "opp_final": 70.9,
    "leader_to_date": "opp",
    "leader": "opp",
-   "margin": -13.9
+   "margin": -12.1
   },
   {
    "cat": "PTS",
-   "me_to_date": 203,
-   "opp_to_date": 185,
-   "me_final": 581.2,
-   "opp_final": 682.7,
+   "me_to_date": 210,
+   "opp_to_date": 196,
+   "me_final": 588.2,
+   "opp_final": 669.1,
    "leader_to_date": "me",
    "leader": "opp",
-   "margin": -101.5
+   "margin": -80.9
   },
   {
    "cat": "REB",
-   "me_to_date": 48,
-   "opp_to_date": 68,
-   "me_final": 166.9,
-   "opp_final": 217.8,
+   "me_to_date": 52,
+   "opp_to_date": 71,
+   "me_final": 170.9,
+   "opp_final": 213.0,
    "leader_to_date": "opp",
    "leader": "opp",
-   "margin": -50.9
+   "margin": -42.1
   },
   {
    "cat": "AST",
    "me_to_date": 41,
    "opp_to_date": 39,
    "me_final": 123.2,
-   "opp_final": 152.6,
+   "opp_final": 142.8,
    "leader_to_date": "me",
    "leader": "opp",
-   "margin": -29.4
+   "margin": -19.6
   },
   {
    "cat": "ST",
    "me_to_date": 15,
-   "opp_to_date": 14,
+   "opp_to_date": 15,
    "me_final": 39.1,
-   "opp_final": 43.2,
-   "leader_to_date": "me",
+   "opp_final": 41.4,
+   "leader_to_date": "tie",
    "leader": "opp",
-   "margin": -4.1
+   "margin": -2.3
   },
   {
    "cat": "BLK",
    "me_to_date": 7,
    "opp_to_date": 11,
    "me_final": 22.7,
-   "opp_final": 28.4,
+   "opp_final": 27.8,
    "leader_to_date": "opp",
    "leader": "opp",
-   "margin": -5.7
+   "margin": -5.1
   },
   {
    "cat": "TO",
    "me_to_date": 25,
-   "opp_to_date": 20,
+   "opp_to_date": 22,
    "me_final": 62.0,
-   "opp_final": 75.7,
+   "opp_final": 73.5,
    "leader_to_date": "opp",
    "leader": "me",
-   "margin": 13.7
+   "margin": 11.5
   }
  ],
  "projected": {
@@ -219,13 +195,13 @@
  "totals": {
   "me": {
    "to_date": {
-    "fgm": 74,
-    "fga": 139,
-    "ftm": 36,
-    "fta": 45,
+    "fgm": 77,
+    "fga": 146,
+    "ftm": 37,
+    "fta": 48,
     "tpm": 19,
-    "pts": 203,
-    "reb": 48,
+    "pts": 210,
+    "reb": 52,
     "ast": 41,
     "stl": 15,
     "blk": 7,
@@ -260,17 +236,17 @@
   },
   "opp": {
    "to_date": {
-    "fgm": 62,
-    "fga": 149,
-    "ftm": 39,
-    "fta": 55,
+    "fgm": 67,
+    "fga": 163,
+    "ftm": 40,
+    "fta": 57,
     "tpm": 22,
-    "pts": 185,
-    "reb": 68,
+    "pts": 196,
+    "reb": 71,
     "ast": 39,
-    "stl": 14,
+    "stl": 15,
     "blk": 11,
-    "tov": 20
+    "tov": 22
    },
    "rebuild_to_date": {
     "fgm": 62,
@@ -286,17 +262,17 @@
     "tov": 18
    },
    "remaining": {
-    "fgm": 173.73,
-    "fga": 373.3,
-    "ftm": 101.39,
-    "fta": 121.1,
-    "tpm": 50.7,
-    "pts": 497.7,
-    "reb": 149.8,
-    "ast": 113.6,
-    "stl": 29.2,
-    "blk": 17.4,
-    "tov": 55.7
+    "fgm": 164.86,
+    "fga": 353.9,
+    "ftm": 96.34,
+    "fta": 115.1,
+    "tpm": 48.9,
+    "pts": 473.1,
+    "reb": 142.0,
+    "ast": 103.8,
+    "stl": 26.4,
+    "blk": 16.8,
+    "tov": 51.5
    }
   }
  },
@@ -326,21 +302,20 @@
    "to_date_counted": 11,
    "to_date_benched": [],
    "remaining_uncapped": 28,
-   "remaining_started": 28,
+   "remaining_started": 26,
    "remaining_by_player": {
     "Tyrese Maxey": 3,
     "Jalen Williams": 2,
     "Joel Embiid": 3,
     "Darius Acuff Jr.": 2,
-    "Keyonte George": 2,
+    "Immanuel Quickley": 2,
     "Devin Vassell": 2,
     "Gui Santos": 2,
     "Franz Wagner": 2,
     "Jalen Smith": 2,
     "Karl-Anthony Towns": 2,
     "Myles Turner": 2,
-    "Kevin Porter Jr.": 2,
-    "Immanuel Quickley": 2
+    "Keyonte George": 2
    }
   }
  },
@@ -389,10 +364,10 @@
   "pool_size": 0,
   "drop": null,
   "pool": {
-   "source": "kit",
-   "reason": "the Yahoo pull carries no available-player list",
-   "listed": null,
-   "ordering": null,
+   "source": "yahoo",
+   "reason": null,
+   "listed": 100,
+   "ordering": "platform_rostered_rate_desc",
    "out": [],
    "unknown_status": [],
    "not_projected": [],
@@ -406,12 +381,12 @@
   "projection": "season-pool per-game line x each remaining game x today's status availability; ten-slot daily fill; IL counts 0",
   "percentages": "total makes / total attempts, actual plus projected",
   "drop": "no game left this week and board value below the active roster's median",
-  "pickups": "every pooled free agent from today on, ranked by projected category wins gained, then gap closed"
+  "pickups": "Yahoo's available-player list (100 listed, Yahoo-wide ownership order), each from today on at his Yahoo letter's availability, ranked by projected category wins gained, then gap closed"
  },
  "inputs": {
   "state": {
    "path": "data/league_state.json",
-   "sha256": "efd94bd082ebc1fec71e2c48b603a336551ee644e6894aeca12fa6c84bad7f14"
+   "sha256": "0b988799a63b6106ed2fc6341ca52c6930e26a440843e82576e33494531f1d31"
   },
   "schedule": {
    "path": "data/league_schedule.json",
@@ -431,11 +406,11 @@
   },
   "yahoo_pull": {
    "path": "data/source/flaim/pull_2026-10-22.json",
-   "sha256": "4900ea890f891f3819bc7c5d8a41994bda041d6c773bb1fe0d66548ccca480d5"
+   "sha256": "b5bcdc245362068ae7f8d700b9c00927d51c37287fffabc2162081b4a334f621"
   },
   "status_file": {
    "path": "data/status/status_2026-10-22.json",
-   "sha256": "f366e7fde117b2c1ba49090f9ba5a3ef8c6d53aad1bebe31dd6dfe623d9bfdb5"
+   "sha256": "df10a412178fd9787f60fc352b6a45547c55158b28b4925805f79268811bdc45"
   },
   "pool": {
    "path": "data/season/pool_season.csv",

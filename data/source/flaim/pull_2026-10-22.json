@@ -1,5 +1,1437 @@
 {
- "free_agents": null,
+ "free_agents": {
+  "capabilities": {
+   "acquisitionState": false,
+   "rosteredRate": true,
+   "startedRate": false
+  },
+  "count": 100,
+  "freeAgents": [
+   {
+    "id": "10095",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Anthony Black",
+    "percentOwned": 39,
+    "playerId": "10095",
+    "playerKey": "478.p.10095",
+    "position": "PG,SG,SF",
+    "status": "Q",
+    "team": "ORL"
+   },
+   {
+    "id": "4622",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Jrue Holiday",
+    "percentOwned": 31,
+    "playerId": "4622",
+    "playerKey": "478.p.4622",
+    "position": "PG,SG",
+    "team": "POR"
+   },
+   {
+    "id": "6047",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Mitchell Robinson",
+    "percentOwned": 27,
+    "playerId": "6047",
+    "playerKey": "478.p.6047",
+    "position": "C",
+    "team": "BOS"
+   },
+   {
+    "id": "4897",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Nikola Vučević",
+    "percentOwned": 25,
+    "playerId": "4897",
+    "playerKey": "478.p.4897",
+    "position": "C",
+    "team": "ORL"
+   },
+   {
+    "id": "6433",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Tre Jones",
+    "percentOwned": 24,
+    "playerId": "6433",
+    "playerKey": "478.p.6433",
+    "position": "PG,SG",
+    "team": "CHI"
+   },
+   {
+    "id": "5482",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Bobby Portis Jr.",
+    "percentOwned": 21,
+    "playerId": "5482",
+    "playerKey": "478.p.5482",
+    "position": "PF,C",
+    "team": "MIA"
+   },
+   {
+    "id": "6754",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Julian Champagnie",
+    "percentOwned": 20,
+    "playerId": "6754",
+    "playerKey": "478.p.6754",
+    "position": "SF,PF",
+    "team": "SAS"
+   },
+   {
+    "id": "5754",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Alex Caruso",
+    "percentOwned": 19,
+    "playerId": "5754",
+    "playerKey": "478.p.5754",
+    "position": "SG,SF",
+    "team": "OKC"
+   },
+   {
+    "id": "6696",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Bennedict Mathurin",
+    "percentOwned": 18,
+    "playerId": "6696",
+    "playerKey": "478.p.6696",
+    "position": "SG,SF",
+    "team": "NOP"
+   },
+   {
+    "id": "4901",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Tobias Harris",
+    "percentOwned": 18,
+    "playerId": "4901",
+    "playerKey": "478.p.4901",
+    "position": "PF",
+    "status": "Q",
+    "team": "SAS"
+   },
+   {
+    "id": "6406",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Aaron Nesmith",
+    "percentOwned": 16,
+    "playerId": "6406",
+    "playerKey": "478.p.6406",
+    "position": "SG,SF",
+    "status": "Q",
+    "team": "IND"
+   },
+   {
+    "id": "6073",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Duncan Robinson",
+    "percentOwned": 16,
+    "playerId": "6073",
+    "playerKey": "478.p.6073",
+    "position": "SG,SF",
+    "team": "DET"
+   },
+   {
+    "id": "5350",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Jerami Grant",
+    "percentOwned": 16,
+    "playerId": "5350",
+    "playerKey": "478.p.5350",
+    "position": "SF,PF",
+    "team": "MEM"
+   },
+   {
+    "id": "6577",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Herbert Jones",
+    "percentOwned": 15,
+    "playerId": "6577",
+    "playerKey": "478.p.6577",
+    "position": "SG,SF",
+    "team": "NOP"
+   },
+   {
+    "id": "10312",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Pelle Larsson",
+    "percentOwned": 15,
+    "playerId": "10312",
+    "playerKey": "478.p.10312",
+    "position": "SG,SF",
+    "team": "MIA"
+   },
+   {
+    "id": "6019",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Collin Sexton",
+    "percentOwned": 14,
+    "playerId": "6019",
+    "playerKey": "478.p.6019",
+    "position": "PG,SG",
+    "status": "Q",
+    "team": "LAL"
+   },
+   {
+    "id": "6757",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Scotty Pippen Jr.",
+    "percentOwned": 14,
+    "playerId": "6757",
+    "playerKey": "478.p.6757",
+    "position": "PG",
+    "team": "MEM"
+   },
+   {
+    "id": "4472",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Brook Lopez",
+    "percentOwned": 13,
+    "playerId": "4472",
+    "playerKey": "478.p.4472",
+    "position": "C",
+    "team": "LAC"
+   },
+   {
+    "id": "5958",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Deandre Ayton",
+    "percentOwned": 13,
+    "playerId": "5958",
+    "playerKey": "478.p.5958",
+    "position": "C",
+    "team": "WAS"
+   },
+   {
+    "id": "10279",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Jaylon Tyson",
+    "percentOwned": 13,
+    "playerId": "10279",
+    "playerKey": "478.p.10279",
+    "position": "SG,SF,PF",
+    "team": "CLE"
+   },
+   {
+    "id": "6217",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Keldon Johnson",
+    "percentOwned": 13,
+    "playerId": "6217",
+    "playerKey": "478.p.6217",
+    "position": "SF,PF",
+    "team": "SAS"
+   },
+   {
+    "id": "5475",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Kelly Oubre Jr.",
+    "percentOwned": 13,
+    "playerId": "5475",
+    "playerKey": "478.p.5475",
+    "position": "SF,PF",
+    "team": "IND"
+   },
+   {
+    "id": "10576",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Brayden Burries",
+    "percentOwned": 12,
+    "playerId": "10576",
+    "playerKey": "478.p.10576",
+    "position": "SG",
+    "team": "MIL"
+   },
+   {
+    "id": "6450",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Paul Reed",
+    "percentOwned": 12,
+    "playerId": "6450",
+    "playerKey": "478.p.6450",
+    "position": "PF,C",
+    "team": "DET"
+   },
+   {
+    "id": "10048",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Scoot Henderson",
+    "percentOwned": 12,
+    "playerId": "10048",
+    "playerKey": "478.p.10048",
+    "position": "PG",
+    "team": "POR"
+   },
+   {
+    "id": "6035",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Anfernee Simons",
+    "percentOwned": 11,
+    "playerId": "6035",
+    "playerKey": "478.p.6035",
+    "position": "PG,SG",
+    "team": "PHI"
+   },
+   {
+    "id": "6408",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Isaiah Stewart",
+    "percentOwned": 11,
+    "playerId": "6408",
+    "playerKey": "478.p.6408",
+    "position": "PF,C",
+    "status": "Q",
+    "team": "MEM"
+   },
+   {
+    "id": "4892",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Klay Thompson",
+    "percentOwned": 11,
+    "playerId": "4892",
+    "playerKey": "478.p.4892",
+    "position": "SG,SF",
+    "team": "MIA"
+   },
+   {
+    "id": "6499",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Naji Marshall",
+    "percentOwned": 11,
+    "playerId": "6499",
+    "playerKey": "478.p.6499",
+    "position": "SG,SF,PF",
+    "team": "DAL"
+   },
+   {
+    "id": "5840",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Kyle Kuzma",
+    "percentOwned": 10,
+    "playerId": "5840",
+    "playerKey": "478.p.5840",
+    "position": "SF,PF",
+    "team": "MIL"
+   },
+   {
+    "id": "6709",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Jake LaRavia",
+    "percentOwned": 9,
+    "playerId": "6709",
+    "playerKey": "478.p.6709",
+    "position": "SF,PF",
+    "team": "LAL"
+   },
+   {
+    "id": "10340",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Jaylen Wells",
+    "percentOwned": 9,
+    "playerId": "10340",
+    "playerKey": "478.p.10340",
+    "position": "SG,SF",
+    "team": "MEM"
+   },
+   {
+    "id": "10315",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Kyle Filipowski",
+    "percentOwned": 9,
+    "playerId": "10315",
+    "playerKey": "478.p.10315",
+    "position": "PF,C",
+    "team": "UTA"
+   },
+   {
+    "id": "6412",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Precious Achiuwa",
+    "percentOwned": 9,
+    "playerId": "6412",
+    "playerKey": "478.p.6412",
+    "position": "PF,C",
+    "team": "SAC"
+   },
+   {
+    "id": "10282",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Isaiah Collier",
+    "percentOwned": 8,
+    "playerId": "10282",
+    "playerKey": "478.p.10282",
+    "position": "PG,SG",
+    "team": "UTA"
+   },
+   {
+    "id": "10460",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Joan Beringer",
+    "percentOwned": 8,
+    "playerId": "10460",
+    "playerKey": "478.p.10460",
+    "position": "PF,C",
+    "team": "MIN"
+   },
+   {
+    "id": "6216",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Jordan Poole",
+    "percentOwned": 8,
+    "playerId": "6216",
+    "playerKey": "478.p.6216",
+    "position": "PG,SG",
+    "team": "NOP"
+   },
+   {
+    "id": "5194",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Tim Hardaway Jr.",
+    "percentOwned": 8,
+    "playerId": "5194",
+    "playerKey": "478.p.5194",
+    "position": "SG,SF",
+    "team": "MIA"
+   },
+   {
+    "id": "6697",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Shaedon Sharpe",
+    "percentOwned": 7,
+    "playerId": "6697",
+    "playerKey": "478.p.6697",
+    "position": "PG,SG",
+    "status": "O",
+    "team": "POR"
+   },
+   {
+    "id": "6166",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "De'Andre Hunter",
+    "percentOwned": 6,
+    "playerId": "6166",
+    "playerKey": "478.p.6166",
+    "position": "SF,PF",
+    "team": "SAC"
+   },
+   {
+    "id": "6057",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "De'Anthony Melton",
+    "percentOwned": 6,
+    "playerId": "6057",
+    "playerKey": "478.p.6057",
+    "position": "PG,SG",
+    "team": "GSW"
+   },
+   {
+    "id": "10097",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Dereck Lively II",
+    "percentOwned": 6,
+    "playerId": "10097",
+    "playerKey": "478.p.10097",
+    "position": "C",
+    "status": "D",
+    "team": "DAL"
+   },
+   {
+    "id": "10572",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Morez Johnson Jr.",
+    "percentOwned": 6,
+    "playerId": "10572",
+    "playerKey": "478.p.10572",
+    "position": "PF",
+    "team": "DAL"
+   },
+   {
+    "id": "10313",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Oso Ighodaro",
+    "percentOwned": 6,
+    "playerId": "10313",
+    "playerKey": "478.p.10313",
+    "position": "C",
+    "status": "Q",
+    "team": "PHX"
+   },
+   {
+    "id": "10327",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Cam Spencer",
+    "percentOwned": 5,
+    "playerId": "10327",
+    "playerKey": "478.p.10327",
+    "position": "PG,SG",
+    "team": "MEM"
+   },
+   {
+    "id": "5636",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Kris Dunn",
+    "percentOwned": 5,
+    "playerId": "5636",
+    "playerKey": "478.p.5636",
+    "position": "PG,SG",
+    "team": "LAC"
+   },
+   {
+    "id": "6267",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Max Strus",
+    "percentOwned": 5,
+    "playerId": "6267",
+    "playerKey": "478.p.6267",
+    "position": "SF,PF",
+    "status": "O",
+    "team": "LAC"
+   },
+   {
+    "id": "6038",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Robert Williams III",
+    "percentOwned": 5,
+    "playerId": "6038",
+    "playerKey": "478.p.6038",
+    "position": "C",
+    "team": "POR"
+   },
+   {
+    "id": "6619",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Sam Hauser",
+    "percentOwned": 5,
+    "playerId": "6619",
+    "playerKey": "478.p.6619",
+    "position": "SF,PF",
+    "team": "BOS"
+   },
+   {
+    "id": "10275",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Tristan da Silva",
+    "percentOwned": 5,
+    "playerId": "10275",
+    "playerKey": "478.p.10275",
+    "position": "SF,PF",
+    "team": "ORL"
+   },
+   {
+    "id": "6597",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Aaron Wiggins",
+    "percentOwned": 4,
+    "playerId": "6597",
+    "playerKey": "478.p.6597",
+    "position": "SG,SF",
+    "team": "ATL"
+   },
+   {
+    "id": "4245",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Al Horford",
+    "percentOwned": 4,
+    "playerId": "4245",
+    "playerKey": "478.p.4245",
+    "position": "PF,C",
+    "team": "GSW"
+   },
+   {
+    "id": "10316",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Daniss Jenkins",
+    "percentOwned": 4,
+    "playerId": "10316",
+    "playerKey": "478.p.10316",
+    "position": "PG,SG",
+    "team": "DET"
+   },
+   {
+    "id": "5747",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Derrick Jones Jr.",
+    "percentOwned": 4,
+    "playerId": "5747",
+    "playerKey": "478.p.5747",
+    "position": "SF,PF",
+    "team": "LAC"
+   },
+   {
+    "id": "6028",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Donte DiVincenzo",
+    "percentOwned": 4,
+    "playerId": "6028",
+    "playerKey": "478.p.6028",
+    "position": "SG,SF",
+    "status": "O",
+    "team": "MIN"
+   },
+   {
+    "id": "10510",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Dylan Cardwell",
+    "percentOwned": 4,
+    "playerId": "10510",
+    "playerKey": "478.p.10510",
+    "position": "PF,C",
+    "status": "O",
+    "team": "SAC"
+   },
+   {
+    "id": "10459",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Hugo González",
+    "percentOwned": 4,
+    "playerId": "10459",
+    "playerKey": "478.p.10459",
+    "position": "SG,SF",
+    "team": "BOS"
+   },
+   {
+    "id": "6441",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Isaiah Joe",
+    "percentOwned": 4,
+    "playerId": "6441",
+    "playerKey": "478.p.6441",
+    "position": "SG,SF",
+    "team": "DET"
+   },
+   {
+    "id": "10333",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Jamal Shead",
+    "percentOwned": 4,
+    "playerId": "10333",
+    "playerKey": "478.p.10333",
+    "position": "PG",
+    "team": "TOR"
+   },
+   {
+    "id": "10574",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Kingston Flemings",
+    "percentOwned": 4,
+    "playerId": "10574",
+    "playerKey": "478.p.10574",
+    "position": "PG",
+    "team": "ATL"
+   },
+   {
+    "id": "6725",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Max Christie",
+    "percentOwned": 4,
+    "playerId": "6725",
+    "playerKey": "478.p.6725",
+    "position": "SG,SF",
+    "team": "DAL"
+   },
+   {
+    "id": "6578",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Miles McBride",
+    "percentOwned": 4,
+    "playerId": "6578",
+    "playerKey": "478.p.6578",
+    "position": "PG,SG",
+    "team": "NYK"
+   },
+   {
+    "id": "10476",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Ryan Kalkbrenner",
+    "percentOwned": 4,
+    "playerId": "10476",
+    "playerKey": "478.p.10476",
+    "position": "C",
+    "team": "CHA"
+   },
+   {
+    "id": "10448",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Tre Johnson",
+    "percentOwned": 4,
+    "playerId": "10448",
+    "playerKey": "478.p.10448",
+    "position": "PG,SG,SF",
+    "team": "WAS"
+   },
+   {
+    "id": "10277",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Baylor Scheierman",
+    "percentOwned": 3,
+    "playerId": "10277",
+    "playerKey": "478.p.10277",
+    "position": "SG,SF",
+    "team": "BOS"
+   },
+   {
+    "id": "10122",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Brice Sensabaugh",
+    "percentOwned": 3,
+    "playerId": "10122",
+    "playerKey": "478.p.10122",
+    "position": "SG,SF,PF",
+    "team": "UTA"
+   },
+   {
+    "id": "10070",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "GG Jackson",
+    "percentOwned": 3,
+    "playerId": "10070",
+    "playerKey": "478.p.10070",
+    "position": "SF,PF,C",
+    "team": "MEM"
+   },
+   {
+    "id": "6617",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Jay Huff",
+    "percentOwned": 3,
+    "playerId": "6617",
+    "playerKey": "478.p.6617",
+    "position": "C",
+    "team": "IND"
+   },
+   {
+    "id": "6724",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Jaylin Williams",
+    "percentOwned": 3,
+    "playerId": "6724",
+    "playerKey": "478.p.6724",
+    "position": "PF,C",
+    "team": "OKC"
+   },
+   {
+    "id": "6753",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Keon Ellis",
+    "percentOwned": 3,
+    "playerId": "6753",
+    "playerKey": "478.p.6753",
+    "position": "SG,SF",
+    "team": "BKN"
+   },
+   {
+    "id": "6254",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Luguentz Dort",
+    "percentOwned": 3,
+    "playerId": "6254",
+    "playerKey": "478.p.6254",
+    "position": "SG,SF",
+    "team": "ATL"
+   },
+   {
+    "id": "5824",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Malik Monk",
+    "percentOwned": 3,
+    "playerId": "5824",
+    "playerKey": "478.p.5824",
+    "position": "PG,SG",
+    "status": "Q",
+    "team": "SAC"
+   },
+   {
+    "id": "5317",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Marcus Smart",
+    "percentOwned": 3,
+    "playerId": "5317",
+    "playerKey": "478.p.5317",
+    "position": "PG,SG",
+    "team": "HOU"
+   },
+   {
+    "id": "10121",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Noah Clowney",
+    "percentOwned": 3,
+    "playerId": "10121",
+    "playerKey": "478.p.10121",
+    "position": "PF,C",
+    "team": "BKN"
+   },
+   {
+    "id": "5905",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Royce O'Neale",
+    "percentOwned": 3,
+    "playerId": "5905",
+    "playerKey": "478.p.5905",
+    "position": "SF,PF",
+    "team": "CHA"
+   },
+   {
+    "id": "6755",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "AJ Green",
+    "percentOwned": 2,
+    "playerId": "6755",
+    "playerKey": "478.p.6755",
+    "position": "PG,SG,SF",
+    "team": "MIL"
+   },
+   {
+    "id": "10273",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Bub Carrington",
+    "percentOwned": 2,
+    "playerId": "10273",
+    "playerKey": "478.p.10273",
+    "position": "PG,SG",
+    "team": "WAS"
+   },
+   {
+    "id": "10101",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Gradey Dick",
+    "percentOwned": 2,
+    "playerId": "10101",
+    "playerKey": "478.p.10101",
+    "position": "SG,SF",
+    "team": "LAC"
+   },
+   {
+    "id": "10103",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Jarace Walker",
+    "percentOwned": 2,
+    "playerId": "10103",
+    "playerKey": "478.p.10103",
+    "position": "SF,PF",
+    "team": "IND"
+   },
+   {
+    "id": "6030",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Kevin Huerter",
+    "percentOwned": 2,
+    "playerId": "6030",
+    "playerKey": "478.p.6030",
+    "position": "SG,SF",
+    "team": "DET"
+   },
+   {
+    "id": "5903",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Luke Kornet",
+    "percentOwned": 2,
+    "playerId": "5903",
+    "playerKey": "478.p.5903",
+    "position": "C",
+    "team": "SAS"
+   },
+   {
+    "id": "5959",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Marvin Bagley III",
+    "percentOwned": 2,
+    "playerId": "5959",
+    "playerKey": "478.p.5959",
+    "position": "PF,C",
+    "team": "DEN"
+   },
+   {
+    "id": "6556",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Moses Moody",
+    "percentOwned": 2,
+    "playerId": "6556",
+    "playerKey": "478.p.6556",
+    "position": "SG,SF,PF",
+    "status": "O",
+    "team": "GSW"
+   },
+   {
+    "id": "6717",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Nikola Jović",
+    "percentOwned": 2,
+    "playerId": "6717",
+    "playerKey": "478.p.6717",
+    "position": "PF,C",
+    "team": "MIA"
+   },
+   {
+    "id": "10469",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Nique Clifford",
+    "percentOwned": 2,
+    "playerId": "10469",
+    "playerKey": "478.p.10469",
+    "position": "SG,SF",
+    "team": "SAC"
+   },
+   {
+    "id": "5582",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "T.J. McConnell",
+    "percentOwned": 2,
+    "playerId": "5582",
+    "playerKey": "478.p.5582",
+    "position": "PG",
+    "status": "Q",
+    "team": "IND"
+   },
+   {
+    "id": "10280",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Terrence Shannon Jr.",
+    "percentOwned": 2,
+    "playerId": "10280",
+    "playerKey": "478.p.10280",
+    "position": "SG,SF",
+    "team": "MIN"
+   },
+   {
+    "id": "10570",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Allen Graves",
+    "percentOwned": 1,
+    "playerId": "10570",
+    "playerKey": "478.p.10570",
+    "position": "PF",
+    "team": "TOR"
+   },
+   {
+    "id": "6568",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Bones Hyland",
+    "percentOwned": 1,
+    "playerId": "6568",
+    "playerKey": "478.p.6568",
+    "position": "PG,SG",
+    "team": "MIN"
+   },
+   {
+    "id": "5739",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Gary Payton II",
+    "percentOwned": 1,
+    "playerId": "5739",
+    "playerKey": "478.p.5739",
+    "position": "SG,SF",
+    "team": "GSW"
+   },
+   {
+    "id": "6206",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Goga Bitadze",
+    "percentOwned": 1,
+    "playerId": "6206",
+    "playerKey": "478.p.6206",
+    "position": "C",
+    "team": "ORL"
+   },
+   {
+    "id": "5013",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Harrison Barnes",
+    "percentOwned": 1,
+    "playerId": "5013",
+    "playerKey": "478.p.5013",
+    "position": "PF",
+    "team": "SAS"
+   },
+   {
+    "id": "6269",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Javonte Green",
+    "percentOwned": 1,
+    "playerId": "6269",
+    "playerKey": "478.p.6269",
+    "position": "SG,SF",
+    "team": "DET"
+   },
+   {
+    "id": "6616",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Jordan Goodwin",
+    "percentOwned": 1,
+    "playerId": "6616",
+    "playerKey": "478.p.6616",
+    "position": "PG,SG",
+    "team": "PHX"
+   },
+   {
+    "id": "6632",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Justin Champagnie",
+    "percentOwned": 1,
+    "playerId": "6632",
+    "playerKey": "478.p.6632",
+    "position": "SF,PF",
+    "team": "WAS"
+   },
+   {
+    "id": "5073",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Khris Middleton",
+    "percentOwned": 1,
+    "playerId": "5073",
+    "playerKey": "478.p.5073",
+    "position": "SF,PF",
+    "team": "WAS"
+   },
+   {
+    "id": "5825",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Luke Kennard",
+    "percentOwned": 1,
+    "playerId": "5825",
+    "playerKey": "478.p.5825",
+    "position": "SG,SF",
+    "status": "Q",
+    "team": "PHX"
+   },
+   {
+    "id": "4390",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Russell Westbrook",
+    "percentOwned": 1,
+    "playerId": "4390",
+    "playerKey": "478.p.4390",
+    "position": "PG,SG",
+    "status": "NA",
+    "team": "SAC"
+   },
+   {
+    "id": "10449",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Will Riley",
+    "percentOwned": 1,
+    "playerId": "10449",
+    "playerKey": "478.p.10449",
+    "position": "SF,PF",
+    "team": "WAS"
+   },
+   {
+    "id": "5823",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Zach Collins",
+    "percentOwned": 1,
+    "playerId": "5823",
+    "playerKey": "478.p.5823",
+    "position": "C",
+    "team": "CHI"
+   }
+  ],
+  "leagueId": "478.l.36464",
+  "leagueKey": "478.l.36464",
+  "leagueName": "ANTI MARTIN MARTIN CLUB",
+  "ordering": "platform_rostered_rate_desc",
+  "ownershipScope": "platform_global",
+  "position": "ALL",
+  "seasonYear": 2026
+ },
  "league_key": "478.l.36464",
  "matchups": {
   "1": {
@@ -18,7 +1450,7 @@
         "name": "Field Goals Made / Field Goals Attempted",
         "result": null,
         "statId": "9004003",
-        "value": "50/129"
+        "value": "50/132"
        },
        {
         "displayName": "FG%",
@@ -26,7 +1458,7 @@
         "name": "Field Goal Percentage",
         "result": "loss",
         "statId": "5",
-        "value": ".388"
+        "value": ".379"
        },
        {
         "displayName": "FTM/A",
@@ -34,15 +1466,15 @@
         "name": "Free Throws Made / Free Throws Attempted",
         "result": null,
         "statId": "9007006",
-        "value": "33/42"
+        "value": "34/44"
        },
        {
         "displayName": "FT%",
         "isDisplayOnly": false,
         "name": "Free Throw Percentage",
-        "result": "win",
+        "result": "loss",
         "statId": "8",
-        "value": ".786"
+        "value": ".773"
        },
        {
         "displayName": "3PTM",
@@ -58,7 +1490,7 @@
         "name": "Points Scored",
         "result": "loss",
         "statId": "12",
-        "value": "155"
+        "value": "156"
        },
        {
         "displayName": "REB",
@@ -66,7 +1498,7 @@
         "name": "Total Rebounds",
         "result": "loss",
         "statId": "15",
-        "value": "57"
+        "value": "58"
        },
        {
         "displayName": "AST",
@@ -74,7 +1506,7 @@
         "name": "Assists",
         "result": "loss",
         "statId": "16",
-        "value": "35"
+        "value": "37"
        },
        {
         "displayName": "ST",
@@ -82,7 +1514,7 @@
         "name": "Steals",
         "result": "win",
         "statId": "17",
-        "value": "15"
+        "value": "16"
        },
        {
         "displayName": "BLK",
@@ -98,17 +1530,17 @@
         "name": "Turnovers",
         "result": "win",
         "statId": "19",
-        "value": "19"
+        "value": "21"
        }
       ],
-      "categoriesWon": 5,
+      "categoriesWon": 4,
       "categoryScore": {
-       "losses": 4,
+       "losses": 5,
        "ties": 0,
-       "wins": 5
+       "wins": 4
       },
       "gamesRemaining": 23,
-      "points": 5,
+      "points": 4,
       "teamId": "9",
       "teamKey": "478.l.36464.t.9",
       "teamName": "ROOKS FTW"
@@ -121,7 +1553,7 @@
         "name": "Field Goals Made / Field Goals Attempted",
         "result": null,
         "statId": "9004003",
-        "value": "64/136"
+        "value": "69/148"
        },
        {
         "displayName": "FG%",
@@ -129,7 +1561,7 @@
         "name": "Field Goal Percentage",
         "result": "win",
         "statId": "5",
-        "value": ".471"
+        "value": ".466"
        },
        {
         "displayName": "FTM/A",
@@ -137,15 +1569,15 @@
         "name": "Free Throws Made / Free Throws Attempted",
         "result": null,
         "statId": "9007006",
-        "value": "35/46"
+        "value": "39/50"
        },
        {
         "displayName": "FT%",
         "isDisplayOnly": false,
         "name": "Free Throw Percentage",
-        "result": "loss",
+        "result": "win",
         "statId": "8",
-        "value": ".761"
+        "value": ".780"
        },
        {
         "displayName": "3PTM",
@@ -153,7 +1585,7 @@
         "name": "3-point Shots Made",
         "result": "loss",
         "statId": "10",
-        "value": "14"
+        "value": "17"
        },
        {
         "displayName": "PTS",
@@ -161,7 +1593,7 @@
         "name": "Points Scored",
         "result": "win",
         "statId": "12",
-        "value": "177"
+        "value": "194"
        },
        {
         "displayName": "REB",
@@ -169,7 +1601,7 @@
         "name": "Total Rebounds",
         "result": "win",
         "statId": "15",
-        "value": "63"
+        "value": "69"
        },
        {
         "displayName": "AST",
@@ -177,7 +1609,7 @@
         "name": "Assists",
         "result": "win",
         "statId": "16",
-        "value": "37"
+        "value": "39"
        },
        {
         "displayName": "ST",
@@ -185,7 +1617,7 @@
         "name": "Steals",
         "result": "loss",
         "statId": "17",
-        "value": "8"
+        "value": "11"
        },
        {
         "displayName": "BLK",
@@ -201,17 +1633,17 @@
         "name": "Turnovers",
         "result": "loss",
         "statId": "19",
-        "value": "20"
+        "value": "24"
        }
       ],
-      "categoriesWon": 4,
+      "categoriesWon": 5,
       "categoryScore": {
-       "losses": 5,
+       "losses": 4,
        "ties": 0,
-       "wins": 4
+       "wins": 5
       },
       "gamesRemaining": 25,
-      "points": 4,
+      "points": 5,
       "teamId": "1",
       "teamKey": "478.l.36464.t.1",
       "teamName": "Lauri’s Prime Rib"
@@ -230,7 +1662,7 @@
         "name": "Field Goals Made / Field Goals Attempted",
         "result": null,
         "statId": "9004003",
-        "value": "55/110"
+        "value": "60/118"
        },
        {
         "displayName": "FG%",
@@ -238,7 +1670,7 @@
         "name": "Field Goal Percentage",
         "result": "loss",
         "statId": "5",
-        "value": ".500"
+        "value": ".508"
        },
        {
         "displayName": "FTM/A",
@@ -246,7 +1678,7 @@
         "name": "Free Throws Made / Free Throws Attempted",
         "result": null,
         "statId": "9007006",
-        "value": "30/35"
+        "value": "36/41"
        },
        {
         "displayName": "FT%",
@@ -254,7 +1686,7 @@
         "name": "Free Throw Percentage",
         "result": "win",
         "statId": "8",
-        "value": ".857"
+        "value": ".878"
        },
        {
         "displayName": "3PTM",
@@ -262,7 +1694,7 @@
         "name": "3-point Shots Made",
         "result": "loss",
         "statId": "10",
-        "value": "6"
+        "value": "7"
        },
        {
         "displayName": "PTS",
@@ -270,7 +1702,7 @@
         "name": "Points Scored",
         "result": "loss",
         "statId": "12",
-        "value": "146"
+        "value": "163"
        },
        {
         "displayName": "REB",
@@ -278,7 +1710,7 @@
         "name": "Total Rebounds",
         "result": "win",
         "statId": "15",
-        "value": "76"
+        "value": "86"
        },
        {
         "displayName": "AST",
@@ -286,7 +1718,7 @@
         "name": "Assists",
         "result": "loss",
         "statId": "16",
-        "value": "47"
+        "value": "53"
        },
        {
         "displayName": "ST",
@@ -294,7 +1726,7 @@
         "name": "Steals",
         "result": "loss",
         "statId": "17",
-        "value": "8"
+        "value": "10"
        },
        {
         "displayName": "BLK",
@@ -310,7 +1742,7 @@
         "name": "Turnovers",
         "result": "loss",
         "statId": "19",
-        "value": "24"
+        "value": "26"
        }
       ],
       "categoriesWon": 2,
@@ -333,7 +1765,7 @@
         "name": "Field Goals Made / Field Goals Attempted",
         "result": null,
         "statId": "9004003",
-        "value": "65/129"
+        "value": "71/139"
        },
        {
         "displayName": "FG%",
@@ -341,7 +1773,7 @@
         "name": "Field Goal Percentage",
         "result": "win",
         "statId": "5",
-        "value": ".504"
+        "value": ".511"
        },
        {
         "displayName": "FTM/A",
@@ -349,7 +1781,7 @@
         "name": "Free Throws Made / Free Throws Attempted",
         "result": null,
         "statId": "9007006",
-        "value": "41/50"
+        "value": "43/52"
        },
        {
         "displayName": "FT%",
@@ -357,7 +1789,7 @@
         "name": "Free Throw Percentage",
         "result": "loss",
         "statId": "8",
-        "value": ".820"
+        "value": ".827"
        },
        {
         "displayName": "3PTM",
@@ -365,7 +1797,7 @@
         "name": "3-point Shots Made",
         "result": "win",
         "statId": "10",
-        "value": "23"
+        "value": "24"
        },
        {
         "displayName": "PTS",
@@ -373,7 +1805,7 @@
         "name": "Points Scored",
         "result": "win",
         "statId": "12",
-        "value": "194"
+        "value": "209"
        },
        {
         "displayName": "REB",
@@ -381,7 +1813,7 @@
         "name": "Total Rebounds",
         "result": "loss",
         "statId": "15",
-        "value": "56"
+        "value": "59"
        },
        {
         "displayName": "AST",
@@ -389,7 +1821,7 @@
         "name": "Assists",
         "result": "win",
         "statId": "16",
-        "value": "54"
+        "value": "55"
        },
        {
         "displayName": "ST",
@@ -405,7 +1837,7 @@
         "name": "Blocked Shots",
         "result": "win",
         "statId": "18",
-        "value": "12"
+        "value": "13"
        },
        {
         "displayName": "TO",
@@ -413,7 +1845,7 @@
         "name": "Turnovers",
         "result": "win",
         "statId": "19",
-        "value": "23"
+        "value": "24"
        }
       ],
       "categoriesWon": 7,
@@ -496,7 +1928,7 @@
         "displayName": "AST",
         "isDisplayOnly": false,
         "name": "Assists",
-        "result": "win",
+        "result": "tie",
         "statId": "16",
         "value": "36"
        },
@@ -525,14 +1957,14 @@
         "value": "31"
        }
       ],
-      "categoriesWon": 5,
+      "categoriesWon": 4,
       "categoryScore": {
        "losses": 3,
-       "ties": 1,
-       "wins": 5
+       "ties": 2,
+       "wins": 4
       },
       "gamesRemaining": 25,
-      "points": 5,
+      "points": 4,
       "teamId": "6",
       "teamKey": "478.l.36464.t.6",
       "teamName": "Cade n em"
@@ -545,7 +1977,7 @@
         "name": "Field Goals Made / Field Goals Attempted",
         "result": null,
         "statId": "9004003",
-        "value": "53/116"
+        "value": "61/131"
        },
        {
         "displayName": "FG%",
@@ -553,7 +1985,7 @@
         "name": "Field Goal Percentage",
         "result": "loss",
         "statId": "5",
-        "value": ".457"
+        "value": ".466"
        },
        {
         "displayName": "FTM/A",
@@ -561,7 +1993,7 @@
         "name": "Free Throws Made / Free Throws Attempted",
         "result": null,
         "statId": "9007006",
-        "value": "34/42"
+        "value": "40/50"
        },
        {
         "displayName": "FT%",
@@ -569,7 +2001,7 @@
         "name": "Free Throw Percentage",
         "result": "win",
         "statId": "8",
-        "value": ".810"
+        "value": ".800"
        },
        {
         "displayName": "3PTM",
@@ -577,7 +2009,7 @@
         "name": "3-point Shots Made",
         "result": "win",
         "statId": "10",
-        "value": "19"
+        "value": "21"
        },
        {
         "displayName": "PTS",
@@ -585,7 +2017,7 @@
         "name": "Points Scored",
         "result": "loss",
         "statId": "12",
-        "value": "159"
+        "value": "183"
        },
        {
         "displayName": "REB",
@@ -593,15 +2025,15 @@
         "name": "Total Rebounds",
         "result": "loss",
         "statId": "15",
-        "value": "58"
+        "value": "63"
        },
        {
         "displayName": "AST",
         "isDisplayOnly": false,
         "name": "Assists",
-        "result": "loss",
+        "result": "tie",
         "statId": "16",
-        "value": "29"
+        "value": "36"
        },
        {
         "displayName": "ST",
@@ -609,7 +2041,7 @@
         "name": "Steals",
         "result": "loss",
         "statId": "17",
-        "value": "9"
+        "value": "12"
        },
        {
         "displayName": "BLK",
@@ -625,13 +2057,13 @@
         "name": "Turnovers",
         "result": "win",
         "statId": "19",
-        "value": "22"
+        "value": "26"
        }
       ],
       "categoriesWon": 3,
       "categoryScore": {
-       "losses": 5,
-       "ties": 1,
+       "losses": 4,
+       "ties": 2,
        "wins": 3
       },
       "gamesRemaining": 22,
@@ -654,7 +2086,7 @@
         "name": "Field Goals Made / Field Goals Attempted",
         "result": null,
         "statId": "9004003",
-        "value": "45/108"
+        "value": "46/113"
        },
        {
         "displayName": "FG%",
@@ -662,7 +2094,7 @@
         "name": "Field Goal Percentage",
         "result": "loss",
         "statId": "5",
-        "value": ".417"
+        "value": ".407"
        },
        {
         "displayName": "FTM/A",
@@ -686,7 +2118,7 @@
         "name": "3-point Shots Made",
         "result": "loss",
         "statId": "10",
-        "value": "8"
+        "value": "9"
        },
        {
         "displayName": "PTS",
@@ -694,7 +2126,7 @@
         "name": "Points Scored",
         "result": "loss",
         "statId": "12",
-        "value": "127"
+        "value": "130"
        },
        {
         "displayName": "REB",
@@ -702,7 +2134,7 @@
         "name": "Total Rebounds",
         "result": "win",
         "statId": "15",
-        "value": "66"
+        "value": "67"
        },
        {
         "displayName": "AST",
@@ -710,7 +2142,7 @@
         "name": "Assists",
         "result": "loss",
         "statId": "16",
-        "value": "31"
+        "value": "32"
        },
        {
         "displayName": "ST",
@@ -718,7 +2150,7 @@
         "name": "Steals",
         "result": "loss",
         "statId": "17",
-        "value": "10"
+        "value": "12"
        },
        {
         "displayName": "BLK",
@@ -734,7 +2166,7 @@
         "name": "Turnovers",
         "result": "win",
         "statId": "19",
-        "value": "18"
+        "value": "21"
        }
       ],
       "categoriesWon": 2,
@@ -757,7 +2189,7 @@
         "name": "Field Goals Made / Field Goals Attempted",
         "result": null,
         "statId": "9004003",
-        "value": "77/155"
+        "value": "77/156"
        },
        {
         "displayName": "FG%",
@@ -765,7 +2197,7 @@
         "name": "Field Goal Percentage",
         "result": "win",
         "statId": "5",
-        "value": ".497"
+        "value": ".494"
        },
        {
         "displayName": "FTM/A",
@@ -773,7 +2205,7 @@
         "name": "Free Throws Made / Free Throws Attempted",
         "result": null,
         "statId": "9007006",
-        "value": "58/70"
+        "value": "59/71"
        },
        {
         "displayName": "FT%",
@@ -781,7 +2213,7 @@
         "name": "Free Throw Percentage",
         "result": "win",
         "statId": "8",
-        "value": ".829"
+        "value": ".831"
        },
        {
         "displayName": "3PTM",
@@ -797,7 +2229,7 @@
         "name": "Points Scored",
         "result": "win",
         "statId": "12",
-        "value": "237"
+        "value": "238"
        },
        {
         "displayName": "REB",
@@ -805,7 +2237,7 @@
         "name": "Total Rebounds",
         "result": "loss",
         "statId": "15",
-        "value": "51"
+        "value": "52"
        },
        {
         "displayName": "AST",
@@ -821,7 +2253,7 @@
         "name": "Steals",
         "result": "win",
         "statId": "17",
-        "value": "13"
+        "value": "14"
        },
        {
         "displayName": "BLK",
@@ -837,7 +2269,7 @@
         "name": "Turnovers",
         "result": "loss",
         "statId": "19",
-        "value": "24"
+        "value": "26"
        }
       ],
       "categoriesWon": 7,
@@ -866,7 +2298,7 @@
         "name": "Field Goals Made / Field Goals Attempted",
         "result": null,
         "statId": "9004003",
-        "value": "61/127"
+        "value": "66/138"
        },
        {
         "displayName": "FG%",
@@ -874,7 +2306,7 @@
         "name": "Field Goal Percentage",
         "result": "win",
         "statId": "5",
-        "value": ".480"
+        "value": ".478"
        },
        {
         "displayName": "FTM/A",
@@ -882,7 +2314,7 @@
         "name": "Free Throws Made / Free Throws Attempted",
         "result": null,
         "statId": "9007006",
-        "value": "40/55"
+        "value": "42/59"
        },
        {
         "displayName": "FT%",
@@ -890,7 +2322,7 @@
         "name": "Free Throw Percentage",
         "result": "loss",
         "statId": "8",
-        "value": ".727"
+        "value": ".712"
        },
        {
         "displayName": "3PTM",
@@ -898,7 +2330,7 @@
         "name": "3-point Shots Made",
         "result": "win",
         "statId": "10",
-        "value": "15"
+        "value": "16"
        },
        {
         "displayName": "PTS",
@@ -906,7 +2338,7 @@
         "name": "Points Scored",
         "result": "win",
         "statId": "12",
-        "value": "177"
+        "value": "190"
        },
        {
         "displayName": "REB",
@@ -914,7 +2346,7 @@
         "name": "Total Rebounds",
         "result": "win",
         "statId": "15",
-        "value": "77"
+        "value": "79"
        },
        {
         "displayName": "AST",
@@ -922,7 +2354,7 @@
         "name": "Assists",
         "result": "win",
         "statId": "16",
-        "value": "48"
+        "value": "50"
        },
        {
         "displayName": "ST",
@@ -946,7 +2378,7 @@
         "name": "Turnovers",
         "result": "win",
         "statId": "19",
-        "value": "18"
+        "value": "20"
        }
       ],
       "categoriesWon": 6,
@@ -969,7 +2401,7 @@
         "name": "Field Goals Made / Field Goals Attempted",
         "result": null,
         "statId": "9004003",
-        "value": "61/128"
+        "value": "66/139"
        },
        {
         "displayName": "FG%",
@@ -977,7 +2409,7 @@
         "name": "Field Goal Percentage",
         "result": "loss",
         "statId": "5",
-        "value": ".477"
+        "value": ".475"
        },
        {
         "displayName": "FTM/A",
@@ -985,7 +2417,7 @@
         "name": "Free Throws Made / Free Throws Attempted",
         "result": null,
         "statId": "9007006",
-        "value": "34/46"
+        "value": "37/50"
        },
        {
         "displayName": "FT%",
@@ -993,7 +2425,7 @@
         "name": "Free Throw Percentage",
         "result": "win",
         "statId": "8",
-        "value": ".739"
+        "value": ".740"
        },
        {
         "displayName": "3PTM",
@@ -1009,7 +2441,7 @@
         "name": "Points Scored",
         "result": "loss",
         "statId": "12",
-        "value": "169"
+        "value": "182"
        },
        {
         "displayName": "REB",
@@ -1017,7 +2449,7 @@
         "name": "Total Rebounds",
         "result": "loss",
         "statId": "15",
-        "value": "59"
+        "value": "63"
        },
        {
         "displayName": "AST",
@@ -1025,7 +2457,7 @@
         "name": "Assists",
         "result": "loss",
         "statId": "16",
-        "value": "17"
+        "value": "22"
        },
        {
         "displayName": "ST",
@@ -1033,7 +2465,7 @@
         "name": "Steals",
         "result": "win",
         "statId": "17",
-        "value": "9"
+        "value": "11"
        },
        {
         "displayName": "BLK",
@@ -1078,7 +2510,7 @@
         "name": "Field Goals Made / Field Goals Attempted",
         "result": null,
         "statId": "9004003",
-        "value": "74/139"
+        "value": "77/146"
        },
        {
         "displayName": "FG%",
@@ -1086,7 +2518,7 @@
         "name": "Field Goal Percentage",
         "result": "win",
         "statId": "5",
-        "value": ".532"
+        "value": ".527"
        },
        {
         "displayName": "FTM/A",
@@ -1094,7 +2526,7 @@
         "name": "Free Throws Made / Free Throws Attempted",
         "result": null,
         "statId": "9007006",
-        "value": "36/45"
+        "value": "37/48"
        },
        {
         "displayName": "FT%",
@@ -1102,7 +2534,7 @@
         "name": "Free Throw Percentage",
         "result": "win",
         "statId": "8",
-        "value": ".800"
+        "value": ".771"
        },
        {
         "displayName": "3PTM",
@@ -1118,7 +2550,7 @@
         "name": "Points Scored",
         "result": "win",
         "statId": "12",
-        "value": "203"
+        "value": "210"
        },
        {
         "displayName": "REB",
@@ -1126,7 +2558,7 @@
         "name": "Total Rebounds",
         "result": "loss",
         "statId": "15",
-        "value": "48"
+        "value": "52"
        },
        {
         "displayName": "AST",
@@ -1140,7 +2572,7 @@
         "displayName": "ST",
         "isDisplayOnly": false,
         "name": "Steals",
-        "result": "win",
+        "result": "tie",
         "statId": "17",
         "value": "15"
        },
@@ -1161,14 +2593,14 @@
         "value": "25"
        }
       ],
-      "categoriesWon": 5,
+      "categoriesWon": 4,
       "categoryScore": {
        "losses": 4,
-       "ties": 0,
-       "wins": 5
+       "ties": 1,
+       "wins": 4
       },
-      "gamesRemaining": 22,
-      "points": 5,
+      "gamesRemaining": 19,
+      "points": 4,
       "teamId": "11",
       "teamKey": "478.l.36464.t.11",
       "teamName": "KEL'EL YAXEL HALQUETA"
@@ -1181,7 +2613,7 @@
         "name": "Field Goals Made / Field Goals Attempted",
         "result": null,
         "statId": "9004003",
-        "value": "62/149"
+        "value": "67/163"
        },
        {
         "displayName": "FG%",
@@ -1189,7 +2621,7 @@
         "name": "Field Goal Percentage",
         "result": "loss",
         "statId": "5",
-        "value": ".416"
+        "value": ".411"
        },
        {
         "displayName": "FTM/A",
@@ -1197,7 +2629,7 @@
         "name": "Free Throws Made / Free Throws Attempted",
         "result": null,
         "statId": "9007006",
-        "value": "39/55"
+        "value": "40/57"
        },
        {
         "displayName": "FT%",
@@ -1205,7 +2637,7 @@
         "name": "Free Throw Percentage",
         "result": "loss",
         "statId": "8",
-        "value": ".709"
+        "value": ".702"
        },
        {
         "displayName": "3PTM",
@@ -1221,7 +2653,7 @@
         "name": "Points Scored",
         "result": "loss",
         "statId": "12",
-        "value": "185"
+        "value": "196"
        },
        {
         "displayName": "REB",
@@ -1229,7 +2661,7 @@
         "name": "Total Rebounds",
         "result": "win",
         "statId": "15",
-        "value": "68"
+        "value": "71"
        },
        {
         "displayName": "AST",
@@ -1243,9 +2675,9 @@
         "displayName": "ST",
         "isDisplayOnly": false,
         "name": "Steals",
-        "result": "loss",
+        "result": "tie",
         "statId": "17",
-        "value": "14"
+        "value": "15"
        },
        {
         "displayName": "BLK",
@@ -1261,13 +2693,13 @@
         "name": "Turnovers",
         "result": "win",
         "statId": "19",
-        "value": "20"
+        "value": "22"
        }
       ],
       "categoriesWon": 4,
       "categoryScore": {
-       "losses": 5,
-       "ties": 0,
+       "losses": 4,
+       "ties": 1,
        "wins": 4
       },
       "gamesRemaining": 26,
@@ -1287,6 +2719,421 @@
   }
  },
  "rosters": {
+  "478.l.36464.t.1": {
+   "ownerName": "William",
+   "players": [
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Luka Dončić",
+     "playerId": "6014",
+     "playerKey": "478.p.6014",
+     "position": "PG,SG",
+     "selectedPosition": "PG",
+     "team": "LAL"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "James Harden",
+     "playerId": "4563",
+     "playerKey": "478.p.4563",
+     "position": "PG,SG",
+     "selectedPosition": "SG",
+     "team": "CLE"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Dylan Harper",
+     "playerId": "10467",
+     "playerKey": "478.p.10467",
+     "position": "PG,SG",
+     "selectedPosition": "G",
+     "team": "SAS"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Lauri Markkanen",
+     "playerId": "5769",
+     "playerKey": "478.p.5769",
+     "position": "SF,PF",
+     "selectedPosition": "SF",
+     "team": "UTA"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Mikal Bridges",
+     "playerId": "6021",
+     "playerKey": "478.p.6021",
+     "position": "SF,PF",
+     "selectedPosition": "PF",
+     "team": "NYK"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Jabari Smith Jr.",
+     "playerId": "6693",
+     "playerKey": "478.p.6693",
+     "position": "PF,C",
+     "selectedPosition": "F",
+     "team": "HOU"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Walker Kessler",
+     "playerId": "6712",
+     "playerKey": "478.p.6712",
+     "position": "C",
+     "selectedPosition": "C",
+     "team": "LAL"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Onyeka Okongwu",
+     "playerId": "6398",
+     "playerKey": "478.p.6398",
+     "position": "C",
+     "selectedPosition": "C",
+     "team": "ATL"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Josh Hart",
+     "playerId": "5843",
+     "playerKey": "478.p.5843",
+     "position": "SG,SF",
+     "selectedPosition": "Util",
+     "team": "NYK"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "RJ Barrett",
+     "playerId": "6165",
+     "playerKey": "478.p.6165",
+     "position": "SG,SF,PF",
+     "selectedPosition": "Util",
+     "team": "TOR"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Rui Hachimura",
+     "playerId": "6171",
+     "playerKey": "478.p.6171",
+     "position": "SF,PF",
+     "selectedPosition": "BN",
+     "team": "LAC"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Jonathan Kuminga",
+     "playerId": "6549",
+     "playerKey": "478.p.6549",
+     "position": "SF,PF",
+     "selectedPosition": "BN",
+     "team": "MIN"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Mikel Brown Jr.",
+     "playerId": "10588",
+     "playerKey": "478.p.10588",
+     "position": "PG",
+     "selectedPosition": "BN",
+     "team": "BKN"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Mark Williams",
+     "playerId": "6705",
+     "playerKey": "478.p.6705",
+     "position": "C",
+     "selectedPosition": "IL",
+     "status": "O",
+     "team": "PHX"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Maxime Raynaud",
+     "playerId": "10496",
+     "playerKey": "478.p.10496",
+     "position": "C",
+     "selectedPosition": "IL",
+     "status": "O",
+     "team": "SAC"
+    }
+   ],
+   "snapshot": {
+    "type": "current"
+   },
+   "teamKey": "478.l.36464.t.1",
+   "teamName": "Lauri’s Prime Rib"
+  },
+  "478.l.36464.t.10": {
+   "ownerName": "Justin",
+   "players": [
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Tyrese Maxey",
+     "playerId": "6413",
+     "playerKey": "478.p.6413",
+     "position": "PG",
+     "selectedPosition": "PG",
+     "team": "PHI"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Devin Vassell",
+     "playerId": "6403",
+     "playerKey": "478.p.6403",
+     "position": "SG,SF",
+     "selectedPosition": "SG",
+     "team": "SAS"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Keyonte George",
+     "playerId": "10100",
+     "playerKey": "478.p.10100",
+     "position": "PG,SG",
+     "selectedPosition": "G",
+     "team": "UTA"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Jalen Williams",
+     "playerId": "6702",
+     "playerKey": "478.p.6702",
+     "position": "SF,PF",
+     "selectedPosition": "SF",
+     "team": "OKC"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Karl-Anthony Towns",
+     "playerId": "5432",
+     "playerKey": "478.p.5432",
+     "position": "PF,C",
+     "selectedPosition": "PF",
+     "team": "NYK"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Franz Wagner",
+     "playerId": "6550",
+     "playerKey": "478.p.6550",
+     "position": "SF,PF",
+     "selectedPosition": "F",
+     "team": "ORL"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Jalen Smith",
+     "playerId": "6402",
+     "playerKey": "478.p.6402",
+     "position": "PF,C",
+     "selectedPosition": "C",
+     "team": "CHI"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Joel Embiid",
+     "playerId": "5294",
+     "playerKey": "478.p.5294",
+     "position": "C",
+     "selectedPosition": "C",
+     "team": "PHI"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Immanuel Quickley",
+     "playerId": "6417",
+     "playerKey": "478.p.6417",
+     "position": "PG,SG",
+     "selectedPosition": "Util",
+     "team": "TOR"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Darius Acuff Jr.",
+     "playerId": "10582",
+     "playerKey": "478.p.10582",
+     "position": "PG",
+     "selectedPosition": "Util",
+     "team": "SAC"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Kevin Porter Jr.",
+     "playerId": "6218",
+     "playerKey": "478.p.6218",
+     "position": "PG,SG",
+     "selectedPosition": "BN",
+     "status": "NA",
+     "team": "MIL"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Gui Santos",
+     "playerId": "6745",
+     "playerKey": "478.p.6745",
+     "position": "SF,PF",
+     "selectedPosition": "BN",
+     "team": "GSW"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Myles Turner",
+     "playerId": "5471",
+     "playerKey": "478.p.5471",
+     "position": "C",
+     "selectedPosition": "BN",
+     "team": "MIL"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Kon Knueppel",
+     "playerId": "10450",
+     "playerKey": "478.p.10450",
+     "position": "SG,SF",
+     "selectedPosition": "IL",
+     "status": "Q",
+     "team": "CHA"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Bradley Beal",
+     "playerId": "5009",
+     "playerKey": "478.p.5009",
+     "position": "SG,SF",
+     "selectedPosition": "IL",
+     "status": "O",
+     "team": "LAC"
+    }
+   ],
+   "snapshot": {
+    "type": "current"
+   },
+   "teamKey": "478.l.36464.t.10",
+   "teamName": "MAXEY-MUM OVERDRIVE"
+  },
   "478.l.36464.t.11": {
    "ownerName": "David",
    "players": [
@@ -1309,12 +3156,12 @@
       "kept": false,
       "status": false
      },
-     "name": "Kevin Durant",
-     "playerId": "4244",
-     "playerKey": "478.p.4244",
+     "name": "Christian Braun",
+     "playerId": "6711",
+     "playerKey": "478.p.6711",
      "position": "SG,SF,PF",
      "selectedPosition": "SG",
-     "team": "HOU"
+     "team": "DEN"
     },
     {
      "isKeeper": {
@@ -1426,6 +3273,19 @@
       "kept": false,
       "status": false
      },
+     "name": "Kevin Durant",
+     "playerId": "4244",
+     "playerKey": "478.p.4244",
+     "position": "SG,SF,PF",
+     "selectedPosition": "BN",
+     "team": "HOU"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
      "name": "Neemias Queta",
      "playerId": "6581",
      "playerKey": "478.p.6581",
@@ -1445,6 +3305,29 @@
      "position": "PG,SG",
      "selectedPosition": "BN",
      "team": "BOS"
+    }
+   ],
+   "snapshot": {
+    "type": "current"
+   },
+   "teamKey": "478.l.36464.t.11",
+   "teamName": "KEL'EL YAXEL HALQUETA"
+  },
+  "478.l.36464.t.12": {
+   "ownerName": "John",
+   "players": [
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Trae Young",
+     "playerId": "6016",
+     "playerKey": "478.p.6016",
+     "position": "PG",
+     "selectedPosition": "PG",
+     "team": "WAS"
     },
     {
      "isKeeper": {
@@ -1452,11 +3335,37 @@
       "kept": false,
       "status": false
      },
-     "name": "Christian Braun",
-     "playerId": "6711",
-     "playerKey": "478.p.6711",
-     "position": "SG,SF,PF",
-     "selectedPosition": "BN",
+     "name": "Jared McCain",
+     "playerId": "10276",
+     "playerKey": "478.p.10276",
+     "position": "PG,SG",
+     "selectedPosition": "SG",
+     "team": "OKC"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Zach LaVine",
+     "playerId": "5324",
+     "playerKey": "478.p.5324",
+     "position": "PG,SG,SF",
+     "selectedPosition": "G",
+     "team": "SAC"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Cameron Johnson",
+     "playerId": "6173",
+     "playerKey": "478.p.6173",
+     "position": "SF,PF",
+     "selectedPosition": "SF",
      "team": "DEN"
     },
     {
@@ -1465,12 +3374,331 @@
       "kept": false,
       "status": false
      },
-     "name": "Max Strus",
-     "playerId": "6267",
-     "playerKey": "478.p.6267",
+     "name": "Jalen Johnson",
+     "playerId": "6562",
+     "playerKey": "478.p.6562",
      "position": "SF,PF",
+     "selectedPosition": "PF",
+     "team": "ATL"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Julius Randle",
+     "playerId": "5318",
+     "playerKey": "478.p.5318",
+     "position": "PF",
+     "selectedPosition": "F",
+     "team": "BKN"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Ivica Zubac",
+     "playerId": "5663",
+     "playerKey": "478.p.5663",
+     "position": "C",
+     "selectedPosition": "C",
+     "team": "IND"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Aaron Gordon",
+     "playerId": "5295",
+     "playerKey": "478.p.5295",
+     "position": "PF,C",
+     "selectedPosition": "C",
+     "team": "DEN"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Jakob Poeltl",
+     "playerId": "5640",
+     "playerKey": "478.p.5640",
+     "position": "C",
+     "selectedPosition": "Util",
+     "team": "TOR"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Yves Missi",
+     "playerId": "10289",
+     "playerKey": "478.p.10289",
+     "position": "C",
+     "selectedPosition": "Util",
+     "team": "NOP"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Saddiq Bey",
+     "playerId": "6411",
+     "playerKey": "478.p.6411",
+     "position": "SF,PF",
+     "selectedPosition": "BN",
+     "team": "NOP"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Donovan Clingan",
+     "playerId": "10285",
+     "playerKey": "478.p.10285",
+     "position": "C",
+     "selectedPosition": "BN",
+     "team": "POR"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Jayson Tatum",
+     "playerId": "5765",
+     "playerKey": "478.p.5765",
+     "position": "SF,PF",
+     "selectedPosition": "BN",
+     "team": "BOS"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Brandon Ingram",
+     "playerId": "5601",
+     "playerKey": "478.p.5601",
+     "position": "SG,SF,PF",
      "selectedPosition": "IL",
      "status": "O",
+     "team": "LAC"
+    }
+   ],
+   "snapshot": {
+    "type": "current"
+   },
+   "teamKey": "478.l.36464.t.12",
+   "teamName": "John's Cool Team"
+  },
+  "478.l.36464.t.2": {
+   "ownerName": "Robert",
+   "players": [
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Shai Gilgeous-Alexander",
+     "playerId": "6022",
+     "playerKey": "478.p.6022",
+     "position": "PG",
+     "selectedPosition": "PG",
+     "team": "OKC"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Jaylen Brown",
+     "playerId": "5602",
+     "playerKey": "478.p.5602",
+     "position": "SG,SF,PF",
+     "selectedPosition": "SG",
+     "team": "PHI"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Grayson Allen",
+     "playerId": "6032",
+     "playerKey": "478.p.6032",
+     "position": "SG,SF",
+     "selectedPosition": "G",
+     "team": "CHA"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Keegan Murray",
+     "playerId": "6694",
+     "playerKey": "478.p.6694",
+     "position": "SF,PF",
+     "selectedPosition": "SF",
+     "team": "SAC"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Bam Adebayo",
+     "playerId": "5827",
+     "playerKey": "478.p.5827",
+     "position": "PF,C",
+     "selectedPosition": "PF",
+     "team": "MIA"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Paolo Banchero",
+     "playerId": "6691",
+     "playerKey": "478.p.6691",
+     "position": "PF",
+     "selectedPosition": "F",
+     "team": "ORL"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Zach Edey",
+     "playerId": "10287",
+     "playerKey": "478.p.10287",
+     "position": "C",
+     "selectedPosition": "C",
+     "team": "MEM"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Daniel Gafford",
+     "playerId": "6226",
+     "playerKey": "478.p.6226",
+     "position": "C",
+     "selectedPosition": "C",
+     "team": "DAL"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Damian Lillard",
+     "playerId": "5012",
+     "playerKey": "478.p.5012",
+     "position": "PG",
+     "selectedPosition": "Util",
+     "team": "POR"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Dejounte Murray",
+     "playerId": "5660",
+     "playerKey": "478.p.5660",
+     "position": "PG",
+     "selectedPosition": "Util",
+     "team": "NOP"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Fred VanVleet",
+     "playerId": "5727",
+     "playerKey": "478.p.5727",
+     "position": "PG",
+     "selectedPosition": "BN",
+     "team": "HOU"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Devin Booker",
+     "playerId": "5473",
+     "playerKey": "478.p.5473",
+     "position": "PG,SG",
+     "selectedPosition": "BN",
+     "team": "PHX"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Tari Eason",
+     "playerId": "6707",
+     "playerKey": "478.p.6707",
+     "position": "SG,SF,PF",
+     "selectedPosition": "BN",
+     "team": "HOU"
+    }
+   ],
+   "snapshot": {
+    "type": "current"
+   },
+   "teamKey": "478.l.36464.t.2",
+   "teamName": "Booker T Floppers"
+  },
+  "478.l.36464.t.3": {
+   "ownerName": "Christian Oblena",
+   "players": [
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Darius Garland",
+     "playerId": "6167",
+     "playerKey": "478.p.6167",
+     "position": "PG",
+     "selectedPosition": "PG",
      "team": "LAC"
     },
     {
@@ -1479,20 +3707,535 @@
       "kept": false,
       "status": false
      },
-     "name": "Tobias Harris",
-     "playerId": "4901",
-     "playerKey": "478.p.4901",
-     "position": "PF",
+     "name": "Josh Giddey",
+     "playerId": "6548",
+     "playerKey": "478.p.6548",
+     "position": "PG,SG",
+     "selectedPosition": "SG",
+     "team": "CHI"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Keaton Wagler",
+     "playerId": "10585",
+     "playerKey": "478.p.10585",
+     "position": "SG",
+     "selectedPosition": "G",
+     "team": "LAC"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Michael Porter Jr.",
+     "playerId": "6025",
+     "playerKey": "478.p.6025",
+     "position": "SF,PF",
+     "selectedPosition": "SF",
+     "team": "BKN"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Chet Holmgren",
+     "playerId": "6692",
+     "playerKey": "478.p.6692",
+     "position": "PF,C",
+     "selectedPosition": "PF",
+     "team": "OKC"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Jalen Green",
+     "playerId": "6513",
+     "playerKey": "478.p.6513",
+     "position": "SG,SF",
+     "selectedPosition": "F",
+     "team": "PHX"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Derik Queen",
+     "playerId": "10444",
+     "playerKey": "478.p.10444",
+     "position": "PF,C",
+     "selectedPosition": "C",
+     "team": "NOP"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Nikola Jokić",
+     "playerId": "5352",
+     "playerKey": "478.p.5352",
+     "position": "C",
+     "selectedPosition": "C",
+     "team": "DEN"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Ja Morant",
+     "playerId": "6164",
+     "playerKey": "478.p.6164",
+     "position": "PG",
+     "selectedPosition": "Util",
+     "team": "POR"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Jeremiah Fears",
+     "playerId": "10440",
+     "playerKey": "478.p.10440",
+     "position": "PG,SG",
+     "selectedPosition": "Util",
+     "team": "NOP"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Jaime Jaquez Jr.",
+     "playerId": "10092",
+     "playerKey": "478.p.10092",
+     "position": "SG,SF,PF",
+     "selectedPosition": "BN",
+     "team": "MIL"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Jaren Jackson Jr.",
+     "playerId": "6015",
+     "playerKey": "478.p.6015",
+     "position": "PF,C",
+     "selectedPosition": "BN",
+     "team": "UTA"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Payton Pritchard",
+     "playerId": "6418",
+     "playerKey": "478.p.6418",
+     "position": "PG",
+     "selectedPosition": "BN",
+     "team": "BOS"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Kristaps Porziņģis",
+     "playerId": "5464",
+     "playerKey": "478.p.5464",
+     "position": "C",
      "selectedPosition": "IL",
-     "status": "Q",
-     "team": "SAS"
+     "status": "O",
+     "team": "GSW"
     }
    ],
    "snapshot": {
     "type": "current"
    },
-   "teamKey": "478.l.36464.t.11",
-   "teamName": "KEL'EL YAXEL HALQUETA"
+   "teamKey": "478.l.36464.t.3",
+   "teamName": "Looking Cool Joker!"
+  },
+  "478.l.36464.t.4": {
+   "ownerName": "JCo",
+   "players": [
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Stephen Curry",
+     "playerId": "4612",
+     "playerKey": "478.p.4612",
+     "position": "PG",
+     "selectedPosition": "PG",
+     "team": "GSW"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Anthony Edwards",
+     "playerId": "6355",
+     "playerKey": "478.p.6355",
+     "position": "PG,SG",
+     "selectedPosition": "SG",
+     "team": "MIN"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Nickeil Alexander-Walker",
+     "playerId": "6205",
+     "playerKey": "478.p.6205",
+     "position": "PG,SG",
+     "selectedPosition": "G",
+     "team": "ATL"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "DeMar DeRozan",
+     "playerId": "4614",
+     "playerKey": "478.p.4614",
+     "position": "SF,PF",
+     "selectedPosition": "SF",
+     "team": "DEN"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Anthony Davis",
+     "playerId": "5007",
+     "playerKey": "478.p.5007",
+     "position": "PF,C",
+     "selectedPosition": "PF",
+     "team": "WAS"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Zion Williamson",
+     "playerId": "6163",
+     "playerKey": "478.p.6163",
+     "position": "PF,C",
+     "selectedPosition": "F",
+     "team": "NOP"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Jarrett Allen",
+     "playerId": "5835",
+     "playerKey": "478.p.5835",
+     "position": "C",
+     "selectedPosition": "C",
+     "status": "Q",
+     "team": "CLE"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Isaiah Hartenstein",
+     "playerId": "5856",
+     "playerKey": "478.p.5856",
+     "position": "C",
+     "selectedPosition": "C",
+     "team": "OKC"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Norman Powell",
+     "playerId": "5506",
+     "playerKey": "478.p.5506",
+     "position": "SG,SF",
+     "selectedPosition": "Util",
+     "team": "CHI"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Andrew Nembhard",
+     "playerId": "6721",
+     "playerKey": "478.p.6721",
+     "position": "PG,SG",
+     "selectedPosition": "Util",
+     "team": "IND"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Scottie Barnes",
+     "playerId": "6515",
+     "playerKey": "478.p.6515",
+     "position": "SF,PF,C",
+     "selectedPosition": "BN",
+     "team": "TOR"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Davion Mitchell",
+     "playerId": "6551",
+     "playerKey": "478.p.6551",
+     "position": "PG",
+     "selectedPosition": "BN",
+     "team": "MIA"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Ace Bailey",
+     "playerId": "10462",
+     "playerKey": "478.p.10462",
+     "position": "SF,PF",
+     "selectedPosition": "BN",
+     "team": "UTA"
+    }
+   ],
+   "snapshot": {
+    "type": "current"
+   },
+   "teamKey": "478.l.36464.t.4",
+   "teamName": "Splash Mountain"
+  },
+  "478.l.36464.t.5": {
+   "ownerName": "Kyle",
+   "players": [
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Jamal Murray",
+     "playerId": "5638",
+     "playerKey": "478.p.5638",
+     "position": "PG",
+     "selectedPosition": "PG",
+     "team": "DEN"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Reed Sheppard",
+     "playerId": "10288",
+     "playerKey": "478.p.10288",
+     "position": "PG,SG",
+     "selectedPosition": "SG",
+     "team": "HOU"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Ayo Dosunmu",
+     "playerId": "6580",
+     "playerKey": "478.p.6580",
+     "position": "PG,SG",
+     "selectedPosition": "G",
+     "team": "MIN"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Trey Murphy III",
+     "playerId": "6559",
+     "playerKey": "478.p.6559",
+     "position": "SG,SF",
+     "selectedPosition": "SF",
+     "team": "NOP"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Giannis Antetokounmpo",
+     "playerId": "5185",
+     "playerKey": "478.p.5185",
+     "position": "PF,C",
+     "selectedPosition": "PF",
+     "team": "MIA"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Collin Murray-Boyles",
+     "playerId": "10443",
+     "playerKey": "478.p.10443",
+     "position": "PF,C",
+     "selectedPosition": "F",
+     "team": "TOR"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Alex Sarr",
+     "playerId": "10294",
+     "playerKey": "478.p.10294",
+     "position": "C",
+     "selectedPosition": "C",
+     "team": "WAS"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Rudy Gobert",
+     "playerId": "5197",
+     "playerKey": "478.p.5197",
+     "position": "C",
+     "selectedPosition": "C",
+     "team": "MIN"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Jalen Suggs",
+     "playerId": "6516",
+     "playerKey": "478.p.6516",
+     "position": "PG,SG",
+     "selectedPosition": "Util",
+     "team": "ORL"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Toumani Camara",
+     "playerId": "10065",
+     "playerKey": "478.p.10065",
+     "position": "SF,PF",
+     "selectedPosition": "Util",
+     "team": "POR"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Collin Gillespie",
+     "playerId": "6751",
+     "playerKey": "478.p.6751",
+     "position": "PG,SG",
+     "selectedPosition": "BN",
+     "team": "PHX"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "De'Aaron Fox",
+     "playerId": "5767",
+     "playerKey": "478.p.5767",
+     "position": "PG",
+     "selectedPosition": "BN",
+     "team": "SAS"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "OG Anunoby",
+     "playerId": "5836",
+     "playerKey": "478.p.5836",
+     "position": "SF,PF",
+     "selectedPosition": "BN",
+     "team": "NYK"
+    }
+   ],
+   "snapshot": {
+    "type": "current"
+   },
+   "teamKey": "478.l.36464.t.5",
+   "teamName": "Giavaris Jamal Javarison-Lamar"
   },
   "478.l.36464.t.6": {
    "ownerName": "Martin",
@@ -1503,12 +4246,12 @@
       "kept": false,
       "status": false
      },
-     "name": "Cade Cunningham",
-     "playerId": "6512",
-     "playerKey": "478.p.6512",
+     "name": "Ajay Mitchell",
+     "playerId": "10304",
+     "playerKey": "478.p.10304",
      "position": "PG,SG",
      "selectedPosition": "PG",
-     "team": "DET"
+     "team": "OKC"
     },
     {
      "isKeeper": {
@@ -1516,12 +4259,12 @@
       "kept": false,
       "status": false
      },
-     "name": "Cedric Coward",
-     "playerId": "10465",
-     "playerKey": "478.p.10465",
-     "position": "SG,SF",
+     "name": "Donovan Mitchell",
+     "playerId": "5826",
+     "playerKey": "478.p.5826",
+     "position": "PG,SG",
      "selectedPosition": "SG",
-     "team": "MEM"
+     "team": "CLE"
     },
     {
      "isKeeper": {
@@ -1594,6 +4337,19 @@
       "kept": false,
       "status": false
      },
+     "name": "Moussa Diabaté",
+     "playerId": "6733",
+     "playerKey": "478.p.6733",
+     "position": "C",
+     "selectedPosition": "C",
+     "team": "CHA"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
      "name": "Caleb Wilson",
      "playerId": "10595",
      "playerKey": "478.p.10595",
@@ -1620,12 +4376,25 @@
       "kept": false,
       "status": false
      },
-     "name": "Ajay Mitchell",
-     "playerId": "10304",
-     "playerKey": "478.p.10304",
+     "name": "Cade Cunningham",
+     "playerId": "6512",
+     "playerKey": "478.p.6512",
      "position": "PG,SG",
      "selectedPosition": "BN",
-     "team": "OKC"
+     "team": "DET"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Cedric Coward",
+     "playerId": "10465",
+     "playerKey": "478.p.10465",
+     "position": "SG,SF",
+     "selectedPosition": "BN",
+     "team": "MEM"
     },
     {
      "isKeeper": {
@@ -1639,32 +4408,6 @@
      "position": "PG",
      "selectedPosition": "BN",
      "team": "NYK"
-    },
-    {
-     "isKeeper": {
-      "cost": false,
-      "kept": false,
-      "status": false
-     },
-     "name": "Donovan Mitchell",
-     "playerId": "5826",
-     "playerKey": "478.p.5826",
-     "position": "PG,SG",
-     "selectedPosition": "BN",
-     "team": "CLE"
-    },
-    {
-     "isKeeper": {
-      "cost": false,
-      "kept": false,
-      "status": false
-     },
-     "name": "Moussa Diabaté",
-     "playerId": "6733",
-     "playerKey": "478.p.6733",
-     "position": "C",
-     "selectedPosition": "BN",
-     "team": "CHA"
     },
     {
      "isKeeper": {
@@ -1696,12 +4439,12 @@
       "kept": false,
       "status": false
      },
-     "name": "Egor Dëmin",
-     "playerId": "10445",
-     "playerKey": "478.p.10445",
-     "position": "PG,SG",
+     "name": "Cason Wallace",
+     "playerId": "10107",
+     "playerKey": "478.p.10107",
+     "position": "PG,SG,SF",
      "selectedPosition": "PG",
-     "team": "BKN"
+     "team": "OKC"
     },
     {
      "isKeeper": {
@@ -1735,12 +4478,12 @@
       "kept": false,
       "status": false
      },
-     "name": "Austin Reaves",
-     "playerId": "6606",
-     "playerKey": "478.p.6606",
-     "position": "PG,SG,SF",
+     "name": "Peyton Watson",
+     "playerId": "6720",
+     "playerKey": "478.p.6720",
+     "position": "SF,PF",
      "selectedPosition": "SF",
-     "team": "LAL"
+     "team": "CLE"
     },
     {
      "isKeeper": {
@@ -1748,12 +4491,12 @@
       "kept": false,
       "status": false
      },
-     "name": "Domantas Sabonis",
-     "playerId": "5642",
-     "playerKey": "478.p.5642",
-     "position": "PF,C",
+     "name": "LeBron James",
+     "playerId": "3704",
+     "playerKey": "478.p.3704",
+     "position": "SF,PF",
      "selectedPosition": "PF",
-     "team": "SAC"
+     "team": "PHI"
     },
     {
      "isKeeper": {
@@ -1826,12 +4569,12 @@
       "kept": false,
       "status": false
      },
-     "name": "LeBron James",
-     "playerId": "3704",
-     "playerKey": "478.p.3704",
-     "position": "SF,PF",
+     "name": "Egor Dëmin",
+     "playerId": "10445",
+     "playerKey": "478.p.10445",
+     "position": "PG,SG",
      "selectedPosition": "BN",
-     "team": "PHI"
+     "team": "BKN"
     },
     {
      "isKeeper": {
@@ -1839,12 +4582,12 @@
       "kept": false,
       "status": false
      },
-     "name": "Cason Wallace",
-     "playerId": "10107",
-     "playerKey": "478.p.10107",
+     "name": "Austin Reaves",
+     "playerId": "6606",
+     "playerKey": "478.p.6606",
      "position": "PG,SG,SF",
      "selectedPosition": "BN",
-     "team": "OKC"
+     "team": "LAL"
     },
     {
      "isKeeper": {
@@ -1852,12 +4595,12 @@
       "kept": false,
       "status": false
      },
-     "name": "Peyton Watson",
-     "playerId": "6720",
-     "playerKey": "478.p.6720",
-     "position": "SF,PF",
+     "name": "Domantas Sabonis",
+     "playerId": "5642",
+     "playerKey": "478.p.5642",
+     "position": "PF,C",
      "selectedPosition": "BN",
-     "team": "CLE"
+     "team": "SAC"
     },
     {
      "isKeeper": {
@@ -1870,7 +4613,7 @@
      "playerKey": "478.p.6169",
      "position": "PG,SG",
      "selectedPosition": "IL",
-     "status": "O",
+     "status": "Q",
      "team": "CHA"
     },
     {
@@ -1893,6 +4636,213 @@
    },
    "teamKey": "478.l.36464.t.7",
    "teamName": "Thompson Telepathy"
+  },
+  "478.l.36464.t.8": {
+   "ownerName": "kevin",
+   "players": [
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "VJ Edgecombe",
+     "playerId": "10454",
+     "playerKey": "478.p.10454",
+     "position": "PG,SG",
+     "selectedPosition": "PG",
+     "team": "PHI"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Cooper Flagg",
+     "playerId": "10468",
+     "playerKey": "478.p.10468",
+     "position": "SG,SF,PF",
+     "selectedPosition": "SG",
+     "team": "DAL"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Deni Avdija",
+     "playerId": "6401",
+     "playerKey": "478.p.6401",
+     "position": "SG,SF,PF",
+     "selectedPosition": "G",
+     "team": "POR"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Brandon Miller",
+     "playerId": "10104",
+     "playerKey": "478.p.10104",
+     "position": "SF,PF",
+     "selectedPosition": "SF",
+     "team": "CHA"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Alperen Şengün",
+     "playerId": "6558",
+     "playerKey": "478.p.6558",
+     "position": "PF,C",
+     "selectedPosition": "PF",
+     "team": "HOU"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Matas Buzelis",
+     "playerId": "10265",
+     "playerKey": "478.p.10265",
+     "position": "SF,PF",
+     "selectedPosition": "F",
+     "team": "CHI"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Aday Mara",
+     "playerId": "10579",
+     "playerKey": "478.p.10579",
+     "position": "C",
+     "selectedPosition": "C",
+     "team": "OKC"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Sandro Mamukelashvili",
+     "playerId": "6596",
+     "playerKey": "478.p.6596",
+     "position": "PF,C",
+     "selectedPosition": "C",
+     "team": "LAL"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Isaiah Jackson",
+     "playerId": "6564",
+     "playerKey": "478.p.6564",
+     "position": "C",
+     "selectedPosition": "Util",
+     "team": "LAC"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Quentin Grimes",
+     "playerId": "6567",
+     "playerKey": "478.p.6567",
+     "position": "SG,SF",
+     "selectedPosition": "Util",
+     "team": "LAL"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Stephon Castle",
+     "playerId": "10290",
+     "playerKey": "478.p.10290",
+     "position": "PG,SG",
+     "selectedPosition": "BN",
+     "team": "SAS"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "John Collins",
+     "playerId": "5832",
+     "playerKey": "478.p.5832",
+     "position": "PF,C",
+     "selectedPosition": "BN",
+     "team": "DET"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Andre Drummond",
+     "playerId": "5015",
+     "playerKey": "478.p.5015",
+     "position": "C",
+     "selectedPosition": "BN",
+     "team": "NYK"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Brandin Podziemski",
+     "playerId": "10115",
+     "playerKey": "478.p.10115",
+     "position": "PG,SG",
+     "selectedPosition": "IL",
+     "status": "Q",
+     "team": "GSW"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Nic Claxton",
+     "playerId": "6219",
+     "playerKey": "478.p.6219",
+     "position": "C",
+     "selectedPosition": "IL",
+     "status": "O",
+     "team": "CHI"
+    }
+   ],
+   "snapshot": {
+    "type": "current"
+   },
+   "teamKey": "478.l.36464.t.8",
+   "teamName": "Podz save the league"
   },
   "478.l.36464.t.9": {
    "ownerName": "noah",
@@ -1955,12 +4905,12 @@
       "kept": false,
       "status": false
      },
-     "name": "Dillon Brooks",
-     "playerId": "5858",
-     "playerKey": "478.p.5858",
-     "position": "SF,PF",
+     "name": "Evan Mobley",
+     "playerId": "6514",
+     "playerKey": "478.p.6514",
+     "position": "PF,C",
      "selectedPosition": "PF",
-     "team": "PHX"
+     "team": "CLE"
     },
     {
      "isKeeper": {
@@ -2020,24 +4970,11 @@
       "kept": false,
       "status": false
      },
-     "name": "Darryn Peterson",
-     "playerId": "10590",
-     "playerKey": "478.p.10590",
-     "position": "SG",
-     "selectedPosition": "Util",
-     "team": "UTA"
-    },
-    {
-     "isKeeper": {
-      "cost": false,
-      "kept": false,
-      "status": false
-     },
      "name": "Zaccharie Risacher",
      "playerId": "10296",
      "playerKey": "478.p.10296",
      "position": "SF,PF",
-     "selectedPosition": "BN",
+     "selectedPosition": "Util",
      "team": "DAL"
     },
     {
@@ -2046,12 +4983,12 @@
       "kept": false,
       "status": false
      },
-     "name": "Evan Mobley",
-     "playerId": "6514",
-     "playerKey": "478.p.6514",
-     "position": "PF,C",
+     "name": "Dillon Brooks",
+     "playerId": "5858",
+     "playerKey": "478.p.5858",
+     "position": "SF,PF",
      "selectedPosition": "BN",
-     "team": "CLE"
+     "team": "PHX"
     },
     {
      "isKeeper": {
@@ -2065,6 +5002,19 @@
      "position": "SF,PF",
      "selectedPosition": "BN",
      "team": "BOS"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Darryn Peterson",
+     "playerId": "10590",
+     "playerKey": "478.p.10590",
+     "position": "SG",
+     "selectedPosition": "BN",
+     "team": "UTA"
     },
     {
      "isKeeper": {

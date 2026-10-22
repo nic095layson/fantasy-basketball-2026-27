@@ -5,7 +5,7 @@
   "brief": {
    "path": "report/briefs/brief_2026-10-22.json",
    "present": true,
-   "sha256": "04f343c2364fef482bb20fb366c77a6b8e93fe5815c41af8bc86b99115813c1b"
+   "sha256": "ce23556db7dfc8f797417d839312ec0085c90d23394025e2dbef245a70587611"
   },
   "board": {
    "path": "report/season/board_2026-10-22.json",
@@ -15,17 +15,17 @@
   "status": {
    "path": "data/status/status_2026-10-22.json",
    "present": true,
-   "sha256": "f366e7fde117b2c1ba49090f9ba5a3ef8c6d53aad1bebe31dd6dfe623d9bfdb5"
+   "sha256": "df10a412178fd9787f60fc352b6a45547c55158b28b4925805f79268811bdc45"
   },
   "league_state": {
    "path": "data/league_state.json",
    "present": true,
-   "sha256": "efd94bd082ebc1fec71e2c48b603a336551ee644e6894aeca12fa6c84bad7f14"
+   "sha256": "0b988799a63b6106ed2fc6341ca52c6930e26a440843e82576e33494531f1d31"
   },
   "season_lines": {
    "path": "data/season/season_lines_2026-10-22.json",
    "present": true,
-   "sha256": "27a09349159b9f04dea8b39c7afb41616ea741d9017b7c44b9884250fe3d61f8"
+   "sha256": "207adcdb31d717763dc249bed1981b086eff5872e22b08aab6eb2a4aa12f6af3"
   },
   "sweep": {
    "path": "report/after-reports/redteam-2026-10-19/sweep.json",
@@ -45,17 +45,17 @@
   "week_matchup": {
    "path": "report/briefs/week_matchup_2026-10-22.json",
    "present": true,
-   "sha256": "eeecb9fb80e1a1c9ab08ec3d4b1a53b70a6315b874da7361cde3875a5df1cead"
+   "sha256": "e8f3f01d738cf1ac45d59d9ae6eb7068b0e3ce9c03ca8294c0a8f6281c867666"
   }
  },
  "board_rows": 313,
- "status_rows": 15,
+ "status_rows": 14,
  "panes": 6,
  "join": {
-  "rostered": 170,
+  "rostered": 168,
   "unresolved": 0,
-  "on_board": 166,
-  "off_board": 4,
+  "on_board": 165,
+  "off_board": 3,
   "respelled": [
    [
     "Cameron Johnson",
@@ -94,7 +94,7 @@
     "Wendell Carter Jr"
    ]
   ],
-  "free_agents_on_board": 147
+  "free_agents_on_board": 148
  },
  "render": {
   "status": "PASS",
@@ -107,6 +107,6 @@
    "Week"
   ],
   "page_errors": 0,
-  "browser": "141.0.7390.37 (playwright default)"
+  "browser": "141.0.7390.37 (/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell)"
  }
 }
