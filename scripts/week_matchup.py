@@ -230,6 +230,15 @@ def cat_chances(me_now, me_rem, opp_now, opp_rem):
     return out
 
 
+def win_week_chance(ps, need=5):
+    """P(at least `need` of the categories) from per-category chances, the categories taken as independent (owner
+    2026-10-22, "Live + pre-week": a simplification, said so on the tile; counting categories move together)."""
+    d = [1.0]
+    for q in ps:
+        d = [(d[k] if k < len(d) else 0.0) * (1 - q) + (d[k - 1] if k > 0 else 0.0) * q for k in range(len(d) + 1)]
+    return sum(d[need:])
+
+
 def swap_candidates(roster):
     """M8's drop candidates: the active players below the active roster's median value, finished or not, lowest first."""
     med = statistics.median(r["value"] for r in roster)
@@ -615,6 +624,7 @@ def build(date, paths):
         to_date_days=read, missing_days=missing, to_date_source=src, remaining_days=[d for d in rem_days if sched[d]],
         status_file=os.path.basename(status_file) if status_file else None, cats=cats,
         projected=dict(wins=W, losses=L, ties=len(CATS) - W - L), exp_cats=sum(chance[c] for c in CATS),
+        p_5plus=win_week_chance([chance[c] for c in CATS]),
         totals=dict(me=dict(to_date=me_now, rebuild_to_date=me_td["totals"],
                             remaining={k: round(x, 2) for k, x in me_rem["totals"].items()}),
                     opp=dict(to_date=opp_now, rebuild_to_date=opp_td["totals"],
