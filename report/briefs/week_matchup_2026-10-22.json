@@ -1,0 +1,493 @@
+{
+ "date": "2026-10-22",
+ "week": 1,
+ "window": [
+  "2026-10-20",
+  "2026-10-25"
+ ],
+ "me": {
+  "name": "KEL'EL YAXEL HALQUETA",
+  "seat": 10
+ },
+ "opponent": {
+  "name": "MAXEY-MUM OVERDRIVE",
+  "seat": 11
+ },
+ "league_state_as_of": "2026-10-22",
+ "to_date_days": [
+  "2026-10-20",
+  "2026-10-21"
+ ],
+ "missing_days": [],
+ "to_date_source": {
+  "source": "yahoo",
+  "reason": null,
+  "rebuild_agrees": false,
+  "differences": [
+   {
+    "side": "me",
+    "stat": "fgm",
+    "yahoo": 74,
+    "rebuild": 69
+   },
+   {
+    "side": "me",
+    "stat": "fga",
+    "yahoo": 139,
+    "rebuild": 124
+   },
+   {
+    "side": "me",
+    "stat": "ftm",
+    "yahoo": 36,
+    "rebuild": 34
+   },
+   {
+    "side": "me",
+    "stat": "fta",
+    "yahoo": 45,
+    "rebuild": 43
+   },
+   {
+    "side": "me",
+    "stat": "tpm",
+    "yahoo": 19,
+    "rebuild": 18
+   },
+   {
+    "side": "me",
+    "stat": "pts",
+    "yahoo": 203,
+    "rebuild": 190
+   },
+   {
+    "side": "me",
+    "stat": "reb",
+    "yahoo": 48,
+    "rebuild": 45
+   },
+   {
+    "side": "me",
+    "stat": "ast",
+    "yahoo": 41,
+    "rebuild": 39
+   },
+   {
+    "side": "me",
+    "stat": "stl",
+    "yahoo": 15,
+    "rebuild": 13
+   },
+   {
+    "side": "me",
+    "stat": "blk",
+    "yahoo": 7,
+    "rebuild": 6
+   },
+   {
+    "side": "me",
+    "stat": "tov",
+    "yahoo": 25,
+    "rebuild": 24
+   },
+   {
+    "side": "opp",
+    "stat": "fgm",
+    "yahoo": 62,
+    "rebuild": 57
+   },
+   {
+    "side": "opp",
+    "stat": "fga",
+    "yahoo": 149,
+    "rebuild": 129
+   },
+   {
+    "side": "opp",
+    "stat": "ftm",
+    "yahoo": 39,
+    "rebuild": 37
+   },
+   {
+    "side": "opp",
+    "stat": "fta",
+    "yahoo": 55,
+    "rebuild": 50
+   },
+   {
+    "side": "opp",
+    "stat": "tpm",
+    "yahoo": 22,
+    "rebuild": 21
+   },
+   {
+    "side": "opp",
+    "stat": "pts",
+    "yahoo": 185,
+    "rebuild": 172
+   },
+   {
+    "side": "opp",
+    "stat": "reb",
+    "yahoo": 68,
+    "rebuild": 63
+   },
+   {
+    "side": "opp",
+    "stat": "ast",
+    "yahoo": 39,
+    "rebuild": 36
+   },
+   {
+    "side": "opp",
+    "stat": "stl",
+    "yahoo": 14,
+    "rebuild": 11
+   },
+   {
+    "side": "opp",
+    "stat": "tov",
+    "yahoo": 20,
+    "rebuild": 18
+   }
+  ],
+  "yahoo_games_remaining": {
+   "me": 22,
+   "opp": 26
+  },
+  "yahoo_names": {
+   "me": "KEL'EL YAXEL HALQUETA",
+   "opp": "MAXEY-MUM OVERDRIVE"
+  }
+ },
+ "remaining_days": [
+  "2026-10-22",
+  "2026-10-23",
+  "2026-10-24",
+  "2026-10-25"
+ ],
+ "status_file": "status_2026-10-22.json",
+ "cats": [
+  {
+   "cat": "FG%",
+   "me_to_date": 0.532,
+   "opp_to_date": 0.416,
+   "me_final": 0.509,
+   "opp_final": 0.452,
+   "leader_to_date": "me",
+   "leader": "me",
+   "margin": 0.057
+  },
+  {
+   "cat": "FT%",
+   "me_to_date": 0.8,
+   "opp_to_date": 0.709,
+   "me_final": 0.824,
+   "opp_final": 0.798,
+   "leader_to_date": "me",
+   "leader": "me",
+   "margin": 0.026
+  },
+  {
+   "cat": "3PTM",
+   "me_to_date": 19,
+   "opp_to_date": 22,
+   "me_final": 59.0,
+   "opp_final": 73.1,
+   "leader_to_date": "opp",
+   "leader": "opp",
+   "margin": -14.1
+  },
+  {
+   "cat": "PTS",
+   "me_to_date": 203,
+   "opp_to_date": 185,
+   "me_final": 582.0,
+   "opp_final": 683.1,
+   "leader_to_date": "me",
+   "leader": "opp",
+   "margin": -101.1
+  },
+  {
+   "cat": "REB",
+   "me_to_date": 48,
+   "opp_to_date": 68,
+   "me_final": 167.5,
+   "opp_final": 217.8,
+   "leader_to_date": "opp",
+   "leader": "opp",
+   "margin": -50.3
+  },
+  {
+   "cat": "AST",
+   "me_to_date": 41,
+   "opp_to_date": 39,
+   "me_final": 123.5,
+   "opp_final": 153.4,
+   "leader_to_date": "me",
+   "leader": "opp",
+   "margin": -29.9
+  },
+  {
+   "cat": "ST",
+   "me_to_date": 15,
+   "opp_to_date": 14,
+   "me_final": 39.1,
+   "opp_final": 43.0,
+   "leader_to_date": "me",
+   "leader": "opp",
+   "margin": -3.9
+  },
+  {
+   "cat": "BLK",
+   "me_to_date": 7,
+   "opp_to_date": 11,
+   "me_final": 22.9,
+   "opp_final": 28.4,
+   "leader_to_date": "opp",
+   "leader": "opp",
+   "margin": -5.5
+  },
+  {
+   "cat": "TO",
+   "me_to_date": 25,
+   "opp_to_date": 20,
+   "me_final": 62.2,
+   "opp_final": 75.7,
+   "leader_to_date": "opp",
+   "leader": "me",
+   "margin": 13.5
+  }
+ ],
+ "projected": {
+  "wins": 3,
+  "losses": 6,
+  "ties": 0
+ },
+ "totals": {
+  "me": {
+   "to_date": {
+    "fgm": 74,
+    "fga": 139,
+    "ftm": 36,
+    "fta": 45,
+    "tpm": 19,
+    "pts": 203,
+    "reb": 48,
+    "ast": 41,
+    "stl": 15,
+    "blk": 7,
+    "tov": 25
+   },
+   "rebuild_to_date": {
+    "fgm": 69,
+    "fga": 124,
+    "ftm": 34,
+    "fta": 43,
+    "tpm": 18,
+    "pts": 190,
+    "reb": 45,
+    "ast": 39,
+    "stl": 13,
+    "blk": 6,
+    "tov": 24
+   },
+   "remaining": {
+    "fgm": 138.35,
+    "fga": 278.4,
+    "ftm": 60.21,
+    "fta": 71.8,
+    "tpm": 40.0,
+    "pts": 379.0,
+    "reb": 119.5,
+    "ast": 82.5,
+    "stl": 24.1,
+    "blk": 15.9,
+    "tov": 37.2
+   }
+  },
+  "opp": {
+   "to_date": {
+    "fgm": 62,
+    "fga": 149,
+    "ftm": 39,
+    "fta": 55,
+    "tpm": 22,
+    "pts": 185,
+    "reb": 68,
+    "ast": 39,
+    "stl": 14,
+    "blk": 11,
+    "tov": 20
+   },
+   "rebuild_to_date": {
+    "fgm": 57,
+    "fga": 129,
+    "ftm": 37,
+    "fta": 50,
+    "tpm": 21,
+    "pts": 172,
+    "reb": 63,
+    "ast": 36,
+    "stl": 11,
+    "blk": 11,
+    "tov": 18
+   },
+   "remaining": {
+    "fgm": 173.69,
+    "fga": 372.3,
+    "ftm": 101.52,
+    "fta": 121.1,
+    "tpm": 51.1,
+    "pts": 498.1,
+    "reb": 149.8,
+    "ast": 114.4,
+    "stl": 29.0,
+    "blk": 17.4,
+    "tov": 55.7
+   }
+  }
+ },
+ "games": {
+  "me": {
+   "to_date_counted": 10,
+   "to_date_benched": [],
+   "remaining_uncapped": 23,
+   "remaining_started": 22,
+   "remaining_by_player": {
+    "Christian Braun": 2,
+    "Ty Jerome": 2,
+    "Kevin Durant": 2,
+    "Derrick White": 1,
+    "Kawhi Leonard": 2,
+    "Yaxel Lendeborg": 2,
+    "Jaden McDaniels": 2,
+    "Neemias Queta": 1,
+    "Kel'el Ware": 2,
+    "Kyrie Irving": 2,
+    "Tyrese Haliburton": 2,
+    "PJ Washington": 1,
+    "Miles Bridges": 1
+   }
+  },
+  "opp": {
+   "to_date_counted": 10,
+   "to_date_benched": [],
+   "remaining_uncapped": 28,
+   "remaining_started": 28,
+   "remaining_by_player": {
+    "Tyrese Maxey": 3,
+    "Jalen Williams": 2,
+    "Joel Embiid": 3,
+    "Darius Acuff Jr.": 2,
+    "Keyonte George": 2,
+    "Devin Vassell": 2,
+    "Gui Santos": 2,
+    "Franz Wagner": 2,
+    "Jalen Smith": 2,
+    "Karl-Anthony Towns": 2,
+    "Myles Turner": 2,
+    "Kevin Porter Jr.": 2,
+    "Immanuel Quickley": 2
+   }
+  }
+ },
+ "pickups": {
+  "status": "no finished low-value player",
+  "drop_candidates": [],
+  "next_finish": [
+   {
+    "player": "Neemias Queta",
+    "team": "BOS",
+    "last_game": "2026-10-23",
+    "value": -1.3
+   },
+   {
+    "player": "PJ Washington",
+    "team": "DAL",
+    "last_game": "2026-10-24",
+    "value": -2.77
+   },
+   {
+    "player": "Christian Braun",
+    "team": "DEN",
+    "last_game": "2026-10-24",
+    "value": -1.62
+   },
+   {
+    "player": "Yaxel Lendeborg",
+    "team": "GSW",
+    "last_game": "2026-10-24",
+    "value": -1.5
+   },
+   {
+    "player": "Miles Bridges",
+    "team": "PHX",
+    "last_game": "2026-10-24",
+    "value": -1.2
+   },
+   {
+    "player": "Kel'el Ware",
+    "team": "MIL",
+    "last_game": "2026-10-24",
+    "value": -0.19
+   }
+  ],
+  "top": [],
+  "pool_size": 0,
+  "drop": null,
+  "pool": {
+   "source": "kit",
+   "reason": "the Yahoo pull carries no available-player list",
+   "listed": null,
+   "ordering": null,
+   "out": [],
+   "unknown_status": [],
+   "not_projected": [],
+   "skipped": [],
+   "kit_pool_not_listed": null
+  }
+ },
+ "unpooled_active": [],
+ "method": {
+  "to_date": "Yahoo's week totals (get_matchups through Flaim, the morning pull); the box-score rebuild is the cross-check",
+  "projection": "season-pool per-game line x each remaining game x today's status availability; ten-slot daily fill; IL counts 0",
+  "percentages": "total makes / total attempts, actual plus projected",
+  "drop": "no game left this week and board value below the active roster's median",
+  "pickups": "every pooled free agent from today on, ranked by projected category wins gained, then gap closed"
+ },
+ "inputs": {
+  "state": {
+   "path": "data/league_state.json",
+   "sha256": "4368570af1b767e56e64fff38725ef553ba939379a9c418ef0a03fd027af8352"
+  },
+  "schedule": {
+   "path": "data/league_schedule.json",
+   "sha256": "3b916455b1d8f9a67a578a3a6cb1ba67093b1aaf5792e1329825150c3d029bce"
+  },
+  "games": {
+   "path": "report/schedule/games-2026-27.csv",
+   "sha256": "7421f6cb9e69f4500df7cf2ff129dbe1718e91a2975f127e1996c96df9806687"
+  },
+  "actuals": {
+   "path": "data/actuals",
+   "sha256": null
+  },
+  "status": {
+   "path": "data/status",
+   "sha256": null
+  },
+  "yahoo_pull": {
+   "path": "data/source/flaim/pull_2026-10-22.json",
+   "sha256": "4900ea890f891f3819bc7c5d8a41994bda041d6c773bb1fe0d66548ccca480d5"
+  },
+  "status_file": {
+   "path": "data/status/status_2026-10-22.json",
+   "sha256": "29a93d38dfda60092546bb9435e50d82c2d8decd910c49a222ab09c874b1ed5e"
+  },
+  "pool": {
+   "path": "data/season/pool_season.csv",
+   "sha256": "0848c5860f8e10dd1c7704b6e2bbc5b871c7e3bab9d0112c812b94a8f264b6db"
+  }
+ }
+}
