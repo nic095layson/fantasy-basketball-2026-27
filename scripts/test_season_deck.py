@@ -602,6 +602,30 @@ class WeekMatchupCard(unittest.TestCase):
         season = fa_dom(p, sort="z")
         self.assertIn("Other FA", season["labels"][0])
 
+    # ---- owner 2026-10-22 ("Live + pre-week"): the frozen forecast is labelled as such; a live tile sits beside it
+    def test_the_odds_card_labels_the_frozen_forecast_and_adds_the_live_tile(self):
+        c = json.load(open(self.fx["calibration"])); c["weeks"]["1"]["recorded_at"] = "2026-10-15T20:26:51Z"
+        json.dump(c, open(self.fx["calibration"], "w"))
+        r = week_matchup_record()
+        for x in r["cats"]:
+            x["p_win"] = 0.5
+        r["exp_cats"], r["p_5plus"] = 4.5, 0.5
+        dom = today_dom(self.page(r))
+        self.assertEqual(dom["errors"], [])
+        for s in ("pre-week forecast", "recorded 2026-10-15", "60.7%", "4.50", "now", "5+ of 9: 50.0%", "independent"):
+            self.assertIn(s, dom["text"])
+        self.assertNotIn("win week 1", dom["text"].lower().replace("pre-week", ""))
+
+    def test_without_a_live_record_the_live_tile_says_so(self):
+        dom = today_dom(self.page(None))
+        self.assertEqual(dom["errors"], [])
+        self.assertIn("no live record this morning", dom["text"])
+        self.assertIn("pre-week forecast", dom["text"])
+
+    def test_the_fantasybot_card_no_longer_calls_the_frozen_figure_live(self):
+        html, _, _ = SD.build(self.fx, date="2026-10-21")
+        self.assertNotIn("P(win week) — our simulator", html)
+
     def test_a_malformed_record_shows_its_error_on_the_card_and_every_tab_still_draws(self):
         bad = week_matchup_record(); bad["cats"] = None
         p = self.page(bad)

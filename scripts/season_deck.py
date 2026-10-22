@@ -380,13 +380,26 @@ function weekCard(){ const W=D.week_matchup, wk=D.brief.week;
   }
 }
 
+// ---- the live week tile (owner 2026-10-22): expected categories now and the chance of 5+ of 9, from the week card ----
+function liveTile(W, wk){
+  if(!W || W.week!==wk || W.exp_cats==null) return h("div",{class:"tile"},h("div",{class:"v"},"—"),h("div",{class:"l"},"week "+wk+" now"),
+    h("div",{class:"e"},"no live record this morning"));
+  return h("div",{class:"tile"},h("div",{class:"v"},W.exp_cats.toFixed(2)),h("div",{class:"l"},"week "+W.week+" now: expected categories of 9"),
+    h("div",{class:"e"},(W.p_5plus!=null?"5+ of 9: "+pct(W.p_5plus)+" (categories taken as independent) · ":"")+"from this morning's week card"));
+}
+
 // ---- Today ----
 (function(){ const b=D.brief, p=$("#pane-today");
   $("#hdate").textContent=D.date;
   $("#hsub").textContent=T(D.my_team)+" · week "+b.week+" vs "+T(b.opponent)+" · lines "+b.lines+" · rosters as-of "+D.league.as_of;
   const runs="avg of 2 runs × "+b.seasons.toLocaleString()+" seasons", BS=D.matchup.by_seed;
   const tiles=h("div",{class:"tiles"},
-    h("div",{class:"tile"},h("div",{class:"v"},pct(BS?avg2(Object.values(BS).map(x=>x.p_win)):null)),h("div",{class:"l"},"win week "+b.week),h("div",{class:"e"},BS?"avg of 2 runs":"")),
+    // owner 2026-10-22 ("Live + pre-week"): the ledger's figure is frozen before the week (so it can be graded) and is
+    // labelled so; the live tile beside it reads this morning's week card
+    h("div",{class:"tile"},h("div",{class:"v"},pct(BS?avg2(Object.values(BS).map(x=>x.p_win)):null)),
+      h("div",{class:"l"},"week "+b.week+" pre-week forecast"),
+      h("div",{class:"e"},BS?(D.matchup.recorded_at?"recorded "+D.matchup.recorded_at.slice(0,10)+" · ":"recorded before the week · ")+"avg of 2 runs":"")),
+    liveTile(D.week_matchup, b.week),
     h("div",{class:"tile"},h("div",{class:"v"},f1(avg2(Object.values(b.title)))+"%"),h("div",{class:"l"},"title odds"),h("div",{class:"e"},runs)),
     h("div",{class:"tile"},h("div",{class:"v"},f1(avg2(Object.values(b.playoffs)))+"%"),h("div",{class:"l"},"playoffs"),h("div",{class:"e"},runs)));
   const catRows = BS? Object.keys(Object.values(BS)[0].cat_p).map(c=>[c, avg2(Object.values(BS).map(x=>x.cat_p[c]))]) : [];
@@ -588,7 +601,7 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
       h("div",{class:"tiles"},
         h("div",{class:"tile"},h("div",{class:"v"},String(L.my_left_to_play)),h("div",{class:"l"},"my player-games left")),
         h("div",{class:"tile"},h("div",{class:"v"},String(L.opp_left_to_play)),h("div",{class:"l"},(L.opp_team||"opponent")+" left")),
-        pw2!=null?h("div",{class:"tile"},h("div",{class:"v"},pct(pw2)),h("div",{class:"l"},"P(win week) — our simulator")):null),
+        pw2!=null?h("div",{class:"tile"},h("div",{class:"v"},pct(pw2)),h("div",{class:"l"},"P(win week) — pre-week forecast")):null),
       h("p",{class:"note"},"Counts from the FantasyBot matchup pull ("+L.date+(L.games_in_progress?", games in progress":"")+"); the win probability is the kit's own record, not FantasyBot's.")));
   }
   // owner 2026-10-20 (option a): show each opponent's CURRENT team name by seat; the ledger record stays frozen

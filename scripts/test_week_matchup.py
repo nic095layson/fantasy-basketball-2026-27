@@ -290,6 +290,23 @@ class ThisWeek(unittest.TestCase):
         self.assertEqual(WM.swap_candidates(roster), ["C", "D"])
 
 
+class WinWeek(unittest.TestCase):
+    """Owner 2026-10-22 ("Live + pre-week"): the chance of 5+ of 9 categories from the card's per-category chances,
+    categories treated as independent (stated on the tile). Hand figures use math.comb, not the code under test."""
+
+    def test_all_coin_flips_give_exactly_one_half(self):
+        self.assertAlmostEqual(WM.win_week_chance([0.5] * 9), 0.5, places=12)
+
+    def test_certain_categories_decide_it(self):
+        self.assertEqual(WM.win_week_chance([1.0] * 5 + [0.0] * 4), 1.0)
+        self.assertEqual(WM.win_week_chance([1.0] * 4 + [0.0] * 5), 0.0)
+
+    def test_nine_equal_chances_match_the_binomial(self):
+        import math
+        want = sum(math.comb(9, k) * 0.7 ** k * 0.3 ** (9 - k) for k in range(5, 10))
+        self.assertAlmostEqual(WM.win_week_chance([0.7] * 9), want, places=12)
+
+
 class Record(unittest.TestCase):
     """End to end on fixture files and the real season pool (names from data/season/pool_season.csv)."""
 
@@ -361,6 +378,7 @@ class Record(unittest.TestCase):
         ps = [c["p_win"] for c in rec["cats"]]
         self.assertTrue(all(0.0 <= x <= 1.0 for x in ps))
         self.assertAlmostEqual(rec["exp_cats"], sum(ps), places=3)    # each p_win is rounded to 4 places on the card
+        self.assertAlmostEqual(rec["p_5plus"], WM.win_week_chance([c["p_win"] for c in rec["cats"]]), places=3)
         tw = rec["pickups"]["this_week"]
         self.assertEqual(tw["status"], "ran")
         self.assertEqual(tw["drops"], ["Derrick White"])           # below the median, not finished on 10/20
