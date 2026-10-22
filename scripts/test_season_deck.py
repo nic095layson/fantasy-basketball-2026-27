@@ -412,6 +412,35 @@ RAN = dict(status="ran", pool_size=154, next_finish=[],
                      flips_to_loss=[], gap_closed=0.4, missed="2026-10-20")])
 
 
+TW = dict(status="ran", drops=["Bench Guy"], pool_size=2, no_games=["Idle Man"], drop_alone={"Bench Guy": -0.03},
+          rows=[dict(add="Free Agent", team="GSW", drop="Bench Guy", d_exp=0.54, d_exp_drop=-0.03, d_exp_add=0.57,
+                     d_cat={"FG%": 0.01, "FT%": 0.0, "3PTM": 0.0, "PTS": -0.02, "REB": 0.12, "AST": 0.0, "ST": 0.0,
+                            "BLK": 0.43, "TO": 0.0}, games=3, games_left=3, value=0.4, status=None, missed=None,
+                     season_d_ecw=0.0123),
+                dict(add="Other FA", team="LAL", drop="Bench Guy", d_exp=0.1, d_exp_drop=-0.03, d_exp_add=0.13,
+                     d_cat={"FG%": 0.0, "FT%": 0.0, "3PTM": 0.0, "PTS": 0.1, "REB": 0.0, "AST": 0.0, "ST": 0.0,
+                            "BLK": 0.0, "TO": 0.0}, games=2, games_left=2, value=1.1, status=None, missed=None,
+                     season_d_ecw=0.031)])
+
+
+def fa_dom(html_path, sort=None):
+    """The Free Agents pane read in the browser; sort, if given, is chosen in the pane's sort control first."""
+    from playwright.sync_api import sync_playwright
+    with sync_playwright() as p:
+        b, exe, tried = DRC._launch(p)
+        try:
+            pg = b.new_page(); errs = []
+            pg.on("pageerror", lambda e: errs.append(str(e)))
+            pg.route(re.compile(r"^https?://"), lambda r: r.abort())
+            pg.goto("file://" + os.path.abspath(html_path), wait_until="load")
+            if sort:
+                pg.select_option("#fa-sort", sort)
+            return dict(errors=errs, text=pg.evaluate("() => document.getElementById('pane-fa').textContent"),
+                        labels=pg.evaluate("() => { const l=[...document.querySelectorAll('#pane-fa .plist')]; return [...l[l.length-1].querySelectorAll('label')].map(x => x.textContent) }"))  # the "I add" list
+        finally:
+            b.close()
+
+
 def today_dom(html_path):
     """The Today pane's faded cells and text, read in the browser (the card is drawn by the page's script)."""
     from playwright.sync_api import sync_playwright
@@ -540,6 +569,38 @@ class WeekMatchupCard(unittest.TestCase):
         for s in ("Yahoo's available-player list", "100 listed", "Out Man", "Letter Man (D)", "not tiered",
                   "New Guy", "Held Man", "67", "Free Agent (GSW) · Q"):
             self.assertIn(s, text)
+
+    # ---- P1 (owner 2026-10-22, "Full build"): each category's chance, and free agents judged on this week's matchup
+    def test_the_card_shows_each_categorys_chance_and_the_expected_categories(self):
+        r = week_matchup_record()
+        for i, c in enumerate(r["cats"]):
+            c["p_win"] = 0.86 if c["cat"] == "BLK" else 0.5
+        r["exp_cats"] = 4.86
+        dom = today_dom(self.page(r))
+        self.assertEqual(dom["errors"], [])
+        for s in ("chance", "86%", "4.86"):
+            self.assertIn(s, dom["text"])
+
+    def test_the_this_week_scan_names_the_move_its_change_the_drops_share_and_the_season_cost(self):
+        k = dict(week_matchup_record()["pickups"], this_week=TW)
+        dom = today_dom(self.page(week_matchup_record(k)))
+        self.assertEqual(dom["errors"], [])
+        for s in ("Free Agent", "for Bench Guy", "+0.54", "BLK +0.43", "REB +0.12", "−0.03", "+0.012", "Idle Man"):
+            self.assertIn(s, dom["text"])
+
+    def test_free_agents_sort_by_this_week_and_back_to_season_z(self):
+        b = json.load(open(self.fx["board"]))
+        b["board"].append(dict(rank=4, name="Other FA", team="LAL", pos="SF", gp=70.0, z_adj=5.0, z_total=5.0,
+                               z={c: 0.5 for c in ["FG%", "FT%", "3PM", "PTS", "REB", "AST", "STL", "BLK", "TOV"]}))
+        json.dump(b, open(self.fx["board"], "w"))
+        k = dict(week_matchup_record()["pickups"], this_week=TW)
+        p = self.page(week_matchup_record(k))
+        week = fa_dom(p)
+        self.assertEqual(week["errors"], [])
+        self.assertIn("Free Agent", week["labels"][0])       # +0.54 this week, though Other FA has the higher z
+        self.assertIn("+0.54", week["labels"][0])
+        season = fa_dom(p, sort="z")
+        self.assertIn("Other FA", season["labels"][0])
 
     def test_a_malformed_record_shows_its_error_on_the_card_and_every_tab_still_draws(self):
         bad = week_matchup_record(); bad["cats"] = None

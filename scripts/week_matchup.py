@@ -37,6 +37,17 @@ owner before the first run (2026-10-21):
                  rostered, availability > 0, not on the do-not-draft list), as before. A free agent absent from his
                  team's last box score in the past week is flagged, not dropped. Waiver players cannot be told apart
                  from free agents.
+  M8 this week   owner 2026-10-22 (P1, "Full build"): each category's chance of winning is the normal approximation
+                 on the final totals (co_gm._pcat): to date is fixed; each remaining started game adds
+                 a*(x*cv)^2 + a*(1-a)*x^2 to a counting stat's variance (arena.SEASON_CV, the compound sum of
+                 team_week_model one game at a time) and a*attempts*p*(1-p) to the makes, FG%/FT% then
+                 x PCT_MIX_INFL^2 / total attempts^2; no remaining variance and a level total is a tie (0.5). The
+                 shared weekly shock (TEAM_WEEK_SHOCK) is left out: the games come from the real schedule. A free
+                 agent's worth this week is the change in expected categories won (the sum of the nine changes in
+                 P(win), exact by linearity), in place of the drop candidate that helps most; candidates are the
+                 active players below the median value (M6's measure), finished or not; the swap starts tomorrow
+                 (waivers cannot be told apart, so the conservative day). The season cost of that drop is the change
+                 in expected weekly categories against the other eleven teams (co_gm.waiver_pairs' measure).
 
     python3 scripts/week_matchup.py --date YYYY-MM-DD [--out-dir report/briefs] [--yahoo-pull PATH]
 Prints 'WEEK MATCHUP: PASS — ...' and exits 0, or 'WEEK MATCHUP: FAIL — ...' and exits 1.
@@ -66,6 +77,7 @@ PULLS = FL.PIN_DIR  # data/source/flaim/pull_<date>.json, pinned by league_live
 CATS = ["FG%", "FT%", "3PTM", "PTS", "REB", "AST", "ST", "BLK", "TO"]
 STATS = ["fgm", "fga", "ftm", "fta", "tpm", "pts", "reb", "ast", "stl", "blk", "tov"]
 PICKUPS_SHOWN = 5
+COUNT = {"3PTM": "tpm", "PTS": "pts", "REB": "reb", "AST": "ast", "ST": "stl", "BLK": "blk", "TO": "tov"}
 LOOKBACK_DAYS = 7  # how far back a free agent's last team game is looked for (the missed-game flag)
 BENCH_SLOTS = ("BN", "IL", "IL+")  # Yahoo slots whose games do not count
 
@@ -172,8 +184,12 @@ def per_game(ln):
 
 def remaining(roster, sched, avail, lines):
     """roster: [{player, team, positions, value}]; sched: {date: set of teams playing}; avail: {player: probability}
-    (missing = 1.0); lines: {player: per-game line}. Expected totals under M3 and each player's projected starts."""
+    (missing = 1.0); lines: {player: per-game line}. Expected totals under M3, each player's projected starts, and
+    the variance of the totals (M8): per started game a*(x*cv)^2 + a*(1-a)*x^2 by counting category, a*att*p*(1-p)
+    on the makes."""
+    cv = CG.arena.SEASON_CV
     t, games, started = {k: 0.0 for k in STATS}, {}, {}
+    var = {k: 0.0 for k in list(COUNT) + ["fg_mk", "ft_mk"]}
     for d in sorted(sched):
         cand = [dict(r, availability=avail.get(r["player"], 1.0)) for r in roster if r["team"] in sched[d]]
         counted, _ = _fill(cand)
@@ -182,7 +198,92 @@ def remaining(roster, sched, avail, lines):
             a, g = avail.get(n, 1.0), per_game(lines[n])
             t = {k: t[k] + g[k] * a for k in STATS}
             games[n] = games.get(n, 0) + 1
-    return dict(totals=t, games=games, started=started)
+            for c, k in COUNT.items():
+                var[c] += a * (g[k] * cv[c]) ** 2 + a * (1 - a) * g[k] ** 2
+            var["fg_mk"] += a * lines[n]["fga"] * lines[n]["fg_pct"] * (1 - lines[n]["fg_pct"])
+            var["ft_mk"] += a * lines[n]["fta"] * lines[n]["ft_pct"] * (1 - lines[n]["ft_pct"])
+    return dict(totals=t, games=games, started=started, var=var)
+
+
+def cat_chances(me_now, me_rem, opp_now, opp_rem):
+    """P(I win) per category (M8): the normal approximation on the final totals, to date fixed and the remaining games
+    carrying the variance; no attempts on either side, or level with nothing left to vary, is a tie (0.5)."""
+    infl = CG.arena.PCT_MIX_INFL
+
+    def side(now, rem):
+        fin, v = add(now, rem["totals"]), rem["var"]
+        mu, var = {c: fin[k] for c, k in COUNT.items()}, {c: v[c] for c in COUNT}
+        for c, mk, at, vk in (("FG%", "fgm", "fga", "fg_mk"), ("FT%", "ftm", "fta", "ft_mk")):
+            mu[c] = fin[mk] / fin[at] if fin[at] else None
+            var[c] = infl ** 2 * v[vk] / fin[at] ** 2 if fin[at] else 0.0
+        return mu, var
+    m, o = side(me_now, me_rem), side(opp_now, opp_rem)
+    out = {}
+    for c in CATS:
+        if m[0][c] is None or o[0][c] is None:
+            out[c] = 0.5
+        elif m[1][c] + o[1][c] == 0:
+            g = margin(c, m[0][c], o[0][c])
+            out[c] = 0.5 if abs(g) < 1e-12 else (1.0 if g > 0 else 0.0)
+        else:
+            out[c] = CG._pcat(m, o, c)
+    return out
+
+
+def swap_candidates(roster):
+    """M8's drop candidates: the active players below the active roster's median value, finished or not, lowest first."""
+    med = statistics.median(r["value"] for r in roster)
+    return [r["player"] for r in sorted(roster, key=lambda r: r["value"]) if r["value"] < med]
+
+
+def _split(sched, today):
+    return {d: t for d, t in sched.items() if d == today}, {d: t for d, t in sched.items() if d != today}
+
+
+def _both(a, b):
+    return dict(totals=add(a["totals"], b["totals"]), var={k: a["var"][k] + b["var"][k] for k in a["var"]})
+
+
+def scan_drop_alone(me_now, opp_now, opp_rem, roster, drops, sched, today, avail, lines):
+    """Each drop candidate with nobody added, from the day after `today`: the change in expected categories won. A drop
+    whose remaining games hurt (a poor shooter, a turnover cost) helps on its own; that is not the add's doing."""
+    now_s, rest = _split(sched, today)
+    r_today = remaining(roster, now_s, avail, lines)
+    base = cat_chances(me_now, _both(r_today, remaining(roster, rest, avail, lines)), opp_now, opp_rem)
+    out = {}
+    for d in drops:
+        p = cat_chances(me_now, _both(r_today, remaining([r for r in roster if r["player"] != d], rest, avail, lines)),
+                        opp_now, opp_rem)
+        out[d] = sum(p[c] - base[c] for c in CATS)
+    return out
+
+
+def scan_this_week(me_now, opp_now, opp_rem, roster, drops, fas, sched, today, avail, lines):
+    """Each free agent in place of the drop candidate that helps most, from the day after `today` (M8): the change in
+    P(win) per category and their sum, the change in expected categories won, split into the drop alone (nobody
+    added) and the add's share; best first."""
+    now_s, rest = _split(sched, today)
+    r_today = remaining(roster, now_s, avail, lines)
+    base = cat_chances(me_now, _both(r_today, remaining(roster, rest, avail, lines)), opp_now, opp_rem)
+    alone = scan_drop_alone(me_now, opp_now, opp_rem, roster, drops, sched, today, avail, lines)
+    out = []
+    for fa in fas:
+        best = None
+        for d in drops:
+            rr = remaining([r for r in roster if r["player"] != d] + [fa], rest, avail, lines)
+            p = cat_chances(me_now, _both(r_today, rr), opp_now, opp_rem)
+            dc = {c: p[c] - base[c] for c in CATS}
+            de = sum(dc[c] for c in CATS)
+            if best is None or de > best["d_exp"]:
+                best = dict(add=fa["player"], team=fa["team"], drop=d, d_exp=de, d_cat=dc,
+                            d_exp_drop=alone[d], d_exp_add=de - alone[d],
+                            games=rr["games"].get(fa["player"], 0),
+                            games_left=sum(1 for x in rest if fa["team"] in rest[x]),
+                            value=round(fa.get("adj", fa["value"]), 2), status=fa.get("status"), missed=fa.get("missed"))
+        if best:
+            out.append(best)
+    out.sort(key=lambda r: (-r["d_exp"], -r["games"], r["add"]))
+    return out
 
 
 def cat_values(t):
@@ -260,6 +361,29 @@ def rank_pickups(me_td, opp_fin, roster, drop, fas, sched, avail, lines, n=PICKU
                         gap_closed=round(closed, 3), missed=fa.get("missed"), status=fa.get("status")))
     out.sort(key=lambda r: (-r["net"], -r["gap_closed"], -r["games_left"], r["add"]))
     return out[:n]
+
+
+def this_week_block(state, by, me_now, opp_now, opp_rem, by_value, fas, sched, date, avail, lines):
+    """M8 on the morning's roster and pool: every free agent scored, best first, each with the season cost of his drop
+    (co_gm.waiver_pairs' measure: expected weekly categories against the other eleven teams, season CV)."""
+    drops = swap_candidates(by_value) if by_value else []
+    if not drops or not fas:
+        return dict(status="no drop candidate" if not drops else "no free agent", drops=drops, rows=[], no_games=[],
+                    pool_size=len(fas), drop_alone={})
+    scored = scan_this_week(me_now, opp_now, opp_rem, by_value, drops, fas, sched, date, avail, lines)
+    rows = [r for r in scored if r["games"] > 0]
+    no_games = sorted(r["add"] for r in scored if r["games"] == 0)
+    cv = CG.arena.SEASON_CV
+    ros = {t["seat"]: [by[p["player"]] for p in t["players"] if p["slot"] != "IL" and p["player"] in by] for t in state["teams"]}
+    opp = [CG.arena.team_week_model(r, cv) for s, r in ros.items() if s != CG.OWNER_SEAT]
+    mine = ros[CG.OWNER_SEAT]
+    base = CG.pwins(CG.arena.team_week_model(mine, cv), opp)
+    for r in rows:
+        swapped = [x for x in mine if x["player"] != r["drop"]] + [by[r["add"]]]
+        r["season_d_ecw"] = round(CG.pwins(CG.arena.team_week_model(swapped, cv), opp) - base, 4)
+    return dict(status="ran", drops=drops, rows=rows, no_games=no_games, pool_size=len(fas),
+                drop_alone={d: round(x, 4) for d, x in
+                            scan_drop_alone(me_now, opp_now, opp_rem, by_value, drops, sched, date, avail, lines).items()})
 
 
 # ---------------------------------------------------------------- Yahoo through Flaim (A, D)
@@ -427,9 +551,10 @@ def build(date, paths):
              me_fin=cat_values(me_fin), opp_fin=cat_values(opp_fin))
     lead_td, lead = compare(v["me_td"], v["opp_td"]), compare(v["me_fin"], v["opp_fin"])
     nd = lambda c, fin: 3 if c in ("FG%", "FT%") else (1 if fin else 0)
+    chance = cat_chances(me_now, me_rem, opp_now, opp_rem)  # M8
     cats = [dict(cat=c, me_to_date=_r(v["me_td"][c], nd(c, False)), opp_to_date=_r(v["opp_td"][c], nd(c, False)),
                  me_final=_r(v["me_fin"][c], nd(c, True)), opp_final=_r(v["opp_fin"][c], nd(c, True)),
-                 leader_to_date=lead_td[c], leader=lead[c],
+                 leader_to_date=lead_td[c], leader=lead[c], p_win=round(chance[c], 4),
                  margin=_r(margin(c, v["me_fin"][c], v["opp_fin"][c]), 3 if c in ("FG%", "FT%") else 1)) for c in CATS]
 
     def games_block(td, rem, roster):
@@ -450,34 +575,37 @@ def build(date, paths):
                 out=[], unknown_status=[], not_projected=[], skipped=[], kit_pool_not_listed=None)
     pick = dict(status="no finished low-value player", drop_candidates=cands, next_finish=next_finish(by_value, sched),
                 top=[], pool_size=0, drop=None, pool=pool)
+    # the pool is built every morning (M8 scans before anyone finishes); M7's scan still runs only on a finished player
+    rostered = {p["player"] for t in state["teams"] for p in t["players"]}
+    veto = CG.hoops.do_not_draft()
+    recent = _recent_boxes(paths["actuals"], date, names=list(by))
+    kit_free = [p for p in P if p["player"] not in rostered and p["player"] not in veto and CG.hoops.availability(p) > 0]
+    fas, fa_avail = [], {}
+    if fa_list is not None:
+        scored, pool["out"], pool["unknown_status"], pool["not_projected"] = yahoo_free_agents(fa_list, P)
+        for y in scored:
+            n, p = y["player"], by[y["player"]]
+            why_skip = ("rostered in the league state" if n in rostered else "on the do-not-draft list" if n in veto
+                        else "out in the kit pool" if CG.hoops.availability(p) <= 0 else None)
+            if why_skip:
+                pool["skipped"].append(dict(name=y["name"], team=y["team"], status=y["status"], reason=why_skip)); continue
+            team, missed = _last_team_game(n, y["team"], recent)
+            fas.append(dict(player=n, team=team, positions=y["positions"] or [x.strip() for x in p["pos"].split(",")],
+                            value=zsum(n), adj=CG.hoops.adj_value(p, ()), missed=missed, status=y["status"]))
+            fa_avail[n] = y["availability"]
+        listed = {f["player"] for f in fas} | {y["player"] for y in scored}
+        pool["kit_pool_not_listed"] = sum(1 for p in kit_free if p["player"] not in listed)
+    else:
+        for p in kit_free:
+            team, missed = _last_team_game(p["player"], CG.TEAM_CODE.get(p["team"], p["team"]), recent)
+            fas.append(dict(player=p["player"], team=team, positions=[x.strip() for x in p["pos"].split(",")],
+                            value=zsum(p["player"]), adj=CG.hoops.adj_value(p, ()), missed=missed))
     if cands:
-        rostered = {p["player"] for t in state["teams"] for p in t["players"]}
-        veto = CG.hoops.do_not_draft()
-        recent = _recent_boxes(paths["actuals"], date, names=list(by))
-        kit_free = [p for p in P if p["player"] not in rostered and p["player"] not in veto and CG.hoops.availability(p) > 0]
-        fas, fa_avail = [], {}
-        if fa_list is not None:
-            scored, pool["out"], pool["unknown_status"], pool["not_projected"] = yahoo_free_agents(fa_list, P)
-            for y in scored:
-                n, p = y["player"], by[y["player"]]
-                why_skip = ("rostered in the league state" if n in rostered else "on the do-not-draft list" if n in veto
-                            else "out in the kit pool" if CG.hoops.availability(p) <= 0 else None)
-                if why_skip:
-                    pool["skipped"].append(dict(name=y["name"], team=y["team"], status=y["status"], reason=why_skip)); continue
-                team, missed = _last_team_game(n, y["team"], recent)
-                fas.append(dict(player=n, team=team, positions=y["positions"] or [x.strip() for x in p["pos"].split(",")],
-                                value=zsum(n), adj=CG.hoops.adj_value(p, ()), missed=missed, status=y["status"]))
-                fa_avail[n] = y["availability"]
-            listed = {f["player"] for f in fas} | {y["player"] for y in scored}
-            pool["kit_pool_not_listed"] = sum(1 for p in kit_free if p["player"] not in listed)
-        else:
-            for p in kit_free:
-                team, missed = _last_team_game(p["player"], CG.TEAM_CODE.get(p["team"], p["team"]), recent)
-                fas.append(dict(player=p["player"], team=team, positions=[x.strip() for x in p["pos"].split(",")],
-                                value=zsum(p["player"]), adj=CG.hoops.adj_value(p, ()), missed=missed))
         drop = cands[0]["player"]
         top = rank_pickups(me_now, opp_fin, mine, drop, fas, sched, dict(avail, **fa_avail), lines)
         pick.update(status="ran", drop=cands[0], top=top, pool_size=len(fas))
+    pick["this_week"] = this_week_block(state, by, me_now, opp_now, opp_rem, by_value, fas, sched, date,
+                                        dict(avail, **fa_avail), lines)
 
     W = sum(1 for x in lead.values() if x == "me"); L = sum(1 for x in lead.values() if x == "opp")
     paths_used = dict(paths, status_file=status_file, pool=os.environ.get("SEASON_POOL") or "v69 preseason pool")
@@ -486,7 +614,7 @@ def build(date, paths):
         opponent=dict(name=opp_t["name"], seat=opp_t["seat"]), league_state_as_of=state.get("as_of"),
         to_date_days=read, missing_days=missing, to_date_source=src, remaining_days=[d for d in rem_days if sched[d]],
         status_file=os.path.basename(status_file) if status_file else None, cats=cats,
-        projected=dict(wins=W, losses=L, ties=len(CATS) - W - L),
+        projected=dict(wins=W, losses=L, ties=len(CATS) - W - L), exp_cats=sum(chance[c] for c in CATS),
         totals=dict(me=dict(to_date=me_now, rebuild_to_date=me_td["totals"],
                             remaining={k: round(x, 2) for k, x in me_rem["totals"].items()}),
                     opp=dict(to_date=opp_now, rebuild_to_date=opp_td["totals"],
@@ -506,6 +634,12 @@ def build(date, paths):
                        "daily fill; IL counts 0",
             percentages="total makes / total attempts, actual plus projected",
             drop="no game left this week and board value below the active roster's median",
+            chances=("P(win) per category: the normal approximation on the final totals; to date fixed, the remaining "
+                     "games' variance from the season per-game CV (FG%/FT%: binomial makes x PCT_MIX_INFL^2); the "
+                     "shared weekly shock left out"),
+            this_week=("each free agent in place of the below-median player whose drop helps most, from tomorrow; "
+                       "ranked by the change in expected categories won (the sum of the nine changes in P(win)); "
+                       "season cost = the change in expected weekly categories against the other eleven teams"),
             pickups=("Yahoo's available-player list (" + str(pool["listed"]) + " listed, Yahoo-wide ownership order), "
                      "each from today on at his Yahoo letter's availability" if pool["source"] == "yahoo" else
                      "every pooled free agent from today on") + ", ranked by projected category wins gained, then gap closed"),
