@@ -98,6 +98,13 @@ class Override(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "one tag"):
                 S.run(date="2026-10-22", actuals=[], kit_csv=kit, deck_csv=deck, out_dir=d, overrides_csv=ov)
 
+    def test_an_override_without_a_decision_is_refused(self):
+        # found by the delivery check (2026-10-22): an empty "decided" cell raised IndexError, not the FAIL line
+        with tempfile.TemporaryDirectory() as d:
+            kit, deck, ov = inputs(d, overrides=(dict(OVERRIDE, decided=" "),))
+            with self.assertRaisesRegex(ValueError, "decided"):
+                S.run(date="2026-10-22", actuals=[], kit_csv=kit, deck_csv=deck, out_dir=d, overrides_csv=ov)
+
     def test_no_overrides_file_leaves_the_pool_byte_equal(self):
         with tempfile.TemporaryDirectory() as d:
             kit, deck, _ = inputs(d)

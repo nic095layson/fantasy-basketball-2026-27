@@ -172,6 +172,8 @@ def _with_tag_overrides(deck_rows, overrides_csv):
             raise ValueError(f"{overrides_csv}: {o['player']}'s leading tag is now '{tag}', the override expects '{want}'")
         if not new or note_tag(new) != new.lower():
             raise ValueError(f"{overrides_csv}: {o['player']}: tag_to '{new}' must be one tag token")
+        if not o["decided"].strip():
+            raise ValueError(f"{overrides_csv}: {o['player']}: an override needs its decided cell (date and decision)")
         rows[i] = dict(rows[i], note=new + f" [kit tag override {o['decided'].split()[0]}; data/tag_overrides.csv]"
                        + rows[i]["note"][len(tag):])
         applied.append(dict(player=rows[i]["player"], tag_from=tag, tag_to=new))

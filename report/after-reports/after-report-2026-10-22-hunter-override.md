@@ -33,10 +33,13 @@ No projection line, roster or engine constant changed. One tag changed, in the s
   - Its `decided` cell quotes your two clicks.
   - Its `receipt` cell names the evidence: February retinal repair with full recovery expected (ESPN and NBA.com, 2026-02-21); two preseason games; on neither ESPN's nor Basketball-Reference's injury list on 2026-10-22.
 - **`scripts/season_lines.py`.** After the frozen snapshot and the pool additions, each override row replaces one player's leading note tag. The prose after the tag is kept, and a marker naming the file is added.
-  - A row is refused, and nothing is written, when the player is not in the pool, when the pool's tag is no longer the one the row expects, or when the replacement is not a single tag token.
+  - A row is refused, and nothing is written, when the player is not in the pool, when the pool's tag is no longer the one the row expects, when the replacement is not a single tag token, or when its `decided` cell is empty.
   - The day's record lists every override applied, and the PASS line counts them.
 - **`scripts/redteam/check_constants.py`.** The registry check flagged the two new module names, `OVERRIDES` (a path) and `OVERRIDE_FIELDS` (a column list), as unregistered judgment constants. They go on its exempt list for the module, beside `ADDITIONS`. Registered constants stay 32 = 32.
-- **Test first.** `scripts/test_tag_overrides.py` (10 tests) failed 10 of 10 on main's code (`hunter-override-2026-10-22/red.txt`) and passes 10 of 10 on this branch (`green.txt`).
+- **Test first.** `scripts/test_tag_overrides.py` has 11 tests.
+  - The first 10 failed 10 of 10 on main's code (`hunter-override-2026-10-22/red.txt`).
+  - The 11th was added by the delivery check: an empty `decided` cell raised `IndexError` instead of the FAIL line. It failed on the first build before its one-line fix.
+  - All 11 pass on this branch (`green.txt`).
   - It checks that the deck's own rules read the new tag as healthy: board availability 1.0, weekly 0.88. The old tag read 0.78 and 0.75.
   - The existing `test_season_lines.py` passes 12 of 12.
 
@@ -71,6 +74,7 @@ From `hunter-override-2026-10-22/compare.json`, run twice with identical results
   - The deck option said removing the tag on the deck would reach the season tools. It would not have: they read the frozen lock file. I found this before building anything and put the options back to you.
   - The override option said it would reach the title odds. It does not (§3). I corrected that in chat before the build started.
 - **The override has no visible effect today**, because Hunter's value is below zero. I found this from the before/after run, not before it. The build is still what you chose, and it starts to matter the day his line or his roster status changes.
+- **The delivery check found one unhandled input.** An override with an empty `decided` cell crashed with `IndexError`. It now fails with the named FAIL line, and a test covers it (§1).
 - **The first "after" run exited 1 with an empty log.** It was started in parallel with the "before" run. Re-run alone, it passed all 7 steps. I did not find the cause (ATTEMPTED-FAILED: the log was empty and the run wrote no record), so I report it rather than explain it.
 
 ## Watchlist
@@ -142,7 +146,7 @@ Near misses (the 🎯 in 5+ mocks, under 25 places): Jamal Murray (18 mocks, val
 - **Produced by** session `session_01QjgeRdpDaWgSJmGKRG8fTU` on 2026-10-22, about 03:45–04:15Z.
 - **Governors.** plan-gate was loaded for your route clicks, and the plan was stated before the first change. adversarial-verify is loaded before the delivery.
 - **Re-verify:**
-  - `python3 scripts/test_tag_overrides.py`
+  - `python3 scripts/test_tag_overrides.py` (11 tests)
   - `python3 report/after-reports/hunter-override-2026-10-22/compare.py`
   - `python3 scripts/season_lines.py --date 2026-10-22 --out /tmp/s` (its PASS line ends "1 tag override(s)")
 
