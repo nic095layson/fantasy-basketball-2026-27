@@ -1,0 +1,100 @@
+test_a_file_with_other_columns_is_refused (__main__.Override.test_a_file_with_other_columns_is_refused) ... ERROR
+test_a_player_outside_the_deck_plane_is_refused (__main__.Override.test_a_player_outside_the_deck_plane_is_refused) ... ERROR
+test_a_replacement_must_be_one_tag_token (__main__.Override.test_a_replacement_must_be_one_tag_token) ... ERROR
+test_a_stale_override_is_refused_and_nothing_is_written (__main__.Override.test_a_stale_override_is_refused_and_nothing_is_written) ... ERROR
+test_no_overrides_file_leaves_the_pool_byte_equal (__main__.Override.test_no_overrides_file_leaves_the_pool_byte_equal) ... ERROR
+test_only_the_named_players_note_changes (__main__.Override.test_only_the_named_players_note_changes) ... ERROR
+test_the_command_line_run_reads_the_kits_overrides_file (__main__.Override.test_the_command_line_run_reads_the_kits_overrides_file) ... /home/user/wthto/scripts/test_tag_overrides.py:45: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpegc223_2/pool_season.csv' mode='r' encoding='utf-8'>
+  return list(csv.DictReader(open(os.path.join(d, "pool_season.csv"), encoding="utf-8")))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ERROR
+test_the_consumers_read_the_override_as_healthy (__main__.Override.test_the_consumers_read_the_override_as_healthy) ... ERROR
+test_the_leading_tag_is_replaced_and_the_prose_kept (__main__.Override.test_the_leading_tag_is_replaced_and_the_prose_kept) ... ERROR
+test_the_record_names_each_override_applied (__main__.Override.test_the_record_names_each_override_applied) ... ERROR
+
+======================================================================
+ERROR: test_a_file_with_other_columns_is_refused (__main__.Override.test_a_file_with_other_columns_is_refused)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/wthto/scripts/test_tag_overrides.py", line 93, in test_a_file_with_other_columns_is_refused
+    S.run(date="2026-10-22", actuals=[], kit_csv=kit, deck_csv=deck, out_dir=d, overrides_csv=ov)
+TypeError: run() got an unexpected keyword argument 'overrides_csv'
+
+======================================================================
+ERROR: test_a_player_outside_the_deck_plane_is_refused (__main__.Override.test_a_player_outside_the_deck_plane_is_refused)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/wthto/scripts/test_tag_overrides.py", line 86, in test_a_player_outside_the_deck_plane_is_refused
+    S.run(date="2026-10-22", actuals=[], kit_csv=kit, deck_csv=deck, out_dir=d, overrides_csv=ov)
+TypeError: run() got an unexpected keyword argument 'overrides_csv'
+
+======================================================================
+ERROR: test_a_replacement_must_be_one_tag_token (__main__.Override.test_a_replacement_must_be_one_tag_token)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/wthto/scripts/test_tag_overrides.py", line 99, in test_a_replacement_must_be_one_tag_token
+    S.run(date="2026-10-22", actuals=[], kit_csv=kit, deck_csv=deck, out_dir=d, overrides_csv=ov)
+TypeError: run() got an unexpected keyword argument 'overrides_csv'
+
+======================================================================
+ERROR: test_a_stale_override_is_refused_and_nothing_is_written (__main__.Override.test_a_stale_override_is_refused_and_nothing_is_written)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/wthto/scripts/test_tag_overrides.py", line 79, in test_a_stale_override_is_refused_and_nothing_is_written
+    S.run(date="2026-10-22", actuals=[], kit_csv=kit, deck_csv=deck, out_dir=d, overrides_csv=ov)
+TypeError: run() got an unexpected keyword argument 'overrides_csv'
+
+======================================================================
+ERROR: test_no_overrides_file_leaves_the_pool_byte_equal (__main__.Override.test_no_overrides_file_leaves_the_pool_byte_equal)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/wthto/scripts/test_tag_overrides.py", line 104, in test_no_overrides_file_leaves_the_pool_byte_equal
+    S.run(date="2026-10-22", actuals=[], kit_csv=kit, deck_csv=deck, out_dir=d,
+TypeError: run() got an unexpected keyword argument 'overrides_csv'
+
+======================================================================
+ERROR: test_only_the_named_players_note_changes (__main__.Override.test_only_the_named_players_note_changes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/wthto/scripts/test_tag_overrides.py", line 60, in test_only_the_named_players_note_changes
+    S.run(date="2026-10-22", actuals=[], kit_csv=kit, deck_csv=deck, out_dir=d, overrides_csv=ov)
+TypeError: run() got an unexpected keyword argument 'overrides_csv'
+
+======================================================================
+ERROR: test_the_command_line_run_reads_the_kits_overrides_file (__main__.Override.test_the_command_line_run_reads_the_kits_overrides_file)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/wthto/scripts/test_tag_overrides.py", line 122, in test_the_command_line_run_reads_the_kits_overrides_file
+    self.assertEqual(S.note_tag(hunter["note"]), "tag-cleared")
+                     ^^^^^^^^^^
+AttributeError: module 'season_lines' has no attribute 'note_tag'
+
+======================================================================
+ERROR: test_the_consumers_read_the_override_as_healthy (__main__.Override.test_the_consumers_read_the_override_as_healthy)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/wthto/scripts/test_tag_overrides.py", line 69, in test_the_consumers_read_the_override_as_healthy
+    S.run(date="2026-10-22", actuals=[], kit_csv=kit, deck_csv=deck, out_dir=d, overrides_csv=ov)
+TypeError: run() got an unexpected keyword argument 'overrides_csv'
+
+======================================================================
+ERROR: test_the_leading_tag_is_replaced_and_the_prose_kept (__main__.Override.test_the_leading_tag_is_replaced_and_the_prose_kept)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/wthto/scripts/test_tag_overrides.py", line 52, in test_the_leading_tag_is_replaced_and_the_prose_kept
+    S.run(date="2026-10-22", actuals=[], kit_csv=kit, deck_csv=deck, out_dir=d, overrides_csv=ov)
+TypeError: run() got an unexpected keyword argument 'overrides_csv'
+
+======================================================================
+ERROR: test_the_record_names_each_override_applied (__main__.Override.test_the_record_names_each_override_applied)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/wthto/scripts/test_tag_overrides.py", line 112, in test_the_record_names_each_override_applied
+    rec = S.run(date="2026-10-22", actuals=[], kit_csv=kit, deck_csv=deck, out_dir=d, overrides_csv=ov)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: run() got an unexpected keyword argument 'overrides_csv'
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.275s
+
+FAILED (errors=10)
