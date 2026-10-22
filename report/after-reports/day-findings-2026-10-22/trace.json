@@ -22,6 +22,12 @@
   "after-report-2026-10-22-risk-rows.md",
   "after-report-2026-10-22-season-cv.md",
   "commands.txt",
+  "correction-2026-10-22/commits.txt",
+  "correction-2026-10-22/league_moves.json",
+  "correction-2026-10-22/name_fix_week_card.json",
+  "correction-2026-10-22/pr_168.json",
+  "correction-2026-10-22/recon.json",
+  "correction-2026-10-22/week_cards.json",
   "deck arena/mocks/league_sim.py",
   "deck weekly_matchups README",
   "git_deck_first_parent.txt",
@@ -42,7 +48,7 @@
   "runner-2026-10-22/west_coast_players.json",
   "scripts/co_gm.py"
  ],
- "tokens": 804,
+ "tokens": 860,
  "unmatched": [],
  "count_checks": [
   {
@@ -281,6 +287,212 @@
    "check": "the three named games are absent from the 10/21 box record",
    "claimed": true,
    "actual": true,
+   "ok": true
+  },
+  {
+   "check": "correction: Acuff played on 10/21 and the box pull left him unmatched",
+   "claimed": [
+    true,
+    null
+   ],
+   "actual": [
+    true,
+    null
+   ],
+   "ok": true
+  },
+  {
+   "check": "prose states: correction: Acuff's line",
+   "claimed": true,
+   "actual": true,
+   "ok": true
+  },
+  {
+   "check": "correction: the reconciliation read the 14:15Z card's Yahoo totals",
+   "claimed": [
+    {
+     "fgm": 67,
+     "fga": 163,
+     "ftm": 40,
+     "fta": 57,
+     "tpm": 22,
+     "pts": 196,
+     "reb": 71,
+     "ast": 39,
+     "stl": 15,
+     "blk": 11,
+     "tov": 22
+    },
+    {
+     "fgm": 77,
+     "fga": 146,
+     "ftm": 37,
+     "fta": 48,
+     "tpm": 19,
+     "pts": 210,
+     "reb": 52,
+     "ast": 41,
+     "stl": 15,
+     "blk": 7,
+     "tov": 25
+    }
+   ],
+   "actual": [
+    {
+     "fgm": 67,
+     "fga": 163,
+     "ftm": 40,
+     "fta": 57,
+     "tpm": 22,
+     "pts": 196,
+     "reb": 71,
+     "ast": 39,
+     "stl": 15,
+     "blk": 11,
+     "tov": 22
+    },
+    {
+     "fgm": 77,
+     "fga": 146,
+     "ftm": 37,
+     "fta": 48,
+     "tpm": 19,
+     "pts": 210,
+     "reb": 52,
+     "ast": 41,
+     "stl": 15,
+     "blk": 7,
+     "tov": 25
+    }
+   ],
+   "ok": true
+  },
+  {
+   "check": "correction: 05:54 PT rebuild + Acuff's line = complete Yahoo, all 11",
+   "claimed": true,
+   "actual": true,
+   "ok": true
+  },
+  {
+   "check": "prose states: correction: the FGA sum",
+   "claimed": true,
+   "actual": true,
+   "ok": true
+  },
+  {
+   "check": "correction: the 14:15Z card differs on Acuff's nonzero stats only",
+   "claimed": [
+    "ast",
+    "fga",
+    "fgm",
+    "fta",
+    "ftm",
+    "pts",
+    "reb",
+    "stl",
+    "tov"
+   ],
+   "actual": [
+    "ast",
+    "fga",
+    "fgm",
+    "fta",
+    "ftm",
+    "pts",
+    "reb",
+    "stl",
+    "tov"
+   ],
+   "ok": true
+  },
+  {
+   "check": "correction: the 14:15Z card agrees on your side",
+   "claimed": 0,
+   "actual": 0,
+   "ok": true
+  },
+  {
+   "check": "prose states: correction: the 14:15Z count",
+   "claimed": true,
+   "actual": true,
+   "ok": true
+  },
+  {
+   "check": "correction: actual lineups reproduce Yahoo, both teams",
+   "claimed": [
+    true,
+    true
+   ],
+   "actual": [
+    true,
+    true
+   ],
+   "ok": true
+  },
+  {
+   "check": "correction: no benched or IL player played",
+   "claimed": 0,
+   "actual": 0,
+   "ok": true
+  },
+  {
+   "check": "correction: Santos's drop first shows at e7b69bb, not 21d815d",
+   "claimed": [
+    0,
+    1
+   ],
+   "actual": [
+    0,
+    1
+   ],
+   "ok": true
+  },
+  {
+   "check": "correction: the run times named",
+   "claimed": [
+    "2026-10-22T14:15:13Z",
+    "2026-10-22T14:31:49Z",
+    "2026-10-22T14:44:17Z"
+   ],
+   "actual": [
+    "2026-10-22T14:15:13Z",
+    "2026-10-22T14:31:49Z",
+    "2026-10-22T14:44:17Z"
+   ],
+   "ok": true
+  },
+  {
+   "check": "correction: the fixed card is e7b69bb's rebuild plus Acuff's line",
+   "claimed": true,
+   "actual": true,
+   "ok": true
+  },
+  {
+   "check": "correction: with the fix, the opponent's gap is exactly Santos's line",
+   "claimed": true,
+   "actual": true,
+   "ok": true
+  },
+  {
+   "check": "prose states: correction: Santos's line",
+   "claimed": true,
+   "actual": true,
+   "ok": true
+  },
+  {
+   "check": "correction: #168 is an open draft, not merged",
+   "claimed": [
+    168,
+    "open",
+    true,
+    false
+   ],
+   "actual": [
+    168,
+    "open",
+    true,
+    false
+   ],
    "ok": true
   },
   {
@@ -2551,7 +2763,7 @@
   {
    "token": "51cf6b3",
    "kind": "hash",
-   "source": "runner-2026-10-22/box_2026-10-21_sources_0554PT.json"
+   "source": "correction-2026-10-22/week_cards.json"
   },
   {
    "token": "-2026",
@@ -2641,7 +2853,7 @@
   {
    "token": "4900ea890f89",
    "kind": "hash",
-   "source": "runner-2026-10-22/commit_0554PT.txt"
+   "source": "correction-2026-10-22/week_cards.json"
   },
   {
    "token": "13",
@@ -2676,12 +2888,12 @@
   {
    "token": "210",
    "kind": "num",
-   "source": "runner-2026-10-22/week_card_to_date_0554PT.json"
+   "source": "correction-2026-10-22/week_cards.json"
   },
   {
    "token": "203",
    "kind": "num",
-   "source": "runner-2026-10-22/week_card_to_date.json"
+   "source": "correction-2026-10-22/week_cards.json"
   },
   {
    "token": "03",
@@ -2712,6 +2924,286 @@
    "token": "2",
    "kind": "num",
    "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "2026-10-22",
+   "kind": "date",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "14",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "15",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "-2026",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "-10",
+   "kind": "num",
+   "source": "after-report-2026-10-21-merge-check.md"
+  },
+  {
+   "token": "-22",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "10",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "21",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "5",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "-24",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "2",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "-5",
+   "kind": "num",
+   "source": "after-report-2026-10-21-corrections.md"
+  },
+  {
+   "token": "0",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "3",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "12",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "3",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "3",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "3",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "0",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "4",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "05:54",
+   "kind": "clock",
+   "source": "runner-2026-10-22/commit_0554PT.txt"
+  },
+  {
+   "token": "14",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "15",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "11",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "139",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "24",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "163",
+   "kind": "num",
+   "source": "after-report-2026-10-22-gp-reconstruction.md"
+  },
+  {
+   "token": "14",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "15",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "2f2aea8",
+   "kind": "hash",
+   "source": "commands.txt"
+  },
+  {
+   "token": "9",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "11",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "11",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "2",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "10",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "20",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "10",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "21",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "11",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "2",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "10",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "21",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "14",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "44",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "e7b69bb",
+   "kind": "hash",
+   "source": "correction-2026-10-22/week_cards.json"
+  },
+  {
+   "token": "14",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "31",
+   "kind": "num",
+   "source": "after-report-2026-10-21-council-fixes.md"
+  },
+  {
+   "token": "21d815d",
+   "kind": "hash",
+   "source": "correction-2026-10-22/week_cards.json"
+  },
+  {
+   "token": "5",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "-10",
+   "kind": "num",
+   "source": "after-report-2026-10-21-merge-check.md"
+  },
+  {
+   "token": "12",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "5",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "14",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "44",
+   "kind": "num",
+   "source": "after-report-2026-10-21-board-test.md"
+  },
+  {
+   "token": "#168",
+   "kind": "pr",
+   "source": "correction-2026-10-22/pr_168.json"
+  },
+  {
+   "token": "168",
+   "kind": "num",
+   "source": "after-report-2026-10-21-merge-check.md"
   },
   {
    "token": "4",
@@ -3811,7 +4303,7 @@
   {
    "token": "51cf6b3",
    "kind": "hash",
-   "source": "runner-2026-10-22/box_2026-10-21_sources_0554PT.json"
+   "source": "correction-2026-10-22/week_cards.json"
   },
   {
    "token": "3",

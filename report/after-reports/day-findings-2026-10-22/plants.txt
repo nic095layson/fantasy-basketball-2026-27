@@ -18,3 +18,10 @@ History, stated plainly:
   planted values. It is now excluded from the sources, and all five plants fail again.
 - 2026-10-22 05:54 PT update: a sixth plant ("split 6 and 7" -> "split 7 and 6") fails on the new binding check; the
   5.2996 and "Seven reached" plants were re-run and still fail.
+- 2026-10-22 correction (after the 14:15Z run): four plants in the new §3 block, each run alone through TRACE_REPORT
+  on a scratch copy, each fails on its own binding check (the clean run was restored after, trace.json byte-identical):
+    "FGA 139 + 24 = 163" -> "FGA 141 + 24 = 163"        FAIL: prose states: correction: the FGA sum
+    "on 9 of the 11 stats" -> "on 8 of the 11 stats"    FAIL: prose states: correction: the 14:15Z count
+    "5-24 FG, 2-5 FT" -> "5-23 FG, 2-5 FT"              FAIL: prose states: correction: Acuff's line
+    "5-10 FG, 12 PTS, 5 REB" -> "5-10 FG, 13 PTS, 5 REB" FAIL: prose states: correction: Santos's line
+  Without those checks none of the four would fail: the planted 141, 8, 23 and 13 all appear in other cited reports.

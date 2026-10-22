@@ -189,6 +189,51 @@ def counts(text, src):
     check("the three named games are absent from the 10/21 box record", True,
           not any(n in g for g in box["games_in_record"] for n in named))
 
+    # the 2026-10-22 correction (§3): the opponent-side gap was Acuff's unmatched 10/21 line, bound to its pins
+    C = "correction-2026-10-22"
+    STATS = ["fgm", "fga", "ftm", "fta", "tpm", "pts", "reb", "ast", "stl", "blk", "tov"]
+    rec = json.loads(src[os.path.join(C, "recon.json")])
+    cards = json.loads(src[os.path.join(C, "week_cards.json")])
+    fixed = json.loads(src[os.path.join(C, "name_fix_week_card.json")])
+    moves = json.loads(src[os.path.join(C, "league_moves.json")])
+    pr = json.loads(src[os.path.join(C, "pr_168.json")])
+    row = lambda who: next(r for r in rec["10"]["rows"] if r["date"] == "2026-10-21" and r["player"] == who)
+    acuff, santos = row("Darius Acuff Jr."), row("Gui Santos")
+    c0554, c1415 = cards["51cf6b3"], cards["2f2aea8"]
+    complete = c1415["yahoo"]["opp"]
+    check("correction: Acuff played on 10/21 and the box pull left him unmatched", (True, None),
+          (acuff["played"], acuff["pool_name"]))
+    a = acuff["line"]
+    says("correction: Acuff's line", f"{a['fgm']}-{a['fga']} FG, {a['ftm']}-{a['fta']} FT, {a['tpm']} 3PM, {a['pts']} PTS, "
+                                     f"{a['reb']} REB, {a['ast']} AST, {a['stl']} STL, {a['blk']} BLK, {a['tov']} TO")
+    check("correction: the reconciliation read the 14:15Z card's Yahoo totals", (complete, c1415["yahoo"]["me"]),
+          (rec["10"]["yahoo"], rec["11"]["yahoo"]))
+    check("correction: 05:54 PT rebuild + Acuff's line = complete Yahoo, all 11", True,
+          all(c0554["rebuild"]["opp"][k] + a[k] == complete[k] for k in STATS))
+    says("correction: the FGA sum", f"FGA {c0554['rebuild']['opp']['fga']} + {a['fga']} = {complete['fga']}")
+    opp = sorted(d["stat"] for d in c1415["differences"] if d["side"] == "opp")
+    check("correction: the 14:15Z card differs on Acuff's nonzero stats only", sorted(k for k in STATS if a[k]), opp)
+    check("correction: the 14:15Z card agrees on your side", 0, sum(d["side"] == "me" for d in c1415["differences"]))
+    says("correction: the 14:15Z count", f"differs from Yahoo on {len(opp)} of the {len(STATS)} stats")
+    check("correction: actual lineups reproduce Yahoo, both teams", (True, True), (rec["10"]["equal"], rec["11"]["equal"]))
+    check("correction: no benched or IL player played", 0,
+          sum(r["played"] and r["slot"] in ("BN", "IL", "IL+") for t in rec.values() for r in t["rows"]))
+    dropped = lambda c: [m for m in moves[c]["moves"] if "Gui Santos" in m["dropped"]]
+    check("correction: Santos's drop first shows at e7b69bb, not 21d815d", (0, 1), (len(dropped("21d815d")), len(dropped("e7b69bb"))))
+    check("correction: the run times named", ("2026-10-22T14:15:13Z", "2026-10-22T14:31:49Z", "2026-10-22T14:44:17Z"),
+          (c1415["t0"], cards["21d815d"]["t0"], cards["e7b69bb"]["t0"]))
+    s = santos["line"]
+    # records_from is a worktree path, so the fixed card is tied to the 14:44Z records by its numbers: e7b69bb's
+    # rebuild plus Acuff's line, the one row the fix adds
+    check("correction: the fixed card is e7b69bb's rebuild plus Acuff's line", True,
+          all(cards["e7b69bb"]["rebuild"]["opp"][k] + a[k] == fixed["week_card"]["rebuild"]["opp"][k] for k in STATS))
+    check("correction: with the fix, the opponent's gap is exactly Santos's line", True,
+          {d["stat"]: d["yahoo"] - d["rebuild"] for d in fixed["week_card"]["differences"] if d["side"] == "opp"}
+          == {k: s[k] for k in STATS if s[k]})
+    says("correction: Santos's line", f"{s['fgm']}-{s['fga']} FG, {s['pts']} PTS, {s['reb']} REB")
+    check("correction: #168 is an open draft, not merged", (168, "open", True, False),
+          (pr["number"], pr["state"], pr["draft"], pr["merged"]))
+
     # the 05:54 PT update (§3): the scheduled run's record, bound to the prose
     wk2 = json.loads(src[os.path.join("runner-2026-10-22", "week_card_to_date_0554PT.json")])
     box2 = json.loads(src[os.path.join("runner-2026-10-22", "box_2026-10-21_sources_0554PT.json")])

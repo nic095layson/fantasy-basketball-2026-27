@@ -179,6 +179,20 @@ The runner's commit `847748e`, "Morning run 2026-10-22", landed on `season/daily
     - The rebuild undercounts the opponent for some other reason; the card's method M2 (current roster, ten-slot rule) is the first candidate.
     - Not diagnosed here.
 
+**Correction, 2026-10-22, after the 14:15Z on-demand run: the opponent-side gap was one dropped box score, not the card's method.** EVIDENCE, pinned in `correction-2026-10-22/`:
+- **The cause.** ESPN's box score names the opponent's player "Darius Acuff Jr."; the kit's file names him "Darius Acuff". The box pull matched names by spelling and the alias table only, so his 10/21 line was left unmatched (`recon.json`), and the week card's rebuild never counted it.
+  - His line: 5-24 FG, 2-5 FT, 0 3PM, 12 PTS, 3 REB, 3 AST, 3 STL, 0 BLK, 4 TO.
+- **It is the whole gap.** The 05:54 PT rebuild of the opponent plus that line equals Yahoo's complete totals from the 14:15Z Flaim pull on all 11 stats: FGA 139 + 24 = 163 (`week_cards.json`).
+  - The 14:15Z run's own card (`2f2aea8`) differs from Yahoo on 9 of the 11 stats, the ones where his line is not zero. Your side agrees on all 11.
+- **The card's method (M2) was not the cause; the "first candidate" named above was wrong.**
+  - Yahoo's daily lineups for both teams on 10/20 and 10/21 (Flaim, by date), summed over the box scores with names matched suffix-free, give Yahoo's totals on all 11 stats for each side (`recon.json`).
+  - No benched or IL player of either team played on those days, so the ten-slot rule had nothing to choose.
+- **A second effect came later, and that one is M2's.**
+  - The opponent dropped Gui Santos after his 10/21 game. The drop first shows in the 14:44Z run (`e7b69bb`), not in the 14:31Z one (`21d815d`) (`league_moves.json`).
+  - The card rebuilds from today's roster, so his line (5-10 FG, 12 PTS, 5 REB) falls out. With the name fix applied to the 14:44Z records, the opponent's gap is exactly that line (`name_fix_week_card.json`).
+  - Whether the card should read Yahoo's daily rosters instead is a separate decision for you.
+- **The fix** for the names is kit draft PR #168, not merged (`pr_168.json`). This answers the opponent-side item left open in § Bounds; the text above it is left as first written.
+
 ## 4. Gaps found, still open
 
 1. **The title odds run on draft-day lines.**
