@@ -1,0 +1,15 @@
+# red first: the new tests (test_flaim_live.py, test_league_live.py of the fix) run on 99b24e9's code (= 0d8e1d2's scripts), DECK_REPO=/home/user/yahoo-fantasy-basketball, 2026-10-22
+ERROR: test_a_later_pin_for_the_same_date_keeps_an_earlier_pins_lineups (__main__.Extract.test_a_later_pin_for_the_same_date_keeps_an_earlier_pins_lineups)
+AttributeError: module 'flaim_live' has no attribute 'keep_daily'
+ERROR: test_the_later_pin_wins_for_a_team_and_day_and_keeps_the_other_days (__main__.Extract.test_the_later_pin_wins_for_a_team_and_day_and_keeps_the_other_days)
+AttributeError: module 'flaim_live' has no attribute 'keep_daily'
+ERROR: test_with_no_earlier_pin_the_pull_is_pinned_as_it_is (__main__.Extract.test_with_no_earlier_pin_the_pull_is_pinned_as_it_is)
+AttributeError: module 'flaim_live' has no attribute 'keep_daily'
+Ran 17 tests in 0.012s
+FAILED (errors=3)
+ERROR: test_a_flaim_pull_without_twelve_rosters_still_pins_its_dated_lineups_for_the_week_card (__main__.FlaimFirst.test_a_flaim_pull_without_twelve_rosters_still_pins_its_dated_lineups_for_the_week_card)
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmpjaoet4i6/pull_2026-10-21.json'
+FAIL: test_a_second_run_for_the_same_date_keeps_the_dated_lineups_the_first_pinned (__main__.FlaimFirst.test_a_second_run_for_the_same_date_keeps_the_dated_lineups_the_first_pinned)
+AssertionError: {} != {'478.l.36464.t.1': ['2026-10-20']}
+Ran 21 tests in 2.098s
+FAILED (failures=1, errors=1)

@@ -298,6 +298,50 @@ class Record(unittest.TestCase):
         src = WM.build("2026-10-21", dict(self.paths, yahoo_pull=self.pull()))["to_date_source"]
         self.assertEqual((src["source"], src["rebuild_agrees"], src["differences"]), ("yahoo", True, []))
 
+    # ---- the rebuild reads each past day's Yahoo lineup (owner 2026-10-22, "Read daily rosters")
+    def daily_pull(self, fname, days, matchup=True):
+        """A Flaim pull carrying Yahoo's lineups by day; days is {(team id, Yahoo name): {date: [(player, slot)]}}."""
+        p = json.load(open(self.pull())) if matchup else dict(source="flaim", matchups={}, rosters={}, free_agents=None)
+        p["daily"] = {}
+        for (tid, name), by_day in days.items():
+            for day, players in by_day.items():
+                r = TFL.roster(tid, name, [(n, "PHI", "PG", slot, None) for n, slot in players], snapshot=day)["data"]
+                p["daily"].setdefault(r["teamKey"], {})[day] = r
+        return dump(p, os.path.join(self.d, fname))
+
+    def test_a_days_yahoo_lineup_counts_its_active_slots_and_not_its_bench(self):
+        # that day Maxey sat on THEIRS's bench and Embiid (IL in today's state) started at C: Embiid's 28 count
+        pull = self.daily_pull("pull_2026-10-21.json", {(10, "THEIRS"): {"2026-10-20": [("Tyrese Maxey", "BN"), ("Joel Embiid", "C")]}})
+        rec = WM.build("2026-10-21", dict(self.paths, yahoo_pull=pull))
+        self.assertEqual(rec["totals"]["opp"]["rebuild_to_date"]["pts"], 28)
+        self.assertEqual(rec["games"]["opp"]["to_date_benched"], [["2026-10-20", "Tyrese Maxey"]])
+        self.assertEqual(rec["rebuild_rosters"]["opp"], {"2026-10-20": "yahoo"})
+
+    def test_a_player_dropped_after_playing_still_counts_on_his_day(self):
+        # Darius Acuff Jr. started for THEIRS on 10/20 and is on no roster in today's state
+        f = os.path.join(self.paths["actuals"], "2026-10-20.json"); box_rec = json.load(open(f))
+        box_rec["players"].append(dict(name="Darius Acuff Jr.", pool_name=None, team="SAC", dnp=False, game="g1",
+                                       **box(fgm=5, fga=24, ftm=2, fta=5, tpm=0, pts=12, reb=3, ast=3, stl=3, blk=0, tov=4)))
+        dump(box_rec, f)
+        pull = self.daily_pull("pull_2026-10-21.json", {(10, "THEIRS"): {"2026-10-20": [("Tyrese Maxey", "PG"), ("Darius Acuff Jr.", "Util")]}})
+        rec = WM.build("2026-10-21", dict(self.paths, yahoo_pull=pull))
+        self.assertEqual(rec["totals"]["opp"]["rebuild_to_date"]["pts"], 42)       # Maxey 30 + Acuff 12
+
+    def test_a_day_without_a_yahoo_lineup_falls_back_to_todays_roster_and_says_so(self):
+        pull = self.daily_pull("pull_2026-10-21.json", {(11, "MINE"): {"2026-10-20": [("Derrick White", "SG"), ("Nikola Jokic", "C")]}})
+        rec = WM.build("2026-10-21", dict(self.paths, yahoo_pull=pull))
+        self.assertEqual(rec["rebuild_rosters"], dict(me={"2026-10-20": "yahoo"}, opp={"2026-10-20": "today"}))
+        self.assertEqual(rec["totals"]["opp"]["rebuild_to_date"]["pts"], 30)       # Maxey, today's rule
+        self.assertEqual(rec["totals"]["me"]["rebuild_to_date"]["pts"], 13)
+
+    def test_a_lineup_pinned_by_an_earlier_run_this_week_is_read(self):
+        self.daily_pull("pull_2026-10-21.json", {(10, "THEIRS"): {"2026-10-20": [("Tyrese Maxey", "BN"), ("Joel Embiid", "C")]}},
+                        matchup=False)
+        run = dump(json.load(open(self.pull())), os.path.join(self.d, "pull_2026-10-22.json"))   # today's: no lineups
+        rec = WM.build("2026-10-22", dict(self.paths, yahoo_pull=run))
+        self.assertEqual(rec["totals"]["opp"]["rebuild_to_date"]["pts"], 28)
+        self.assertEqual(rec["rebuild_rosters"]["opp"], {"2026-10-20": "yahoo"})
+
     def test_no_pull_file_falls_back_to_the_rebuild_and_says_why(self):
         rec = WM.build("2026-10-21", dict(self.paths, yahoo_pull=os.path.join(self.d, "absent.json")))
         self.assertEqual(rec["to_date_source"]["source"], "rebuild")

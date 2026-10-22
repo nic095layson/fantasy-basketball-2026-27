@@ -11,11 +11,14 @@ owner before the first run (2026-10-21):
                  through yesterday; remaining = NBA games from today through the week's last day (bref schedule).
   M2 to date     Yahoo's own week totals (owner 2026-10-21, "A"): the current week's get_matchups values read through
                  Flaim at the morning pull (data/source/flaim/pull_<date>.json), so through yesterday's games. The
-                 reconstruction still runs as the cross-check, and every stat where it differs from Yahoo is listed:
+                 reconstruction still runs as the cross-check, and every stat where it differs from Yahoo is listed.
+                 A day whose Yahoo lineup is pinned (get_roster with as_of_date, in this week's pulls; owner
+                 2026-10-22, "Read daily rosters") counts the box lines of the players in an active slot that day (not
+                 BN, IL or IL+), so a player dropped after playing still counts on his day. Any other day falls back:
                  every non-IL player on the current roster who played counts; on a day more than ten of a team's
                  players played, the ten counted are the brief's daily-fill rule (co_gm.daily_lineup: positions, then
-                 board value). No pull, no week in it, or a matchup that does not name both teams: the reconstruction
-                 is the column, and the record says why.
+                 board value). The record names each day's source (rebuild_rosters). No pull, no week in it, or a
+                 matchup that does not name both teams: the reconstruction is the column, and the record says why.
   M3 projection  season-pool per-game line (SEASON_POOL, the brief's blended lines) x each remaining game x today's
                  availability from the status file (no row: 1.0, the brief's rule); the same ten-slot fill each day;
                  IL counts 0 (D-IS-8).
@@ -64,6 +67,7 @@ CATS = ["FG%", "FT%", "3PTM", "PTS", "REB", "AST", "ST", "BLK", "TO"]
 STATS = ["fgm", "fga", "ftm", "fta", "tpm", "pts", "reb", "ast", "stl", "blk", "tov"]
 PICKUPS_SHOWN = 5
 LOOKBACK_DAYS = 7  # how far back a free agent's last team game is looked for (the missed-game flag)
+BENCH_SLOTS = ("BN", "IL", "IL+")  # Yahoo slots whose games do not count
 
 
 def _d(s):
@@ -120,16 +124,45 @@ def _fill(players):
     return [p for _, p in lineup], bench
 
 
-def to_date(roster, days):
-    """roster: [{player, positions, value}]; days: {date: {name: box}}. The counted totals under M2."""
+def to_date(roster, days, lineups=None, recs=None):
+    """roster: [{player, positions, value}]; days: {date: {name: box}}. The counted totals under M2: a day with the
+    team's Yahoo lineup (lineups: {date: dated Flaim roster}, recs: {date: that day's box-score record}) counts the
+    players in an active slot, read under the lineup's spelling; any other day falls back to today's roster."""
     t, out = zero(), {}
     for d in sorted(days):
-        who = [dict(r, availability=1.0) for r in roster if r["player"] in days[d]]
-        counted, benched = _fill(who)
+        if lineups and d in lineups and recs and d in recs:
+            slots = {_alias(p["name"]): p.get("selectedPosition") or "BN" for p in lineups[d].get("players", [])}
+            box = played(recs[d], names=list(slots))
+            counted = [n for n in slots if n in box and slots[n] not in BENCH_SLOTS]
+            benched = [n for n in slots if n in box and slots[n] in BENCH_SLOTS]
+            source = "yahoo"
+        else:
+            box = days[d]
+            counted, benched = _fill([dict(r, availability=1.0) for r in roster if r["player"] in box])
+            source = "today"
         for n in counted:
-            t = add(t, days[d][n])
-        out[d] = dict(counted=counted, benched=benched)
+            t = add(t, box[n])
+        out[d] = dict(counted=counted, benched=benched, roster=source)
     return dict(totals=t, days=out)
+
+
+def week_lineups(pull_path, ws, date):
+    """{Yahoo team name: {date: dated roster}} for the week's days before `date`, from the dated rosters pinned in
+    this week's pulls (data/source/flaim/pull_<date>.json) and the run's own pull, read last: a lineup one morning
+    pinned is read by every later run of the week, and the latest pin of a day wins."""
+    if not pull_path:
+        return {}
+    run = os.path.abspath(pull_path)
+    earlier = sorted(f for f in glob.glob(os.path.join(os.path.dirname(run), "pull_????-??-??.json"))
+                     if ws <= os.path.basename(f)[5:15] <= date and os.path.abspath(f) != run)
+    out = {}
+    for f in earlier + [run]:
+        pull, _ = load_pull(f)
+        for by_day in ((pull or {}).get("daily") or {}).values():
+            for day, r in by_day.items():
+                if ws <= day < date:
+                    out.setdefault(r.get("teamName"), {})[day] = r
+    return out
 
 
 def per_game(ln):
@@ -351,14 +384,14 @@ def build(date, paths):
     # to date: the week's days through yesterday; a day with scheduled games and no box-score file is missing
     td_days = days_to_date(date, ws)
     sched_td = _sched(games, td_days)
-    boxes, missing, read = {}, [], []
+    boxes, recs, missing, read = {}, {}, [], []
     for d in td_days:
         f = os.path.join(paths["actuals"], f"{d}.json")
         if os.path.exists(f):
-            boxes[d] = played(json.load(open(f, encoding="utf-8")), names=list(by)); read.append(d)
+            recs[d] = json.load(open(f, encoding="utf-8"))
+            boxes[d] = played(recs[d], names=list(by)); read.append(d)
         elif sched_td[d]:
             missing.append(d)
-    me_td, opp_td = to_date(mine, boxes), to_date(theirs, boxes)
 
     # A: Yahoo's own week totals are the column when the pull carries this matchup; the rebuild is the cross-check
     pull, why = load_pull(paths.get("yahoo_pull"))
@@ -366,6 +399,11 @@ def build(date, paths):
     y_me = y_opp = y_left = y_names = None
     if pull is not None:
         y_me, y_opp, y_left, y_names, why = yahoo_to_date(pull, wk, me_t, opp_t)
+    # the rebuild reads each day's Yahoo lineup where one is pinned this week, today's roster otherwise
+    lineups = week_lineups(paths.get("yahoo_pull"), ws, date)
+    on_yahoo = y_names or {s: (yahoo_name(t, pull) if pull is not None else t["name"]) for s, t in (("me", me_t), ("opp", opp_t))}
+    me_td = to_date(mine, boxes, lineups.get(on_yahoo["me"]), recs)
+    opp_td = to_date(theirs, boxes, lineups.get(on_yahoo["opp"]), recs)
     if y_me is not None:
         diffs = [dict(side=side, stat=k, yahoo=y[k], rebuild=r["totals"][k])
                  for side, y, r in (("me", y_me, me_td), ("opp", y_opp, opp_td)) for k in STATS if y[k] != r["totals"][k]]
@@ -454,12 +492,16 @@ def build(date, paths):
                     opp=dict(to_date=opp_now, rebuild_to_date=opp_td["totals"],
                              remaining={k: round(x, 2) for k, x in opp_rem["totals"].items()})),
         games=dict(me=games_block(me_td, me_rem, mine), opp=games_block(opp_td, opp_rem, theirs)),
+        rebuild_rosters=dict(me={d: x["roster"] for d, x in me_td["days"].items()},
+                             opp={d: x["roster"] for d, x in opp_td["days"].items()}),
         pickups=pick, unpooled_active=sorted(set(unpooled)),
         method=dict(
             to_date=("Yahoo's week totals (get_matchups through Flaim, the morning pull); the box-score rebuild is the "
                      "cross-check" if src["source"] == "yahoo" else
-                     "reconstructed from box scores (" + str(src["reason"]) + "): every non-IL rostered player who "
-                     "played; ten per day by the daily-fill rule when more played"),
+                     "reconstructed from box scores (" + str(src["reason"]) + ")"),
+            rebuild=("a day with Yahoo's pinned lineup counts its active slots (not BN, IL or IL+); any other day "
+                     "counts every non-IL player on today's roster who played, ten per day by the daily-fill rule "
+                     "when more played; each day's source is in rebuild_rosters"),
             projection="season-pool per-game line x each remaining game x today's status availability; ten-slot "
                        "daily fill; IL counts 0",
             percentages="total makes / total attempts, actual plus projected",
