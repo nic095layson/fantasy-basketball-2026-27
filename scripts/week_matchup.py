@@ -49,6 +49,7 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
+import box_pull as BP  # noqa: E402
 import co_gm as CG  # noqa: E402
 import flaim_live as FL  # noqa: E402
 import league_intake as LI  # noqa: E402
@@ -91,11 +92,26 @@ def add(a, b):
     return {k: a[k] + b[k] for k in STATS}
 
 
-def played(rec):
-    """{pool name: box line} for pooled players who played a regular-season game in one data/actuals record."""
+def _card_name(p, index):
+    """The name a box line is read under: the record's pool name, or, given the card's own names, the one its source
+    spelling (then its pool name) matches there (owner 2026-10-22: the box pull files lines under the kit file's
+    spelling, the rosters carry Yahoo's — "Darius Acuff" / "Darius Acuff Jr.", "Cam Johnson" / "Cameron Johnson")."""
+    if index is None:
+        return p.get("pool_name")
+    return BP.match_name(p["name"], index) or (BP.match_name(p["pool_name"], index) if p.get("pool_name") else None)
+
+
+def played(rec, names=None):
+    """{name: box line} for players who played a regular-season game in one data/actuals record, keyed by pool name,
+    or by the card's own spelling when its names are given."""
     regular = {g["espn_id"] for g in rec.get("games", []) if g.get("season_type") == 2}
-    return {p["pool_name"]: {k: p.get(k) or 0 for k in STATS} for p in rec.get("players", [])
-            if p.get("pool_name") and not p.get("dnp") and p.get("game") in regular}
+    index = BP.name_index(names) if names is not None else None
+    out = {}
+    for p in rec.get("players", []):
+        n = _card_name(p, index)
+        if n and not p.get("dnp") and p.get("game") in regular:
+            out[n] = {k: p.get(k) or 0 for k in STATS}
+    return out
 
 
 def _fill(players):
@@ -339,7 +355,7 @@ def build(date, paths):
     for d in td_days:
         f = os.path.join(paths["actuals"], f"{d}.json")
         if os.path.exists(f):
-            boxes[d] = played(json.load(open(f, encoding="utf-8"))); read.append(d)
+            boxes[d] = played(json.load(open(f, encoding="utf-8")), names=list(by)); read.append(d)
         elif sched_td[d]:
             missing.append(d)
     me_td, opp_td = to_date(mine, boxes), to_date(theirs, boxes)
@@ -399,7 +415,7 @@ def build(date, paths):
     if cands:
         rostered = {p["player"] for t in state["teams"] for p in t["players"]}
         veto = CG.hoops.do_not_draft()
-        recent = _recent_boxes(paths["actuals"], date)
+        recent = _recent_boxes(paths["actuals"], date, names=list(by))
         kit_free = [p for p in P if p["player"] not in rostered and p["player"] not in veto and CG.hoops.availability(p) > 0]
         fas, fa_avail = [], {}
         if fa_list is not None:
@@ -456,15 +472,17 @@ def build(date, paths):
                 for k, p in paths_used.items()})
 
 
-def _recent_boxes(actuals_dir, date):
-    """The last LOOKBACK_DAYS of box-score records before `date`: [(date, {pool name: (team, dnp)}, teams played)]."""
+def _recent_boxes(actuals_dir, date, names=None):
+    """The last LOOKBACK_DAYS of box-score records before `date`: [(date, {name: (team, dnp)}, teams played)], names
+    as played() reads them."""
+    index = BP.name_index(names) if names is not None else None
     out = []
     for i in range(1, LOOKBACK_DAYS + 1):
         d = (_d(date) - datetime.timedelta(days=i)).isoformat()
         f = os.path.join(actuals_dir, f"{d}.json")
         if os.path.exists(f):
             rec = json.load(open(f, encoding="utf-8"))
-            who = {p["pool_name"]: (p.get("team"), bool(p.get("dnp"))) for p in rec.get("players", []) if p.get("pool_name")}
+            who = {n: (p.get("team"), bool(p.get("dnp"))) for p in rec.get("players", []) for n in [_card_name(p, index)] if n}
             teams = {CG.TEAM_CODE.get(p.get("team"), p.get("team")) for p in rec.get("players", []) if p.get("team")}
             out.append((d, who, teams))
     return out

@@ -101,6 +101,30 @@ class Run(unittest.TestCase):
             self.assertEqual(open(os.path.join(d, "pool_season.csv")).read().replace("\r", ""),
                              open(deck).read().replace("\r", ""))
 
+    def _two_planes(self, d, kit_name, deck_name, box_name, pool_name):
+        kit = os.path.join(d, "kit.csv"); deck = os.path.join(d, "deck.csv")
+        with open(kit, "w", newline="") as f:
+            w = csv.DictWriter(f, fieldnames=list(KIT_ROW)); w.writeheader(); w.writerow(dict(KIT_ROW, name=kit_name))
+        with open(deck, "w", newline="") as f:
+            w = csv.DictWriter(f, fieldnames=list(DECK_ROW)); w.writeheader(); w.writerow(dict(DECK_ROW, player=deck_name))
+        rows = [dict(r, name=box_name, pool_name=pool_name) for r in box("x", 3, pts=30)]
+        S.run(date="2026-10-22", actuals=[record("2026-10-21", rows)], kit_csv=kit, deck_csv=deck, out_dir=d)
+        return (next(csv.DictReader(open(os.path.join(d, "projections_season.csv"))))["pts"],
+                next(csv.DictReader(open(os.path.join(d, "pool_season.csv"))))["pts"])
+
+    def test_a_line_filed_under_the_kits_spelling_reaches_the_deck_plane_too(self):
+        # owner 2026-10-22 (the name-mismatch fix): the box pull files Darius Acuff Jr. under the kit's "Darius Acuff";
+        # the deck plane carries Yahoo's spelling and must still receive his games
+        with tempfile.TemporaryDirectory() as d:
+            kit_pts, deck_pts = self._two_planes(d, "Darius Acuff", "Darius Acuff Jr.", "Darius Acuff Jr.", "Darius Acuff")
+            self.assertNotEqual(kit_pts, KIT_ROW["pts"]); self.assertEqual(kit_pts, deck_pts)
+
+    def test_an_aliased_line_reaches_the_deck_planes_spelling(self):
+        # "Cameron Johnson" (ESPN, Yahoo, the deck) is "Cam Johnson" in the kit's file and alias table
+        with tempfile.TemporaryDirectory() as d:
+            kit_pts, deck_pts = self._two_planes(d, "Cam Johnson", "Cameron Johnson", "Cameron Johnson", "Cam Johnson")
+            self.assertNotEqual(kit_pts, KIT_ROW["pts"]); self.assertEqual(kit_pts, deck_pts)
+
     def test_additions_join_the_deck_plane_after_the_snapshot_rows(self):
         # owner 2026-10-21 option (b): the frozen Version 69 snapshot stays untouched; in-season pickups follow it
         with tempfile.TemporaryDirectory() as d:

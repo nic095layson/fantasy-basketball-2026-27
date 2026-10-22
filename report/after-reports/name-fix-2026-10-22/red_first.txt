@@ -1,0 +1,515 @@
+/home/user/wtname/scripts/test_box_pull.py:56: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/wtname/scripts/fixtures/bref_202604100ATL_basic_tables.html' mode='r' encoding='utf-8'>
+  html = open(os.path.join(FX, "bref_202604100ATL_basic_tables.html"), encoding="utf-8").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./home/user/wtname/scripts/test_box_pull.py:70: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/wtname/scripts/fixtures/bref_index_2026-04-10_links.txt' mode='r' encoding='utf-8'>
+  links = open(os.path.join(FX, "bref_index_2026-04-10_links.txt")).read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+../home/user/wtname/scripts/test_box_pull.py:23: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/wtname/scripts/fixtures/espn_scoreboard_2026-10-16.json' mode='r' encoding='utf-8'>
+  self.sb = json.load(open(os.path.join(FX, "espn_scoreboard_2026-10-16.json")))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/test_box_pull.py:24: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/wtname/scripts/fixtures/espn_summary_401898406_2026-10-16.json' mode='r' encoding='utf-8'>
+  self.sm = json.load(open(os.path.join(FX, "espn_summary_401898406_2026-10-16.json")))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+..........F....E.E....../home/user/wtname/scripts/test_week_matchup.py:240: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpxysl514w/state.json' mode='r' encoding='utf-8'>
+  st = json.load(open(self.state))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/test_week_matchup.py:243: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpxysl514w/actuals/2026-10-20.json' mode='r' encoding='utf-8'>
+  f = os.path.join(self.paths["actuals"], "2026-10-20.json"); box_rec = json.load(open(f))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:309: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpxysl514w/state.json' mode='r' encoding='utf-8'>
+  state = json.load(open(paths["state"], encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:310: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpxysl514w/sched.json' mode='r' encoding='utf-8'>
+  sched_rec = json.load(open(paths["schedule"], encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/co_gm.py:86: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpxysl514w/games.csv' mode='r' encoding='utf-8'>
+  return [(r["date"], r["visitor"], r["home"]) for r in csv.DictReader(open(path, encoding="utf-8"))]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:342: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpxysl514w/actuals/2026-10-20.json' mode='r' encoding='utf-8'>
+  boxes[d] = played(json.load(open(f, encoding="utf-8"))); read.append(d)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:293: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpxysl514w/status/status_2026-10-21.json' mode='r' encoding='utf-8'>
+  return (json.load(open(files[-1], encoding="utf-8")), files[-1]) if files else ({"rows": []}, None)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:466: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpxysl514w/actuals/2026-10-20.json' mode='r' encoding='utf-8'>
+  rec = json.load(open(f, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpxysl514w/state.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpxysl514w/sched.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpxysl514w/games.csv'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpxysl514w/status/status_2026-10-21.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/home/user/wtname/data/season/pool_season.csv'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+F/home/user/wtname/scripts/week_matchup.py:309: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpqs486lml/state.json' mode='r' encoding='utf-8'>
+  state = json.load(open(paths["state"], encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:310: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpqs486lml/sched.json' mode='r' encoding='utf-8'>
+  sched_rec = json.load(open(paths["schedule"], encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/co_gm.py:86: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpqs486lml/games.csv' mode='r' encoding='utf-8'>
+  return [(r["date"], r["visitor"], r["home"]) for r in csv.DictReader(open(path, encoding="utf-8"))]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:342: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpqs486lml/actuals/2026-10-20.json' mode='r' encoding='utf-8'>
+  boxes[d] = played(json.load(open(f, encoding="utf-8"))); read.append(d)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:222: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpqs486lml/pull_13_Renamed.json' mode='r' encoding='utf-8'>
+  pull = json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:293: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpqs486lml/status/status_2026-10-21.json' mode='r' encoding='utf-8'>
+  return (json.load(open(files[-1], encoding="utf-8")), files[-1]) if files else ({"rows": []}, None)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:466: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpqs486lml/actuals/2026-10-20.json' mode='r' encoding='utf-8'>
+  rec = json.load(open(f, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpqs486lml/state.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpqs486lml/sched.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpqs486lml/games.csv'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpqs486lml/pull_13_Renamed.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpqs486lml/status/status_2026-10-21.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./home/user/wtname/scripts/test_week_matchup.py:322: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpias4vwk4/pull_13_Renamed.json' mode='r' encoding='utf-8'>
+  p = json.load(open(self.pull(names=("Renamed", "THEIRS"))))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:309: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpias4vwk4/state.json' mode='r' encoding='utf-8'>
+  state = json.load(open(paths["state"], encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:310: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpias4vwk4/sched.json' mode='r' encoding='utf-8'>
+  sched_rec = json.load(open(paths["schedule"], encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/co_gm.py:86: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpias4vwk4/games.csv' mode='r' encoding='utf-8'>
+  return [(r["date"], r["visitor"], r["home"]) for r in csv.DictReader(open(path, encoding="utf-8"))]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:342: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpias4vwk4/actuals/2026-10-20.json' mode='r' encoding='utf-8'>
+  boxes[d] = played(json.load(open(f, encoding="utf-8"))); read.append(d)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:222: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpias4vwk4/renamed.json' mode='r' encoding='utf-8'>
+  pull = json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:293: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpias4vwk4/status/status_2026-10-21.json' mode='r' encoding='utf-8'>
+  return (json.load(open(files[-1], encoding="utf-8")), files[-1]) if files else ({"rows": []}, None)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:466: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpias4vwk4/actuals/2026-10-20.json' mode='r' encoding='utf-8'>
+  rec = json.load(open(f, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpias4vwk4/state.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpias4vwk4/sched.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpias4vwk4/games.csv'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpias4vwk4/renamed.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpias4vwk4/status/status_2026-10-21.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./home/user/wtname/scripts/week_matchup.py:309: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpfl3kxa50/state.json' mode='r' encoding='utf-8'>
+  state = json.load(open(paths["state"], encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:310: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpfl3kxa50/sched.json' mode='r' encoding='utf-8'>
+  sched_rec = json.load(open(paths["schedule"], encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/co_gm.py:86: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpfl3kxa50/games.csv' mode='r' encoding='utf-8'>
+  return [(r["date"], r["visitor"], r["home"]) for r in csv.DictReader(open(path, encoding="utf-8"))]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:342: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpfl3kxa50/actuals/2026-10-20.json' mode='r' encoding='utf-8'>
+  boxes[d] = played(json.load(open(f, encoding="utf-8"))); read.append(d)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:293: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpfl3kxa50/status/status_2026-10-21.json' mode='r' encoding='utf-8'>
+  return (json.load(open(files[-1], encoding="utf-8")), files[-1]) if files else ({"rows": []}, None)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:466: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpfl3kxa50/actuals/2026-10-20.json' mode='r' encoding='utf-8'>
+  rec = json.load(open(f, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpfl3kxa50/state.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpfl3kxa50/sched.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpfl3kxa50/games.csv'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpfl3kxa50/status/status_2026-10-21.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./home/user/wtname/scripts/week_matchup.py:309: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpjvax3hpw/state.json' mode='r' encoding='utf-8'>
+  state = json.load(open(paths["state"], encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:310: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpjvax3hpw/sched.json' mode='r' encoding='utf-8'>
+  sched_rec = json.load(open(paths["schedule"], encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/co_gm.py:86: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpjvax3hpw/games.csv' mode='r' encoding='utf-8'>
+  return [(r["date"], r["visitor"], r["home"]) for r in csv.DictReader(open(path, encoding="utf-8"))]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:342: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpjvax3hpw/actuals/2026-10-20.json' mode='r' encoding='utf-8'>
+  boxes[d] = played(json.load(open(f, encoding="utf-8"))); read.append(d)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:224: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpjvax3hpw/torn.json' mode='r' encoding='utf-8'>
+  return None, f"{os.path.basename(path)} is unreadable ({type(e).__name__})"
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:293: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpjvax3hpw/status/status_2026-10-21.json' mode='r' encoding='utf-8'>
+  return (json.load(open(files[-1], encoding="utf-8")), files[-1]) if files else ({"rows": []}, None)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:466: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpjvax3hpw/actuals/2026-10-20.json' mode='r' encoding='utf-8'>
+  rec = json.load(open(f, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpjvax3hpw/state.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpjvax3hpw/sched.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpjvax3hpw/games.csv'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpjvax3hpw/torn.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpjvax3hpw/status/status_2026-10-21.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./home/user/wtname/scripts/week_matchup.py:309: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmps80situf/state.json' mode='r' encoding='utf-8'>
+  state = json.load(open(paths["state"], encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:310: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmps80situf/sched.json' mode='r' encoding='utf-8'>
+  sched_rec = json.load(open(paths["schedule"], encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/co_gm.py:86: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmps80situf/games.csv' mode='r' encoding='utf-8'>
+  return [(r["date"], r["visitor"], r["home"]) for r in csv.DictReader(open(path, encoding="utf-8"))]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmps80situf/state.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmps80situf/sched.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmps80situf/games.csv'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+../home/user/wtname/scripts/week_matchup.py:309: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpz81nf576/state.json' mode='r' encoding='utf-8'>
+  state = json.load(open(paths["state"], encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:310: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpz81nf576/sched.json' mode='r' encoding='utf-8'>
+  sched_rec = json.load(open(paths["schedule"], encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/co_gm.py:86: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpz81nf576/games.csv' mode='r' encoding='utf-8'>
+  return [(r["date"], r["visitor"], r["home"]) for r in csv.DictReader(open(path, encoding="utf-8"))]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:342: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpz81nf576/actuals/2026-10-20.json' mode='r' encoding='utf-8'>
+  boxes[d] = played(json.load(open(f, encoding="utf-8"))); read.append(d)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:293: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpz81nf576/status/status_2026-10-21.json' mode='r' encoding='utf-8'>
+  return (json.load(open(files[-1], encoding="utf-8")), files[-1]) if files else ({"rows": []}, None)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:466: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpz81nf576/actuals/2026-10-20.json' mode='r' encoding='utf-8'>
+  rec = json.load(open(f, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpz81nf576/state.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpz81nf576/sched.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpz81nf576/games.csv'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpz81nf576/status/status_2026-10-21.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./home/user/wtname/scripts/week_matchup.py:309: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpi6y2ogkp/state.json' mode='r' encoding='utf-8'>
+  state = json.load(open(paths["state"], encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:310: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpi6y2ogkp/sched.json' mode='r' encoding='utf-8'>
+  sched_rec = json.load(open(paths["schedule"], encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/co_gm.py:86: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpi6y2ogkp/games.csv' mode='r' encoding='utf-8'>
+  return [(r["date"], r["visitor"], r["home"]) for r in csv.DictReader(open(path, encoding="utf-8"))]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:342: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpi6y2ogkp/actuals/2026-10-20.json' mode='r' encoding='utf-8'>
+  boxes[d] = played(json.load(open(f, encoding="utf-8"))); read.append(d)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:293: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpi6y2ogkp/status/status_2026-10-21.json' mode='r' encoding='utf-8'>
+  return (json.load(open(files[-1], encoding="utf-8")), files[-1]) if files else ({"rows": []}, None)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:466: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpi6y2ogkp/actuals/2026-10-20.json' mode='r' encoding='utf-8'>
+  rec = json.load(open(f, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpi6y2ogkp/state.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpi6y2ogkp/sched.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpi6y2ogkp/games.csv'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpi6y2ogkp/status/status_2026-10-21.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./home/user/wtname/scripts/week_matchup.py:309: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp2kqte4f_/state.json' mode='r' encoding='utf-8'>
+  state = json.load(open(paths["state"], encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:310: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp2kqte4f_/sched.json' mode='r' encoding='utf-8'>
+  sched_rec = json.load(open(paths["schedule"], encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/co_gm.py:86: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp2kqte4f_/games.csv' mode='r' encoding='utf-8'>
+  return [(r["date"], r["visitor"], r["home"]) for r in csv.DictReader(open(path, encoding="utf-8"))]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:342: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp2kqte4f_/actuals/2026-10-20.json' mode='r' encoding='utf-8'>
+  boxes[d] = played(json.load(open(f, encoding="utf-8"))); read.append(d)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:222: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp2kqte4f_/pull_13_MINE.json' mode='r' encoding='utf-8'>
+  pull = json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:293: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp2kqte4f_/status/status_2026-10-21.json' mode='r' encoding='utf-8'>
+  return (json.load(open(files[-1], encoding="utf-8")), files[-1]) if files else ({"rows": []}, None)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:466: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp2kqte4f_/actuals/2026-10-20.json' mode='r' encoding='utf-8'>
+  rec = json.load(open(f, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp2kqte4f_/state.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp2kqte4f_/sched.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp2kqte4f_/games.csv'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp2kqte4f_/pull_13_MINE.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp2kqte4f_/status/status_2026-10-21.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./home/user/wtname/scripts/week_matchup.py:309: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmprg157c12/state.json' mode='r' encoding='utf-8'>
+  state = json.load(open(paths["state"], encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:310: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmprg157c12/sched.json' mode='r' encoding='utf-8'>
+  sched_rec = json.load(open(paths["schedule"], encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/co_gm.py:86: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmprg157c12/games.csv' mode='r' encoding='utf-8'>
+  return [(r["date"], r["visitor"], r["home"]) for r in csv.DictReader(open(path, encoding="utf-8"))]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:342: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmprg157c12/actuals/2026-10-20.json' mode='r' encoding='utf-8'>
+  boxes[d] = played(json.load(open(f, encoding="utf-8"))); read.append(d)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:222: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmprg157c12/pull_13_MINE.json' mode='r' encoding='utf-8'>
+  pull = json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:293: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmprg157c12/status/status_2026-10-21.json' mode='r' encoding='utf-8'>
+  return (json.load(open(files[-1], encoding="utf-8")), files[-1]) if files else ({"rows": []}, None)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:466: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmprg157c12/actuals/2026-10-20.json' mode='r' encoding='utf-8'>
+  rec = json.load(open(f, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmprg157c12/state.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmprg157c12/sched.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmprg157c12/games.csv'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmprg157c12/pull_13_MINE.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmprg157c12/status/status_2026-10-21.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./home/user/wtname/scripts/week_matchup.py:309: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpo4ez5kau/state.json' mode='r' encoding='utf-8'>
+  state = json.load(open(paths["state"], encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:310: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpo4ez5kau/sched.json' mode='r' encoding='utf-8'>
+  sched_rec = json.load(open(paths["schedule"], encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/co_gm.py:86: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpo4ez5kau/games.csv' mode='r' encoding='utf-8'>
+  return [(r["date"], r["visitor"], r["home"]) for r in csv.DictReader(open(path, encoding="utf-8"))]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:342: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpo4ez5kau/actuals/2026-10-20.json' mode='r' encoding='utf-8'>
+  boxes[d] = played(json.load(open(f, encoding="utf-8"))); read.append(d)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:222: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpo4ez5kau/pull_13_MINE.json' mode='r' encoding='utf-8'>
+  pull = json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:293: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpo4ez5kau/status/status_2026-10-21.json' mode='r' encoding='utf-8'>
+  return (json.load(open(files[-1], encoding="utf-8")), files[-1]) if files else ({"rows": []}, None)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:466: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpo4ez5kau/actuals/2026-10-20.json' mode='r' encoding='utf-8'>
+  rec = json.load(open(f, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpo4ez5kau/state.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpo4ez5kau/sched.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpo4ez5kau/games.csv'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpo4ez5kau/pull_13_MINE.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpo4ez5kau/status/status_2026-10-21.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./home/user/wtname/scripts/week_matchup.py:309: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpequyn1vk/state.json' mode='r' encoding='utf-8'>
+  state = json.load(open(paths["state"], encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:310: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpequyn1vk/sched.json' mode='r' encoding='utf-8'>
+  sched_rec = json.load(open(paths["schedule"], encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/co_gm.py:86: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpequyn1vk/games.csv' mode='r' encoding='utf-8'>
+  return [(r["date"], r["visitor"], r["home"]) for r in csv.DictReader(open(path, encoding="utf-8"))]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:342: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpequyn1vk/actuals/2026-10-20.json' mode='r' encoding='utf-8'>
+  boxes[d] = played(json.load(open(f, encoding="utf-8"))); read.append(d)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:222: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpequyn1vk/pull_15_MINE.json' mode='r' encoding='utf-8'>
+  pull = json.load(open(path, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:293: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpequyn1vk/status/status_2026-10-21.json' mode='r' encoding='utf-8'>
+  return (json.load(open(files[-1], encoding="utf-8")), files[-1]) if files else ({"rows": []}, None)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:466: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpequyn1vk/actuals/2026-10-20.json' mode='r' encoding='utf-8'>
+  rec = json.load(open(f, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpequyn1vk/state.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpequyn1vk/sched.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpequyn1vk/games.csv'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpequyn1vk/pull_15_MINE.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/week_matchup.py:287: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpequyn1vk/status/status_2026-10-21.json'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+............/home/user/wtname/scripts/test_season_lines.py:112: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpv_zfh9k1/projections_season.csv' mode='r' encoding='utf-8'>
+  return (next(csv.DictReader(open(os.path.join(d, "projections_season.csv"))))["pts"],
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/test_season_lines.py:113: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpv_zfh9k1/pool_season.csv' mode='r' encoding='utf-8'>
+  next(csv.DictReader(open(os.path.join(d, "pool_season.csv"))))["pts"])
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+F/home/user/wtname/scripts/test_season_lines.py:138: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpi9guen6w/pool_season.csv' mode='r' encoding='utf-8'>
+  names = [r["player"] for r in csv.DictReader(open(os.path.join(d, "pool_season.csv")))]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+../home/user/wtname/scripts/test_season_lines.py:112: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp9d_zlioe/projections_season.csv' mode='r' encoding='utf-8'>
+  return (next(csv.DictReader(open(os.path.join(d, "projections_season.csv"))))["pts"],
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/test_season_lines.py:113: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp9d_zlioe/pool_season.csv' mode='r' encoding='utf-8'>
+  next(csv.DictReader(open(os.path.join(d, "pool_season.csv"))))["pts"])
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+F/home/user/wtname/scripts/test_season_lines.py:99: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp3h9d4_1u/projections_season.csv' mode='r' encoding='utf-8'>
+  self.assertEqual(open(os.path.join(d, "projections_season.csv")).read().replace("\r", ""),
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/test_season_lines.py:100: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp3h9d4_1u/kit.csv' mode='r' encoding='utf-8'>
+  open(kit).read().replace("\r", ""))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/test_season_lines.py:101: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp3h9d4_1u/pool_season.csv' mode='r' encoding='utf-8'>
+  self.assertEqual(open(os.path.join(d, "pool_season.csv")).read().replace("\r", ""),
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/user/wtname/scripts/test_season_lines.py:102: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp3h9d4_1u/deck.csv' mode='r' encoding='utf-8'>
+  open(deck).read().replace("\r", ""))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./home/user/wtname/scripts/test_season_lines.py:161: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpygwn8utc/pool_season.csv' mode='r' encoding='utf-8'>
+  names = [r["player"] for r in csv.DictReader(open(os.path.join(d, "pool_season.csv"), encoding="utf-8"))]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+...
+======================================================================
+ERROR: test_given_the_cards_names_a_line_is_read_under_the_cards_spelling (scripts.test_week_matchup.BoxScores.test_given_the_cards_names_a_line_is_read_under_the_cards_spelling)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/wtname/scripts/test_week_matchup.py", line 70, in test_given_the_cards_names_a_line_is_read_under_the_cards_spelling
+    got = WM.played(rec, names=["Darius Acuff Jr.", "Cameron Johnson", "A"])
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: played() got an unexpected keyword argument 'names'
+
+======================================================================
+ERROR: test_the_recent_box_scores_are_read_under_the_cards_spelling_too (scripts.test_week_matchup.BoxScores.test_the_recent_box_scores_are_read_under_the_cards_spelling_too)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/wtname/scripts/test_week_matchup.py", line 79, in test_the_recent_box_scores_are_read_under_the_cards_spelling_too
+    (day, who, teams), = WM._recent_boxes(d, "2026-10-22", names=["Darius Acuff Jr."])
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: _recent_boxes() got an unexpected keyword argument 'names'
+
+======================================================================
+FAIL: test_a_suffix_the_pool_leaves_off_resolves_when_one_name_shares_the_key (scripts.test_box_pull.Resolve.test_a_suffix_the_pool_leaves_off_resolves_when_one_name_shares_the_key)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/wtname/scripts/test_box_pull.py", line 129, in test_a_suffix_the_pool_leaves_off_resolves_when_one_name_shares_the_key
+    self.assertEqual([r["pool_name"] for r in res], ["Darius Acuff", "Dereck Lively"])
+AssertionError: Lists differ: [None, None] != ['Darius Acuff', 'Dereck Lively']
+
+First differing element 0:
+None
+'Darius Acuff'
+
+- [None, None]
++ ['Darius Acuff', 'Dereck Lively']
+
+======================================================================
+FAIL: test_a_line_the_kits_file_spells_differently_still_counts_for_its_roster (scripts.test_week_matchup.Record.test_a_line_the_kits_file_spells_differently_still_counts_for_its_roster)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/wtname/scripts/test_week_matchup.py", line 248, in test_a_line_the_kits_file_spells_differently_still_counts_for_its_roster
+    self.assertEqual(cats["PTS"]["opp_to_date"], 42)            # Maxey 30 + Acuff 12
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 30 != 42
+
+======================================================================
+FAIL: test_a_line_filed_under_the_kits_spelling_reaches_the_deck_plane_too (scripts.test_season_lines.Run.test_a_line_filed_under_the_kits_spelling_reaches_the_deck_plane_too)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/wtname/scripts/test_season_lines.py", line 120, in test_a_line_filed_under_the_kits_spelling_reaches_the_deck_plane_too
+    self.assertNotEqual(kit_pts, KIT_ROW["pts"]); self.assertEqual(kit_pts, deck_pts)
+                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: '20.4' != '18.0'
+- 20.4
++ 18.0
+
+
+======================================================================
+FAIL: test_an_aliased_line_reaches_the_deck_planes_spelling (scripts.test_season_lines.Run.test_an_aliased_line_reaches_the_deck_planes_spelling)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/wtname/scripts/test_season_lines.py", line 126, in test_an_aliased_line_reaches_the_deck_planes_spelling
+    self.assertNotEqual(kit_pts, KIT_ROW["pts"]); self.assertEqual(kit_pts, deck_pts)
+                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: '20.4' != '18.0'
+- 20.4
++ 18.0
+
+
+----------------------------------------------------------------------
+Ran 59 tests in 1.270s
+
+FAILED (failures=4, errors=2)

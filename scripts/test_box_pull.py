@@ -121,6 +121,19 @@ class Resolve(unittest.TestCase):
         rows = B.resolve_names([dict(name="Nobody Here", team="X", pts=5)], self.POOL, {})
         self.assertIsNone(rows[0]["pool_name"]); self.assertEqual(rows[0]["pts"], 5)
 
+    def test_a_suffix_the_pool_leaves_off_resolves_when_one_name_shares_the_key(self):
+        # owner 2026-10-22 (the name-mismatch fix): the kit's file spells "Darius Acuff" and "Dereck Lively"; ESPN's
+        # box scores add Jr. / II, and the line was left unpooled
+        res = B.resolve_names([dict(name="Darius Acuff Jr.", team="SAC"), dict(name="Dereck Lively II", team="DAL")],
+                              self.POOL + ["Darius Acuff", "Dereck Lively"], {})
+        self.assertEqual([r["pool_name"] for r in res], ["Darius Acuff", "Dereck Lively"])
+
+    def test_two_pool_names_sharing_the_suffix_free_key_leave_the_line_unpooled(self):
+        res = B.resolve_names([dict(name="Gary Payton III", team="GSW"), dict(name="Gary Payton II", team="GSW")],
+                              self.POOL + ["Gary Payton", "Gary Payton II"], {})
+        self.assertIsNone(res[0]["pool_name"])                    # two candidates: never guessed
+        self.assertEqual(res[1]["pool_name"], "Gary Payton II")   # an exact spelling still wins
+
 
 class Record(unittest.TestCase):
     def test_no_games_writes_an_empty_dated_record_with_receipts(self):
