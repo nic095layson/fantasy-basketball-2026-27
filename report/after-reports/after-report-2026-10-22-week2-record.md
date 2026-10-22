@@ -37,7 +37,13 @@ The full preview is `report/previews/week_02.md`. These are the kit's own figure
 ## 3. Bounds
 
 - **Out of scope by design:** the method itself. Week 2 runs on the preseason v69 lines and the 3.5-games-per-player weekly model, as week 1 did; P3 (owner's decision 3) moves the title odds to the season lines, and the ledger records the lines each week used.
-- **In scope and unverified:** none open. The prediction cannot be graded until week 2 ends (11/01) and its result is entered.
+- **In scope and unverified:** the prediction cannot be graded until week 2 ends (11/01) and its result is entered.
+
+**Bands.** The weekly preview runs on both FRAGILE constants of the standing sweep (`redteam-2026-10-19/sweep.json`, engine 048efb6): the shared games shock in the weekly draw (`weekly_preview.simulate`) and the availability discount inside `arena.team_week_model`. The sweep measured their effect on the season title share, not on a weekly P(win):
+- TEAM_WEEK_SHOCK is FRAGILE: +2.3 (no shared games shock) / −3.4 (shock doubled to 0.12).
+- weekly_availability is FRAGILE: −2.0 (no in-sim injury discount) / +0.8 (harsher risk tier 0.65) / −1.5 (healthy players play 0.95 of games) / +0.9 (healthy players play 0.80 of games).
+
+Their effect on this week's 0.576 was not measured (did not check); week 1 was recorded on the same two constants, so the ledger compares like with like, and the ledger's Brier scores are what will calibrate them (PR #171 §4).
 
 ## Watchlist
 
