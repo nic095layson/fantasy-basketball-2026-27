@@ -1,5 +1,5 @@
 {
- "ran_at_utc": "2026-10-22T03:44:32Z",
+ "ran_at_utc": "2026-10-22T12:54:21Z",
  "steps": [
   {
    "name": "preflight",
@@ -13,56 +13,55 @@
   },
   {
    "name": "league live",
-   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/league_live.py --as-of 2026-10-22 --since 2026-10-22T03:43:33Z",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/league_live.py --as-of 2026-10-22 --since 2026-10-22T12:54:00Z",
    "exit": 0,
    "pass_line": "LEAGUE LIVE: PASS — rosters from FantasyBot, pinned data/source/fantasybot/pull_2026-10-22.json",
    "verdict": "PASS",
    "tail": [
-    "LEAGUE LIVE: Flaim pull not used — 4 of 12 current Flaim rosters in the pull; trying FantasyBot",
-    "LEAGUE LIVE: Flaim matchup/available-player responses pinned for the week card, data/source/flaim/pull_2026-10-22.json",
+    "LEAGUE LIVE: Flaim pull not used — 0 of 12 current Flaim rosters in the pull; trying FantasyBot",
     "LEAGUE INTAKE: PASS — 12 teams, 170 players, 170 of 170 resolved; 0 NBA-team disagreement(s) with the pool; wrote data/league_state.json",
-    "LEAGUE MOVES: PASS — 4 team(s) changed, 7 move(s), 2026-10-20 to 2026-10-22; wrote data/news/league_moves_2026-10-22.json",
+    "LEAGUE MOVES: PASS — 0 team(s) changed, 0 move(s), 2026-10-22 to 2026-10-22; wrote data/news/league_moves_2026-10-22.json",
     "LEAGUE LIVE: PASS — rosters from FantasyBot, pinned data/source/fantasybot/pull_2026-10-22.json"
    ]
   },
   {
    "name": "matchup live",
-   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/matchup_live.py --date 2026-10-22 --since 2026-10-22T03:43:33Z",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/matchup_live.py --date 2026-10-22 --since 2026-10-22T12:54:00Z",
    "exit": 0,
-   "pass_line": "MATCHUP LIVE: PASS — week 1, games left 21 mine / 27 MAXEY-MUM OVERDRIVE; wrote data/news/matchup_live_2026-10-22.json",
+   "pass_line": "MATCHUP LIVE: PASS — week 1, games left 21 mine / 26 MAXEY-MUM OVERDRIVE; wrote data/news/matchup_live_2026-10-22.json",
    "verdict": "PASS",
    "tail": [
-    "MATCHUP LIVE: PASS — week 1, games left 21 mine / 27 MAXEY-MUM OVERDRIVE; wrote data/news/matchup_live_2026-10-22.json"
+    "MATCHUP LIVE: PASS — week 1, games left 21 mine / 26 MAXEY-MUM OVERDRIVE; wrote data/news/matchup_live_2026-10-22.json"
    ]
   },
   {
    "name": "box scores 2026-10-21",
    "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/box_pull.py --date 2026-10-21",
    "exit": 0,
-   "pass_line": "BOX PULL: PASS — 2026-10-21: 8 games, 223 player lines, 153 in the pool, 70 unpooled; single-source (ESPN only); written data/actuals/2026-10-21.json",
+   "pass_line": "BOX PULL: PASS — 2026-10-21: 11 games, 301 player lines, 204 in the pool, 97 unpooled; two outlets: 298 matched, 3 cells differ, 0 ESPN-only, 0 bref-only; written data/actuals/2026-10-21.json",
    "verdict": "PASS",
    "tail": [
-    "BOX PULL: PASS — 2026-10-21: 8 games, 223 player lines, 153 in the pool, 70 unpooled; single-source (ESPN only); written data/actuals/2026-10-21.json"
+    "BOX PULL: PASS — 2026-10-21: 11 games, 301 player lines, 204 in the pool, 97 unpooled; two outlets: 298 matched, 3 cells differ, 0 ESPN-only, 0 bref-only; written data/actuals/2026-10-21.json"
    ]
   },
   {
    "name": "season lines",
    "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/season_lines.py --date 2026-10-22",
    "exit": 0,
-   "pass_line": "SEASON LINES: PASS — 2026-10-22: 4 box-score records, 198 pool players with regular-season games, 152 lines moved by 0.25+ (priors in games: FG% 26.0, FT% 37.5, 3PM 9.5, PTS 11.7, REB 12.4, AST 11.7, STL 21.7, BLK 14.5, TO 14.0); 48 unpooled players with games",
+   "pass_line": "SEASON LINES: PASS — 2026-10-22: 4 box-score records, 249 pool players with regular-season games, 194 lines moved by 0.25+ (priors in games: FG% 26.0, FT% 37.5, 3PM 9.5, PTS 11.7, REB 12.4, AST 11.7, STL 21.7, BLK 14.5, TO 14.0); 73 unpooled players with games",
    "verdict": "PASS",
    "tail": [
-    "SEASON LINES: PASS — 2026-10-22: 4 box-score records, 198 pool players with regular-season games, 152 lines moved by 0.25+ (priors in games: FG% 26.0, FT% 37.5, 3PM 9.5, PTS 11.7, REB 12.4, AST 11.7, STL 21.7, BLK 14.5, TO 14.0); 48 unpooled players with games"
+    "SEASON LINES: PASS — 2026-10-22: 4 box-score records, 249 pool players with regular-season games, 194 lines moved by 0.25+ (priors in games: FG% 26.0, FT% 37.5, 3PM 9.5, PTS 11.7, REB 12.4, AST 11.7, STL 21.7, BLK 14.5, TO 14.0); 73 unpooled players with games"
    ]
   },
   {
    "name": "season board",
    "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/season_board.py --date 2026-10-22",
    "exit": 0,
-   "pass_line": "SEASON BOARD: PASS — 2026-10-22: report/season/board_2026-10-22.md (152 movers listed)",
+   "pass_line": "SEASON BOARD: PASS — 2026-10-22: report/season/board_2026-10-22.md (194 movers listed)",
    "verdict": "PASS",
    "tail": [
-    "SEASON BOARD: PASS — 2026-10-22: report/season/board_2026-10-22.md (152 movers listed)"
+    "SEASON BOARD: PASS — 2026-10-22: report/season/board_2026-10-22.md (194 movers listed)"
    ]
   },
   {
@@ -102,10 +101,10 @@
    "name": "week matchup",
    "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/week_matchup.py --date 2026-10-22",
    "exit": 0,
-   "pass_line": "WEEK MATCHUP: PASS — 2026-10-22: week 1 vs MAXEY-MUM OVERDRIVE; to date from Yahoo (rebuild differs on 21 stat(s)); to date 2 day(s), 0 missing; projected 3-6-0; pickups: no finished low-value player; wrote report/briefs/week_matchup_2026-10-22.json",
+   "pass_line": "WEEK MATCHUP: PASS — 2026-10-22: week 1 vs MAXEY-MUM OVERDRIVE; to date from Yahoo (rebuild differs on 13 stat(s)); to date 2 day(s), 0 missing; projected 3-6-0; pickups: no finished low-value player; wrote report/briefs/week_matchup_2026-10-22.json",
    "verdict": "PASS",
    "tail": [
-    "WEEK MATCHUP: PASS — 2026-10-22: week 1 vs MAXEY-MUM OVERDRIVE; to date from Yahoo (rebuild differs on 21 stat(s)); to date 2 day(s), 0 missing; projected 3-6-0; pickups: no finished low-value player; wrote report/briefs/week_matchup_2026-10-22.json"
+    "WEEK MATCHUP: PASS — 2026-10-22: week 1 vs MAXEY-MUM OVERDRIVE; to date from Yahoo (rebuild differs on 13 stat(s)); to date 2 day(s), 0 missing; projected 3-6-0; pickups: no finished low-value player; wrote report/briefs/week_matchup_2026-10-22.json"
    ]
   },
   {

@@ -19,9 +19,9 @@
    2
   ],
   [
-   "Kevin Durant",
-   "HOU",
-   null,
+   "Christian Braun",
+   "DEN",
+   "@ OKC",
    null,
    1.0,
    2
@@ -91,20 +91,20 @@
    2
   ],
   [
+   "Kevin Durant",
+   "HOU",
+   null,
+   null,
+   1.0,
+   2
+  ],
+  [
    "Derrick White",
    "BOS",
    null,
    null,
    1.0,
    1
-  ],
-  [
-   "Christian Braun",
-   "DEN",
-   "@ OKC",
-   null,
-   1.0,
-   2
   ],
   [
    "Neemias Queta",
@@ -122,10 +122,23 @@
   ]
  ],
  "bench": [],
- "waiver_base_ecw": 5.1783,
- "waiver_positive_pairs": 0,
+ "waiver_base_ecw": 5.1249,
+ "waiver_positive_pairs": 1,
  "waiver_pairs_scored": 520,
- "waiver_top": [],
+ "waiver_top": [
+  {
+   "add": "Julian Champagnie",
+   "add_team": "SAS",
+   "drop": "Christian Braun",
+   "d_ecw": 0.0017,
+   "title_by_seed": {
+    "2026": 23.75,
+    "2027": 23.29
+   },
+   "title": 23.52,
+   "d_title": -0.24
+  }
+ ],
  "streaming": [],
  "streaming_vs": {
   "player": "PJ Washington",
@@ -152,52 +165,5 @@
   "ok": true,
   "hits": []
  },
- "league_moves": [
-  {
-   "team": "Splash Mountain",
-   "seat": 8,
-   "added": [
-    "Ace Bailey"
-   ],
-   "dropped": [
-    "Collin Sexton"
-   ],
-   "to_il": [],
-   "from_il": []
-  },
-  {
-   "team": "Cade n em",
-   "seat": 6,
-   "added": [
-    "Moussa Diabate"
-   ],
-   "dropped": [
-    "Mitchell Robinson"
-   ],
-   "to_il": [],
-   "from_il": []
-  },
-  {
-   "team": "Podz save the league",
-   "seat": 9,
-   "added": [
-    "Andre Drummond"
-   ],
-   "dropped": [],
-   "to_il": [
-    "Brandin Podziemski"
-   ],
-   "from_il": []
-  },
-  {
-   "team": "John's Cool Team",
-   "seat": 7,
-   "added": [
-    "Yves Missi"
-   ],
-   "dropped": [],
-   "to_il": [],
-   "from_il": []
-  }
- ]
+ "league_moves": []
 }

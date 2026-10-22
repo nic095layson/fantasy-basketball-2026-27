@@ -2,6 +2,53 @@
  "mine": {
   "bench": [
    {
+    "gamesLeft": 2,
+    "gamesThisPeriod": 3,
+    "id": "1433",
+    "imageUrl": "https://api.fantasybot.ai/img/player/1433.webp?sport=nba",
+    "injury": null,
+    "name": "Kevin Durant",
+    "nextGame": {
+     "backToBack": false,
+     "date": "2026-10-23",
+     "home": false,
+     "label": "Fri Oct 23",
+     "opponent": "SAS",
+     "tipEt": "9:30 PM",
+     "tipUtc": "2026-10-24T01:30:00.000Z"
+    },
+    "perGame": {
+     "ast": 4.2,
+     "blk": 1,
+     "fg_pct": 0.533,
+     "fga": 16.7,
+     "fgm": 8.9,
+     "ft_pct": 0.837,
+     "fta": 5.9,
+     "ftm": 4.9,
+     "min": 36.1,
+     "pts": 25,
+     "reb": 5.3,
+     "stl": 0.8,
+     "tov": 3,
+     "tpm": 2.2
+    },
+    "position": "SG/SF/PF",
+    "positions": [
+     "SG",
+     "SF",
+     "PF"
+    ],
+    "slot": "BN",
+    "sport": "nba",
+    "statusLine": null,
+    "team": "HOU",
+    "value": {
+     "perGame": 2.53,
+     "text": "strong PTS and FG%, costs you TO"
+    }
+   },
+   {
     "gamesLeft": 1,
     "gamesThisPeriod": 2,
     "id": "1830",
@@ -43,55 +90,8 @@
     "statusLine": null,
     "team": "BOS",
     "value": {
-     "perGame": 2.25,
+     "perGame": 2.24,
      "text": "strong 3PM and AST, costs you REB"
-    }
-   },
-   {
-    "gamesLeft": 2,
-    "gamesThisPeriod": 2,
-    "id": "2457",
-    "imageUrl": "https://api.fantasybot.ai/img/player/2457.webp?sport=nba",
-    "injury": null,
-    "name": "Christian Braun",
-    "nextGame": {
-     "backToBack": false,
-     "date": "2026-10-22",
-     "home": false,
-     "label": "Thu Oct 22",
-     "opponent": "OKC",
-     "tipEt": "9:30 PM",
-     "tipUtc": "2026-10-23T01:30:00.000Z"
-    },
-    "perGame": {
-     "ast": 2.6,
-     "blk": 0.4,
-     "fg_pct": 0.541,
-     "fga": 9.5,
-     "fgm": 5.2,
-     "ft_pct": 0.793,
-     "fta": 2.5,
-     "ftm": 2,
-     "min": 32,
-     "pts": 13.4,
-     "reb": 5.1,
-     "stl": 1,
-     "tov": 1,
-     "tpm": 1.1
-    },
-    "position": "SG/SF/PF",
-    "positions": [
-     "SG",
-     "SF",
-     "PF"
-    ],
-    "slot": "BN",
-    "sport": "nba",
-    "statusLine": null,
-    "team": "DEN",
-    "value": {
-     "perGame": -1.33,
-     "text": "strong TO, solid FG%, costs you AST"
     }
    },
    {
@@ -135,8 +135,8 @@
     "statusLine": null,
     "team": "BOS",
     "value": {
-     "perGame": -1.44,
-     "text": "strong BLK and TO, costs you 3PM"
+     "perGame": -1.42,
+     "text": "strong TO and BLK, costs you 3PM"
     }
    }
   ],
@@ -181,10 +181,10 @@
     "reserve": "ir",
     "slot": "IR",
     "sport": "nba",
-    "statusLine": "Out tonight vs SAC (right plantar fascia tear)",
+    "statusLine": "Out (right foot, est. return Nov 8)",
     "team": "LAC",
     "value": {
-     "perGame": -2.51,
+     "perGame": -2.48,
      "text": "strong TO and 3PM, costs you PTS"
     }
    },
@@ -230,7 +230,7 @@
     "statusLine": "Day-to-day (left calf strain)",
     "team": "SAS",
     "value": {
-     "perGame": -2.74,
+     "perGame": -2.73,
      "text": "strong TO, costs you PTS and AST"
     }
    }
@@ -257,20 +257,20 @@
       "tipUtc": "2026-10-23T23:00:00.000Z"
      },
      "perGame": {
-      "ast": 8.9,
+      "ast": 9.2,
       "blk": 0.6,
-      "fg_pct": 0.463,
-      "fga": 13.3,
-      "fgm": 6.2,
-      "ft_pct": 0.85,
-      "fta": 2.9,
-      "ftm": 2.5,
-      "min": 31,
-      "pts": 17.6,
-      "reb": 3.4,
+      "fg_pct": 0.47,
+      "fga": 13.5,
+      "fgm": 6.3,
+      "ft_pct": 0.872,
+      "fta": 3.1,
+      "ftm": 2.7,
+      "min": 31.3,
+      "pts": 18.1,
+      "reb": 3.3,
       "stl": 1.3,
-      "tov": 1.7,
-      "tpm": 2.8
+      "tov": 1.9,
+      "tpm": 2.7
      },
      "position": "PG/SG",
      "positions": [
@@ -282,7 +282,7 @@
      "statusLine": null,
      "team": "IND",
      "value": {
-      "perGame": 4.1,
+      "perGame": 4.33,
       "text": "elite AST, strong 3PM, costs you REB"
      }
     },
@@ -291,35 +291,35 @@
    {
     "player": {
      "gamesLeft": 2,
-     "gamesThisPeriod": 3,
-     "id": "1433",
-     "imageUrl": "https://api.fantasybot.ai/img/player/1433.webp?sport=nba",
+     "gamesThisPeriod": 2,
+     "id": "2457",
+     "imageUrl": "https://api.fantasybot.ai/img/player/2457.webp?sport=nba",
      "injury": null,
-     "name": "Kevin Durant",
+     "name": "Christian Braun",
      "nextGame": {
       "backToBack": false,
-      "date": "2026-10-23",
+      "date": "2026-10-22",
       "home": false,
-      "label": "Fri Oct 23",
-      "opponent": "SAS",
+      "label": "Thu Oct 22",
+      "opponent": "OKC",
       "tipEt": "9:30 PM",
-      "tipUtc": "2026-10-24T01:30:00.000Z"
+      "tipUtc": "2026-10-23T01:30:00.000Z"
      },
      "perGame": {
-      "ast": 4.3,
-      "blk": 1,
-      "fg_pct": 0.524,
-      "fga": 16.8,
-      "fgm": 8.8,
-      "ft_pct": 0.859,
-      "fta": 5.4,
-      "ftm": 4.6,
-      "min": 36,
-      "pts": 24.5,
-      "reb": 5.2,
-      "stl": 0.8,
-      "tov": 2.9,
-      "tpm": 2.2
+      "ast": 2.6,
+      "blk": 0.4,
+      "fg_pct": 0.541,
+      "fga": 9.5,
+      "fgm": 5.2,
+      "ft_pct": 0.793,
+      "fta": 2.5,
+      "ftm": 2,
+      "min": 32,
+      "pts": 13.4,
+      "reb": 5.1,
+      "stl": 1,
+      "tov": 1,
+      "tpm": 1.1
      },
      "position": "SG/SF/PF",
      "positions": [
@@ -330,10 +330,10 @@
      "slot": "SG",
      "sport": "nba",
      "statusLine": null,
-     "team": "HOU",
+     "team": "DEN",
      "value": {
-      "perGame": 2.66,
-      "text": "strong PTS, solid FT%, costs you TO"
+      "perGame": -1.33,
+      "text": "strong TO, solid FG%, costs you AST"
      }
     },
     "slot": "SG"
@@ -356,20 +356,20 @@
       "tipUtc": "2026-10-23T23:00:00.000Z"
      },
      "perGame": {
-      "ast": 3.3,
+      "ast": 3.2,
       "blk": 0.5,
-      "fg_pct": 0.507,
-      "fga": 17.4,
-      "fgm": 8.8,
-      "ft_pct": 0.882,
-      "fta": 5,
-      "ftm": 4.4,
-      "min": 32,
-      "pts": 24.3,
+      "fg_pct": 0.488,
+      "fga": 17.3,
+      "fgm": 8.5,
+      "ft_pct": 0.903,
+      "fta": 5.5,
+      "ftm": 5,
+      "min": 31.3,
+      "pts": 24.1,
       "reb": 6.1,
-      "stl": 1.7,
+      "stl": 1.9,
       "tov": 1.9,
-      "tpm": 2.3
+      "tpm": 2.2
      },
      "position": "SG/SF/PF",
      "positions": [
@@ -382,8 +382,8 @@
      "statusLine": null,
      "team": "TOR",
      "value": {
-      "perGame": 4.84,
-      "text": "strong PTS, STL and FT%"
+      "perGame": 5.19,
+      "text": "strong STL, PTS and FT%"
      }
     },
     "slot": "G"
@@ -406,20 +406,20 @@
       "tipUtc": "2026-10-23T23:00:00.000Z"
      },
      "perGame": {
-      "ast": 2.9,
+      "ast": 2.7,
       "blk": 0.9,
-      "fg_pct": 0.511,
+      "fg_pct": 0.53,
       "fga": 11.2,
-      "fgm": 5.7,
+      "fgm": 5.9,
       "ft_pct": 0.819,
       "fta": 2.9,
       "ftm": 2.4,
-      "min": 32,
-      "pts": 15.2,
-      "reb": 4.8,
-      "stl": 1.2,
-      "tov": 1.5,
-      "tpm": 1.4
+      "min": 31.7,
+      "pts": 15.3,
+      "reb": 5.1,
+      "stl": 1.4,
+      "tov": 1.6,
+      "tpm": 1.3
      },
      "position": "SF",
      "positions": [
@@ -430,8 +430,8 @@
      "statusLine": null,
      "team": "MIN",
      "value": {
-      "perGame": 0.13,
-      "text": "solid TO, costs you REB and AST"
+      "perGame": 0.71,
+      "text": "solid FG% and STL, costs you AST"
      }
     },
     "slot": "SF"
@@ -455,19 +455,19 @@
      },
      "perGame": {
       "ast": 3.4,
-      "blk": 0.5,
-      "fg_pct": 0.444,
-      "fga": 13.9,
-      "fgm": 6.2,
-      "ft_pct": 0.844,
-      "fta": 3.5,
-      "ftm": 2.9,
-      "min": 32.4,
-      "pts": 17.3,
-      "reb": 6.8,
+      "blk": 0.6,
+      "fg_pct": 0.431,
+      "fga": 13.7,
+      "fgm": 5.9,
+      "ft_pct": 0.852,
+      "fta": 3.3,
+      "ftm": 2.8,
+      "min": 32.1,
+      "pts": 16.5,
+      "reb": 6.5,
       "stl": 0.7,
       "tov": 1.7,
-      "tpm": 2
+      "tpm": 1.8
      },
      "position": "PF",
      "positions": [
@@ -478,8 +478,8 @@
      "statusLine": null,
      "team": "PHX",
      "value": {
-      "perGame": -0.29,
-      "text": "costs you STL and FG%"
+      "perGame": -0.71,
+      "text": "solid FT%, costs you FG% and STL"
      }
     },
     "slot": "PF"
@@ -502,20 +502,20 @@
       "tipUtc": "2026-10-24T02:00:00.000Z"
      },
      "perGame": {
-      "ast": 2.5,
+      "ast": 2.4,
       "blk": 0.9,
-      "fg_pct": 0.466,
-      "fga": 8.5,
-      "fgm": 4,
-      "ft_pct": 0.81,
-      "fta": 2.7,
-      "ftm": 2.2,
+      "fg_pct": 0.465,
+      "fga": 8.7,
+      "fgm": 4.1,
+      "ft_pct": 0.763,
+      "fta": 2.8,
+      "ftm": 2.1,
       "min": 28.6,
       "pts": 11.4,
-      "reb": 5.5,
+      "reb": 5.3,
       "stl": 1,
       "tov": 1.2,
-      "tpm": 1.3
+      "tpm": 1.2
      },
      "position": "PF",
      "positions": [
@@ -526,7 +526,7 @@
      "statusLine": null,
      "team": "GSW",
      "value": {
-      "perGame": -1.51,
+      "perGame": -2.01,
       "text": "solid TO, costs you PTS and AST"
      }
     },
@@ -553,16 +553,16 @@
       "ast": 1.9,
       "blk": 1,
       "fg_pct": 0.448,
-      "fga": 11.2,
-      "fgm": 5,
-      "ft_pct": 0.7,
-      "fta": 3,
-      "ftm": 2.1,
+      "fga": 11,
+      "fgm": 4.9,
+      "ft_pct": 0.656,
+      "fta": 2.9,
+      "ftm": 1.9,
       "min": 30.3,
-      "pts": 13.6,
-      "reb": 6.8,
+      "pts": 13.3,
+      "reb": 6.5,
       "stl": 1,
-      "tov": 1.7,
+      "tov": 1.9,
       "tpm": 1.5
      },
      "position": "PF/C",
@@ -575,7 +575,7 @@
      "statusLine": null,
      "team": "DAL",
      "value": {
-      "perGame": -2.11,
+      "perGame": -2.8,
       "text": "solid BLK, costs you AST and FT%"
      }
     },
@@ -601,18 +601,18 @@
      "perGame": {
       "ast": 1,
       "blk": 1.4,
-      "fg_pct": 0.529,
-      "fga": 10.4,
-      "fgm": 5.5,
-      "ft_pct": 0.726,
-      "fta": 1.5,
+      "fg_pct": 0.527,
+      "fga": 10,
+      "fgm": 5.3,
+      "ft_pct": 0.659,
+      "fta": 1.6,
       "ftm": 1.1,
-      "min": 26,
-      "pts": 13.4,
-      "reb": 9.1,
+      "min": 24.9,
+      "pts": 12.8,
+      "reb": 8.6,
       "stl": 0.9,
       "tov": 1,
-      "tpm": 1.4
+      "tpm": 1.2
      },
      "position": "C",
      "positions": [
@@ -623,7 +623,7 @@
      "statusLine": null,
      "team": "MIL",
      "value": {
-      "perGame": 1.34,
+      "perGame": 0.47,
       "text": "strong REB and BLK, costs you AST"
      }
     },
@@ -647,20 +647,20 @@
       "tipUtc": "2026-10-23T23:00:00.000Z"
      },
      "perGame": {
-      "ast": 4.6,
+      "ast": 4.4,
       "blk": 0.4,
-      "fg_pct": 0.475,
-      "fga": 18.2,
-      "fgm": 8.6,
-      "ft_pct": 0.913,
-      "fta": 3.6,
-      "ftm": 3.3,
-      "min": 33,
-      "pts": 23.6,
+      "fg_pct": 0.484,
+      "fga": 17.3,
+      "fgm": 8.4,
+      "ft_pct": 0.918,
+      "fta": 3.4,
+      "ftm": 3.2,
+      "min": 32.2,
+      "pts": 22.8,
       "reb": 4.6,
-      "stl": 1.2,
-      "tov": 1.9,
-      "tpm": 3
+      "stl": 1.1,
+      "tov": 2,
+      "tpm": 2.8
      },
      "position": "PG",
      "positions": [
@@ -671,7 +671,7 @@
      "statusLine": null,
      "team": "DAL",
      "value": {
-      "perGame": 3.63,
+      "perGame": 2.94,
       "text": "strong 3PM and PTS, costs you REB"
      }
     },
@@ -696,19 +696,19 @@
      },
      "perGame": {
       "ast": 5.9,
-      "blk": 0.1,
-      "fg_pct": 0.495,
-      "fga": 11.6,
-      "fgm": 5.7,
-      "ft_pct": 0.875,
-      "fta": 3,
-      "ftm": 2.6,
-      "min": 26.9,
-      "pts": 16.5,
-      "reb": 3.3,
+      "blk": 0.2,
+      "fg_pct": 0.528,
+      "fga": 12.8,
+      "fgm": 6.8,
+      "ft_pct": 0.871,
+      "fta": 3.3,
+      "ftm": 2.9,
+      "min": 27.4,
+      "pts": 19.1,
+      "reb": 3.7,
       "stl": 1.2,
-      "tov": 1.9,
-      "tpm": 2.5
+      "tov": 1.8,
+      "tpm": 2.7
      },
      "position": "PG/SG",
      "positions": [
@@ -720,8 +720,8 @@
      "statusLine": null,
      "team": "MEM",
      "value": {
-      "perGame": 0.98,
-      "text": "strong AST, solid 3PM, costs you REB"
+      "perGame": 2.81,
+      "text": "strong AST and 3PM, costs you REB"
      }
     },
     "slot": "UTIL"
@@ -749,63 +749,63 @@
        "injury": null,
        "name": "Shai Gilgeous-Alexander",
        "positions": "PG",
-       "starter": false,
+       "starter": true,
        "status": null,
        "team": "OKC",
-       "value": 9.12,
+       "value": 9.01,
        "why": "elite PTS, strong FT%, costs you REB"
       },
       {
-       "boardRank": 27,
+       "boardRank": 20,
        "expertRank": null,
-       "gamesLeft": 55,
+       "gamesLeft": 56,
        "injury": null,
        "name": "Damian Lillard",
        "positions": "PG",
        "starter": true,
        "status": null,
        "team": "POR",
-       "value": 2.66,
+       "value": 3.4,
        "why": "strong 3PM and FT%, costs you BLK"
       },
       {
-       "boardRank": 32,
+       "boardRank": 28,
        "expertRank": null,
        "gamesLeft": 60,
        "injury": null,
        "name": "Devin Booker",
        "positions": "PG/SG",
-       "starter": true,
+       "starter": false,
        "status": null,
        "team": "PHX",
-       "value": 2.47,
-       "why": "elite PTS, strong FT%, costs you TO"
+       "value": 2.77,
+       "why": "elite PTS and FT%, costs you TO"
       },
       {
-       "boardRank": 75,
+       "boardRank": 62,
        "expertRank": null,
-       "gamesLeft": 58,
+       "gamesLeft": 59,
        "injury": null,
        "name": "Dejounte Murray",
        "positions": "PG",
        "starter": true,
        "status": null,
        "team": "NOP",
-       "value": 0.01,
+       "value": 0.73,
        "why": "strong AST and STL, costs you TO"
       },
       {
-       "boardRank": 102,
+       "boardRank": 86,
        "expertRank": null,
        "gamesLeft": 57,
        "injury": null,
        "name": "Fred VanVleet",
        "positions": "PG",
-       "starter": true,
+       "starter": false,
        "status": null,
        "team": "HOU",
-       "value": -0.87,
-       "why": "solid TO and AST, costs you REB"
+       "value": -0.4,
+       "why": "strong AST and TO, costs you REB"
       }
      ],
      "position": "PG"
@@ -813,20 +813,20 @@
     {
      "players": [
       {
-       "boardRank": 71,
+       "boardRank": 73,
        "expertRank": null,
        "gamesLeft": 60,
        "injury": null,
        "name": "Jaylen Brown",
        "positions": "SG/SF/PF",
-       "starter": false,
+       "starter": true,
        "status": null,
        "team": "PHI",
-       "value": 0.13,
+       "value": 0.15,
        "why": "strong PTS, solid AST, costs you TO"
       },
       {
-       "boardRank": 123,
+       "boardRank": 100,
        "expertRank": null,
        "gamesLeft": 52,
        "injury": null,
@@ -835,20 +835,20 @@
        "starter": true,
        "status": null,
        "team": "CHA",
-       "value": -1.42,
-       "why": "strong 3PM, solid TO, costs you REB"
+       "value": -0.91,
+       "why": "strong 3PM, solid FT%, costs you REB"
       },
       {
-       "boardRank": 158,
+       "boardRank": 170,
        "expertRank": null,
-       "gamesLeft": 55,
+       "gamesLeft": 56,
        "injury": null,
        "name": "Tari Eason",
        "positions": "SG/SF/PF",
        "starter": false,
        "status": null,
        "team": "HOU",
-       "value": -2.57,
+       "value": -2.96,
        "why": "strong TO, solid STL, costs you AST"
       }
      ],
@@ -857,7 +857,7 @@
     {
      "players": [
       {
-       "boardRank": 81,
+       "boardRank": 104,
        "expertRank": null,
        "gamesLeft": 59,
        "injury": null,
@@ -866,7 +866,7 @@
        "starter": true,
        "status": null,
        "team": "SAC",
-       "value": -0.28,
+       "value": -1.07,
        "why": "strong TO, solid BLK, costs you AST"
       }
      ],
@@ -875,7 +875,7 @@
     {
      "players": [
       {
-       "boardRank": 43,
+       "boardRank": 40,
        "expertRank": null,
        "gamesLeft": 61,
        "injury": null,
@@ -884,21 +884,21 @@
        "starter": true,
        "status": null,
        "team": "MIA",
-       "value": 1.89,
+       "value": 1.99,
        "why": "strong REB, solid PTS, costs you FG%"
       },
       {
-       "boardRank": 86,
+       "boardRank": 66,
        "expertRank": null,
-       "gamesLeft": 57,
+       "gamesLeft": 58,
        "injury": null,
        "name": "Paolo Banchero",
        "positions": "PF",
        "starter": true,
        "status": null,
        "team": "ORL",
-       "value": -0.4,
-       "why": "strong PTS and REB, costs you TO"
+       "value": 0.37,
+       "why": "strong PTS and AST, costs you TO"
       }
      ],
      "position": "PF"
@@ -906,7 +906,7 @@
     {
      "players": [
       {
-       "boardRank": 35,
+       "boardRank": 41,
        "expertRank": null,
        "gamesLeft": 52,
        "injury": null,
@@ -915,11 +915,11 @@
        "starter": true,
        "status": null,
        "team": "MEM",
-       "value": 2.36,
+       "value": 1.94,
        "why": "elite BLK and REB, costs you AST"
       },
       {
-       "boardRank": 157,
+       "boardRank": 173,
        "expertRank": null,
        "gamesLeft": 56,
        "injury": null,
@@ -928,8 +928,8 @@
        "starter": true,
        "status": null,
        "team": "DAL",
-       "value": -2.57,
-       "why": "strong FG% and BLK, costs you 3PM"
+       "value": -3.04,
+       "why": "strong BLK and TO, costs you 3PM"
       }
      ],
      "position": "C"
@@ -938,7 +938,7 @@
    "record": null,
    "surplus": [
     "FT%",
-    "PTS"
+    "AST"
    ],
    "teamName": "Booker T Floppers"
   },
@@ -950,35 +950,36 @@
    "mode": "team",
    "needs": [
     "FT%",
-    "3PM"
+    "3PM",
+    "TO"
    ],
    "positions": [
     {
      "players": [
       {
-       "boardRank": 11,
+       "boardRank": 13,
        "expertRank": null,
-       "gamesLeft": 61,
+       "gamesLeft": 62,
        "injury": null,
        "name": "Donovan Mitchell",
        "positions": "PG/SG",
-       "starter": false,
+       "starter": true,
        "status": null,
        "team": "CLE",
-       "value": 4.17,
-       "why": "elite PTS, strong 3PM, costs you TO"
+       "value": 4.12,
+       "why": "elite PTS, strong 3PM, costs you BLK"
       },
       {
-       "boardRank": 19,
+       "boardRank": 21,
        "expertRank": null,
        "gamesLeft": 57,
        "injury": null,
        "name": "Cade Cunningham",
        "positions": "PG/SG",
-       "starter": true,
+       "starter": false,
        "status": null,
        "team": "DET",
-       "value": 3.31,
+       "value": 3.29,
        "why": "elite AST, strong PTS, costs you TO"
       },
       {
@@ -991,20 +992,20 @@
        "starter": false,
        "status": null,
        "team": "NYK",
-       "value": 1.38,
+       "value": 1.37,
        "why": "strong PTS and AST, costs you REB"
       },
       {
-       "boardRank": 113,
+       "boardRank": 110,
        "expertRank": null,
-       "gamesLeft": 46,
+       "gamesLeft": 47,
        "injury": null,
        "name": "Ajay Mitchell",
        "positions": "PG/SG",
-       "starter": false,
+       "starter": true,
        "status": null,
        "team": "OKC",
-       "value": -1.17,
+       "value": -1.18,
        "why": "solid STL and TO, costs you REB"
       }
      ],
@@ -1013,7 +1014,7 @@
     {
      "players": [
       {
-       "boardRank": 63,
+       "boardRank": 59,
        "expertRank": null,
        "gamesLeft": 63,
        "injury": null,
@@ -1022,24 +1023,24 @@
        "starter": true,
        "status": null,
        "team": "ATL",
-       "value": 0.38,
-       "why": "elite STL, strong AST, costs you 3PM"
+       "value": 0.82,
+       "why": "elite STL, solid AST, costs you 3PM"
       },
       {
-       "boardRank": 77,
+       "boardRank": 84,
        "expertRank": null,
-       "gamesLeft": 57,
+       "gamesLeft": 58,
        "injury": null,
        "name": "Cedric Coward",
        "positions": "SG/SF",
-       "starter": true,
+       "starter": false,
        "status": null,
        "team": "MEM",
-       "value": -0.11,
+       "value": -0.39,
        "why": "no standout category either way"
       },
       {
-       "boardRank": 100,
+       "boardRank": 116,
        "expertRank": null,
        "gamesLeft": 56,
        "injury": null,
@@ -1048,21 +1049,21 @@
        "starter": true,
        "status": null,
        "team": "MIA",
-       "value": -0.82,
+       "value": -1.28,
        "why": "solid TO, costs you AST and REB"
       },
       {
-       "boardRank": 127,
+       "boardRank": 126,
        "expertRank": null,
-       "gamesLeft": 55,
+       "gamesLeft": 56,
        "injury": null,
        "name": "Kyshawn George",
        "positions": "SG/SF/PF",
        "starter": true,
        "status": null,
        "team": "WAS",
-       "value": -1.62,
-       "why": "costs you PTS and FG%"
+       "value": -1.6,
+       "why": "costs you PTS and TO"
       }
      ],
      "position": "SG"
@@ -1070,7 +1071,7 @@
     {
      "players": [
       {
-       "boardRank": 67,
+       "boardRank": 61,
        "expertRank": null,
        "gamesLeft": 62,
        "injury": null,
@@ -1079,11 +1080,11 @@
        "starter": true,
        "status": null,
        "team": "CHA",
-       "value": 0.25,
-       "why": "solid 3PM and BLK, costs you AST"
+       "value": 0.79,
+       "why": "strong 3PM, solid BLK, costs you AST"
       },
       {
-       "boardRank": 70,
+       "boardRank": 82,
        "expertRank": null,
        "gamesLeft": 61,
        "injury": null,
@@ -1092,11 +1093,11 @@
        "starter": true,
        "status": null,
        "team": "IND",
-       "value": 0.15,
-       "why": "strong PTS, costs you FT% and BLK"
+       "value": -0.35,
+       "why": "strong PTS, solid FG%, costs you FT%"
       },
       {
-       "boardRank": 89,
+       "boardRank": 125,
        "expertRank": null,
        "gamesLeft": 58,
        "injury": null,
@@ -1105,8 +1106,8 @@
        "starter": true,
        "status": null,
        "team": "CHI",
-       "value": -0.45,
-       "why": "solid BLK and REB, costs you AST"
+       "value": -1.58,
+       "why": "solid BLK and REB, costs you TO"
       }
      ],
      "position": "PF"
@@ -1114,7 +1115,7 @@
     {
      "players": [
       {
-       "boardRank": 38,
+       "boardRank": 37,
        "expertRank": null,
        "gamesLeft": 59,
        "injury": null,
@@ -1123,34 +1124,34 @@
        "starter": true,
        "status": null,
        "team": "DET",
-       "value": 2.21,
+       "value": 2.2,
        "why": "elite REB and FG%, costs you 3PM"
       },
       {
-       "boardRank": 192,
+       "boardRank": 156,
        "expertRank": null,
-       "gamesLeft": 57,
+       "gamesLeft": 58,
        "injury": null,
        "name": "Moussa Diabaté",
        "positions": "C",
-       "starter": false,
+       "starter": true,
        "status": null,
        "team": "CHA",
-       "value": -3.68,
-       "why": "strong TO, solid REB, costs you PTS"
+       "value": -2.54,
+       "why": "solid REB and FG%, costs you 3PM"
       },
       {
-       "boardRank": 313,
+       "boardRank": 317,
        "expertRank": null,
-       "gamesLeft": 55,
+       "gamesLeft": 50,
        "injury": "Out",
        "name": "Yanic Konan Niederhäuser",
        "positions": "C",
        "reserve": "ir",
        "starter": false,
-       "status": "Out tonight vs SAC (right lisfranc surgery)",
+       "status": "Out (right foot surgery, est. return Nov 8)",
        "team": "LAC",
-       "value": -6.57,
+       "value": -6.5,
        "why": "strong TO, solid FG%, costs you PTS"
       }
      ],
@@ -1159,7 +1160,7 @@
    ],
    "record": null,
    "surplus": [
-    "AST"
+    "STL"
    ],
    "teamName": "Cade n em"
   },
@@ -1180,30 +1181,17 @@
     {
      "players": [
       {
-       "boardRank": 10,
+       "boardRank": 12,
        "expertRank": null,
-       "gamesLeft": 58,
+       "gamesLeft": 59,
        "injury": null,
        "name": "Jamal Murray",
        "positions": "PG",
-       "starter": false,
-       "status": null,
-       "team": "DEN",
-       "value": 4.21,
-       "why": "strong AST and PTS, costs you REB"
-      },
-      {
-       "boardRank": 80,
-       "expertRank": null,
-       "gamesLeft": 52,
-       "injury": null,
-       "name": "Jalen Suggs",
-       "positions": "PG/SG",
        "starter": true,
        "status": null,
-       "team": "ORL",
-       "value": -0.19,
-       "why": "strong STL, solid AST, costs you REB"
+       "team": "DEN",
+       "value": 4.17,
+       "why": "strong AST and PTS, costs you REB"
       },
       {
        "boardRank": 85,
@@ -1219,20 +1207,20 @@
        "why": "strong AST, solid STL, costs you REB"
       },
       {
-       "boardRank": 111,
+       "boardRank": 89,
        "expertRank": null,
-       "gamesLeft": 61,
+       "gamesLeft": 52,
        "injury": null,
-       "name": "Collin Gillespie",
+       "name": "Jalen Suggs",
        "positions": "PG/SG",
        "starter": true,
        "status": null,
-       "team": "PHX",
-       "value": -1.13,
-       "why": "strong 3PM, solid TO, costs you REB"
+       "team": "ORL",
+       "value": -0.57,
+       "why": "strong STL, solid AST, costs you REB"
       },
       {
-       "boardRank": 119,
+       "boardRank": 112,
        "expertRank": null,
        "gamesLeft": 59,
        "injury": null,
@@ -1241,11 +1229,24 @@
        "starter": true,
        "status": null,
        "team": "MIN",
-       "value": -1.33,
+       "value": -1.23,
        "why": "solid TO, costs you REB and BLK"
       },
       {
-       "boardRank": 131,
+       "boardRank": 135,
+       "expertRank": null,
+       "gamesLeft": 61,
+       "injury": null,
+       "name": "Collin Gillespie",
+       "positions": "PG/SG",
+       "starter": false,
+       "status": null,
+       "team": "PHX",
+       "value": -2.02,
+       "why": "solid 3PM and STL, costs you FG%"
+      },
+      {
+       "boardRank": 147,
        "expertRank": null,
        "gamesLeft": 63,
        "injury": null,
@@ -1254,7 +1255,7 @@
        "starter": true,
        "status": null,
        "team": "HOU",
-       "value": -1.77,
+       "value": -2.3,
        "why": "solid STL and 3PM, costs you REB"
       }
      ],
@@ -1263,17 +1264,17 @@
     {
      "players": [
       {
-       "boardRank": 21,
+       "boardRank": 31,
        "expertRank": null,
-       "gamesLeft": 58,
+       "gamesLeft": 59,
        "injury": null,
        "name": "Trey Murphy III",
        "positions": "SG/SF",
        "starter": true,
        "status": null,
        "team": "NOP",
-       "value": 3.24,
-       "why": "strong 3PM, solid PTS and FT%"
+       "value": 2.52,
+       "why": "strong 3PM, solid FT%, costs you FG%"
       }
      ],
      "position": "SG"
@@ -1281,7 +1282,7 @@
     {
      "players": [
       {
-       "boardRank": 74,
+       "boardRank": 76,
        "expertRank": null,
        "gamesLeft": 56,
        "injury": null,
@@ -1290,11 +1291,11 @@
        "starter": false,
        "status": null,
        "team": "NYK",
-       "value": 0.05,
+       "value": 0.04,
        "why": "solid STL and 3PM, costs you AST"
       },
       {
-       "boardRank": 134,
+       "boardRank": 113,
        "expertRank": null,
        "gamesLeft": 63,
        "injury": null,
@@ -1303,7 +1304,7 @@
        "starter": true,
        "status": null,
        "team": "POR",
-       "value": -1.85,
+       "value": -1.23,
        "why": "solid 3PM and TO, costs you AST"
       }
      ],
@@ -1312,7 +1313,7 @@
     {
      "players": [
       {
-       "boardRank": 31,
+       "boardRank": 38,
        "expertRank": null,
        "gamesLeft": 56,
        "injury": null,
@@ -1321,21 +1322,21 @@
        "starter": true,
        "status": null,
        "team": "MIA",
-       "value": 2.48,
+       "value": 2.19,
        "why": "elite FG% and PTS, costs you FT%"
       },
       {
-       "boardRank": 133,
+       "boardRank": 132,
        "expertRank": null,
-       "gamesLeft": 55,
+       "gamesLeft": 56,
        "injury": null,
        "name": "Collin Murray-Boyles",
        "positions": "PF/C",
        "starter": true,
        "status": null,
        "team": "TOR",
-       "value": -1.83,
-       "why": "solid FG% and BLK, costs you 3PM"
+       "value": -1.94,
+       "why": "solid TO and BLK, costs you 3PM"
       }
      ],
      "position": "PF"
@@ -1343,20 +1344,20 @@
     {
      "players": [
       {
-       "boardRank": 76,
+       "boardRank": 88,
        "expertRank": null,
-       "gamesLeft": 55,
+       "gamesLeft": 56,
        "injury": null,
        "name": "Alex Sarr",
        "positions": "C",
        "starter": true,
        "status": null,
        "team": "WAS",
-       "value": -0.01,
+       "value": -0.44,
        "why": "solid BLK and REB, costs you AST"
       },
       {
-       "boardRank": 91,
+       "boardRank": 105,
        "expertRank": null,
        "gamesLeft": 59,
        "injury": null,
@@ -1365,7 +1366,7 @@
        "starter": true,
        "status": null,
        "team": "MIN",
-       "value": -0.57,
+       "value": -1.09,
        "why": "elite REB, strong BLK, costs you FT%"
       }
      ],
@@ -1374,7 +1375,6 @@
    ],
    "record": null,
    "surplus": [
-    "FG%",
     "STL",
     "TO"
    ],
@@ -1396,7 +1396,7 @@
     {
      "players": [
       {
-       "boardRank": 58,
+       "boardRank": 56,
        "expertRank": null,
        "gamesLeft": 59,
        "injury": null,
@@ -1405,33 +1405,33 @@
        "starter": true,
        "status": null,
        "team": "WAS",
-       "value": 0.93,
+       "value": 0.89,
        "why": "elite AST, strong PTS, costs you TO"
       },
       {
-       "boardRank": 105,
+       "boardRank": 109,
        "expertRank": null,
-       "gamesLeft": 51,
+       "gamesLeft": 52,
        "injury": null,
        "name": "Zach LaVine",
        "positions": "PG/SG/SF",
        "starter": true,
        "status": null,
        "team": "SAC",
-       "value": -0.92,
+       "value": -1.17,
        "why": "strong 3PM, solid PTS, costs you REB"
       },
       {
-       "boardRank": 219,
+       "boardRank": 220,
        "expertRank": null,
-       "gamesLeft": 57,
+       "gamesLeft": 58,
        "injury": null,
        "name": "Jared McCain",
        "positions": "PG/SG",
        "starter": true,
        "status": null,
        "team": "OKC",
-       "value": -4.11,
+       "value": -4.08,
        "why": "solid 3PM and TO, costs you REB"
       }
      ],
@@ -1440,7 +1440,7 @@
     {
      "players": [
       {
-       "boardRank": 93,
+       "boardRank": 91,
        "expertRank": null,
        "gamesLeft": 44,
        "injury": "Out",
@@ -1448,9 +1448,9 @@
        "positions": "SG/SF/PF",
        "reserve": "ir",
        "starter": false,
-       "status": "Out tonight vs SAC (right heel surgery)",
+       "status": "Out (Achilles surgery, est. return Nov 8)",
        "team": "LAC",
-       "value": -0.62,
+       "value": -0.61,
        "why": "solid PTS, costs you TO and STL"
       }
      ],
@@ -1459,7 +1459,7 @@
     {
      "players": [
       {
-       "boardRank": 8,
+       "boardRank": 9,
        "expertRank": null,
        "gamesLeft": 61,
        "injury": null,
@@ -1468,46 +1468,46 @@
        "starter": true,
        "status": null,
        "team": "ATL",
-       "value": 4.72,
-       "why": "elite AST, strong REB, costs you TO"
+       "value": 4.54,
+       "why": "elite AST and REB, costs you TO"
       },
       {
-       "boardRank": 14,
+       "boardRank": 16,
        "expertRank": null,
-       "gamesLeft": 58,
+       "gamesLeft": 59,
        "injury": null,
        "name": "Jayson Tatum",
        "positions": "SF/PF",
        "starter": false,
        "status": null,
        "team": "BOS",
-       "value": 3.72,
+       "value": 3.71,
        "why": "strong PTS and 3PM, costs you FG%"
       },
       {
-       "boardRank": 120,
+       "boardRank": 121,
        "expertRank": null,
        "gamesLeft": 61,
        "injury": null,
        "name": "Saddiq Bey",
        "positions": "SF/PF",
-       "starter": true,
+       "starter": false,
        "status": null,
        "team": "NOP",
-       "value": -1.35,
-       "why": "strong TO, costs you BLK and AST"
+       "value": -1.43,
+       "why": "strong TO, solid FT%, costs you BLK"
       },
       {
-       "boardRank": 132,
+       "boardRank": 130,
        "expertRank": null,
-       "gamesLeft": 57,
+       "gamesLeft": 58,
        "injury": null,
        "name": "Cameron Johnson",
        "positions": "SF/PF",
-       "starter": false,
+       "starter": true,
        "status": null,
        "team": "DEN",
-       "value": -1.78,
+       "value": -1.77,
        "why": "strong TO, costs you REB and PTS"
       }
      ],
@@ -1516,7 +1516,7 @@
     {
      "players": [
       {
-       "boardRank": 97,
+       "boardRank": 79,
        "expertRank": null,
        "gamesLeft": 60,
        "injury": null,
@@ -1525,20 +1525,20 @@
        "starter": true,
        "status": null,
        "team": "BKN",
-       "value": -0.77,
-       "why": "solid PTS and AST, costs you TO"
+       "value": -0.08,
+       "why": "strong PTS, solid AST, costs you TO"
       },
       {
-       "boardRank": 129,
+       "boardRank": 128,
        "expertRank": null,
        "gamesLeft": 56,
        "injury": null,
        "name": "Aaron Gordon",
        "positions": "PF/C",
-       "starter": false,
+       "starter": true,
        "status": null,
        "team": "DEN",
-       "value": -1.66,
+       "value": -1.62,
        "why": "solid TO, costs you STL and BLK"
       }
      ],
@@ -1547,55 +1547,55 @@
     {
      "players": [
       {
-       "boardRank": 29,
+       "boardRank": 32,
        "expertRank": null,
        "gamesLeft": 61,
        "injury": null,
        "name": "Donovan Clingan",
        "positions": "C",
-       "starter": true,
+       "starter": false,
        "status": null,
        "team": "POR",
-       "value": 2.64,
-       "why": "elite REB and BLK, costs you AST"
+       "value": 2.37,
+       "why": "elite REB and BLK, costs you FT%"
       },
       {
-       "boardRank": 55,
+       "boardRank": 49,
        "expertRank": null,
-       "gamesLeft": 57,
+       "gamesLeft": 58,
        "injury": null,
        "name": "Ivica Zubac",
        "positions": "C",
        "starter": true,
        "status": null,
        "team": "IND",
-       "value": 1.11,
+       "value": 1.28,
        "why": "elite REB, strong FG%, costs you 3PM"
       },
       {
-       "boardRank": 139,
+       "boardRank": 95,
        "expertRank": null,
-       "gamesLeft": 57,
+       "gamesLeft": 58,
        "injury": null,
        "name": "Yves Missi",
        "positions": "C",
        "starter": true,
        "status": null,
        "team": "NOP",
-       "value": -2.02,
+       "value": -0.69,
        "why": "elite BLK, strong TO, costs you 3PM"
       },
       {
-       "boardRank": 148,
+       "boardRank": 162,
        "expertRank": null,
-       "gamesLeft": 55,
+       "gamesLeft": 56,
        "injury": null,
        "name": "Jakob Poeltl",
        "positions": "C",
        "starter": true,
        "status": null,
        "team": "TOR",
-       "value": -2.26,
+       "value": -2.73,
        "why": "strong FG%, solid REB, costs you 3PM"
       }
      ],
@@ -1627,53 +1627,53 @@
       {
        "boardRank": 4,
        "expertRank": null,
-       "gamesLeft": 57,
+       "gamesLeft": 58,
        "injury": null,
        "name": "Luka Dončić",
        "positions": "PG/SG",
        "starter": true,
        "status": null,
        "team": "LAL",
-       "value": 6.98,
+       "value": 7.24,
        "why": "elite PTS and AST, costs you TO"
       },
       {
        "boardRank": 45,
        "expertRank": null,
-       "gamesLeft": 62,
+       "gamesLeft": 63,
        "injury": null,
        "name": "James Harden",
        "positions": "PG/SG",
        "starter": true,
        "status": null,
        "team": "CLE",
-       "value": 1.5,
+       "value": 1.49,
        "why": "elite AST, strong FT%, costs you TO"
       },
       {
-       "boardRank": 95,
+       "boardRank": 93,
        "expertRank": null,
        "gamesLeft": 60,
        "injury": null,
        "name": "Dylan Harper",
        "positions": "PG/SG",
-       "starter": false,
+       "starter": true,
        "status": null,
        "team": "SAS",
        "value": -0.64,
        "why": "solid AST, costs you 3PM"
       },
       {
-       "boardRank": 193,
+       "boardRank": 217,
        "expertRank": null,
        "gamesLeft": 59,
        "injury": null,
        "name": "Mikel Brown Jr.",
        "positions": "PG",
-       "starter": true,
+       "starter": false,
        "status": null,
        "team": "BKN",
-       "value": -3.74,
+       "value": -4,
        "why": "solid TO, costs you REB and FG%"
       }
      ],
@@ -1682,29 +1682,29 @@
     {
      "players": [
       {
-       "boardRank": 83,
+       "boardRank": 81,
        "expertRank": null,
        "gamesLeft": 56,
        "injury": null,
        "name": "Josh Hart",
        "positions": "SG/SF",
-       "starter": false,
+       "starter": true,
        "status": null,
        "team": "NYK",
        "value": -0.32,
        "why": "solid REB, costs you PTS and BLK"
       },
       {
-       "boardRank": 173,
+       "boardRank": 182,
        "expertRank": null,
-       "gamesLeft": 55,
+       "gamesLeft": 56,
        "injury": null,
        "name": "RJ Barrett",
        "positions": "SG/SF/PF",
        "starter": true,
        "status": null,
        "team": "TOR",
-       "value": -3.16,
+       "value": -3.31,
        "why": "costs you FT% and BLK"
       }
      ],
@@ -1713,55 +1713,55 @@
     {
      "players": [
       {
-       "boardRank": 16,
+       "boardRank": 23,
        "expertRank": null,
-       "gamesLeft": 57,
+       "gamesLeft": 58,
        "injury": null,
        "name": "Lauri Markkanen",
        "positions": "SF/PF",
        "starter": true,
        "status": null,
        "team": "UTA",
-       "value": 3.52,
-       "why": "strong PTS and 3PM, costs you AST"
+       "value": 3.11,
+       "why": "strong FT% and PTS, costs you AST"
       },
       {
-       "boardRank": 121,
+       "boardRank": 119,
        "expertRank": null,
        "gamesLeft": 67,
        "injury": null,
        "name": "Mikal Bridges",
        "positions": "SF/PF",
-       "starter": false,
+       "starter": true,
        "status": null,
        "team": "NYK",
        "value": -1.39,
        "why": "solid TO, costs you REB and PTS"
       },
       {
-       "boardRank": 128,
+       "boardRank": 154,
        "expertRank": null,
        "gamesLeft": 58,
        "injury": null,
        "name": "Rui Hachimura",
        "positions": "SF/PF",
-       "starter": true,
+       "starter": false,
        "status": null,
        "team": "LAC",
-       "value": -1.64,
-       "why": "solid 3PM and TO, costs you AST"
+       "value": -2.49,
+       "why": "solid 3PM, costs you AST and FT%"
       },
       {
-       "boardRank": 207,
+       "boardRank": 176,
        "expertRank": null,
-       "gamesLeft": 55,
+       "gamesLeft": 56,
        "injury": null,
        "name": "Jonathan Kuminga",
        "positions": "SF/PF",
-       "starter": true,
+       "starter": false,
        "status": null,
        "team": "MIN",
-       "value": -3.94,
+       "value": -3.19,
        "why": "costs you FT% and AST"
       }
      ],
@@ -1770,7 +1770,7 @@
     {
      "players": [
       {
-       "boardRank": 104,
+       "boardRank": 72,
        "expertRank": null,
        "gamesLeft": 61,
        "injury": null,
@@ -1779,7 +1779,7 @@
        "starter": true,
        "status": null,
        "team": "HOU",
-       "value": -0.92,
+       "value": 0.15,
        "why": "solid TO and 3PM, costs you AST"
       }
      ],
@@ -1788,20 +1788,20 @@
     {
      "players": [
       {
-       "boardRank": 18,
+       "boardRank": 15,
        "expertRank": null,
-       "gamesLeft": 54,
+       "gamesLeft": 55,
        "injury": null,
        "name": "Walker Kessler",
        "positions": "C",
        "starter": true,
-       "status": "Available tonight vs GSW (left finger splint)",
+       "status": null,
        "team": "LAL",
-       "value": 3.38,
+       "value": 3.74,
        "why": "elite BLK and REB, costs you FT%"
       },
       {
-       "boardRank": 39,
+       "boardRank": 42,
        "expertRank": null,
        "gamesLeft": 61,
        "injury": null,
@@ -1810,11 +1810,11 @@
        "starter": true,
        "status": null,
        "team": "ATL",
-       "value": 2.07,
-       "why": "strong BLK and REB, costs you AST"
+       "value": 1.77,
+       "why": "strong BLK, solid REB"
       },
       {
-       "boardRank": 88,
+       "boardRank": 87,
        "expertRank": null,
        "gamesLeft": 20,
        "injury": "Out",
@@ -1822,23 +1822,23 @@
        "positions": "C",
        "reserve": "ir",
        "starter": false,
-       "status": "Out tonight at POR (left shoulder surgery)",
+       "status": "Out (left shoulder surgery, est. return Feb 3)",
        "team": "PHX",
        "value": -0.42,
        "why": "strong FG% and REB, costs you 3PM"
       },
       {
-       "boardRank": 266,
+       "boardRank": 265,
        "expertRank": null,
-       "gamesLeft": 56,
+       "gamesLeft": 51,
        "injury": "Out",
        "name": "Maxime Raynaud",
        "positions": "C",
        "reserve": "ir",
        "starter": false,
-       "status": "Out tonight at LAC (right patella subluxation)",
+       "status": "Out (right knee dislocated, est. return Nov 2)",
        "team": "SAC",
-       "value": -5.55,
+       "value": -5.5,
        "why": "strong TO, solid FG%, costs you AST"
       }
      ],
@@ -1868,20 +1868,7 @@
     {
      "players": [
       {
-       "boardRank": 44,
-       "expertRank": null,
-       "gamesLeft": 56,
-       "injury": null,
-       "name": "Josh Giddey",
-       "positions": "PG/SG",
-       "starter": true,
-       "status": null,
-       "team": "CHI",
-       "value": 1.8,
-       "why": "elite AST, strong REB, costs you TO"
-      },
-      {
-       "boardRank": 49,
+       "boardRank": 53,
        "expertRank": null,
        "gamesLeft": 57,
        "injury": null,
@@ -1890,11 +1877,11 @@
        "starter": true,
        "status": null,
        "team": "LAC",
-       "value": 1.34,
-       "why": "elite AST, strong 3PM, costs you REB"
+       "value": 1.04,
+       "why": "strong AST and 3PM, costs you REB"
       },
       {
-       "boardRank": 57,
+       "boardRank": 55,
        "expertRank": null,
        "gamesLeft": 60,
        "injury": null,
@@ -1903,11 +1890,37 @@
        "starter": false,
        "status": null,
        "team": "BOS",
-       "value": 0.93,
+       "value": 0.92,
        "why": "strong 3PM, solid TO, costs you BLK"
       },
       {
-       "boardRank": 171,
+       "boardRank": 71,
+       "expertRank": null,
+       "gamesLeft": 56,
+       "injury": null,
+       "name": "Josh Giddey",
+       "positions": "PG/SG",
+       "starter": true,
+       "status": null,
+       "team": "CHI",
+       "value": 0.17,
+       "why": "elite AST, strong REB, costs you TO"
+      },
+      {
+       "boardRank": 134,
+       "expertRank": null,
+       "gamesLeft": 56,
+       "injury": null,
+       "name": "Ja Morant",
+       "positions": "PG",
+       "starter": true,
+       "status": null,
+       "team": "POR",
+       "value": -2.01,
+       "why": "strong AST, solid FT%, costs you TO"
+      },
+      {
+       "boardRank": 192,
        "expertRank": null,
        "gamesLeft": 66,
        "injury": null,
@@ -1916,21 +1929,8 @@
        "starter": true,
        "status": null,
        "team": "NOP",
-       "value": -3.09,
-       "why": "solid STL, costs you REB and FG%"
-      },
-      {
-       "boardRank": 175,
-       "expertRank": null,
-       "gamesLeft": 55,
-       "injury": null,
-       "name": "Ja Morant",
-       "positions": "PG",
-       "starter": true,
-       "status": null,
-       "team": "POR",
-       "value": -3.24,
-       "why": "strong AST, solid FT%, costs you TO"
+       "value": -3.58,
+       "why": "solid STL, costs you FG% and REB"
       }
      ],
      "position": "PG"
@@ -1938,42 +1938,42 @@
     {
      "players": [
       {
-       "boardRank": 78,
+       "boardRank": 75,
        "expertRank": null,
-       "gamesLeft": 61,
+       "gamesLeft": 60,
        "injury": null,
        "name": "Jaime Jaquez Jr.",
        "positions": "SG/SF/PF",
-       "starter": true,
+       "starter": false,
        "status": null,
        "team": "MIL",
-       "value": -0.13,
-       "why": "strong TO, solid FG%, costs you BLK"
+       "value": 0.05,
+       "why": "strong TO and FG%, costs you BLK"
       },
       {
-       "boardRank": 146,
+       "boardRank": 149,
        "expertRank": null,
-       "gamesLeft": 58,
+       "gamesLeft": 59,
        "injury": null,
        "name": "Jalen Green",
        "positions": "SG/SF",
        "starter": true,
        "status": null,
        "team": "PHX",
-       "value": -2.13,
+       "value": -2.41,
        "why": "strong 3PM, solid PTS, costs you FG%"
       },
       {
-       "boardRank": 198,
+       "boardRank": 169,
        "expertRank": null,
-       "gamesLeft": 57,
+       "gamesLeft": 58,
        "injury": null,
        "name": "Keaton Wagler",
        "positions": "SG",
        "starter": true,
        "status": null,
        "team": "LAC",
-       "value": -3.87,
+       "value": -2.94,
        "why": "costs you REB and BLK"
       }
      ],
@@ -1982,16 +1982,16 @@
     {
      "players": [
       {
-       "boardRank": 42,
+       "boardRank": 39,
        "expertRank": null,
-       "gamesLeft": 57,
+       "gamesLeft": 58,
        "injury": null,
        "name": "Michael Porter Jr.",
        "positions": "SF/PF",
        "starter": true,
        "status": null,
        "team": "BKN",
-       "value": 2,
+       "value": 2.14,
        "why": "strong 3PM and PTS, costs you AST"
       }
      ],
@@ -2000,33 +2000,33 @@
     {
      "players": [
       {
-       "boardRank": 13,
+       "boardRank": 14,
        "expertRank": null,
-       "gamesLeft": 54,
+       "gamesLeft": 55,
        "injury": null,
        "name": "Chet Holmgren",
        "positions": "PF/C",
-       "starter": false,
+       "starter": true,
        "status": null,
        "team": "OKC",
-       "value": 4.02,
+       "value": 4.01,
        "why": "elite BLK, strong REB, costs you AST"
       },
       {
-       "boardRank": 51,
+       "boardRank": 58,
        "expertRank": null,
        "gamesLeft": 52,
        "injury": null,
        "name": "Jaren Jackson Jr.",
        "positions": "PF/C",
-       "starter": true,
+       "starter": false,
        "status": null,
        "team": "UTA",
-       "value": 1.3,
-       "why": "strong BLK, costs you AST"
+       "value": 0.87,
+       "why": "strong BLK, costs you AST and TO"
       },
       {
-       "boardRank": 96,
+       "boardRank": 80,
        "expertRank": null,
        "gamesLeft": 65,
        "injury": null,
@@ -2035,8 +2035,8 @@
        "starter": true,
        "status": null,
        "team": "NOP",
-       "value": -0.64,
-       "why": "solid REB, costs you 3PM and TO"
+       "value": -0.17,
+       "why": "strong REB, costs you 3PM and PTS"
       }
      ],
      "position": "PF"
@@ -2050,14 +2050,14 @@
        "injury": null,
        "name": "Nikola Jokić",
        "positions": "C",
-       "starter": false,
+       "starter": true,
        "status": null,
        "team": "DEN",
-       "value": 11.73,
+       "value": 11.63,
        "why": "elite AST and REB, costs you TO"
       },
       {
-       "boardRank": 64,
+       "boardRank": 67,
        "expertRank": null,
        "gamesLeft": 47,
        "injury": "Out",
@@ -2065,9 +2065,9 @@
        "positions": "C",
        "reserve": "ir",
        "starter": false,
-       "status": "Out tonight at LAL (not with team)",
+       "status": "Out (illness, est. return Dec 1)",
        "team": "GSW",
-       "value": 0.35,
+       "value": 0.36,
        "why": "strong TO, solid BLK, costs you STL"
       }
      ],
@@ -2091,8 +2091,7 @@
    "needs": [
     "FG%",
     "REB",
-    "BLK",
-    "TO"
+    "BLK"
    ],
    "positions": [
     {
@@ -2104,14 +2103,27 @@
        "injury": null,
        "name": "Tyrese Maxey",
        "positions": "PG",
-       "starter": false,
+       "starter": true,
        "status": null,
        "team": "PHI",
-       "value": 6.06,
-       "why": "elite PTS, strong STL, costs you REB"
+       "value": 5.99,
+       "why": "elite PTS, strong 3PM, costs you REB"
       },
       {
-       "boardRank": 61,
+       "boardRank": 54,
+       "expertRank": null,
+       "gamesLeft": 55,
+       "injury": null,
+       "name": "Immanuel Quickley",
+       "positions": "PG/SG",
+       "starter": true,
+       "status": null,
+       "team": "TOR",
+       "value": 1.01,
+       "why": "strong AST and 3PM, costs you BLK"
+      },
+      {
+       "boardRank": 64,
        "expertRank": null,
        "gamesLeft": 57,
        "injury": null,
@@ -2120,37 +2132,24 @@
        "starter": true,
        "status": null,
        "team": "UTA",
-       "value": 0.75,
-       "why": "strong AST and FT%, costs you TO"
+       "value": 0.63,
+       "why": "strong AST, solid PTS, costs you REB"
       },
       {
-       "boardRank": 65,
+       "boardRank": 115,
        "expertRank": null,
-       "gamesLeft": 54,
-       "injury": null,
-       "name": "Immanuel Quickley",
-       "positions": "PG/SG",
-       "starter": true,
-       "status": null,
-       "team": "TOR",
-       "value": 0.34,
-       "why": "strong AST and 3PM, costs you BLK"
-      },
-      {
-       "boardRank": 116,
-       "expertRank": null,
-       "gamesLeft": 54,
+       "gamesLeft": 55,
        "injury": null,
        "name": "Kevin Porter",
        "positions": "PG/SG",
-       "starter": true,
+       "starter": false,
        "status": null,
        "team": "MIL",
-       "value": -1.25,
+       "value": -1.27,
        "why": "strong STL, solid AST, costs you 3PM"
       },
       {
-       "boardRank": 167,
+       "boardRank": 228,
        "expertRank": null,
        "gamesLeft": 61,
        "injury": null,
@@ -2159,7 +2158,7 @@
        "starter": true,
        "status": null,
        "team": "SAC",
-       "value": -2.96,
+       "value": -4.25,
        "why": "costs you FG% and REB"
       }
      ],
@@ -2170,32 +2169,32 @@
       {
        "boardRank": 46,
        "expertRank": null,
-       "gamesLeft": 62,
-       "injury": "Out",
+       "gamesLeft": 64,
+       "injury": "Day-to-day",
        "name": "Kon Knueppel",
        "positions": "SG/SF",
        "reserve": "ir",
        "starter": false,
-       "status": "Out tonight at BKN (left hamstring strain)",
+       "status": "Day-to-day (left hamstring)",
        "team": "CHA",
-       "value": 1.4,
+       "value": 1.39,
        "why": "elite 3PM, solid PTS, costs you BLK"
       },
       {
-       "boardRank": 140,
+       "boardRank": 138,
        "expertRank": null,
-       "gamesLeft": 57,
+       "gamesLeft": 58,
        "injury": null,
        "name": "Devin Vassell",
        "positions": "SG/SF",
        "starter": true,
        "status": null,
        "team": "SAS",
-       "value": -2.1,
+       "value": -2.08,
        "why": "strong TO, solid 3PM, costs you REB"
       },
       {
-       "boardRank": 272,
+       "boardRank": 271,
        "expertRank": null,
        "gamesLeft": 43,
        "injury": "Out",
@@ -2203,9 +2202,9 @@
        "positions": "SG/SF",
        "reserve": "ir",
        "starter": false,
-       "status": "Out tonight vs SAC (right knee injury management)",
+       "status": "Out (knee inflammation, est. return Nov 8)",
        "team": "LAC",
-       "value": -5.73,
+       "value": -5.68,
        "why": "strong TO, costs you REB and PTS"
       }
      ],
@@ -2214,42 +2213,42 @@
     {
      "players": [
       {
-       "boardRank": 52,
+       "boardRank": 57,
        "expertRank": null,
-       "gamesLeft": 55,
+       "gamesLeft": 59,
+       "injury": null,
+       "name": "Jalen Williams",
+       "positions": "SF/PF",
+       "starter": true,
+       "status": null,
+       "team": "OKC",
+       "value": 0.88,
+       "why": "solid AST, STL and PTS"
+      },
+      {
+       "boardRank": 60,
+       "expertRank": null,
+       "gamesLeft": 56,
        "injury": null,
        "name": "Franz Wagner",
        "positions": "SF/PF",
        "starter": true,
        "status": null,
        "team": "ORL",
-       "value": 1.29,
+       "value": 0.82,
        "why": "strong PTS, solid FT%, costs you BLK"
       },
       {
-       "boardRank": 59,
+       "boardRank": 178,
        "expertRank": null,
-       "gamesLeft": 58,
-       "injury": null,
-       "name": "Jalen Williams",
-       "positions": "SF/PF",
-       "starter": false,
-       "status": null,
-       "team": "OKC",
-       "value": 0.89,
-       "why": "solid STL, AST and PTS"
-      },
-      {
-       "boardRank": 174,
-       "expertRank": null,
-       "gamesLeft": 54,
+       "gamesLeft": 55,
        "injury": null,
        "name": "Gui Santos",
        "positions": "SF/PF",
-       "starter": true,
+       "starter": false,
        "status": null,
        "team": "GSW",
-       "value": -3.17,
+       "value": -3.25,
        "why": "solid TO, costs you PTS and BLK"
       }
      ],
@@ -2260,27 +2259,27 @@
       {
        "boardRank": 22,
        "expertRank": null,
-       "gamesLeft": 57,
+       "gamesLeft": 58,
        "injury": null,
        "name": "Karl-Anthony Towns",
        "positions": "PF/C",
        "starter": true,
        "status": null,
        "team": "NYK",
-       "value": 3.17,
+       "value": 3.15,
        "why": "elite REB, solid PTS, costs you TO"
       },
       {
-       "boardRank": 187,
+       "boardRank": 185,
        "expertRank": null,
-       "gamesLeft": 54,
+       "gamesLeft": 55,
        "injury": null,
        "name": "Jalen Smith",
        "positions": "PF/C",
        "starter": true,
        "status": null,
        "team": "CHI",
-       "value": -3.53,
+       "value": -3.34,
        "why": "solid TO, costs you AST and PTS"
       }
      ],
@@ -2291,27 +2290,27 @@
       {
        "boardRank": 26,
        "expertRank": null,
-       "gamesLeft": 46,
+       "gamesLeft": 47,
        "injury": null,
        "name": "Joel Embiid",
        "positions": "C",
-       "starter": false,
+       "starter": true,
        "status": null,
        "team": "PHI",
        "value": 2.86,
        "why": "strong PTS and FT%, costs you TO"
       },
       {
-       "boardRank": 94,
+       "boardRank": 98,
        "expertRank": null,
        "gamesLeft": 58,
        "injury": null,
        "name": "Myles Turner",
        "positions": "C",
-       "starter": true,
+       "starter": false,
        "status": null,
        "team": "MIL",
-       "value": -0.63,
+       "value": -0.74,
        "why": "strong BLK, solid TO, costs you AST"
       }
      ],
@@ -2335,50 +2334,52 @@
    "mode": "team",
    "needs": [
     "FT%",
+    "3PM",
+    "AST",
     "TO"
    ],
    "positions": [
     {
      "players": [
       {
-       "boardRank": 84,
+       "boardRank": 83,
        "expertRank": null,
        "gamesLeft": 60,
        "injury": null,
        "name": "Stephon Castle",
        "positions": "PG/SG",
-       "starter": true,
+       "starter": false,
        "status": null,
        "team": "SAS",
-       "value": -0.38,
+       "value": -0.36,
        "why": "strong AST, solid STL, costs you TO"
       },
       {
-       "boardRank": 107,
+       "boardRank": 101,
        "expertRank": null,
-       "gamesLeft": 63,
-       "injury": "Out",
+       "gamesLeft": 65,
+       "injury": "Day-to-day",
        "name": "Brandin Podziemski",
        "positions": "PG/SG",
        "reserve": "ir",
        "starter": false,
-       "status": "Out tonight at LAL (bilateral low back soreness)",
+       "status": "Day-to-day (back soreness)",
        "team": "GSW",
        "value": -0.95,
-       "why": "costs you BLK and PTS"
+       "why": "solid TO, costs you BLK and PTS"
       },
       {
-       "boardRank": 115,
+       "boardRank": 114,
        "expertRank": null,
        "gamesLeft": 61,
        "injury": null,
        "name": "VJ Edgecombe",
        "positions": "PG/SG",
-       "starter": false,
+       "starter": true,
        "status": null,
        "team": "PHI",
-       "value": -1.23,
-       "why": "strong STL, costs you REB and FG%"
+       "value": -1.24,
+       "why": "solid STL, costs you REB and FG%"
       }
      ],
      "position": "PG"
@@ -2395,8 +2396,8 @@
        "starter": true,
        "status": null,
        "team": "DAL",
-       "value": 3.4,
-       "why": "strong PTS, solid REB, costs you TO"
+       "value": 3.69,
+       "why": "strong PTS, solid STL, costs you TO"
       },
       {
        "boardRank": 68,
@@ -2406,22 +2407,22 @@
        "name": "Deni Avdija",
        "positions": "SG/SF/PF",
        "starter": true,
-       "status": "Available tonight vs PHX",
+       "status": null,
        "team": "POR",
-       "value": 0.24,
-       "why": "strong AST, solid PTS, costs you TO"
+       "value": 0.3,
+       "why": "solid AST and PTS, costs you TO"
       },
       {
        "boardRank": 142,
        "expertRank": null,
-       "gamesLeft": 62,
+       "gamesLeft": 61,
        "injury": null,
        "name": "Quentin Grimes",
        "positions": "SG/SF",
        "starter": true,
        "status": null,
        "team": "LAL",
-       "value": -2.1,
+       "value": -2.16,
        "why": "solid 3PM, costs you REB and BLK"
       }
      ],
@@ -2430,7 +2431,20 @@
     {
      "players": [
       {
-       "boardRank": 40,
+       "boardRank": 43,
+       "expertRank": null,
+       "gamesLeft": 60,
+       "injury": null,
+       "name": "Matas Buzelis",
+       "positions": "SF/PF",
+       "starter": true,
+       "status": null,
+       "team": "CHI",
+       "value": 1.58,
+       "why": "strong BLK, solid 3PM, costs you AST"
+      },
+      {
+       "boardRank": 51,
        "expertRank": null,
        "gamesLeft": 56,
        "injury": null,
@@ -2439,21 +2453,8 @@
        "starter": true,
        "status": null,
        "team": "CHA",
-       "value": 2.06,
+       "value": 1.17,
        "why": "strong 3PM and PTS, costs you FG%"
-      },
-      {
-       "boardRank": 41,
-       "expertRank": null,
-       "gamesLeft": 61,
-       "injury": null,
-       "name": "Matas Buzelis",
-       "positions": "SF/PF",
-       "starter": true,
-       "status": null,
-       "team": "CHI",
-       "value": 2.05,
-       "why": "strong BLK, solid 3PM, costs you AST"
       }
      ],
      "position": "SF"
@@ -2461,7 +2462,7 @@
     {
      "players": [
       {
-       "boardRank": 54,
+       "boardRank": 44,
        "expertRank": null,
        "gamesLeft": 60,
        "injury": null,
@@ -2470,11 +2471,11 @@
        "starter": true,
        "status": null,
        "team": "HOU",
-       "value": 1.19,
-       "why": "strong REB and AST, costs you FT%"
+       "value": 1.5,
+       "why": "strong REB and AST, costs you TO"
       },
       {
-       "boardRank": 110,
+       "boardRank": 106,
        "expertRank": null,
        "gamesLeft": 56,
        "injury": null,
@@ -2487,16 +2488,16 @@
        "why": "solid FG%, costs you AST"
       },
       {
-       "boardRank": 138,
+       "boardRank": 148,
        "expertRank": null,
-       "gamesLeft": 59,
+       "gamesLeft": 60,
        "injury": null,
        "name": "Sandro Mamukelashvili",
        "positions": "PF/C",
        "starter": true,
        "status": null,
        "team": "LAL",
-       "value": -2,
+       "value": -2.4,
        "why": "solid TO, costs you AST and PTS"
       }
      ],
@@ -2505,7 +2506,7 @@
     {
      "players": [
       {
-       "boardRank": 98,
+       "boardRank": 99,
        "expertRank": null,
        "gamesLeft": 55,
        "injury": "Out",
@@ -2513,48 +2514,48 @@
        "positions": "C",
        "reserve": "ir",
        "starter": false,
-       "status": "Out tonight at TOR (left hamstring strain)",
+       "status": "Out (hamstring, est. return Nov 4)",
        "team": "CHI",
-       "value": -0.78,
+       "value": -0.75,
        "why": "strong BLK and FG%, costs you 3PM"
       },
       {
        "boardRank": 226,
        "expertRank": null,
-       "gamesLeft": 49,
+       "gamesLeft": 50,
        "injury": null,
        "name": "Andre Drummond",
        "positions": "C",
        "starter": false,
        "status": null,
        "team": "NYK",
-       "value": -4.28,
+       "value": -4.23,
        "why": "strong TO and REB, costs you PTS"
       },
       {
-       "boardRank": 236,
+       "boardRank": 231,
        "expertRank": null,
-       "gamesLeft": 55,
+       "gamesLeft": 56,
        "injury": null,
        "name": "Isaiah Jackson",
        "positions": "C",
        "starter": true,
        "status": null,
        "team": "LAC",
-       "value": -4.68,
+       "value": -4.38,
        "why": "strong TO, solid FG%, costs you PTS"
       },
       {
-       "boardRank": 293,
+       "boardRank": 294,
        "expertRank": null,
-       "gamesLeft": 58,
+       "gamesLeft": 59,
        "injury": null,
        "name": "Aday Mara",
        "positions": "C",
        "starter": true,
        "status": null,
        "team": "OKC",
-       "value": -6.14,
+       "value": -6.07,
        "why": "strong TO, solid BLK, costs you PTS"
       }
      ],
@@ -2564,7 +2565,6 @@
    "record": null,
    "surplus": [
     "REB",
-    "STL",
     "BLK"
    ],
    "teamName": "Podz save the league"
@@ -2592,11 +2592,11 @@
        "starter": true,
        "status": null,
        "team": "MIN",
-       "value": 2.97,
-       "why": "elite 3PM and AST, costs you TO"
+       "value": 3.05,
+       "why": "elite 3PM and AST, costs you FG%"
       },
       {
-       "boardRank": 62,
+       "boardRank": 77,
        "expertRank": null,
        "gamesLeft": 57,
        "injury": null,
@@ -2605,11 +2605,11 @@
        "starter": true,
        "status": null,
        "team": "MIL",
-       "value": 0.73,
-       "why": "strong AST, solid 3PM, costs you TO"
+       "value": 0,
+       "why": "solid AST and STL, costs you TO"
       },
       {
-       "boardRank": 109,
+       "boardRank": 97,
        "expertRank": null,
        "gamesLeft": 61,
        "injury": null,
@@ -2618,8 +2618,8 @@
        "starter": true,
        "status": null,
        "team": "ATL",
-       "value": -1.05,
-       "why": "strong 3PM, costs you REB and FG%"
+       "value": -0.73,
+       "why": "strong 3PM, costs you REB and BLK"
       }
      ],
      "position": "PG"
@@ -2627,7 +2627,7 @@
     {
      "players": [
       {
-       "boardRank": 53,
+       "boardRank": 52,
        "expertRank": null,
        "gamesLeft": 60,
        "injury": null,
@@ -2636,24 +2636,24 @@
        "starter": true,
        "status": null,
        "team": "ORL",
-       "value": 1.22,
-       "why": "strong FT%, solid PTS, costs you REB"
+       "value": 1.04,
+       "why": "solid FT% and 3PM, costs you REB"
       },
       {
-       "boardRank": 99,
+       "boardRank": 108,
        "expertRank": null,
        "gamesLeft": 61,
        "injury": null,
        "name": "Darryn Peterson",
        "positions": "SG",
-       "starter": true,
+       "starter": false,
        "status": null,
        "team": "UTA",
-       "value": -0.81,
+       "value": -1.15,
        "why": "costs you REB and FG%"
       },
       {
-       "boardRank": 186,
+       "boardRank": 165,
        "expertRank": null,
        "gamesLeft": 57,
        "injury": null,
@@ -2662,8 +2662,8 @@
        "starter": true,
        "status": null,
        "team": "WAS",
-       "value": -3.53,
-       "why": "solid TO, costs you PTS and REB"
+       "value": -2.8,
+       "why": "solid STL and BLK, costs you PTS"
       }
      ],
      "position": "SG"
@@ -2671,7 +2671,7 @@
     {
      "players": [
       {
-       "boardRank": 50,
+       "boardRank": 48,
        "expertRank": null,
        "gamesLeft": 46,
        "injury": null,
@@ -2680,48 +2680,48 @@
        "starter": false,
        "status": null,
        "team": "BOS",
-       "value": 1.32,
+       "value": 1.28,
        "why": "strong STL and 3PM, costs you REB"
       },
       {
-       "boardRank": 176,
+       "boardRank": 177,
        "expertRank": null,
-       "gamesLeft": 59,
-       "injury": "Out",
+       "gamesLeft": 60,
+       "injury": "Day-to-day",
        "name": "AJ Dybantsa",
        "positions": "SF",
        "reserve": "ir",
        "starter": false,
-       "status": "Out tonight vs MIL (left ankle sprain)",
+       "status": "Day-to-day (left ankle sprain)",
        "team": "WAS",
-       "value": -3.26,
+       "value": -3.22,
        "why": "costs you TO and BLK"
       },
       {
-       "boardRank": 178,
-       "expertRank": null,
-       "gamesLeft": 57,
-       "injury": null,
-       "name": "Dillon Brooks",
-       "positions": "SF/PF",
-       "starter": true,
-       "status": null,
-       "team": "PHX",
-       "value": -3.34,
-       "why": "solid TO and 3PM, costs you AST"
-      },
-      {
-       "boardRank": 218,
+       "boardRank": 205,
        "expertRank": null,
        "gamesLeft": 56,
        "injury": null,
        "name": "Zaccharie Risacher",
        "positions": "SF/PF",
-       "starter": false,
+       "starter": true,
        "status": null,
        "team": "DAL",
-       "value": -4.11,
-       "why": "strong TO, costs you AST and PTS"
+       "value": -3.81,
+       "why": "solid TO, costs you AST and PTS"
+      },
+      {
+       "boardRank": 206,
+       "expertRank": null,
+       "gamesLeft": 58,
+       "injury": null,
+       "name": "Dillon Brooks",
+       "positions": "SF/PF",
+       "starter": false,
+       "status": null,
+       "team": "PHX",
+       "value": -3.85,
+       "why": "solid TO, costs you AST and REB"
       }
      ],
      "position": "SF"
@@ -2729,20 +2729,20 @@
     {
      "players": [
       {
-       "boardRank": 36,
+       "boardRank": 35,
        "expertRank": null,
        "gamesLeft": 57,
        "injury": null,
        "name": "Evan Mobley",
        "positions": "PF/C",
-       "starter": false,
+       "starter": true,
        "status": null,
        "team": "CLE",
-       "value": 2.27,
+       "value": 2.29,
        "why": "elite BLK, strong REB, costs you FT%"
       },
       {
-       "boardRank": 87,
+       "boardRank": 103,
        "expertRank": null,
        "gamesLeft": 60,
        "injury": null,
@@ -2751,11 +2751,11 @@
        "starter": true,
        "status": null,
        "team": "MEM",
-       "value": -0.42,
-       "why": "strong REB, costs you TO"
+       "value": -1,
+       "why": "strong REB, costs you 3PM and FG%"
       },
       {
-       "boardRank": 181,
+       "boardRank": 199,
        "expertRank": null,
        "gamesLeft": 53,
        "injury": null,
@@ -2764,8 +2764,8 @@
        "starter": true,
        "status": null,
        "team": "GSW",
-       "value": -3.41,
-       "why": "solid AST, costs you PTS and 3PM"
+       "value": -3.73,
+       "why": "solid AST, costs you PTS and TO"
       }
      ],
      "position": "PF"
@@ -2782,11 +2782,11 @@
        "starter": true,
        "status": null,
        "team": "SAS",
-       "value": 9.49,
+       "value": 9.45,
        "why": "elite BLK and REB, costs you TO"
       },
       {
-       "boardRank": 150,
+       "boardRank": 146,
        "expertRank": null,
        "gamesLeft": 52,
        "injury": "Out",
@@ -2794,9 +2794,9 @@
        "positions": "C",
        "reserve": "ir",
        "starter": false,
-       "status": "Out tonight at MEM (right 2nd plantar plate tear)",
+       "status": "Out (right foot, est. return Nov 4)",
        "team": "UTA",
-       "value": -2.31,
+       "value": -2.28,
        "why": "strong REB, costs you PTS and FT%"
       }
      ],
@@ -2818,9 +2818,7 @@
    "linked": true,
    "mode": "team",
    "needs": [
-    "3PM",
     "REB",
-    "AST",
     "STL",
     "BLK"
    ],
@@ -2828,20 +2826,7 @@
     {
      "players": [
       {
-       "boardRank": 9,
-       "expertRank": null,
-       "gamesLeft": 54,
-       "injury": null,
-       "name": "Stephen Curry",
-       "positions": "PG",
-       "starter": true,
-       "status": "Available tonight at LAL",
-       "team": "GSW",
-       "value": 4.38,
-       "why": "elite 3PM, strong PTS, costs you TO"
-      },
-      {
-       "boardRank": 20,
+       "boardRank": 8,
        "expertRank": null,
        "gamesLeft": 59,
        "injury": null,
@@ -2850,11 +2835,24 @@
        "starter": true,
        "status": null,
        "team": "MIN",
-       "value": 3.28,
+       "value": 4.64,
        "why": "elite PTS and 3PM, costs you TO"
       },
       {
-       "boardRank": 60,
+       "boardRank": 11,
+       "expertRank": null,
+       "gamesLeft": 55,
+       "injury": null,
+       "name": "Stephen Curry",
+       "positions": "PG",
+       "starter": true,
+       "status": null,
+       "team": "GSW",
+       "value": 4.19,
+       "why": "elite 3PM, strong PTS, costs you REB"
+      },
+      {
+       "boardRank": 50,
        "expertRank": null,
        "gamesLeft": 66,
        "injury": null,
@@ -2863,24 +2861,24 @@
        "starter": true,
        "status": null,
        "team": "ATL",
-       "value": 0.78,
-       "why": "strong 3PM, solid FT%, costs you REB"
+       "value": 1.24,
+       "why": "strong 3PM, solid PTS, costs you REB"
       },
       {
-       "boardRank": 117,
+       "boardRank": 111,
        "expertRank": null,
        "gamesLeft": 59,
        "injury": null,
        "name": "Davion Mitchell",
        "positions": "PG",
-       "starter": true,
+       "starter": false,
        "status": null,
        "team": "MIA",
-       "value": -1.27,
+       "value": -1.22,
        "why": "elite AST, solid STL, costs you REB"
       },
       {
-       "boardRank": 159,
+       "boardRank": 145,
        "expertRank": null,
        "gamesLeft": 59,
        "injury": null,
@@ -2889,7 +2887,7 @@
        "starter": true,
        "status": null,
        "team": "IND",
-       "value": -2.58,
+       "value": -2.24,
        "why": "strong AST, costs you REB and BLK"
       }
      ],
@@ -2898,16 +2896,16 @@
     {
      "players": [
       {
-       "boardRank": 101,
+       "boardRank": 117,
        "expertRank": null,
-       "gamesLeft": 56,
+       "gamesLeft": 57,
        "injury": null,
        "name": "Norman Powell",
        "positions": "SG/SF",
        "starter": true,
        "status": null,
        "team": "CHI",
-       "value": -0.85,
+       "value": -1.32,
        "why": "strong 3PM, solid PTS, costs you REB"
       }
      ],
@@ -2916,43 +2914,43 @@
     {
      "players": [
       {
-       "boardRank": 33,
+       "boardRank": 29,
        "expertRank": null,
        "gamesLeft": 60,
        "injury": null,
        "name": "Scottie Barnes",
        "positions": "SF/PF/C",
-       "starter": true,
+       "starter": false,
        "status": null,
        "team": "TOR",
-       "value": 2.41,
+       "value": 2.75,
        "why": "strong BLK, solid STL, costs you TO"
       },
       {
-       "boardRank": 155,
-       "expertRank": null,
-       "gamesLeft": 65,
-       "injury": null,
-       "name": "DeMar DeRozan",
-       "positions": "SF/PF",
-       "starter": false,
-       "status": null,
-       "team": "DEN",
-       "value": -2.53,
-       "why": "strong TO, solid FT%, costs you REB"
-      },
-      {
-       "boardRank": 163,
+       "boardRank": 137,
        "expertRank": null,
        "gamesLeft": 60,
        "injury": null,
        "name": "Ace Bailey",
        "positions": "SF/PF",
-       "starter": true,
+       "starter": false,
        "status": null,
        "team": "UTA",
-       "value": -2.64,
-       "why": "costs you AST and REB"
+       "value": -2.07,
+       "why": "solid TO, costs you AST and PTS"
+      },
+      {
+       "boardRank": 155,
+       "expertRank": null,
+       "gamesLeft": 66,
+       "injury": null,
+       "name": "DeMar DeRozan",
+       "positions": "SF/PF",
+       "starter": true,
+       "status": null,
+       "team": "DEN",
+       "value": -2.52,
+       "why": "strong TO, solid FT%, costs you REB"
       }
      ],
      "position": "SF"
@@ -2969,21 +2967,21 @@
        "starter": true,
        "status": null,
        "team": "WAS",
-       "value": 4.97,
-       "why": "elite BLK and REB, costs you 3PM"
+       "value": 5.29,
+       "why": "elite REB and BLK, costs you 3PM"
       },
       {
-       "boardRank": 90,
+       "boardRank": 78,
        "expertRank": null,
-       "gamesLeft": 55,
+       "gamesLeft": 56,
        "injury": null,
        "name": "Zion Williamson",
        "positions": "PF/C",
        "starter": true,
        "status": null,
        "team": "NOP",
-       "value": -0.48,
-       "why": "elite FG%, strong PTS, costs you 3PM"
+       "value": -0.02,
+       "why": "strong FG% and PTS, costs you 3PM"
       }
      ],
      "position": "PF"
@@ -2991,29 +2989,29 @@
     {
      "players": [
       {
-       "boardRank": 73,
+       "boardRank": 74,
        "expertRank": null,
-       "gamesLeft": 60,
+       "gamesLeft": 61,
        "injury": "Questionable",
        "name": "Jarrett Allen",
        "positions": "C",
-       "starter": false,
-       "status": "Questionable tomorrow at PHI (right patellar tendinopathy)",
+       "starter": true,
+       "status": "Questionable tonight at PHI (right patellar tendinopathy)",
        "team": "CLE",
        "value": 0.12,
        "why": "strong FG% and REB, costs you 3PM"
       },
       {
-       "boardRank": 112,
+       "boardRank": 107,
        "expertRank": null,
-       "gamesLeft": 53,
+       "gamesLeft": 54,
        "injury": null,
        "name": "Isaiah Hartenstein",
        "positions": "C",
-       "starter": false,
+       "starter": true,
        "status": null,
        "team": "OKC",
-       "value": -1.14,
+       "value": -1.13,
        "why": "strong REB, solid FG%, costs you 3PM"
       }
      ],
@@ -3023,6 +3021,7 @@
    "record": null,
    "surplus": [
     "FG%",
+    "PTS",
     "TO"
    ],
    "teamName": "Splash Mountain"
@@ -3041,20 +3040,20 @@
     {
      "players": [
       {
-       "boardRank": 23,
+       "boardRank": 19,
        "expertRank": null,
        "gamesLeft": 57,
        "injury": null,
        "name": "Austin Reaves",
        "positions": "PG/SG/SF",
-       "starter": true,
+       "starter": false,
        "status": null,
        "team": "LAL",
-       "value": 3.14,
-       "why": "strong PTS and FT%, costs you TO"
+       "value": 3.47,
+       "why": "strong FT% and PTS, costs you TO"
       },
       {
-       "boardRank": 30,
+       "boardRank": 33,
        "expertRank": null,
        "gamesLeft": 65,
        "injury": null,
@@ -3063,64 +3062,64 @@
        "starter": true,
        "status": null,
        "team": "HOU",
-       "value": 2.5,
-       "why": "strong STL, solid FG%, costs you 3PM"
+       "value": 2.3,
+       "why": "strong STL and REB, costs you 3PM"
       },
       {
        "boardRank": 34,
        "expertRank": null,
-       "gamesLeft": 55,
+       "gamesLeft": 56,
        "injury": null,
        "name": "Tyler Herro",
        "positions": "PG/SG",
        "starter": true,
        "status": null,
        "team": "MIL",
-       "value": 2.41,
+       "value": 2.3,
        "why": "strong 3PM and PTS, costs you BLK"
       },
       {
-       "boardRank": 66,
+       "boardRank": 69,
        "expertRank": null,
-       "gamesLeft": 57,
+       "gamesLeft": 58,
        "injury": "Out",
        "name": "Coby White",
        "positions": "PG/SG",
        "reserve": "ir",
        "starter": false,
-       "status": "Out tonight at BKN (left calf strain)",
+       "status": "Out (left calf strain, est. return Oct 23)",
        "team": "CHA",
-       "value": 0.28,
+       "value": 0.29,
        "why": "strong AST and 3PM, costs you BLK"
       },
       {
-       "boardRank": 108,
-       "expertRank": null,
-       "gamesLeft": 59,
-       "injury": null,
-       "name": "Egor Dëmin",
-       "positions": "PG/SG",
-       "starter": true,
-       "status": null,
-       "team": "BKN",
-       "value": -1.04,
-       "why": "strong 3PM, costs you FG% and REB"
-      },
-      {
-       "boardRank": 122,
+       "boardRank": 123,
        "expertRank": null,
        "gamesLeft": 63,
        "injury": null,
        "name": "Cason Wallace",
        "positions": "PG/SG/SF",
-       "starter": false,
+       "starter": true,
        "status": null,
        "team": "OKC",
-       "value": -1.41,
+       "value": -1.44,
        "why": "strong STL and TO, costs you PTS"
       },
       {
-       "boardRank": 265,
+       "boardRank": 136,
+       "expertRank": null,
+       "gamesLeft": 59,
+       "injury": null,
+       "name": "Egor Dëmin",
+       "positions": "PG/SG",
+       "starter": false,
+       "status": null,
+       "team": "BKN",
+       "value": -2.04,
+       "why": "strong 3PM, costs you FG% and REB"
+      },
+      {
+       "boardRank": 250,
        "expertRank": null,
        "gamesLeft": 59,
        "injury": null,
@@ -3129,7 +3128,7 @@
        "starter": true,
        "status": null,
        "team": "CHA",
-       "value": -5.53,
+       "value": -4.99,
        "why": "strong TO, costs you REB and PTS"
       }
      ],
@@ -3140,15 +3139,15 @@
       {
        "boardRank": 92,
        "expertRank": null,
-       "gamesLeft": 57,
+       "gamesLeft": 58,
        "injury": null,
        "name": "Ausar Thompson",
        "positions": "SG/SF/PF",
        "starter": true,
        "status": null,
        "team": "DET",
-       "value": -0.6,
-       "why": "elite STL, solid BLK, costs you 3PM"
+       "value": -0.62,
+       "why": "strong STL, solid BLK, costs you 3PM"
       }
      ],
      "position": "SG"
@@ -3156,20 +3155,20 @@
     {
      "players": [
       {
-       "boardRank": 69,
+       "boardRank": 70,
        "expertRank": null,
-       "gamesLeft": 54,
+       "gamesLeft": 55,
        "injury": null,
        "name": "LeBron James",
        "positions": "SF/PF",
-       "starter": false,
+       "starter": true,
        "status": null,
        "team": "PHI",
-       "value": 0.21,
+       "value": 0.23,
        "why": "strong AST, costs you TO and FT%"
       },
       {
-       "boardRank": 106,
+       "boardRank": 102,
        "expertRank": null,
        "gamesLeft": 31,
        "injury": "Out",
@@ -3177,22 +3176,22 @@
        "positions": "SF/PF",
        "reserve": "ir",
        "starter": false,
-       "status": "Out tonight at LAL (right ACL repair / surgery)",
+       "status": "Out (right knee surgery, est. return Jan 2)",
        "team": "GSW",
        "value": -0.95,
-       "why": "solid FT% and TO, costs you REB"
+       "why": "solid TO and FT%, costs you REB"
       },
       {
-       "boardRank": 135,
+       "boardRank": 131,
        "expertRank": null,
-       "gamesLeft": 61,
+       "gamesLeft": 62,
        "injury": null,
        "name": "Peyton Watson",
        "positions": "SF/PF",
-       "starter": false,
+       "starter": true,
        "status": null,
        "team": "CLE",
-       "value": -1.88,
+       "value": -1.85,
        "why": "strong BLK, solid TO, costs you AST"
       }
      ],
@@ -3201,16 +3200,16 @@
     {
      "players": [
       {
-       "boardRank": 25,
+       "boardRank": 18,
        "expertRank": null,
-       "gamesLeft": 57,
+       "gamesLeft": 58,
        "injury": null,
        "name": "Domantas Sabonis",
        "positions": "PF/C",
-       "starter": true,
+       "starter": false,
        "status": null,
        "team": "SAC",
-       "value": 2.93,
+       "value": 3.58,
        "why": "elite REB, strong FG%, costs you TO"
       }
      ],
@@ -3219,33 +3218,33 @@
     {
      "players": [
       {
-       "boardRank": 79,
+       "boardRank": 90,
        "expertRank": null,
-       "gamesLeft": 54,
-       "injury": null,
-       "name": "Khaman Maluach",
-       "positions": "C",
-       "starter": true,
-       "status": null,
-       "team": "PHX",
-       "value": -0.16,
-       "why": "elite BLK, strong REB, costs you AST"
-      },
-      {
-       "boardRank": 103,
-       "expertRank": null,
-       "gamesLeft": 57,
+       "gamesLeft": 58,
        "injury": null,
        "name": "Day'Ron Sharpe",
        "positions": "C",
        "starter": true,
        "status": null,
        "team": "BKN",
-       "value": -0.9,
+       "value": -0.59,
        "why": "strong REB and STL, costs you 3PM"
       },
       {
-       "boardRank": 152,
+       "boardRank": 94,
+       "expertRank": null,
+       "gamesLeft": 55,
+       "injury": null,
+       "name": "Khaman Maluach",
+       "positions": "C",
+       "starter": true,
+       "status": null,
+       "team": "PHX",
+       "value": -0.64,
+       "why": "elite BLK, strong REB, costs you AST"
+      },
+      {
+       "boardRank": 124,
        "expertRank": null,
        "gamesLeft": 60,
        "injury": null,
@@ -3254,8 +3253,8 @@
        "starter": true,
        "status": null,
        "team": "ORL",
-       "value": -2.46,
-       "why": "solid TO and REB, costs you PTS"
+       "value": -1.56,
+       "why": "solid TO and REB, costs you AST"
       }
      ],
      "position": "C"
