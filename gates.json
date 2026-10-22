@@ -1,7 +1,7 @@
 {
- "ran_at_utc": "2026-10-22T13:27:29Z",
+ "ran_at_utc": "2026-10-22T15:25:16Z",
  "inputs": {
-  "report/after-reports/after-report-2026-10-22-day-findings.md": "12d573a1a86bb37e9969e2501facb1fb718bc5963f870d637036aa1f4ca9ccf7",
+  "report/after-reports/after-report-2026-10-22-day-findings.md": "a93da7ad599244d93221e8f589184e7cb5637679bc83f3bb594bc2d78e15b96b",
   "report/after-reports/redteam-2026-10-19/sweep.json": "e5e5bd86dcf85c0af0ecf4c00e1dc18e77a3b07ab43313eaacc109e5d7560c45"
  },
  "gates": [
@@ -63,11 +63,11 @@
    "cwd": ".",
    "pass_re": "^TRACE: PASS",
    "exit": 0,
-   "pass_line": "TRACE: PASS \u2014 804 figures, 0 unmatched []; 77 of 77 counts agree",
+   "pass_line": "TRACE: PASS \u2014 860 figures, 0 unmatched []; 97 of 97 counts agree",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "TRACE: PASS \u2014 804 figures, 0 unmatched []; 77 of 77 counts agree"
+    "TRACE: PASS \u2014 860 figures, 0 unmatched []; 97 of 97 counts agree"
    ]
   },
   {
@@ -125,5 +125,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "edafd2d21bb964c030c26ef47b6c228c04f42c96"
+ "base_commit": "5edfbbe67fb3776be867f391b69f3204cb56f66b"
 }
