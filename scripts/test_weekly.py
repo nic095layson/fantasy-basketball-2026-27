@@ -41,5 +41,43 @@ class Ledger(unittest.TestCase):
         self.assertAlmostEqual(s["brier_matchup"], (0.6 - 1.0) ** 2)
 
 
+class MatchupOnly(unittest.TestCase):
+    """2026-10-22, week 2: the preview simulates the owner against one opponent, but built every team's model first, so a
+    player without a line on a third team's roster (Andre Drummond, seat 9, D-DR-1) stopped the record. Only the two
+    teams in the matchup are modelled; a player without a line on either of them still stops it, by name."""
+
+    def _state(self, d, seat, name):
+        st = json.load(open(WP.CG.STATE, encoding="utf-8"))
+        for t in st["teams"]:
+            if t["seat"] == seat:
+                t["players"].append(dict(player=name, slot="BN"))
+        p = os.path.join(d, "league_state.json")
+        json.dump(st, open(p, "w", encoding="utf-8"))
+        return p
+
+    def _preview(self, state_path):
+        old = WP.CG.STATE
+        WP.CG.STATE = state_path
+        try:
+            return WP.preview(1, n=200)
+        finally:
+            WP.CG.STATE = old
+
+    def test_a_third_team_player_without_a_line_does_not_stop_or_move_the_preview(self):
+        o = next(x for x in json.load(open(WP.CG.SCHEDULE, encoding="utf-8"))["owner_opponents"] if x["week"] == 1)
+        third = next(s for s in range(1, 13) if s not in (WP.CG.OWNER_SEAT, o["seat"]))
+        with tempfile.TemporaryDirectory() as d:
+            clean = self._preview(self._state(d, third, "No Such Player Zz"))
+        with tempfile.TemporaryDirectory() as d:
+            base = self._preview(self._state(d, -1, "unused"))
+        self.assertEqual(clean["by_seed"], base["by_seed"])
+
+    def test_a_matchup_player_without_a_line_stops_the_preview_by_name(self):
+        o = next(x for x in json.load(open(WP.CG.SCHEDULE, encoding="utf-8"))["owner_opponents"] if x["week"] == 1)
+        with tempfile.TemporaryDirectory() as d:
+            with self.assertRaisesRegex(WP.LedgerError, "No Such Player Zz"):
+                self._preview(self._state(d, o["seat"], "No Such Player Zz"))
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
