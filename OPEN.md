@@ -30,6 +30,7 @@ repo's `OPEN.md`; this kit copy is the master.
 | D-SF-1..4 | Scope-fence follow-ups (analysis-session prompt, lessons entry, Hashtag parse, usage dry run) | (a)/(b)/(b)/(a) | `after-report-2026-10-13-scope-fence.md` |
 | D-MC-1 | #156 and #29 are Global Operations' to merge (owner, 10/21 at about 20:10Z: "Global merges #156 now"); #155 and #157 were merged by the kit session. Playwright in the runner's setup script is optional until #156 merges, required after | Global Ops merges | `after-report-2026-10-21-pickups-file.md` |
 | D-ZS-3 | Per-game variation fit: hand-set `arena.CV` is 24-43% below 2025-26 (game logs, 157 players) — (a) adopt the fitted values (deck engine PR, sweep + title odds restated) / (b) keep, widen the registry band to x1.24-x1.43 / (c) leave | (c), flagged; recommendation (a) | `after-report-2026-10-21-zscore-assessment.md` §4 Measurement 3 |
+| D-RR-1 | De'Andre Hunter's `inj-eye-risk` tag (deck): (a) remove it, dropping his x0.78 on the deck / (b) keep it by convention — February retinal repair with full recovery expected (ESPN and NBA.com, 2/21), two preseason games, on neither ESPN's nor Basketball-Reference's injury list 10/22 | (b) until you decide; recommendation (a) | `after-report-2026-10-22-risk-rows.md` §4 |
 
 ## Owner inputs requested, not yet received
 

@@ -1,0 +1,50 @@
+{
+ "purpose": "De'Andre Hunter tag review (owner 2026-10-22: 'Keep GP, research tag')",
+ "files": {
+  "espn_story_47990846_2026-02-21.html": {
+   "url": "https://www.espn.com/nba/story/_/id/47990846/kings-f-deandre-hunter-season-left-eye-surgery",
+   "fetched": "2026-10-22T00:17:34Z (curl, HTTP 200)",
+   "published": "2026-02-21T01:24:16Z (page datePublished)",
+   "sha256": "f0e587aeb91942cbaffffb3018faaae69ef8f1ca947b769d15692db2b182f875",
+   "bytes": 121172
+  },
+  "espn_injuries_2026-10-22T0018Z.json": {
+   "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries",
+   "fetched": "2026-10-22T00:18:11Z (curl, HTTP 200)",
+   "published": "live feed at fetch time",
+   "sha256": "47e4b4c93d3b0de0b9512a4d353dec81bb1639ec0e5b1db776ab65ea23b9ef84",
+   "bytes": 818679
+  },
+  "nbacom_story_2026-02-21.html": {
+   "url": "https://www.nba.com/news/deandre-hunter-out-season-eye-surgery",
+   "fetched": "2026-10-22T00:29Z (curl, HTTP 200)",
+   "published": "2026-02-21T03:51:38Z (page datePublished)",
+   "sha256": "817c5b3a23f8683d7f2d9d5b52722c3c7dfa6a39ed4ec8031ead9e477038a8e5",
+   "bytes": 319360
+  },
+  "bref_injuries_2026-10-22T0029Z.html": {
+   "url": "https://www.basketball-reference.com/friv/injuries.fcgi",
+   "fetched": "2026-10-22T00:29Z (curl, HTTP 200)",
+   "published": "live list at fetch time (69 rows)",
+   "sha256": "e4da8337be424f863c8216a05364cfd8186efc1252c11733b63aa9125bab3f29",
+   "bytes": 162514
+  }
+ },
+ "unreachable": [
+  {
+   "url": "https://www.rotowire.com/basketball/headlines/deandre-hunter-news-good-to-go-for-camp-532880",
+   "attempt": "WebFetch: getaddrinfo ENOTFOUND; curl: HTTP 000",
+   "seen_only_in": "WebSearch result summary (not cited)"
+  },
+  {
+   "url": "https://www.si.com/nba/kings/onsi/sacramento-kings-news/de-andre-hunter-speaks-on-recovery-strong-pairing-with-keegan-murray",
+   "attempt": "WebFetch: getaddrinfo ENOTFOUND; curl: HTTP 000",
+   "seen_only_in": "WebSearch result summary (not cited)"
+  },
+  {
+   "url": "https://www.nbcsportsbayarea.com/nba/sacramento-kings/deandre-hunter-eye-injury-surgery/1918807/",
+   "attempt": "curl: HTTP 000",
+   "seen_only_in": "WebSearch results (not cited)"
+  }
+ ]
+}

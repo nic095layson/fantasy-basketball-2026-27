@@ -1,0 +1,103 @@
+{
+ "date": "2026-10-21",
+ "base": "origin/main",
+ "base_commit": "2b5bd1ff641f861786cd88b6e6c4556e1fa83fd2",
+ "deck_commit": "80eecdfd1675724f59cc803879dcb1cc3b0a1f76",
+ "files": {
+  "data/season/projections_season.csv": {
+   "identical": false,
+   "lines_changed": 6
+  },
+  "data/season/pool_season.csv": {
+   "identical": true,
+   "lines_changed": 0
+  }
+ },
+ "board_rows": 200,
+ "board_changed": [
+  {
+   "player": "Trey Murphy III",
+   "before": {
+    "rank": 16,
+    "gp": 70,
+    "value_adj": 3.0,
+    "z_total": 3.39
+   },
+   "after": {
+    "rank": 16,
+    "gp": 64,
+    "value_adj": 2.8,
+    "z_total": 3.39
+   }
+  },
+  {
+   "player": "Jaren Jackson Jr",
+   "before": {
+    "rank": 44,
+    "gp": 68,
+    "value_adj": 1.31,
+    "z_total": 1.52
+   },
+   "after": {
+    "rank": 44,
+    "gp": 62,
+    "value_adj": 1.22,
+    "z_total": 1.52
+   }
+  },
+  {
+   "player": "Zach Edey",
+   "before": {
+    "rank": 51,
+    "gp": 70,
+    "value_adj": 0.93,
+    "z_total": 1.05
+   },
+   "after": {
+    "rank": 51,
+    "gp": 64,
+    "value_adj": 0.87,
+    "z_total": 1.05
+   }
+  },
+  {
+   "player": "Keegan Murray",
+   "before": {
+    "rank": 83,
+    "gp": 72,
+    "value_adj": -0.04,
+    "z_total": -0.04
+   },
+   "after": {
+    "rank": 83,
+    "gp": 66,
+    "value_adj": -0.04,
+    "z_total": -0.04
+   }
+  },
+  {
+   "player": "Alex Sarr",
+   "before": {
+    "rank": 91,
+    "gp": 72,
+    "value_adj": -0.55,
+    "z_total": -0.55
+   },
+   "after": {
+    "rank": 91,
+    "gp": 66,
+    "value_adj": -0.55,
+    "z_total": -0.55
+   }
+  }
+ ],
+ "rank_changes": [],
+ "lines_pass": [
+  "SEASON LINES: PASS — 2026-10-21: 3 box-score records, 56 pool players with regular-season games, 43 lines moved by 0.25+ (priors in games: FG% 26.0, FT% 37.5, 3PM 9.5, PTS 11.7, REB 12.4, AST 11.7, STL 21.7, BLK 14.5, TO 14.0); 12 unpooled players with games",
+  "SEASON LINES: PASS — 2026-10-21: 3 box-score records, 56 pool players with regular-season games, 43 lines moved by 0.25+ (priors in games: FG% 26.0, FT% 37.5, 3PM 9.5, PTS 11.7, REB 12.4, AST 11.7, STL 21.7, BLK 14.5, TO 14.0); 12 unpooled players with games"
+ ],
+ "board_pass": [
+  "SEASON BOARD: PASS — 2026-10-21: report/season/board_2026-10-21.md (43 movers listed)",
+  "SEASON BOARD: PASS — 2026-10-21: report/season/board_2026-10-21.md (43 movers listed)"
+ ]
+}
