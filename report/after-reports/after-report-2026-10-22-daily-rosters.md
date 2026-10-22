@@ -39,7 +39,7 @@ Pull window: 2026-10-20 → 2026-10-22. The pull is four Flaim `get_roster` call
 **Tests.**
 - New tests on `main`'s code: 7 of 7 fail (`red_first.txt`). With the change, all 45 tests in the two files pass (`green.txt`).
 - The five tests of the afternoon fix on the code before it (`99b24e9`): 5 of 5 fail, 3 errors (`keep_daily` absent), 1 error (a lineup-only pull pinned nothing) and 1 failure (the second run's pin had lost the first run's lineup: `{}`) (`red_pin_fix.txt`). With the fix, `test_flaim_live.py` 17, `test_league_live.py` 21 and `test_week_matchup.py` 31 all pass (`green_pin_fix.txt`).
-- Full suite on the fix: 354 tests, two runs, identical results (`suite_pin_fix.txt`, which names the command). 352 pass, 1 is skipped, and 1 fails: `test_matchup_live.Record.test_todays_transcript_yields_todays_outlook`. Before the fix: 349, the same one failure (`suite.txt`).
+- Full suite on the fix: 354 tests, two runs on the working tree and a third on the committed head `ac1bf57`, identical results (`suite_pin_fix.txt`, which names the command). 352 pass, 1 is skipped, and 1 fails: `test_matchup_live.Record.test_todays_transcript_yields_todays_outlook`. Before the fix: 349, the same one failure (`suite.txt`).
 - That failure is pre-existing. It fails identically on `main` (the name-fix after-report recorded it on `af625a8`). It reads today's live session transcript and expects a fixed opponent name from an earlier date. It is unrelated to this change and was left untouched.
 
 **The 10/22 card on the `e7b69bb` records** (`daily-rosters-2026-10-22/evidence.py`, two runs, identical `evidence.json`):
