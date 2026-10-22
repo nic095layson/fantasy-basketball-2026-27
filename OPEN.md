@@ -29,6 +29,7 @@ repo's `OPEN.md`; this kit copy is the master.
 | D-INT-2 | Commit the two lagging tools as standing versions | after the draft | `after-report-2026-10-14-integrity.md` |
 | D-SF-1..4 | Scope-fence follow-ups (analysis-session prompt, lessons entry, Hashtag parse, usage dry run) | (a)/(b)/(b)/(a) | `after-report-2026-10-13-scope-fence.md` |
 | D-MC-1 | #156 and #29 are Global Operations' to merge (owner, 10/21 at about 20:10Z: "Global merges #156 now"); #155 and #157 were merged by the kit session. Playwright in the runner's setup script is optional until #156 merges, required after | Global Ops merges | `after-report-2026-10-21-pickups-file.md` |
+| D-RR-1 | De'Andre Hunter's `inj-eye-risk` tag (deck): (a) remove it, dropping his x0.78 on the deck / (b) keep it by convention — February retinal repair with full recovery expected (ESPN and NBA.com, 2/21), two preseason games, on neither ESPN's nor Basketball-Reference's injury list 10/22 | (b) until you decide; recommendation (a) | `after-report-2026-10-22-risk-rows.md` §4 |
 
 ## Owner inputs requested, not yet received
 
