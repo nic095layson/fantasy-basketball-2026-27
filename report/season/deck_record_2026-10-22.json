@@ -15,12 +15,12 @@
   "status": {
    "path": "data/status/status_2026-10-22.json",
    "present": true,
-   "sha256": "f3ba8592df8c524b557169b2212e6dae33869ba307433cd6262cb6f063909058"
+   "sha256": "463ce597c4c4f0613774731311ddc54be728388c004bf14712b1d16eba7cab15"
   },
   "league_state": {
    "path": "data/league_state.json",
    "present": true,
-   "sha256": "64eaafe93e133a66722ab8ead55dc16878d946fe5099135dbc304b30e9dccf29"
+   "sha256": "74b5e78c20369ea73c5109c026385a66e7c2a817367bb9019498034bed3b23a2"
   },
   "season_lines": {
    "path": "data/season/season_lines_2026-10-22.json",
@@ -35,7 +35,7 @@
   "calibration": {
    "path": "report/calibration.json",
    "present": true,
-   "sha256": "a5db5a742419084353b86bba3a7be22482aefdc98b7dd9f02546c0ef19146403"
+   "sha256": "1e9fcadfa000ffa43cba3b61f079cc50c4f70a0bb570cfbdb7089fa471c0fb7b"
   },
   "matchup_live": {
    "path": "data/news/matchup_live_2026-10-22.json",
@@ -45,16 +45,16 @@
   "week_matchup": {
    "path": "report/briefs/week_matchup_2026-10-22.json",
    "present": true,
-   "sha256": "85f278dfc98cec378a954489e6e452bb771a29c2e84ef12225667070f73cfaae"
+   "sha256": "0d54212359d68074ec6e268a71a88d4571e466e9e6777f54752c9889955def93"
   }
  },
  "board_rows": 313,
- "status_rows": 14,
+ "status_rows": 17,
  "panes": 6,
  "join": {
-  "rostered": 167,
+  "rostered": 168,
   "unresolved": 0,
-  "on_board": 164,
+  "on_board": 165,
   "off_board": 3,
   "respelled": [
    [
@@ -78,10 +78,6 @@
     "Jaren Jackson Jr"
    ],
    [
-    "Kevin Porter Jr.",
-    "Kevin Porter Jr"
-   ],
-   [
     "Michael Porter Jr.",
     "Michael Porter Jr"
    ],
@@ -94,7 +90,7 @@
     "Wendell Carter Jr"
    ]
   ],
-  "free_agents_on_board": 149
+  "free_agents_on_board": 148
  },
  "render": {
   "status": "PASS",
@@ -107,6 +103,6 @@
    "Week"
   ],
   "page_errors": 0,
-  "browser": "141.0.7390.37 (/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell)"
+  "browser": "141.0.7390.37 (playwright default)"
  }
 }
