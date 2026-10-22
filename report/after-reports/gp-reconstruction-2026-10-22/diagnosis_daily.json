@@ -1,0 +1,528 @@
+{
+ "cases": [
+  {
+   "week": 13,
+   "manager": "David",
+   "team_id": 11,
+   "known": 43,
+   "weekly": 32,
+   "daily": 38,
+   "lineup": 38,
+   "starts": 45,
+   "roster_change": 6,
+   "lineup_choice": 0,
+   "unexplained": 5,
+   "totals_lineup": {
+    "fgm": 236,
+    "fga": 477,
+    "ftm": 136,
+    "fta": 159,
+    "tpm": 70,
+    "pts": 678,
+    "reb": 165,
+    "ast": 142,
+    "stl": 43,
+    "blk": 25,
+    "tov": 72
+   },
+   "totals_truth": {
+    "fgm": 236,
+    "fga": 477,
+    "ftm": 136,
+    "fta": 159,
+    "tpm": 70,
+    "pts": 678,
+    "reb": 165,
+    "ast": 142,
+    "stl": 43,
+    "blk": 25,
+    "tov": 72
+   },
+   "totals_equal": true,
+   "days": [
+    {
+     "date": "2026-01-12",
+     "perfect": 3,
+     "actual_lineup": 3,
+     "starts": 3,
+     "benched_who_played": [],
+     "in_slot_did_not_play": []
+    },
+    {
+     "date": "2026-01-13",
+     "perfect": 5,
+     "actual_lineup": 5,
+     "starts": 6,
+     "benched_who_played": [],
+     "in_slot_did_not_play": [
+      "Jerami Grant"
+     ]
+    },
+    {
+     "date": "2026-01-14",
+     "perfect": 8,
+     "actual_lineup": 8,
+     "starts": 8,
+     "benched_who_played": [],
+     "in_slot_did_not_play": []
+    },
+    {
+     "date": "2026-01-15",
+     "perfect": 6,
+     "actual_lineup": 6,
+     "starts": 7,
+     "benched_who_played": [],
+     "in_slot_did_not_play": [
+      "Jalen Brunson"
+     ]
+    },
+    {
+     "date": "2026-01-16",
+     "perfect": 4,
+     "actual_lineup": 4,
+     "starts": 6,
+     "benched_who_played": [],
+     "in_slot_did_not_play": [
+      "Kawhi Leonard",
+      "Tari Eason"
+     ]
+    },
+    {
+     "date": "2026-01-17",
+     "perfect": 7,
+     "actual_lineup": 7,
+     "starts": 8,
+     "benched_who_played": [],
+     "in_slot_did_not_play": [
+      "Jalen Brunson"
+     ]
+    },
+    {
+     "date": "2026-01-18",
+     "perfect": 5,
+     "actual_lineup": 5,
+     "starts": 7,
+     "benched_who_played": [],
+     "in_slot_did_not_play": [
+      "Jerami Grant",
+      "Tari Eason"
+     ]
+    }
+   ]
+  },
+  {
+   "week": 8,
+   "manager": "Robert",
+   "team_id": 2,
+   "known": 27,
+   "weekly": 19,
+   "daily": 19,
+   "lineup": 19,
+   "starts": 29,
+   "roster_change": 0,
+   "lineup_choice": 0,
+   "unexplained": 8,
+   "totals_lineup": {
+    "fgm": 87,
+    "fga": 189,
+    "ftm": 49,
+    "fta": 63,
+    "tpm": 27,
+    "pts": 250,
+    "reb": 79,
+    "ast": 46,
+    "stl": 11,
+    "blk": 7,
+    "tov": 28
+   },
+   "totals_truth": {
+    "fgm": 87,
+    "fga": 189,
+    "ftm": 49,
+    "fta": 63,
+    "tpm": 27,
+    "pts": 250,
+    "reb": 79,
+    "ast": 46,
+    "stl": 11,
+    "blk": 7,
+    "tov": 28
+   },
+   "totals_equal": true,
+   "days": [
+    {
+     "date": "2025-12-08",
+     "perfect": 4,
+     "actual_lineup": 4,
+     "starts": 6,
+     "benched_who_played": [],
+     "in_slot_did_not_play": [
+      "Dejounte Murray",
+      "Domantas Sabonis"
+     ]
+    },
+    {
+     "date": "2025-12-09",
+     "perfect": 1,
+     "actual_lineup": 1,
+     "starts": 1,
+     "benched_who_played": [],
+     "in_slot_did_not_play": []
+    },
+    {
+     "date": "2025-12-10",
+     "perfect": 3,
+     "actual_lineup": 3,
+     "starts": 3,
+     "benched_who_played": [],
+     "in_slot_did_not_play": []
+    },
+    {
+     "date": "2025-12-11",
+     "perfect": 2,
+     "actual_lineup": 2,
+     "starts": 5,
+     "benched_who_played": [],
+     "in_slot_did_not_play": [
+      "Dejounte Murray",
+      "Domantas Sabonis",
+      "Zach LaVine"
+     ]
+    },
+    {
+     "date": "2025-12-12",
+     "perfect": 2,
+     "actual_lineup": 2,
+     "starts": 4,
+     "benched_who_played": [],
+     "in_slot_did_not_play": [
+      "Collin Sexton",
+      "Jarrett Allen"
+     ]
+    },
+    {
+     "date": "2025-12-13",
+     "perfect": 1,
+     "actual_lineup": 1,
+     "starts": 1,
+     "benched_who_played": [],
+     "in_slot_did_not_play": []
+    },
+    {
+     "date": "2025-12-14",
+     "perfect": 6,
+     "actual_lineup": 6,
+     "starts": 9,
+     "benched_who_played": [],
+     "in_slot_did_not_play": [
+      "Collin Sexton",
+      "Dejounte Murray",
+      "Domantas Sabonis"
+     ]
+    }
+   ]
+  },
+  {
+   "week": 5,
+   "manager": "David",
+   "team_id": 11,
+   "known": 44,
+   "weekly": 36,
+   "daily": 40,
+   "lineup": 40,
+   "starts": 48,
+   "roster_change": 4,
+   "lineup_choice": 0,
+   "unexplained": 4,
+   "totals_lineup": {
+    "fgm": 246,
+    "fga": 479,
+    "ftm": 124,
+    "fta": 151,
+    "tpm": 65,
+    "pts": 681,
+    "reb": 247,
+    "ast": 174,
+    "stl": 42,
+    "blk": 34,
+    "tov": 69
+   },
+   "totals_truth": {
+    "fgm": 246,
+    "fga": 479,
+    "ftm": 124,
+    "fta": 151,
+    "tpm": 65,
+    "pts": 681,
+    "reb": 247,
+    "ast": 174,
+    "stl": 42,
+    "blk": 34,
+    "tov": 69
+   },
+   "totals_equal": true,
+   "days": [
+    {
+     "date": "2025-11-17",
+     "perfect": 7,
+     "actual_lineup": 7,
+     "starts": 9,
+     "benched_who_played": [],
+     "in_slot_did_not_play": [
+      "Daniel Gafford",
+      "OG Anunoby"
+     ]
+    },
+    {
+     "date": "2025-11-18",
+     "perfect": 3,
+     "actual_lineup": 3,
+     "starts": 4,
+     "benched_who_played": [],
+     "in_slot_did_not_play": [
+      "Kristaps Porzi\u0146\u0123is"
+     ]
+    },
+    {
+     "date": "2025-11-19",
+     "perfect": 8,
+     "actual_lineup": 8,
+     "starts": 8,
+     "benched_who_played": [
+      "Donte DiVincenzo"
+     ],
+     "in_slot_did_not_play": []
+    },
+    {
+     "date": "2025-11-20",
+     "perfect": 4,
+     "actual_lineup": 4,
+     "starts": 5,
+     "benched_who_played": [],
+     "in_slot_did_not_play": [
+      "Jaren Jackson Jr."
+     ]
+    },
+    {
+     "date": "2025-11-21",
+     "perfect": 7,
+     "actual_lineup": 7,
+     "starts": 7,
+     "benched_who_played": [],
+     "in_slot_did_not_play": []
+    },
+    {
+     "date": "2025-11-22",
+     "perfect": 5,
+     "actual_lineup": 5,
+     "starts": 7,
+     "benched_who_played": [],
+     "in_slot_did_not_play": [
+      "Jaren Jackson Jr.",
+      "Kawhi Leonard"
+     ]
+    },
+    {
+     "date": "2025-11-23",
+     "perfect": 6,
+     "actual_lineup": 6,
+     "starts": 8,
+     "benched_who_played": [],
+     "in_slot_did_not_play": [
+      "Kristaps Porzi\u0146\u0123is",
+      "VJ Edgecombe"
+     ]
+    }
+   ]
+  },
+  {
+   "week": 1,
+   "manager": "David",
+   "team_id": 11,
+   "known": 32,
+   "weekly": 33,
+   "daily": 34,
+   "lineup": 33,
+   "starts": 33,
+   "roster_change": 1,
+   "lineup_choice": -1,
+   "unexplained": -1,
+   "totals_lineup": {
+    "fgm": 213,
+    "fga": 454,
+    "ftm": 118,
+    "fta": 136,
+    "tpm": 69,
+    "pts": 613,
+    "reb": 182,
+    "ast": 100,
+    "stl": 42,
+    "blk": 30,
+    "tov": 68
+   },
+   "totals_truth": {
+    "fgm": 213,
+    "fga": 454,
+    "ftm": 118,
+    "fta": 136,
+    "tpm": 69,
+    "pts": 613,
+    "reb": 182,
+    "ast": 100,
+    "stl": 42,
+    "blk": 30,
+    "tov": 68
+   },
+   "totals_equal": true,
+   "days": [
+    {
+     "date": "2025-10-21",
+     "perfect": 2,
+     "actual_lineup": 2,
+     "starts": 2,
+     "benched_who_played": [],
+     "in_slot_did_not_play": []
+    },
+    {
+     "date": "2025-10-22",
+     "perfect": 10,
+     "actual_lineup": 10,
+     "starts": 10,
+     "benched_who_played": [],
+     "in_slot_did_not_play": []
+    },
+    {
+     "date": "2025-10-23",
+     "perfect": 2,
+     "actual_lineup": 2,
+     "starts": 2,
+     "benched_who_played": [],
+     "in_slot_did_not_play": []
+    },
+    {
+     "date": "2025-10-24",
+     "perfect": 9,
+     "actual_lineup": 9,
+     "starts": 9,
+     "benched_who_played": [],
+     "in_slot_did_not_play": []
+    },
+    {
+     "date": "2025-10-25",
+     "perfect": 5,
+     "actual_lineup": 5,
+     "starts": 5,
+     "benched_who_played": [],
+     "in_slot_did_not_play": []
+    },
+    {
+     "date": "2025-10-26",
+     "perfect": 6,
+     "actual_lineup": 5,
+     "starts": 5,
+     "benched_who_played": [
+      "Donte DiVincenzo"
+     ],
+     "in_slot_did_not_play": []
+    }
+   ]
+  },
+  {
+   "week": 1,
+   "manager": "Kyle",
+   "team_id": 5,
+   "known": 28,
+   "weekly": 33,
+   "daily": 35,
+   "lineup": 35,
+   "starts": 35,
+   "roster_change": 2,
+   "lineup_choice": 0,
+   "unexplained": -7,
+   "totals_lineup": {
+    "fgm": 192,
+    "fga": 429,
+    "ftm": 95,
+    "fta": 116,
+    "tpm": 56,
+    "pts": 535,
+    "reb": 174,
+    "ast": 88,
+    "stl": 36,
+    "blk": 19,
+    "tov": 68
+   },
+   "totals_truth": {
+    "fgm": 192,
+    "fga": 429,
+    "ftm": 95,
+    "fta": 116,
+    "tpm": 56,
+    "pts": 535,
+    "reb": 174,
+    "ast": 87,
+    "stl": 36,
+    "blk": 19,
+    "tov": 68
+   },
+   "totals_equal": false,
+   "days": [
+    {
+     "date": "2025-10-21",
+     "perfect": 1,
+     "actual_lineup": 1,
+     "starts": 1,
+     "benched_who_played": [],
+     "in_slot_did_not_play": []
+    },
+    {
+     "date": "2025-10-22",
+     "perfect": 10,
+     "actual_lineup": 10,
+     "starts": 10,
+     "benched_who_played": [
+      "Nickeil Alexander-Walker",
+      "Santi Aldama"
+     ],
+     "in_slot_did_not_play": []
+    },
+    {
+     "date": "2025-10-23",
+     "perfect": 1,
+     "actual_lineup": 1,
+     "starts": 1,
+     "benched_who_played": [],
+     "in_slot_did_not_play": []
+    },
+    {
+     "date": "2025-10-24",
+     "perfect": 10,
+     "actual_lineup": 10,
+     "starts": 10,
+     "benched_who_played": [
+      "Buddy Hield",
+      "Nickeil Alexander-Walker",
+      "Santi Aldama"
+     ],
+     "in_slot_did_not_play": []
+    },
+    {
+     "date": "2025-10-25",
+     "perfect": 4,
+     "actual_lineup": 4,
+     "starts": 4,
+     "benched_who_played": [],
+     "in_slot_did_not_play": []
+    },
+    {
+     "date": "2025-10-26",
+     "perfect": 9,
+     "actual_lineup": 9,
+     "starts": 9,
+     "benched_who_played": [],
+     "in_slot_did_not_play": []
+    }
+   ]
+  }
+ ]
+}
