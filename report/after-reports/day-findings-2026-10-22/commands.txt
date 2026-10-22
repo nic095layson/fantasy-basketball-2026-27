@@ -1,0 +1,7 @@
+Commands that wrote the git records beside this report (run 2026-10-22 from the kit and the deck checkouts):
+
+TZ=America/Los_Angeles git log origin/main --first-parent --since='2026-10-20T18:00:00-07:00' --format='%cd %h %s' --date=format-local:'%m-%d %H:%M PT'   > git_kit_first_parent.txt   (kit)
+TZ=America/Los_Angeles git -C <deck> log origin/main --first-parent --since='2026-10-20T18:00:00-07:00' --format='%cd %h %s' --date=format-local:'%m-%d %H:%M PT'   > git_deck_first_parent.txt
+for each after-report: TZ=America/Los_Angeles git log --all --diff-filter=A --format='%cd %h' --date=format-local:'%m-%d %H:%M PT' -- report/after-reports/<file> | tail -1   > report_commit_times.txt
+
+Window: Monday 2026-10-20 18:00 PT onward for the merge history; "today" = Tuesday 2026-10-21 Pacific (07:00Z 10/21 onward).
