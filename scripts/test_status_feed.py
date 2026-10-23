@@ -104,3 +104,20 @@ class FlaimReceipts(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
+
+
+class LedgerRow(unittest.TestCase):
+    """Owner 2026-10-23 (D5): a standalone `status_feed.py --check` appends one ledger row."""
+    def test_check_appends_a_row_when_run_alone_and_none_under_the_morning(self):
+        import json, subprocess, tempfile
+        d = tempfile.mkdtemp(); st = os.path.join(d, "status_2026-10-23.json"); led = os.path.join(d, "ledger.jsonl")
+        with open(st, "w") as f:
+            json.dump({"date": "2026-10-23", "rows": []}, f)
+        env = {k: v for k, v in os.environ.items() if k != "KIT_LEDGER_PARENT"}
+        p = subprocess.run([sys.executable, SF.__file__, "--check", st, "--ledger", led], capture_output=True, text=True, env=env)
+        self.assertIn("STATUS GATE: PASS", p.stdout)
+        rows = [json.loads(l) for l in open(led)]
+        self.assertEqual([(r["name"], r["verdict"]) for r in rows], [("status_feed --check", "PASS")])
+        env["KIT_LEDGER_PARENT"] = "morning"
+        subprocess.run([sys.executable, SF.__file__, "--check", st, "--ledger", led], capture_output=True, text=True, env=env)
+        self.assertEqual(len(open(led).read().splitlines()), 1)

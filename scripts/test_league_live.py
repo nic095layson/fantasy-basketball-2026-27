@@ -270,3 +270,16 @@ class FlaimFirst(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class LedgerRow(unittest.TestCase):
+    """Owner 2026-10-23 (D5): a standalone league_live.py run records its verdict (here a HALT on a missing pull)."""
+    def test_a_halt_run_alone_records_a_fail_row(self):
+        d = tempfile.mkdtemp(); led = os.path.join(d, "ledger.jsonl")
+        env = {k: v for k, v in os.environ.items() if k != "KIT_LEDGER_PARENT"}
+        p = subprocess.run([sys.executable, os.path.join(HERE, "league_live.py"), "--as-of", "2026-10-23", "--pull",
+                            os.path.join(d, "missing.json"), "--out", os.path.join(d, "state.json"), "--ledger", led],
+                           capture_output=True, text=True, env=env)
+        self.assertNotEqual(p.returncode, 0)
+        rows = [json.loads(l) for l in open(led)]
+        self.assertEqual([(r["name"], r["verdict"]) for r in rows], [("league_live", "FAIL")])

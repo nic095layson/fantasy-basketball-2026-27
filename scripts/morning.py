@@ -94,6 +94,7 @@ def run_steps(st, out, ledger=None):
         if failed:
             rec["steps"].append(dict(name=s["name"], verdict="SKIPPED", cmd=" ".join(shlex.quote(c) for c in s["cmd"]))); continue
         env = dict(os.environ); env.update(s.get("env") or {})
+        env["KIT_LEDGER_PARENT"] = "morning"  # the step scripts then leave the ledger row to run_steps (D5)
         p = subprocess.run(s["cmd"], cwd=s["cwd"], capture_output=True, text=True, env=env)
         lines = (p.stdout + "\n" + p.stderr).splitlines()
         hits = [ln.strip() for ln in lines if re.search(s["pass_re"], ln)]

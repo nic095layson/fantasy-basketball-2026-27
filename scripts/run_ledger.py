@@ -81,6 +81,15 @@ def record(name, verdict, detail="", ledger=LEDGER, deck=DECK, kit=KIT, ran_at=N
     return row
 
 
+def standalone_record(name, verdict, detail="", **kw):
+    """safe_record() for a step script run on its own (owner 2026-10-23, D5: the afternoon runs left no rows).
+    Under morning.py, which records 'morning: <step>' itself, KIT_LEDGER_PARENT is set and nothing is written, so no
+    step is counted twice. Returns the row, or None when silent or unwritable."""
+    if os.environ.get("KIT_LEDGER_PARENT"):
+        return None
+    return safe_record(name, verdict, detail, **kw)
+
+
 def safe_record(name, verdict, detail="", **kw):
     """record() for producers whose own run must not fail because the ledger could not be written."""
     try:
