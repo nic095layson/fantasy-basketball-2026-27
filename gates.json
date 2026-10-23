@@ -1,52 +1,52 @@
 {
- "ran_at_utc": "2026-10-22T21:35:31Z",
+ "ran_at_utc": "2026-10-22T23:28:28Z",
  "inputs": {
-  "report/after-reports/after-report-2026-10-22-flaim-history-totals.md": "fb338b66e0e42b028ab8af6fc8ce030719fbce50ac018523b035995f0b89dcc6",
+  "report/after-reports/after-report-2026-10-22-pull-carry.md": "5d917554467f28f7bd37e957f1e7df7324bf4d878ebdcf9d31fed564e8f24cc5",
   "report/after-reports/redteam-2026-10-19/sweep.json": "e5e5bd86dcf85c0af0ecf4c00e1dc18e77a3b07ab43313eaacc109e5d7560c45"
  },
  "gates": [
   {
    "name": "kit check_report",
-   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/wtgp3/report/after-reports/after-report-2026-10-22-flaim-history-totals.md",
+   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/wtcarry/report/after-reports/after-report-2026-10-22-pull-carry.md",
    "cwd": ".",
    "pass_re": "^REPORT GATE: PASS",
    "exit": 0,
-   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-10-22-flaim-history-totals.md (structure, publication rule, pull-log row)",
+   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-10-22-pull-carry.md (structure, publication rule, pull-log row)",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "REPORT GATE: PASS \u2014 after-report-2026-10-22-flaim-history-totals.md (structure, publication rule, pull-log row)"
+    "REPORT GATE: PASS \u2014 after-report-2026-10-22-pull-carry.md (structure, publication rule, pull-log row)"
    ]
   },
   {
    "name": "deck judgment_open_items --check-report",
-   "cmd": "/usr/local/bin/python3 scripts/judgment_open_items.py --check-report /home/user/wtgp3/report/after-reports/after-report-2026-10-22-flaim-history-totals.md",
+   "cmd": "/usr/local/bin/python3 scripts/judgment_open_items.py --check-report /home/user/wtcarry/report/after-reports/after-report-2026-10-22-pull-carry.md",
    "cwd": "../deck-main",
    "pass_re": "^receipts check PASS",
    "exit": 0,
-   "pass_line": "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-10-22-flaim-history-totals.md",
+   "pass_line": "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-10-22-pull-carry.md",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-10-22-flaim-history-totals.md"
+    "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-10-22-pull-carry.md"
    ]
   },
   {
    "name": "deck repeat_market_check --check-report",
-   "cmd": "/usr/local/bin/python3 scripts/repeat_market_check.py --check-report /home/user/wtgp3/report/after-reports/after-report-2026-10-22-flaim-history-totals.md",
+   "cmd": "/usr/local/bin/python3 scripts/repeat_market_check.py --check-report /home/user/wtcarry/report/after-reports/after-report-2026-10-22-pull-carry.md",
    "cwd": "../deck-main",
    "pass_re": "^REPEAT-NAME CHECK: PASS",
    "exit": 0,
-   "pass_line": "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-10-22-flaim-history-totals.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)",
+   "pass_line": "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-10-22-pull-carry.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-10-22-flaim-history-totals.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)"
+    "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-10-22-pull-carry.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)"
    ]
   },
   {
    "name": "claim receipts",
-   "cmd": "/usr/local/bin/python3 /home/user/wtgp3/scripts/independent_audit/claim_receipts.py /home/user/wtgp3/report/after-reports/after-report-2026-10-22-flaim-history-totals.md",
+   "cmd": "/usr/local/bin/python3 /home/user/wtcarry/scripts/independent_audit/claim_receipts.py /home/user/wtcarry/report/after-reports/after-report-2026-10-22-pull-carry.md",
    "cwd": ".",
    "pass_re": "^CLAIM RECEIPTS: (PASS|ADVISORY)",
    "exit": 0,
@@ -59,7 +59,7 @@
   },
   {
    "name": "redteam constants",
-   "cmd": "/usr/local/bin/python3 /home/user/wtgp3/scripts/redteam/check_constants.py --deck /home/user/deck-main",
+   "cmd": "/usr/local/bin/python3 /home/user/wtcarry/scripts/redteam/check_constants.py --deck /home/user/deck-main",
    "cwd": ".",
    "pass_re": "^CONSTANTS CHECK: PASS",
    "exit": 0,
@@ -72,7 +72,7 @@
   },
   {
    "name": "redteam bands",
-   "cmd": "/usr/local/bin/python3 /home/user/wtgp3/scripts/redteam/check_bands.py --report /home/user/wtgp3/report/after-reports/after-report-2026-10-22-flaim-history-totals.md --sweep /home/user/wtgp3/report/after-reports/redteam-2026-10-19/sweep.json",
+   "cmd": "/usr/local/bin/python3 /home/user/wtcarry/scripts/redteam/check_bands.py --report /home/user/wtcarry/report/after-reports/after-report-2026-10-22-pull-carry.md --sweep /home/user/wtcarry/report/after-reports/redteam-2026-10-19/sweep.json",
    "cwd": ".",
    "pass_re": "^BANDS CHECK: PASS",
    "exit": 0,
@@ -85,7 +85,7 @@
   },
   {
    "name": "redteam attacks",
-   "cmd": "/usr/local/bin/python3 /home/user/wtgp3/scripts/redteam/run_attacks.py --check --deck /home/user/deck-main",
+   "cmd": "/usr/local/bin/python3 /home/user/wtcarry/scripts/redteam/run_attacks.py --check --deck /home/user/deck-main",
    "cwd": ".",
    "pass_re": "^ATTACKS CHECK: PASS",
    "exit": 0,
@@ -98,7 +98,7 @@
   },
   {
    "name": "kit check_claims --gate",
-   "cmd": "/usr/local/bin/python3 /home/user/wtgp3/scripts/check_claims.py --gate",
+   "cmd": "/usr/local/bin/python3 /home/user/wtcarry/scripts/check_claims.py --gate",
    "cwd": ".",
    "pass_re": "^CLAIM GATE: PASS",
    "exit": 0,
@@ -112,5 +112,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "9bfbebead23ac877c44633aebff5961e06328315"
+ "base_commit": "46984bbd1354ba9ebbaa534e250dfe62891ac3d6"
 }
