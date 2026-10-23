@@ -14,6 +14,8 @@ Pull window: 2026-10-22 → 2026-10-22. There was no new pull: both replays read
 - **Notify.** "Push only when needed." The script prints a `PUSH:` line only when there is an alert.
 - **Free-agent notice.** "Beats my weakest by 1.0+." A free agent is listed when his season value per game beats your weakest non-IL player's by `FA_NOTICE_GAP` 1.0 or more. The top `FA_NOTICE_TOP` 3 are listed. Beside them is the week card's best This Week move, when it adds `FA_NOTICE_D_EXP` 0.10 or more expected categories.
 
+**Changed 2026-10-23 (owner, D2 of the system audit: "Default to the season pool on #176").** `week_matchup.py` and `lineup_check.py` read their lines through `co_gm.load_pool`, which used the preseason v69 pool unless `SEASON_POOL` was set; `morning.py` sets it, a hand run did not, and the runner prompt handed over on 10/22 did not. Now `week_matchup.build` sets `SEASON_POOL` to `data/season/pool_season.csv` when the variable is unset and that file exists (`SEASON_POOL_DEFAULT`), and both PASS lines name the pool ("pool pool_season.csv"). Red first: 2 failures on the unchanged code (`inputs.pool` = "v69 preseason pool"; no pool in the lineup line), then 77 of 77. On today's records a hand run of `week_matchup.py` with no variable now reproduces the morning record exactly (3–6–0, 3.5655), and a hand run of `lineup_check.py` gives the same moves and alerts as the `SEASON_POOL` run (`system-audit-2026-10-23/lineup_replay_2026-10-23_seasonpool.json`). The 10/22 replays quoted in §3 below ran on the preseason pool (the record said so in `inputs.pool`); their alerts are unchanged on the season pool.
+
 ## 1. What changed (EVIDENCE)
 
 - `scripts/week_matchup.py`:

@@ -16,6 +16,9 @@ Prints one LINEUP CHECK line (ALERT with each move, or OK) and the push text on 
 writes data/news/lineup_<date>.json. Changes no value.
 
     python3 scripts/lineup_check.py --date <UTC date> [--state ...] [--yahoo-pull ...]
+
+Lines: the season pool (data/season/pool_season.csv, the blended lines) when it exists and SEASON_POOL is unset
+(owner 2026-10-23, D2); the line names the pool it ran on.
 """
 import argparse
 import json
@@ -68,14 +71,15 @@ def main():
     with open(path, "w", encoding="utf-8") as f:
         json.dump(out, f, indent=1, ensure_ascii=False); f.write("\n")
     rel = os.path.relpath(path, CG.KIT) if path.startswith(CG.KIT) else path
+    pool = "pool " + os.path.basename(str(rec["inputs"]["pool"]["path"]))  # owner 2026-10-23 (D2): name the lines it ran on
     if L["alerts"]:
         lines = [describe(m, teams) for m in L["alerts"]]
-        print(f"LINEUP CHECK: ALERT — {a.date}: {len(lines)} move(s): " + "; ".join(lines) + f"; wrote {rel}")
+        print(f"LINEUP CHECK: ALERT — {a.date}: {len(lines)} move(s): " + "; ".join(lines) + f"; {pool}; wrote {rel}")
         print("PUSH: Lineup — " + "; ".join(lines))
     else:
         why = ("no bench player of yours plays today, or Yahoo's lineup already starts the best who do" if not L["moves"]
                else f"{len(L['moves'])} swap(s) that do not help this week by {L['d_exp']:.2f}+")
-        print(f"LINEUP CHECK: OK — {a.date}: no move ({why}); wrote {rel}")
+        print(f"LINEUP CHECK: OK — {a.date}: no move ({why}); {pool}; wrote {rel}")
     return 0
 
 

@@ -80,6 +80,7 @@ PICKUPS_SHOWN = 5
 COUNT = {"3PTM": "tpm", "PTS": "pts", "REB": "reb", "AST": "ast", "ST": "stl", "BLK": "blk", "TO": "tov"}
 LOOKBACK_DAYS = 7  # how far back a free agent's last team game is looked for (the missed-game flag)
 BENCH_SLOTS = ("BN", "IL", "IL+")  # Yahoo slots whose games do not count
+SEASON_POOL_DEFAULT = os.path.join(CG.KIT, "data", "season", "pool_season.csv")  # the blended lines (season_lines.py)
 # owner 2026-10-22 (the 3 PM lineup check and the Today tab's free-agent notice): the bars, stated before the build
 LINEUP_D_EXP = 0.05   # expected categories won this week that starting him today must add; owner 2026-10-23: the only
                       # bar for a starter who also plays ("if it would better help me win this week's matchup")
@@ -556,6 +557,9 @@ def build(date, paths):
     opp_t = next((t for t in state["teams"] if t["seat"] == opp_seat), None)
     if opp_t is None:
         raise ValueError(f"no opponent for week {wk} (seat {opp_seat}) in the league state")
+    # owner 2026-10-23 (D2): a hand run uses the season pool when it exists; the morning run sets SEASON_POOL itself
+    if not os.environ.get("SEASON_POOL") and os.path.exists(SEASON_POOL_DEFAULT):
+        os.environ["SEASON_POOL"] = SEASON_POOL_DEFAULT
     P, by = CG.load_pool()
     zsum = lambda n: sum(by[n]["z"][c] for c in CG.CATS)
 
@@ -792,7 +796,8 @@ def main():
            if src["source"] == "yahoo" else f"to date rebuilt ({src['reason']})")
     print(f"WEEK MATCHUP: PASS — {a.date}: week {rec['week']} vs {rec['opponent']['name']}; {tds}; to date "
           f"{len(rec['to_date_days'])} day(s), {len(rec['missing_days'])} missing; projected {p['wins']}-{p['losses']}-{p['ties']}; "
-          f"{pick}; wrote {os.path.relpath(out, KIT) if out.startswith(KIT) else out}")
+          f"{pick}; pool {os.path.basename(str(rec['inputs']['pool']['path']))}; "
+          f"wrote {os.path.relpath(out, KIT) if out.startswith(KIT) else out}")
     return 0
 
 

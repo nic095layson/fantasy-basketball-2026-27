@@ -672,3 +672,24 @@ class YahooFreeAgents(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
+
+
+class PoolDefault(Record):
+    """Owner 2026-10-23 (D2): a hand run of week_matchup.py or lineup_check.py uses the season pool
+    (data/season/pool_season.csv) when it exists and SEASON_POOL is unset, and names the pool it ran on."""
+    def setUp(self):
+        super().setUp()
+        os.environ.pop("SEASON_POOL", None)
+
+    def test_build_defaults_to_the_season_pool_when_present_and_names_it(self):
+        rec = WM.build("2026-10-21", self.paths)
+        self.assertTrue(str(rec["inputs"]["pool"]["path"]).endswith(os.path.join("data", "season", "pool_season.csv")), rec["inputs"]["pool"])
+
+    def test_the_lineup_check_names_the_pool_it_ran_on(self):
+        out = os.path.join(self.d, "news")
+        r = subprocess.run([sys.executable, os.path.join(HERE, "lineup_check.py"), "--date", "2026-10-21",
+                            "--state", self.state, "--schedule", self.sched, "--games", self.paths["games"],
+                            "--actuals", self.paths["actuals"], "--status-dir", self.paths["status"],
+                            "--yahoo-pull", os.path.join(self.d, "none.json"), "--out-dir", out],
+                           capture_output=True, text=True, env={k: v for k, v in os.environ.items() if k != "SEASON_POOL"})
+        self.assertIn("pool pool_season.csv", r.stdout, r.stdout + r.stderr)
