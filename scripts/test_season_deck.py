@@ -588,6 +588,24 @@ class WeekMatchupCard(unittest.TestCase):
         for s in ("Free Agent", "for Bench Guy", "+0.54", "BLK +0.43", "REB +0.12", "−0.03", "+0.012", "Idle Man"):
             self.assertIn(s, dom["text"])
 
+    def test_the_free_agent_notice_names_the_add_the_drop_and_the_gap(self):
+        # owner 2026-10-22: "if there is a valuable player available in the free agent pull, make this notice to me on
+        # the Today tab"
+        r = week_matchup_record()
+        r["fa_notice"] = dict(rows=[dict(add="Big Pickup", team="LAL", drop="Bench Guy", gap=2.4)],
+                              this_week=dict(add="Week Rental", drop="Bench Guy", d_exp=0.34), gap=1.0, d_exp=0.1)
+        dom = today_dom(self.page(r))
+        self.assertEqual(dom["errors"], [])
+        for s in ("Worth a look", "Big Pickup (LAL)", "for Bench Guy", "+2.40", "Week Rental", "+0.34"):
+            self.assertIn(s, dom["text"])
+
+    def test_no_notice_card_when_nothing_passes_either_bar(self):
+        r = week_matchup_record()
+        r["fa_notice"] = dict(rows=[], this_week=None, gap=1.0, d_exp=0.1)
+        dom = today_dom(self.page(r))
+        self.assertEqual(dom["errors"], [])
+        self.assertNotIn("Worth a look", dom["text"])
+
     def test_free_agents_sort_by_this_week_and_back_to_season_z(self):
         b = json.load(open(self.fx["board"]))
         b["board"].append(dict(rank=4, name="Other FA", team="LAL", pos="SF", gp=70.0, z_adj=5.0, z_total=5.0,
