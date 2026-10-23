@@ -1,0 +1,171 @@
+#!/usr/bin/env python3
+"""Red-first tests for scripts/league_table.py (owner 2026-10-23, "Build 1": the League tab — every team's cumulative
+nine-category totals from Yahoo's weekly matchup blocks, the all-play power ranking, the week-in-progress to date).
+Every expected figure below is computed by hand from the fixture, not by the code under test.
+
+    python3 scripts/test_league_table.py
+"""
+import json
+import os
+import subprocess
+import sys
+import tempfile
+import unittest
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+import league_table as LT  # noqa: E402
+import test_flaim_live as TFL  # noqa: E402
+
+TEAMS = [f"Team {i}" for i in range(1, 13)]
+STATE = {"as_of": "2026-10-23", "teams": [{"name": t, "seat": i + 1, "manager": f"M{i + 1}", "players": []} for i, t in enumerate(TEAMS)]}
+
+
+def tot(fgm, fga, ftm, fta, tpm, pts, reb, ast, stl, blk, tov):
+    return dict(fgm=fgm, fga=fga, ftm=ftm, fta=fta, tpm=tpm, pts=pts, reb=reb, ast=ast, stl=stl, blk=blk, tov=tov)
+
+
+def block(week, status="in_progress", scale=1):
+    """Six matchups, Team 1 vs 2, 3 vs 4, ...; Team k's totals are k-shaped so every team differs."""
+    ms = []
+    for i in range(6):
+        a, b = 2 * i + 1, 2 * i + 2
+        sides = []
+        for k in (a, b):
+            s = TFL.side(k, TEAMS[k - 1], 100 + k, 40 + k, 20, 10 + k, (k, 100 + 10 * k, 50 + k, 20 + k, 5 + k % 3, 3 + k % 2, 20 - k), 24 - k)
+            s["categoryScore"] = dict(wins=5 if k == a else 4, losses=4 if k == a else 5, ties=0)
+            sides.append(s)
+        ms.append(dict(matchupId=i + 1, week=week, status=status, home=sides[0], away=sides[1]))
+    data = dict(leagueKey=TFL.KEY, currentWeek=week, matchupWeek=week, matchups=ms)
+    if scale != 1:
+        for m in data["matchups"]:
+            for sd in (m["home"], m["away"]):
+                for c in sd["categories"]:
+                    if "/" in c["value"]:
+                        x, y = c["value"].split("/"); c["value"] = f"{int(x) * scale}/{int(y) * scale}"
+                    elif c["value"] != "x":
+                        c["value"] = str(int(c["value"]) * scale)
+    return data
+
+
+def pull(date, weeks):
+    return {"source": "flaim", "league_key": TFL.KEY, "rosters": {}, "daily": {}, "matchups": {str(w): b for w, b in weeks.items()}}
+
+
+class Yahoo(unittest.TestCase):
+    def test_a_weeks_block_gives_every_team_its_totals_opponent_score_and_games_left(self):
+        wk = LT.week_from_yahoo(block(1), STATE)
+        self.assertEqual(sorted(wk), sorted(TEAMS))
+        t = wk["Team 10"]
+        self.assertEqual(t["totals"], tot(50, 110, 20, 20, 10, 200, 60, 30, 6, 3, 10))
+        self.assertEqual((t["seat"], t["opponent"], t["games_remaining"]), (10, "Team 9", 14))
+        self.assertEqual(t["score"], dict(wins=4, losses=5, ties=0))
+
+    def test_a_block_naming_a_team_the_state_lacks_halts(self):
+        b = block(1); b["matchups"][0]["home"]["teamName"] = "Nobody"
+        with self.assertRaises(LT.TableError):
+            LT.week_from_yahoo(b, STATE)
+
+
+class AllPlay(unittest.TestCase):
+    A = tot(50, 100, 10, 20, 10, 100, 50, 20, 5, 5, 10)
+    B = tot(45, 100, 10, 20, 12, 90, 50, 25, 5, 4, 12)
+    C = tot(55, 100, 8, 20, 8, 110, 40, 20, 6, 5, 8)
+
+    def test_each_team_against_every_other_on_nine_categories_turnovers_reversed_ties_half(self):
+        ap = LT.allplay({"A": self.A, "B": self.B, "C": self.C})
+        # by hand: A vs B 4-2-3, A vs C 3-4-2; B vs A 2-4-3, B vs C 4-5-0; C vs A 4-3-2, C vs B 5-4-0
+        self.assertEqual((ap["A"]["w"], ap["A"]["l"], ap["A"]["t"]), (7, 6, 5))
+        self.assertEqual((ap["B"]["w"], ap["B"]["l"], ap["B"]["t"]), (6, 9, 3))
+        self.assertEqual((ap["C"]["w"], ap["C"]["l"], ap["C"]["t"]), (9, 7, 2))
+        self.assertAlmostEqual(ap["A"]["pct"], (7 + 2.5) / 18)
+
+    def test_category_ranks_put_the_fewest_turnovers_first(self):
+        r = LT.ranks({"A": LT.cat_values(self.A), "B": LT.cat_values(self.B), "C": LT.cat_values(self.C)})
+        self.assertEqual((r["C"]["TO"], r["A"]["TO"], r["B"]["TO"]), (1, 2, 3))
+        self.assertEqual((r["C"]["FG%"], r["A"]["FG%"], r["B"]["FG%"]), (1, 2, 3))
+        self.assertEqual(r["A"]["REB"], r["B"]["REB"])          # a tie shares the rank
+        self.assertEqual(r["C"]["REB"], 3)
+
+
+class Build(unittest.TestCase):
+    """Two weeks: week 1 finished (its finals in a pull dated after the week), week 2 in progress at 2026-10-28."""
+    def setUp(self):
+        self.d = tempfile.mkdtemp()
+        self.pulls = os.path.join(self.d, "flaim"); os.makedirs(self.pulls)
+        self.state = os.path.join(self.d, "state.json"); json.dump(STATE, open(self.state, "w"))
+        # 10/25 (Sunday): week 1 still in progress at the morning pull
+        json.dump(pull("2026-10-25", {1: block(1)}), open(os.path.join(self.pulls, "pull_2026-10-25.json"), "w"))
+        # 10/26 (Monday): the pull carries week 2 (current) and week 1's finals, doubled (Sunday's games)
+        json.dump(pull("2026-10-26", {1: block(1, "finished", scale=2), 2: block(2)}), open(os.path.join(self.pulls, "pull_2026-10-26.json"), "w"))
+        json.dump(pull("2026-10-28", {2: block(2, scale=3)}), open(os.path.join(self.pulls, "pull_2026-10-28.json"), "w"))
+        self.paths = dict(state=self.state, pull_dir=self.pulls, actuals=os.path.join(self.d, "actuals"))
+
+    def test_finished_weeks_use_the_post_week_pull_and_the_current_week_the_days_pull(self):
+        rec = LT.build("2026-10-28", self.paths)
+        self.assertEqual(rec["week"], 2)
+        self.assertEqual([w["status"] for w in rec["weeks"]], ["finished", "in_progress"])
+        self.assertEqual([w["source"] for w in rec["weeks"]], ["yahoo", "yahoo"])
+        self.assertEqual(rec["weeks"][0]["pull"], "pull_2026-10-26.json")
+        self.assertEqual(rec["weeks"][1]["pull"], "pull_2026-10-28.json")
+        self.assertEqual(rec["weeks"][0]["teams"]["Team 10"]["totals"]["pts"], 400)   # the finals, not Sunday morning's 200
+        self.assertEqual(rec["weeks"][1]["teams"]["Team 10"]["totals"]["pts"], 600)
+
+    def test_cumulative_percentages_are_total_makes_over_total_attempts(self):
+        rec = LT.build("2026-10-28", self.paths)
+        c = rec["cumulative"]["Team 10"]
+        self.assertEqual(c["totals"]["fgm"], 100 + 150); self.assertEqual(c["totals"]["fga"], 220 + 330)
+        self.assertAlmostEqual(c["cats"]["FG%"], 250 / 550)
+        self.assertEqual(c["cats"]["PTS"], 400 + 600)
+        self.assertEqual(c["weeks"], 2)
+        self.assertTrue(c["mine"]); self.assertFalse(rec["cumulative"]["Team 9"]["mine"])
+        self.assertEqual(c["manager"], "M10")
+
+    def test_power_ranks_by_cumulative_all_play_and_names_the_luck_gap(self):
+        rec = LT.build("2026-10-28", self.paths)
+        p = rec["power"]
+        self.assertEqual([x["rank"] for x in p], list(range(1, 13)))
+        self.assertTrue(all(p[i]["allplay"]["pct"] >= p[i + 1]["allplay"]["pct"] for i in range(11)))
+        t10 = next(x for x in p if x["team"] == "Team 10")
+        # actual = the Yahoo category score summed over the weeks (4-5-0 twice as the away side)
+        self.assertEqual(t10["actual"], dict(w=8, l=10, t=0))
+        self.assertAlmostEqual(t10["luck"], 8 / 18 - t10["allplay"]["pct"])
+        self.assertEqual(sum(x["allplay"]["w"] for x in p), sum(x["allplay"]["l"] for x in p))
+
+    def test_the_current_week_block_alone_builds_when_no_week_has_finished(self):
+        rec = LT.build("2026-10-25", self.paths)
+        self.assertEqual([w["status"] for w in rec["weeks"]], ["in_progress"])
+        self.assertEqual(rec["cumulative"]["Team 10"]["cats"]["PTS"], 200)
+
+    def test_a_finished_week_with_no_post_week_pull_is_rebuilt_from_box_scores_and_says_so(self):
+        os.remove(os.path.join(self.pulls, "pull_2026-10-26.json"))
+        json.dump(pull("2026-10-27", {2: block(2)}), open(os.path.join(self.pulls, "pull_2026-10-27.json"), "w"))
+        st = json.load(open(self.state))
+        st["teams"][9]["players"] = [dict(player="Starter Guy", slot="PG", yahoo_nba_team="DEN", positions=["PG"], status=None),
+                                     dict(player="Bench Guy", slot="BN", yahoo_nba_team="DEN", positions=["PG"], status=None)]
+        json.dump(st, open(self.state, "w"))
+        os.makedirs(self.paths["actuals"])
+        json.dump(dict(date="2026-10-21", games=[dict(espn_id="g1", season_type=2)], players=[
+            dict(name="Starter Guy", pool_name="Starter Guy", team="DEN", dnp=False, game="g1", **tot(5, 10, 2, 2, 1, 13, 4, 5, 2, 1, 1)),
+            dict(name="Bench Guy", pool_name="Bench Guy", team="DEN", dnp=False, game="g1", **tot(9, 9, 0, 0, 0, 18, 1, 1, 0, 0, 0))]),
+            open(os.path.join(self.paths["actuals"], "2026-10-21.json"), "w"))
+        rec = LT.build("2026-10-28", self.paths)
+        w1 = rec["weeks"][0]
+        self.assertEqual((w1["status"], w1["source"]), ("finished", "rebuild"))
+        self.assertEqual(w1["teams"]["Team 10"]["totals"]["pts"], 13)       # the active slot only
+        self.assertIsNone(w1["teams"]["Team 10"]["score"])                    # no Yahoo result for a rebuilt week
+        self.assertIn("2026-10-21", w1["days_read"])
+
+    def test_cli_writes_the_record_and_prints_pass(self):
+        out = os.path.join(self.d, "out")
+        p = subprocess.run([sys.executable, os.path.join(HERE, "league_table.py"), "--date", "2026-10-28", "--state", self.state,
+                            "--pull-dir", self.pulls, "--actuals", self.paths["actuals"], "--out-dir", out, "--ledger", ""],
+                           capture_output=True, text=True)   # --ledger '': no row in the kit's run-ledger from a test
+        self.assertIn("LEAGUE TABLE: PASS", p.stdout, p.stdout + p.stderr)
+        rec = json.load(open(os.path.join(out, "league_2026-10-28.json")))
+        self.assertEqual(len(rec["power"]), 12)
+        self.assertIn("pull_2026-10-28.json", json.dumps(rec["inputs"]))
+
+
+if __name__ == "__main__":
+    unittest.main()

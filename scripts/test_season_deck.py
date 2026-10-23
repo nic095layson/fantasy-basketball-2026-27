@@ -578,6 +578,108 @@ class MatchupBoard(unittest.TestCase):
         self.assertIsNone(board_dom(self.page(week_matchup_record()))["text"])
 
 
+def league_record():
+    """league_table.py-shaped record (owner 2026-10-23, Build 1): twelve teams, cumulative totals, ranks, all-play power."""
+    import league_table as LT
+    teams = [f"Team {i}" for i in range(1, 13)]
+    def tot(k):  # Team k: k-shaped so every column orders differently from the power order
+        return dict(fgm=40 + k, fga=100 + k, ftm=10 + k, fta=20, tpm=k, pts=100 + 10 * k, reb=50 + (13 - k), ast=20 + k, stl=5 + k % 3, blk=3 + k % 2, tov=20 - k)
+    totals = {t: tot(i + 1) for i, t in enumerate(teams)}
+    ap = LT.allplay(totals)
+    cats = {t: LT.cat_values(x) for t, x in totals.items()}
+    rk = LT.ranks(cats)
+    cum = {t: dict(seat=i + 1, manager=f"M{i + 1}", mine=(i + 1 == 10), totals=totals[t], weeks=1, cats=cats[t], ranks=rk[t]) for i, t in enumerate(teams)}
+    power = sorted([dict(team=t, seat=i + 1, manager=f"M{i + 1}", mine=(i + 1 == 10), allplay=ap[t], actual=dict(w=5, l=4, t=0), actual_pct=5 / 9,
+                         luck=5 / 9 - ap[t]["pct"]) for i, t in enumerate(teams)], key=lambda x: -x["allplay"]["pct"])
+    for i, x in enumerate(power): x["rank"] = i + 1
+    wk = dict(week=1, window=["2026-10-20", "2026-10-25"], status="in_progress", source="yahoo", pull="pull_2026-10-21.json",
+              teams={t: dict(seat=i + 1, totals=totals[t], opponent=teams[(i + 1) % 12], score=dict(wins=5, losses=4, ties=0), games_remaining=20)
+                     for i, t in enumerate(teams)}, allplay=ap)
+    return dict(date="2026-10-21", week=1, window=["2026-10-20", "2026-10-25"], league_state_as_of="2026-10-21", weeks=[wk],
+                cumulative=cum, power=power, method=dict(power="all-play"), inputs=dict(pulls={}, state={}))
+
+
+def league_dom(html_path, clicks=(), width=1280):
+    """The League pane read in the browser; clicks = column header labels to click in order."""
+    from playwright.sync_api import sync_playwright
+    with sync_playwright() as p:
+        b, exe, tried = DRC._launch(p)
+        try:
+            pg = b.new_page(viewport=dict(width=width, height=900)); errs = []
+            pg.on("pageerror", lambda e: errs.append(str(e)))
+            pg.route(re.compile(r"^https?://"), lambda r: r.abort())
+            pg.goto("file://" + os.path.abspath(html_path), wait_until="load")
+            pg.evaluate("() => document.querySelector('nav.tabs button[data-tab=league]') && document.querySelector('nav.tabs button[data-tab=league]').click()")
+            for c in clicks:
+                pg.evaluate("(c) => { const th=[...document.querySelectorAll('#lg-table th')].find(x=>x.textContent.replace(/[ ↑↓]/g,'')===c); th.click(); }", c)
+            q = lambda js: pg.evaluate(js)
+            return dict(errors=errs,
+                text=q("() => { const m=document.getElementById('pane-league'); return m? m.textContent : null }"),
+                teams=q("() => [...document.querySelectorAll('#lg-table tr td.team')].map(x=>x.dataset.team)"),
+                mine=q("() => [...document.querySelectorAll('#lg-table tr.mine td.team')].map(x=>x.dataset.team)"),
+                badges=q("() => [...document.querySelectorAll('#lg-table tr.mine .rk')].map(x=>x.textContent)"),
+                power=q("() => [...document.querySelectorAll('#lg-power tr td.team')].map(x=>x.dataset.team)"),
+                page_overflow=q("() => document.documentElement.scrollWidth - window.innerWidth"))
+        finally:
+            b.close()
+
+
+class LeagueTab(unittest.TestCase):
+    """Owner 2026-10-23, Build 1: the League tab — every team's cumulative categories, sortable, with a computed power ranking."""
+    def setUp(self):
+        self.d = tempfile.mkdtemp(); self.fx = fixtures(self.d)
+
+    def page(self, record):
+        if record is not None:
+            self.fx["league"] = os.path.join(self.d, "league_table.json")
+            with open(self.fx["league"], "w") as f:
+                json.dump(record, f)
+        html, data, rec = SD.build(self.fx, date="2026-10-21")
+        p = os.path.join(self.d, "deck.html")
+        with open(p, "w", encoding="utf-8") as f:
+            f.write(html)
+        return p
+
+    def test_default_paths_name_the_days_league_record_and_an_absent_one_builds(self):
+        self.assertTrue(SD.default_paths("2026-10-22")["league"].endswith(os.path.join("report", "league", "league_2026-10-22.json")))
+        html, data, rec = SD.build(self.fx, date="2026-10-21")
+        self.assertIsNone(data["league_table"])
+        self.assertEqual(rec["panes"], 7)
+
+    def test_the_tab_lists_twelve_teams_in_power_order_with_my_row_marked_and_rank_badges(self):
+        p = self.page(league_record())
+        self.assertEqual(DRC.check(p)["status"], "PASS")
+        dom = league_dom(p)
+        self.assertEqual(dom["errors"], [])
+        self.assertEqual(len(dom["teams"]), 12)
+        self.assertEqual(dom["teams"], [x["team"] for x in league_record()["power"]])   # default order: power rank
+        self.assertEqual(dom["mine"], ["Team 10"])
+        self.assertEqual(len(dom["badges"]), 9)
+        self.assertEqual(dom["badges"][8], "3")      # Team 10's TO rank: tov 20-k, fewest first -> Team 12 1st, 11 2nd, 10 3rd
+        for s in ("Power", "all-play", "M10", "week 1", "to date"):
+            self.assertIn(s, dom["text"])
+
+    def test_every_category_column_sorts_on_a_click_turnovers_ascending(self):
+        p = self.page(league_record())
+        self.assertEqual(league_dom(p, clicks=("TO",))["teams"][0], "Team 12")     # fewest turnovers first
+        self.assertEqual(league_dom(p, clicks=("PTS",))["teams"][0], "Team 12")    # most points first
+        self.assertEqual(league_dom(p, clicks=("PTS", "PTS"))["teams"][0], "Team 1")
+        self.assertEqual(league_dom(p, clicks=("REB",))["teams"][0], "Team 1")     # reb = 50 + (13 - k)
+        self.assertEqual(league_dom(p, clicks=("FG%",))["teams"][0], "Team 12")    # (40+k)/(100+k) rises with k
+
+    def test_the_power_card_orders_by_all_play_and_the_page_fits_a_phone(self):
+        p = self.page(league_record())
+        dom = league_dom(p, width=400)
+        self.assertEqual(dom["errors"], [])
+        self.assertEqual(dom["power"], [x["team"] for x in league_record()["power"]])
+        self.assertLessEqual(dom["page_overflow"], 0)
+
+    def test_no_record_draws_the_tab_with_a_zero_state(self):
+        dom = league_dom(self.page(None))
+        self.assertEqual(dom["errors"], [])
+        self.assertIn("No league record", dom["text"])
+
+
 class WeekMatchupData(unittest.TestCase):
     """Owner 2026-10-21: the Today tab carries the week's categories; the record is an optional input."""
     def setUp(self):
