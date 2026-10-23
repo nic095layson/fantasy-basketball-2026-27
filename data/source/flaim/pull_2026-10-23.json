@@ -1,4 +1,8 @@
 {
+ "carried_forward": [
+  "free_agents",
+  "matchups"
+ ],
  "daily": {
   "478.l.36464.t.1": {
    "2026-10-22": {
@@ -5108,10 +5112,10 @@
       "kept": false,
       "status": false
      },
-     "name": "Mikel Brown Jr.",
-     "playerId": "10588",
-     "playerKey": "478.p.10588",
-     "position": "PG",
+     "name": "Keon Ellis",
+     "playerId": "6753",
+     "playerKey": "478.p.6753",
+     "position": "SG,SF",
      "selectedPosition": "BN",
      "team": "BKN"
     },
@@ -5276,6 +5280,32 @@
       "kept": false,
       "status": false
      },
+     "name": "Duncan Robinson",
+     "playerId": "6073",
+     "playerKey": "478.p.6073",
+     "position": "SG,SF",
+     "selectedPosition": "Util",
+     "team": "DET"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Joel Embiid",
+     "playerId": "5294",
+     "playerKey": "478.p.5294",
+     "position": "C",
+     "selectedPosition": "BN",
+     "team": "PHI"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
      "name": "Jalen Williams",
      "playerId": "6702",
      "playerKey": "478.p.6702",
@@ -5295,19 +5325,6 @@
      "position": "SG,SF,PF",
      "selectedPosition": "BN",
      "team": "CLE"
-    },
-    {
-     "isKeeper": {
-      "cost": false,
-      "kept": false,
-      "status": false
-     },
-     "name": "Joel Embiid",
-     "playerId": "5294",
-     "playerKey": "478.p.5294",
-     "position": "C",
-     "selectedPosition": "BN",
-     "team": "PHI"
     },
     {
      "isKeeper": {
@@ -5366,12 +5383,12 @@
       "kept": false,
       "status": false
      },
-     "name": "Christian Braun",
-     "playerId": "6711",
-     "playerKey": "478.p.6711",
-     "position": "SG,SF,PF",
+     "name": "Derrick White",
+     "playerId": "5842",
+     "playerKey": "478.p.5842",
+     "position": "PG,SG",
      "selectedPosition": "SG",
-     "team": "DEN"
+     "team": "BOS"
     },
     {
      "isKeeper": {
@@ -5405,12 +5422,12 @@
       "kept": false,
       "status": false
      },
-     "name": "Miles Bridges",
-     "playerId": "6023",
-     "playerKey": "478.p.6023",
-     "position": "PF",
+     "name": "Kevin Durant",
+     "playerId": "4244",
+     "playerKey": "478.p.4244",
+     "position": "SG,SF,PF",
      "selectedPosition": "PF",
-     "team": "PHX"
+     "team": "HOU"
     },
     {
      "isKeeper": {
@@ -5483,19 +5500,6 @@
       "kept": false,
       "status": false
      },
-     "name": "Kevin Durant",
-     "playerId": "4244",
-     "playerKey": "478.p.4244",
-     "position": "SG,SF,PF",
-     "selectedPosition": "BN",
-     "team": "HOU"
-    },
-    {
-     "isKeeper": {
-      "cost": false,
-      "kept": false,
-      "status": false
-     },
      "name": "Neemias Queta",
      "playerId": "6581",
      "playerKey": "478.p.6581",
@@ -5509,12 +5513,25 @@
       "kept": false,
       "status": false
      },
-     "name": "Derrick White",
-     "playerId": "5842",
-     "playerKey": "478.p.5842",
-     "position": "PG,SG",
+     "name": "Miles Bridges",
+     "playerId": "6023",
+     "playerKey": "478.p.6023",
+     "position": "PF",
      "selectedPosition": "BN",
-     "team": "BOS"
+     "team": "PHX"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Christian Braun",
+     "playerId": "6711",
+     "playerKey": "478.p.6711",
+     "position": "SG,SF,PF",
+     "selectedPosition": "BN",
+     "team": "DEN"
     },
     {
      "isKeeper": {
@@ -5937,7 +5954,6 @@
      "playerKey": "478.p.6548",
      "position": "PG,SG",
      "selectedPosition": "SG",
-     "status": "P",
      "team": "CHI"
     },
     {
@@ -6037,12 +6053,12 @@
       "kept": false,
       "status": false
      },
-     "name": "Jeremiah Fears",
-     "playerId": "10440",
-     "playerKey": "478.p.10440",
-     "position": "PG,SG",
+     "name": "Keaton Wagler",
+     "playerId": "10585",
+     "playerKey": "478.p.10585",
+     "position": "SG",
      "selectedPosition": "Util",
-     "team": "NOP"
+     "team": "LAC"
     },
     {
      "isKeeper": {
@@ -6050,12 +6066,12 @@
       "kept": false,
       "status": false
      },
-     "name": "Keaton Wagler",
-     "playerId": "10585",
-     "playerKey": "478.p.10585",
-     "position": "SG",
+     "name": "Jeremiah Fears",
+     "playerId": "10440",
+     "playerKey": "478.p.10440",
+     "position": "PG,SG",
      "selectedPosition": "BN",
-     "team": "LAC"
+     "team": "NOP"
     },
     {
      "isKeeper": {
@@ -6082,20 +6098,6 @@
      "position": "C",
      "selectedPosition": "BN",
      "team": "DEN"
-    },
-    {
-     "isKeeper": {
-      "cost": false,
-      "kept": false,
-      "status": false
-     },
-     "name": "Kristaps Porziņģis",
-     "playerId": "5464",
-     "playerKey": "478.p.5464",
-     "position": "C",
-     "selectedPosition": "IL",
-     "status": "O",
-     "team": "GSW"
     }
    ],
    "snapshot": {
@@ -6292,12 +6294,13 @@
       "kept": false,
       "status": false
      },
-     "name": "Jamal Murray",
-     "playerId": "5638",
-     "playerKey": "478.p.5638",
+     "name": "De'Aaron Fox",
+     "playerId": "5767",
+     "playerKey": "478.p.5767",
      "position": "PG",
      "selectedPosition": "PG",
-     "team": "DEN"
+     "status": "Q",
+     "team": "SAS"
     },
     {
      "isKeeper": {
@@ -6305,13 +6308,12 @@
       "kept": false,
       "status": false
      },
-     "name": "Reed Sheppard",
-     "playerId": "10288",
-     "playerKey": "478.p.10288",
+     "name": "Jalen Suggs",
+     "playerId": "6516",
+     "playerKey": "478.p.6516",
      "position": "PG,SG",
      "selectedPosition": "SG",
-     "status": "Q",
-     "team": "HOU"
+     "team": "ORL"
     },
     {
      "isKeeper": {
@@ -6397,52 +6399,12 @@
       "kept": false,
       "status": false
      },
-     "name": "Jalen Suggs",
-     "playerId": "6516",
-     "playerKey": "478.p.6516",
-     "position": "PG,SG",
-     "selectedPosition": "Util",
-     "team": "ORL"
-    },
-    {
-     "isKeeper": {
-      "cost": false,
-      "kept": false,
-      "status": false
-     },
-     "name": "Kentavious Caldwell-Pope",
-     "playerId": "5159",
-     "playerKey": "478.p.5159",
-     "position": "SG,SF",
-     "selectedPosition": "Util",
-     "team": "PHI"
-    },
-    {
-     "isKeeper": {
-      "cost": false,
-      "kept": false,
-      "status": false
-     },
      "name": "Toumani Camara",
      "playerId": "10065",
      "playerKey": "478.p.10065",
      "position": "SF,PF",
-     "selectedPosition": "BN",
+     "selectedPosition": "Util",
      "team": "POR"
-    },
-    {
-     "isKeeper": {
-      "cost": false,
-      "kept": false,
-      "status": false
-     },
-     "name": "De'Aaron Fox",
-     "playerId": "5767",
-     "playerKey": "478.p.5767",
-     "position": "PG",
-     "selectedPosition": "BN",
-     "status": "Q",
-     "team": "SAS"
     },
     {
      "isKeeper": {
@@ -6454,8 +6416,48 @@
      "playerId": "5836",
      "playerKey": "478.p.5836",
      "position": "SF,PF",
-     "selectedPosition": "BN",
+     "selectedPosition": "Util",
      "team": "NYK"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Reed Sheppard",
+     "playerId": "10288",
+     "playerKey": "478.p.10288",
+     "position": "PG,SG",
+     "selectedPosition": "BN",
+     "status": "Q",
+     "team": "HOU"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Jamal Murray",
+     "playerId": "5638",
+     "playerKey": "478.p.5638",
+     "position": "PG",
+     "selectedPosition": "BN",
+     "team": "DEN"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Kentavious Caldwell-Pope",
+     "playerId": "5159",
+     "playerKey": "478.p.5159",
+     "position": "SG,SF",
+     "selectedPosition": "BN",
+     "team": "PHI"
     }
    ],
    "snapshot": {
@@ -6815,6 +6817,7 @@
      "playerKey": "478.p.3704",
      "position": "SF,PF",
      "selectedPosition": "BN",
+     "status": "Q",
      "team": "PHI"
     },
     {
@@ -6978,12 +6981,12 @@
       "kept": false,
       "status": false
      },
-     "name": "Isaiah Jackson",
-     "playerId": "6564",
-     "playerKey": "478.p.6564",
-     "position": "C",
+     "name": "Quentin Grimes",
+     "playerId": "6567",
+     "playerKey": "478.p.6567",
+     "position": "SG,SF",
      "selectedPosition": "Util",
-     "team": "LAC"
+     "team": "LAL"
     },
     {
      "isKeeper": {
@@ -6991,12 +6994,13 @@
       "kept": false,
       "status": false
      },
-     "name": "Quentin Grimes",
-     "playerId": "6567",
-     "playerKey": "478.p.6567",
-     "position": "SG,SF",
+     "name": "Brandin Podziemski",
+     "playerId": "10115",
+     "playerKey": "478.p.10115",
+     "position": "PG,SG",
      "selectedPosition": "Util",
-     "team": "LAL"
+     "status": "P",
+     "team": "GSW"
     },
     {
      "isKeeper": {
@@ -7036,20 +7040,6 @@
      "position": "PF,C",
      "selectedPosition": "BN",
      "team": "DET"
-    },
-    {
-     "isKeeper": {
-      "cost": false,
-      "kept": false,
-      "status": false
-     },
-     "name": "Brandin Podziemski",
-     "playerId": "10115",
-     "playerKey": "478.p.10115",
-     "position": "PG,SG",
-     "selectedPosition": "IL",
-     "status": "Q",
-     "team": "GSW"
     },
     {
      "isKeeper": {
@@ -7198,10 +7188,10 @@
       "kept": false,
       "status": false
      },
-     "name": "Zaccharie Risacher",
-     "playerId": "10296",
-     "playerKey": "478.p.10296",
-     "position": "SF,PF",
+     "name": "Naji Marshall",
+     "playerId": "6499",
+     "playerKey": "478.p.6499",
+     "position": "SG,SF,PF",
      "selectedPosition": "Util",
      "team": "DAL"
     },
