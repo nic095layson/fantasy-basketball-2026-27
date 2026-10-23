@@ -167,18 +167,18 @@ SHELL = r"""<title>Season Deck 2026-27</title>
 :root{
   --bg:#F4F5F3; --surface:#FFFFFF; --ink:#1B2630; --ink2:#5B6670; --line:#DEE2E0; --chip:#ECEEEC;
   --accent:#C45A21; --mine:#077FA6; --pos:#2766A8; --neg:#C13F2E; --negtx:#B83A2A;
-  --ok:#2E7D4F; --warn:#B26A00; --crit:#B3261E; --fade:#6A7680;
+  --ok:#2E7D4F; --warn:#B26A00; --crit:#B3261E; --fade:#6A7680; --lead:#DCEAF4;
   --disp:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;
   --body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
 }
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
   --bg:#11161B; --surface:#1A222A; --ink:#E7EAEC; --ink2:#9AA4AD; --line:#2A343D; --chip:#232D36;
   --accent:#D06B2A; --mine:#1E97AD; --pos:#4484C8; --neg:#CE5240; --negtx:#E2735F;
-  --ok:#5BB77F; --warn:#D9A04C; --crit:#E07069; --fade:#838E97; color-scheme:dark } }
+  --ok:#5BB77F; --warn:#D9A04C; --crit:#E07069; --fade:#838E97; --lead:#1D3646; color-scheme:dark } }
 :root[data-theme="dark"]{
   --bg:#11161B; --surface:#1A222A; --ink:#E7EAEC; --ink2:#9AA4AD; --line:#2A343D; --chip:#232D36;
   --accent:#D06B2A; --mine:#1E97AD; --pos:#4484C8; --neg:#CE5240; --negtx:#E2735F;
-  --ok:#5BB77F; --warn:#D9A04C; --crit:#E07069; --fade:#838E97; color-scheme:dark }
+  --ok:#5BB77F; --warn:#D9A04C; --crit:#E07069; --fade:#838E97; --lead:#1D3646; color-scheme:dark }
 body{background:var(--bg); color:var(--ink); font-family:var(--body); margin:0; font-size:15px; line-height:1.45}
 .wrap{max-width:1060px; margin:0 auto; padding-left:max(16px,env(safe-area-inset-left,0px)); padding-right:max(16px,env(safe-area-inset-right,0px)); padding-block:0 48px}
 body::before{content:""; position:fixed; inset:0 0 auto; height:env(safe-area-inset-top,0px); z-index:10; background:var(--bg)}
@@ -239,6 +239,26 @@ select,input[type=search],input[type=text]{background:var(--surface); color:var(
 /* week card (owner 2026-10-21): projections faded — their own token (4.6:1+ on surface in both themes) and italic */
 .proj{color:var(--fade); font-style:italic} .wk td.actual{color:var(--ink)} .wk th.projh{color:var(--fade); font-style:italic}
 .wk th,.wk td{padding:5px 6px}  /* six columns fit a 400px phone without a sideways scroll */
+/* the matchup board (owner 2026-10-23, after Yahoo's matchup page): header, category row, players side by side by slot */
+.mb-head{display:grid; grid-template-columns:1fr auto 1fr; gap:12px; align-items:center; margin:2px 0 12px}
+.mb-team{min-width:0} .mb-team.r{text-align:right}
+.mb-name{font-family:var(--disp); font-size:26px; font-weight:600; line-height:1.1; color:var(--mine); overflow-wrap:anywhere}
+.mb-team.r .mb-name{color:var(--accent)}
+.mb-mgr{color:var(--ink2); font-size:13px}
+.mb-score{font-family:var(--disp); font-size:36px; font-weight:600; display:flex; gap:10px; align-items:baseline; color:var(--ink)}
+.mb-score span{font-size:14px; font-weight:400; color:var(--ink2)}
+@media (max-width:560px){ .mb-name{font-size:19px} .mb-score{font-size:28px} .mb-head{gap:8px} }
+.mb-cats td.lead,.mb-cats th.lead{background:var(--lead); font-weight:700}
+.mb-cats td:first-child{white-space:normal; min-width:8em}
+.mb-players th,.mb-players td{padding:4px 5px; font-size:12.5px}
+@media (min-width:1100px){ .mb-players th,.mb-players td{padding:4px 4px} }
+.mb-players td.slot,.mb-players th.slot,.mb-players td.mid{text-align:center; background:var(--chip); color:var(--ink2); font-weight:600}
+.mb-pl{white-space:normal; min-width:8.5em}
+.mb-pl b{font-weight:600; color:var(--ink)} .mb-pl .chip{margin-left:4px; padding:0 6px}
+.mb-pl small{display:block; color:var(--ink2); font-size:11.5px}
+.mb-players td.dash{color:var(--fade)}
+.mb-players tr.mb-total td{font-weight:700; border-top:2px solid var(--line)}
+.mb-empty{color:var(--fade)}
 /* the League tab (owner 2026-10-23, Build 1): sortable category table with rank badges, the power card */
 .lg th.sort{cursor:pointer; user-select:none} .lg th.sort:hover{color:var(--accent)}
 .lg td.team{white-space:normal; min-width:9em} .lg tr.mine td{background:var(--lead)}
@@ -412,6 +432,54 @@ function liveTile(W, wk){
     h("div",{class:"e"},(W.p_5plus!=null?"5+ of 9: "+pct(W.p_5plus)+" (categories taken as independent) · ":"")+"from this morning's week card"));
 }
 
+// ---- the matchup board (owner 2026-10-23: "take this inspiration [Yahoo's matchup page] ... make this the today page";
+// week_matchup.py's board block: Yahoo's totals, the categories each side leads to date, every player by today's slot) ----
+function matchupBoard(){ const W=D.week_matchup, B=W&&W.board; if(!B) return null;
+  const SLOTS=["PG","SG","G","SF","PF","F","C","UTIL","BN","IL","IL+"];
+  const CAT=[["FG%","fgm","fga"],["FT%","ftm","fta"],["3PTM","tpm"],["PTS","pts"],["REB","reb"],["AST","ast"],["ST","stl"],["BLK","blk"],["TO","tov"]];
+  const pv=(m,a)=>a? (m/a).toFixed(3).replace(/^0/,"") : "–";
+  const vals=(t)=>CAT.map(([c,m,a])=>t==null? "–" : (a? pv(t[m],t[a]) : String(t[m])));
+  const lead={}; (W.cats||[]).forEach(r=>lead[r.cat]=r.leader_to_date);
+  const side=(k)=>B[k], me=side("me"), op=side("opp");
+  const head=h("div",{class:"mb-head"},
+    h("div",{class:"mb-team"},h("div",{class:"mb-name"},me.name),h("div",{class:"mb-mgr"},(me.manager&&me.manager!=="Me"?me.manager+" · ":"")+"you")),
+    h("div",{class:"mb-score"},h("b",{},String(B.score.me)),h("span",{},"vs"),h("b",{},String(B.score.opp))),
+    h("div",{class:"mb-team r"},h("div",{class:"mb-name"},op.name),h("div",{class:"mb-mgr"},op.manager||"")));
+  const catRow=(k,s)=>h("tr",{},h("td",{},s.name),
+    vals(s.totals).map((v,i)=>h("td",lead[CAT[i][0]]===k?{class:"num lead","data-cat":CAT[i][0],"data-side":k}:{class:"num"},v)),
+    h("td",{class:"num"},h("b",{},String(B.score[k]))));
+  const cats=h("div",{class:"tablebox"},h("table",{class:"mb-cats"},
+    h("tr",{},h("th",{},"Team"),CAT.map(([c])=>h("th",{class:"num"},c)),h("th",{class:"num"},"Score")),
+    catRow("me",me), catRow("opp",op)));
+  const slotName=(x)=>x==="UTIL"?"Util":x;
+  const plCell=(r)=> r? h("td",{class:"mb-pl"},h("b",{},r.player),statusChip(r.status),
+      h("small",{},(r.team||"")+(r.positions&&r.positions.length?" · "+r.positions.join(","):"")),
+      h("small",{},r.today||"No game")) : h("td",{class:"mb-pl mb-empty"},"Empty");
+  const statCells=(r)=>vals(r&&r.to_date).map(v=>h("td",{class:"num"+(v==="–"?" dash":"")},v));
+  const by=(s)=>{ const m={}; s.rows.forEach(r=>{ const k=(r.slot||"").toUpperCase(); (m[k]=m[k]||[]).push(r); }); return m; };
+  const A=by(me), O=by(op), order=SLOTS.concat(Object.keys(A).concat(Object.keys(O)).filter(k=>SLOTS.indexOf(k)<0));
+  const rows=[];
+  order.forEach(k=>{ const n=Math.max((A[k]||[]).length,(O[k]||[]).length);
+    for(let i=0;i<n;i++){ const a=(A[k]||[])[i], o=(O[k]||[])[i];
+      rows.push(h("tr",{},plCell(a),statCells(a),h("td",{class:"slot"},slotName(k)),plCell(o),statCells(o))); } });
+  const total=h("tr",{class:"mb-total"},h("td",{},"TOTAL"),vals(me.totals).map(v=>h("td",{class:"num"},v)),h("td",{class:"mid"},""),
+    h("td",{},"TOTAL"),vals(op.totals).map(v=>h("td",{class:"num"},v)));
+  const hdr=h("tr",{},h("th",{},me.name),CAT.map(([c])=>h("th",{class:"num"},c)),h("th",{class:"slot"},"Pos"),h("th",{},op.name),CAT.map(([c])=>h("th",{class:"num"},c)));
+  const players=h("div",{class:"tablebox"},h("table",{class:"mb-players"},hdr,rows,total));
+  const STAT=["fgm","fga","ftm","fta","tpm","pts","reb","ast","stl","blk","tov"], SL={fgm:"FGM",fga:"FGA",ftm:"FTM",fta:"FTA",tpm:"3PTM",pts:"PTS",reb:"REB",ast:"AST",stl:"ST",blk:"BLK",tov:"TO"};
+  const diffNote=(s)=>{ if(s.rows_match_totals) return null;
+    const sum={}; STAT.forEach(k=>{ sum[k]=s.rows.reduce((a,r)=>a+((r.to_date||{})[k]||0),0)+((s.departed||{}).to_date||{})[k]||0; });
+    const d=STAT.filter(k=>sum[k]!==s.totals[k]).map(k=>SL[k]+" Yahoo "+s.totals[k]+", rows "+sum[k]);
+    return h("p",{class:"note zneg"},s.name+": Yahoo's totals differ from the sum of the player rows ("+d.join("; ")+"). The rows are rebuilt from box scores; a day with no Yahoo lineup on file is read from this morning's roster, so a player dropped since, or a game Yahoo counted from a different slot, is not on the rows."); };
+  const gone=(s)=>(s.departed&&s.departed.names.length)? h("p",{class:"note"},s.name+": counted this week but no longer on the roster: "+s.departed.names.join(", ")+".") : null;
+  const S=W.to_date_source||{};
+  return h("div",{class:"card",id:"mboard"},h("h2",{},"Week "+W.week+" matchup"),
+    h("p",{class:"note"},W.window[0]+" to "+W.window[1]+" · totals "+(S.source==="yahoo"?"from Yahoo's scoreboard at the morning pull":"rebuilt from box scores")+
+      " · player rows rebuilt from box scores through "+((W.to_date_days||[]).slice(-1)[0]||"—")+" · rosters and slots as of "+(W.league_state_as_of||D.league.as_of)),
+    head, cats, players, diffNote(me), diffNote(op), gone(me), gone(op),
+    h("p",{class:"note"},"Score = categories each side leads to date. A dash: no game counted in an active slot this week. Today's game has no tip-off time: the kit's schedule file carries dates only."));
+}
+
 // ---- Today ----
 (function(){ const b=D.brief, p=$("#pane-today");
   $("#hdate").textContent=D.date;
@@ -431,6 +499,7 @@ function liveTile(W, wk){
       h("tr",{},h("th",{},"category"),h("th",{class:"num"},"P(win cat)"),h("th",{},"")),
       catRows.map(([c,v])=>h("tr",{},h("td",{},c),h("td",{class:"num"},pct(v)),
         h("td",{},h("span",{class:"bar "+(v>=0.5?"pos":"neg")},h("i",{style:"width:"+Math.round(Math.abs(v-0.5)*160)+"px"}))))))) : h("div",{class:"zero"},"No matchup record yet.");
+  const mb=matchupBoard(); if(mb) p.append(mb);
   const fn=faNotice(); if(fn) p.append(fn);
   p.append(weekCard());
   p.append(
