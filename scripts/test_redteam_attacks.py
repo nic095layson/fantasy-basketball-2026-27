@@ -68,3 +68,45 @@ class Check(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
+
+
+class EngineFingerprint(unittest.TestCase):
+    """Owner 2026-10-23 (D1): an attack record is STALE only when the engine files changed between its commit and
+    the live one, not when any deck commit landed (the 10/23 audit: a CLAUDE.md-only deck commit staled 5 of 9)."""
+    def setUp(self):
+        import subprocess
+        self.deck = tempfile.mkdtemp()
+        def git(*a):
+            return subprocess.run(["git", "-C", self.deck] + list(a), capture_output=True, text=True, check=True).stdout.strip()
+        git("init", "-q"); git("config", "user.email", "t@t"); git("config", "user.name", "t")
+        os.makedirs(os.path.join(self.deck, "arena")); os.makedirs(os.path.join(self.deck, "scripts"))
+        for p in ("arena/arena.py", "scripts/hoops.py", "README.md"):
+            with open(os.path.join(self.deck, p), "w") as f:
+                f.write("v1\n")
+        git("add", "-A"); git("commit", "-q", "-m", "engine v1"); self.c_engine = git("rev-parse", "--short", "HEAD")
+        with open(os.path.join(self.deck, "README.md"), "w") as f:
+            f.write("docs only\n")
+        git("add", "-A"); git("commit", "-q", "-m", "docs"); self.c_docs = git("rev-parse", "--short", "HEAD")
+        with open(os.path.join(self.deck, "arena/arena.py"), "w") as f:
+            f.write("v2\n")
+        git("add", "-A"); git("commit", "-q", "-m", "engine v2"); self.c_engine2 = git("rev-parse", "--short", "HEAD")
+        self.root = tempfile.mkdtemp(); os.makedirs(os.path.join(self.root, "s"))
+        with open(os.path.join(self.root, "s", "attack.py"), "w") as f:
+            f.write("print('x')\n")
+        with open(os.path.join(self.root, "rec.json"), "w") as f:
+            json.dump({"engine_commit": self.c_engine}, f)
+        self.attacks = {"attacks": [{"id": "A-1", "name": "n", "question": "q", "script": "s/attack.py", "record": "rec.json",
+                                     "commit_field": "engine_commit", "added": "2026-10-19"}]}
+
+    def test_a_docs_only_deck_commit_keeps_the_record_current(self):
+        rec = A.check(self.attacks, root=self.root, live_commit=self.c_docs, deck=self.deck)
+        self.assertEqual(rec["attacks"][0]["status"], "CURRENT", rec["attacks"][0])
+        self.assertEqual(rec["verdict"], "PASS")
+
+    def test_an_engine_change_still_stales_the_record(self):
+        rec = A.check(self.attacks, root=self.root, live_commit=self.c_engine2, deck=self.deck)
+        self.assertEqual(rec["attacks"][0]["status"], "STALE", rec["attacks"][0])
+
+    def test_the_engine_commit_of_a_revision_is_the_last_commit_touching_the_engine_files(self):
+        self.assertEqual(A.engine_commit(self.deck, self.c_docs), self.c_engine)
+        self.assertEqual(A.engine_commit(self.deck, self.c_engine2), self.c_engine2)

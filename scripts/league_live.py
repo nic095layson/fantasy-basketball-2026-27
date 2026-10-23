@@ -36,6 +36,7 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 KIT = os.path.dirname(HERE)
 sys.path.insert(0, HERE)
+import run_ledger  # noqa: E402
 import league_intake  # noqa: E402
 import league_moves  # noqa: E402
 
@@ -179,7 +180,7 @@ def sha(path):
     return hashlib.sha256(open(path, "rb").read()).hexdigest()
 
 
-def main():
+def _main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--as-of", default=datetime.date.today().isoformat())
     ap.add_argument("--transcript", help="session transcript jsonl (default: the newest in the project dir)")
@@ -188,6 +189,7 @@ def main():
     ap.add_argument("--out", default=league_intake.OUT)
     ap.add_argument("--pin-dir", default=PIN_DIR)
     ap.add_argument("--flaim-pin-dir", default=os.path.join(KIT, "data", "source", "flaim"))
+    ap.add_argument("--ledger", default=run_ledger.LEDGER, help="run-ledger for a standalone run's row ('' to skip)")
     ap.add_argument("--source", choices=("auto", "flaim", "fantasybot"), default="auto",
                     help="auto (default): Flaim first, FantasyBot when the Flaim pull is missing or incomplete")
     a = ap.parse_args()
@@ -292,6 +294,19 @@ def main():
               f"{old['as_of']} to {new['as_of']}; wrote {os.path.relpath(outp, KIT)}")
     print(f"LEAGUE LIVE: PASS — rosters from {'Flaim (Yahoo)' if used == 'flaim' else 'FantasyBot'}, pinned {rel(pin)}")
     return 0
+
+
+def main():
+    """_main(), then one ledger row for a standalone run (owner 2026-10-23, D5): PASS on exit 0, FAIL on a HALT;
+    silent under morning.py, which records the step itself."""
+    led = [a for a in sys.argv[1:] if a.startswith("--ledger")]
+    code = _main()
+    ledger = run_ledger.LEDGER
+    if led:
+        ledger = led[0].split("=", 1)[1] if "=" in led[0] else sys.argv[sys.argv.index(led[0]) + 1]
+    if ledger:
+        run_ledger.standalone_record("league_live", "PASS" if code == 0 else "FAIL", f"exit {code}", ledger=ledger)
+    return code
 
 
 if __name__ == "__main__":

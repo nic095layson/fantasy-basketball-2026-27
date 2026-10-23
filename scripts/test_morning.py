@@ -103,3 +103,14 @@ class NonFatal(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
+
+
+class LedgerParent(unittest.TestCase):
+    def test_every_step_runs_with_the_morning_named_as_ledger_parent(self):
+        # owner 2026-10-23 (D5): the step scripts record their own ledger rows when run alone; under the morning run
+        # they must not, since run_steps records 'morning: <step>' itself
+        d = tempfile.mkdtemp()
+        step = {"name": "echo", "cmd": [PY, "-c", "import os; print('PARENT ' + os.environ.get('KIT_LEDGER_PARENT', 'none'))"],
+                "cwd": ".", "pass_re": r"^PARENT morning$", "env": {}}
+        rec = M.run_steps([step], os.path.join(d, "m.json"))
+        self.assertEqual(rec["steps"][0]["verdict"], "PASS", rec["steps"][0])

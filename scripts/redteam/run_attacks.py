@@ -33,6 +33,24 @@ def live_commit(deck=DECK):
         return ""
 
 
+ENGINE_FILES = run_ledger.ENGINE_FILES  # the ledger's definition of "the engine" (scripts/hoops.py, arena/arena.py)
+
+
+def engine_commit(deck, rev="HEAD"):
+    """The last commit at or before `rev` that touched ENGINE_FILES: the engine's content fingerprint (owner 2026-10-23,
+    D1 — a deck commit that touches no engine file, such as CLAUDE.md, must not stale an attack record). '' when
+    `rev` is not in the deck's history or the deck is unreadable."""
+    try:
+        return subprocess.run(["git", "-C", deck, "log", "-1", "--format=%h", "--abbrev=7", rev, "--", *ENGINE_FILES],
+                              capture_output=True, text=True, check=True).stdout.strip()
+    except (OSError, subprocess.CalledProcessError):
+        return ""
+
+
+def _same(a, b):
+    return bool(a) and bool(b) and (str(a).startswith(str(b)[:7]) or str(b).startswith(str(a)[:7]))
+
+
 def _dig(rec, dotted):
     cur = rec
     for part in dotted.split("."):
@@ -49,7 +67,10 @@ def _sha(path):
     return h.hexdigest()[:12]
 
 
-def check(attacks, root, live_commit):
+def check(attacks, root, live_commit, deck=None):
+    """With `deck`, a record made on another commit is CURRENT when the engine files are unchanged between its
+    commit and `live_commit` (engine_commit of both agree); without `deck`, only the commit itself counts."""
+    live_eng = engine_commit(deck, live_commit) if deck else ""
     rows, problems, seen = [], [], set()
     for a in attacks.get("attacks", []):
         row = dict(id=a.get("id"), name=a.get("name"), question=a.get("question"), script=a.get("script"),
@@ -80,10 +101,14 @@ def check(attacks, root, live_commit):
                     row["why"] = f"record unreadable: {e}"
                 if not c:
                     row["status"], row["why"] = "MISSING", row["why"] or f"record has no {a['commit_field']}"
-                elif not live_commit.startswith(str(c)[:7]) and not str(c).startswith(live_commit[:7]):
-                    row["status"], row["why"] = "STALE", f"record made on engine {c}, live engine is {live_commit}"
-                else:
+                elif _same(live_commit, c):
                     row["engine_commit"] = c
+                elif deck and live_eng and _same(engine_commit(deck, str(c)), live_eng):
+                    row["engine_commit"] = c
+                    row["why"] = f"made on {c}; engine files unchanged since (last engine commit {live_eng})"
+                else:
+                    row["status"], row["why"] = "STALE", (f"record made on engine {c}, live engine is {live_commit}"
+                                                          + (f" (engine files last changed {live_eng})" if live_eng else ""))
             else:
                 row["status"] = "UNFINGERPRINTED"
         if row["status"] in ("MISSING", "STALE", "DUPLICATE"):
@@ -95,7 +120,8 @@ def check(attacks, root, live_commit):
     for r in rows:
         counts[r["status"]] = counts.get(r["status"], 0) + 1
     return dict(checked_at_utc=datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-                live_engine_commit=live_commit, attacks=rows, by_status=counts, problems=problems,
+                live_engine_commit=live_commit, live_engine_files_commit=live_eng, attacks=rows, by_status=counts,
+                problems=problems,
                 verdict="PASS" if not problems else "FAIL")
 
 
@@ -110,13 +136,14 @@ def main():
     a = ap.parse_args()
     with open(a.attacks, encoding="utf-8") as f:
         attacks = json.load(f)
-    rec = check(attacks, KIT, live_commit(os.path.abspath(a.deck)))
+    rec = check(attacks, KIT, live_commit(os.path.abspath(a.deck)), deck=os.path.abspath(a.deck))
     if a.out:
         with open(a.out, "w", encoding="utf-8") as f:
             json.dump(rec, f, indent=1, ensure_ascii=False)
             f.write("\n")
     if rec["verdict"] == "PASS":
-        print(f"ATTACKS CHECK: PASS — {len(rec['attacks'])} attacks on engine {rec['live_engine_commit']}; "
+        print(f"ATTACKS CHECK: PASS — {len(rec['attacks'])} attacks on engine {rec['live_engine_commit']}"
+              + (f" (engine files last changed {rec['live_engine_files_commit']})" if rec.get('live_engine_files_commit') else "") + "; "
               + ", ".join(f"{k} {v}" for k, v in sorted(rec["by_status"].items())))
     else:
         print("ATTACKS CHECK: FAIL")

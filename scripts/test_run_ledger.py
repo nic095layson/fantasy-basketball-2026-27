@@ -151,3 +151,21 @@ class Consumer(Base):
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
+
+
+class StandaloneRows(unittest.TestCase):
+    """Owner 2026-10-23 (D5): a script run outside morning.py records its own row; under morning.py, which records
+    'morning: <step>' itself, it stays silent (KIT_LEDGER_PARENT set), so no step is counted twice."""
+    def setUp(self):
+        self.d = tempfile.mkdtemp(); self.ledger = os.path.join(self.d, "ledger.jsonl")
+        self.saved = os.environ.pop("KIT_LEDGER_PARENT", None)
+        self.addCleanup(lambda: os.environ.__setitem__("KIT_LEDGER_PARENT", self.saved) if self.saved is not None else os.environ.pop("KIT_LEDGER_PARENT", None))
+
+    def test_standalone_records_a_row(self):
+        row = L.standalone_record("status_feed --check", "PASS", "x", ledger=self.ledger)
+        self.assertIsNotNone(row); self.assertEqual(len(L.read(self.ledger)), 1)
+
+    def test_under_a_parent_it_stays_silent(self):
+        os.environ["KIT_LEDGER_PARENT"] = "morning"
+        self.assertIsNone(L.standalone_record("status_feed --check", "PASS", "x", ledger=self.ledger))
+        self.assertFalse(os.path.exists(self.ledger))
