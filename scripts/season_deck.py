@@ -380,6 +380,21 @@ function weekCard(){ const W=D.week_matchup, wk=D.brief.week;
   }
 }
 
+// ---- Worth a look (owner 2026-10-22): "if there is a valuable player available in the free agent pull, make this
+// notice to me on the 'Today' tab"; drawn only when a free agent passes a bar ----
+function faNotice(){ const W=D.week_matchup, N=W&&W.fa_notice; if(!N || (!(N.rows||[]).length && !N.this_week)) return null;
+  const tw=N.this_week;
+  return h("div",{class:"card"},h("h2",{},"Worth a look"),
+    N.rows.length? h("div",{class:"tablebox"},h("table",{},
+      h("tr",{},h("th",{},"add"),h("th",{class:"num"},"season gap")),
+      N.rows.map(r=>h("tr",{},h("td",{style:"white-space:normal;min-width:9em"},r.add+" ("+r.team+")",h("div",{class:"note"},"for "+r.drop)),
+        h("td",{class:"num"},swk(r.gap,2)))))) : null,
+    tw? h("p",{},h("b",{},"This week: "),tw.add+(tw.team?" ("+tw.team+")":"")+" for "+tw.drop+", "+swk(tw.d_exp,2)+" expected categories won this week.") : null,
+    h("p",{class:"note"},"Season gap = the free agent's season value per game minus that of your weakest non-IL player (listed only at "+
+      N.gap.toFixed(1)+" or more, best "+N.rows.length+" shown). This week = the best move in the week card's scan, shown when it adds "+
+      N.d_exp.toFixed(2)+" or more expected categories. A notice, not a move: the league allows 4 adds a week."));
+}
+
 // ---- the live week tile (owner 2026-10-22): expected categories now and the chance of 5+ of 9, from the week card ----
 function liveTile(W, wk){
   if(!W || W.week!==wk || W.exp_cats==null) return h("div",{class:"tile"},h("div",{class:"v"},"—"),h("div",{class:"l"},"week "+wk+" now"),
@@ -407,6 +422,7 @@ function liveTile(W, wk){
       h("tr",{},h("th",{},"category"),h("th",{class:"num"},"P(win cat)"),h("th",{},"")),
       catRows.map(([c,v])=>h("tr",{},h("td",{},c),h("td",{class:"num"},pct(v)),
         h("td",{},h("span",{class:"bar "+(v>=0.5?"pos":"neg")},h("i",{style:"width:"+Math.round(Math.abs(v-0.5)*160)+"px"}))))))) : h("div",{class:"zero"},"No matchup record yet.");
+  const fn=faNotice(); if(fn) p.append(fn);
   p.append(weekCard());
   p.append(
     h("div",{class:"cols"},

@@ -80,6 +80,12 @@ PICKUPS_SHOWN = 5
 COUNT = {"3PTM": "tpm", "PTS": "pts", "REB": "reb", "AST": "ast", "ST": "stl", "BLK": "blk", "TO": "tov"}
 LOOKBACK_DAYS = 7  # how far back a free agent's last team game is looked for (the missed-game flag)
 BENCH_SLOTS = ("BN", "IL", "IL+")  # Yahoo slots whose games do not count
+# owner 2026-10-22 (the 3 PM lineup check and the Today tab's free-agent notice): the bars, stated before the build
+LINEUP_GAP = 1.0      # season value per game (the nine z-scores summed) a bench player must beat a starter by
+LINEUP_D_EXP = 0.05   # expected categories won this week that starting him today must add (the matchup-aware rule)
+FA_NOTICE_GAP = 1.0   # season value per game a free agent must beat my weakest non-IL player by
+FA_NOTICE_TOP = 3
+FA_NOTICE_D_EXP = 0.10  # expected categories this week the This Week table's best move must add to be named
 
 
 def _d(s):
@@ -293,6 +299,57 @@ def scan_this_week(me_now, opp_now, opp_rem, roster, drops, fas, sched, today, a
             out.append(best)
     out.sort(key=lambda r: (-r["d_exp"], -r["games"], r["add"]))
     return out
+
+
+def lineup_moves(me, playing, avail, value):
+    """Today's lineup moves (owner 2026-10-22). me: my non-IL players [{player, slot, positions, team}]; playing: the
+    teams with a game today; avail: {player: probability} (missing = 1.0); value: {player: season value per game}. The
+    best lineup is the ten-slot daily fill over the players who play today and are not Out; a bench player it starts
+    is paired with a starter it does not (a starter with no game or Out first, then the lowest value). kind "empty"
+    when that starter cannot play today (or a slot is open), "better" when both play; gap = the value difference."""
+    plays = lambda p: p["team"] in playing and avail.get(p["player"], 1.0) > 0
+    best, _ = _fill([dict(player=p["player"], positions=p["positions"], value=value[p["player"]],
+                          availability=avail.get(p["player"], 1.0)) for p in me if plays(p)])
+    starters = [p for p in me if p["slot"] not in BENCH_SLOTS]
+    start = sorted((p for p in me if p["slot"] in BENCH_SLOTS and p["player"] in best), key=lambda p: -value[p["player"]])
+    sit = sorted((p for p in starters if p["player"] not in best), key=lambda p: (plays(p), value[p["player"]]))
+    moves = []
+    for i, b in enumerate(start):
+        s = sit[i] if i < len(sit) else None
+        empty = s is None or not plays(s)
+        moves.append(dict(start=b["player"], sit=s["player"] if s else None, kind="empty" if empty else "better",
+                          gap=None if empty else round(value[b["player"]] - value[s["player"]], 2)))
+    return moves
+
+
+def today_swap_value(me_now, opp_now, opp_rem, roster, today_names, swap, sched, today, avail, lines):
+    """The change in expected categories won this week from today's swap (start, sit): today's counted players are the
+    actual starters who play (today_names) with the swap applied; the rest of the week keeps the daily fill."""
+    now_s, rest = _split(sched, today)
+    r_rest = remaining(roster, rest, avail, lines)
+    start, sit = swap
+    new = [n for n in today_names if n != sit] + [start]
+    exp = lambda names: sum(cat_chances(me_now, _both(remaining([r for r in roster if r["player"] in names], now_s,
+                                                                avail, lines), r_rest), opp_now, opp_rem).values())
+    return exp(new) - exp(today_names)
+
+
+def lineup_alerts(moves):
+    """The moves the 3 PM check notifies: an empty slot always; a worse starter past either bar."""
+    return [m for m in moves if m["kind"] == "empty" or (m["gap"] or 0) >= LINEUP_GAP or m.get("d_exp", 0) >= LINEUP_D_EXP]
+
+
+def fa_notice(mine, fas, this_week_rows):
+    """The Today tab's free-agent notice (owner 2026-10-22): free agents whose season value per game beats my weakest
+    non-IL player by FA_NOTICE_GAP or more, best first, top FA_NOTICE_TOP; and the This Week table's best move when it
+    adds FA_NOTICE_D_EXP or more expected categories this week."""
+    weak = min(mine, key=lambda r: r["value"]) if mine else None
+    rows = []
+    if weak is not None:
+        rows = sorted((dict(add=f["player"], team=f["team"], drop=weak["player"], gap=round(f["value"] - weak["value"], 2))
+                       for f in fas if f["value"] - weak["value"] >= FA_NOTICE_GAP - 1e-9), key=lambda r: (-r["gap"], r["add"]))
+    top = this_week_rows[0] if this_week_rows and this_week_rows[0]["d_exp"] >= FA_NOTICE_D_EXP else None
+    return dict(rows=rows[:FA_NOTICE_TOP], this_week=top, gap=FA_NOTICE_GAP, d_exp=FA_NOTICE_D_EXP)
 
 
 def cat_values(t):
@@ -616,6 +673,22 @@ def build(date, paths):
     pick["this_week"] = this_week_block(state, by, me_now, opp_now, opp_rem, by_value, fas, sched, date,
                                         dict(avail, **fa_avail), lines)
 
+    # today's lineup (owner 2026-10-22, the 3 PM check): Yahoo's slots against the best fill of today's games
+    slot = {p["player"]: p["slot"] for p in me_t["players"]}
+    me_slots = [dict(player=r["player"], slot=slot[r["player"]], positions=r["positions"], team=r["team"]) for r in mine]
+    playing = sched.get(date, set())
+    value = {r["player"]: r["value"] for r in mine}
+    moves = lineup_moves(me_slots, playing, avail, value)
+    on_today = [r["player"] for r in me_slots if r["slot"] not in BENCH_SLOTS and r["team"] in playing
+                and avail.get(r["player"], 1.0) > 0]
+    for m in moves:
+        m["d_exp"] = round(today_swap_value(me_now, opp_now, opp_rem, mine, on_today, (m["start"], m["sit"]), sched,
+                                            date, avail, lines), 3) if date in sched else 0.0
+    lineup_today = dict(date=date, games_today=bool(playing), moves=moves, alerts=lineup_alerts(moves),
+                        gap=LINEUP_GAP, d_exp=LINEUP_D_EXP,
+                        slots={r["player"]: r["slot"] for r in me_slots})
+    notice = fa_notice(mine, fas, (pick["this_week"] or {}).get("rows") or [])
+
     W = sum(1 for x in lead.values() if x == "me"); L = sum(1 for x in lead.values() if x == "opp")
     paths_used = dict(paths, status_file=status_file, pool=os.environ.get("SEASON_POOL") or "v69 preseason pool")
     return dict(
@@ -632,7 +705,7 @@ def build(date, paths):
         games=dict(me=games_block(me_td, me_rem, mine), opp=games_block(opp_td, opp_rem, theirs)),
         rebuild_rosters=dict(me={d: x["roster"] for d, x in me_td["days"].items()},
                              opp={d: x["roster"] for d, x in opp_td["days"].items()}),
-        pickups=pick, unpooled_active=sorted(set(unpooled)),
+        pickups=pick, lineup_today=lineup_today, fa_notice=notice, unpooled_active=sorted(set(unpooled)),
         method=dict(
             to_date=("Yahoo's week totals (get_matchups through Flaim, the morning pull); the box-score rebuild is the "
                      "cross-check" if src["source"] == "yahoo" else
