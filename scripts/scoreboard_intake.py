@@ -79,17 +79,18 @@ def parse(path, state):
 
 def from_pull(path, week, state):
     """A finished week's six matchups from a Flaim pull's Yahoo matchup block (owner 2026-10-23, Build 1): the same
-    shape parse() returns. Halts when the pull lacks the week, or the week is not finished (every matchup's status
-    must read finished, or its Sunday games are not in the totals), or a team is not in the league state."""
+    shape parse() returns. Halts when the pull lacks the week, or the week is not final (every matchup's status must
+    read "final" — Flaim's get_matchups contract, read 2026-10-23: upcoming, in_progress or final; the Runner session
+    flagged the earlier "finished" check the same day), or a team is not in the league state."""
     sys.path.insert(0, HERE)
     import league_table as LT
     pull = json.load(open(path, encoding="utf-8"))
     block = ((pull.get("matchups") or {}).get(str(week)))
     if not block:
         raise IntakeError(f"{os.path.basename(path)} carries no week {week} matchups")
-    unfinished = [m.get("matchupId") for m in block.get("matchups") or [] if (m.get("status") or "") != "finished"]
+    unfinished = [m.get("matchupId") for m in block.get("matchups") or [] if (m.get("status") or "") != "final"]
     if unfinished:
-        raise IntakeError(f"week {week} is not finished in {os.path.basename(path)} (matchups {unfinished} are {block['matchups'][0].get('status')!r})")
+        raise IntakeError(f"week {week} is not final in {os.path.basename(path)} (matchups {unfinished} are {block['matchups'][0].get('status')!r})")
     try:
         yw = LT.week_from_yahoo(block, state)
     except LT.TableError as e:
@@ -136,7 +137,7 @@ def append_team_weeks(week, path):
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--week", type=int, required=True); ap.add_argument("--csv"); ap.add_argument("--no-ledger", action="store_true")
-    ap.add_argument("--from-pull", help="a Flaim pull carrying the finished week's matchups (owner 2026-10-23, Build 1)")
+    ap.add_argument("--from-pull", help="a Flaim pull carrying the final week's matchups (owner 2026-10-23, Build 1)")
     ap.add_argument("--state", default=STATE); ap.add_argument("--weeks-dir", default=WEEKS)
     a = ap.parse_args()
     WEEKS_DIR = a.weeks_dir
