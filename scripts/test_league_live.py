@@ -137,7 +137,7 @@ class SinceGuard(unittest.TestCase):
         out = os.path.join(tempfile.mkdtemp(), "state.json")
         r = subprocess.run([sys.executable, os.path.join(HERE, "league_live.py"), "--as-of", "2026-10-23",
                             "--transcript", self.tr, "--since", "2026-10-23T00:00:00Z", "--out", out,
-                            "--pin-dir", tempfile.mkdtemp()], capture_output=True, text=True)
+                            "--pin-dir", tempfile.mkdtemp(), "--ledger", ""], capture_output=True, text=True)
         self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
         self.assertIn("LEAGUE LIVE: HALT", r.stdout)
         self.assertFalse(os.path.exists(out))
@@ -163,7 +163,7 @@ class EndToEnd(unittest.TestCase):
         out = os.path.join(tdir, "league_state.json")
         p = subprocess.run([sys.executable, os.path.join(HERE, "league_live.py"),
                             "--as-of", "2026-10-20", "--out", out, "--source", "fantasybot",
-                            "--pin-dir", tdir], capture_output=True, text=True)
+                            "--pin-dir", tdir, "--ledger", ""], capture_output=True, text=True)
         self.assertIn("LEAGUE INTAKE: PASS", p.stdout, p.stdout + p.stderr)
         self.assertIn("LEAGUE LIVE: PASS", p.stdout, p.stdout + p.stderr)
         state = json.load(open(out, encoding="utf-8"))
@@ -181,8 +181,10 @@ class FlaimFirst(unittest.TestCase):
     def run_live(self, *args, tdir=None):
         tdir = tdir or tempfile.mkdtemp()
         out = os.path.join(tdir, "league_state.json")
+        # --ledger '' : a test run leaves no row in the kit's run-ledger (2026-10-23; standalone runs record by default
+        # since D5, and the suite was appending a league_live row to report/run-ledger.jsonl on every run)
         p = subprocess.run([sys.executable, os.path.join(HERE, "league_live.py"), "--as-of", "2026-10-21", "--out", out,
-                            "--pin-dir", tdir, "--flaim-pin-dir", tdir] + list(args), capture_output=True, text=True)
+                            "--pin-dir", tdir, "--flaim-pin-dir", tdir, "--ledger", ""] + list(args), capture_output=True, text=True)
         return p, out, tdir
 
     @unittest.skipUnless(os.path.exists(PIN), "no pinned Flaim pull")

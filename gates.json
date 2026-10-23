@@ -1,52 +1,52 @@
 {
- "ran_at_utc": "2026-10-23T16:56:56Z",
+ "ran_at_utc": "2026-10-23T20:31:48Z",
  "inputs": {
-  "report/after-reports/after-report-2026-10-23-box-repull.md": "2f0c9f7f4e052669e4f9d4ab2e105c37f6bf857fe079d3d99ab8cf15a91fb0dc",
+  "report/after-reports/after-report-2026-10-23-ledger-test-isolation.md": "f644c97524c9e91516fb52159e9ba153dbfb2ae42ee03b9b8f9d55d52fa2de8b",
   "report/after-reports/redteam-2026-10-19/sweep.json": "e5e5bd86dcf85c0af0ecf4c00e1dc18e77a3b07ab43313eaacc109e5d7560c45"
  },
  "gates": [
   {
    "name": "kit check_report",
-   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/wtd4/report/after-reports/after-report-2026-10-23-box-repull.md",
+   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/wtiso/report/after-reports/after-report-2026-10-23-ledger-test-isolation.md",
    "cwd": ".",
    "pass_re": "^REPORT GATE: PASS",
    "exit": 0,
-   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-10-23-box-repull.md (structure, publication rule, pull-log row)",
+   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-10-23-ledger-test-isolation.md (structure, publication rule, pull-log row)",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "REPORT GATE: PASS \u2014 after-report-2026-10-23-box-repull.md (structure, publication rule, pull-log row)"
+    "REPORT GATE: PASS \u2014 after-report-2026-10-23-ledger-test-isolation.md (structure, publication rule, pull-log row)"
    ]
   },
   {
    "name": "deck judgment_open_items --check-report",
-   "cmd": "/usr/local/bin/python3 scripts/judgment_open_items.py --check-report /home/user/wtd4/report/after-reports/after-report-2026-10-23-box-repull.md",
+   "cmd": "/usr/local/bin/python3 scripts/judgment_open_items.py --check-report /home/user/wtiso/report/after-reports/after-report-2026-10-23-ledger-test-isolation.md",
    "cwd": "../deck-main",
    "pass_re": "^receipts check PASS",
    "exit": 0,
-   "pass_line": "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-10-23-box-repull.md",
+   "pass_line": "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-10-23-ledger-test-isolation.md",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-10-23-box-repull.md"
+    "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-10-23-ledger-test-isolation.md"
    ]
   },
   {
    "name": "deck repeat_market_check --check-report",
-   "cmd": "/usr/local/bin/python3 scripts/repeat_market_check.py --check-report /home/user/wtd4/report/after-reports/after-report-2026-10-23-box-repull.md",
+   "cmd": "/usr/local/bin/python3 scripts/repeat_market_check.py --check-report /home/user/wtiso/report/after-reports/after-report-2026-10-23-ledger-test-isolation.md",
    "cwd": "../deck-main",
    "pass_re": "^REPEAT-NAME CHECK: PASS",
    "exit": 0,
-   "pass_line": "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-10-23-box-repull.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)",
+   "pass_line": "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-10-23-ledger-test-isolation.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-10-23-box-repull.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)"
+    "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-10-23-ledger-test-isolation.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)"
    ]
   },
   {
    "name": "claim receipts",
-   "cmd": "/usr/local/bin/python3 /home/user/wtd4/scripts/independent_audit/claim_receipts.py /home/user/wtd4/report/after-reports/after-report-2026-10-23-box-repull.md",
+   "cmd": "/usr/local/bin/python3 /home/user/wtiso/scripts/independent_audit/claim_receipts.py /home/user/wtiso/report/after-reports/after-report-2026-10-23-ledger-test-isolation.md",
    "cwd": ".",
    "pass_re": "^CLAIM RECEIPTS: (PASS|ADVISORY)",
    "exit": 0,
@@ -59,7 +59,7 @@
   },
   {
    "name": "redteam constants",
-   "cmd": "/usr/local/bin/python3 /home/user/wtd4/scripts/redteam/check_constants.py --deck /home/user/deck-main",
+   "cmd": "/usr/local/bin/python3 /home/user/wtiso/scripts/redteam/check_constants.py --deck /home/user/deck-main",
    "cwd": ".",
    "pass_re": "^CONSTANTS CHECK: PASS",
    "exit": 0,
@@ -72,7 +72,7 @@
   },
   {
    "name": "redteam bands",
-   "cmd": "/usr/local/bin/python3 /home/user/wtd4/scripts/redteam/check_bands.py --report /home/user/wtd4/report/after-reports/after-report-2026-10-23-box-repull.md --sweep /home/user/wtd4/report/after-reports/redteam-2026-10-19/sweep.json",
+   "cmd": "/usr/local/bin/python3 /home/user/wtiso/scripts/redteam/check_bands.py --report /home/user/wtiso/report/after-reports/after-report-2026-10-23-ledger-test-isolation.md --sweep /home/user/wtiso/report/after-reports/redteam-2026-10-19/sweep.json",
    "cwd": ".",
    "pass_re": "^BANDS CHECK: PASS",
    "exit": 0,
@@ -85,7 +85,7 @@
   },
   {
    "name": "redteam attacks",
-   "cmd": "/usr/local/bin/python3 /home/user/wtd4/scripts/redteam/run_attacks.py --check --deck /home/user/deck-main",
+   "cmd": "/usr/local/bin/python3 /home/user/wtiso/scripts/redteam/run_attacks.py --check --deck /home/user/deck-main",
    "cwd": ".",
    "pass_re": "^ATTACKS CHECK: PASS",
    "exit": 0,
@@ -98,7 +98,7 @@
   },
   {
    "name": "kit check_claims --gate",
-   "cmd": "/usr/local/bin/python3 /home/user/wtd4/scripts/check_claims.py --gate",
+   "cmd": "/usr/local/bin/python3 /home/user/wtiso/scripts/check_claims.py --gate",
    "cwd": ".",
    "pass_re": "^CLAIM GATE: PASS",
    "exit": 0,
@@ -112,5 +112,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "4370faebf60d81f0bacae809b006a7264670bb9b"
+ "base_commit": "046ae2f52574d30bdb01d89903f0a221760f5c22"
 }
