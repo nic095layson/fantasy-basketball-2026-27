@@ -7,6 +7,7 @@ every team-week's totals go to the calibration dataset for D-PM-1).
 """
 import csv
 import json
+import subprocess
 import os
 import sys
 import tempfile
@@ -83,6 +84,44 @@ class Dataset(unittest.TestCase):
             SI.append_team_weeks(wk, ds); SI.append_team_weeks(wk, ds)
             with open(ds) as f:
                 self.assertEqual(len(list(csv.DictReader(f))), 12)
+
+class FromPull(unittest.TestCase):
+    """Owner 2026-10-23 (Build 1): a finished week's six matchups come from the Yahoo pull, not a hand-filled CSV."""
+    def setUp(self):
+        import test_league_table as TLT
+        self.d = tempfile.mkdtemp()
+        self.state = os.path.join(self.d, "state.json"); json.dump(TLT.STATE, open(self.state, "w"))
+        self.pull = os.path.join(self.d, "pull_2026-10-26.json")
+        json.dump(TLT.pull("2026-10-26", {1: TLT.block(1, "finished", scale=2), 2: TLT.block(2)}), open(self.pull, "w"))
+
+    def test_a_finished_week_parses_to_twelve_lines_with_percentages_from_makes_and_attempts(self):
+        wk = SI.from_pull(self.pull, 1, json.load(open(self.state)))
+        self.assertEqual(wk["week"], 1)
+        self.assertEqual(len(wk["teams"]), 12); self.assertEqual(len(wk["matchups"]), 6)
+        t = wk["teams"]["Team 10"]
+        self.assertEqual(t["opponent"], "Team 9")
+        self.assertAlmostEqual(t["line"]["FG%"], 100 / 220, places=4)   # 50/110 doubled
+        self.assertEqual(t["line"]["PTS"], 400)
+        self.assertEqual(SI.owner_result(wk)["opponent"], "Team 9")
+
+    def test_a_week_still_in_progress_halts(self):
+        with self.assertRaises(SI.IntakeError):
+            SI.from_pull(self.pull, 2, json.load(open(self.state)))
+
+    def test_a_week_the_pull_does_not_carry_halts(self):
+        with self.assertRaises(SI.IntakeError):
+            SI.from_pull(self.pull, 3, json.load(open(self.state)))
+
+    def test_cli_from_pull_writes_the_week_and_team_weeks(self):
+        out = os.path.join(self.d, "weeks")
+        p = subprocess.run([sys.executable, os.path.join(HERE, "scoreboard_intake.py"), "--week", "1", "--from-pull", self.pull,
+                            "--state", self.state, "--weeks-dir", out, "--no-ledger"], capture_output=True, text=True)
+        self.assertIn("SCOREBOARD INTAKE: PASS", p.stdout, p.stdout + p.stderr)
+        self.assertTrue(os.path.exists(os.path.join(out, "week_1.json")))
+        with open(os.path.join(out, "team_weeks.csv")) as f:
+            rows = list(csv.DictReader(f))
+        self.assertEqual(len(rows), 12)
+        self.assertEqual(rows[9]["team"], "Team 10"); self.assertEqual(float(rows[9]["PTS"]), 400)
 
 
 if __name__ == "__main__":

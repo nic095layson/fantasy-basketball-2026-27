@@ -21,7 +21,8 @@ class Steps(unittest.TestCase):
     def test_steps_in_order_with_dates(self):
         st = M.steps("2026-10-21", fetch=True, seasons=10000)
         # 2026-10-21: "preflight" became step 0 (independent-audit adoption); the indices below moved by one.
-        self.assertEqual([s["name"] for s in st], ["preflight", "league live", "matchup live", "box scores 2026-10-20", "season lines", "season board", "status feed", "transactions", "daily brief", "week matchup", "season deck"])
+        # 2026-10-23 (owner, Build 1): "league table" after the week matchup, before the deck that draws it
+        self.assertEqual([s["name"] for s in st], ["preflight", "league live", "matchup live", "box scores 2026-10-20", "season lines", "season board", "status feed", "transactions", "daily brief", "week matchup", "league table", "season deck"])
         self.assertIn("2026-10-20", st[3]["cmd"])
         self.assertIn("2026-10-21", st[8]["cmd"])
         self.assertTrue(all(s["pass_re"] for s in st))

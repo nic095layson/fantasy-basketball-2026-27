@@ -46,7 +46,9 @@ def default_paths(date):
                 # optional (owner 2026-10-20; trade finder removed on the owner's veto 2026-10-20): absent renders nothing
                 matchup_live=os.path.join(KIT, "data", "news", f"matchup_live_{date}.json"),
                 # optional (owner 2026-10-21): the week's categories to date and projected (week_matchup.py)
-                week_matchup=os.path.join(KIT, "report", "briefs", f"week_matchup_{date}.json"))
+                week_matchup=os.path.join(KIT, "report", "briefs", f"week_matchup_{date}.json"),
+                # optional (owner 2026-10-23, Build 1): every team's totals, ranks and the all-play power ranking (league_table.py)
+                league=os.path.join(KIT, "report", "league", f"league_{date}.json"))
 
 
 def resolve_rostered(rostered, board_names, held_names, aliases):
@@ -93,7 +95,7 @@ def build(paths, date):
     calib = _load(paths["calibration"], "calibration")
     opt = lambda k: (json.load(open(paths[k], encoding="utf-8"))
                      if paths.get(k) and os.path.exists(paths[k]) else None)
-    matchup_live = opt("matchup_live"); week_matchup = opt("week_matchup")
+    matchup_live = opt("matchup_live"); week_matchup = opt("week_matchup"); league_rec = opt("league")
     for k in ("date", "opponent", "title", "lineup"):
         if k not in brief: raise DeckError(f"brief lacks {k}")
     if brief["date"] != date: raise DeckError(f"brief is for {brief['date']}, not {date}")
@@ -136,7 +138,7 @@ def build(paths, date):
                 my_team=my_team, my_seat=my_seat, brief=brief, board=board, status=status,
                 league=dict(as_of=league["as_of"], rosters=rosters, managers={t["name"]: t.get("manager") for t in league["teams"]}), season_lines=lines, matchup=wk,
                 ledger=calib.get("weeks", {}), bands=bands, band_engine=band_engine, matchup_live=matchup_live,
-                week_matchup=week_matchup,
+                week_matchup=week_matchup, league_table=league_rec,
                 config=dict(cats=["FG%", "FT%", "3PM", "PTS", "REB", "AST", "STL", "BLK", "TOV"],
                             tier_low=0.3, tier_high=1.0, verdict_edge=0.5, verdict_strong=1.5,
                             thresholds_note="stated defaults, D-SD-1 (owner re-tunes); z screen only, not the simulator"))
@@ -150,7 +152,7 @@ def build(paths, date):
                                   present=bool(p) and os.path.exists(p),
                                   sha256=hashlib.sha256(open(p, "rb").read()).hexdigest()
                                   if p and os.path.exists(p) else None) for k, p in paths.items()},
-                  board_rows=len(board["board"]), status_rows=len(status["rows"]), panes=6,
+                  board_rows=len(board["board"]), status_rows=len(status["rows"]), panes=7,
                   join=dict(rostered=len(rostered), unresolved=0, on_board=sum(1 for n in rostered if rmap[n] in on_board),
                             off_board=sum(1 for n in rostered if rmap[n] not in on_board), respelled=respelled,
                             free_agents_on_board=sum(1 for r in board["board"] if r["fa"])))
@@ -237,6 +239,12 @@ select,input[type=search],input[type=text]{background:var(--surface); color:var(
 /* week card (owner 2026-10-21): projections faded — their own token (4.6:1+ on surface in both themes) and italic */
 .proj{color:var(--fade); font-style:italic} .wk td.actual{color:var(--ink)} .wk th.projh{color:var(--fade); font-style:italic}
 .wk th,.wk td{padding:5px 6px}  /* six columns fit a 400px phone without a sideways scroll */
+/* the League tab (owner 2026-10-23, Build 1): sortable category table with rank badges, the power card */
+.lg th.sort{cursor:pointer; user-select:none} .lg th.sort:hover{color:var(--accent)}
+.lg td.team{white-space:normal; min-width:9em} .lg tr.mine td{background:var(--lead)}
+.lg .rk{display:inline-block; min-width:1.5em; margin-left:4px; padding:0 4px; border-radius:999px; background:var(--chip); color:var(--ink2); font-size:10.5px; text-align:center; vertical-align:middle}
+.lg .rk.top{background:var(--mine); color:#fff} .lg .rk.low{color:var(--negtx)}
+.lg .bar{display:inline-block; height:8px; background:var(--pos); border-radius:4px; vertical-align:middle; margin-left:6px}
 .zneg{color:var(--negtx)}  /* text red: 4.5:1+ on surface, bg and chip in both themes (--neg is for fills) */
 .h2row{display:flex; justify-content:space-between; align-items:center; gap:10px; margin:0 0 8px}
 .h2row h2{margin:0}
@@ -266,6 +274,7 @@ footer{color:var(--ink2); font-size:12px; margin-top:28px; border-top:1px solid 
   <section class="pane" id="pane-board" role="tabpanel" hidden></section>
   <section class="pane" id="pane-movers" role="tabpanel" hidden></section>
   <section class="pane" id="pane-week" role="tabpanel" hidden></section>
+  <section class="pane" id="pane-league" role="tabpanel" hidden></section>
   <footer id="foot"></footer>
 </div></main>
 <script>
@@ -633,8 +642,54 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
       : h("div",{class:"zero"},"No weeks recorded yet.")));
 })();
 
+// ---- League (owner 2026-10-23, Build 1): every team's cumulative nine categories from Yahoo's weekly blocks, sortable
+// by any column (TO ascending), rank badges, and the all-play power ranking (league_table.py; the method is the record's) ----
+(function(){ const p=$("#pane-league"), L=D.league_table;
+  if(!L){ p.append(h("div",{class:"card"},h("h2",{},"League"),h("div",{class:"zero"},"No league record for "+D.date+" (league_table.py did not run, or failed, this morning)."))); return; }
+  const CAT=["FG%","FT%","3PTM","PTS","REB","AST","ST","BLK","TO"], N=Object.keys(L.cumulative).length;
+  const pw={}; L.power.forEach(x=>pw[x.team]=x);
+  const cur=L.weeks[L.weeks.length-1]||null, finished=L.weeks.filter(w=>w.status==="finished"&&w.teams&&Object.keys(w.teams).length);
+  let view="season", key="power", asc=true;
+  const fv=(c,x)=>x==null?"–":(c.indexOf("%")>=0? x.toFixed(3).replace(/^0/,"") : String(x));
+  const rows=()=>{ if(view==="season") return Object.entries(L.cumulative).map(([t,c])=>({team:t, manager:c.manager, mine:c.mine, cats:c.cats, ranks:c.ranks, weeks:c.weeks, power:pw[t]?pw[t].rank:N+1, pct:pw[t]?pw[t].allplay.pct:null}));
+    if(!cur||!cur.teams) return [];
+    const cats={}; Object.entries(cur.teams).forEach(([t,x])=>{ cats[t]={"FG%":x.totals.fga?x.totals.fgm/x.totals.fga:null,"FT%":x.totals.fta?x.totals.ftm/x.totals.fta:null,"3PTM":x.totals.tpm,"PTS":x.totals.pts,"REB":x.totals.reb,"AST":x.totals.ast,"ST":x.totals.stl,"BLK":x.totals.blk,"TO":x.totals.tov}; });
+    const rk={}; CAT.forEach(c=>{ const v=Object.entries(cats).map(([t,x])=>[t,x[c]]).filter(a=>a[1]!=null).sort((a,b)=>c==="TO"?a[1]-b[1]:b[1]-a[1]); let r=0,prev=null; v.forEach(([t,x],i)=>{ if(x!==prev){r=i+1;prev=x;} (rk[t]=rk[t]||{})[c]=r; }); });
+    return Object.entries(cur.teams).map(([t,x])=>({team:t, manager:(L.cumulative[t]||{}).manager, mine:(L.cumulative[t]||{}).mine, cats:cats[t], ranks:rk[t]||{}, weeks:1,
+      power:pw[t]?pw[t].rank:N+1, pct:cur.allplay&&cur.allplay[t]?cur.allplay[t].pct:null, score:x.score, left:x.games_remaining, opp:x.opponent})); };
+  const badge=(r)=>h("span",{class:"rk"+(r===1?" top":(r>=N-2?" low":""))},String(r));
+  const hd=(label,k,num)=>h("th",{class:"sort"+(num?" num":""),onclick:()=>{ if(key===k) asc=!asc; else { key=k; asc=(k==="power"||k==="team"||k==="TO"); } render(); }},label+(key===k?(asc?" ↑":" ↓"):""));
+  const box=h("div",{});
+  function render(){ const rs=rows();
+    rs.sort((x,y)=>{ const g=(r)=>key==="team"?r.team:(key==="power"?r.power:(key==="pct"?(r.pct==null?-1:r.pct):(r.cats[key]==null?(asc?Infinity:-Infinity):r.cats[key])));
+      const a=g(x), b=g(y); return (a<b?-1:a>b?1:0)*(asc?1:-1); });
+    const wkNote=cur? (view==="season"? "Season to date: "+finished.length+" finished week"+(finished.length===1?"":"s")+(cur.status==="in_progress"?" plus week "+cur.week+" to date":"")+". " : "Week "+cur.week+" to date ("+cur.window[0]+" to "+cur.window[1]+"), from "+(cur.source==="yahoo"?"Yahoo's scoreboard at the morning pull":"the box-score rebuild")+". ") : "";
+    box.replaceChildren(h("div",{},
+      h("p",{class:"note"},wkNote+"Percentages are total makes over total attempts. Click a column to sort; turnovers sort fewest first. Badge = rank of "+N+" in that category."),
+      h("div",{class:"tablebox"},h("table",{id:"lg-table",class:"lg"},
+        h("tr",{},hd("#","power",true),hd("team","team"),hd("all-play","pct",true),CAT.map(c=>hd(c,c,true)),view==="season"?h("th",{class:"num"},"wks"):h("th",{},"this week")),
+        rs.map(r=>h("tr",{class:r.mine?"mine":""},h("td",{class:"num"},String(r.power)),
+          h("td",{class:"team","data-team":r.team},h("b",{},r.team),r.mine?h("span",{class:"chip mine"},"you"):null,h("small",{style:"display:block;color:var(--ink2)"},r.manager||"")),
+          h("td",{class:"num"},r.pct==null?"–":(r.pct*100).toFixed(1)+"%"),
+          CAT.map(c=>h("td",{class:"num"},fv(c,r.cats[c]),r.ranks[c]?badge(r.ranks[c]):null)),
+          view==="season"?h("td",{class:"num"},String(r.weeks)):h("td",{},(r.score?r.score.wins+"–"+r.score.losses+"–"+r.score.ties:"–")+" vs "+(r.opp||"?")+(r.left!=null?" · "+r.left+" games left":"")))))),
+      L.weeks.some(w=>w.source==="rebuild")? h("p",{class:"note zneg"},"Week"+(L.weeks.filter(w=>w.source==="rebuild").length>1?"s ":" ")+L.weeks.filter(w=>w.source==="rebuild").map(w=>w.week).join(", ")+" rebuilt from box scores (no pull carried Yahoo's finals): active slots per the pinned lineups, today's roster on a day with none; no Yahoo result for those weeks.") : null)); }
+  const sel=h("select",{class:"field",onchange:(e)=>{view=e.target.value; render();}},h("option",{value:"season"},"season to date"),h("option",{value:"week"},"this week only"));
+  const top=L.power.slice();
+  const powerCard=h("div",{class:"card"},h("h2",{},"Power rankings"),
+    h("p",{class:"note"},"All-play: each week every team is scored against all "+(N-1)+" others on the nine categories (a tie counts half). Power = the season's all-play win rate, recomputed every morning. Luck = the actual category win rate (Yahoo's matchup scores) minus the all-play rate: positive means the schedule has been kind."),
+    h("div",{class:"tablebox"},h("table",{id:"lg-power",class:"lg"},
+      h("tr",{},h("th",{class:"num"},"#"),h("th",{},"team"),h("th",{class:"num"},"all-play"),h("th",{},""),h("th",{class:"num"},"W–L–T"),h("th",{class:"num"},"actual"),h("th",{class:"num"},"luck")),
+      top.map(x=>h("tr",{class:x.mine?"mine":""},h("td",{class:"num"},String(x.rank)),h("td",{class:"team","data-team":x.team},h("b",{},x.team),x.mine?h("span",{class:"chip mine"},"you"):null,h("small",{style:"display:block;color:var(--ink2)"},x.manager||"")),
+        h("td",{class:"num"},x.allplay.pct==null?"–":(x.allplay.pct*100).toFixed(1)+"%"),h("td",{},h("span",{class:"bar",style:"width:"+Math.round((x.allplay.pct||0)*90)+"px"})),
+        h("td",{class:"num"},x.allplay.w+"–"+x.allplay.l+"–"+x.allplay.t),h("td",{class:"num"},x.actual?x.actual.w+"–"+x.actual.l+"–"+x.actual.t:"–"),
+        h("td",{class:"num"+(x.luck!=null&&x.luck<0?" zneg":"")},x.luck==null?"–":((x.luck>=0?"+":"")+(x.luck*100).toFixed(1)+" pts")))))));
+  p.append(powerCard, h("div",{class:"card"},h("h2",{},"League categories"),h("div",{class:"pick"},h("label",{},"view ",sel)),box));
+  render();
+})();
+
 // ---- tabs, footer ----
-(function(){ const defs=[["today","Today"],["trade","Trade Analyzer"],["fa","Free Agents"],["board","Board"],["movers","Movers"],["week","Week"]];
+(function(){ const defs=[["today","Today"],["trade","Trade Analyzer"],["fa","Free Agents"],["board","Board"],["movers","Movers"],["week","Week"],["league","League"]];
   const tabs=$("#tabs"); let cur="today";
   try{ const s=localStorage.getItem("deck-tab"); if(s&&defs.some(d=>d[0]===s)) cur=s; }catch(e){}
   const hash=(location.hash||"").replace("#",""); if(defs.some(d=>d[0]===hash)) cur=hash;
@@ -643,7 +698,7 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
     [...tabs.children].forEach((b,i)=>b.setAttribute("aria-selected",String(defs[i][0]===id)));
     try{ localStorage.setItem("deck-tab",id); }catch(e){}
   }
-  for(const [id,label] of defs) tabs.append(h("button",{role:"tab","aria-selected":"false",onclick:()=>show(id)},label));
+  for(const [id,label] of defs) tabs.append(h("button",{role:"tab","aria-selected":"false","data-tab":id,onclick:()=>show(id)},label));
   show(cur);
   $("#foot").textContent="Built "+D.generated_utc+" from the morning records — lines "+D.brief.lines+", league state as-of "+D.league.as_of+", engine "+(D.band_engine||"?")+". The page proposes; it changes nothing. Record: report/season/deck_record_"+D.date+".json";
 })();
