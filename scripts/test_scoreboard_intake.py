@@ -92,7 +92,7 @@ class FromPull(unittest.TestCase):
         self.d = tempfile.mkdtemp()
         self.state = os.path.join(self.d, "state.json"); json.dump(TLT.STATE, open(self.state, "w"))
         self.pull = os.path.join(self.d, "pull_2026-10-26.json")
-        json.dump(TLT.pull("2026-10-26", {1: TLT.block(1, "finished", scale=2), 2: TLT.block(2)}), open(self.pull, "w"))
+        json.dump(TLT.pull("2026-10-26", {1: TLT.block(1, "final", scale=2), 2: TLT.block(2)}), open(self.pull, "w"))
 
     def test_a_finished_week_parses_to_twelve_lines_with_percentages_from_makes_and_attempts(self):
         wk = SI.from_pull(self.pull, 1, json.load(open(self.state)))
@@ -103,6 +103,15 @@ class FromPull(unittest.TestCase):
         self.assertAlmostEqual(t["line"]["FG%"], 100 / 220, places=4)   # 50/110 doubled
         self.assertEqual(t["line"]["PTS"], 400)
         self.assertEqual(SI.owner_result(wk)["opponent"], "Team 9")
+
+    def test_a_week_marked_finished_is_not_final_and_halts(self):
+        # Flaim's contract (get_matchups, read 2026-10-23): status is upcoming, in_progress or final; nothing else counts
+        import test_league_table as TLT
+        pull = os.path.join(self.d, "pull_2026-10-27.json")
+        json.dump(TLT.pull("2026-10-27", {1: TLT.block(1, "finished", scale=2)}), open(pull, "w"))
+        with self.assertRaises(SI.IntakeError) as cm:
+            SI.from_pull(pull, 1, json.load(open(self.state)))
+        self.assertIn("'finished'", str(cm.exception))
 
     def test_a_week_still_in_progress_halts(self):
         with self.assertRaises(SI.IntakeError):
