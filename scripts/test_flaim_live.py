@@ -130,14 +130,29 @@ class Extract(unittest.TestCase):
         self.assertEqual({d: r["players"][0]["name"] for d, r in pull["daily"][f"{KEY}.t.3"].items()},
                          {"2026-10-20": "New", "2026-10-21": "Kept"})
 
+    def test_a_later_pin_with_no_matchups_or_free_agents_keeps_the_earlier_pins(self):
+        # the 3 PM check pulls rosters only; its re-pin dropped the morning's matchups and available-player list,
+        # which the week card reads (owner 2026-10-22, "Carry them forward")
+        path = self.pin({}, matchups={"1": {"m": 1}}, free_agents={"freeAgents": [{"name": "A"}]})
+        pull = FL.keep_daily({"source": "flaim", "daily": {}, "matchups": {}, "free_agents": None}, path)
+        self.assertEqual((pull["matchups"], pull["free_agents"], pull["carried_forward"]),
+                         ({"1": {"m": 1}}, {"freeAgents": [{"name": "A"}]}, ["free_agents", "matchups"]))
+
+    def test_a_later_pins_own_matchups_and_free_agents_win(self):
+        path = self.pin({}, matchups={"1": {"m": "old"}}, free_agents={"freeAgents": [{"name": "Old"}]})
+        later = {"source": "flaim", "daily": {}, "matchups": {"1": {"m": "new"}}, "free_agents": {"freeAgents": []}}
+        pull = FL.keep_daily(later, path)
+        self.assertEqual((pull["matchups"], pull["free_agents"], "carried_forward" in pull),
+                         ({"1": {"m": "new"}}, {"freeAgents": []}, False))
+
     def test_with_no_earlier_pin_the_pull_is_pinned_as_it_is(self):
         pull = {"source": "flaim", "daily": {}}
         self.assertEqual(FL.keep_daily(dict(pull), os.path.join(tempfile.mkdtemp(), "pull_2026-10-22.json")), pull)
 
-    def pin(self, daily):
+    def pin(self, daily, **more):
         fd, p = tempfile.mkstemp(suffix=".json")
         with os.fdopen(fd, "w", encoding="utf-8") as f:
-            json.dump({"source": "flaim", "daily": daily}, f)
+            json.dump(dict({"source": "flaim", "daily": daily}, **more), f)
         return p
 
     def test_another_leagues_rosters_are_ignored(self):

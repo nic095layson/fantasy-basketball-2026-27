@@ -18,6 +18,7 @@ failed step stops the run and later steps are SKIPPED):
   5 daily brief on the season pool  SEASON_POOL=data/season/pool_season.csv scripts/daily_brief.py --date <today>
   5b week matchup (non-fatal)     scripts/week_matchup.py --date <today>       (Yahoo's totals to date + projected, Yahoo's
                                    available-player list for the pickup scan; owner 2026-10-21)
+  5c league table (non-fatal)     scripts/league_table.py --date <today>       (all 12 teams' totals, ranks, all-play power ranking)
   6 season deck                   scripts/season_deck.py --date <today>        (render-checked before it is written)
 
 Writes report/briefs/morning_<date>.json (every step's command, exit, PASS line, tail), appends each step's verdict to
@@ -80,6 +81,10 @@ def steps(date, fetch=True, seasons=10000, since=None):
            # deck then draws a "no record" line instead of the card)
            dict(name="week matchup", cmd=[PY, os.path.join(HERE, "week_matchup.py"), "--date", date], cwd=KIT,
                 pass_re=r"^WEEK MATCHUP: PASS", env={"SEASON_POOL": season_pool}, fatal=False),
+           # owner 2026-10-23 (Build 1): every team's totals, ranks and the all-play power ranking for the deck's League
+           # tab, from the pulls already on disk; non-fatal (the deck then draws a "no record" line)
+           dict(name="league table", cmd=[PY, os.path.join(HERE, "league_table.py"), "--date", date], cwd=KIT,
+                pass_re=r"^LEAGUE TABLE: PASS", env={}, fatal=False),
            dict(name="season deck", cmd=[PY, os.path.join(HERE, "season_deck.py"), "--date", date], cwd=KIT,
                 pass_re=r"^SEASON DECK: PASS", env={})]
     return st
@@ -94,6 +99,7 @@ def run_steps(st, out, ledger=None):
         if failed:
             rec["steps"].append(dict(name=s["name"], verdict="SKIPPED", cmd=" ".join(shlex.quote(c) for c in s["cmd"]))); continue
         env = dict(os.environ); env.update(s.get("env") or {})
+        env["KIT_LEDGER_PARENT"] = "morning"  # the step scripts then leave the ledger row to run_steps (D5)
         p = subprocess.run(s["cmd"], cwd=s["cwd"], capture_output=True, text=True, env=env)
         lines = (p.stdout + "\n" + p.stderr).splitlines()
         hits = [ln.strip() for ln in lines if re.search(s["pass_re"], ln)]

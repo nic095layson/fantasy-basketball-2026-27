@@ -26,6 +26,8 @@ import sys
 import urllib.request
 
 KIT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import run_ledger  # noqa: E402
 STATE = os.path.join(KIT, "data", "league_state.json")
 OVERRIDES = os.path.join(KIT, "data", "status_overrides.json")
 OUTDIR = os.path.join(KIT, "data", "status")
@@ -110,11 +112,13 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--date", default=datetime.date.today().isoformat())
     ap.add_argument("--check", nargs="?", const="__newest__")
+    ap.add_argument("--ledger", default=run_ledger.LEDGER, help="run-ledger for a standalone run's row ('' to skip)")
     a = ap.parse_args()
+    led = (lambda v, d: run_ledger.standalone_record("status_feed --check" if a.check else "status_feed", v, d, ledger=a.ledger)) if a.ledger else (lambda v, d: None)
     if a.check:
         path = a.check if a.check != "__newest__" else (sorted(glob.glob(os.path.join(OUTDIR, "status_*.json"))) or [None])[-1]
         if not path:
-            print("STATUS GATE: FAIL — no status file")
+            print("STATUS GATE: FAIL — no status file"); led("FAIL", "no status file")
             sys.exit(1)
         rec = json.load(open(path, encoding="utf-8"))
         problems = check(rec["rows"])
@@ -122,8 +126,10 @@ def main():
             print(f"STATUS GATE: FAIL — {os.path.basename(path)}")
             for p in problems:
                 print("  -", p)
+            led("FAIL", f"{os.path.basename(path)}: {len(problems)} problem(s)")
             sys.exit(1)
         print(f"STATUS GATE: PASS — {os.path.basename(path)}: {len(rec['rows'])} flagged row(s), each tiered with a dated receipt")
+        led("PASS", f"{os.path.basename(path)}: {len(rec['rows'])} flagged row(s)")
         sys.exit(0)
     state = json.load(open(STATE, encoding="utf-8"))
     espn, attempt = try_espn()

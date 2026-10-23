@@ -99,15 +99,30 @@ def extract_pull(transcript, since=None):
 def keep_daily(pull, path):
     """The pull to pin at path, carrying the dated lineups an earlier pin there holds. A later run for the same date
     (the afternoon check) rewrites the morning's file with a pull that has none, and the week card reads the morning's
-    on later days; a past day's lineup is history, so it is kept. For the same team and day the later pull wins."""
+    on later days; a past day's lineup is history, so it is kept. For the same team and day the later pull wins.
+    The week's matchups and the available-player list are kept the same way when the later pull has none (the 3 PM
+    check pulls rosters only; owner 2026-10-22, "Carry them forward"), and carried_forward names what was kept: those
+    are the earlier pin's, pulled by the day's first run. A later pull that has its own wins."""
     if not os.path.exists(path):
         return pull
     with open(path, encoding="utf-8") as f:
-        earlier = json.load(f).get("daily") or {}
-    daily = {team: dict(days) for team, days in earlier.items()}
+        pin = json.load(f)
+    daily = {team: dict(days) for team, days in (pin.get("daily") or {}).items()}
     for team, days in (pull.get("daily") or {}).items():
         daily.setdefault(team, {}).update(days)
-    return dict(pull, daily=daily)
+    out = dict(pull, daily=daily)
+    carried = set(pin.get("carried_forward") or ())
+    for key in ("matchups", "free_agents"):
+        if not pull.get(key) and pin.get(key):
+            out[key] = pin[key]
+            carried.add(key)
+        else:
+            carried.discard(key)
+    if carried:
+        out["carried_forward"] = sorted(carried)
+    else:
+        out.pop("carried_forward", None)
+    return out
 
 
 def check_pull(pull):

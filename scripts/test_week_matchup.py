@@ -290,6 +290,94 @@ class ThisWeek(unittest.TestCase):
         self.assertEqual(WM.swap_candidates(roster), ["C", "D"])
 
 
+class LineupToday(unittest.TestCase):
+    """Owner 2026-10-22: at the 3 PM check, tell me when a bench player with a game today should start. Rules stated
+    before the build: an empty slot (a starter with no game or Out, a bench player who plays) always; a starter who also
+    plays when starting the bench player adds LINEUP_D_EXP (0.05) or more expected categories this week (today's swap
+    only, the rest of the week unchanged). Owner 2026-10-23: the season-value gap no longer alerts on its own."""
+
+    def me(self, *rows):
+        return [dict(player=n, slot=s, positions=pos, team=t) for n, s, pos, t in rows]
+
+    def test_a_bench_player_who_plays_takes_a_starter_slot_whose_player_has_no_game(self):
+        me = self.me(("Idle", "C", ["C"], "MIA"), ("Sitter", "BN", ["C"], "BOS"))
+        moves = WM.lineup_moves(me, {"BOS"}, {}, {"Idle": 3.0, "Sitter": 0.5})
+        self.assertEqual([(m["start"], m["sit"], m["kind"]) for m in moves], [("Sitter", "Idle", "empty")])
+
+    def test_an_out_starter_is_an_empty_slot_too(self):
+        me = self.me(("Hurt", "C", ["C"], "BOS"), ("Sitter", "BN", ["C"], "BOS"))
+        moves = WM.lineup_moves(me, {"BOS"}, {"Hurt": 0.0}, {"Hurt": 3.0, "Sitter": 0.5})
+        self.assertEqual([(m["start"], m["sit"], m["kind"]) for m in moves], [("Sitter", "Hurt", "empty")])
+
+    def test_a_better_bench_player_is_paired_with_the_weakest_starter_he_can_replace(self):
+        # ten starters who all play, Star on the bench: the best lineup starts Star over the weakest player he fits
+        rows = [("S%d" % i, "UTIL", ["PG", "SG", "SF", "PF", "C"], "BOS") for i in range(10)] + \
+               [("Star", "BN", ["PG", "SG", "SF", "PF", "C"], "BOS")]
+        value = {"S%d" % i: float(i) for i in range(10)}
+        value["Star"] = 5.5
+        moves = WM.lineup_moves(self.me(*rows), {"BOS"}, {}, value)
+        self.assertEqual([(m["start"], m["sit"], m["kind"], m["gap"]) for m in moves], [("Star", "S0", "better", 5.5)])
+
+    def test_no_move_when_the_lineup_is_already_the_best(self):
+        # all ten slots filled by players who play and are worth more than the bench player (with fewer than ten
+        # starters a slot is open, and starting the bench player is a real move)
+        rows = [("S%d" % i, "UTIL", ["PG", "SG", "SF", "PF", "C"], "BOS") for i in range(10)] + \
+               [("Bad", "BN", ["PG", "SG", "SF", "PF", "C"], "BOS")]
+        value = {"S%d" % i: 1.0 + i for i in range(10)}
+        value["Bad"] = 0.5
+        self.assertEqual(WM.lineup_moves(self.me(*rows), {"BOS"}, {}, value), [])
+
+    def test_an_open_slot_with_a_bench_player_who_plays_is_an_empty_slot_move(self):
+        me = self.me(("Good", "C", ["C"], "BOS"), ("Bench", "BN", ["C"], "BOS"))
+        self.assertEqual([(m["start"], m["sit"], m["kind"]) for m in WM.lineup_moves(me, {"BOS"}, {}, {"Good": 3.0, "Bench": 0.5})],
+                         [("Bench", None, "empty")])
+
+    def test_a_bench_player_with_no_game_is_never_suggested(self):
+        me = self.me(("Idle", "C", ["C"], "MIA"), ("AlsoIdle", "BN", ["C"], "NYK"))
+        self.assertEqual(WM.lineup_moves(me, {"BOS"}, {}, {"Idle": 0.5, "AlsoIdle": 3.0}), [])
+
+    def test_the_week_value_of_todays_swap_is_its_change_in_expected_categories(self):
+        # one slot today; Keeper (bench) outscores Scorer's points line, so starting him raises P(win PTS) this week
+        me_now = box(fgm=100, fga=210, pts=280, reb=120, blk=10, tov=30)
+        opp_now = box(fgm=100, fga=210, pts=280, reb=120, blk=12, tov=30)
+        roster = [dict(player="Weak", team="BOS", positions=["C"], value=0.0),
+                  dict(player="Strong", team="BOS", positions=["C"], value=2.0)]
+        lines = {"Weak": line(pts=4, fga=4, fg_pct=0.4), "Strong": line(pts=30, blk=3, fga=20, fg_pct=0.5)}
+        sched = {"t0": {"BOS"}}
+        opp_rem = dict(totals=box(), var={k: 0.0 for k in ("3PTM", "PTS", "REB", "AST", "ST", "BLK", "TO", "fg_mk", "ft_mk")})
+        d = WM.today_swap_value(me_now, opp_now, opp_rem, roster, ["Weak"], ("Strong", "Weak"), sched, "t0", {}, lines)
+        base = WM.cat_chances(me_now, WM.remaining([roster[0]], sched, {}, lines), opp_now, opp_rem)
+        new = WM.cat_chances(me_now, WM.remaining([roster[1]], sched, {}, lines), opp_now, opp_rem)
+        self.assertAlmostEqual(d, sum(new[c] - base[c] for c in WM.CATS))
+        self.assertGreater(d, 0)
+
+    def test_alert_flags_empty_slots_and_swaps_that_help_this_week(self):
+        # owner 2026-10-23: "I'd rather start Queta for Washington if it would better help me win this week's matchup"
+        # — the season gap alone (B, the Queta case: +1.13 season, −0.02 this week) no longer alerts
+        moves = [dict(start="A", sit="X", kind="empty", gap=None, d_exp=0.0),
+                 dict(start="B", sit="Y", kind="better", gap=1.13, d_exp=-0.02),
+                 dict(start="C", sit="Z", kind="better", gap=0.3, d_exp=0.06),
+                 dict(start="D", sit="W", kind="better", gap=0.3, d_exp=0.01)]
+        self.assertEqual([m["start"] for m in WM.lineup_alerts(moves)], ["A", "C"])
+
+
+class FreeAgentNotice(unittest.TestCase):
+    """Owner 2026-10-22: the Today tab names a free agent whose season value per game beats my weakest non-IL player
+    by FA_NOTICE_GAP (1.0) or more (top 3), and the This Week table's best move when it adds 0.10+ expected categories."""
+
+    def test_free_agents_past_the_gap_over_my_weakest_player_best_first_top_three(self):
+        mine = [dict(player="Weakest", value=-1.0), dict(player="Fine", value=2.0)]
+        fas = [dict(player=n, team="BOS", value=v) for n, v in (("Near", -0.2), ("Big", 1.5), ("Ok", 0.0), ("Mid", 0.4), ("Top", 3.0))]
+        n = WM.fa_notice(mine, fas, [])
+        self.assertEqual([(r["add"], r["drop"], r["gap"]) for r in n["rows"]], [("Top", "Weakest", 4.0), ("Big", "Weakest", 2.5), ("Mid", "Weakest", 1.4)])
+        self.assertIsNone(n["this_week"])
+
+    def test_the_this_week_best_move_shows_only_past_its_bar(self):
+        mine = [dict(player="W", value=0.0)]
+        self.assertIsNone(WM.fa_notice(mine, [], [dict(add="A", drop="W", d_exp=0.09)])["this_week"])
+        self.assertEqual(WM.fa_notice(mine, [], [dict(add="A", drop="W", d_exp=0.12)])["this_week"]["add"], "A")
+
+
 class WinWeek(unittest.TestCase):
     """Owner 2026-10-22 ("Live + pre-week"): the chance of 5+ of 9 categories from the card's per-category chances,
     categories treated as independent (stated on the tile). Hand figures use math.comb, not the code under test."""
@@ -338,6 +426,32 @@ class Record(unittest.TestCase):
         saved = os.environ.get("SEASON_POOL")
         self.addCleanup(lambda: os.environ.__setitem__("SEASON_POOL", saved) if saved is not None else os.environ.pop("SEASON_POOL", None))
         os.environ["SEASON_POOL"] = os.path.join(os.path.dirname(HERE), "data", "season", "pool_season.csv")
+
+    def test_lineup_check_alerts_when_a_bench_player_plays_and_a_starter_does_not(self):
+        # 2026-10-21: DEN plays, BOS does not; Jokic on the bench, White (no game) in a starting slot
+        st = json.load(open(self.state))
+        st["teams"][0]["players"][0]["slot"], st["teams"][0]["players"][1]["slot"] = "BN", "UTIL"
+        dump(st, self.state)
+        out = os.path.join(self.d, "news")
+        r = subprocess.run([sys.executable, os.path.join(HERE, "lineup_check.py"), "--date", "2026-10-21",
+                            "--state", self.state, "--schedule", self.sched, "--games", self.paths["games"],
+                            "--actuals", self.paths["actuals"], "--status-dir", self.paths["status"],
+                            "--yahoo-pull", os.path.join(self.d, "none.json"), "--out-dir", out],
+                           capture_output=True, text=True)
+        self.assertIn("LINEUP CHECK: ALERT", r.stdout, r.stdout + r.stderr)
+        self.assertIn("PUSH: Lineup — Start Nikola Jokic (DEN) for Derrick White", r.stdout)
+        rec = json.load(open(os.path.join(out, "lineup_2026-10-21.json")))
+        self.assertEqual([(m["start"], m["sit"], m["kind"]) for m in rec["alerts"]], [("Nikola Jokic", "Derrick White", "empty")])
+
+    def test_lineup_check_is_quiet_when_the_lineup_is_already_the_best(self):
+        out = os.path.join(self.d, "news")
+        r = subprocess.run([sys.executable, os.path.join(HERE, "lineup_check.py"), "--date", "2026-10-21",
+                            "--state", self.state, "--schedule", self.sched, "--games", self.paths["games"],
+                            "--actuals", self.paths["actuals"], "--status-dir", self.paths["status"],
+                            "--yahoo-pull", os.path.join(self.d, "none.json"), "--out-dir", out],
+                           capture_output=True, text=True)
+        self.assertIn("LINEUP CHECK: OK", r.stdout, r.stdout + r.stderr)
+        self.assertNotIn("PUSH:", r.stdout)
 
     def test_the_record_carries_to_date_projection_and_leaders_for_both_teams(self):
         rec = WM.build("2026-10-21", self.paths)
@@ -537,6 +651,53 @@ class Record(unittest.TestCase):
         self.assertGreater(pk["pool_size"], 300)
 
 
+class MatchupBoard(Record):
+    """Owner 2026-10-23 (the Today page as a matchup board): both teams' players by today's slot, each with his week
+    to date rebuilt from the box scores and today's game; the totals row stays Yahoo's (or the rebuild's) figure."""
+
+    def board(self, date="2026-10-21"):
+        return WM.build(date, self.paths)["board"]
+
+    def test_each_side_lists_its_players_in_slot_order_with_slot_status_and_team(self):
+        b = self.board()
+        me = [(r["slot"], r["player"], r["team"]) for r in b["me"]["rows"]]
+        self.assertEqual(me, [("C", "Nikola Jokic", "DEN"), ("UTIL", "Derrick White", "BOS"), ("IL", "Max Strus", "LAC")])
+        opp = [(r["slot"], r["player"]) for r in b["opp"]["rows"]]
+        self.assertEqual(opp, [("BN", "Tyrese Maxey"), ("IL", "Joel Embiid")])
+        self.assertEqual((b["me"]["name"], b["opp"]["name"]), ("MINE", "THEIRS"))
+
+    def test_a_players_week_line_is_his_counted_box_scores_and_none_when_he_has_not_counted(self):
+        rows = {r["player"]: r for side in ("me", "opp") for r in self.board()[side]["rows"]}
+        self.assertEqual(rows["Derrick White"]["to_date"]["pts"], 13)
+        self.assertEqual(rows["Derrick White"]["to_date"]["tpm"], 3)
+        self.assertEqual(rows["Derrick White"]["games"], 1)
+        self.assertEqual(rows["Tyrese Maxey"]["to_date"]["pts"], 30)   # a fallback day counts every non-IL player who played
+        self.assertIsNone(rows["Nikola Jokic"]["to_date"])                # DEN had no game on 10/20
+        self.assertIsNone(rows["Joel Embiid"]["to_date"])                 # IL: his 28 points do not count
+        self.assertEqual(rows["Joel Embiid"]["games"], 0)
+
+    def test_the_rows_plus_departed_players_sum_to_the_rebuild_and_the_board_says_whether_yahoo_agrees(self):
+        rec = WM.build("2026-10-21", self.paths)
+        for side in ("me", "opp"):
+            s = rec["board"][side]
+            tot = {k: sum((r["to_date"] or {}).get(k, 0) for r in s["rows"]) + s["departed"]["to_date"].get(k, 0)
+                   for k in WM.STATS}
+            self.assertEqual(tot, rec["totals"][side]["rebuild_to_date"])
+            self.assertEqual(s["totals"], rec["totals"][side]["to_date"])
+            self.assertIs(s["rows_match_totals"], tot == rec["totals"][side]["to_date"])
+
+    def test_todays_game_reads_vs_at_home_and_at_on_the_road_and_none_without_a_game(self):
+        rows = {r["player"]: r for side in ("me", "opp") for r in self.board()[side]["rows"]}
+        self.assertEqual(rows["Nikola Jokic"]["today"], "@ PHI")    # 2026-10-21: DEN at PHI
+        self.assertEqual(rows["Tyrese Maxey"]["today"], "vs DEN")
+        self.assertIsNone(rows["Derrick White"]["today"])
+
+    def test_the_score_counts_the_categories_each_side_leads_to_date(self):
+        rec = WM.build("2026-10-21", self.paths)
+        lead = [c["leader_to_date"] for c in rec["cats"]]
+        self.assertEqual(rec["board"]["score"], dict(me=lead.count("me"), opp=lead.count("opp"), tie=lead.count("tie")))
+
+
 class YahooFreeAgents(unittest.TestCase):
     def test_letters_tier_names_resolve_and_unknowns_are_set_aside(self):
         pool = [dict(player="Jrue Holiday"), dict(player="Nikola Vucevic"), dict(player="Max Strus")]
@@ -558,3 +719,24 @@ class YahooFreeAgents(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
+
+
+class PoolDefault(Record):
+    """Owner 2026-10-23 (D2): a hand run of week_matchup.py or lineup_check.py uses the season pool
+    (data/season/pool_season.csv) when it exists and SEASON_POOL is unset, and names the pool it ran on."""
+    def setUp(self):
+        super().setUp()
+        os.environ.pop("SEASON_POOL", None)
+
+    def test_build_defaults_to_the_season_pool_when_present_and_names_it(self):
+        rec = WM.build("2026-10-21", self.paths)
+        self.assertTrue(str(rec["inputs"]["pool"]["path"]).endswith(os.path.join("data", "season", "pool_season.csv")), rec["inputs"]["pool"])
+
+    def test_the_lineup_check_names_the_pool_it_ran_on(self):
+        out = os.path.join(self.d, "news")
+        r = subprocess.run([sys.executable, os.path.join(HERE, "lineup_check.py"), "--date", "2026-10-21",
+                            "--state", self.state, "--schedule", self.sched, "--games", self.paths["games"],
+                            "--actuals", self.paths["actuals"], "--status-dir", self.paths["status"],
+                            "--yahoo-pull", os.path.join(self.d, "none.json"), "--out-dir", out],
+                           capture_output=True, text=True, env={k: v for k, v in os.environ.items() if k != "SEASON_POOL"})
+        self.assertIn("pool pool_season.csv", r.stdout, r.stdout + r.stderr)

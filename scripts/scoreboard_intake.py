@@ -12,6 +12,7 @@ games shock and the variance scales are calibrated on, D-PM-1), and the calibrat
 scripts/weekly_preview.py --score (skipped with --no-ledger).
 
     python3 scripts/scoreboard_intake.py --week 1 [--csv data/weeks/week_1.csv] [--no-ledger]
+    python3 scripts/scoreboard_intake.py --week 1 --from-pull data/source/flaim/pull_2026-10-26.json   (Build 1: Yahoo's finals)
 """
 import argparse
 import csv
@@ -76,6 +77,37 @@ def parse(path, state):
     return dict(week=weeks.pop(), teams=teams, matchups=matchups, source=os.path.relpath(path, KIT))
 
 
+def from_pull(path, week, state):
+    """A finished week's six matchups from a Flaim pull's Yahoo matchup block (owner 2026-10-23, Build 1): the same
+    shape parse() returns. Halts when the pull lacks the week, or the week is not final (every matchup's status must
+    read "final" — Flaim's get_matchups contract, read 2026-10-23: upcoming, in_progress or final; the Runner session
+    flagged the earlier "finished" check the same day), or a team is not in the league state."""
+    sys.path.insert(0, HERE)
+    import league_table as LT
+    pull = json.load(open(path, encoding="utf-8"))
+    block = ((pull.get("matchups") or {}).get(str(week)))
+    if not block:
+        raise IntakeError(f"{os.path.basename(path)} carries no week {week} matchups")
+    unfinished = [m.get("matchupId") for m in block.get("matchups") or [] if (m.get("status") or "") != "final"]
+    if unfinished:
+        raise IntakeError(f"week {week} is not final in {os.path.basename(path)} (matchups {unfinished} are {block['matchups'][0].get('status')!r})")
+    try:
+        yw = LT.week_from_yahoo(block, state)
+    except LT.TableError as e:
+        raise IntakeError(str(e))
+    teams = {}
+    for n, x in yw.items():
+        v = LT.cat_values(x["totals"])
+        teams[n] = dict(seat=x["seat"], opponent=x["opponent"], line={c: (round(v[c], 4) if c in ("FG%", "FT%") and v[c] is not None else v[c]) for c in CATS},
+                        yahoo_score=x["score"])
+    matchups, seen = [], set()
+    for t, v in teams.items():
+        if t not in seen:
+            matchups.append([t, v["opponent"]]); seen |= {t, v["opponent"]}
+    rel = os.path.relpath(path, KIT) if os.path.abspath(path).startswith(KIT) else path
+    return dict(week=week, teams=teams, matchups=matchups, source=rel)
+
+
 def owner_result(week, owner_seat=OWNER_SEAT):
     me = next(t for t, v in week["teams"].items() if v["seat"] == owner_seat)
     opp = week["teams"][me]["opponent"]
@@ -105,21 +137,24 @@ def append_team_weeks(week, path):
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--week", type=int, required=True); ap.add_argument("--csv"); ap.add_argument("--no-ledger", action="store_true")
+    ap.add_argument("--from-pull", help="a Flaim pull carrying the final week's matchups (owner 2026-10-23, Build 1)")
+    ap.add_argument("--state", default=STATE); ap.add_argument("--weeks-dir", default=WEEKS)
     a = ap.parse_args()
-    path = a.csv or os.path.join(WEEKS, f"week_{a.week}.csv")
-    with open(STATE, encoding="utf-8") as f:
+    WEEKS_DIR = a.weeks_dir
+    path = a.from_pull or a.csv or os.path.join(WEEKS_DIR, f"week_{a.week}.csv")
+    with open(a.state, encoding="utf-8") as f:
         state = json.load(f)
     try:
-        wk = parse(path, state)
-    except (IntakeError, OSError) as e:
+        wk = from_pull(path, a.week, state) if a.from_pull else parse(path, state)
+    except (IntakeError, OSError, ValueError) as e:
         print(f"SCOREBOARD INTAKE: FAIL — {e}"); return 1
     if wk["week"] != a.week:
         print(f"SCOREBOARD INTAKE: FAIL — the file says week {wk['week']}, --week {a.week}"); return 1
     res = owner_result(wk); wk["owner"] = res
-    os.makedirs(WEEKS, exist_ok=True)
-    with open(os.path.join(WEEKS, f"week_{a.week}.json"), "w", encoding="utf-8") as f:
+    os.makedirs(WEEKS_DIR, exist_ok=True)
+    with open(os.path.join(WEEKS_DIR, f"week_{a.week}.json"), "w", encoding="utf-8") as f:
         json.dump(wk, f, indent=1, ensure_ascii=False); f.write("\n")
-    append_team_weeks(wk, os.path.join(WEEKS, "team_weeks.csv"))
+    append_team_weeks(wk, os.path.join(WEEKS_DIR, "team_weeks.csv"))
     ledger = "skipped"
     if not a.no_ledger:
         p = subprocess.run([sys.executable, os.path.join(HERE, "weekly_preview.py"), "--score", str(a.week), "--won", ",".join(res["won"])],

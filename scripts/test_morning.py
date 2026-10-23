@@ -21,7 +21,8 @@ class Steps(unittest.TestCase):
     def test_steps_in_order_with_dates(self):
         st = M.steps("2026-10-21", fetch=True, seasons=10000)
         # 2026-10-21: "preflight" became step 0 (independent-audit adoption); the indices below moved by one.
-        self.assertEqual([s["name"] for s in st], ["preflight", "league live", "matchup live", "box scores 2026-10-20", "season lines", "season board", "status feed", "transactions", "daily brief", "week matchup", "season deck"])
+        # 2026-10-23 (owner, Build 1): "league table" after the week matchup, before the deck that draws it
+        self.assertEqual([s["name"] for s in st], ["preflight", "league live", "matchup live", "box scores 2026-10-20", "season lines", "season board", "status feed", "transactions", "daily brief", "week matchup", "league table", "season deck"])
         self.assertIn("2026-10-20", st[3]["cmd"])
         self.assertIn("2026-10-21", st[8]["cmd"])
         self.assertTrue(all(s["pass_re"] for s in st))
@@ -103,3 +104,14 @@ class NonFatal(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
+
+
+class LedgerParent(unittest.TestCase):
+    def test_every_step_runs_with_the_morning_named_as_ledger_parent(self):
+        # owner 2026-10-23 (D5): the step scripts record their own ledger rows when run alone; under the morning run
+        # they must not, since run_steps records 'morning: <step>' itself
+        d = tempfile.mkdtemp()
+        step = {"name": "echo", "cmd": [PY, "-c", "import os; print('PARENT ' + os.environ.get('KIT_LEDGER_PARENT', 'none'))"],
+                "cwd": ".", "pass_re": r"^PARENT morning$", "env": {}}
+        rec = M.run_steps([step], os.path.join(d, "m.json"))
+        self.assertEqual(rec["steps"][0]["verdict"], "PASS", rec["steps"][0])

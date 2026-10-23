@@ -20,8 +20,8 @@ import os
 import re
 import sys
 
-TABS = ["Today", "Trade Analyzer", "Free Agents", "Board", "Movers", "Week"]
-PANES = ["today", "trade", "fa", "board", "movers", "week"]
+TABS = ["Today", "Trade Analyzer", "Free Agents", "Board", "Movers", "Week", "League"]  # 2026-10-23: League (owner, Build 1)
+PANES = ["today", "trade", "fa", "board", "movers", "week", "league"]
 
 
 def _executables():
