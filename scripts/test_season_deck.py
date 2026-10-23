@@ -460,6 +460,124 @@ def today_dom(html_path):
             b.close()
 
 
+def _row(slot, player, team, today, td=None, games=0, status=None):
+    return dict(slot=slot, player=player, team=team, positions=["PG"], status=status, today=today, games=games,
+                to_date=None if td is None else dict(dict(fgm=0, fga=0, ftm=0, fta=0, tpm=0, pts=0, reb=0, ast=0, stl=0,
+                                                          blk=0, tov=0), **td))
+
+
+def board_record(match_opp=False):
+    """week_matchup_record() with the owner's 2026-10-23 matchup board: two sides by slot, Yahoo's totals, the score."""
+    r = week_matchup_record()
+    me_tot = dict(fgm=11, fga=24, ftm=4, fta=4, tpm=3, pts=29, reb=10, ast=9, stl=2, blk=1, tov=3)
+    opp_tot = dict(fgm=9, fga=20, ftm=5, fta=6, tpm=2, pts=30, reb=12, ast=4, stl=1, blk=2, tov=2)
+    r["board"] = dict(score=dict(me=3, opp=6, tie=0),
+        me=dict(name="MY TEAM", seat=10, manager="Me", departed=dict(names=[], to_date={k: 0 for k in me_tot}, games=0),
+                totals=me_tot, rows_match_totals=True, rows=[
+                    _row("PG", "Alpha Man", "DEN", "vs DAL", dict(fgm=8, fga=15, ftm=4, fta=4, tpm=2, pts=22, reb=2, ast=8, stl=1, blk=0, tov=2), 1),
+                    _row("C", "Big Guy", "MIL", None, dict(fgm=3, fga=9, tpm=1, pts=7, reb=8, ast=1, stl=1, blk=1, tov=1), 1),
+                    _row("BN", "Bench Guy", "BOS", "@ NYK"),
+                    _row("IL", "Hurt Guy", "ORL", "vs MIN", status="O")]),
+        opp=dict(name="THEM", seat=11, manager="Cayas", departed=dict(names=[], to_date={k: 0 for k in opp_tot}, games=0),
+                 totals=opp_tot, rows_match_totals=match_opp, rows=[
+                    _row("PG", "Their Guard", "PHI", None, dict(fgm=9, fga=20, ftm=5, fta=6, tpm=2, pts=25, reb=7, ast=4, stl=1, blk=0, tov=2), 1),
+                    _row("SF", "Their Wing", "TOR", "@ WAS", dict(reb=5, blk=2), 1),
+                    _row("C", "Their Center", "CHI", "@ MIL")]))
+    return r
+
+
+def board_dom(html_path, width=1280):
+    """The matchup board read in the browser at a given viewport width."""
+    from playwright.sync_api import sync_playwright
+    with sync_playwright() as p:
+        b, exe, tried = DRC._launch(p)
+        try:
+            pg = b.new_page(viewport=dict(width=width, height=900)); errs = []
+            pg.on("pageerror", lambda e: errs.append(str(e)))
+            pg.route(re.compile(r"^https?://"), lambda r: r.abort())
+            pg.goto("file://" + os.path.abspath(html_path), wait_until="load")
+            q = lambda js: pg.evaluate(js)
+            return dict(errors=errs,
+                first=q("() => { const c=document.querySelector('#pane-today .card'); return c? c.id : null }"),
+                text=q("() => { const m=document.getElementById('mboard'); return m? m.textContent : null }"),
+                score=q("() => [...document.querySelectorAll('#mboard .mb-score b')].map(x=>x.textContent)"),
+                lead=q("() => [...document.querySelectorAll('#mboard .mb-cats td.lead')].map(x=>x.dataset.cat+':'+x.dataset.side)"),
+                slots=q("() => [...document.querySelectorAll('#mboard .mb-players td.slot')].map(x=>x.textContent)"),
+                cells=q("() => [...document.querySelectorAll('#mboard .mb-players tr')].map(tr=>[...tr.children].map(td=>td.textContent))"),
+                page_overflow=q("() => document.documentElement.scrollWidth - window.innerWidth"))
+        finally:
+            b.close()
+
+
+class MatchupBoard(unittest.TestCase):
+    """Owner 2026-10-23: "take this inspiration [Yahoo's matchup page] ... make this the today page, which should
+    update with each morning refresh. Same data being pulled, just build differently visually"."""
+    def setUp(self):
+        self.d = tempfile.mkdtemp(); self.fx = fixtures(self.d)
+
+    def page(self, record):
+        self.fx["week_matchup"] = os.path.join(self.d, "wm.json")
+        with open(self.fx["week_matchup"], "w") as f:
+            json.dump(record, f)
+        html, data, rec = SD.build(self.fx, date="2026-10-21")
+        p = os.path.join(self.d, "deck.html")
+        with open(p, "w", encoding="utf-8") as f:
+            f.write(html)
+        return p
+
+    def test_the_board_leads_today_with_both_teams_their_managers_and_the_score(self):
+        p = self.page(board_record())
+        self.assertEqual(DRC.check(p)["status"], "PASS")
+        dom = board_dom(p)
+        self.assertEqual(dom["errors"], [])
+        self.assertEqual(dom["first"], "mboard")
+        self.assertEqual(dom["score"], ["3", "6"])
+        for s in ("MY TEAM", "THEM", "Cayas", "Week 1"):
+            self.assertIn(s, dom["text"])
+
+    def test_the_category_row_shows_each_sides_totals_and_marks_the_leader(self):
+        dom = board_dom(self.page(board_record()))
+        # the record's leader_to_date is "opp" in every category (week_matchup_record), so every lead mark is theirs
+        self.assertEqual(len(dom["lead"]), 9)
+        self.assertTrue(all(x.endswith(":opp") for x in dom["lead"]))
+        self.assertIn(".458", dom["text"])            # 11/24, Yahoo-style three places with no leading zero
+        self.assertIn("29", dom["text"])
+
+    def test_players_pair_by_slot_with_their_week_line_and_todays_game(self):
+        dom = board_dom(self.page(board_record()))
+        self.assertEqual(dom["slots"], ["PG", "SF", "C", "BN", "IL"])
+        rows = {r[len(r) // 2]: r for r in dom["cells"] if len(r) > 3}   # keyed by the middle (slot) cell
+        pg = " ".join(rows["PG"])
+        for s in ("Alpha Man", "vs DAL", ".533", "22", "Their Guard", "No game", ".450", "25"):
+            self.assertIn(s, pg)
+        sf = " ".join(rows["SF"])
+        self.assertIn("Their Wing", sf); self.assertIn("Empty", sf)       # no SF on my side
+        il = " ".join(rows["IL"])
+        self.assertIn("Hurt Guy", il); self.assertIn("O", il)
+
+    def test_a_player_who_has_not_counted_shows_dashes_and_totals_are_yahoos(self):
+        dom = board_dom(self.page(board_record()))
+        bn = [r for r in dom["cells"] if len(r) > 3 and r[len(r) // 2] == "BN"][0]
+        self.assertIn("Bench Guy", " ".join(bn)); self.assertIn("–", " ".join(bn))
+        tot = [r for r in dom["cells"] if r and "TOTAL" in r[0]][0]
+        self.assertIn("29", tot); self.assertIn("30", tot)
+
+    def test_a_side_whose_rows_do_not_add_to_yahoo_is_named_and_one_that_does_is_not(self):
+        text = board_dom(self.page(board_record(match_opp=False)))["text"]
+        self.assertIn("THEM: Yahoo's totals differ from the sum of the player rows", text)
+        self.assertNotIn("MY TEAM: Yahoo's totals differ", text)
+        text = board_dom(self.page(board_record(match_opp=True)))["text"]
+        self.assertNotIn("Yahoo's totals differ", text)
+
+    def test_the_board_never_scrolls_the_page_sideways_on_a_phone(self):
+        dom = board_dom(self.page(board_record()), width=400)
+        self.assertEqual(dom["errors"], [])
+        self.assertLessEqual(dom["page_overflow"], 0)
+
+    def test_a_record_without_a_board_draws_no_board(self):
+        self.assertIsNone(board_dom(self.page(week_matchup_record()))["text"])
+
+
 class WeekMatchupData(unittest.TestCase):
     """Owner 2026-10-21: the Today tab carries the week's categories; the record is an optional input."""
     def setUp(self):

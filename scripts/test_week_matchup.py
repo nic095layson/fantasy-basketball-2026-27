@@ -651,6 +651,53 @@ class Record(unittest.TestCase):
         self.assertGreater(pk["pool_size"], 300)
 
 
+class MatchupBoard(Record):
+    """Owner 2026-10-23 (the Today page as a matchup board): both teams' players by today's slot, each with his week
+    to date rebuilt from the box scores and today's game; the totals row stays Yahoo's (or the rebuild's) figure."""
+
+    def board(self, date="2026-10-21"):
+        return WM.build(date, self.paths)["board"]
+
+    def test_each_side_lists_its_players_in_slot_order_with_slot_status_and_team(self):
+        b = self.board()
+        me = [(r["slot"], r["player"], r["team"]) for r in b["me"]["rows"]]
+        self.assertEqual(me, [("C", "Nikola Jokic", "DEN"), ("UTIL", "Derrick White", "BOS"), ("IL", "Max Strus", "LAC")])
+        opp = [(r["slot"], r["player"]) for r in b["opp"]["rows"]]
+        self.assertEqual(opp, [("BN", "Tyrese Maxey"), ("IL", "Joel Embiid")])
+        self.assertEqual((b["me"]["name"], b["opp"]["name"]), ("MINE", "THEIRS"))
+
+    def test_a_players_week_line_is_his_counted_box_scores_and_none_when_he_has_not_counted(self):
+        rows = {r["player"]: r for side in ("me", "opp") for r in self.board()[side]["rows"]}
+        self.assertEqual(rows["Derrick White"]["to_date"]["pts"], 13)
+        self.assertEqual(rows["Derrick White"]["to_date"]["tpm"], 3)
+        self.assertEqual(rows["Derrick White"]["games"], 1)
+        self.assertEqual(rows["Tyrese Maxey"]["to_date"]["pts"], 30)   # a fallback day counts every non-IL player who played
+        self.assertIsNone(rows["Nikola Jokic"]["to_date"])                # DEN had no game on 10/20
+        self.assertIsNone(rows["Joel Embiid"]["to_date"])                 # IL: his 28 points do not count
+        self.assertEqual(rows["Joel Embiid"]["games"], 0)
+
+    def test_the_rows_plus_departed_players_sum_to_the_rebuild_and_the_board_says_whether_yahoo_agrees(self):
+        rec = WM.build("2026-10-21", self.paths)
+        for side in ("me", "opp"):
+            s = rec["board"][side]
+            tot = {k: sum((r["to_date"] or {}).get(k, 0) for r in s["rows"]) + s["departed"]["to_date"].get(k, 0)
+                   for k in WM.STATS}
+            self.assertEqual(tot, rec["totals"][side]["rebuild_to_date"])
+            self.assertEqual(s["totals"], rec["totals"][side]["to_date"])
+            self.assertIs(s["rows_match_totals"], tot == rec["totals"][side]["to_date"])
+
+    def test_todays_game_reads_vs_at_home_and_at_on_the_road_and_none_without_a_game(self):
+        rows = {r["player"]: r for side in ("me", "opp") for r in self.board()[side]["rows"]}
+        self.assertEqual(rows["Nikola Jokic"]["today"], "@ PHI")    # 2026-10-21: DEN at PHI
+        self.assertEqual(rows["Tyrese Maxey"]["today"], "vs DEN")
+        self.assertIsNone(rows["Derrick White"]["today"])
+
+    def test_the_score_counts_the_categories_each_side_leads_to_date(self):
+        rec = WM.build("2026-10-21", self.paths)
+        lead = [c["leader_to_date"] for c in rec["cats"]]
+        self.assertEqual(rec["board"]["score"], dict(me=lead.count("me"), opp=lead.count("opp"), tie=lead.count("tie")))
+
+
 class YahooFreeAgents(unittest.TestCase):
     def test_letters_tier_names_resolve_and_unknowns_are_set_aside(self):
         pool = [dict(player="Jrue Holiday"), dict(player="Nikola Vucevic"), dict(player="Max Strus")]
