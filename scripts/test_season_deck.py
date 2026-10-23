@@ -872,5 +872,104 @@ class WeekMatchupCard(unittest.TestCase):
         self.assertIn("could not be drawn", today_dom(p)["text"])
 
 
+
+def form_record():
+    """form_board.py-shaped record (owner 2026-10-23): minutes, starts, role and per-36 rates per player from the box scores."""
+    def row(name, nba, owner, seat, mine, fa, slot, games, mpg, starts, role, pts36, trend=None):
+        return dict(name=name, yahoo_name=name, owner=owner, seat=seat, mine=mine, fa=fa, slot=slot, status=None, nba=nba,
+                    games=games, mpg=mpg, starts=starts, role=role, minutes=[mpg] * games if games else [],
+                    per36=dict(pts=pts36, reb=5.0, ast=3.0, stl=1.0, blk=0.5, tpm=2.0, tov=2.0) if games else {},
+                    per_game={}, fg=dict(made=5, att=10, pct=0.5 if games else None), ft=dict(made=2, att=2, pct=1.0 if games else None),
+                    last3_mpg=None, prior_mpg=None, trend=trend)
+    rows = [row("Their Star", "NYK", "THEM", 11, False, False, "C", 1, 40.0, 1, "starter", 27.0),
+            row("Alpha Man", "DEN", "MY TEAM", 10, True, False, "PG", 2, 33.0, 2, "starter", 19.6),
+            row("Free Agent", "GSW", None, None, False, True, None, 1, 20.0, 0, "bench", 18.0),
+            row("Bench Guy", "DAL", "MY TEAM", 10, True, False, "BN", 1, 12.0, 0, "bench", 12.0),
+            row("Hurt FA", "MIA", None, None, False, True, None, 0, None, 0, None, None)]
+    return dict(date="2026-10-21", window=["2026-10-20", "2026-10-21"], league_state_as_of="2026-10-19", pull="pull_2026-10-21.json",
+                rows=rows, fa_unresolved=["Nobody Known"], unpooled_with_games=["Mystery Man"],
+                counts=dict(rostered=3, free_agents=2, with_games=4, no_game=1, days=2),
+                method=dict(source="box scores", rate_base=36, trend_min_games=4, trend_min=6.0, role="starter flag",
+                            not_a_projection="the season line stays the per-game line"),
+                inputs=dict(actuals={}, state=None, pull=None, pool=None))
+
+
+def form_dom(html_path, clicks=(), view=None, width=1280):
+    """The minutes card on the Movers pane read in the browser; clicks = header labels to click in order; view = the filter."""
+    from playwright.sync_api import sync_playwright
+    with sync_playwright() as p:
+        b, exe, tried = DRC._launch(p)
+        try:
+            pg = b.new_page(viewport=dict(width=width, height=900)); errs = []
+            pg.on("pageerror", lambda e: errs.append(str(e)))
+            pg.route(re.compile(r"^https?://"), lambda r: r.abort())
+            pg.goto("file://" + os.path.abspath(html_path), wait_until="load")
+            pg.evaluate("() => document.querySelector('nav.tabs button[data-tab=movers]').click()")
+            if view:
+                pg.evaluate("(v) => { const s=document.getElementById('fm-view'); s.value=v; s.dispatchEvent(new Event('change')); }", view)
+            for c in clicks:
+                pg.evaluate("(c) => { const th=[...document.querySelectorAll('#fm-table th')].find(x=>x.textContent.replace(/[ ↑↓]/g,'')===c); th.click(); }", c)
+            q = lambda js: pg.evaluate(js)
+            return dict(errors=errs,
+                text=q("() => { const m=document.getElementById('pane-movers'); return m? m.textContent : null }"),
+                names=q("() => [...document.querySelectorAll('#fm-table tr td.name')].map(x=>x.dataset.name)"),
+                mine=q("() => [...document.querySelectorAll('#fm-table tr.mine td.name')].map(x=>x.dataset.name)"),
+                fa_text=q("() => { const m=document.getElementById('pane-fa'); return m? m.textContent : null }"),
+                stamp=q("() => { const e=document.getElementById('hstamp'); return e? e.textContent+' | '+e.title : null }"),
+                page_overflow=q("() => document.documentElement.scrollWidth - window.innerWidth"))
+        finally:
+            b.close()
+
+
+class FormCard(unittest.TestCase):
+    """Owner 2026-10-23: the minutes & role board on the Movers tab, my rows marked, sortable, with a view filter; the
+    Free Agents list shows each free agent's minutes per game."""
+    def setUp(self):
+        self.d = tempfile.mkdtemp(); self.fx = fixtures(self.d)
+
+    def page(self, record):
+        if record is not None:
+            self.fx["form"] = os.path.join(self.d, "form.json")
+            with open(self.fx["form"], "w") as f:
+                json.dump(record, f)
+        html, data, rec = SD.build(self.fx, date="2026-10-21")
+        p = os.path.join(self.d, "deck.html")
+        with open(p, "w", encoding="utf-8") as f:
+            f.write(html)
+        return p
+
+    def test_default_paths_name_the_days_form_record_and_an_absent_one_builds(self):
+        self.assertTrue(SD.default_paths("2026-10-22")["form"].endswith(os.path.join("report", "form", "form_2026-10-22.json")))
+        html, data, rec = SD.build(self.fx, date="2026-10-21")
+        self.assertIsNone(data["form"])
+        p = self.page(None)
+        self.assertEqual(DRC.check(p)["status"], "PASS")
+        self.assertIn("No minutes record", form_dom(p)["text"])
+
+    def test_the_card_lists_players_by_minutes_with_my_rows_marked(self):
+        p = self.page(form_record())
+        self.assertEqual(DRC.check(p)["status"], "PASS")
+        dom = form_dom(p)
+        self.assertEqual(dom["errors"], [])
+        self.assertEqual(dom["names"], ["Their Star", "Alpha Man", "Free Agent", "Bench Guy", "Hurt FA"])   # mpg desc, no-game last
+        self.assertEqual(dom["mine"], ["Alpha Man", "Bench Guy"])
+        for s in ("Minutes & role", "33.0", "S 2/2", "B 0/1", "2026-10-20", "per-36", "Nobody Known", "Mystery Man"):
+            self.assertIn(s, dom["text"])
+        self.assertIn("Updated ", dom["stamp"]); self.assertIn("generated 20", dom["stamp"])   # the build time, top right
+        self.assertLessEqual(dom["page_overflow"], 0)
+
+    def test_headers_sort_and_the_view_filters_to_mine_or_free_agents(self):
+        p = self.page(form_record())
+        self.assertEqual(form_dom(p, clicks=("g",))["names"][0], "Alpha Man")                 # games desc: 2 first
+        self.assertEqual(form_dom(p, clicks=("PTS",))["names"][0], "Their Star")              # per-36 pts desc: 27.0
+        self.assertEqual(form_dom(p, clicks=("player",))["names"][0], "Alpha Man")           # name asc
+        self.assertEqual(form_dom(p, view="mine")["names"], ["Alpha Man", "Bench Guy"])
+        self.assertEqual(form_dom(p, view="fa")["names"], ["Free Agent", "Hurt FA"])
+
+    def test_the_free_agent_list_shows_minutes_per_game(self):
+        p = self.page(form_record())
+        self.assertIn("20.0 min/g (1 g, bench)", form_dom(p)["fa_text"])
+
+
 if __name__ == "__main__":
     unittest.main()

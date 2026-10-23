@@ -48,7 +48,9 @@ def default_paths(date):
                 # optional (owner 2026-10-21): the week's categories to date and projected (week_matchup.py)
                 week_matchup=os.path.join(KIT, "report", "briefs", f"week_matchup_{date}.json"),
                 # optional (owner 2026-10-23, Build 1): every team's totals, ranks and the all-play power ranking (league_table.py)
-                league=os.path.join(KIT, "report", "league", f"league_{date}.json"))
+                league=os.path.join(KIT, "report", "league", f"league_{date}.json"),
+                # optional (owner 2026-10-23): minutes, starts, role and per-36 rates from the box scores (form_board.py)
+                form=os.path.join(KIT, "report", "form", f"form_{date}.json"))
 
 
 def resolve_rostered(rostered, board_names, held_names, aliases):
@@ -95,7 +97,7 @@ def build(paths, date):
     calib = _load(paths["calibration"], "calibration")
     opt = lambda k: (json.load(open(paths[k], encoding="utf-8"))
                      if paths.get(k) and os.path.exists(paths[k]) else None)
-    matchup_live = opt("matchup_live"); week_matchup = opt("week_matchup"); league_rec = opt("league")
+    matchup_live = opt("matchup_live"); week_matchup = opt("week_matchup"); league_rec = opt("league"); form_rec = opt("form")
     for k in ("date", "opponent", "title", "lineup"):
         if k not in brief: raise DeckError(f"brief lacks {k}")
     if brief["date"] != date: raise DeckError(f"brief is for {brief['date']}, not {date}")
@@ -138,7 +140,7 @@ def build(paths, date):
                 my_team=my_team, my_seat=my_seat, brief=brief, board=board, status=status,
                 league=dict(as_of=league["as_of"], rosters=rosters, managers={t["name"]: t.get("manager") for t in league["teams"]}), season_lines=lines, matchup=wk,
                 ledger=calib.get("weeks", {}), bands=bands, band_engine=band_engine, matchup_live=matchup_live,
-                week_matchup=week_matchup, league_table=league_rec,
+                week_matchup=week_matchup, league_table=league_rec, form=form_rec,
                 config=dict(cats=["FG%", "FT%", "3PM", "PTS", "REB", "AST", "STL", "BLK", "TOV"],
                             tier_low=0.3, tier_high=1.0, verdict_edge=0.5, verdict_strong=1.5,
                             thresholds_note="stated defaults, D-SD-1 (owner re-tunes); z screen only, not the simulator"))
@@ -183,7 +185,9 @@ body{background:var(--bg); color:var(--ink); font-family:var(--body); margin:0; 
 .wrap{max-width:1060px; margin:0 auto; padding-left:max(16px,env(safe-area-inset-left,0px)); padding-right:max(16px,env(safe-area-inset-right,0px)); padding-block:0 48px}
 body::before{content:""; position:fixed; inset:0 0 auto; height:env(safe-area-inset-top,0px); z-index:10; background:var(--bg)}
 header.deck{position:sticky; top:env(safe-area-inset-top,0px); z-index:9; background:var(--bg); border-bottom:1px solid var(--line)}
-header.deck .wrap{padding-block:10px 0}
+header.deck .wrap{padding-block:10px 0; position:relative}
+.stamp{position:absolute; right:max(16px,env(safe-area-inset-right,0px)); top:12px; font-size:11px; color:var(--ink2); text-align:right; line-height:1.3}
+@media (max-width:640px){ .stamp{position:static; text-align:left; margin-bottom:2px} }
 h1{font-family:var(--disp); font-weight:700; font-size:28px; letter-spacing:.02em; margin:0; text-wrap:balance}
 h1 .dt{color:var(--accent)}
 .sub{color:var(--ink2); font-size:13px; margin:2px 0 8px}
@@ -264,6 +268,8 @@ select,input[type=search],input[type=text]{background:var(--surface); color:var(
 .lg td.team{white-space:normal; min-width:9em} .lg tr.mine td{background:var(--lead)}
 .lg .rk{display:inline-block; min-width:1.5em; margin-left:4px; padding:0 4px; border-radius:999px; background:var(--chip); color:var(--ink2); font-size:10.5px; text-align:center; vertical-align:middle}
 .lg .rk.top{background:var(--mine); color:#fff} .lg .rk.low{color:var(--negtx)}
+.fm td.name{white-space:nowrap} .fm td, .fm th{font-size:12px; padding-left:5px; padding-right:5px}
+details.how{margin-top:8px} details.how summary{cursor:pointer; font-size:12px; color:var(--ink2)}
 .lg .bar{display:inline-block; height:8px; background:var(--pos); border-radius:4px; vertical-align:middle; margin-left:6px}
 .zneg{color:var(--negtx)}  /* text red: 4.5:1+ on surface, bg and chip in both themes (--neg is for fills) */
 .h2row{display:flex; justify-content:space-between; align-items:center; gap:10px; margin:0 0 8px}
@@ -283,6 +289,7 @@ footer{color:var(--ink2); font-size:12px; margin-top:28px; border-top:1px solid 
 </style>
 <script id="deck-data" type="application/json">__DATA__</script>
 <header class="deck"><div class="wrap">
+  <div class="stamp" id="hstamp" title="when this page was generated"></div>
   <h1>Season Deck <span class="dt" id="hdate"></span></h1>
   <div class="sub" id="hsub"></div>
   <nav class="tabs" id="tabs" role="tablist"></nav>
@@ -484,6 +491,11 @@ function matchupBoard(){ const W=D.week_matchup, B=W&&W.board; if(!B) return nul
 (function(){ const b=D.brief, p=$("#pane-today");
   $("#hdate").textContent=D.date;
   $("#hsub").textContent=T(D.my_team)+" · week "+b.week+" vs "+T(b.opponent)+" · lines "+b.lines+" · rosters as-of "+D.league.as_of;
+  // owner 2026-10-23: when the tool was last updated (the morning run's build time), in the viewer's own clock
+  (function(){ const g=D.generated_utc? new Date(D.generated_utc) : null; if(!g||isNaN(g)) return;
+    const loc=g.toLocaleString(undefined,{month:"short",day:"numeric",hour:"numeric",minute:"2-digit"});
+    const tz=(Intl.DateTimeFormat().resolvedOptions().timeZone||"").split("/").pop().replace("_"," ");
+    $("#hstamp").textContent="Updated "+loc+(tz?" ("+tz+")":""); $("#hstamp").title="generated "+D.generated_utc; })();
   const runs="avg of 2 runs × "+b.seasons.toLocaleString()+" seasons", BS=D.matchup.by_seed;
   const tiles=h("div",{class:"tiles"},
     // owner 2026-10-22 ("Live + pre-week"): the ledger's figure is frozen before the week (so it can be graded) and is
@@ -602,7 +614,9 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
   const sortSel=h("select",{id:"fa-sort",class:"field",onchange:(e)=>{sortBy=e.target.value;render();}},
     h("option",{value:"week",...(sortBy==="week"?{selected:""}:{})},"Sort: this week"+(W?" vs "+W.opponent.name:"")),
     h("option",{value:"z",...(sortBy==="z"?{selected:""}:{})},"Sort: season z"));
-  const wk=(r)=>{ const t=TWM[r.name]; return t? h("span",{class:"note"}," · this week "+swk(t.d_exp,2)+" ("+t.games+" g, for "+t.drop+")") : null; };
+  const FM={}; ((D.form&&D.form.rows)||[]).forEach(r=>{FM[r.name]=r;});   // owner 2026-10-23: minutes per game from the box scores
+  const mins=(r)=>{ const f=FM[r.name]; return f&&f.games? h("span",{class:"note"}," · "+f.mpg.toFixed(1)+" min/g ("+f.games+" g"+(f.role==="starter"?", starts":f.role==="bench"?", bench":"")+")") : null; };
+  const wk=(r)=>{ const t=TWM[r.name]; return h("span",{},t? h("span",{class:"note"}," · this week "+swk(t.d_exp,2)+" ("+t.games+" g, for "+t.drop+")") : null, mins(r)); };
   function render(){ let pool=BOARD.filter(r=>r.fa && (!search || r.name.toLowerCase().includes(search.toLowerCase())))
       .sort((a,b)=>b.z_adj-a.z_adj);  // owner 2026-10-20: free agents by z, descending
     if(sortBy==="week") pool=pool.sort((a,b)=>{ const x=TWM[a.name], y=TWM[b.name];  // 2026-10-22: scored ones first, by this week
@@ -670,6 +684,48 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
 })();
 
 // ---- Movers ----
+// ---- Minutes & role (owner 2026-10-23): the box scores' minutes, starts, role and per-36 rates per player, the signal
+// that stabilizes first; the games count sits on every row, so a one-game row reads as one game (form_board.py) ----
+(function(){ const p=$("#pane-movers"), F=D.form;
+  if(!F){ p.append(h("div",{class:"card"},h("h2",{},"Minutes & role"),h("div",{class:"zero"},"No minutes record for "+D.date+" (form_board.py did not run, or failed, this morning)."))); return; }
+  const P36=[["PTS","pts"],["REB","reb"],["AST","ast"],["STL","stl"],["BLK","blk"],["3PM","tpm"],["TOV","tov"]];
+  let view="all", key="mpg", asc=false;
+  const who=(r)=>r.mine? "you" : (r.fa? "FA" : (r.owner||"?"));
+  const g=(r,k)=>{ if(k==="player") return r.name; if(k==="owner") return who(r); if(k==="nba") return r.nba||""; if(k==="role") return r.role||"";
+    if(k==="trend") return r.trend==="up"?2:r.trend==="flat"?1:r.trend==="down"?0:-1;
+    if(k==="fg") return r.fg&&r.fg.pct!=null?r.fg.pct:-1; if(k==="ft") return r.ft&&r.ft.pct!=null?r.ft.pct:-1;
+    if(k==="mpg"||k==="games"||k==="starts") return r[k]==null?-1:r[k];
+    return r.per36&&r.per36[k]!=null? r.per36[k] : -1; };
+  const hd=(label,k,num,title)=>h("th",{class:"sort"+(num?" num":""),title:title||"",onclick:()=>{ if(key===k) asc=!asc; else { key=k; asc=(k==="player"||k==="owner"||k==="nba"||k==="role"); } render(); }},label+(key===k?(asc?" ↑":" ↓"):""));
+  const pct=(x)=>x==null?"–":x.toFixed(3).replace(/^0/,"");
+  const role=(r)=>!r.games? "–" : (r.role==="starter"?"S":r.role==="bench"?"B":"M")+" "+r.starts+"/"+r.games;
+  const tr=(r)=>r.trend==null? "–" : (r.trend==="up"?"▲ ":r.trend==="down"?"▼ ":"= ")+r.last3_mpg;
+  const box=h("div",{});
+  function render(){ let rs=F.rows.filter(r=>view==="all"||(view==="mine"&&r.mine)||(view==="fa"&&r.fa));
+    rs=rs.slice().sort((x,y)=>{ const a=g(x,key), b=g(y,key); const c=(a<b?-1:a>b?1:0)*(asc?1:-1); return c||((y.mpg||-1)-(x.mpg||-1))||x.name.localeCompare(y.name); });
+    box.replaceChildren(h("div",{class:"tablebox"},h("table",{id:"fm-table",class:"lg fm"},
+      h("tr",{},hd("player","player"),hd("tm","nba"),view==="mine"?null:hd("owner","owner"),hd("g","games",true,"games played"),hd("min","mpg",true,"minutes per game"),
+        hd("role","role",null,"S starter · B bench · M mixed, starts/games"),hd("last 3","trend",true,"minutes over the last 3 games vs before, from 4 games on"),
+        P36.map(([l,k])=>hd(l,k,true,l+" per 36 minutes")),hd("FG%","fg",true),hd("FT%","ft",true)),
+      rs.map(r=>h("tr",{class:r.mine?"mine":""},
+        h("td",{class:"name","data-name":r.name},h("b",{},r.name),r.slot?h("small",{style:"margin-left:4px;color:var(--ink2)"},r.slot):null),
+        h("td",{},r.nba||"–"),view==="mine"?null:h("td",{},r.mine?h("span",{class:"chip mine"},"you"):(r.fa?h("span",{class:"chip"},"FA"):h("small",{},r.owner||""))),
+        h("td",{class:"num"},String(r.games)),h("td",{class:"num"},r.mpg==null?"–":r.mpg.toFixed(1)),
+        h("td",{},role(r)),h("td",{class:"num"+(r.trend==="down"?" zneg":"")},tr(r)),
+        P36.map(([l,k])=>h("td",{class:"num"},r.per36&&r.per36[k]!=null?r.per36[k].toFixed(1):"–")),
+        h("td",{class:"num"},pct(r.fg&&r.fg.pct)),h("td",{class:"num"},pct(r.ft&&r.ft.pct))))))); }
+  const sel=h("select",{id:"fm-view",class:"field",style:"max-width:12em",onchange:(e)=>{view=e.target.value; render();}},h("option",{value:"all"},"all"),h("option",{value:"mine"},"my roster"),h("option",{value:"fa"},"free agents"));
+  const c=F.counts, w=F.window;
+  p.append(h("div",{class:"card"},h("div",{class:"h2row"},h("h2",{},"Minutes & role"),sel),
+    h("p",{class:"note"},"Box scores "+(w?w[0]+" → "+w[1]:"")+" · "+c.days+" day"+(c.days===1?"":"s")+" · "+c.rostered+" rostered + "+c.free_agents+" FA · per-36 rates · not a projection."),
+    box,
+    h("details",{class:"how"},h("summary",{},"How to read it"),
+      h("p",{class:"note"},"Regular-season box scores only; DNPs excluded. Rates are per 36 minutes on minutes actually played. Role: S started every game, B none, M some; starts/games beside it. Last 3 = minutes over the last three games against the games before them, from "+F.method.trend_min_games+" games on; ▲/▼ at ±"+F.method.trend_min+" min. The season line stays the per-game line the board and simulator run on; this shows the minutes behind it, and a one-game row is one game."),
+      (F.fa_unresolved&&F.fa_unresolved.length)? h("p",{class:"note"},"On Yahoo's list, no game yet and not in the pool: "+F.fa_unresolved.join(", ")+".") : null,
+      (F.unpooled_with_games&&F.unpooled_with_games.length)? h("p",{class:"note"},"Played, not in the pool ("+F.unpooled_with_games.length+"): "+F.unpooled_with_games.join(", ")+".") : null)));
+  render();
+})();
+
 (function(){ const p=$("#pane-movers"); const L=D.season_lines;
   // season_lines.py records each moved stat as [preseason, season] per-game strings under its kit column (owner
   // 2026-10-21, decision A: shown as "PTS 25.6 → 24.5"; formatting the pair as a number threw and took the tab bar down)
