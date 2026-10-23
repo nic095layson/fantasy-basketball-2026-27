@@ -292,9 +292,9 @@ class ThisWeek(unittest.TestCase):
 
 class LineupToday(unittest.TestCase):
     """Owner 2026-10-22: at the 3 PM check, tell me when a bench player with a game today should start. Rules stated
-    before the build: an empty slot (a starter with no game or Out, a bench player who plays) always; a worse starter
-    when the bench player's season value per game beats his by LINEUP_GAP (1.0) or more, or when starting him adds
-    LINEUP_D_EXP (0.05) or more expected categories this week (today's swap only, the rest of the week unchanged)."""
+    before the build: an empty slot (a starter with no game or Out, a bench player who plays) always; a starter who also
+    plays when starting the bench player adds LINEUP_D_EXP (0.05) or more expected categories this week (today's swap
+    only, the rest of the week unchanged). Owner 2026-10-23: the season-value gap no longer alerts on its own."""
 
     def me(self, *rows):
         return [dict(player=n, slot=s, positions=pos, team=t) for n, s, pos, t in rows]
@@ -351,12 +351,14 @@ class LineupToday(unittest.TestCase):
         self.assertAlmostEqual(d, sum(new[c] - base[c] for c in WM.CATS))
         self.assertGreater(d, 0)
 
-    def test_alert_flags_empty_slots_and_gaps_past_either_threshold(self):
+    def test_alert_flags_empty_slots_and_swaps_that_help_this_week(self):
+        # owner 2026-10-23: "I'd rather start Queta for Washington if it would better help me win this week's matchup"
+        # — the season gap alone (B, the Queta case: +1.13 season, −0.02 this week) no longer alerts
         moves = [dict(start="A", sit="X", kind="empty", gap=None, d_exp=0.0),
-                 dict(start="B", sit="Y", kind="better", gap=1.2, d_exp=0.01),
+                 dict(start="B", sit="Y", kind="better", gap=1.13, d_exp=-0.02),
                  dict(start="C", sit="Z", kind="better", gap=0.3, d_exp=0.06),
                  dict(start="D", sit="W", kind="better", gap=0.3, d_exp=0.01)]
-        self.assertEqual([m["start"] for m in WM.lineup_alerts(moves)], ["A", "B", "C"])
+        self.assertEqual([m["start"] for m in WM.lineup_alerts(moves)], ["A", "C"])
 
 
 class FreeAgentNotice(unittest.TestCase):

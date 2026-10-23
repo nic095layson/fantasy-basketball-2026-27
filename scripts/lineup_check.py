@@ -7,9 +7,10 @@ Reads the same records as week_matchup.py (the afternoon league state with Yahoo
 file, the season pool, the week's to-date) and compares Yahoo's slots with the best ten-slot fill of today's games.
 A move is notified when:
   - a slot is empty: a bench player has a game today and the starter he replaces has none, is Out, or the slot is open;
-  - a starter is worse: both play today, and the bench player's season value per game beats his by LINEUP_GAP (1.0)
-    or more, or starting the bench player today adds LINEUP_D_EXP (0.05) or more expected categories won this week
-    against the opponent (the week card's model, today's swap only, the rest of the week unchanged).
+  - a starter is worse for this week: both play today, and starting the bench player today adds LINEUP_D_EXP (0.05)
+    or more expected categories won this week against the opponent (the week card's model, today's swap only, the
+    rest of the week unchanged). Owner 2026-10-23: "I'd rather start Queta for Washington if it would better help me
+    win this week's matchup" — the season-value gap is shown in the message, not a bar.
 
 Prints one LINEUP CHECK line (ALERT with each move, or OK) and the push text on the next line when there is an alert;
 writes data/news/lineup_<date>.json. Changes no value.
@@ -35,8 +36,8 @@ def describe(m, teams):
         return f"{who} in an open slot"
     if m["kind"] == "empty":
         return f"{who} for {m['sit']}, who has no game today or is Out"
-    return (f"{who} for {m['sit']}: season value {'+' if m['gap'] >= 0 else '−'}{abs(m['gap']):.2f}, "
-            f"this week {'+' if m['d_exp'] >= 0 else '−'}{abs(m['d_exp']):.2f} expected categories")
+    return (f"{who} for {m['sit']}: this week {'+' if m['d_exp'] >= 0 else '−'}{abs(m['d_exp']):.2f} expected "
+            f"categories (season value {'+' if m['gap'] >= 0 else '−'}{abs(m['gap']):.2f})")
 
 
 def main():
@@ -61,7 +62,7 @@ def main():
     teams = {p["player"]: p["yahoo_nba_team"] for p in me["players"]}
     out = dict(date=a.date, opponent=rec["opponent"]["name"], league_state_as_of=rec["league_state_as_of"],
                status_file=rec["status_file"], games_today=L["games_today"], moves=L["moves"], alerts=L["alerts"],
-               slots=L["slots"], gap=L["gap"], d_exp=L["d_exp"], exp_cats=rec["exp_cats"])
+               slots=L["slots"], d_exp=L["d_exp"], exp_cats=rec["exp_cats"])
     os.makedirs(a.out_dir, exist_ok=True)
     path = os.path.join(a.out_dir, f"lineup_{a.date}.json")
     with open(path, "w", encoding="utf-8") as f:
@@ -73,7 +74,7 @@ def main():
         print("PUSH: Lineup — " + "; ".join(lines))
     else:
         why = ("no bench player of yours plays today, or Yahoo's lineup already starts the best who do" if not L["moves"]
-               else f"{len(L['moves'])} swap(s) under both bars")
+               else f"{len(L['moves'])} swap(s) that do not help this week by {L['d_exp']:.2f}+")
         print(f"LINEUP CHECK: OK — {a.date}: no move ({why}); wrote {rel}")
     return 0
 

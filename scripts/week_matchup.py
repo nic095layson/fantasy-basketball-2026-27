@@ -81,8 +81,8 @@ COUNT = {"3PTM": "tpm", "PTS": "pts", "REB": "reb", "AST": "ast", "ST": "stl", "
 LOOKBACK_DAYS = 7  # how far back a free agent's last team game is looked for (the missed-game flag)
 BENCH_SLOTS = ("BN", "IL", "IL+")  # Yahoo slots whose games do not count
 # owner 2026-10-22 (the 3 PM lineup check and the Today tab's free-agent notice): the bars, stated before the build
-LINEUP_GAP = 1.0      # season value per game (the nine z-scores summed) a bench player must beat a starter by
-LINEUP_D_EXP = 0.05   # expected categories won this week that starting him today must add (the matchup-aware rule)
+LINEUP_D_EXP = 0.05   # expected categories won this week that starting him today must add; owner 2026-10-23: the only
+                      # bar for a starter who also plays ("if it would better help me win this week's matchup")
 FA_NOTICE_GAP = 1.0   # season value per game a free agent must beat my weakest non-IL player by
 FA_NOTICE_TOP = 3
 FA_NOTICE_D_EXP = 0.10  # expected categories this week the This Week table's best move must add to be named
@@ -335,8 +335,10 @@ def today_swap_value(me_now, opp_now, opp_rem, roster, today_names, swap, sched,
 
 
 def lineup_alerts(moves):
-    """The moves the 3 PM check notifies: an empty slot always; a worse starter past either bar."""
-    return [m for m in moves if m["kind"] == "empty" or (m["gap"] or 0) >= LINEUP_GAP or m.get("d_exp", 0) >= LINEUP_D_EXP]
+    """The moves the 3 PM check notifies: an empty slot always; a starter who also plays only when starting the bench
+    player today adds LINEUP_D_EXP or more expected categories this week (owner 2026-10-23). The season-value gap is
+    shown, not a bar."""
+    return [m for m in moves if m["kind"] == "empty" or m.get("d_exp", 0) >= LINEUP_D_EXP]
 
 
 def fa_notice(mine, fas, this_week_rows):
@@ -685,7 +687,7 @@ def build(date, paths):
         m["d_exp"] = round(today_swap_value(me_now, opp_now, opp_rem, mine, on_today, (m["start"], m["sit"]), sched,
                                             date, avail, lines), 3) if date in sched else 0.0
     lineup_today = dict(date=date, games_today=bool(playing), moves=moves, alerts=lineup_alerts(moves),
-                        gap=LINEUP_GAP, d_exp=LINEUP_D_EXP,
+                        d_exp=LINEUP_D_EXP,
                         slots={r["player"]: r["slot"] for r in me_slots})
     notice = fa_notice(mine, fas, (pick["this_week"] or {}).get("rows") or [])
 

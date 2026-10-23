@@ -8,10 +8,8 @@ Pull window: 2026-10-22 → 2026-10-22. There was no new pull: both replays read
 
 **Method (stated to the owner before the build, owner answers in quotes).**
 - **Swap rule.** "I like option 1, but also want to build and integrate option 3 where it is dynamic and matchup-up aware."
-  - A move is notified when **either** bar is met:
-    1. an empty slot: the bench player has a game today, and the starter he would replace has none, is Out, or the slot is open; or
-    2. a better player: both play, and the bench player's season value per game (the nine z-scores summed) beats the starter's by `LINEUP_GAP` 1.0 or more; or
-    3. a matchup gain: starting him today adds `LINEUP_D_EXP` 0.05 or more expected categories won this week. This uses the week card's model: today's swap only, the rest of the week unchanged.
+  - A move is notified when the slot is **empty**: the bench player has a game today, and the starter he would replace has none, is Out, or the slot is open.
+  - **Changed 2026-10-23 (owner):** "In this case, I'd rather start Queta for Washington if it would better help me win this week's matchup." When both players have a game, the move is notified only when starting the bench player today adds `LINEUP_D_EXP` 0.05 or more expected categories won this week. This uses the week card's model: today's swap only, the rest of the week unchanged. The season-value gap is shown in the message, but it is no longer a bar. The first build also alerted on a season gap of 1.0 or more (`LINEUP_GAP`); that constant is removed.
   - The best lineup is the kit's ten-slot fill (`CG.daily_lineup`, by value) over the players who play today and are not Out.
 - **Notify.** "Push only when needed." The script prints a `PUSH:` line only when there is an alert.
 - **Free-agent notice.** "Beats my weakest by 1.0+." A free agent is listed when his season value per game beats your weakest non-IL player's by `FA_NOTICE_GAP` 1.0 or more. The top `FA_NOTICE_TOP` 3 are listed. Beside them is the week card's best This Week move, when it adds `FA_NOTICE_D_EXP` 0.10 or more expected categories.
@@ -19,8 +17,8 @@ Pull window: 2026-10-22 → 2026-10-22. There was no new pull: both replays read
 ## 1. What changed (EVIDENCE)
 
 - `scripts/week_matchup.py`:
-  - The five constants are at line 84. `lineup_moves` is at line 304, `today_swap_value` at 325, `lineup_alerts` at 337 and `fa_notice` at 342.
-  - The record carries `lineup_today` and `fa_notice` (line 708).
+  - The four constants are at line 84 (`LINEUP_GAP` removed 2026-10-23). `lineup_moves` is at line 304, `today_swap_value` at 325, `lineup_alerts` at 337 and `fa_notice` at 344.
+  - The record carries `lineup_today` and `fa_notice` (line 710).
 - `scripts/lineup_check.py` (new):
   - It runs the week card's build with the same inputs.
   - It writes `data/news/lineup_<date>.json`.
@@ -28,23 +26,24 @@ Pull window: 2026-10-22 → 2026-10-22. There was no new pull: both replays read
   - It changes no value.
 - `scripts/season_deck.py`: `faNotice` (line 385) draws a "Worth a look" card at the top of the Today tab, only when a free agent passes a bar (line 425).
 - Tests:
-  - `test_week_matchup.py` classes `LineupToday` (line 293) and `FreeAgentNotice` (line 362).
-  - Two record tests run `lineup_check.py` end to end (lines 428 and 444).
+  - `test_week_matchup.py` classes `LineupToday` (line 293) and `FreeAgentNotice` (line 364).
+  - Two record tests run `lineup_check.py` end to end (lines 430 and 446).
   - `test_season_deck.py` lines 591 and 602.
 
 ## 2. Tests
 
 - The deck card's test was written first and failed on the unchanged page ("Worth a look" absent). It passes with the card. The red-first counts for the week_matchup tests are not recorded here (did not check).
 - `test_week_matchup.py` 55 OK; `test_season_deck.py` 74 OK.
+- 2026-10-23 change: the alert test was rewritten to the owner's rule. Its Queta case (gap 1.13, this week −0.02) must not alert. It failed on the first build's code (1 failure), then passed.
 - Full suite: 399 run, 1 failure, 1 skipped. The failure is `test_matchup_live.test_todays_transcript_yields_todays_outlook`, the known transcript-dependent test that fails identically on main.
 
 ## 3. On real records (EVIDENCE; `lineup-alert-2026-10-22/`)
 
 - **2026-10-22:** `LINEUP CHECK: OK — no move`. Only CLE, DEN, OKC and PHI play, and Yahoo's lineup already starts the best of yours who do (`lineup_2026-10-22.json`).
-- **2026-10-23 (rosters as of the 10/22 morning pull):** `LINEUP CHECK: ALERT`, 3 moves (`lineup_2026-10-23.json`):
+- **2026-10-23 (rosters as of the 10/22 morning pull):** `LINEUP CHECK: ALERT`; 3 moves in the first build, 2 after the 2026-10-23 change (`lineup_2026-10-23.json`):
   - Start Kevin Durant (HOU) for Christian Braun, who has no game: +0.39 expected categories this week.
   - Start Derrick White (BOS) for Miles Bridges, who has no game: +0.43.
-  - Start Neemias Queta (BOS) for PJ Washington: season value **+1.13**, this week **−0.02**. The two bars disagree here. The season bar fires, so the move is notified, and the push text carries both numbers.
+  - Start Neemias Queta (BOS) for PJ Washington: season value **+1.13**, this week **−0.02**. In the first build the season bar fired and the move was notified. **After the 2026-10-23 change it is not notified**: the replay alerts on 2 moves (Durant, White), and Queta stays in the record's `moves` but not in `alerts`. Two runs were byte-identical. The evidence files are the post-change run.
 - **The Today card on today's records:**
   - Collin Gillespie (PHX) for PJ Washington, season gap +1.03.
   - This week: Anfernee Simons (PHI) for Neemias Queta, +0.38 expected categories.
@@ -55,7 +54,7 @@ Pull window: 2026-10-22 → 2026-10-22. There was no new pull: both replays read
 - **Assumption A1 (unconfirmed):** the afternoon league state carries Yahoo's slots as they stand at 3 PM. The check reads the slots from `data/league_state.json`, which the 3 PM run re-pulls. It is confirmed by the first afternoon run whose slots match Yahoo's page.
 - **The runner wiring is not in this PR.** The 3 PM scheduled task's prompt is the owner's to change. The text for it was given to the owner beside this report. Until the prompt changes, nothing runs `lineup_check.py` and no push is sent.
 - **Push delivery depends on the runner session's tools.** A Claude push notification needs the PushNotification tool in that session. The prompt tells the runner to say so at the top of its report when the tool is missing. This was not tested from the runner (did not check).
-- **INFERENCE:** the matchup bar values one day's games. Over a few games it is small next to the season bar, which is why the Queta move reads −0.02.
+- **INFERENCE:** the matchup bar values one day's games, so its figures are small (the Queta move reads −0.02), and 0.05 is a low bar. A swap that helps this week by less than 0.05 is not notified.
 - **Out of scope by design:** making the move (Flaim is read-only), and changing any value or constant.
 
 **Bands.** The lineup check and the notice use neither FRAGILE constant of the standing sweep (`redteam-2026-10-19/sweep.json`, engine 048efb6). The shared shock is left out, and availability is the day's status, as on the week card. The sweep's bands for those constants, quoted:
