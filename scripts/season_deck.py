@@ -50,7 +50,9 @@ def default_paths(date):
                 # optional (owner 2026-10-23, Build 1): every team's totals, ranks and the all-play power ranking (league_table.py)
                 league=os.path.join(KIT, "report", "league", f"league_{date}.json"),
                 # optional (owner 2026-10-23): minutes, starts, role and per-36 rates from the box scores (form_board.py)
-                form=os.path.join(KIT, "report", "form", f"form_{date}.json"))
+                form=os.path.join(KIT, "report", "form", f"form_{date}.json"),
+                # optional (owner 2026-10-24): the morning card's P(win) scored against each finished week (score_week.py)
+                scores=os.path.join(KIT, "report", "calibration_daily.json"))
 
 
 def resolve_rostered(rostered, board_names, held_names, aliases):
@@ -97,7 +99,7 @@ def build(paths, date):
     calib = _load(paths["calibration"], "calibration")
     opt = lambda k: (json.load(open(paths[k], encoding="utf-8"))
                      if paths.get(k) and os.path.exists(paths[k]) else None)
-    matchup_live = opt("matchup_live"); week_matchup = opt("week_matchup"); league_rec = opt("league"); form_rec = opt("form")
+    matchup_live = opt("matchup_live"); week_matchup = opt("week_matchup"); league_rec = opt("league"); form_rec = opt("form"); scores = opt("scores")
     for k in ("date", "opponent", "title", "lineup"):
         if k not in brief: raise DeckError(f"brief lacks {k}")
     if brief["date"] != date: raise DeckError(f"brief is for {brief['date']}, not {date}")
@@ -140,7 +142,7 @@ def build(paths, date):
                 my_team=my_team, my_seat=my_seat, brief=brief, board=board, status=status,
                 league=dict(as_of=league["as_of"], rosters=rosters, managers={t["name"]: t.get("manager") for t in league["teams"]}), season_lines=lines, matchup=wk,
                 ledger=calib.get("weeks", {}), bands=bands, band_engine=band_engine, matchup_live=matchup_live,
-                week_matchup=week_matchup, league_table=league_rec, form=form_rec,
+                week_matchup=week_matchup, league_table=league_rec, form=form_rec, scores=scores,
                 config=dict(cats=["FG%", "FT%", "3PM", "PTS", "REB", "AST", "STL", "BLK", "TOV"],
                             tier_low=0.3, tier_high=1.0, verdict_edge=0.5, verdict_strong=1.5,
                             thresholds_note="stated defaults, D-SD-1 (owner re-tunes); z screen only, not the simulator"))
@@ -765,6 +767,25 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
         return h("tr",{},h("td",{class:"num"},String(w.week)),h("td",{},oname+" ("+(w.opponent_manager||"?")+")"),
           h("td",{class:"num"},pct(pw)),h("td",{class:"num"},f2(ec)),h("td",{},w.rosters_as_of||"—"),h("td",{},w.result||"pending"));})))
       : h("div",{class:"zero"},"No weeks recorded yet.")));
+  // owner 2026-10-24 (the scoring loop): how the morning card's stated chances scored once the week was final
+  (function(){ const S=D.scores, wks=S? Object.values(S.weeks||{}).sort((a,z)=>a.week-z.week) : [];
+    const sg=(x)=>x==null?"–":(x<0?"−":"+")+Math.abs(x).toFixed(3), f3=(x)=>x==null?"–":x.toFixed(3);
+    const card=h("div",{class:"card"},h("h2",{},"Scorecard — the morning card's P(win) against the finals"),
+      h("p",{class:"note"},"Each morning the Today card states, per category, the chance of winning it. At the week's intake every stated chance is scored: Brier = (p − outcome)², 0 perfect, 0.25 a coin flip (won 1, tied ½, lost 0). Baseline = that morning's lead as a forecast; skill = baseline − card, positive when the card beats the scoreboard."));
+    if(!wks.length){ card.append(h("div",{class:"zero"},"No week scored yet — the first finals land at Monday's intake.")); p.append(card); return; }
+    const total=(w)=>{ if(!w.window) return null; const a=new Date(w.window[0]), b=new Date(w.window[1]); return Math.round((b-a)/864e5)+1; };
+    card.append(h("div",{class:"tablebox"},h("table",{id:"sc-table",class:"lg"},
+      h("tr",{},h("th",{class:"num"},"wk"),h("th",{},"opponent"),h("th",{},"result"),h("th",{},"mornings"),h("th",{class:"num"},"forecasts"),h("th",{class:"num"},"Brier card"),h("th",{class:"num"},"Brier lead"),h("th",{class:"num"},"skill")),
+      wks.map(w=>{ const r=w.result||{won:[],lost:[],tied:[]}, n=total(w);
+        return h("tr",{},h("td",{class:"num wk"},String(w.week)),h("td",{},w.opponent||"?"),h("td",{},r.won.length+"-"+r.lost.length+"-"+r.tied.length),
+          h("td",{},w.days_scored.length+(n?" of "+n:"")+" mornings"+(w.days_missing&&w.days_missing.length?" (missing "+w.days_missing.join(", ")+")":"")),
+          h("td",{class:"num"},String(w.n_forecasts)),h("td",{class:"num"},f3(w.brier)),h("td",{class:"num"},f3(w.baseline_brier)),h("td",{class:"num"+(w.skill<0?" zneg":"")},sg(w.skill))); }))));
+    // reliability over every scored week
+    const agg={}; wks.forEach(w=>(w.reliability||[]).forEach(x=>{ const a=agg[x.bin]||(agg[x.bin]={n:0,p:0,h:0}); if(x.n){ a.n+=x.n; a.p+=x.mean_p*x.n; a.h+=x.hit_rate*x.n; } }));
+    card.append(h("p",{class:"note"},"Reliability, all scored weeks — a calibrated card has hit rate ≈ stated P in every bin:"),
+      h("div",{class:"tablebox"},h("table",{class:"lg"},h("tr",{},h("th",{},"stated P"),h("th",{class:"num"},"forecasts"),h("th",{class:"num"},"mean P"),h("th",{class:"num"},"hit rate")),
+        ["0.0-0.2","0.2-0.4","0.4-0.6","0.6-0.8","0.8-1.0"].map(b=>{ const a=agg[b]||{n:0}; return h("tr",{},h("td",{},b),h("td",{class:"num"},String(a.n)),h("td",{class:"num"},a.n?(a.p/a.n).toFixed(2):"–"),h("td",{class:"num"},a.n?(a.h/a.n).toFixed(2):"–")); }))));
+    p.append(card); })();
 })();
 
 // ---- League (owner 2026-10-23, Build 1): every team's cumulative nine categories from Yahoo's weekly blocks, sortable

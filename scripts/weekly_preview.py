@@ -141,15 +141,16 @@ def main():
     ap.add_argument("--score", type=int)
     ap.add_argument("--won", default="")
     ap.add_argument("--n", type=int, default=10000)
+    ap.add_argument("--ledger", default=LEDGER, help="calibration ledger path (tests pass a scratch file; owner 2026-10-24)")
     a = ap.parse_args()
     if a.score:
-        led = json.load(open(LEDGER, encoding="utf-8"))
+        led = json.load(open(a.ledger, encoding="utf-8"))
         w = led["weeks"][str(a.score)]
         if "score" in w:
             raise LedgerError(f"week {a.score} is already scored")
         w["score"] = score(w, {"won": [c.strip() for c in a.won.split(",") if c.strip()]})
-        json.dump(led, open(LEDGER, "w", encoding="utf-8"), indent=1, ensure_ascii=False)
-        open(LEDGER_MD, "w", encoding="utf-8").write(render_ledger(led))
+        json.dump(led, open(a.ledger, "w", encoding="utf-8"), indent=1, ensure_ascii=False)
+        open(LEDGER_MD if a.ledger == LEDGER else a.ledger[:-5] + ".md", "w", encoding="utf-8").write(render_ledger(led))
         print(f"scored week {a.score}: {w['score']}")
         return
     wk, ws, we = None, None, None
