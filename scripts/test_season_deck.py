@@ -971,5 +971,73 @@ class FormCard(unittest.TestCase):
         self.assertIn("20.0 min/g (1 g, bench)", form_dom(p)["fa_text"])
 
 
+
+def score_record():
+    """score_week.py-shaped record (owner 2026-10-24): week 1's morning P(win) graded against the finals."""
+    cats = ["FG%", "FT%", "3PTM", "PTS", "REB", "AST", "ST", "BLK", "TO"]
+    day = {c: dict(p=0.7, outcome=1.0, brier=0.09, lead="me", baseline_brier=0.0) for c in cats}
+    wk = dict(week=1, window=["2026-10-20", "2026-10-25"], team="MY TEAM", opponent="KEVIN ELEVEN DOUBLES",
+              result=dict(won=cats[:5], lost=cats[5:8], tied=cats[8:]), days={"2026-10-22": day, "2026-10-23": day},
+              by_day={"2026-10-22": dict(n=9, brier=0.09, baseline_brier=0.0), "2026-10-23": dict(n=9, brier=0.09, baseline_brier=0.0)},
+              by_cat={c: dict(n=2, brier=0.09, baseline_brier=0.0, outcome=1.0) for c in cats},
+              reliability=[dict(bin="0.6-0.8", n=18, mean_p=0.7, hit_rate=1.0)] + [dict(bin=b, n=0, mean_p=None, hit_rate=None) for b in ("0.0-0.2", "0.2-0.4", "0.4-0.6", "0.8-1.0")],
+              n_forecasts=18, brier=0.09, baseline_brier=0.0, skill=-0.09, days_scored=["2026-10-22", "2026-10-23"],
+              days_missing=["2026-10-20", "2026-10-21", "2026-10-24", "2026-10-25"], method=dict(outcome="won 1, tied 0.5, lost 0"),
+              inputs=dict(week_file="abc", cards={}), scored_at="2026-10-26T12:05:00Z")
+    return dict(weeks={"1": wk})
+
+
+def week_dom(html_path, width=1280):
+    from playwright.sync_api import sync_playwright
+    with sync_playwright() as p:
+        b, exe, tried = DRC._launch(p)
+        try:
+            pg = b.new_page(viewport=dict(width=width, height=900)); errs = []
+            pg.on("pageerror", lambda e: errs.append(str(e)))
+            pg.route(re.compile(r"^https?://"), lambda r: r.abort())
+            pg.goto("file://" + os.path.abspath(html_path), wait_until="load")
+            pg.evaluate("() => document.querySelector('nav.tabs button[data-tab=week]').click()")
+            q = lambda js: pg.evaluate(js)
+            return dict(errors=errs, text=q("() => document.getElementById('pane-week').textContent"),
+                        rows=q("() => [...document.querySelectorAll('#sc-table tr td.wk')].map(x=>x.textContent)"),
+                        page_overflow=q("() => document.documentElement.scrollWidth - window.innerWidth"))
+        finally:
+            b.close()
+
+
+class Scorecard(unittest.TestCase):
+    """Owner 2026-10-24: the Week tab shows how the morning card's P(win) scored against each finished week."""
+    def setUp(self):
+        self.d = tempfile.mkdtemp(); self.fx = fixtures(self.d)
+
+    def page(self, record):
+        if record is not None:
+            self.fx["scores"] = os.path.join(self.d, "calibration_daily.json")
+            with open(self.fx["scores"], "w") as f:
+                json.dump(record, f)
+        html, data, rec = SD.build(self.fx, date="2026-10-21")
+        p = os.path.join(self.d, "deck.html")
+        with open(p, "w", encoding="utf-8") as f:
+            f.write(html)
+        return p
+
+    def test_default_paths_name_the_record_and_an_absent_one_builds_with_a_pending_line(self):
+        self.assertTrue(SD.default_paths("2026-10-22")["scores"].endswith(os.path.join("report", "calibration_daily.json")))
+        p = self.page(None)
+        self.assertEqual(DRC.check(p)["status"], "PASS")
+        dom = week_dom(p)
+        self.assertEqual(dom["errors"], [])
+        self.assertIn("Scorecard", dom["text"]); self.assertIn("first finals", dom["text"])
+
+    def test_a_scored_week_shows_brier_baseline_skill_and_missing_mornings(self):
+        p = self.page(score_record())
+        self.assertEqual(DRC.check(p)["status"], "PASS")
+        dom = week_dom(p)
+        self.assertEqual(dom["errors"], []); self.assertEqual(dom["rows"], ["1"])
+        for s in ("0.090", "0.000", "−0.090", "2 of 6 mornings", "5-3-1", "0.6-0.8", "18"):
+            self.assertIn(s, dom["text"])
+        self.assertLessEqual(dom["page_overflow"], 0)
+
+
 if __name__ == "__main__":
     unittest.main()

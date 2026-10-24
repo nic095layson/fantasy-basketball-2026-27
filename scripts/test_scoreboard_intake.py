@@ -121,6 +121,20 @@ class FromPull(unittest.TestCase):
         with self.assertRaises(SI.IntakeError):
             SI.from_pull(self.pull, 3, json.load(open(self.state)))
 
+    def test_cli_with_the_ledger_on_scores_the_week_from_the_morning_cards(self):
+        # owner 2026-10-24 (the scoring loop): after the weekly ledger score, every morning card's P(win) is graded
+        out = os.path.join(self.d, "weeks"); briefs = os.path.join(self.d, "briefs"); os.makedirs(briefs)
+        json.dump(dict(date="2026-10-22", week=1, window=["2026-10-20", "2026-10-25"], me="Team 10", opponent="Team 9",
+                       cats=[dict(cat=c, p_win=0.5, leader_to_date="tie") for c in SI.CATS]), open(os.path.join(briefs, "week_matchup_2026-10-22.json"), "w"))
+        cal = os.path.join(self.d, "calibration.json"); daily = os.path.join(self.d, "calibration_daily.json")
+        p = subprocess.run([sys.executable, os.path.join(HERE, "scoreboard_intake.py"), "--week", "1", "--from-pull", self.pull,
+                            "--state", self.state, "--weeks-dir", out, "--calibration", cal, "--briefs-dir", briefs, "--daily-out", daily],
+                           capture_output=True, text=True)
+        self.assertIn("SCOREBOARD INTAKE: PASS", p.stdout, p.stdout + p.stderr)
+        self.assertIn("week score", p.stdout)
+        rec = json.load(open(daily))["weeks"]["1"]
+        self.assertEqual(rec["n_forecasts"], 9); self.assertEqual(rec["days_scored"], ["2026-10-22"])
+
     def test_cli_from_pull_writes_the_week_and_team_weeks(self):
         out = os.path.join(self.d, "weeks")
         p = subprocess.run([sys.executable, os.path.join(HERE, "scoreboard_intake.py"), "--week", "1", "--from-pull", self.pull,
