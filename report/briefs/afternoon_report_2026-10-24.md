@@ -23,6 +23,6 @@ Note: league_moves_2026-10-24.json now holds the afternoon diff (24 → 24) and 
 ## Status changes since the morning status file (commit 4be1760)
 - Your roster: Kyrie Irving Q → D (availability 0.50 → 0.25), still in the Util slot for tonight vs SAS.
 - Opponent (MAXEY-MUM OVERDRIVE): Kon Knueppel Q → O (on IL already). Bradley Beal unchanged (O, IL).
-- League-wide, 13 rows changed, 1 new: AJ Dybantsa Q → O; Coby White Q → O; Fred VanVleet D → O; Jalen Duren Q → O and moved to IL; LeBron James Q → O; Paolo Banchero Q → O; Stephen Curry D → O and moved to IL; Yves Missi Q → O; Cameron Johnson moved to IL; Cedric Coward moved IL → F; Draymond Green newly D (ROOKS FTW, bench).
+- League-wide, 13 rows differ from the morning file (12 changed, 1 new): AJ Dybantsa Q → O; Coby White Q → O; Fred VanVleet D → O; Jalen Duren Q → O and moved to IL; LeBron James Q → O; Paolo Banchero Q → O; Stephen Curry D → O and moved to IL; Yves Missi Q → O; Cameron Johnson moved to IL; Cedric Coward moved IL → F; Draymond Green newly D (ROOKS FTW, bench).
 
 ## Nothing failed. No stash.
