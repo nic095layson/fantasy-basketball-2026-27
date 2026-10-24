@@ -4,14 +4,14 @@
   "flaim": {
    "transcript": "f7b74300-8501-5e41-b8c5-d2c75dd06ce4.jsonl",
    "method": "mechanical json extraction of Flaim (Yahoo) tool results from the session transcript",
-   "since": "2026-10-24T16:37:06Z",
+   "since": "2026-10-24T22:04:26Z",
    "pull_file": "data/source/flaim/pull_2026-10-24.json",
-   "pull_sha256": "200c211ddee605db8026d18655efdc4bb83ba96d4051305d61caeab8103b9dda",
+   "pull_sha256": "4978d5a5b01b4b22b9f6892e7dff52789ee6f3aa1c3553ce7cfa4dc2cfaa8ef8",
    "view": "Flaim connector (Yahoo, read-only): get_roster per team (current), get_matchups, get_free_agents"
   },
   "transcription": {
    "file": "data/source/flaim/rosters_2026-10-24.transcribed.csv",
-   "sha256": "d16cce5007ef4ad011bb327d3d6cd09ec43b935e6f64552e594f81f247f324d3",
+   "sha256": "786c7e2b0e0ff0017b01024b85c889e5bd99fdc1cbe32e067d9cffd7f71f05a7",
    "method": "flaim_live.to_rows (mechanical; Yahoo slots and status letters for every team)"
   },
   "draft_board": "report/after-reports/draft-league-2026-10-14/recap.json",
@@ -237,7 +237,7 @@
      "positions": [
       "PG"
      ],
-     "status": "D"
+     "status": "O"
     },
     {
      "player": "Tari Eason",
@@ -298,7 +298,7 @@
      "positions": [
       "PF"
      ],
-     "status": "Q"
+     "status": "O"
     },
     {
      "player": "Zach Edey",
@@ -560,15 +560,16 @@
    "name": "Splash Mountain",
    "players": [
     {
-     "player": "Stephen Curry",
-     "yahoo_name": "Stephen Curry",
+     "player": "Tre Jones",
+     "yahoo_name": "Tre Jones",
      "slot": "PG",
-     "yahoo_nba_team": "GSW",
-     "pool_team": "GSW",
+     "yahoo_nba_team": "CHI",
+     "pool_team": "CHI",
      "positions": [
-      "PG"
+      "PG",
+      "SG"
      ],
-     "status": "D"
+     "status": null
     },
     {
      "player": "Anthony Edwards",
@@ -711,6 +712,17 @@
       "C"
      ],
      "status": null
+    },
+    {
+     "player": "Stephen Curry",
+     "yahoo_name": "Stephen Curry",
+     "slot": "IL",
+     "yahoo_nba_team": "GSW",
+     "pool_team": "GSW",
+     "positions": [
+      "PG"
+     ],
+     "status": "O"
     }
    ],
    "empty_slots": [],
@@ -719,7 +731,8 @@
    "manager": "JCo",
    "draft_overlap": 12,
    "added_since_draft": [
-    "Ace Bailey"
+    "Ace Bailey",
+    "Tre Jones"
    ],
    "dropped_since_draft": [
     "Collin Sexton"
@@ -958,9 +971,21 @@
      "status": null
     },
     {
+     "player": "Cedric Coward",
+     "yahoo_name": "Cedric Coward",
+     "slot": "F",
+     "yahoo_nba_team": "MEM",
+     "pool_team": "MEM",
+     "positions": [
+      "SG",
+      "SF"
+     ],
+     "status": "Q"
+    },
+    {
      "player": "Naz Reid",
      "yahoo_name": "Naz Reid",
-     "slot": "F",
+     "slot": "C",
      "yahoo_nba_team": "CHA",
      "pool_team": "CHA",
      "positions": [
@@ -968,17 +993,6 @@
       "C"
      ],
      "status": null
-    },
-    {
-     "player": "Jalen Duren",
-     "yahoo_name": "Jalen Duren",
-     "slot": "C",
-     "yahoo_nba_team": "DET",
-     "pool_team": "DET",
-     "positions": [
-      "C"
-     ],
-     "status": "Q"
     },
     {
      "player": "Moussa Diabate",
@@ -1051,16 +1065,15 @@
      "status": null
     },
     {
-     "player": "Cedric Coward",
-     "yahoo_name": "Cedric Coward",
+     "player": "Jalen Duren",
+     "yahoo_name": "Jalen Duren",
      "slot": "IL",
-     "yahoo_nba_team": "MEM",
-     "pool_team": "MEM",
+     "yahoo_nba_team": "DET",
+     "pool_team": "DET",
      "positions": [
-      "SG",
-      "SF"
+      "C"
      ],
-     "status": "Q"
+     "status": "O"
     }
    ],
    "empty_slots": [],
@@ -1130,16 +1143,16 @@
      "status": null
     },
     {
-     "player": "LeBron James",
-     "yahoo_name": "LeBron James",
+     "player": "Domantas Sabonis",
+     "yahoo_name": "Domantas Sabonis",
      "slot": "PF",
-     "yahoo_nba_team": "PHI",
-     "pool_team": "PHI",
+     "yahoo_nba_team": "SAC",
+     "pool_team": "SAC",
      "positions": [
-      "SF",
-      "PF"
+      "PF",
+      "C"
      ],
-     "status": "Q"
+     "status": null
     },
     {
      "player": "Ausar Thompson",
@@ -1189,9 +1202,21 @@
      "status": null
     },
     {
+     "player": "LeBron James",
+     "yahoo_name": "LeBron James",
+     "slot": "UTIL",
+     "yahoo_nba_team": "PHI",
+     "pool_team": "PHI",
+     "positions": [
+      "SF",
+      "PF"
+     ],
+     "status": "O"
+    },
+    {
      "player": "Wendell Carter Jr.",
      "yahoo_name": "Wendell Carter Jr.",
-     "slot": "UTIL",
+     "slot": "BN",
      "yahoo_nba_team": "ORL",
      "pool_team": "ORL",
      "positions": [
@@ -1226,18 +1251,6 @@
      "status": null
     },
     {
-     "player": "Domantas Sabonis",
-     "yahoo_name": "Domantas Sabonis",
-     "slot": "BN",
-     "yahoo_nba_team": "SAC",
-     "pool_team": "SAC",
-     "positions": [
-      "PF",
-      "C"
-     ],
-     "status": null
-    },
-    {
      "player": "Coby White",
      "yahoo_name": "Coby White",
      "slot": "IL",
@@ -1247,7 +1260,7 @@
       "PG",
       "SG"
      ],
-     "status": "Q"
+     "status": "O"
     },
     {
      "player": "Jimmy Butler",
@@ -1540,18 +1553,6 @@
      "status": null
     },
     {
-     "player": "Draymond Green",
-     "yahoo_name": "Draymond Green",
-     "slot": "C",
-     "yahoo_nba_team": "GSW",
-     "pool_team": "GSW",
-     "positions": [
-      "PF",
-      "C"
-     ],
-     "status": null
-    },
-    {
      "player": "CJ McCollum",
      "yahoo_name": "CJ McCollum",
      "slot": "UTIL",
@@ -1575,6 +1576,18 @@
       "PF"
      ],
      "status": null
+    },
+    {
+     "player": "Draymond Green",
+     "yahoo_name": "Draymond Green",
+     "slot": "BN",
+     "yahoo_nba_team": "GSW",
+     "pool_team": "GSW",
+     "positions": [
+      "PF",
+      "C"
+     ],
+     "status": "D"
     },
     {
      "player": "Paul George",
@@ -1619,7 +1632,7 @@
      "positions": [
       "SF"
      ],
-     "status": "Q"
+     "status": "O"
     },
     {
      "player": "Jusuf Nurkic",
@@ -1695,13 +1708,12 @@
      "status": null
     },
     {
-     "player": "Jaylon Tyson",
-     "yahoo_name": "Jaylon Tyson",
+     "player": "Jalen Williams",
+     "yahoo_name": "Jalen Williams",
      "slot": "PF",
-     "yahoo_nba_team": "CLE",
-     "pool_team": "CLE",
+     "yahoo_nba_team": "OKC",
+     "pool_team": "OKC",
      "positions": [
-      "SG",
       "SF",
       "PF"
      ],
@@ -1789,14 +1801,14 @@
      "status": null
     },
     {
-     "player": "Jalen Williams",
-     "yahoo_name": "Jalen Williams",
+     "player": "Paul Reed",
+     "yahoo_name": "Paul Reed",
      "slot": "BN",
-     "yahoo_nba_team": "OKC",
-     "pool_team": "OKC",
+     "yahoo_nba_team": "DET",
+     "pool_team": "DET",
      "positions": [
-      "SF",
-      "PF"
+      "PF",
+      "C"
      ],
      "status": null
     },
@@ -1810,7 +1822,7 @@
       "SG",
       "SF"
      ],
-     "status": "Q"
+     "status": "O"
     },
     {
      "player": "Bradley Beal",
@@ -1834,7 +1846,7 @@
     "Bradley Beal",
     "Duncan Robinson",
     "Jalen Smith",
-    "Jaylon Tyson"
+    "Paul Reed"
    ],
    "dropped_since_draft": [
     "Herbert Jones",
@@ -1948,7 +1960,7 @@
      "positions": [
       "PG"
      ],
-     "status": "Q"
+     "status": "D"
     },
     {
      "player": "Miles Bridges",
@@ -2115,19 +2127,18 @@
      "positions": [
       "C"
      ],
-     "status": "Q"
+     "status": "O"
     },
     {
-     "player": "Cameron Johnson",
-     "yahoo_name": "Cameron Johnson",
+     "player": "Brook Lopez",
+     "yahoo_name": "Brook Lopez",
      "slot": "UTIL",
-     "yahoo_nba_team": "DEN",
-     "pool_team": "DEN",
+     "yahoo_nba_team": "LAC",
+     "pool_team": "LAC",
      "positions": [
-      "SF",
-      "PF"
+      "C"
      ],
-     "status": "O"
+     "status": null
     },
     {
      "player": "Jayson Tatum",
@@ -2164,6 +2175,18 @@
      "status": null
     },
     {
+     "player": "Cameron Johnson",
+     "yahoo_name": "Cameron Johnson",
+     "slot": "IL",
+     "yahoo_nba_team": "DEN",
+     "pool_team": "DEN",
+     "positions": [
+      "SF",
+      "PF"
+     ],
+     "status": "O"
+    },
+    {
      "player": "Brandon Ingram",
      "yahoo_name": "Brandon Ingram",
      "slot": "IL",
@@ -2183,6 +2206,7 @@
    "manager": "John",
    "draft_overlap": 13,
    "added_since_draft": [
+    "Brook Lopez",
     "Yves Missi"
    ],
    "dropped_since_draft": []

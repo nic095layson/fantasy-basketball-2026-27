@@ -28,7 +28,7 @@
   ]
  },
  "espn": {
-  "attempted": "2026-10-24T16:43:34Z",
+  "attempted": "2026-10-24T22:07:11Z",
   "ok": true,
   "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
  },
@@ -38,20 +38,20 @@
    "fantasy_team": "KEL'EL YAXEL HALQUETA",
    "seat": 10,
    "slot": "UTIL",
-   "yahoo_status": "Q",
-   "tier": "questionable",
-   "availability": 0.5,
+   "yahoo_status": "D",
+   "tier": "doubtful",
+   "availability": 0.25,
    "receipts": [
     {
      "source": "Yahoo roster read through Flaim (get_roster, read-only)",
      "file": "data/source/flaim/pull_2026-10-24.json",
-     "sha256": "200c211ddee605db8026d18655efdc4bb83ba96d4051305d61caeab8103b9dda",
+     "sha256": "4978d5a5b01b4b22b9f6892e7dff52789ee6f3aa1c3553ce7cfa4dc2cfaa8ef8",
      "captured": "2026-10-24",
-     "text": "Q beside Kyrie Irving (KEL'EL YAXEL HALQUETA, UTIL)"
+     "text": "D beside Kyrie Irving (KEL'EL YAXEL HALQUETA, UTIL)"
     }
    ],
    "espn": {
-    "attempted": "2026-10-24T16:43:34Z",
+    "attempted": "2026-10-24T22:07:11Z",
     "ok": true,
     "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
    }
@@ -61,20 +61,43 @@
    "fantasy_team": "ROOKS FTW",
    "seat": 2,
    "slot": "IL",
-   "yahoo_status": "Q",
-   "tier": "questionable",
-   "availability": 0.5,
+   "yahoo_status": "O",
+   "tier": "out",
+   "availability": 0.0,
    "receipts": [
     {
      "source": "Yahoo roster read through Flaim (get_roster, read-only)",
      "file": "data/source/flaim/pull_2026-10-24.json",
-     "sha256": "200c211ddee605db8026d18655efdc4bb83ba96d4051305d61caeab8103b9dda",
+     "sha256": "4978d5a5b01b4b22b9f6892e7dff52789ee6f3aa1c3553ce7cfa4dc2cfaa8ef8",
      "captured": "2026-10-24",
-     "text": "Q beside AJ Dybantsa (ROOKS FTW, IL)"
+     "text": "O beside AJ Dybantsa (ROOKS FTW, IL)"
     }
    ],
    "espn": {
-    "attempted": "2026-10-24T16:43:34Z",
+    "attempted": "2026-10-24T22:07:11Z",
+    "ok": true,
+    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
+   }
+  },
+  {
+   "player": "Draymond Green",
+   "fantasy_team": "ROOKS FTW",
+   "seat": 2,
+   "slot": "BN",
+   "yahoo_status": "D",
+   "tier": "doubtful",
+   "availability": 0.25,
+   "receipts": [
+    {
+     "source": "Yahoo roster read through Flaim (get_roster, read-only)",
+     "file": "data/source/flaim/pull_2026-10-24.json",
+     "sha256": "4978d5a5b01b4b22b9f6892e7dff52789ee6f3aa1c3553ce7cfa4dc2cfaa8ef8",
+     "captured": "2026-10-24",
+     "text": "D beside Draymond Green (ROOKS FTW, BN)"
+    }
+   ],
+   "espn": {
+    "attempted": "2026-10-24T22:07:11Z",
     "ok": true,
     "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
    }
@@ -91,13 +114,13 @@
     {
      "source": "Yahoo roster read through Flaim (get_roster, read-only)",
      "file": "data/source/flaim/pull_2026-10-24.json",
-     "sha256": "200c211ddee605db8026d18655efdc4bb83ba96d4051305d61caeab8103b9dda",
+     "sha256": "4978d5a5b01b4b22b9f6892e7dff52789ee6f3aa1c3553ce7cfa4dc2cfaa8ef8",
      "captured": "2026-10-24",
      "text": "O beside Jusuf Nurkic (ROOKS FTW, IL)"
     }
    ],
    "espn": {
-    "attempted": "2026-10-24T16:43:34Z",
+    "attempted": "2026-10-24T22:07:11Z",
     "ok": true,
     "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
    }
@@ -114,13 +137,13 @@
     {
      "source": "Yahoo roster read through Flaim (get_roster, read-only)",
      "file": "data/source/flaim/pull_2026-10-24.json",
-     "sha256": "200c211ddee605db8026d18655efdc4bb83ba96d4051305d61caeab8103b9dda",
+     "sha256": "4978d5a5b01b4b22b9f6892e7dff52789ee6f3aa1c3553ce7cfa4dc2cfaa8ef8",
      "captured": "2026-10-24",
      "text": "O beside Mark Williams (Lauri’s Prime Rib, IL)"
     }
    ],
    "espn": {
-    "attempted": "2026-10-24T16:43:34Z",
+    "attempted": "2026-10-24T22:07:11Z",
     "ok": true,
     "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
    }
@@ -137,13 +160,13 @@
     {
      "source": "Yahoo roster read through Flaim (get_roster, read-only)",
      "file": "data/source/flaim/pull_2026-10-24.json",
-     "sha256": "200c211ddee605db8026d18655efdc4bb83ba96d4051305d61caeab8103b9dda",
+     "sha256": "4978d5a5b01b4b22b9f6892e7dff52789ee6f3aa1c3553ce7cfa4dc2cfaa8ef8",
      "captured": "2026-10-24",
      "text": "O beside Maxime Raynaud (Lauri’s Prime Rib, IL)"
     }
    ],
    "espn": {
-    "attempted": "2026-10-24T16:43:34Z",
+    "attempted": "2026-10-24T22:07:11Z",
     "ok": true,
     "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
    }
@@ -153,20 +176,20 @@
    "fantasy_team": "Booker T Floppers",
    "seat": 4,
    "slot": "PG",
-   "yahoo_status": "D",
-   "tier": "doubtful",
-   "availability": 0.25,
+   "yahoo_status": "O",
+   "tier": "out",
+   "availability": 0.0,
    "receipts": [
     {
      "source": "Yahoo roster read through Flaim (get_roster, read-only)",
      "file": "data/source/flaim/pull_2026-10-24.json",
-     "sha256": "200c211ddee605db8026d18655efdc4bb83ba96d4051305d61caeab8103b9dda",
+     "sha256": "4978d5a5b01b4b22b9f6892e7dff52789ee6f3aa1c3553ce7cfa4dc2cfaa8ef8",
      "captured": "2026-10-24",
-     "text": "D beside Fred VanVleet (Booker T Floppers, PG)"
+     "text": "O beside Fred VanVleet (Booker T Floppers, PG)"
     }
    ],
    "espn": {
-    "attempted": "2026-10-24T16:43:34Z",
+    "attempted": "2026-10-24T22:07:11Z",
     "ok": true,
     "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
    }
@@ -176,20 +199,20 @@
    "fantasy_team": "Booker T Floppers",
    "seat": 4,
    "slot": "F",
-   "yahoo_status": "Q",
-   "tier": "questionable",
-   "availability": 0.5,
+   "yahoo_status": "O",
+   "tier": "out",
+   "availability": 0.0,
    "receipts": [
     {
      "source": "Yahoo roster read through Flaim (get_roster, read-only)",
      "file": "data/source/flaim/pull_2026-10-24.json",
-     "sha256": "200c211ddee605db8026d18655efdc4bb83ba96d4051305d61caeab8103b9dda",
+     "sha256": "4978d5a5b01b4b22b9f6892e7dff52789ee6f3aa1c3553ce7cfa4dc2cfaa8ef8",
      "captured": "2026-10-24",
-     "text": "Q beside Paolo Banchero (Booker T Floppers, F)"
+     "text": "O beside Paolo Banchero (Booker T Floppers, F)"
     }
    ],
    "espn": {
-    "attempted": "2026-10-24T16:43:34Z",
+    "attempted": "2026-10-24T22:07:11Z",
     "ok": true,
     "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
    }
@@ -206,13 +229,13 @@
     {
      "source": "Yahoo roster read through Flaim (get_roster, read-only)",
      "file": "data/source/flaim/pull_2026-10-24.json",
-     "sha256": "200c211ddee605db8026d18655efdc4bb83ba96d4051305d61caeab8103b9dda",
+     "sha256": "4978d5a5b01b4b22b9f6892e7dff52789ee6f3aa1c3553ce7cfa4dc2cfaa8ef8",
      "captured": "2026-10-24",
      "text": "Q beside Reed Sheppard (Giavaris Jamal Javarison-Lamar, SG)"
     }
    ],
    "espn": {
-    "attempted": "2026-10-24T16:43:34Z",
+    "attempted": "2026-10-24T22:07:11Z",
     "ok": true,
     "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
    }
@@ -221,7 +244,7 @@
    "player": "Cedric Coward",
    "fantasy_team": "Cade n em",
    "seat": 6,
-   "slot": "IL",
+   "slot": "F",
    "yahoo_status": "Q",
    "tier": "questionable",
    "availability": 0.5,
@@ -229,13 +252,13 @@
     {
      "source": "Yahoo roster read through Flaim (get_roster, read-only)",
      "file": "data/source/flaim/pull_2026-10-24.json",
-     "sha256": "200c211ddee605db8026d18655efdc4bb83ba96d4051305d61caeab8103b9dda",
+     "sha256": "4978d5a5b01b4b22b9f6892e7dff52789ee6f3aa1c3553ce7cfa4dc2cfaa8ef8",
      "captured": "2026-10-24",
-     "text": "Q beside Cedric Coward (Cade n em, IL)"
+     "text": "Q beside Cedric Coward (Cade n em, F)"
     }
    ],
    "espn": {
-    "attempted": "2026-10-24T16:43:34Z",
+    "attempted": "2026-10-24T22:07:11Z",
     "ok": true,
     "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
    }
@@ -244,21 +267,21 @@
    "player": "Jalen Duren",
    "fantasy_team": "Cade n em",
    "seat": 6,
-   "slot": "C",
-   "yahoo_status": "Q",
-   "tier": "questionable",
-   "availability": 0.5,
+   "slot": "IL",
+   "yahoo_status": "O",
+   "tier": "out",
+   "availability": 0.0,
    "receipts": [
     {
      "source": "Yahoo roster read through Flaim (get_roster, read-only)",
      "file": "data/source/flaim/pull_2026-10-24.json",
-     "sha256": "200c211ddee605db8026d18655efdc4bb83ba96d4051305d61caeab8103b9dda",
+     "sha256": "4978d5a5b01b4b22b9f6892e7dff52789ee6f3aa1c3553ce7cfa4dc2cfaa8ef8",
      "captured": "2026-10-24",
-     "text": "Q beside Jalen Duren (Cade n em, C)"
+     "text": "O beside Jalen Duren (Cade n em, IL)"
     }
    ],
    "espn": {
-    "attempted": "2026-10-24T16:43:34Z",
+    "attempted": "2026-10-24T22:07:11Z",
     "ok": true,
     "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
    }
@@ -275,19 +298,42 @@
     {
      "source": "Yahoo roster read through Flaim (get_roster, read-only)",
      "file": "data/source/flaim/pull_2026-10-24.json",
-     "sha256": "200c211ddee605db8026d18655efdc4bb83ba96d4051305d61caeab8103b9dda",
+     "sha256": "4978d5a5b01b4b22b9f6892e7dff52789ee6f3aa1c3553ce7cfa4dc2cfaa8ef8",
      "captured": "2026-10-24",
      "text": "O beside Brandon Ingram (John's Cool Team, IL)"
     }
    ],
    "espn": {
-    "attempted": "2026-10-24T16:43:34Z",
+    "attempted": "2026-10-24T22:07:11Z",
     "ok": true,
     "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
    }
   },
   {
    "player": "Cameron Johnson",
+   "fantasy_team": "John's Cool Team",
+   "seat": 7,
+   "slot": "IL",
+   "yahoo_status": "O",
+   "tier": "out",
+   "availability": 0.0,
+   "receipts": [
+    {
+     "source": "Yahoo roster read through Flaim (get_roster, read-only)",
+     "file": "data/source/flaim/pull_2026-10-24.json",
+     "sha256": "4978d5a5b01b4b22b9f6892e7dff52789ee6f3aa1c3553ce7cfa4dc2cfaa8ef8",
+     "captured": "2026-10-24",
+     "text": "O beside Cameron Johnson (John's Cool Team, IL)"
+    }
+   ],
+   "espn": {
+    "attempted": "2026-10-24T22:07:11Z",
+    "ok": true,
+    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
+   }
+  },
+  {
+   "player": "Yves Missi",
    "fantasy_team": "John's Cool Team",
    "seat": 7,
    "slot": "UTIL",
@@ -298,36 +344,13 @@
     {
      "source": "Yahoo roster read through Flaim (get_roster, read-only)",
      "file": "data/source/flaim/pull_2026-10-24.json",
-     "sha256": "200c211ddee605db8026d18655efdc4bb83ba96d4051305d61caeab8103b9dda",
+     "sha256": "4978d5a5b01b4b22b9f6892e7dff52789ee6f3aa1c3553ce7cfa4dc2cfaa8ef8",
      "captured": "2026-10-24",
-     "text": "O beside Cameron Johnson (John's Cool Team, UTIL)"
+     "text": "O beside Yves Missi (John's Cool Team, UTIL)"
     }
    ],
    "espn": {
-    "attempted": "2026-10-24T16:43:34Z",
-    "ok": true,
-    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
-   }
-  },
-  {
-   "player": "Yves Missi",
-   "fantasy_team": "John's Cool Team",
-   "seat": 7,
-   "slot": "UTIL",
-   "yahoo_status": "Q",
-   "tier": "questionable",
-   "availability": 0.5,
-   "receipts": [
-    {
-     "source": "Yahoo roster read through Flaim (get_roster, read-only)",
-     "file": "data/source/flaim/pull_2026-10-24.json",
-     "sha256": "200c211ddee605db8026d18655efdc4bb83ba96d4051305d61caeab8103b9dda",
-     "captured": "2026-10-24",
-     "text": "Q beside Yves Missi (John's Cool Team, UTIL)"
-    }
-   ],
-   "espn": {
-    "attempted": "2026-10-24T16:43:34Z",
+    "attempted": "2026-10-24T22:07:11Z",
     "ok": true,
     "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
    }
@@ -336,21 +359,21 @@
    "player": "Stephen Curry",
    "fantasy_team": "Splash Mountain",
    "seat": 8,
-   "slot": "PG",
-   "yahoo_status": "D",
-   "tier": "doubtful",
-   "availability": 0.25,
+   "slot": "IL",
+   "yahoo_status": "O",
+   "tier": "out",
+   "availability": 0.0,
    "receipts": [
     {
      "source": "Yahoo roster read through Flaim (get_roster, read-only)",
      "file": "data/source/flaim/pull_2026-10-24.json",
-     "sha256": "200c211ddee605db8026d18655efdc4bb83ba96d4051305d61caeab8103b9dda",
+     "sha256": "4978d5a5b01b4b22b9f6892e7dff52789ee6f3aa1c3553ce7cfa4dc2cfaa8ef8",
      "captured": "2026-10-24",
-     "text": "D beside Stephen Curry (Splash Mountain, PG)"
+     "text": "O beside Stephen Curry (Splash Mountain, IL)"
     }
    ],
    "espn": {
-    "attempted": "2026-10-24T16:43:34Z",
+    "attempted": "2026-10-24T22:07:11Z",
     "ok": true,
     "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
    }
@@ -367,13 +390,13 @@
     {
      "source": "Yahoo roster read through Flaim (get_roster, read-only)",
      "file": "data/source/flaim/pull_2026-10-24.json",
-     "sha256": "200c211ddee605db8026d18655efdc4bb83ba96d4051305d61caeab8103b9dda",
+     "sha256": "4978d5a5b01b4b22b9f6892e7dff52789ee6f3aa1c3553ce7cfa4dc2cfaa8ef8",
      "captured": "2026-10-24",
      "text": "O beside Brandin Podziemski (Podz save the league, UTIL)"
     }
    ],
    "espn": {
-    "attempted": "2026-10-24T16:43:34Z",
+    "attempted": "2026-10-24T22:07:11Z",
     "ok": true,
     "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
    }
@@ -390,13 +413,13 @@
     {
      "source": "Yahoo roster read through Flaim (get_roster, read-only)",
      "file": "data/source/flaim/pull_2026-10-24.json",
-     "sha256": "200c211ddee605db8026d18655efdc4bb83ba96d4051305d61caeab8103b9dda",
+     "sha256": "4978d5a5b01b4b22b9f6892e7dff52789ee6f3aa1c3553ce7cfa4dc2cfaa8ef8",
      "captured": "2026-10-24",
      "text": "O beside Cooper Flagg (Podz save the league, IL)"
     }
    ],
    "espn": {
-    "attempted": "2026-10-24T16:43:34Z",
+    "attempted": "2026-10-24T22:07:11Z",
     "ok": true,
     "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
    }
@@ -413,13 +436,13 @@
     {
      "source": "Yahoo roster read through Flaim (get_roster, read-only)",
      "file": "data/source/flaim/pull_2026-10-24.json",
-     "sha256": "200c211ddee605db8026d18655efdc4bb83ba96d4051305d61caeab8103b9dda",
+     "sha256": "4978d5a5b01b4b22b9f6892e7dff52789ee6f3aa1c3553ce7cfa4dc2cfaa8ef8",
      "captured": "2026-10-24",
      "text": "O beside Nic Claxton (Podz save the league, IL)"
     }
    ],
    "espn": {
-    "attempted": "2026-10-24T16:43:34Z",
+    "attempted": "2026-10-24T22:07:11Z",
     "ok": true,
     "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
    }
@@ -436,13 +459,13 @@
     {
      "source": "Yahoo roster read through Flaim (get_roster, read-only)",
      "file": "data/source/flaim/pull_2026-10-24.json",
-     "sha256": "200c211ddee605db8026d18655efdc4bb83ba96d4051305d61caeab8103b9dda",
+     "sha256": "4978d5a5b01b4b22b9f6892e7dff52789ee6f3aa1c3553ce7cfa4dc2cfaa8ef8",
      "captured": "2026-10-24",
      "text": "O beside Bradley Beal (MAXEY-MUM OVERDRIVE, IL)"
     }
    ],
    "espn": {
-    "attempted": "2026-10-24T16:43:34Z",
+    "attempted": "2026-10-24T22:07:11Z",
     "ok": true,
     "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
    }
@@ -452,20 +475,20 @@
    "fantasy_team": "MAXEY-MUM OVERDRIVE",
    "seat": 11,
    "slot": "IL",
-   "yahoo_status": "Q",
-   "tier": "questionable",
-   "availability": 0.5,
+   "yahoo_status": "O",
+   "tier": "out",
+   "availability": 0.0,
    "receipts": [
     {
      "source": "Yahoo roster read through Flaim (get_roster, read-only)",
      "file": "data/source/flaim/pull_2026-10-24.json",
-     "sha256": "200c211ddee605db8026d18655efdc4bb83ba96d4051305d61caeab8103b9dda",
+     "sha256": "4978d5a5b01b4b22b9f6892e7dff52789ee6f3aa1c3553ce7cfa4dc2cfaa8ef8",
      "captured": "2026-10-24",
-     "text": "Q beside Kon Knueppel (MAXEY-MUM OVERDRIVE, IL)"
+     "text": "O beside Kon Knueppel (MAXEY-MUM OVERDRIVE, IL)"
     }
    ],
    "espn": {
-    "attempted": "2026-10-24T16:43:34Z",
+    "attempted": "2026-10-24T22:07:11Z",
     "ok": true,
     "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
    }
@@ -482,13 +505,13 @@
     {
      "source": "Yahoo roster read through Flaim (get_roster, read-only)",
      "file": "data/source/flaim/pull_2026-10-24.json",
-     "sha256": "200c211ddee605db8026d18655efdc4bb83ba96d4051305d61caeab8103b9dda",
+     "sha256": "4978d5a5b01b4b22b9f6892e7dff52789ee6f3aa1c3553ce7cfa4dc2cfaa8ef8",
      "captured": "2026-10-24",
      "text": "Q beside Ausar Thompson (Thompson Telepathy, F)"
     }
    ],
    "espn": {
-    "attempted": "2026-10-24T16:43:34Z",
+    "attempted": "2026-10-24T22:07:11Z",
     "ok": true,
     "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
    }
@@ -498,20 +521,20 @@
    "fantasy_team": "Thompson Telepathy",
    "seat": 12,
    "slot": "IL",
-   "yahoo_status": "Q",
-   "tier": "questionable",
-   "availability": 0.5,
+   "yahoo_status": "O",
+   "tier": "out",
+   "availability": 0.0,
    "receipts": [
     {
      "source": "Yahoo roster read through Flaim (get_roster, read-only)",
      "file": "data/source/flaim/pull_2026-10-24.json",
-     "sha256": "200c211ddee605db8026d18655efdc4bb83ba96d4051305d61caeab8103b9dda",
+     "sha256": "4978d5a5b01b4b22b9f6892e7dff52789ee6f3aa1c3553ce7cfa4dc2cfaa8ef8",
      "captured": "2026-10-24",
-     "text": "Q beside Coby White (Thompson Telepathy, IL)"
+     "text": "O beside Coby White (Thompson Telepathy, IL)"
     }
    ],
    "espn": {
-    "attempted": "2026-10-24T16:43:34Z",
+    "attempted": "2026-10-24T22:07:11Z",
     "ok": true,
     "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
    }
@@ -528,13 +551,13 @@
     {
      "source": "Yahoo roster read through Flaim (get_roster, read-only)",
      "file": "data/source/flaim/pull_2026-10-24.json",
-     "sha256": "200c211ddee605db8026d18655efdc4bb83ba96d4051305d61caeab8103b9dda",
+     "sha256": "4978d5a5b01b4b22b9f6892e7dff52789ee6f3aa1c3553ce7cfa4dc2cfaa8ef8",
      "captured": "2026-10-24",
      "text": "O beside Jimmy Butler (Thompson Telepathy, IL)"
     }
    ],
    "espn": {
-    "attempted": "2026-10-24T16:43:34Z",
+    "attempted": "2026-10-24T22:07:11Z",
     "ok": true,
     "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
    }
@@ -543,21 +566,21 @@
    "player": "LeBron James",
    "fantasy_team": "Thompson Telepathy",
    "seat": 12,
-   "slot": "PF",
-   "yahoo_status": "Q",
-   "tier": "questionable",
-   "availability": 0.5,
+   "slot": "UTIL",
+   "yahoo_status": "O",
+   "tier": "out",
+   "availability": 0.0,
    "receipts": [
     {
      "source": "Yahoo roster read through Flaim (get_roster, read-only)",
      "file": "data/source/flaim/pull_2026-10-24.json",
-     "sha256": "200c211ddee605db8026d18655efdc4bb83ba96d4051305d61caeab8103b9dda",
+     "sha256": "4978d5a5b01b4b22b9f6892e7dff52789ee6f3aa1c3553ce7cfa4dc2cfaa8ef8",
      "captured": "2026-10-24",
-     "text": "Q beside LeBron James (Thompson Telepathy, PF)"
+     "text": "O beside LeBron James (Thompson Telepathy, UTIL)"
     }
    ],
    "espn": {
-    "attempted": "2026-10-24T16:43:34Z",
+    "attempted": "2026-10-24T22:07:11Z",
     "ok": true,
     "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
    }
