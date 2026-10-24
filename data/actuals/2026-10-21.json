@@ -1,6 +1,6 @@
 {
  "date": "2026-10-21",
- "fetched_at_utc": "2026-10-23T15:05:32Z",
+ "fetched_at_utc": "2026-10-24T00:12:49Z",
  "sources": {
   "espn": {
    "events": 11,
@@ -74,7 +74,7 @@
      "how": "live"
     }
    ],
-   "fetched_at_utc": "2026-10-23T15:05:11Z"
+   "fetched_at_utc": "2026-10-24T00:12:28Z"
   },
   "bref": {
    "games": 11,
@@ -136,7 +136,7 @@
      "how": "live"
     }
    ],
-   "fetched_at_utc": "2026-10-23T15:05:18Z"
+   "fetched_at_utc": "2026-10-24T00:12:35Z"
   }
  },
  "single_source": false,
@@ -427,7 +427,7 @@
    "stl": 0,
    "blk": 0,
    "game": "401909834",
-   "pool_name": null
+   "pool_name": "Dorian Finney-Smith"
   },
   {
    "name": "Corey Kispert",
@@ -449,7 +449,7 @@
    "stl": 0,
    "blk": 0,
    "game": "401909834",
-   "pool_name": null
+   "pool_name": "Corey Kispert"
   },
   {
    "name": "Asa Newell",
@@ -1417,7 +1417,7 @@
    "stl": 0,
    "blk": 0,
    "game": "401909835",
-   "pool_name": null
+   "pool_name": "Tre Mann"
   },
   {
    "name": "Will Riley",
@@ -2734,7 +2734,7 @@
    "reb": 5,
    "ast": 1,
    "tov": 1,
-   "stl": 1,
+   "stl": 2,
    "blk": 0,
    "game": "401909837",
    "pool_name": "Norman Powell"
@@ -2844,7 +2844,7 @@
    "reb": 7,
    "ast": 2,
    "tov": 0,
-   "stl": 1,
+   "stl": 0,
    "blk": 1,
    "game": "401909837",
    "pool_name": null
@@ -2891,7 +2891,7 @@
    "stl": 0,
    "blk": 0,
    "game": "401909837",
-   "pool_name": null
+   "pool_name": "Buddy Hield"
   },
   {
    "name": "Tre Jones",
@@ -3111,7 +3111,7 @@
    "stl": 0,
    "blk": 0,
    "game": "401909837",
-   "pool_name": null
+   "pool_name": "Trayce Jackson-Davis"
   },
   {
    "name": "Jamison Battle",
@@ -5113,7 +5113,7 @@
    "stl": 0,
    "blk": 0,
    "game": "401909840",
-   "pool_name": null
+   "pool_name": "Steven Adams"
   },
   {
    "name": "Draymond Green",
@@ -5663,7 +5663,7 @@
    "stl": 0,
    "blk": 0,
    "game": "401909092",
-   "pool_name": null
+   "pool_name": "Jaden Hardy"
   },
   {
    "name": "Jarred Vanderbilt",
@@ -5685,7 +5685,7 @@
    "stl": 0,
    "blk": 0,
    "game": "401909092",
-   "pool_name": null
+   "pool_name": "Jarred Vanderbilt"
   },
   {
    "name": "Dillon Brooks",
@@ -6833,18 +6833,8 @@
   }
  ],
  "reconciliation": {
-  "matched": 298,
+  "matched": 300,
   "mismatched": [
-   {
-    "name": "Norman Powell",
-    "team": "CHI",
-    "cells": {
-     "stl": [
-      1,
-      2
-     ]
-    }
-   },
    {
     "name": "Rasheer Fleming",
     "team": "PHX",
@@ -6854,24 +6844,12 @@
       3
      ]
     }
-   },
-   {
-    "name": "Tobe Awaka",
-    "team": "CHI",
-    "cells": {
-     "stl": [
-      1,
-      0
-     ]
-    }
    }
   ],
   "espn_only": [],
   "bref_only": []
  },
  "unpooled": [
-  "Dorian Finney-Smith",
-  "Corey Kispert",
   "Asa Newell",
   "Jamal Cain",
   "Jase Richardson",
@@ -6885,7 +6863,6 @@
   "Anthony Gill",
   "Felix Okpara",
   "Reece Beekman",
-  "Tre Mann",
   "Trey Lyles",
   "Cody Williams",
   "Isaiah Evans",
@@ -6905,11 +6882,9 @@
   "Leonard Miller",
   "Tobe Awaka",
   "Noa Essengue",
-  "Buddy Hield",
   "Jaylin Sellers",
   "Patrick Williams",
   "Kyle Anderson",
-  "Trayce Jackson-Davis",
   "Jamison Battle",
   "Jaden Bradley",
   "Alijah Martin",
@@ -6937,7 +6912,6 @@
   "Jae'Sean Tate",
   "Isaiah Crawford",
   "Bruce Thornton",
-  "Steven Adams",
   "Georges Niang",
   "Graham Ike",
   "Malevy Leons",
@@ -6945,8 +6919,6 @@
   "Matisse Thybulle",
   "Kevon Looney",
   "Chris Manon",
-  "Jaden Hardy",
-  "Jarred Vanderbilt",
   "Koa Peat",
   "Rasheer Fleming",
   "Duop Reath",
@@ -6966,5 +6938,5 @@
   "Cam Christie"
  ],
  "n_players": 301,
- "n_pooled": 207
+ "n_pooled": 215
 }
