@@ -43,6 +43,7 @@ ESPN_CODE = {"GS": "GSW", "NY": "NYK", "NO": "NOP", "SA": "SAS", "UTAH": "UTA", 
 STATS = ("min", "pts", "fgm", "fga", "tpm", "tpa", "ftm", "fta", "reb", "ast", "tov", "stl", "blk")
 ALIAS_FILE = os.path.join(KIT, "report", "market", "build_market.py")
 POOL_CSV = os.path.join(KIT, "report", "projections-2026-27.csv")
+SEASON_POOL_CSV = os.path.join(KIT, "data", "season", "pool_season.csv")   # the deck pool + in-season additions (season_lines.py)
 
 
 # ---------------------------------------------------------------- fetching
@@ -174,10 +175,25 @@ def load_aliases(path=ALIAS_FILE):
     return {}
 
 
-def load_pool_names(path=POOL_CSV):
+def load_pool_names(path=POOL_CSV, season_csv=SEASON_POOL_CSV, aliases=None):
+    """The kit file's names, then every season-pool name whose suffix-free key the kit file lacks (owner 2026-10-24:
+    the kit file alone left ~20 season-pool players — Hield, Clarkson, Shamet, Westbrook, ... — unpooled in every box
+    file, so the blend never saw their games). On a shared key the kit spelling wins, so a name the two files spell
+    differently (Kelly Oubre / Kelly Oubre Jr.) stays one pool name and match_name's one-per-key rule still holds; a
+    season spelling the alias table lists as a variant of a kit name (Herbert Jones for Herb Jones) is the same player
+    and is not added either, so ESPN's spelling keeps landing on the kit row."""
     import csv
     with open(path, encoding="utf-8") as f:
-        return [r["name"] for r in csv.DictReader(f)]
+        names = [r["name"] for r in csv.DictReader(f)]
+    if season_csv and os.path.exists(season_csv):
+        keys = {name_key(n) for n in names}
+        variants = {fold(v) for vs in (aliases or {}).values() for v in vs}
+        with open(season_csv, encoding="utf-8") as f:
+            for r in csv.DictReader(f):
+                k = name_key(r["player"])
+                if k not in keys and fold(r["player"]) not in variants:
+                    names.append(r["player"]); keys.add(k)
+    return names
 
 
 def resolve_names(rows, pool_names, aliases):
@@ -311,7 +327,8 @@ def pull(date, cache=None, use_bref=True, log=print):
         return None, problems
     single = not bref_rows
     rec = reconcile(espn_rows, bref_rows) if bref_rows else {}
-    players = resolve_names(espn_rows, load_pool_names(), load_aliases())
+    aliases = load_aliases()
+    players = resolve_names(espn_rows, load_pool_names(aliases=aliases), aliases)
     sources = dict(espn=dict(events=len(events), final=len(finals), **receipts["espn"]),
                    bref=dict(games=len(bref_games), **receipts["bref"]))
     return build_record(date, players, games, single, sources, rec), []

@@ -121,6 +121,27 @@ class Resolve(unittest.TestCase):
         rows = B.resolve_names([dict(name="Nobody Here", team="X", pts=5)], self.POOL, {})
         self.assertIsNone(rows[0]["pool_name"]); self.assertEqual(rows[0]["pts"], 5)
 
+    def test_pool_names_take_in_the_season_pool_with_the_kit_spelling_winning_a_shared_key(self):
+        # owner 2026-10-24: the kit file (325 names) left ~20 season-pool players unpooled in every box file, so the
+        # blend never saw their games (Hield, Clarkson, Shamet, Westbrook, ...); the index now covers the season pool
+        import tempfile
+        d = tempfile.mkdtemp()
+        kit = os.path.join(d, "kit.csv"); open(kit, "w").write("name,team\nKelly Oubre,IND\nNikola Jokic,DEN\n")
+        sea = os.path.join(d, "pool_season.csv"); open(sea, "w").write("player,team\nKelly Oubre Jr.,IND\nBuddy Hield,GSW\nNikola Jokic,DEN\n")
+        names = B.load_pool_names(kit, season_csv=sea)
+        self.assertEqual(names, ["Kelly Oubre", "Nikola Jokic", "Buddy Hield"])      # kit order, then the season pool's new keys
+        res = B.resolve_names([dict(name="Buddy Hield", team="GSW"), dict(name="Kelly Oubre Jr.", team="IND")], names, {})
+        self.assertEqual([r["pool_name"] for r in res], ["Buddy Hield", "Kelly Oubre"])
+        self.assertEqual(B.load_pool_names(kit, season_csv=os.path.join(d, "absent.csv")), ["Kelly Oubre", "Nikola Jokic"])
+        # a season spelling that is an alias variant of a kit name is the same player: not added, and ESPN's spelling
+        # still lands on the kit name (the first replay flipped Herb Jones and Cam Johnson off their kit rows)
+        kit2 = os.path.join(d, "kit2.csv"); open(kit2, "w").write("name,team\nHerb Jones,NOP\n")
+        sea2 = os.path.join(d, "sea2.csv"); open(sea2, "w").write("player,team\nHerbert Jones,NOP\nBuddy Hield,GSW\n")
+        al = {"Herb Jones": {"Herbert Jones"}}
+        names2 = B.load_pool_names(kit2, season_csv=sea2, aliases=al)
+        self.assertEqual(names2, ["Herb Jones", "Buddy Hield"])
+        self.assertEqual(B.resolve_names([dict(name="Herbert Jones", team="NOP")], names2, al)[0]["pool_name"], "Herb Jones")
+
     def test_a_suffix_the_pool_leaves_off_resolves_when_one_name_shares_the_key(self):
         # owner 2026-10-22 (the name-mismatch fix): the kit's file spells "Darius Acuff" and "Dereck Lively"; ESPN's
         # box scores add Jr. / II, and the line was left unpooled
