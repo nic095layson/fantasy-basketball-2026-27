@@ -18,7 +18,7 @@ failed step stops the run and later steps are SKIPPED):
   5 daily brief on the season pool  SEASON_POOL=data/season/pool_season.csv scripts/daily_brief.py --date <today>
   5b week matchup (non-fatal)     scripts/week_matchup.py --date <today>       (Yahoo's totals to date + projected, Yahoo's
                                    available-player list for the pickup scan; owner 2026-10-21)
-  5c league table (non-fatal)     scripts/league_table.py --date <today>       (all 12 teams' totals, ranks, all-play power ranking)
+  5c league table, 5d form board (non-fatal)     scripts/league_table.py --date <today>       (all 12 teams' totals, ranks, all-play power ranking)
   6 season deck                   scripts/season_deck.py --date <today>        (render-checked before it is written)
 
 Writes report/briefs/morning_<date>.json (every step's command, exit, PASS line, tail), appends each step's verdict to
@@ -85,6 +85,10 @@ def steps(date, fetch=True, seasons=10000, since=None):
            # tab, from the pulls already on disk; non-fatal (the deck then draws a "no record" line)
            dict(name="league table", cmd=[PY, os.path.join(HERE, "league_table.py"), "--date", date], cwd=KIT,
                 pass_re=r"^LEAGUE TABLE: PASS", env={}, fatal=False),
+           # owner 2026-10-23: minutes, starts, role and per-36 rates per rostered player and free agent from the box
+           # scores on disk, for the Movers tab and the free-agent list; non-fatal (the deck draws a "no record" line)
+           dict(name="form board", cmd=[PY, os.path.join(HERE, "form_board.py"), "--date", date], cwd=KIT,
+                pass_re=r"^FORM BOARD: PASS", env={}, fatal=False),
            dict(name="season deck", cmd=[PY, os.path.join(HERE, "season_deck.py"), "--date", date], cwd=KIT,
                 pass_re=r"^SEASON DECK: PASS", env={})]
     return st
