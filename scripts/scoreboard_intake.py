@@ -139,6 +139,10 @@ def main():
     ap.add_argument("--week", type=int, required=True); ap.add_argument("--csv"); ap.add_argument("--no-ledger", action="store_true")
     ap.add_argument("--from-pull", help="a Flaim pull carrying the final week's matchups (owner 2026-10-23, Build 1)")
     ap.add_argument("--state", default=STATE); ap.add_argument("--weeks-dir", default=WEEKS)
+    # owner 2026-10-24 (the scoring loop): after the weekly ledger, every morning card's P(win) is graded (score_week.py)
+    ap.add_argument("--calibration", default=None, help="weekly calibration ledger (default: weekly_preview's)")
+    ap.add_argument("--briefs-dir", default=None, help="where the morning week_matchup_<date>.json cards are")
+    ap.add_argument("--daily-out", default=None, help="the daily calibration record (default: report/calibration_daily.json)")
     a = ap.parse_args()
     WEEKS_DIR = a.weeks_dir
     path = a.from_pull or a.csv or os.path.join(WEEKS_DIR, f"week_{a.week}.csv")
@@ -155,13 +159,24 @@ def main():
     with open(os.path.join(WEEKS_DIR, f"week_{a.week}.json"), "w", encoding="utf-8") as f:
         json.dump(wk, f, indent=1, ensure_ascii=False); f.write("\n")
     append_team_weeks(wk, os.path.join(WEEKS_DIR, "team_weeks.csv"))
-    ledger = "skipped"
+    ledger = daily = "skipped"
     if not a.no_ledger:
-        p = subprocess.run([sys.executable, os.path.join(HERE, "weekly_preview.py"), "--score", str(a.week), "--won", ",".join(res["won"])],
-                           capture_output=True, text=True)
+        cmd = [sys.executable, os.path.join(HERE, "weekly_preview.py"), "--score", str(a.week), "--won", ",".join(res["won"])]
+        if a.calibration:
+            cmd += ["--ledger", a.calibration]
+        p = subprocess.run(cmd, capture_output=True, text=True)
         ledger = f"exit {p.returncode}: " + (p.stdout.strip().splitlines() or [p.stderr.strip()[-200:]])[-1]
+        # the daily scorer is non-fatal: the intake stands, and a scoring failure is named on this line
+        import score_week as SW
+        try:
+            r = SW.run(a.week, WEEKS_DIR, a.briefs_dir or SW.BRIEFS, a.daily_out or SW.OUT)
+            w = r["week"]
+            daily = (f"{r['status']}, {len(w['days_scored'])} mornings / {w['n_forecasts']} forecasts, Brier {w['brier']:.3f} "
+                     f"vs lead-to-date {w['baseline_brier']:.3f}")
+        except (SW.ScoreError, OSError, ValueError, KeyError) as e:
+            daily = f"FAIL — {str(e)[:160]}"
     print(f"SCOREBOARD INTAKE: PASS — week {a.week}: 6 matchups, 12 team lines; you {res['cats_won']}-{len(res['lost'])}-{res['cats_tied']} "
-          f"vs {res['opponent']} (won {', '.join(res['won']) or 'none'}); team_weeks.csv updated; ledger {ledger}")
+          f"vs {res['opponent']} (won {', '.join(res['won']) or 'none'}); team_weeks.csv updated; ledger {ledger}; week score {daily}")
     return 0
 
 
