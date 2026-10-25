@@ -1,4 +1,8 @@
 {
+ "carried_forward": [
+  "free_agents",
+  "matchups"
+ ],
  "daily": {
   "478.l.36464.t.1": {
    "2026-10-24": {
@@ -5292,7 +5296,7 @@
      "playerKey": "478.p.5294",
      "position": "C",
      "selectedPosition": "Util",
-     "status": "D",
+     "status": "O",
      "team": "PHI"
     },
     {
@@ -5565,7 +5569,6 @@
      "playerKey": "478.p.4840",
      "position": "PG",
      "selectedPosition": "IL",
-     "status": "O",
      "team": "DAL"
     }
    ],
@@ -5662,12 +5665,12 @@
       "kept": false,
       "status": false
      },
-     "name": "Donovan Clingan",
-     "playerId": "10285",
-     "playerKey": "478.p.10285",
+     "name": "Ivica Zubac",
+     "playerId": "5663",
+     "playerKey": "478.p.5663",
      "position": "C",
      "selectedPosition": "C",
-     "team": "POR"
+     "team": "IND"
     },
     {
      "isKeeper": {
@@ -5675,12 +5678,12 @@
       "kept": false,
       "status": false
      },
-     "name": "Aaron Gordon",
-     "playerId": "5295",
-     "playerKey": "478.p.5295",
-     "position": "PF,C",
+     "name": "Jakob Poeltl",
+     "playerId": "5640",
+     "playerKey": "478.p.5640",
+     "position": "C",
      "selectedPosition": "C",
-     "team": "DEN"
+     "team": "TOR"
     },
     {
      "isKeeper": {
@@ -5715,6 +5718,32 @@
       "kept": false,
       "status": false
      },
+     "name": "Donovan Clingan",
+     "playerId": "10285",
+     "playerKey": "478.p.10285",
+     "position": "C",
+     "selectedPosition": "BN",
+     "team": "POR"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Aaron Gordon",
+     "playerId": "5295",
+     "playerKey": "478.p.5295",
+     "position": "PF,C",
+     "selectedPosition": "BN",
+     "team": "DEN"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
      "name": "Jayson Tatum",
      "playerId": "5765",
      "playerKey": "478.p.5765",
@@ -5728,38 +5757,12 @@
       "kept": false,
       "status": false
      },
-     "name": "Ivica Zubac",
-     "playerId": "5663",
-     "playerKey": "478.p.5663",
-     "position": "C",
-     "selectedPosition": "BN",
-     "team": "IND"
-    },
-    {
-     "isKeeper": {
-      "cost": false,
-      "kept": false,
-      "status": false
-     },
-     "name": "Jakob Poeltl",
-     "playerId": "5640",
-     "playerKey": "478.p.5640",
-     "position": "C",
-     "selectedPosition": "BN",
-     "team": "TOR"
-    },
-    {
-     "isKeeper": {
-      "cost": false,
-      "kept": false,
-      "status": false
-     },
      "name": "Cameron Johnson",
      "playerId": "6173",
      "playerKey": "478.p.6173",
      "position": "SF,PF",
      "selectedPosition": "IL",
-     "status": "O",
+     "status": "Q",
      "team": "DEN"
     },
     {
@@ -5849,7 +5852,7 @@
      "playerKey": "478.p.6694",
      "position": "SF,PF",
      "selectedPosition": "PF",
-     "status": "Q",
+     "status": "D",
      "team": "SAC"
     },
     {
@@ -5858,13 +5861,12 @@
       "kept": false,
       "status": false
      },
-     "name": "Zach Edey",
-     "playerId": "10287",
-     "playerKey": "478.p.10287",
-     "position": "C",
-     "selectedPosition": "C",
-     "status": "O",
-     "team": "MEM"
+     "name": "Derrick Jones Jr.",
+     "playerId": "5747",
+     "playerKey": "478.p.5747",
+     "position": "SF,PF",
+     "selectedPosition": "F",
+     "team": "LAC"
     },
     {
      "isKeeper": {
@@ -5885,12 +5887,12 @@
       "kept": false,
       "status": false
      },
-     "name": "Dejounte Murray",
-     "playerId": "5660",
-     "playerKey": "478.p.5660",
-     "position": "PG",
-     "selectedPosition": "Util",
-     "team": "NOP"
+     "name": "Bam Adebayo",
+     "playerId": "5827",
+     "playerKey": "478.p.5827",
+     "position": "PF,C",
+     "selectedPosition": "C",
+     "team": "MIA"
     },
     {
      "isKeeper": {
@@ -5911,13 +5913,12 @@
       "kept": false,
       "status": false
      },
-     "name": "Fred VanVleet",
-     "playerId": "5727",
-     "playerKey": "478.p.5727",
-     "position": "PG",
-     "selectedPosition": "BN",
-     "status": "O",
-     "team": "HOU"
+     "name": "Tristan da Silva",
+     "playerId": "10275",
+     "playerKey": "478.p.10275",
+     "position": "SF,PF",
+     "selectedPosition": "Util",
+     "team": "ORL"
     },
     {
      "isKeeper": {
@@ -5925,12 +5926,25 @@
       "kept": false,
       "status": false
      },
-     "name": "Bam Adebayo",
-     "playerId": "5827",
-     "playerKey": "478.p.5827",
-     "position": "PF,C",
+     "name": "Dejounte Murray",
+     "playerId": "5660",
+     "playerKey": "478.p.5660",
+     "position": "PG",
      "selectedPosition": "BN",
-     "team": "MIA"
+     "team": "NOP"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Fred VanVleet",
+     "playerId": "5727",
+     "playerKey": "478.p.5727",
+     "position": "PG",
+     "selectedPosition": "BN",
+     "team": "HOU"
     },
     {
      "isKeeper": {
@@ -5944,6 +5958,20 @@
      "position": "PG",
      "selectedPosition": "BN",
      "team": "POR"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Zach Edey",
+     "playerId": "10287",
+     "playerKey": "478.p.10287",
+     "position": "C",
+     "selectedPosition": "IL",
+     "status": "O",
+     "team": "MEM"
     },
     {
      "isKeeper": {
@@ -6040,12 +6068,12 @@
       "kept": false,
       "status": false
      },
-     "name": "Jalen Green",
-     "playerId": "6513",
-     "playerKey": "478.p.6513",
-     "position": "SG,SF",
+     "name": "Obi Toppin",
+     "playerId": "6400",
+     "playerKey": "478.p.6400",
+     "position": "SF,PF",
      "selectedPosition": "F",
-     "team": "PHX"
+     "team": "IND"
     },
     {
      "isKeeper": {
@@ -6105,12 +6133,12 @@
       "kept": false,
       "status": false
      },
-     "name": "Brandon Williams",
-     "playerId": "6679",
-     "playerKey": "478.p.6679",
-     "position": "PG",
+     "name": "Jalen Green",
+     "playerId": "6513",
+     "playerKey": "478.p.6513",
+     "position": "SG,SF",
      "selectedPosition": "BN",
-     "team": "GSW"
+     "team": "PHX"
     },
     {
      "isKeeper": {
@@ -6328,7 +6356,6 @@
      "playerKey": "478.p.4612",
      "position": "PG",
      "selectedPosition": "IL",
-     "status": "O",
      "team": "GSW"
     }
    ],
@@ -6778,7 +6805,6 @@
      "playerKey": "478.p.3704",
      "position": "SF,PF",
      "selectedPosition": "SF",
-     "status": "O",
      "team": "PHI"
     },
     {
@@ -6961,7 +6987,6 @@
      "playerKey": "478.p.10115",
      "position": "PG,SG",
      "selectedPosition": "SG",
-     "status": "O",
      "team": "GSW"
     },
     {
@@ -6975,6 +7000,7 @@
      "playerKey": "478.p.10454",
      "position": "PG,SG",
      "selectedPosition": "G",
+     "status": "Q",
      "team": "PHI"
     },
     {
@@ -7221,7 +7247,6 @@
      "playerKey": "478.p.5069",
      "position": "PF,C",
      "selectedPosition": "C",
-     "status": "O",
      "team": "GSW"
     },
     {
@@ -7261,6 +7286,7 @@
      "playerKey": "478.p.6499",
      "position": "SG,SF,PF",
      "selectedPosition": "Util",
+     "status": "O",
      "team": "DAL"
     },
     {
