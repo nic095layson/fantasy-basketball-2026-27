@@ -445,6 +445,23 @@ TW = dict(status="ran", drops=["Bench Guy"], pool_size=2, no_games=["Idle Man"],
                      season_d_ecw=0.031)])
 
 
+def fa_positions_dom(html_path, tick=()):
+    """The Free Agents pane's positions block in the browser, after ticking the named players' boxes in order."""
+    from playwright.sync_api import sync_playwright
+    with sync_playwright() as p:
+        b, exe, tried = DRC._launch(p)
+        try:
+            pg = b.new_page(); errs = []
+            pg.on("pageerror", lambda e: errs.append(str(e)))
+            pg.route(re.compile(r"^https?://"), lambda r: r.abort())
+            pg.goto("file://" + os.path.abspath(html_path), wait_until="load")
+            for name in tick:
+                pg.evaluate("(n) => { const l=[...document.querySelectorAll('#pane-fa .plist label')].find(x => x.textContent.startsWith(n+' ')); l.querySelector('input').click(); }", name)
+            return dict(errors=errs, text=pg.evaluate("() => document.getElementById('fa-positions').textContent"))
+        finally:
+            b.close()
+
+
 def fa_dom(html_path, sort=None):
     """The Free Agents pane read in the browser; sort, if given, is chosen in the pane's sort control first."""
     from playwright.sync_api import sync_playwright
@@ -847,6 +864,25 @@ class WeekMatchupCard(unittest.TestCase):
         dom = today_dom(self.page(r))
         self.assertEqual(dom["errors"], [])
         self.assertNotIn("Worth a look", dom["text"])
+
+    def test_the_positions_recount_as_drops_and_adds_are_ticked(self):
+        # owner 2026-10-26 (item 3): the header counts follow the picked move. The board row's pos is Yahoo's
+        # eligibility (equal for 14/14 rostered and 87/87 board free agents on 10/26). Fixture: Alpha Man PG and
+        # Bench Guy PF are mine; Other FA is an SF. Drop Bench Guy, add Other FA -> PF 1->0, SF 0->1, F stays 1.
+        b = json.load(open(self.fx["board"]))
+        b["board"].append(dict(rank=4, name="Other FA", team="LAL", pos="SF", gp=70.0, z_adj=5.0, z_total=5.0,
+                               z={c: 0.5 for c in ["FG%", "FT%", "3PM", "PTS", "REB", "AST", "STL", "BLK", "TOV"]}))
+        json.dump(b, open(self.fx["board"], "w"))
+        p = self.page(week_matchup_record())
+        before = fa_positions_dom(p)
+        self.assertEqual(before["errors"], [])
+        self.assertIn("PF(1)", before["text"].replace(" ", ""))
+        after = fa_positions_dom(p, tick=("Bench Guy", "Other FA"))
+        self.assertEqual(after["errors"], [])
+        t = after["text"].replace(" ", "")
+        self.assertIn("PF(1→0)", t); self.assertIn("SF(0→1)", t)
+        self.assertIn("PG(1)", t)                    # untouched counts stay plain
+        self.assertIn("F(1)", t)                     # a forward out, a forward in: the family count holds
 
     def test_free_agents_sort_by_this_week_and_back_to_season_z(self):
         b = json.load(open(self.fx["board"]))
