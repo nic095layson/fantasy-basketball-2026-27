@@ -1,53 +1,52 @@
 {
- "ran_at_utc": "2026-10-26T20:29:39Z",
+ "ran_at_utc": "2026-10-26T20:54:39Z",
  "inputs": {
-  "report/after-reports/after-report-2026-10-26-league-standings.md": "af778c313b74ef83105ff6b149c136e6acf3098e757d6d0d923f0cc5c9091183",
-  "scripts/league_table.py": "88e538093fd3838ae9c202a9ec93d8e6ec60500bb7c6ff6ededb35d0fda48fdd",
-  "scripts/season_deck.py": "122feba1ad164df2586003eb5b2670b57d6f4df14ed5b8ff93b4ae8cc3734b5f"
+  "report/after-reports/after-report-2026-10-26-wording-pass-2.md": "5645e8c25a3f845fff3c484cb38ac1a4cb7e3863d8cc1656878a32bae116a95f",
+  "scripts/season_deck.py": "f971b4faeb734b78d596aa0d3650c95ec69fe38ea06710b758424586c5f456a3"
  },
  "gates": [
   {
    "name": "kit check_report",
-   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-26-league-standings.md",
+   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-26-wording-pass-2.md",
    "cwd": ".",
    "pass_re": "^REPORT GATE: PASS",
    "exit": 0,
-   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-10-26-league-standings.md (structure, publication rule, pull-log row)",
+   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-10-26-wording-pass-2.md (structure, publication rule, pull-log row)",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "REPORT GATE: PASS \u2014 after-report-2026-10-26-league-standings.md (structure, publication rule, pull-log row)"
+    "REPORT GATE: PASS \u2014 after-report-2026-10-26-wording-pass-2.md (structure, publication rule, pull-log row)"
    ]
   },
   {
    "name": "deck judgment_open_items --check-report",
-   "cmd": "/usr/local/bin/python3 scripts/judgment_open_items.py --check-report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-26-league-standings.md",
+   "cmd": "/usr/local/bin/python3 scripts/judgment_open_items.py --check-report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-26-wording-pass-2.md",
    "cwd": "../yahoo-fantasy-basketball",
    "pass_re": "^receipts check PASS",
    "exit": 0,
-   "pass_line": "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-10-26-league-standings.md",
+   "pass_line": "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-10-26-wording-pass-2.md",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-10-26-league-standings.md"
+    "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-10-26-wording-pass-2.md"
    ]
   },
   {
    "name": "deck repeat_market_check --check-report",
-   "cmd": "/usr/local/bin/python3 scripts/repeat_market_check.py --check-report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-26-league-standings.md",
+   "cmd": "/usr/local/bin/python3 scripts/repeat_market_check.py --check-report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-26-wording-pass-2.md",
    "cwd": "../yahoo-fantasy-basketball",
    "pass_re": "^REPEAT-NAME CHECK: PASS",
    "exit": 0,
-   "pass_line": "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-10-26-league-standings.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)",
+   "pass_line": "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-10-26-wording-pass-2.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-10-26-league-standings.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)"
+    "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-10-26-wording-pass-2.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)"
    ]
   },
   {
    "name": "claim receipts",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/independent_audit/claim_receipts.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-26-league-standings.md",
+   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/independent_audit/claim_receipts.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-26-wording-pass-2.md",
    "cwd": ".",
    "pass_re": "^CLAIM RECEIPTS: (PASS|ADVISORY)",
    "exit": 0,
@@ -56,21 +55,6 @@
    "why": "",
    "tail": [
     "CLAIM RECEIPTS: PASS \u2014 1 file(s), every mechanism claim carries a receipt"
-   ]
-  },
-  {
-   "name": "kit test_league_table",
-   "cmd": "python3 scripts/test_league_table.py",
-   "cwd": ".",
-   "pass_re": "^OK",
-   "exit": 0,
-   "pass_line": "OK",
-   "verdict": "PASS",
-   "why": "",
-   "tail": [
-    "----------------------------------------------------------------------",
-    "Ran 20 tests in 0.241s",
-    "OK"
    ]
   },
   {
@@ -84,22 +68,7 @@
    "why": "",
    "tail": [
     "----------------------------------------------------------------------",
-    "Ran 106 tests in 52.548s",
-    "OK"
-   ]
-  },
-  {
-   "name": "kit test_morning",
-   "cmd": "python3 scripts/test_morning.py",
-   "cwd": ".",
-   "pass_re": "^OK",
-   "exit": 0,
-   "pass_line": "OK",
-   "verdict": "PASS",
-   "why": "",
-   "tail": [
-    "----------------------------------------------------------------------",
-    "Ran 15 tests in 0.327s",
+    "Ran 110 tests in 53.409s",
     "OK"
    ]
   },
@@ -119,5 +88,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "35d50f09771fadd5380433d91eb1a4c1a20cc0c9"
+ "base_commit": "301f25ac55f38a35e9cddbdefb0365f55802becb"
 }
