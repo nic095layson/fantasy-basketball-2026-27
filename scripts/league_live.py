@@ -292,7 +292,9 @@ def _main():
         n = sum(len(m["added"]) + len(m["dropped"]) + len(m["to_il"]) + len(m["from_il"]) for m in rec["moves"])
         print(f"LEAGUE MOVES: PASS — {len(rec['moves'])} team(s) changed, {n} move(s), "
               f"{old['as_of']} to {new['as_of']}; wrote {os.path.relpath(outp, KIT)}")
-    print(f"LEAGUE LIVE: PASS — rosters from {'Flaim (Yahoo)' if used == 'flaim' else 'FantasyBot'}, pinned {rel(pin)}")
+    un = new.get("unpooled") or []   # owner 2026-10-26, option (a): never silent
+    flag = (f"; {len(un)} not in the pool, not simulated: " + ", ".join(f"{u['player']} ({u['fantasy_team']}, {u['slot']})" for u in un)) if un else ""
+    print(f"LEAGUE LIVE: PASS — rosters from {'Flaim (Yahoo)' if used == 'flaim' else 'FantasyBot'}, pinned {rel(pin)}{flag}")
     return 0
 
 

@@ -17,8 +17,10 @@ OUTDIR = os.path.join(KIT, "data", "news")
 
 def _team(t):
     """(rostered names incl. unpooled IL, names in an IL slot)."""
-    names = {p["player"] for p in t["players"]} | set(t.get("unpooled_il") or [])
-    il = {p["player"] for p in t["players"] if p["slot"] == "IL"} | set(t.get("unpooled_il") or [])
+    un = t.get("unpooled") or []   # owner 2026-10-26, option (a): a carried name is still a move
+    names = {p["player"] for p in t["players"]} | set(t.get("unpooled_il") or []) | {u["player"] for u in un}
+    il = ({p["player"] for p in t["players"] if p["slot"] == "IL"} | set(t.get("unpooled_il") or [])
+          | {u["player"] for u in un if u["slot"] == "IL"})
     return names, il
 
 

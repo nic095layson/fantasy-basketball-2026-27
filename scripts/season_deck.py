@@ -140,7 +140,8 @@ def build(paths, date):
     wk = calib.get("weeks", {}).get(str(brief.get("week"))) or {}
     data = dict(date=date, generated_utc=datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
                 my_team=my_team, my_seat=my_seat, brief=brief, board=board, status=status,
-                league=dict(as_of=league["as_of"], rosters=rosters, managers={t["name"]: t.get("manager") for t in league["teams"]}), season_lines=lines, matchup=wk,
+                league=dict(as_of=league["as_of"], rosters=rosters, managers={t["name"]: t.get("manager") for t in league["teams"]},
+                            unpooled=league.get("unpooled") or []), season_lines=lines, matchup=wk,
                 ledger=calib.get("weeks", {}), bands=bands, band_engine=band_engine, matchup_live=matchup_live,
                 week_matchup=week_matchup, league_table=league_rec, form=form_rec, scores=scores,
                 config=dict(cats=["FG%", "FT%", "3PM", "PTS", "REB", "AST", "STL", "BLK", "TOV"],
@@ -491,6 +492,9 @@ function matchupBoard(){ const W=D.week_matchup, B=W&&W.board; if(!B) return nul
 
 // ---- Today ----
 (function(){ const b=D.brief, p=$("#pane-today");
+  // owner 2026-10-26, option (a): rostered names the intake carried without a pool row — never silent
+  const UN=(D.league&&D.league.unpooled)||[];
+  if(UN.length) p.append(h("div",{class:"card"},h("p",{class:"note zneg",id:"unpooled-note"},"Not in the pool, not simulated: "+UN.map(u=>u.player+" ("+u.fantasy_team+", "+u.slot+")").join(", ")+". Each needs a pool row before the simulator counts him.")));
   $("#hdate").textContent=D.date;
   $("#hsub").textContent=T(D.my_team)+" · week "+b.week+" vs "+T(b.opponent)+" · lines "+b.lines+" · rosters as-of "+D.league.as_of;
   // owner 2026-10-23: when the tool was last updated (the morning run's build time), in the viewer's own clock
@@ -798,7 +802,7 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
   let view="season", key="power", asc=true;
   const fv=(c,x)=>x==null?"–":(c.indexOf("%")>=0? x.toFixed(3).replace(/^0/,"") : String(x));
   const rows=()=>{ if(view==="season") return Object.entries(L.cumulative).map(([t,c])=>({team:t, manager:c.manager, mine:c.mine, cats:c.cats, ranks:c.ranks, weeks:c.weeks, power:pw[t]?pw[t].rank:N+1, pct:pw[t]?pw[t].allplay.pct:null}));
-    if(!cur||!cur.teams) return [];
+    if(!cur||!cur.teams||cur.status==="not_started") return [];   // owner 2026-10-26: no stats yet
     const cats={}; Object.entries(cur.teams).forEach(([t,x])=>{ cats[t]={"FG%":x.totals.fga?x.totals.fgm/x.totals.fga:null,"FT%":x.totals.fta?x.totals.ftm/x.totals.fta:null,"3PTM":x.totals.tpm,"PTS":x.totals.pts,"REB":x.totals.reb,"AST":x.totals.ast,"ST":x.totals.stl,"BLK":x.totals.blk,"TO":x.totals.tov}; });
     const rk={}; CAT.forEach(c=>{ const v=Object.entries(cats).map(([t,x])=>[t,x[c]]).filter(a=>a[1]!=null).sort((a,b)=>c==="TO"?a[1]-b[1]:b[1]-a[1]); let r=0,prev=null; v.forEach(([t,x],i)=>{ if(x!==prev){r=i+1;prev=x;} (rk[t]=rk[t]||{})[c]=r; }); });
     return Object.entries(cur.teams).map(([t,x])=>({team:t, manager:(L.cumulative[t]||{}).manager, mine:(L.cumulative[t]||{}).mine, cats:cats[t], ranks:rk[t]||{}, weeks:1,
@@ -809,7 +813,8 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
   function render(){ const rs=rows();
     rs.sort((x,y)=>{ const g=(r)=>key==="team"?r.team:(key==="power"?r.power:(key==="pct"?(r.pct==null?-1:r.pct):(r.cats[key]==null?(asc?Infinity:-Infinity):r.cats[key])));
       const a=g(x), b=g(y); return (a<b?-1:a>b?1:0)*(asc?1:-1); });
-    const wkNote=cur? (view==="season"? "Season to date: "+finished.length+" finished week"+(finished.length===1?"":"s")+(cur.status==="in_progress"?" plus week "+cur.week+" to date":"")+". " : "Week "+cur.week+" to date ("+cur.window[0]+" to "+cur.window[1]+"), from "+(cur.source==="yahoo"?"Yahoo's scoreboard at the morning pull":"the box-score rebuild")+". ") : "";
+    const wkNote=cur? (cur.status==="not_started"? (view==="season"? "Season to date: "+finished.length+" finished week"+(finished.length===1?"":"s")+"; week "+cur.week+" not started (Yahoo shows no stats yet). " : "Week "+cur.week+" ("+cur.window[0]+" to "+cur.window[1]+"): no stats yet. ")
+      : (view==="season"? "Season to date: "+finished.length+" finished week"+(finished.length===1?"":"s")+(cur.status==="in_progress"?" plus week "+cur.week+" to date":"")+". " : "Week "+cur.week+" to date ("+cur.window[0]+" to "+cur.window[1]+"), from "+(cur.source==="yahoo"?"Yahoo's scoreboard at the morning pull":"the box-score rebuild")+". ")) : "";
     box.replaceChildren(h("div",{},
       h("p",{class:"note"},wkNote+"Percentages are total makes over total attempts. Click a column to sort; turnovers sort fewest first. Badge = rank of "+N+" in that category."),
       h("div",{class:"tablebox"},h("table",{id:"lg-table",class:"lg"},

@@ -199,5 +199,14 @@ class SimulatorPool(unittest.TestCase):
         self.assertIn("left out of the season simulation", line)
 
 
+
+class Unpooled(unittest.TestCase):
+    """Owner 2026-10-26, option (a): every name the intake carried without a pool row is named in the brief."""
+    def test_named_with_team_and_slot_and_none_says_nothing(self):
+        st = {"unpooled": [dict(player="Trevon Brazile", fantasy_team="Podz save the league", seat=4, slot="BN", nba_team="DEN", status=None)]}
+        self.assertEqual(DB.unpooled_line(st), "**Not in the pool, not simulated (1):** Trevon Brazile (Podz save the league, BN, DEN). "
+                                                "Each needs a data/pool_additions.csv row before the simulator counts him.")
+        self.assertIsNone(DB.unpooled_line({"unpooled": []})); self.assertIsNone(DB.unpooled_line({}))
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
