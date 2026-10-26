@@ -1022,3 +1022,11 @@
 {"deck_head": "cbfb422", "detail": "OK", "engine_commit": "95ebade", "kit_head": "4b16db4", "name": "kit test_sweep_record", "ran_at": "2026-10-26T21:54:22Z", "verdict": "PASS"}
 {"deck_head": "cbfb422", "detail": "OK", "engine_commit": "95ebade", "kit_head": "4b16db4", "name": "kit test_morning", "ran_at": "2026-10-26T21:54:23Z", "verdict": "PASS"}
 {"deck_head": "cbfb422", "detail": "OK", "engine_commit": "95ebade", "kit_head": "4b16db4", "name": "kit test_daily_brief", "ran_at": "2026-10-26T21:54:24Z", "verdict": "PASS"}
+{"deck_head": "cbfb422", "detail": "OK", "engine_commit": "95ebade", "kit_head": "f3315ec", "name": "kit test_season_deck", "ran_at": "2026-10-26T21:55:20Z", "verdict": "PASS"}
+{"deck_head": "cbfb422", "detail": "OK", "engine_commit": "95ebade", "kit_head": "f3315ec", "name": "deck test_patches", "ran_at": "2026-10-26T21:55:22Z", "verdict": "PASS"}
+{"deck_head": "cbfb422", "detail": "OK", "engine_commit": "95ebade", "kit_head": "f3315ec", "name": "deck test_schedule", "ran_at": "2026-10-26T21:55:24Z", "verdict": "PASS"}
+{"deck_head": "cbfb422", "detail": "CONSTANTS CHECK: PASS — 32 registered = 32 live on deck cbfb422; declared_band 5, measured 7, settings 7, structural 4, uncalibrated 9", "engine_commit": "95ebade", "kit_head": "f3315ec", "name": "redteam constants", "ran_at": "2026-10-26T21:55:24Z", "verdict": "PASS"}
+{"deck_head": "cbfb422", "detail": "BANDS CHECK: PASS — 2 FRAGILE band(s) quoted (arena.TEAM_WEEK_SHOCK, arena.weekly_availability); engine cbfb422", "engine_commit": "95ebade", "kit_head": "f3315ec", "name": "redteam bands", "ran_at": "2026-10-26T21:55:24Z", "verdict": "PASS"}
+{"deck_head": "cbfb422", "detail": "CURRENT 5; UNFINGERPRINTED 4", "engine_commit": "95ebade", "kit_head": "f3315ec", "name": "run_attacks", "ran_at": "2026-10-26T21:55:24Z", "verdict": "PASS"}
+{"deck_head": "cbfb422", "detail": "ATTACKS CHECK: PASS — 9 attacks on engine cbfb422 (engine files last changed 95ebade); CURRENT 5, UNFINGERPRINTED 4", "engine_commit": "95ebade", "kit_head": "f3315ec", "name": "redteam attacks", "ran_at": "2026-10-26T21:55:24Z", "verdict": "PASS"}
+{"deck_head": "cbfb422", "detail": "CLAIM GATE: PASS", "engine_commit": "95ebade", "kit_head": "f3315ec", "name": "kit check_claims --gate", "ran_at": "2026-10-26T21:55:24Z", "verdict": "PASS"}
