@@ -1,25 +1,12 @@
 {
- "ran_at_utc": "2026-10-26T18:13:34Z",
+ "ran_at_utc": "2026-10-26T18:27:16Z",
  "inputs": {
-  "report/after-reports/redteam-2026-10-26/sweep.json": "9a8afd3a6d67d5f394871350753d3dde25530be019705d8b20487cd112213008"
+  "scripts/season_deck.py": "e7bbf6b76f3d25770c842a07157c41162d397aaef84a50f7f504d41d7483c6f1"
  },
  "gates": [
   {
-   "name": "redteam attacks",
-   "cmd": "python3 scripts/redteam/run_attacks.py --check",
-   "cwd": ".",
-   "pass_re": "^ATTACKS CHECK: PASS",
-   "exit": 0,
-   "pass_line": "ATTACKS CHECK: PASS \u2014 9 attacks on engine c11b05b (engine files last changed 95ebade); CURRENT 5, UNFINGERPRINTED 4",
-   "verdict": "PASS",
-   "why": "",
-   "tail": [
-    "ATTACKS CHECK: PASS \u2014 9 attacks on engine c11b05b (engine files last changed 95ebade); CURRENT 5, UNFINGERPRINTED 4"
-   ]
-  },
-  {
-   "name": "kit test_redteam_sweep",
-   "cmd": "python3 scripts/test_redteam_sweep.py",
+   "name": "kit test_season_deck",
+   "cmd": "python3 scripts/test_season_deck.py",
    "cwd": ".",
    "pass_re": "^OK",
    "exit": 0,
@@ -28,22 +15,7 @@
    "why": "",
    "tail": [
     "----------------------------------------------------------------------",
-    "Ran 10 tests in 0.756s",
-    "OK"
-   ]
-  },
-  {
-   "name": "kit test_redteam_attacks",
-   "cmd": "python3 scripts/test_redteam_attacks.py",
-   "cwd": ".",
-   "pass_re": "^OK",
-   "exit": 0,
-   "pass_line": "OK",
-   "verdict": "PASS",
-   "why": "",
-   "tail": [
-    "----------------------------------------------------------------------",
-    "Ran 7 tests in 0.003s",
+    "Ran 101 tests in 45.436s",
     "OK"
    ]
   },
@@ -63,5 +35,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "5b90019159f1c3849665f7f870ff0f130f955076"
+ "base_commit": "9d83c0bdcb6c593f18fafaa70addd07b16428288"
 }
