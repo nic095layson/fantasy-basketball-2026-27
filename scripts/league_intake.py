@@ -9,11 +9,16 @@ to the deck's pool, maps each fantasy team to its draft seat by roster overlap w
 
 Resolution: the deck's name fold (verify_rosters.norm: accents, punctuation, suffixes,
 aliases), then Yahoo's own abbreviations as recorded on the draft board (recap.json
-"abbr" -> "player"). Nothing else: a name neither rule resolves HALTS the intake and
-nothing is written (RULES.md rule 4; the Session 1 prompt: "halt on any miss").
-One recorded exception (Council 2026-10-15, 4-1): a name listed in data/unpooled_il.json
-passes ONLY while it sits in an IL slot, carried as `unpooled_il` with no line; on any
-other slot it halts like every other miss.
+"abbr" -> "player"). Nothing else: a name neither rule resolves is never guessed (RULES.md rule 4).
+Council 2026-10-15 (4-1), unchanged: a name listed in data/unpooled_il.json that sits in an IL slot is
+carried as `unpooled_il` with no line.
+Owner 2026-10-26, option (a) (the 10/26 Brazile halt froze every roster for a rival's bench pickup): any
+OTHER name the pool lacks no longer halts the intake. It is carried as `unpooled` (per team, and listed in
+the state's top-level `unpooled`) with no projection line, a named LEAGUE INTAKE: WARN line is printed,
+and the brief and the deck's Today tab show it as "not in the pool, not simulated". The simulator reads
+only `players`, so it never sees an unpooled name; the gap stays visible every day until a
+data/pool_additions.csv row lands. This widens the Council rule from "a listed IL stash" to "any slot,
+flagged"; the IL path itself is untouched.
 
 The pool is the deck's data/players.csv (frozen at the draft lock) followed by the kit's data/pool_additions.csv:
 in-season pickups the draft pool never carried, one deck-schema row each (owner 2026-10-21, option (b)). A name
@@ -146,24 +151,29 @@ def run(src, out, pool, abbr, draft, as_of, managers=None, sources=None, unpoole
     il_exempt = {r["player"] for r in rows if r["player"] in unpooled and r["slot"] == "IL"}
     names = [r["player"] for r in rows if r["player"] != EMPTY and r["player"] not in il_exempt]
     res, miss = resolve(names, pool, abbr)
+    missed = set(miss)
     if miss:
-        print(f"LEAGUE INTAKE: HALT — {len(miss)} name(s) not in the pool; nothing written:")
-        for n in miss:
-            r = next(x for x in rows if x["player"] == n)
-            print(f"  - {n} ({r['fantasy_team']}, {r['slot']}, {r['nba_team']}, status {r['status'] or '-'})")
-        return 1
+        # owner 2026-10-26, option (a): carried, flagged, never simulated, never guessed
+        print(f"LEAGUE INTAKE: WARN — {len(miss)} name(s) not in the pool, carried as unpooled (no line, not simulated): "
+              + "; ".join(f"{n} ({r['fantasy_team']}, {r['slot']}, {r['nba_team']})"
+                          for n in miss for r in [next(x for x in rows if x["player"] == n)]))
     team_of = {p["player"]: p["team"] for p in pool}
     teams, order = {}, []
     for r in rows:
         t = r["fantasy_team"]
         if t not in teams:
-            teams[t] = {"name": t, "players": [], "empty_slots": [], "unpooled_il": []}
+            teams[t] = {"name": t, "players": [], "empty_slots": [], "unpooled_il": [], "unpooled": []}
             order.append(t)
         if r["player"] == EMPTY:
             teams[t]["empty_slots"].append(r["slot"])
             continue
         if r["player"] in il_exempt:
             teams[t]["unpooled_il"].append(r["player"])
+            continue
+        if r["player"] in missed:
+            teams[t]["unpooled"].append({"player": r["player"], "slot": r["slot"], "nba_team": r["nba_team"],
+                                         "positions": r["positions"].split(",") if r["positions"] else [],
+                                         "status": r["status"] or None})
             continue
         p = res[r["player"]]
         teams[t]["players"].append({"player": p, "yahoo_name": r["player"], "slot": r["slot"],
@@ -194,15 +204,18 @@ def run(src, out, pool, abbr, draft, as_of, managers=None, sources=None, unpoole
         for p in problems:
             print("  -", p)
         return 1
-    state = {"as_of": as_of, "sources": sources or {}, "unpooled_il": {n: unpooled[n] for n in sorted(il_exempt)}, "standings": None, "scoreboard": None,
+    flagged = [dict(player=u["player"], fantasy_team=teams[t]["name"], seat=teams[t].get("seat"), slot=u["slot"],
+                    nba_team=u["nba_team"], status=u["status"]) for t in order for u in teams[t]["unpooled"]]
+    state = {"as_of": as_of, "sources": sources or {}, "unpooled_il": {n: unpooled[n] for n in sorted(il_exempt)},
+             "unpooled": flagged, "standings": None, "scoreboard": None,
              "standings_note": "pre-season: no standings or scoreboard exist before week 1 (2026-10-20)",
              "teams": [teams[t] for t in order], "nba_team_disagreements": disagreements}
     with open(out, "w", encoding="utf-8") as f:
         json.dump(state, f, indent=1, ensure_ascii=False)
         f.write("\n")
     n = sum(len(teams[t]["players"]) for t in order)
-    print(f"LEAGUE INTAKE: PASS — {len(order)} teams, {n} players, {n} of {n} resolved; "
-          f"{len(disagreements)} NBA-team disagreement(s) with the pool; wrote {os.path.relpath(out, KIT)}")
+    print(f"LEAGUE INTAKE: PASS — {len(order)} teams, {n} players, {n} of {n} resolved; {len(flagged)} unpooled; "
+          f"{len(disagreements)} NBA-team disagreement(s) with the pool; wrote {os.path.relpath(out, KIT) if out.startswith(KIT) else out}")
     return 0
 
 

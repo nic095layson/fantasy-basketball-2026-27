@@ -167,5 +167,54 @@ class Build(unittest.TestCase):
         self.assertIn("pull_2026-10-28.json", json.dumps(rec["inputs"]))
 
 
+
+def blank_side(seat, name):
+    """A Yahoo matchup side on day one of a week: '/' for makes/attempts, '' for every other cell (the 10/26 pull)."""
+    cats = [dict(displayName="FGM/A", value="/"), dict(displayName="FG%", value=""), dict(displayName="FTM/A", value="/"),
+            dict(displayName="FT%", value="")] + [dict(displayName=c, value="") for c in ("3PTM", "PTS", "REB", "AST", "ST", "BLK", "TO")]
+    return dict(teamKey=f"{TFL.KEY}.t.{seat}", teamId=str(seat), teamName=name, categories=cats,
+                categoryScore=dict(wins=0, losses=0, ties=9), gamesRemaining=40)
+
+
+class NotStarted(unittest.TestCase):
+    """Owner 2026-10-26: on day one of a week Yahoo shows '/' and '' — record the week as not started, not an error."""
+    def block(self, bad=None):
+        ms = []
+        for i in range(6):
+            a, b = 2 * i + 1, 2 * i + 2
+            sa, sb = blank_side(a, TEAMS[a - 1]), blank_side(b, TEAMS[b - 1])
+            ms.append(dict(matchupId=i + 1, week=2, status="in_progress", home=sa, away=sb))
+        if bad:
+            ms[0]["home"]["categories"][0]["value"] = bad
+        return dict(leagueKey=TFL.KEY, currentWeek=2, matchupWeek=2, matchups=ms)
+
+    def test_a_blank_week_is_not_started_with_no_totals_and_yahoos_score(self):
+        out = LT.week_from_yahoo(self.block(), STATE)
+        self.assertEqual(len(out), 12)
+        x = out["Team 1"]
+        self.assertIsNone(x["totals"]); self.assertTrue(x["not_started"])
+        self.assertEqual(x["score"], dict(wins=0, losses=0, ties=9))
+
+    def test_still_malformed_values_fail_loudly(self):
+        for bad in ("12/", "abc"):
+            with self.assertRaises(LT.TableError):
+                LT.week_from_yahoo(self.block(bad), STATE)
+
+    def test_build_records_the_week_as_not_started_and_leaves_it_out_of_the_totals(self):
+        d = tempfile.mkdtemp()
+        pull_dir = os.path.join(d, "flaim"); os.makedirs(pull_dir)
+        st = os.path.join(d, "state.json"); json.dump(STATE, open(st, "w"))
+        json.dump(pull("2026-10-26", {1: block(1, "final"), 2: self.block()}), open(os.path.join(pull_dir, "pull_2026-10-26.json"), "w"))
+        rec = LT.build("2026-10-26", dict(state=st, pull_dir=pull_dir, actuals=os.path.join(d, "none")))
+        w2 = rec["weeks"][-1]
+        self.assertEqual((w2["week"], w2["status"]), (2, "not_started"))
+        self.assertNotIn("allplay", w2)
+        self.assertEqual(rec["cumulative"]["Team 1"]["weeks"], 1)                     # week 1 only
+        p = subprocess.run([sys.executable, os.path.join(HERE, "league_table.py"), "--date", "2026-10-26", "--state", st,
+                            "--pull-dir", pull_dir, "--actuals", os.path.join(d, "none"), "--out-dir", os.path.join(d, "out"), "--ledger", ""],
+                           capture_output=True, text=True)
+        self.assertIn("LEAGUE TABLE: PASS", p.stdout, p.stdout + p.stderr)
+        self.assertIn("wk2 not started (Yahoo shows no stats yet)", p.stdout)
+
 if __name__ == "__main__":
     unittest.main()

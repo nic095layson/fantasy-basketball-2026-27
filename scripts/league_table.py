@@ -108,6 +108,23 @@ def _seats(state):
     return {_fold(t["name"]): (t["name"], t["seat"], t.get("manager")) for t in state["teams"]}
 
 
+def _not_started(side):
+    """True when a side carries no stats at all: FGM/A and FTM/A read '/' (or empty) and every other cell is empty —
+    Yahoo on day one of a week (owner 2026-10-26; the 10/26 FAIL). Anything else unreadable still raises, through
+    flaim_live._pair, which stays strict for scoreboard_intake and week_matchup."""
+    cats = side.get("categories") or []
+    if not cats:
+        return False
+    for c in cats:
+        v = c.get("value")
+        if c.get("displayName") in ("FGM/A", "FTM/A"):
+            if str(v if v is not None else "").strip() not in ("/", ""):
+                return False
+        elif str(v if v is not None else "").strip() != "":
+            return False
+    return True
+
+
 def week_from_yahoo(block, state):
     """{team: {seat, totals, opponent, score, games_remaining}} from one Yahoo matchup block (all six matchups)."""
     seats = _seats(state)
@@ -123,14 +140,23 @@ def week_from_yahoo(block, state):
                 raise TableError(f"Yahoo team {s.get('teamName')!r} is not in the league state")
             names.append(hit[0])
         for s, n, o in ((sides[0], names[0], names[1]), (sides[1], names[1], names[0])):
-            try:
-                totals = FL.side_totals(s)
-            except FL.PullError as e:
-                raise TableError(str(e))
+            blank = _not_started(s)
+            if blank:
+                totals = None   # no games yet: no totals, never an error (owner 2026-10-26)
+            else:
+                try:
+                    totals = FL.side_totals(s)
+                except FL.PullError as e:
+                    raise TableError(str(e))
             sc = s.get("categoryScore") or {}
             score = dict(wins=sc.get("wins"), losses=sc.get("losses"), ties=sc.get("ties")) if sc else None
             out[n] = dict(seat=seats[_fold(n)][1], totals=totals, opponent=o, score=score,
-                          games_remaining=s.get("gamesRemaining"))
+                          games_remaining=s.get("gamesRemaining"), not_started=blank)
+    # some sides played and some did not (a team idle on the first day): the idle ones carry zero totals
+    if any(x["totals"] is not None for x in out.values()):
+        for x in out.values():
+            if x["totals"] is None:
+                x["totals"] = {k: 0 for k in STATS}
     if len(out) != len(state["teams"]):
         raise TableError(f"the block names {len(out)} teams, the league state {len(state['teams'])}")
     return out
@@ -226,7 +252,9 @@ def build(date, paths):
                 continue
             pd, fn, blk = cands[-1]
             teams = week_from_yahoo(blk, state)
-            weeks.append(dict(week=n, window=[s, e], status="in_progress", source="yahoo", pull=fn, teams=teams))
+            started = any(x["totals"] is not None for x in teams.values())
+            weeks.append(dict(week=n, window=[s, e], status="in_progress" if started else "not_started", source="yahoo",
+                              pull=fn, teams=teams))
             inputs[fn] = _fingerprint(os.path.join(paths["pull_dir"], fn))
     # cumulative totals, ranks, all-play and actual records
     cum, ap_sum, act = {}, {}, {}
@@ -235,7 +263,7 @@ def build(date, paths):
                               totals={k: 0 for k in STATS}, weeks=0)
         ap_sum[t["name"]] = dict(w=0, l=0, t=0); act[t["name"]] = dict(w=0, l=0, t=0)
     for w in weeks:
-        if not w["teams"]:
+        if not w["teams"] or w["status"] == "not_started":
             continue
         ap = allplay({n: x["totals"] for n, x in w["teams"].items()})
         w["allplay"] = ap
@@ -291,7 +319,8 @@ def main():
     out = os.path.join(a.out_dir, f"league_{a.date}.json")
     with open(out, "w", encoding="utf-8") as f:
         json.dump(rec, f, indent=1, ensure_ascii=False); f.write("\n")
-    srcs = ", ".join(f"wk{w['week']} {w['status']} ({w['source']})" for w in rec["weeks"])
+    srcs = ", ".join(f"wk{w['week']} not started (Yahoo shows no stats yet)" if w["status"] == "not_started"
+                     else f"wk{w['week']} {w['status']} ({w['source']})" for w in rec["weeks"])
     top = rec["power"][0]
     me = next(x for x in rec["power"] if x["mine"])
     msg = (f"{a.date}: week {rec['week']}; {srcs}; power #1 {top['team']} ({top['allplay']['pct']:.3f}), you #{me['rank']} "

@@ -1,0 +1,40 @@
+{
+ "captured_utc": "2026-10-26T14:42:31.921Z",
+ "input": {
+  "query": "Trevon Brazile",
+  "platform": "yahoo",
+  "sport": "basketball",
+  "league_id": "478.l.36464",
+  "season_year": 2026,
+  "count": 5
+ },
+ "response": {
+  "success": true,
+  "data": {
+   "leagueKey": "478.l.36464",
+   "leagueName": "ANTI MARTIN MARTIN CLUB",
+   "query": "Trevon Brazile",
+   "count": 1,
+   "players": [
+    {
+     "id": "10607",
+     "name": "Trevon Brazile",
+     "team": "DEN",
+     "position": "PF",
+     "market_percent_owned": 15,
+     "ownership_scope": "platform_global",
+     "league_status": "ROSTERED",
+     "league_team_name": "Podz save the league",
+     "league_owner_name": "kevin",
+     "isKeeper": {
+      "status": false,
+      "cost": false,
+      "kept": false
+     }
+    }
+   ]
+  }
+ },
+ "source_transcript_sha256": "62dac5c35b50fc7d",
+ "tool": "mcp__Flaim_Fantasy__get_players"
+}

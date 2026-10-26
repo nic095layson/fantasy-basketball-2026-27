@@ -220,8 +220,9 @@ class FlaimFirst(unittest.TestCase):
         self.assertEqual({t: sorted(d) for t, d in (pinned.get("daily") or {}).items()}, {team: ["2026-10-20"]})
 
     @unittest.skipUnless(os.path.exists(PIN), "no pinned Flaim pull")
-    def test_an_active_player_with_no_pool_row_still_halts_and_writes_nothing(self):
-        # the intake's halt stands for any rostered, non-IL name the pool lacks (a made-up name added to a copy)
+    def test_an_active_player_with_no_pool_row_is_carried_unpooled_and_named(self):
+        # owner 2026-10-26, option (a) (replaces the halt this test asserted until then): a rostered, non-IL name the
+        # pool lacks is carried as `unpooled`, named on the LEAGUE LIVE line, and the state is written
         pull = json.load(open(self.PIN, encoding="utf-8"))
         team = sorted(pull["rosters"])[7]
         pull["rosters"][team]["players"].append(dict(name="Not A Pool Player", playerKey="478.p.999999", team="NYK",
@@ -230,9 +231,12 @@ class FlaimFirst(unittest.TestCase):
         with os.fdopen(fd, "w", encoding="utf-8") as f:
             json.dump(pull, f)
         p, out, tdir = self.run_live("--source", "flaim", "--pull", pin)
-        self.assertIn("Not A Pool Player", p.stdout)
-        self.assertIn("LEAGUE LIVE: HALT", p.stdout)
-        self.assertFalse(os.path.exists(out))
+        self.assertIn("LEAGUE INTAKE: WARN", p.stdout)
+        self.assertIn("LEAGUE LIVE: PASS", p.stdout)
+        self.assertIn("1 not in the pool, not simulated: Not A Pool Player", p.stdout)
+        st = json.load(open(out, encoding="utf-8"))
+        self.assertEqual([u["player"] for u in st["unpooled"]], ["Not A Pool Player"])
+        self.assertNotIn("Not A Pool Player", [q["player"] for t in st["teams"] for q in t["players"]])
 
     def test_an_incomplete_flaim_pull_falls_back_to_fantasybot_and_says_so(self):
         fd, tr = tempfile.mkstemp(suffix=".jsonl")
