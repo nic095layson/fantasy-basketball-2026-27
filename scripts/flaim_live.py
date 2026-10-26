@@ -105,7 +105,8 @@ def keep_daily(pull, path):
     on later days; a past day's lineup is history, so it is kept. For the same team and day the later pull wins.
     The week's matchups and the available-player list are kept the same way when the later pull has none (the 3 PM
     check pulls rosters only; owner 2026-10-22, "Carry them forward"), and carried_forward names what was kept: those
-    are the earlier pin's, pulled by the day's first run. A later pull that has its own wins."""
+    are the earlier pin's, pulled by the day's first run. A later pull that has its own wins. A later pull with some
+    weeks keeps each week the earlier pin had and it lacks ("matchups week N"; owner 2026-10-26)."""
     if not os.path.exists(path):
         return pull
     with open(path, encoding="utf-8") as f:
@@ -121,6 +122,14 @@ def keep_daily(pull, path):
             carried.add(key)
         else:
             carried.discard(key)
+    # owner 2026-10-26 ("same-day re-runs keep earlier final results"): a re-pin that carries some weeks keeps every
+    # week the earlier pin had and it lacks (a finished week's finals are pulled once, by the day's first run)
+    carried = {c for c in carried if not c.startswith("matchups week ")}
+    if pull.get("matchups") and pin.get("matchups"):
+        kept = {w: m for w, m in pin["matchups"].items() if w not in pull["matchups"]}
+        if kept:
+            out["matchups"] = dict(sorted({**kept, **pull["matchups"]}.items(), key=lambda x: int(x[0]) if str(x[0]).isdigit() else 0))
+            carried |= {f"matchups week {w}" for w in kept}
     if carried:
         out["carried_forward"] = sorted(carried)
     else:

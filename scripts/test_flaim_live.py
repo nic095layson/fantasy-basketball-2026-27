@@ -167,6 +167,14 @@ class Extract(unittest.TestCase):
         self.assertEqual((pull["matchups"], pull["free_agents"], "carried_forward" in pull),
                          ({"1": {"m": "new"}}, {"freeAgents": []}, False))
 
+    def test_a_same_day_re_pin_keeps_a_week_the_earlier_pin_had_and_the_new_pull_lacks(self):
+        # owner 2026-10-26 ("same-day re-runs keep earlier final results"): the 15:12Z morning re-run re-pinned
+        # pull_2026-10-26.json with week 2 only, and week 1's finals, pinned by the first run, were lost
+        path = self.pin({}, matchups={"1": {"m": "week 1 finals"}, "2": {"m": "old 2"}})
+        pull = FL.keep_daily({"source": "flaim", "daily": {}, "matchups": {"2": {"m": "new 2"}}}, path)
+        self.assertEqual(pull["matchups"], {"1": {"m": "week 1 finals"}, "2": {"m": "new 2"}})
+        self.assertEqual(pull["carried_forward"], ["matchups week 1"])
+
     def test_with_no_earlier_pin_the_pull_is_pinned_as_it_is(self):
         pull = {"source": "flaim", "daily": {}}
         self.assertEqual(FL.keep_daily(dict(pull), os.path.join(tempfile.mkdtemp(), "pull_2026-10-22.json")), pull)

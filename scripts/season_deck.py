@@ -8,7 +8,7 @@ Inputs (all must exist; a missing or malformed record halts the build):
   status        data/status/status_<date>.json          (status_feed.py)
   league_state  data/league_state.json                  (league_intake.py)
   season_lines  data/season/season_lines_<date>.json    (season_lines.py)
-  sweep         report/after-reports/redteam-2026-10-19/sweep.json  (standing red-team sweep)
+  sweep         report/after-reports/redteam-2026-10-26-season/sweep.json  (red-team sweep on the season configuration)
   calibration   report/calibration.json                 (weekly_preview.py)
 
 The page embeds those records verbatim as JSON and renders every figure from them in the browser; the static shell
@@ -41,7 +41,7 @@ def default_paths(date):
                 status=os.path.join(KIT, "data", "status", f"status_{date}.json"),
                 league_state=os.path.join(KIT, "data", "league_state.json"),
                 season_lines=os.path.join(KIT, "data", "season", f"season_lines_{date}.json"),
-                sweep=os.path.join(KIT, "report", "after-reports", "redteam-2026-10-19", "sweep.json"),
+                sweep=os.path.join(KIT, "report", "after-reports", "redteam-2026-10-26-season", "sweep.json"),
                 calibration=os.path.join(KIT, "report", "calibration.json"),
                 # optional (owner 2026-10-20; trade finder removed on the owner's veto 2026-10-20): absent renders nothing
                 matchup_live=os.path.join(KIT, "data", "news", f"matchup_live_{date}.json"),
@@ -163,12 +163,14 @@ def build(paths, date):
             dict(label=v.get("label"), shift=v.get("shift_mean_1dp", f"{v['shift_mean']:+.1f}")) for v in c["variants"]]))
         if not bands[-1]["variants"]: raise DeckError(f"FRAGILE band {key} with no variants")
     band_engine = sweep.get("engine_commit") or sweep.get("engine")
+    # owner 2026-10-26: which configuration the bands were measured on (daily_brief.sweep_config's wording)
+    band_config = "season sweep (current rosters, season pool)" if sweep.get("state_sha256") else "draft sweep (draft rosters, frozen pool)"
     wk = calib.get("weeks", {}).get(str(brief.get("week"))) or {}
     data = dict(date=date, generated_utc=datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
                 my_team=my_team, my_seat=my_seat, brief=brief, board=board, status=status,
                 league=dict(as_of=league["as_of"], rosters=rosters, managers={t["name"]: t.get("manager") for t in league["teams"]},
                             unpooled=league.get("unpooled") or [], my_positions=my_positions), season_lines=lines, matchup=wk,
-                ledger=calib.get("weeks", {}), bands=bands, band_engine=band_engine, matchup_live=matchup_live,
+                ledger=calib.get("weeks", {}), bands=bands, band_engine=band_engine, band_config=band_config, matchup_live=matchup_live,
                 week_matchup=week_matchup, league_table=league_rec, form=form_rec, scores=scores,
                 config=dict(cats=["FG%", "FT%", "3PM", "PTS", "REB", "AST", "STL", "BLK", "TOV"],
                             tier_low=0.3, tier_high=1.0, verdict_edge=0.5, verdict_strong=1.5,
@@ -573,7 +575,7 @@ function matchupBoard(){ const W=D.week_matchup, B=W&&W.board; if(!B) return nul
   p.append(
     h("div",{class:"cols"},
       h("div",{class:"card span2"},h("h2",{},"Odds"),tiles,noteMore("Model bands: "+(D.bands||[]).map(b=>b.name.split(".").pop()+" "+b.variants.map(v=>v.shift).join("/")).join(" · ")+" title pts",
-        "Structural band (standing sweep): "+bandLine())),
+        "Structural band ("+D.band_config+"): "+bandLine())),
       h("div",{class:"card"},h("h2",{},"Lineup"),h("div",{class:"tablebox"},h("table",{},
         b.lineup.map(([slot,name])=>h("tr",{},h("td",{},h("span",{class:"chip"},slot)),h("td",{},name))))),
         b.bench.length?h("p",{class:"note"},"Bench: "+b.bench.join(", ")):null),

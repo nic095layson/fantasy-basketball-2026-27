@@ -85,6 +85,23 @@ class Band(unittest.TestCase):
         self.assertRegex(line, r"[+-]\d\.\d")
 
 
+class SeasonBand(unittest.TestCase):
+    """Owner 2026-10-26 ("re-measure the uncertainty ranges shown with the title odds now that they use the updated
+    stats"): the brief quotes the sweep run on the season configuration and says which configuration it is."""
+    def test_the_brief_reads_the_season_sweep(self):
+        self.assertTrue(DB.SWEEP.endswith(os.path.join("redteam-2026-10-26-season", "sweep.json")))
+
+    def test_the_band_line_names_the_configuration(self):
+        import json, tempfile
+        rec = dict(engine_commit="abc1234", fragile=["arena.TEAM_WEEK_SHOCK"], constants={"arena.TEAM_WEEK_SHOCK": dict(
+            tier="FRAGILE", variants=[dict(label="no shock", shift_mean=3.0), dict(label="doubled", shift_mean=-2.5)])})
+        d = tempfile.mkdtemp()
+        json.dump(rec, open(os.path.join(d, "draft.json"), "w"))
+        json.dump(dict(rec, state_sha256="x", pool_sha256="y"), open(os.path.join(d, "season.json"), "w"))
+        self.assertIn("draft sweep", DB.band_line(os.path.join(d, "draft.json")))
+        self.assertIn("season sweep", DB.band_line(os.path.join(d, "season.json")))
+
+
 class SeasonPool(unittest.TestCase):
     """In-season tool: SEASON_POOL (a deck-schema CSV path) overrides the preseason v69 pool for the brief, the
     preview and the waiver scan; unset, the preseason pool loads as before."""

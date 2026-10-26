@@ -120,5 +120,49 @@ class Smoke(unittest.TestCase):
             self.assertTrue(os.path.exists(out))
 
 
+
+class SeasonConfiguration(unittest.TestCase):
+    """Owner 2026-10-26 ("re-measure the uncertainty ranges ... now that they use the updated stats"): the sweep runs
+    on a named state and pool (the season configuration the title odds use) and records both with their sha256; the
+    draft configuration stays the default."""
+    def setUp(self):
+        if not os.path.isdir(S.DECK):
+            self.skipTest("deck not present")
+        import csv
+        self.d = tempfile.mkdtemp()
+        st = json.load(open(os.path.join(S.DECK, S.STATE), encoding="utf-8"))
+        first = st["picks"][0]["player"]; st["picks"][0]["player"] = "Season Pickup Zzz"
+        self.state = os.path.join(self.d, "state.json"); json.dump(st, open(self.state, "w"))
+        with open(os.path.join(S.DECK, S.POOL), encoding="utf-8") as f:
+            r = csv.DictReader(f); fields = r.fieldnames; rows = list(r)
+        rows.append(dict(next(x for x in rows if x["player"] == first), player="Season Pickup Zzz"))
+        self.pool = os.path.join(self.d, "pool.csv")
+        with open(self.pool, "w", newline="", encoding="utf-8") as f:
+            w = csv.DictWriter(f, fieldnames=fields); w.writeheader(); w.writerows(rows)
+
+    def test_a_job_plays_the_named_state_and_pool(self):
+        label, seed, title, playoff = S._job(("baseline", {}, 1, 20, S.DECK, self.state, self.pool))
+        self.assertEqual((label, seed), ("baseline", 1))
+        self.assertGreaterEqual(title, 0.0)
+
+    def test_the_record_names_the_configuration_with_hashes_and_its_own_references(self):
+        import hashlib
+        refs = {}
+        for sd in (1, 2):
+            refs[sd] = os.path.join(self.d, f"ref_{sd}.json")
+            json.dump({"teams": {str(S.OWNER_SEAT): {"champ": 50.0}}}, open(refs[sd], "w"))
+        rec = S.run_sweep(seasons=10, seeds=(1, 2), out=os.path.join(self.d, "sweep.json"), workers=2,
+                          registry=registry(SHOCK, FIXED), state=self.state, pool=self.pool, references=refs)
+        self.assertEqual(rec["state"], self.state); self.assertEqual(rec["pool"], self.pool)
+        self.assertEqual(rec["state_sha256"], hashlib.sha256(open(self.state, "rb").read()).hexdigest())
+        self.assertEqual(rec["pool_sha256"], hashlib.sha256(open(self.pool, "rb").read()).hexdigest())
+        self.assertEqual(rec["reference_10k"], {"1": 50.0, "2": 50.0})
+
+    def test_a_missing_reference_is_an_error_not_a_silent_skip(self):
+        with self.assertRaises(FileNotFoundError):
+            S.run_sweep(seasons=10, seeds=(1,), out=os.path.join(self.d, "sweep.json"), workers=1,
+                        registry=registry(SHOCK, FIXED), state=self.state, pool=self.pool,
+                        references={1: os.path.join(self.d, "nope.json")})
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
