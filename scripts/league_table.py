@@ -37,6 +37,7 @@ KIT = CG.KIT
 PULL_DIR = os.path.join(KIT, "data", "source", "flaim")
 ACTUALS = os.path.join(KIT, "data", "actuals")
 OUT = os.path.join(KIT, "report", "league")
+WEEKS = os.path.join(KIT, "data", "weeks")
 CATS = ["FG%", "FT%", "3PTM", "PTS", "REB", "AST", "ST", "BLK", "TO"]
 STATS = FL.STATS
 COUNT = {"3PTM": "tpm", "PTS": "pts", "REB": "reb", "AST": "ast", "ST": "stl", "BLK": "blk", "TO": "tov"}
@@ -223,6 +224,47 @@ def _fingerprint(path):
         return None
 
 
+def standings_of(pulls, date, state, weeks):
+    """Owner 2026-10-26: Yahoo's standings from the latest pull on or before the date that carries them (M1), or None.
+    vs_line (M2): category games ahead of 9th for the top eight, behind 8th (negative) for the rest. check (M4): each
+    team's Yahoo W-L-T against the kit's summed score over its finished weeks."""
+    cands = [(pd, fn, p["standings"]) for pd, (fn, p) in pulls.items() if pd <= date and (p or {}).get("standings")]
+    if not cands:
+        return None
+    pd, fn, resp = cands[-1]
+    by = {t["name"]: t for t in state["teams"]}
+    po = CG.arena.PLAYOFF_TEAMS
+    rows = []
+    for x in sorted(resp["standings"], key=lambda x: int(x["rank"])):
+        if x["name"] not in by:
+            raise TableError(f"standings name {x['name']!r} is not a team in the league state")
+        t = by[x["name"]]
+        rows.append(dict(rank=int(x["rank"]), team=x["name"], seat=t["seat"], manager=t.get("manager"), mine=t["seat"] == OWNER_SEAT,
+                         w=int(x["wins"]), l=int(x["losses"]), t=int(x["ties"] or 0), pct=float(x["percentage"]),
+                         seed=x.get("playoffSeed"), waiver=x.get("waiverPriority"), faab=x.get("faabBalance")))
+    gap = lambda a, b: ((a["w"] - b["w"]) + (b["l"] - a["l"])) / 2
+    if len(rows) > po:
+        for i, r in enumerate(rows):
+            r["vs_line"] = gap(r, rows[po]) if i < po else -gap(rows[po - 1], r)
+    fin = [w for w in weeks if w["status"] == "finished"]
+    kit = {r["team"]: [0, 0, 0] for r in rows}
+    for w in fin:
+        for n, x in w["teams"].items():
+            if x.get("score") and n in kit:
+                kit[n] = [kit[n][0] + (x["score"]["wins"] or 0), kit[n][1] + (x["score"]["losses"] or 0), kit[n][2] + (x["score"]["ties"] or 0)]
+    mism = [dict(team=r["team"], kit=kit[r["team"]], yahoo=[r["w"], r["l"], r["t"]]) for r in rows if kit[r["team"]] != [r["w"], r["l"], r["t"]]]
+    return dict(pull=fn, pull_date=pd, playoff_teams=po, rows=rows,
+                check=dict(finished_weeks=[w["week"] for w in fin], teams_checked=len(rows), mismatches=mism))
+
+
+def standings_note(st):
+    if not st:
+        return "no Yahoo standings pinned"
+    c = st["check"]
+    return (f"standings {st['pull']}, " + (f"Yahoo W-L-T matches the kit's finished weeks for {c['teams_checked']} teams" if not c["mismatches"]
+            else f"Yahoo W-L-T DIFFERS from the kit's finished weeks for {', '.join(m['team'] for m in c['mismatches'])}"))
+
+
 def build(date, paths):
     state = json.load(open(paths["state"], encoding="utf-8"))
     pulls = load_pulls(paths["pull_dir"])
@@ -241,8 +283,20 @@ def build(date, paths):
                 inputs[fn] = _fingerprint(os.path.join(paths["pull_dir"], fn))
             else:
                 teams, read, missing = rebuild_week(n, s, e, state, paths.get("actuals") or ACTUALS, pulls, date)
-                weeks.append(dict(week=n, window=[s, e], status="finished", source="rebuild", pull=None, teams=teams,
-                                  days_read=read, days_missing=missing))
+                wk_rec = dict(week=n, window=[s, e], status="finished", source="rebuild", pull=None, teams=teams,
+                              days_read=read, days_missing=missing)
+                # owner 2026-10-26 (M3): a rebuilt week carries no Yahoo score; the verified week record has it
+                rf = os.path.join(paths["weeks"], f"week_{n}.json") if paths.get("weeks") else None
+                if rf and os.path.exists(rf):
+                    scores = {t: x.get("yahoo_score") for t, x in json.load(open(rf, encoding="utf-8"))["teams"].items()}
+                    lacking = sorted(t for t in teams if not scores.get(t))
+                    if lacking:
+                        raise TableError(f"week_{n}.json has no yahoo_score for {lacking}")
+                    for t, x in teams.items():
+                        x["score"] = {k: scores[t][k] for k in ("wins", "losses", "ties")}
+                    wk_rec["score_source"] = os.path.basename(rf)
+                    inputs[os.path.basename(rf)] = _fingerprint(rf)
+                weeks.append(wk_rec)
                 for day in read:
                     inputs[f"actuals/{day}.json"] = _fingerprint(os.path.join(paths.get("actuals") or ACTUALS, f"{day}.json"))
         else:
@@ -291,7 +345,7 @@ def build(date, paths):
     for i, x in enumerate(power):
         x["rank"] = i + 1
     return dict(date=date, week=wk, window=[ws, we], league_state_as_of=state.get("as_of"), weeks=weeks, cumulative=cum,
-                power=power,
+                power=power, standings=standings_of(pulls, date, state, weeks),
                 method=dict(sources="a finished week: Yahoo's block from the latest pull after the week's end, else the box-score "
                                     "rebuild of each team's active slots (pinned lineups, else today's roster); the week in "
                                     "progress: the day's pull",
@@ -308,11 +362,12 @@ def main():
     ap.add_argument("--date", default=datetime.date.today().isoformat())
     ap.add_argument("--state", default=CG.STATE); ap.add_argument("--pull-dir", default=PULL_DIR)
     ap.add_argument("--actuals", default=ACTUALS); ap.add_argument("--out-dir", default=OUT)
+    ap.add_argument("--weeks", default=WEEKS, help="the verified week records (scoreboard_intake), for a rebuilt week's score")
     ap.add_argument("--ledger", default=run_ledger.LEDGER, help="run-ledger path; '' records no row")
     a = ap.parse_args()
     led = lambda v, d: run_ledger.standalone_record("league_table", v, d, ledger=a.ledger) if a.ledger else None
     try:
-        rec = build(a.date, dict(state=a.state, pull_dir=a.pull_dir, actuals=a.actuals))
+        rec = build(a.date, dict(state=a.state, pull_dir=a.pull_dir, actuals=a.actuals, weeks=a.weeks))
     except (TableError, ValueError, OSError) as e:
         print(f"LEAGUE TABLE: FAIL — {e}"); led("FAIL", str(e)[:200]); return 1
     os.makedirs(a.out_dir, exist_ok=True)
@@ -324,7 +379,7 @@ def main():
     top = rec["power"][0]
     me = next(x for x in rec["power"] if x["mine"])
     msg = (f"{a.date}: week {rec['week']}; {srcs}; power #1 {top['team']} ({top['allplay']['pct']:.3f}), you #{me['rank']} "
-           f"({(me['allplay']['pct'] or 0):.3f}); wrote {os.path.relpath(out, KIT) if out.startswith(KIT) else out}")
+           f"({(me['allplay']['pct'] or 0):.3f}); {standings_note(rec['standings'])}; wrote {os.path.relpath(out, KIT) if out.startswith(KIT) else out}")
     print(f"LEAGUE TABLE: PASS — {msg}"); led("PASS", msg[:200])
     return 0
 
