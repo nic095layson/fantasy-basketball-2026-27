@@ -258,11 +258,11 @@ select,input[type=search],input[type=text]{background:var(--surface); color:var(
 .pick h2{margin:0}
 .field{width:100%; height:40px; box-sizing:border-box}
 .field.static{display:flex; align-items:center; border:1px solid var(--line); border-radius:6px; padding:0 10px; background:var(--chip); color:var(--ink2); font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
-.positions{border:1px solid var(--line); border-radius:6px; padding:8px 10px; background:var(--chip); display:flex; flex-direction:column; gap:6px}
-.positions hr{border:0; border-top:1px solid var(--line); margin:0}
-.posttl{font-size:12.5px; color:var(--ink2)}
-.posrow{display:flex; flex-wrap:wrap; gap:6px 14px; justify-content:center}
-.poschip{display:inline-flex; gap:4px; align-items:baseline; font-size:14px} .poschip b{font-weight:600}
+.positions{flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; min-width:0}
+.positions hr{border:0; border-top:1px solid var(--line); margin:0; width:min(100%,22em)}
+.posrow{display:flex; flex-wrap:wrap; gap:2px 12px; justify-content:center}
+.poschip{display:inline-flex; gap:3px; align-items:baseline; font-size:13.5px} .poschip b{font-weight:600}
+@media (max-width:640px){ .h2row:has(.positions){flex-wrap:wrap} .positions{flex-basis:100%; order:3} }  /* phone: the counts take their own line under the title */
 .plist{border:1px solid var(--line); border-radius:6px; height:230px; overflow-y:auto; padding:4px; box-sizing:border-box}
 .plist label{display:flex; gap:8px; align-items:center; padding:6px 8px; border-radius:4px; font-size:13.5px; min-height:32px}
 .plist label:hover{background:var(--chip)}
@@ -608,12 +608,10 @@ function myHeld(){ const ob=(D.league.rosters[D.my_team]||{}).off_board||[];
 // each player once per family (G = PG/SG, F = SF/PF) beneath; counted at build time (D.league.my_positions), not here
 function myPositions(){ const P=D.league.my_positions; if(!P) return null;
   const row=(pairs)=>h("div",{class:"posrow"},pairs.map(([k,v])=>h("span",{class:"poschip"},h("b",{},k),h("span",{},"("+v+")"))));
-  return h("div",{id:"fa-positions",class:"positions"},
-    h("div",{class:"posttl"},"Your positions · "+P.rostered+" rostered"+(P.il?" incl. "+P.il+" IL":"")),
+  return h("div",{id:"fa-positions",class:"positions",title:"Your positions: "+P.rostered+" rostered"+(P.il?" incl. "+P.il+" IL":"")+". Top: every position each player is eligible for; below: each player once per family."},
     row(["PG","SG","SF","PF","C"].map(k=>[k,P.positions[k]])),
     h("hr",{}),
-    row(["G","F","C"].map(k=>[k,P.families[k]])),
-    h("p",{class:"note"},"Top: every position each player is eligible for. Below: each player once per family (a PG,SG guard is one G).")); }
+    row(["G","F","C"].map(k=>[k,P.families[k]]))); }
 function myField(){ return h("div",{class:"field static",title:T(D.my_team)},T(D.my_team)+" · "+MINE.length+" on the board"); }
 function pickList(rows, set, rerender, empty, extra){ return h("div",{class:"plist"}, rows.length? rows.map(r=>h("label",{},
   h("input",{type:"checkbox",...(set.has(r.name)?{checked:""}:{}),onchange:(e)=>{e.target.checked?set.add(r.name):set.delete(r.name);rerender();}}),
@@ -651,7 +649,6 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
   render();
 })();
 (function(){ const p=$("#pane-fa"); let search=""; const drop=new Set(), add=new Set(); const root=h("div",{class:"card"}); p.append(root, howItWorks());
-  const nfa=BOARD.filter(r=>r.fa).length;
   const inp=h("input",{type:"search",id:"fa-search",class:"field",placeholder:"Search free agents",oninput:()=>{search=inp.value; keepTyping(inp,render);}});
   // owner 2026-10-22 (P1): this week's matchup value beside z; the sort defaults to it when the morning's scan ran
   const W=D.week_matchup, TWR=((W&&W.pickups&&W.pickups.this_week&&W.pickups.this_week.rows)||[]), TWM={};
@@ -670,10 +667,8 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
       return (x&&y)? y.d_exp-x.d_exp : x? -1 : y? 1 : 0; });                         // the rest keep their z order (stable sort)
     pool=pool.slice(0,60);
     root.replaceChildren(
-      h("div",{class:"h2row"},h("h2",{},"Free-Agent Adder"),
+      h("div",{class:"h2row"},h("h2",{},"Free-Agent Adder"),myPositions(),
         h("button",{id:"fa-reset",class:"resetbtn",onclick:()=>{drop.clear();add.clear();search="";inp.value="";render();}},"Reset")),
-      h("p",{class:"note"},nfa+" unrostered players on today's board, matched to all 12 rosters as of "+D.league.as_of+"."),
-      myPositions(),
       h("div",{class:"pick"},
         h("div",{},h("h2",{},"I drop"),myField(),pickList(MINE,drop,render,"No players of yours on the board."),myHeld()),
         h("div",{},h("h2",{},"I add"),
