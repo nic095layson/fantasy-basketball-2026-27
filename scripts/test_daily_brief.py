@@ -102,6 +102,25 @@ class SeasonBand(unittest.TestCase):
         self.assertIn("season sweep", DB.band_line(os.path.join(d, "season.json")))
 
 
+class LinesLabel(unittest.TestCase):
+    """Owner 2026-10-26 ("You can change the v69 label"): the brief names the lines it actually ran on."""
+    def test_with_the_season_pool_the_label_names_it(self):
+        old = os.environ.get("SEASON_POOL")
+        os.environ["SEASON_POOL"] = "/x/data/season/pool_season.csv"
+        try:
+            self.assertEqual(DB.lines_label(), "season pool")
+        finally:
+            os.environ.pop("SEASON_POOL") if old is None else os.environ.__setitem__("SEASON_POOL", old)
+
+    def test_without_it_the_label_stays_the_frozen_tag(self):
+        old = os.environ.pop("SEASON_POOL", None)
+        try:
+            self.assertEqual(DB.lines_label(), CG.LINES_TAG)
+        finally:
+            if old is not None:
+                os.environ["SEASON_POOL"] = old
+
+
 class SeasonPool(unittest.TestCase):
     """In-season tool: SEASON_POOL (a deck-schema CSV path) overrides the preseason v69 pool for the brief, the
     preview and the waiver scan; unset, the preseason pool loads as before."""
