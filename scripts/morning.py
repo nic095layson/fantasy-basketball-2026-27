@@ -94,11 +94,47 @@ def steps(date, fetch=True, seasons=10000, since=None):
     return st
 
 
-def run_steps(st, out, ledger=None):
+def _tree(root):
+    """{path: status} for every change git reports under the kit, or None outside a git checkout."""
+    p = subprocess.run(["git", "status", "--porcelain", "--untracked-files=all"], cwd=root, capture_output=True, text=True)
+    if p.returncode != 0:
+        return None
+    out = {}
+    for line in p.stdout.splitlines():
+        path = line[3:].strip().strip('"')
+        if " -> " in path:
+            path = path.split(" -> ", 1)[1]
+        out[path] = line[:2]
+    return out
+
+
+def _wrote(before, after):
+    """The paths a step added or changed, measured from the tree rather than declared by the script (owner 2026-10-26,
+    option 2A): a new output script appears here without being named anywhere."""
+    if before is None or after is None:
+        return None
+    return sorted(p for p, st in after.items() if before.get(p) != st)
+
+
+def print_manifest(rec):
+    """The block the runner commits. Never a confident empty list: outside a git checkout it says so."""
+    w = rec.get("wrote")
+    if not isinstance(w, list):
+        print(f"WROTE: {w}")
+        return
+    print(f"WROTE: {len(w)} path(s)")
+    for p in w:
+        print("  " + p)
+
+
+def run_steps(st, out, ledger=None, root=None):
     """Run the steps in order; with `ledger` (main passes run_ledger.LEDGER) each step's verdict is appended to the
     run-ledger as 'morning: <step>' — non-fatally: a ledger that cannot be written never fails the morning run."""
     rec = dict(ran_at_utc=datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), steps=[], verdict="PASS")
     failed = False
+    root = root or KIT
+    seen = _tree(root)
+    attributed = seen is not None
     for s in st:
         if failed:
             rec["steps"].append(dict(name=s["name"], verdict="SKIPPED", cmd=" ".join(shlex.quote(c) for c in s["cmd"]))); continue
@@ -108,8 +144,12 @@ def run_steps(st, out, ledger=None):
         lines = (p.stdout + "\n" + p.stderr).splitlines()
         hits = [ln.strip() for ln in lines if re.search(s["pass_re"], ln)]
         verdict = "PASS" if p.returncode == 0 and hits else "FAIL"
+        after = _tree(root)
+        wrote = _wrote(seen, after)
+        seen = after
         rec["steps"].append(dict(name=s["name"], cmd=" ".join(shlex.quote(c) for c in s["cmd"]), exit=p.returncode,
-                                 pass_line=hits[-1] if hits else "", verdict=verdict, tail=[ln for ln in lines if ln.strip()][-6:]))
+                                 pass_line=hits[-1] if hits else "", verdict=verdict, wrote=wrote,
+                                 tail=[ln for ln in lines if ln.strip()][-6:]))
         if verdict == "FAIL":
             if s.get("fatal", True):
                 failed = True; rec["verdict"] = "FAIL"
@@ -117,6 +157,10 @@ def run_steps(st, out, ledger=None):
                 rec["steps"][-1]["verdict"] = "FAIL (non-fatal)"
         if ledger:
             run_ledger.safe_record("morning: " + s["name"], verdict, rec["steps"][-1]["pass_line"], ledger=ledger)
+    if attributed:
+        rec["wrote"] = sorted({p for st_ in rec["steps"] for p in (st_.get("wrote") or [])})
+    else:
+        rec["wrote"] = "unattributed (not a git checkout)"
     os.makedirs(os.path.dirname(out), exist_ok=True)
     with open(out, "w", encoding="utf-8") as f:
         json.dump(rec, f, indent=1, ensure_ascii=False); f.write("\n")
@@ -139,6 +183,7 @@ def main():
     else:
         first = next(s for s in rec["steps"] if s["verdict"] == "FAIL")
         print(f"MORNING: FAIL — {a.date}: step '{first['name']}' failed (exit {first['exit']}); later steps skipped; record report/briefs/morning_{a.date}.json")
+    print_manifest(rec)   # owner 2026-10-26 (option 2A): the paths the runner commits, measured from the tree
     return 0 if rec["verdict"] == "PASS" else 1
 
 

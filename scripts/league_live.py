@@ -190,6 +190,10 @@ def _main():
     ap.add_argument("--pin-dir", default=PIN_DIR)
     ap.add_argument("--flaim-pin-dir", default=os.path.join(KIT, "data", "source", "flaim"))
     ap.add_argument("--ledger", default=run_ledger.LEDGER, help="run-ledger for a standalone run's row ('' to skip)")
+    # owner 2026-10-26 (option 1A): am (the morning, default) writes league_moves_<date>.json and the day's baseline
+    # copy; pm (the afternoon) writes league_moves_<date>_pm.json and never touches the morning's record
+    ap.add_argument("--phase", choices=("am", "pm"), default="am")
+    ap.add_argument("--news-dir", default=league_moves.OUTDIR)
     ap.add_argument("--source", choices=("auto", "flaim", "fantasybot"), default="auto",
                     help="auto (default): Flaim first, FantasyBot when the Flaim pull is missing or incomplete")
     a = ap.parse_args()
@@ -282,20 +286,54 @@ def _main():
     unpooled = (json.load(open(league_intake.UNPOOLED, encoding="utf-8"))["players"]
                 if os.path.exists(league_intake.UNPOOLED) else {})
     old = json.load(open(a.out, encoding="utf-8")) if os.path.exists(a.out) else None
+    if old is not None and a.phase == "am":
+        old = am_baseline(a.as_of, a.news_dir, old)
     code = league_intake.run(src, a.out, pool, abbr, draft, a.as_of, managers, sources, unpooled)
     if code != 0:
         print("LEAGUE LIVE: HALT — intake refused the pull; league_state.json not touched (last paste stands)")
         return code
     new = json.load(open(a.out, encoding="utf-8"))
     if old is not None:
-        rec, outp = league_moves.write_record(old, new, a.as_of)
+        rec, outp = record_moves(old, new, a.as_of, a.phase, a.news_dir)
         n = sum(len(m["added"]) + len(m["dropped"]) + len(m["to_il"]) + len(m["from_il"]) for m in rec["moves"])
         print(f"LEAGUE MOVES: PASS — {len(rec['moves'])} team(s) changed, {n} move(s), "
-              f"{old['as_of']} to {new['as_of']}; wrote {os.path.relpath(outp, KIT)}")
+              f"{old['as_of']} to {new['as_of']} ({a.phase}); wrote {os.path.relpath(outp, KIT) if outp.startswith(KIT) else outp}")
     un = new.get("unpooled") or []   # owner 2026-10-26, option (a): never silent
     flag = (f"; {len(un)} not in the pool, not simulated: " + ", ".join(f"{u['player']} ({u['fantasy_team']}, {u['slot']})" for u in un)) if un else ""
     print(f"LEAGUE LIVE: PASS — rosters from {'Flaim (Yahoo)' if used == 'flaim' else 'FantasyBot'}, pinned {rel(pin)}{flag}")
     return 0
+
+
+BASELINE_LOOKBACK_DAYS = 7   # how far back the morning looks for the last am baseline (hand-set, owner 2026-10-26)
+
+
+def am_baseline(date, news_dir, fallback):
+    """The state the previous morning produced, when one of the last BASELINE_LOOKBACK_DAYS days left a copy; else the
+    state on disk. Without this a morning re-run made after that day's afternoon run would diff against the afternoon
+    state and call the result an overnight record (owner 2026-10-26, consequence (b))."""
+    try:
+        d0 = datetime.date.fromisoformat(date)
+    except ValueError:
+        return fallback
+    for back in range(1, BASELINE_LOOKBACK_DAYS + 1):
+        p = os.path.join(news_dir, f"league_state_am_{(d0 - datetime.timedelta(days=back)).isoformat()}.json")
+        if os.path.exists(p):
+            try:
+                return json.load(open(p, encoding="utf-8"))
+            except (OSError, ValueError):
+                return fallback
+    return fallback
+
+
+def record_moves(old, new, date, phase, news_dir):
+    """Write the phase's moves record; on the morning also keep a copy of the state it produced as the next morning's
+    baseline. Returns (record, path) as league_moves.write_record does."""
+    os.makedirs(news_dir, exist_ok=True)
+    rec, outp = league_moves.write_record(old, new, date, out=league_moves.record_path(date, phase, news_dir), phase=phase)
+    if phase == "am":
+        with open(os.path.join(news_dir, f"league_state_am_{date}.json"), "w", encoding="utf-8") as f:
+            json.dump(new, f, indent=1, ensure_ascii=False); f.write("\n")
+    return rec, outp
 
 
 def main():
