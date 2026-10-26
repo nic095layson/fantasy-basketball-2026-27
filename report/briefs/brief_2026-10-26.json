@@ -5,7 +5,8 @@
   "2026-10-26",
   "2026-11-01"
  ],
- "league_state_as_of": "2026-10-25",
+ "league_state_as_of": "2026-10-26",
+ "unpooled": [],
  "status_file": "status_2026-10-26.json",
  "lines": "v69",
  "opponent": "Looking Cool Joker!",
@@ -19,20 +20,20 @@
    4
   ],
   [
-   "Ty Jerome",
-   "MEM",
-   "@ UTA",
+   "Derrick White",
+   "BOS",
+   "vs CHI",
    null,
    1.0,
-   3
+   4
   ],
   [
-   "Kawhi Leonard",
-   "TOR",
-   null,
+   "Collin Gillespie",
+   "PHX",
+   "@ OKC",
    null,
    1.0,
-   3
+   2
   ],
   [
    "Jaden McDaniels",
@@ -67,9 +68,33 @@
    3
   ],
   [
+   "Neemias Queta",
+   "BOS",
+   "vs CHI",
+   null,
+   1.0,
+   4
+  ],
+  [
    "PJ Washington",
    "DAL",
    "@ MIA",
+   null,
+   1.0,
+   3
+  ],
+  [
+   "Kyrie Irving",
+   "DAL",
+   "@ MIA",
+   null,
+   1.0,
+   3
+  ],
+  [
+   "Ty Jerome",
+   "MEM",
+   "@ UTA",
    null,
    1.0,
    3
@@ -83,50 +108,26 @@
    2
   ],
   [
-   "Noah Clowney",
-   "BKN",
+   "Julian Champagnie",
+   "SAS",
    null,
    null,
    1.0,
    3
-  ],
-  [
-   "Collin Gillespie",
-   "PHX",
-   "@ OKC",
-   null,
-   1.0,
-   2
-  ],
-  [
-   "Derrick White",
-   "BOS",
-   "vs CHI",
-   null,
-   1.0,
-   4
-  ],
-  [
-   "Neemias Queta",
-   "BOS",
-   "vs CHI",
-   null,
-   1.0,
-   4
   ]
  ],
  "lineup": [
   [
    "PG",
-   "Collin Gillespie"
-  ],
-  [
-   "SG",
    "Ty Jerome"
   ],
   [
-   "G",
+   "SG",
    "Kevin Durant"
+  ],
+  [
+   "G",
+   "Derrick White"
   ],
   [
    "SF",
@@ -150,58 +151,65 @@
   ],
   [
    "Util",
-   "Derrick White"
+   "Tyrese Haliburton"
   ],
   [
    "Util",
-   "Tyrese Haliburton"
+   "Kyrie Irving"
   ]
  ],
  "bench": [
+  "Collin Gillespie",
   "PJ Washington"
  ],
- "waiver_base_ecw": 5.155,
- "waiver_positive_pairs": 40,
+ "waiver_base_ecw": 5.2585,
+ "waiver_positive_pairs": 5,
  "waiver_pairs_scored": 520,
  "waiver_top": [
   {
    "add": "Bobby Portis",
    "add_team": "MIA",
-   "drop": "Noah Clowney",
-   "d_ecw": 0.2015,
+   "drop": "PJ Washington",
+   "d_ecw": 0.0056,
    "title_by_seed": {
-    "2026": 25.56,
-    "2027": 24.09
+    "2026": 22.03,
+    "2027": 22.0
    },
-   "title": 24.82,
-   "d_title": 4.86
+   "title": 22.02,
+   "d_title": -0.59
   },
   {
-   "add": "Julian Champagnie",
-   "add_team": "SAS",
-   "drop": "Noah Clowney",
-   "d_ecw": 0.177,
+   "add": "Jrue Holiday",
+   "add_team": "POR",
+   "drop": "Collin Gillespie",
+   "d_ecw": 0.0028,
    "title_by_seed": {
-    "2026": 23.88,
-    "2027": 22.84
+    "2026": 21.95,
+    "2027": 20.98
    },
-   "title": 23.36,
-   "d_title": 3.39
+   "title": 21.46,
+   "d_title": -1.14
   },
   {
-   "add": "Tobias Harris",
-   "add_team": "SAS",
-   "drop": "Noah Clowney",
-   "d_ecw": 0.1747,
+   "add": "Christian Braun",
+   "add_team": "DEN",
+   "drop": "Julian Champagnie",
+   "d_ecw": 0.0015,
    "title_by_seed": {
-    "2026": 24.23,
-    "2027": 23.79
+    "2026": 23.75,
+    "2027": 23.53
    },
-   "title": 24.01,
-   "d_title": 4.05
+   "title": 23.64,
+   "d_title": 1.04
   }
  ],
  "streaming": [
+  {
+   "player": "Sandro Mamukelashvili",
+   "team": "LAL",
+   "games_left": 4,
+   "value_per_game": -2.23
+  },
   {
    "player": "Mitchell Robinson",
    "team": "BOS",
@@ -215,40 +223,34 @@
    "value_per_game": -2.58
   },
   {
+   "player": "Quentin Grimes",
+   "team": "LAL",
+   "games_left": 4,
+   "value_per_game": -2.75
+  },
+  {
    "player": "Collin Sexton",
    "team": "LAL",
    "games_left": 4,
    "value_per_game": -2.98
-  },
-  {
-   "player": "Aaron Nesmith",
-   "team": "IND",
-   "games_left": 4,
-   "value_per_game": -2.99
-  },
-  {
-   "player": "Jaylon Tyson",
-   "team": "CLE",
-   "games_left": 4,
-   "value_per_game": -3.21
   }
  ],
  "streaming_vs": {
-  "player": "Noah Clowney",
+  "player": "PJ Washington",
   "games_left": 3,
-  "value_per_game": -4.88
+  "value_per_game": -2.54
  },
  "title": {
-  "2026": 20.56,
-  "2027": 19.37
+  "2026": 23.16,
+  "2027": 22.05
  },
  "playoffs": {
-  "2026": 98.86,
-  "2027": 98.72
+  "2026": 99.14,
+  "2027": 99.12
  },
  "seasons": 10000,
  "absent_from_sim": [
-  "Andre Drummond"
+  "Trevon Brazile"
  ],
  "transactions": {
   "window": [
@@ -258,5 +260,102 @@
   "ok": true,
   "hits": []
  },
- "league_moves": null
+ "league_moves": [
+  {
+   "team": "Booker T Floppers",
+   "seat": 4,
+   "added": [],
+   "dropped": [],
+   "to_il": [
+    "Keegan Murray"
+   ],
+   "from_il": [
+    "Zach Edey"
+   ]
+  },
+  {
+   "team": "Looking Cool Joker!",
+   "seat": 1,
+   "added": [
+    "Precious Achiuwa"
+   ],
+   "dropped": [
+    "Jalen Green"
+   ],
+   "to_il": [],
+   "from_il": []
+  },
+  {
+   "team": "Splash Mountain",
+   "seat": 8,
+   "added": [],
+   "dropped": [
+    "Tre Jones"
+   ],
+   "to_il": [],
+   "from_il": [
+    "Stephen Curry"
+   ]
+  },
+  {
+   "team": "Giavaris Jamal Javarison-Lamar",
+   "seat": 5,
+   "added": [
+    "Zaccharie Risacher"
+   ],
+   "dropped": [
+    "Kentavious Caldwell-Pope"
+   ],
+   "to_il": [],
+   "from_il": []
+  },
+  {
+   "team": "Podz save the league",
+   "seat": 9,
+   "added": [
+    "Jaylen Wells",
+    "Kris Dunn",
+    "Trevon Brazile"
+   ],
+   "dropped": [
+    "Andre Drummond",
+    "Quentin Grimes",
+    "Sandro Mamukelashvili"
+   ],
+   "to_il": [
+    "VJ Edgecombe"
+   ],
+   "from_il": [
+    "Cooper Flagg"
+   ]
+  },
+  {
+   "team": "ROOKS FTW",
+   "seat": 2,
+   "added": [
+    "Anthony Black"
+   ],
+   "dropped": [
+    "Darryn Peterson"
+   ],
+   "to_il": [],
+   "from_il": []
+  },
+  {
+   "team": "KEL'EL YAXEL HALQUETA",
+   "seat": 10,
+   "added": [
+    "Julian Champagnie"
+   ],
+   "dropped": [
+    "Noah Clowney"
+   ],
+   "to_il": [
+    "Kawhi Leonard"
+   ],
+   "from_il": [
+    "Kyrie Irving"
+   ]
+  }
+ ]
 }

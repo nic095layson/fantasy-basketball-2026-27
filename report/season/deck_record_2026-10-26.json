@@ -5,27 +5,27 @@
   "brief": {
    "path": "report/briefs/brief_2026-10-26.json",
    "present": true,
-   "sha256": "97bd6d0ab1cae4f830fed19e0bcf43f708606deb3c2695ee9bb8a209fd112cb2"
+   "sha256": "a58bce5feec0c9d567cb5f9a9fea516962493df7697a772c44a869c5a1a3dcdb"
   },
   "board": {
    "path": "report/season/board_2026-10-26.json",
    "present": true,
-   "sha256": "0623425bd75c5346cfbab04b7362850f42419f4dff14b120abba5805832007d6"
+   "sha256": "e39df826d353a341b4fe4804cb4d52bc71b8b076288aaafdb838d43760b19f20"
   },
   "status": {
    "path": "data/status/status_2026-10-26.json",
    "present": true,
-   "sha256": "f89f222a0bf543158d9b20672b43d3b67ab4aab2fa4e3bafb935cdc85fef9bf1"
+   "sha256": "73ea1dfd16db6f97c92f9e138641e37eb1a21578909ff8fea2c339a3f18c948c"
   },
   "league_state": {
    "path": "data/league_state.json",
    "present": true,
-   "sha256": "ed4e8e0712fd674eb98b6c7b9a73dc62b0ab22f05aff63975918ac47a3b30640"
+   "sha256": "4fef6b7d890893a6d05b49c3ea5788e478d7dc821b0874535c3c521881a63cb5"
   },
   "season_lines": {
    "path": "data/season/season_lines_2026-10-26.json",
    "present": true,
-   "sha256": "a1d37f54d401a854637cf21baf56b35b410767dfd7daddcc39ae89d7f605a1ef"
+   "sha256": "80d26c4a638958b8eef46d4fd9720296c39072ef90a69529d879208f35d1d084"
   },
   "sweep": {
    "path": "report/after-reports/redteam-2026-10-19/sweep.json",
@@ -35,41 +35,41 @@
   "calibration": {
    "path": "report/calibration.json",
    "present": true,
-   "sha256": "1e9fcadfa000ffa43cba3b61f079cc50c4f70a0bb570cfbdb7089fa471c0fb7b"
+   "sha256": "d352f28eca240b9ad4e26d897249378c8c7542ef5480f7a6a8326226cd6f82ab"
   },
   "matchup_live": {
    "path": "data/news/matchup_live_2026-10-26.json",
    "present": true,
-   "sha256": "4a22c002a51bf972ccc498dc91754d7d1d6ea29a9798ff5936c3b24ed3a2e5b7"
+   "sha256": "48c977c69d8dc7f976c62c0101017eccf7ec48320cc7fd988cfaeea575037ad0"
   },
   "week_matchup": {
    "path": "report/briefs/week_matchup_2026-10-26.json",
    "present": true,
-   "sha256": "ca0e5fcb82e79618e54d1335ce1379141de3f4c6e3566c6f1e6271d5c23cf81c"
+   "sha256": "88985b66d785e6d0a9581803d20052d2fd44398941e891fad89d228f47744d52"
   },
   "league": {
    "path": "report/league/league_2026-10-26.json",
-   "present": false,
-   "sha256": null
+   "present": true,
+   "sha256": "d9ca20164f8d0dc8560f80867219436139b81c957db2a1a4065440992b3fb302"
   },
   "form": {
    "path": "report/form/form_2026-10-26.json",
    "present": true,
-   "sha256": "1dd5550b1dbdd0cd3ce00bb4328649920c6fc88489c85229bbb377790f3fa0d4"
+   "sha256": "2c52af9c62cc9472e195f67abc95aaa38e65111aa0615338bb05225bb13357a1"
   },
   "scores": {
    "path": "report/calibration_daily.json",
-   "present": false,
-   "sha256": null
+   "present": true,
+   "sha256": "c899e2dd1ff9cb7668126d1a34b18d12184cd623c12cd573dcab8cde4c372297"
   }
  },
- "board_rows": 313,
- "status_rows": 22,
+ "board_rows": 314,
+ "status_rows": 26,
  "panes": 7,
  "join": {
-  "rostered": 172,
+  "rostered": 171,
   "unresolved": 0,
-  "on_board": 169,
+  "on_board": 168,
   "off_board": 3,
   "respelled": [
    [
@@ -101,7 +101,7 @@
     "Wendell Carter Jr"
    ]
   ],
-  "free_agents_on_board": 144
+  "free_agents_on_board": 146
  },
  "render": {
   "status": "PASS",
