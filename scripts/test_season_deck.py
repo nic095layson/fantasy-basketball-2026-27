@@ -689,13 +689,14 @@ def league_dom(html_path, clicks=(), width=1280):
 class SeasonBandDeck(unittest.TestCase):
     """Owner 2026-10-26: the deck's band note quotes the season sweep and says so."""
     def test_default_paths_name_the_season_sweep(self):
-        self.assertTrue(SD.default_paths("2026-10-27")["sweep"].endswith(os.path.join("redteam-2026-10-26-season", "sweep.json")))
+        self.assertTrue(SD.default_paths("2026-10-27")["sweep"].endswith(os.path.join("redteam-2026-10-26-season-real", "sweep.json")))
+        self.assertTrue(SD.default_paths("2026-10-21")["sweep"].endswith(os.path.join("redteam-2026-10-19", "sweep.json")))
 
     def test_the_band_note_names_the_configuration(self):
         d = tempfile.mkdtemp(); fx = fixtures(d)
         sw = json.load(open(fx["sweep"])); json.dump(dict(sw, state_sha256="x", pool_sha256="y"), open(fx["sweep"], "w"))
         html, data, rec = SD.build(fx, date="2026-10-21")
-        self.assertEqual(data["band_config"], "season sweep (current rosters, season pool)")
+        self.assertTrue(data["band_config"].startswith("season sweep of "), data["band_config"])
 
 
 class LeagueTab(unittest.TestCase):

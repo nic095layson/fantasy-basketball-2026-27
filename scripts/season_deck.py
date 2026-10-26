@@ -8,7 +8,7 @@ Inputs (all must exist; a missing or malformed record halts the build):
   status        data/status/status_<date>.json          (status_feed.py)
   league_state  data/league_state.json                  (league_intake.py)
   season_lines  data/season/season_lines_<date>.json    (season_lines.py)
-  sweep         report/after-reports/redteam-2026-10-26-season/sweep.json  (red-team sweep on the season configuration)
+  sweep         report/after-reports/redteam-<date>-season/sweep.json, the newest on or before the day (sweep_record.py)
   calibration   report/calibration.json                 (weekly_preview.py)
 
 The page embeds those records verbatim as JSON and renders every figure from them in the browser; the static shell
@@ -23,6 +23,7 @@ deck_<date>.failed.html and prints SEASON DECK: FAIL.
 import argparse, datetime, hashlib, json, os, sys
 HERE = os.path.dirname(os.path.abspath(__file__)); KIT = os.path.dirname(HERE)
 sys.path.insert(0, HERE)
+import sweep_record as SR  # noqa: E402
 
 class DeckError(Exception): pass
 
@@ -41,7 +42,8 @@ def default_paths(date):
                 status=os.path.join(KIT, "data", "status", f"status_{date}.json"),
                 league_state=os.path.join(KIT, "data", "league_state.json"),
                 season_lines=os.path.join(KIT, "data", "season", f"season_lines_{date}.json"),
-                sweep=os.path.join(KIT, "report", "after-reports", "redteam-2026-10-26-season", "sweep.json"),
+                # owner 2026-10-26 ("every Monday"): the newest season sweep dated on or before the day
+                sweep=SR.latest(date),
                 calibration=os.path.join(KIT, "report", "calibration.json"),
                 # optional (owner 2026-10-20; trade finder removed on the owner's veto 2026-10-20): absent renders nothing
                 matchup_live=os.path.join(KIT, "data", "news", f"matchup_live_{date}.json"),
@@ -163,8 +165,8 @@ def build(paths, date):
             dict(label=v.get("label"), shift=v.get("shift_mean_1dp", f"{v['shift_mean']:+.1f}")) for v in c["variants"]]))
         if not bands[-1]["variants"]: raise DeckError(f"FRAGILE band {key} with no variants")
     band_engine = sweep.get("engine_commit") or sweep.get("engine")
-    # owner 2026-10-26: which configuration the bands were measured on (daily_brief.sweep_config's wording)
-    band_config = "season sweep (current rosters, season pool)" if sweep.get("state_sha256") else "draft sweep (draft rosters, frozen pool)"
+    # owner 2026-10-26: which configuration and day the bands were measured on (sweep_record.describe, the brief's wording)
+    band_config = SR.describe(sweep, paths["sweep"])
     wk = calib.get("weeks", {}).get(str(brief.get("week"))) or {}
     data = dict(date=date, generated_utc=datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
                 my_team=my_team, my_seat=my_seat, brief=brief, board=board, status=status,

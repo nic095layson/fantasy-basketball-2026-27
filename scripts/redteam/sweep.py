@@ -21,8 +21,10 @@ import json
 import math
 import os
 import random
+import shutil
 import subprocess
 import sys
+import tempfile
 from concurrent.futures import ProcessPoolExecutor
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -78,28 +80,8 @@ def _job(args):
     ros = {s: [] for s in range(1, arena.TEAMS + 1)}
     for pk in st["picks"]:
         ros[pk["slot"]].append(by[pk["player"]])
-    for k, v in patch.get("const", {}).items():
-        if not hasattr(arena, k):
-            raise AttributeError(f"patch names arena.{k}, which the live engine does not have")
-        setattr(arena, k, v)
-    if "avail" in patch:
-        h, r = patch["avail"]
-        orig = arena.weekly_availability
-        arena.weekly_availability = lambda p, h=h, r=r, orig=orig: (
-            r if orig(p) == 0.75 else h if orig(p) == 0.88 else orig(p))
-    if "cv" in patch:
-        # the season headline's per-game variation is SEASON_CV since D-ZS-3 (arena.CV is the frozen draft engine's)
-        arena.SEASON_CV = {c: v * patch["cv"] for c, v in arena.SEASON_CV.items()}
-    if "games" in patch:
-        # the 3.5 games/week is a literal inside team_week_model, not a module constant: re-compile the
-        # function with the literal replaced, in arena's own namespace
-        src = inspect.getsource(arena.team_week_model)
-        g = patch["games"]
-        new = src.replace("g = 3.5 * a", f"g = {g} * a").replace("g_var = 3.5 * a", f"g_var = {g} * a")
-        if new == src:
-            raise RuntimeError("games patch found no 3.5 literal in team_week_model")
-        ns = vars(arena)
-        exec(compile(new, arena.__file__, "exec"), ns)
+    # the patch kinds live in the deck's arena/patches.py since 2026-10-26, shared with league_sim --patch
+    importlib.import_module("patches").apply(arena, patch)
     rng = random.Random(seed)
     champ, po = arena.simulate_seasons(ros, seasons, rng, cv=arena.SEASON_CV)
     return label, seed, 100 * champ[OWNER_SEAT] / seasons, 100 * po[OWNER_SEAT] / seasons
@@ -128,13 +110,42 @@ def _sha(path):
         return hashlib.sha256(f.read()).hexdigest()
 
 
-def season_inputs(out_dir, league_state, pool, seeds, ref_seasons=10000, deck=DECK):
+def _job_sim(args):
+    """One variant through the deck's league_sim (owner 2026-10-26, the real-schedule re-measurement): the season
+    configuration's state and pool, the league's real pairings and the weeks already final, the patch by --patch."""
+    label, patch, seed, seasons, deck, state, pool, schedule, work = args
+    tag = "".join(ch if ch.isalnum() else "_" for ch in label)[:40]
+    out = os.path.join(work, f"sim_{tag}_{seed}.json")
+    cmd = [sys.executable, os.path.join(deck, "arena", "mocks", "league_sim.py"), state, "v69", str(seasons), str(seed), out,
+           "--schedule", schedule, "--season-cv", "--pool", pool]
+    if patch:
+        pf = os.path.join(work, f"patch_{tag}_{seed}.json")
+        with open(pf, "w", encoding="utf-8") as f:
+            json.dump(patch, f)
+        cmd += ["--patch", pf]
+    subprocess.run(cmd, check=True, capture_output=True)
+    with open(out, encoding="utf-8") as f:
+        t = json.load(f)["teams"][str(OWNER_SEAT)]
+    return label, seed, t["champ"], t["playoff"]
+
+
+def season_inputs(out_dir, league_state, pool, seeds, ref_seasons=10000, deck=DECK, schedule=None):
     """Owner 2026-10-26: the season configuration the title odds run on — the league state's rosters (IL excluded,
     D-IS-8, as the brief builds them) on the season pool — written as a picks file in out_dir, and each seed's 10k
     reference from league_sim --verify --pool on it. Returns (state_path, {seed: reference_path})."""
     kit_scripts = os.path.dirname(HERE)
     if kit_scripts not in sys.path:
         sys.path.insert(0, kit_scripts)
+    # the inputs are pinned beside the record, and the run reads the pinned copies (owner 2026-10-26)
+    os.makedirs(out_dir, exist_ok=True)
+    pinned = {}
+    for name, src in (("league_state.json", league_state), ("pool_season.csv", pool), ("league_schedule.json", schedule)):
+        if src:
+            dst = os.path.join(out_dir, name)
+            if os.path.abspath(src) != os.path.abspath(dst):
+                shutil.copyfile(src, dst)
+            pinned[name] = dst
+    league_state, pool, schedule = pinned["league_state.json"], pinned["pool_season.csv"], pinned.get("league_schedule.json")
     os.environ["SEASON_POOL"] = pool
     import co_gm as CG
     _, by = CG.load_pool()
@@ -147,14 +158,16 @@ def season_inputs(out_dir, league_state, pool, seeds, ref_seasons=10000, deck=DE
     refs = {}
     for sd in seeds:
         refs[sd] = os.path.join(out_dir, f"reference_10k_s{sd}.json")
+        # with the real schedule --verify cannot run (it changes the draw order): the reference is the plain run
+        mode = ["--schedule", schedule] if schedule else ["--verify"]
         subprocess.run([sys.executable, os.path.join(deck, "arena", "mocks", "league_sim.py"), state_path, "v69",
-                        str(ref_seasons), str(sd), refs[sd], "--verify", "--season-cv", "--pool", pool],
+                        str(ref_seasons), str(sd), refs[sd], "--season-cv", "--pool", pool] + mode,
                        check=True, capture_output=True)
-    return state_path, refs
+    return state_path, refs, pool, schedule
 
 
 def run_sweep(seasons, seeds, out, workers=4, registry=None, deck=DECK, registry_path=REGISTRY, state=None, pool=None,
-              references=None):
+              references=None, schedule=None):
     """state/pool: absolute paths of a draft-state-shaped picks file and a deck-schema pool (the season configuration,
     owner 2026-10-26); references: {seed: path} of that configuration's 10k league_sim --verify records, each required.
     All three absent: the draft configuration and its standing references, as before."""
@@ -169,10 +182,20 @@ def run_sweep(seasons, seeds, out, workers=4, registry=None, deck=DECK, registry
         for sd in seeds:
             if not os.path.exists(references[sd]):
                 raise FileNotFoundError(f"no 10k reference for seed {sd}: {references[sd]}")
-    jobs = [("baseline", {}, sd, seasons, deck, state, pool) for sd in seeds]
-    jobs += [(v["label"], v["patch"], sd, seasons, deck, state, pool) for v in variants for sd in seeds]
+    if schedule:
+        # owner 2026-10-26: every variant through league_sim on the real pairings and the weeks already final
+        if not (state and pool):
+            raise ValueError("the real-schedule sweep needs the season configuration's state and pool")
+        work = tempfile.mkdtemp()
+        jobs = [("baseline", {}, sd, seasons, deck, state, pool, schedule, work) for sd in seeds]
+        jobs += [(v["label"], v["patch"], sd, seasons, deck, state, pool, schedule, work) for v in variants for sd in seeds]
+        fn = _job_sim
+    else:
+        jobs = [("baseline", {}, sd, seasons, deck, state, pool) for sd in seeds]
+        jobs += [(v["label"], v["patch"], sd, seasons, deck, state, pool) for v in variants for sd in seeds]
+        fn = _job
     with ProcessPoolExecutor(workers) as ex:
-        res = list(ex.map(_job, jobs))
+        res = list(ex.map(fn, jobs))
     titles, playoffs = {}, {}
     for label, sd, c, p in res:
         titles.setdefault(label, {})[str(sd)] = round(c, 2)
@@ -199,6 +222,8 @@ def run_sweep(seasons, seeds, out, workers=4, registry=None, deck=DECK, registry
     if state or pool:
         rec.update(state_sha256=_sha(state or os.path.join(deck, STATE)), pool_sha256=_sha(pool or os.path.join(deck, POOL)),
                    references={str(sd): references[sd] for sd in seeds} if references else None)
+    if schedule:
+        rec.update(schedule=schedule, schedule_sha256=_sha(schedule), simulator="league_sim (real pairings, weeks already final)")
     rec.update(summarize(titles, variants, seeds))
     with open(out, "w", encoding="utf-8") as f:
         json.dump(rec, f, indent=1, ensure_ascii=False)
@@ -214,17 +239,22 @@ def main():
     ap.add_argument("--workers", type=int, default=4)
     ap.add_argument("--deck", default=DECK)
     ap.add_argument("--registry", default=REGISTRY)
+    ap.add_argument("--real-schedule", metavar="SCHEDULE",
+                    help="with --season: every variant through league_sim on this schedule file (the real pairings and "
+                         "the weeks already final), the reference the plain league_sim run (owner 2026-10-26)")
     ap.add_argument("--season", nargs=2, metavar=("LEAGUE_STATE", "POOL"),
                     help="the season configuration (owner 2026-10-26): rosters from the league state on the named pool; "
                          "the picks file and each seed's 10k reference are written beside --out")
     a = ap.parse_args()
-    state = pool = refs = None
+    state = pool = refs = sched = None
+    if a.real_schedule and not a.season:
+        ap.error("--real-schedule needs --season")
     if a.season:
-        pool = os.path.abspath(a.season[1])
-        state, refs = season_inputs(os.path.dirname(os.path.abspath(a.out)), os.path.abspath(a.season[0]), pool,
-                                    tuple(a.seeds), deck=os.path.abspath(a.deck))
+        state, refs, pool, sched = season_inputs(os.path.dirname(os.path.abspath(a.out)), os.path.abspath(a.season[0]),
+                                                 os.path.abspath(a.season[1]), tuple(a.seeds), deck=os.path.abspath(a.deck),
+                                                 schedule=os.path.abspath(a.real_schedule) if a.real_schedule else None)
     rec = run_sweep(a.seasons, tuple(a.seeds), a.out, a.workers, deck=os.path.abspath(a.deck),
-                    registry_path=a.registry, state=state, pool=pool, references=refs)
+                    registry_path=a.registry, state=state, pool=pool, references=refs, schedule=sched)
     print(f"SWEEP: {rec['seasons']:,} seasons x seeds {rec['seeds']} on deck {rec['engine_commit']}; "
           f"MC SE {rec['mc_se_points']:.2f}; baseline within 3 SE of the 10k reference: {rec['baseline_within_3se']}")
     b = rec["variants"]["baseline"]["title"]
