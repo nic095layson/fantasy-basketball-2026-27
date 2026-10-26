@@ -22,9 +22,10 @@ class Steps(unittest.TestCase):
         st = M.steps("2026-10-21", fetch=True, seasons=10000)
         # 2026-10-21: "preflight" became step 0 (independent-audit adoption); the indices below moved by one.
         # 2026-10-23 (owner, Build 1): "league table" after the week matchup, before the deck that draws it
-        self.assertEqual([s["name"] for s in st], ["preflight", "league live", "matchup live", "box scores 2026-10-20", "season lines", "season board", "status feed", "transactions", "daily brief", "week matchup", "league table", "form board", "season deck"])
+        # 2026-10-26 (owner, "results so far"): "league pairings" before the brief that runs the simulator
+        self.assertEqual([s["name"] for s in st], ["preflight", "league live", "matchup live", "box scores 2026-10-20", "season lines", "season board", "status feed", "transactions", "league pairings", "daily brief", "week matchup", "league table", "form board", "season deck"])
         self.assertIn("2026-10-20", st[3]["cmd"])
-        self.assertIn("2026-10-21", st[8]["cmd"])
+        self.assertIn("2026-10-21", st[9]["cmd"])
         self.assertTrue(all(s["pass_re"] for s in st))
 
     def test_no_fetch_skips_the_box_score_step(self):
@@ -101,6 +102,19 @@ class NonFatal(unittest.TestCase):
         rec = M.run_steps(st, out)
         self.assertEqual([x["verdict"] for x in rec["steps"]], ["FAIL (non-fatal)", "PASS"])
         self.assertEqual(rec["verdict"], "PASS")
+
+
+class Pairings(unittest.TestCase):
+    def test_the_morning_refreshes_the_schedules_played_weeks_before_the_brief(self):
+        # owner 2026-10-26 ("full pairings + results so far"): the simulator starts each season from the weeks already
+        # final, so the schedule file's played block is recompiled every morning from data/weeks, before the brief
+        # that runs the simulator; non-fatal (a failed compile leaves the last schedule file standing)
+        names = [s["name"] for s in M.steps("2026-10-27")]
+        self.assertIn("league pairings", names)
+        self.assertLess(names.index("league pairings"), names.index("daily brief"))
+        st = next(s for s in M.steps("2026-10-27") if s["name"] == "league pairings")
+        self.assertFalse(st.get("fatal", True))
+        self.assertIn("league_pairings.py", " ".join(st["cmd"]))
 
 
 class Manifest(unittest.TestCase):
