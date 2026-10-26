@@ -44,7 +44,7 @@ Pull window: 2026-10-26 → 2026-10-26. No pull: both findings come from the cod
 
 ## 4. Open for the owner
 
-- **Apply the two prompt edits** (drafted in the PR body, before/after in full). Until then the afternoon still overwrites.
+- **Apply the two prompt edits** (before/after in full in `prompt-diff-2026-10-26-run-records.md`, beside this report). Until then the afternoon still overwrites.
 - **Back-fill the overwritten overnight records** from git history into `league_moves_<date>.json`, or leave history as the record. Not done either way.
 
 ## Watchlist
