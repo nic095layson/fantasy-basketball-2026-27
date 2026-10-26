@@ -1,0 +1,308 @@
+{
+ "seasons": 6000,
+ "seeds": [
+  2026,
+  2027
+ ],
+ "workers": 4,
+ "mc_se_points": 0.535,
+ "engine_commit": "f3e1d27",
+ "state": "/home/user/fantasy-basketball-2026-27/report/after-reports/redteam-2026-10-26-season/state_season.json",
+ "pool": "/home/user/fantasy-basketball-2026-27/report/after-reports/redteam-2026-10-26-season/pool_season_2026-10-26.csv",
+ "owner_seat": 10,
+ "registry_sha256": "ad58a6a1eb2b",
+ "reference_10k": {
+  "2026": 24.96,
+  "2027": 25.47
+ },
+ "baseline_within_3se": {
+  "2026": true,
+  "2027": true
+ },
+ "tier_rule": "mean shift over seeds: ROBUST < 1, SENSITIVE 1-2, FRAGILE >= 2 title points",
+ "variants": {
+  "baseline": {
+   "title": {
+    "2026": 25.1,
+    "2027": 25.32
+   },
+   "playoff": {
+    "2026": 98.63,
+    "2027": 98.58
+   }
+  },
+  "bench weight 0.50": {
+   "title": {
+    "2026": 25.1,
+    "2027": 25.32
+   },
+   "playoff": {
+    "2026": 98.63,
+    "2027": 98.58
+   }
+  },
+  "bench weight 1.00 (F07's flip)": {
+   "title": {
+    "2026": 25.1,
+    "2027": 25.32
+   },
+   "playoff": {
+    "2026": 98.63,
+    "2027": 98.58
+   }
+  },
+  "binomial floor only (1.0)": {
+   "title": {
+    "2026": 25.9,
+    "2027": 26.27
+   },
+   "playoff": {
+    "2026": 98.83,
+    "2027": 98.77
+   }
+  },
+  "inflation 1.30": {
+   "title": {
+    "2026": 24.58,
+    "2027": 24.48
+   },
+   "playoff": {
+    "2026": 98.53,
+    "2027": 98.37
+   }
+  },
+  "no shared games shock (0.0)": {
+   "title": {
+    "2026": 28.07,
+    "2027": 27.73
+   },
+   "playoff": {
+    "2026": 99.28,
+    "2027": 99.12
+   }
+  },
+  "shared games shock doubled (0.12)": {
+   "title": {
+    "2026": 21.67,
+    "2027": 21.33
+   },
+   "playoff": {
+    "2026": 97.25,
+    "2027": 97.38
+   }
+  },
+  "no in-sim injury discount (risk 0.88 like healthy)": {
+   "title": {
+    "2026": 19.85,
+    "2027": 20.33
+   },
+   "playoff": {
+    "2026": 96.65,
+    "2027": 96.48
+   }
+  },
+  "harsher risk tier (0.65)": {
+   "title": {
+    "2026": 29.3,
+    "2027": 28.5
+   },
+   "playoff": {
+    "2026": 99.45,
+    "2027": 99.52
+   }
+  },
+  "healthy players play 0.95 of games": {
+   "title": {
+    "2026": 25.58,
+    "2027": 26.85
+   },
+   "playoff": {
+    "2026": 99.07,
+    "2027": 99.23
+   }
+  },
+  "healthy players play 0.80 of games": {
+   "title": {
+    "2026": 23.62,
+    "2027": 23.83
+   },
+   "playoff": {
+    "2026": 98.17,
+    "2027": 98.13
+   }
+  },
+  "3.0 games per healthy week": {
+   "title": {
+    "2026": 23.93,
+    "2027": 24.42
+   },
+   "playoff": {
+    "2026": 98.5,
+    "2027": 98.38
+   }
+  },
+  "4.0 games per healthy week": {
+   "title": {
+    "2026": 26.45,
+    "2027": 25.98
+   },
+   "playoff": {
+    "2026": 98.9,
+    "2027": 98.82
+   }
+  }
+ },
+ "state_sha256": "ad3f5c5b349c60c63c26b5278799f02859f063ea7205e2999c4798cfe1f3273e",
+ "pool_sha256": "902f4daef672a172eff530dc3a8e154d1b7879f29222d66fa17d29cf6e16d104",
+ "references": {
+  "2026": "/home/user/fantasy-basketball-2026-27/report/after-reports/redteam-2026-10-26-season/reference_10k_s2026.json",
+  "2027": "/home/user/fantasy-basketball-2026-27/report/after-reports/redteam-2026-10-26-season/reference_10k_s2027.json"
+ },
+ "constants": {
+  "arena.BENCH_WEIGHT": {
+   "variants": [
+    {
+     "label": "bench weight 0.50",
+     "shift": {
+      "2026": 0.0,
+      "2027": 0.0
+     },
+     "shift_mean": 0.0,
+     "tier": "ROBUST"
+    },
+    {
+     "label": "bench weight 1.00 (F07's flip)",
+     "shift": {
+      "2026": 0.0,
+      "2027": 0.0
+     },
+     "shift_mean": 0.0,
+     "tier": "ROBUST"
+    }
+   ],
+   "tier": "ROBUST",
+   "max_abs_shift": 0.0
+  },
+  "arena.PCT_MIX_INFL": {
+   "variants": [
+    {
+     "label": "binomial floor only (1.0)",
+     "shift": {
+      "2026": 0.8,
+      "2027": 0.95
+     },
+     "shift_mean": 0.88,
+     "tier": "ROBUST"
+    },
+    {
+     "label": "inflation 1.30",
+     "shift": {
+      "2026": -0.52,
+      "2027": -0.84
+     },
+     "shift_mean": -0.68,
+     "tier": "ROBUST"
+    }
+   ],
+   "tier": "ROBUST",
+   "max_abs_shift": 0.88
+  },
+  "arena.TEAM_WEEK_SHOCK": {
+   "variants": [
+    {
+     "label": "no shared games shock (0.0)",
+     "shift": {
+      "2026": 2.97,
+      "2027": 2.41
+     },
+     "shift_mean": 2.69,
+     "tier": "FRAGILE"
+    },
+    {
+     "label": "shared games shock doubled (0.12)",
+     "shift": {
+      "2026": -3.43,
+      "2027": -3.99
+     },
+     "shift_mean": -3.71,
+     "tier": "FRAGILE"
+    }
+   ],
+   "tier": "FRAGILE",
+   "max_abs_shift": 3.71
+  },
+  "arena.weekly_availability": {
+   "variants": [
+    {
+     "label": "no in-sim injury discount (risk 0.88 like healthy)",
+     "shift": {
+      "2026": -5.25,
+      "2027": -4.99
+     },
+     "shift_mean": -5.12,
+     "tier": "FRAGILE"
+    },
+    {
+     "label": "harsher risk tier (0.65)",
+     "shift": {
+      "2026": 4.2,
+      "2027": 3.18
+     },
+     "shift_mean": 3.69,
+     "tier": "FRAGILE"
+    },
+    {
+     "label": "healthy players play 0.95 of games",
+     "shift": {
+      "2026": 0.48,
+      "2027": 1.53
+     },
+     "shift_mean": 1.0,
+     "tier": "SENSITIVE"
+    },
+    {
+     "label": "healthy players play 0.80 of games",
+     "shift": {
+      "2026": -1.48,
+      "2027": -1.49
+     },
+     "shift_mean": -1.48,
+     "tier": "SENSITIVE"
+    }
+   ],
+   "tier": "FRAGILE",
+   "max_abs_shift": 5.12
+  },
+  "arena.GAMES_PER_WEEK": {
+   "variants": [
+    {
+     "label": "3.0 games per healthy week",
+     "shift": {
+      "2026": -1.17,
+      "2027": -0.9
+     },
+     "shift_mean": -1.03,
+     "tier": "SENSITIVE"
+    },
+    {
+     "label": "4.0 games per healthy week",
+     "shift": {
+      "2026": 1.35,
+      "2027": 0.66
+     },
+     "shift_mean": 1.01,
+     "tier": "SENSITIVE"
+    }
+   ],
+   "tier": "SENSITIVE",
+   "max_abs_shift": 1.03
+  }
+ },
+ "fragile": [
+  "arena.TEAM_WEEK_SHOCK",
+  "arena.weekly_availability"
+ ],
+ "sensitive": [
+  "arena.GAMES_PER_WEEK"
+ ]
+}
