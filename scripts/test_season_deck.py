@@ -445,6 +445,25 @@ TW = dict(status="ran", drops=["Bench Guy"], pool_size=2, no_games=["Idle Man"],
                      season_d_ecw=0.031)])
 
 
+def visible_dom(html_path, tab, pane):
+    """A pane's visible text (innerText: a closed <details> body and title attributes are not in it) and every title
+    attribute in it, after clicking its tab."""
+    from playwright.sync_api import sync_playwright
+    with sync_playwright() as p:
+        b, exe, tried = DRC._launch(p)
+        try:
+            pg = b.new_page(); errs = []
+            pg.on("pageerror", lambda e: errs.append(str(e)))
+            pg.route(re.compile(r"^https?://"), lambda r: r.abort())
+            pg.goto("file://" + os.path.abspath(html_path), wait_until="load")
+            pg.click(f"nav.tabs button:has-text('{tab}')")
+            return dict(errors=errs, text=pg.evaluate(f"() => document.getElementById('{pane}').innerText"),
+                        titles=pg.evaluate(f"() => [...document.querySelectorAll('#{pane} [title]')].map(e => e.title)"),
+                        details=pg.evaluate(f"() => [...document.querySelectorAll('#{pane} details')].map(d => [d.open, d.textContent])"))
+        finally:
+            b.close()
+
+
 def fa_positions_dom(html_path, tick=()):
     """The Free Agents pane's positions block in the browser, after ticking the named players' boxes in order."""
     from playwright.sync_api import sync_playwright
@@ -799,7 +818,8 @@ class WeekMatchupCard(unittest.TestCase):
         self.assertEqual(dom["errors"], [])
         self.assertIn("Yahoo's scoreboard", dom["text"])
         self.assertIn("rebuild agrees on all 11", dom["text"])
-        self.assertIn("Yahoo's own count of games left: you 32, them 33", dom["text"])
+        # 2026-10-26 (wording pass, item 10): the figures stay visible in the short line; the sentence is the hover
+        self.assertIn("(Yahoo: 32 v 33)", dom["text"])
         self.assertNotIn("rebuilt from box scores", dom["text"])
 
     def test_a_rebuild_difference_is_named_stat_by_stat(self):
@@ -864,6 +884,56 @@ class WeekMatchupCard(unittest.TestCase):
         dom = today_dom(self.page(r))
         self.assertEqual(dom["errors"], [])
         self.assertNotIn("Worth a look", dom["text"])
+
+    def test_the_wording_pass_shortens_today_and_free_agents_and_keeps_every_definition(self):
+        # owner 2026-10-26 (item 10, "Build all 12 lines as proposed"): the visible notes shrink to the proposed lines;
+        # every definition they carried is still on the page as a hover title or inside a closed toggle
+        r = board_record()
+        r["pickups"] = dict(r["pickups"], this_week=TW)
+        r["to_date_days"] = []                                               # T1: no box-score day yet this week
+        r["to_date_source"] = dict(source="rebuild", reason="Yahoo's week 2 totals could not be read: unreadable makes/attempts value '/'",
+                                   rebuild_agrees=None, differences=[], yahoo_games_remaining=None)
+        r["fa_notice"] = dict(rows=[dict(add="Big Pickup", team="LAL", drop="Bench Guy", gap=2.4)],
+                              this_week=dict(add="Week Rental", drop="Bench Guy", d_exp=0.34), gap=1.0, d_exp=0.1)
+        p = self.page(r)
+        t = visible_dom(p, "Today", "pane-today")
+        self.assertEqual(t["errors"], [])
+        tx, hover = t["text"], " ".join(t["titles"])
+        self.assertNotIn("through —", tx)                                        # T1 defect
+        self.assertNotIn("player rows rebuilt from box scores", tx)              # T1
+        self.assertIn("Score = categories led to date · — = no game yet", tx)    # T2
+        self.assertIn("schedule file carries dates only", hover)
+        self.assertNotIn("Season gap = the free agent", tx)                       # T3
+        self.assertIn("Season gap = the free agent", hover)
+        self.assertIn("Projected ", tx); self.assertNotIn("(W–L–T)", tx); self.assertNotIn("Expected categories this week", tx)   # T4
+        self.assertIn(" · games left ", tx)                                       # the fixture carries no exp_cats
+        self.assertIn("Best adds this week", tx)                                   # T5
+        self.assertNotIn("whose drop helps most", tx); self.assertIn("whose drop helps most", hover)
+        self.assertIn("Dropping with nobody added", tx)                            # T6: names and figures stay
+        self.assertNotIn("A positive figure means", tx); self.assertIn("A positive figure means", hover)
+        self.assertNotIn("the sum of the nine changes", tx); self.assertIn("the sum of the nine changes", hover)    # T7
+        self.assertIn("To date rebuilt from box scores (Yahoo's totals not posted yet)", tx)                    # T8
+        self.assertNotIn("at most ten a day", tx); self.assertIn("at most ten a day", hover)
+        self.assertIn("Model bands:", tx); self.assertNotIn("Structural band (standing sweep)", tx)            # T9
+        self.assertIn("TEAM_WEEK_SHOCK is FRAGILE", hover)
+        f = visible_dom(p, "Free Agents", "pane-fa")
+        self.assertEqual(f["errors"], [])
+        fx, fhover = f["text"], " ".join(f["titles"])
+        self.assertIn("IL counts 0 · z screen, not the simulator", fx)            # F2
+        self.assertNotIn("owner rule D-IS-8", fx); self.assertIn("owner rule D-IS-8", fhover)
+        self.assertNotIn("Per-category z-scores come from", fx)                   # F3: inside a closed toggle
+        self.assertTrue(any((not op) and "Per-category z-scores come from" in body for op, body in f["details"]))
+
+    def test_the_fa_this_week_note_is_one_line_with_the_rest_on_hover(self):
+        b = json.load(open(self.fx["board"]))
+        b["board"].append(dict(rank=4, name="Other FA", team="LAL", pos="SF", gp=70.0, z_adj=5.0, z_total=5.0,
+                               z={c: 0.5 for c in ["FG%", "FT%", "3PM", "PTS", "REB", "AST", "STL", "BLK", "TOV"]}))
+        json.dump(b, open(self.fx["board"], "w"))
+        k = dict(week_matchup_record()["pickups"], this_week=TW)
+        f = visible_dom(self.page(week_matchup_record(k)), "Free Agents", "pane-fa")
+        self.assertIn("This week = Δ cats vs opponent if added tomorrow", f["text"])   # F1
+        self.assertNotIn("in place of the lower-valued player named", f["text"])
+        self.assertIn("in place of the lower-valued player named", " ".join(f["titles"]))
 
     def test_the_positions_recount_as_drops_and_adds_are_ticked(self):
         # owner 2026-10-26 (item 3): the header counts follow the picked move. The board row's pos is Yahoo's
