@@ -306,6 +306,7 @@ select,input[type=search],input[type=text]{background:var(--surface); color:var(
 .lg .rk.top{background:var(--mine); color:#fff} .lg .rk.low{color:var(--negtx)}
 .fm td.name{white-space:nowrap} .fm td, .fm th{font-size:12px; padding-left:5px; padding-right:5px}
 details.how{margin-top:8px} details.how summary{cursor:pointer; font-size:12px; color:var(--ink2)}
+.lg tr.cut td{border-bottom:2px dashed var(--ink2)}  /* owner 2026-10-26: the playoff line under 8th */
 .lg .bar{display:inline-block; height:8px; background:var(--pos); border-radius:4px; vertical-align:middle; margin-left:6px}
 .zneg{color:var(--negtx)}  /* text red: 4.5:1+ on surface, bg and chip in both themes (--neg is for fills) */
 .h2row{display:flex; justify-content:space-between; align-items:center; gap:10px; margin:0 0 8px}
@@ -902,7 +903,26 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
         h("td",{class:"num"},x.allplay.pct==null?"–":(x.allplay.pct*100).toFixed(1)+"%"),h("td",{},h("span",{class:"bar",style:"width:"+Math.round((x.allplay.pct||0)*90)+"px"})),
         h("td",{class:"num"},x.allplay.w+"–"+x.allplay.l+"–"+x.allplay.t),h("td",{class:"num"},x.actual?x.actual.w+"–"+x.actual.l+"–"+x.actual.t:"–"),
         h("td",{class:"num"+(x.luck!=null&&x.luck<0?" zneg":"")},x.luck==null?"–":((x.luck>=0?"+":"")+(x.luck*100).toFixed(1)+" pts")))))));
-  p.append(powerCard, h("div",{class:"card"},h("h2",{},"League categories"),h("div",{class:"pick"},h("label",{},"view ",sel)),box));
+  // owner 2026-10-26 ("Standings card + fix records"): Yahoo's standings from the latest pull that carries them, the playoff
+  // line under 8th, the distance from it in category games, and the kit's week records checked against Yahoo's W-L-T
+  const S=L.standings, rec3=(a)=>a[0]+"–"+a[1]+"–"+a[2];
+  const vsl=(v)=>v==null?"–":(v>0? "+"+v : (v<0? "−"+(-v) : "0"));
+  const stCard=h("div",{class:"card",id:"lg-standings-card"},h("h2",{},"Standings"),
+    !S? h("div",{class:"zero"},"No Yahoo standings pinned on or before "+D.date+" (the morning pull carries them from 2026-10-27).")
+    : h("div",{},
+        h("p",{class:"note"},"Yahoo's standings as of "+S.pull_date+". The dashed line is the playoff line: the top "+S.playoff_teams+" of "+S.rows.length+" make it. "+
+          "vs line = category games ahead of 9th (+) for the top "+S.playoff_teams+", behind "+S.playoff_teams+"th (−) for the rest."),
+        h("div",{class:"tablebox"},h("table",{id:"lg-standings",class:"lg"},
+          h("tr",{},h("th",{class:"num"},"#"),h("th",{},"team"),h("th",{class:"num"},"W–L–T"),h("th",{class:"num"},"win %"),h("th",{class:"num"},"vs line"),h("th",{class:"num"},"waiver")),
+          S.rows.map(r=>h("tr",{class:[r.mine?"mine":"", r.rank===S.playoff_teams?"cut":""].join(" ").trim()},
+            h("td",{class:"num"},String(r.rank)),
+            h("td",{class:"team","data-team":r.team},h("b",{},r.team),r.mine?h("span",{class:"chip mine"},"you"):null,h("small",{style:"display:block;color:var(--ink2)"},r.manager||"")),
+            h("td",{class:"num"},r.w+"–"+r.l+"–"+r.t),h("td",{class:"num"},r.pct.toFixed(3).replace(/^0/,"")),
+            h("td",{class:"num"+(r.vs_line!=null&&r.vs_line<0?" zneg":"")},vsl(r.vs_line)),h("td",{class:"num"},r.waiver==null?"–":String(r.waiver)))))),
+        S.check.mismatches.length
+          ? h("p",{class:"note zneg"},"Yahoo's W–L–T differs from the kit's week records for "+S.check.mismatches.map(m=>m.team+" (kit "+rec3(m.kit)+", Yahoo "+rec3(m.yahoo)+")").join("; ")+".")
+          : h("p",{class:"note"},"Yahoo's W–L–T matches the kit's week records for all "+S.check.teams_checked+" teams (finished week"+(S.check.finished_weeks.length===1?" ":"s ")+S.check.finished_weeks.join(", ")+").")));
+  p.append(stCard, powerCard, h("div",{class:"card"},h("h2",{},"League categories"),h("div",{class:"pick"},h("label",{},"view ",sel)),box));
   render();
 })();
 

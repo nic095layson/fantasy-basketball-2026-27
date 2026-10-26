@@ -677,6 +677,10 @@ def league_dom(html_path, clicks=(), width=1280):
                 mine=q("() => [...document.querySelectorAll('#lg-table tr.mine td.team')].map(x=>x.dataset.team)"),
                 badges=q("() => [...document.querySelectorAll('#lg-table tr.mine .rk')].map(x=>x.textContent)"),
                 power=q("() => [...document.querySelectorAll('#lg-power tr td.team')].map(x=>x.dataset.team)"),
+                standings=q("() => [...document.querySelectorAll('#lg-standings tr td.team')].map(x=>x.dataset.team)"),
+                cut=q("() => [...document.querySelectorAll('#lg-standings tr.cut td.team')].map(x=>x.dataset.team)"),
+                st_mine=q("() => [...document.querySelectorAll('#lg-standings tr.mine td.team')].map(x=>x.dataset.team)"),
+                st_text=q("() => { const m=document.getElementById('lg-standings-card'); return m? m.textContent : null }"),
                 page_overflow=q("() => document.documentElement.scrollWidth - window.innerWidth"))
         finally:
             b.close()
@@ -731,6 +735,37 @@ class LeagueTab(unittest.TestCase):
         self.assertEqual(dom["errors"], [])
         self.assertEqual(dom["power"], [x["team"] for x in league_record()["power"]])
         self.assertLessEqual(dom["page_overflow"], 0)
+
+    def standings(self, mismatches=()):
+        """Owner 2026-10-26: league_table.py's standings block (Yahoo's rank order is Team 12 first)."""
+        teams = [f"Team {i}" for i in range(12, 0, -1)]
+        rows = [dict(rank=i + 1, team=t, seat=int(t.split()[1]), manager="M" + t.split()[1], mine=t == "Team 10", w=9 - i // 2, l=i // 2,
+                     t=0, pct=(9 - i // 2) / 9, seed=i + 1 if i < 8 else None, waiver=12 - i, faab=500,
+                     vs_line=(4.5 - i if i < 8 else -(i - 7.5))) for i, t in enumerate(teams)]
+        return dict(pull="pull_2026-10-21.json", pull_date="2026-10-21", playoff_teams=8, rows=rows,
+                    check=dict(finished_weeks=[1], teams_checked=12, mismatches=list(mismatches)))
+
+    def test_the_standings_card_lists_yahoos_order_with_the_playoff_line_under_eighth(self):
+        rec = league_record(); rec["standings"] = self.standings()
+        dom = league_dom(self.page(rec))
+        self.assertEqual(dom["errors"], [])
+        self.assertEqual(dom["standings"], [f"Team {i}" for i in range(12, 0, -1)])
+        self.assertEqual(dom["cut"], ["Team 5"])            # the 8th row carries the line
+        self.assertEqual(dom["st_mine"], ["Team 10"])
+        for s in ("Standings", "W–L–T", "waiver", "playoff line", "2026-10-21", "matches"):
+            self.assertIn(s, dom["st_text"])
+
+    def test_a_disagreement_with_yahoo_is_shown_on_the_card(self):
+        rec = league_record(); rec["standings"] = self.standings([dict(team="Team 3", kit=[5, 4, 0], yahoo=[6, 3, 0])])
+        dom = league_dom(self.page(rec))
+        self.assertIn("Team 3", dom["st_text"]); self.assertIn("differs", dom["st_text"])
+
+    def test_no_standings_says_so_and_the_tab_still_draws(self):
+        rec = league_record(); rec["standings"] = None
+        dom = league_dom(self.page(rec))
+        self.assertEqual(dom["errors"], [])
+        self.assertIn("No Yahoo standings pinned", dom["st_text"])
+        self.assertEqual(len(dom["teams"]), 12)
 
     def test_no_record_draws_the_tab_with_a_zero_state(self):
         dom = league_dom(self.page(None))
