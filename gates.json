@@ -1,12 +1,12 @@
 {
- "ran_at_utc": "2026-10-26T18:27:16Z",
+ "ran_at_utc": "2026-10-26T18:27:43Z",
  "inputs": {
-  "scripts/season_deck.py": "e7bbf6b76f3d25770c842a07157c41162d397aaef84a50f7f504d41d7483c6f1"
+  "scripts/flaim_live.py": "014704903f5944af2cee75d87bdd4cc627b5640c65f3cc06f5baa63007d8b860"
  },
  "gates": [
   {
-   "name": "kit test_season_deck",
-   "cmd": "python3 scripts/test_season_deck.py",
+   "name": "kit test_flaim_live",
+   "cmd": "python3 scripts/test_flaim_live.py",
    "cwd": ".",
    "pass_re": "^OK",
    "exit": 0,
@@ -15,7 +15,37 @@
    "why": "",
    "tail": [
     "----------------------------------------------------------------------",
-    "Ran 101 tests in 45.436s",
+    "Ran 21 tests in 0.008s",
+    "OK"
+   ]
+  },
+  {
+   "name": "kit test_league_live",
+   "cmd": "python3 scripts/test_league_live.py",
+   "cwd": ".",
+   "pass_re": "^OK",
+   "exit": 0,
+   "pass_line": "OK",
+   "verdict": "PASS",
+   "why": "",
+   "tail": [
+    "----------------------------------------------------------------------",
+    "Ran 24 tests in 0.676s",
+    "OK"
+   ]
+  },
+  {
+   "name": "kit test_week_matchup",
+   "cmd": "python3 scripts/test_week_matchup.py",
+   "cwd": ".",
+   "pass_re": "^OK",
+   "exit": 0,
+   "pass_line": "OK",
+   "verdict": "PASS",
+   "why": "",
+   "tail": [
+    "----------------------------------------------------------------------",
+    "Ran 80 tests in 6.154s",
     "OK"
    ]
   },
@@ -35,5 +65,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "9d83c0bdcb6c593f18fafaa70addd07b16428288"
+ "base_commit": "a6fae91a0c18194004c6f4b9b7d9eb4c57856252"
 }
