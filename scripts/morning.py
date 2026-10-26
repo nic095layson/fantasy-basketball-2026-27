@@ -75,6 +75,11 @@ def steps(date, fetch=True, seasons=10000, since=None):
         st.append(dict(name="transactions", cmd=[PY, os.path.join(HERE, "transactions.py"), "--date", date], cwd=KIT,
                        pass_re=r"^TRANSACTIONS: PASS", env={}))
     st += [
+           # owner 2026-10-26 ("full pairings + results so far"): the schedule file's played block, recompiled from
+           # data/weeks so the simulator starts each season from the weeks already final; non-fatal (the last
+           # schedule file stands)
+           dict(name="league pairings", cmd=[PY, os.path.join(HERE, "league_pairings.py")], cwd=KIT,
+                pass_re=r"^LEAGUE PAIRINGS: PASS", env={}, fatal=False),
            dict(name="daily brief", cmd=[PY, os.path.join(HERE, "daily_brief.py"), "--date", date, "--seasons", str(seasons)], cwd=KIT,
                 pass_re=r"^wrote report/briefs/brief_", env={"SEASON_POOL": season_pool}),
            # owner 2026-10-21: the week's categories to date + projected, for the deck's Today tab; non-fatal (the
