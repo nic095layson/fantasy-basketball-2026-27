@@ -8,6 +8,7 @@ FantasyBot: nothing is retyped.
   B  every rostered player's Yahoo status letter; a letter status_feed.TIERS does not know halts, never guessed
   A  this week's Yahoo category totals per team (week_matchup's to-date column)
   D  Yahoo's available-player list (week_matchup's pickup pool)
+  F  Yahoo's standings (get_standings), pinned beside the rosters for the record (owner 2026-10-26, item 7)
   E  a past day's lineup (get_roster with as_of_date): week_matchup's rebuild counts that day's active slots
      (owner 2026-10-22, "Read daily rosters")
 
@@ -58,10 +59,10 @@ def extract_pull(transcript, since=None):
     """Walk the transcript for this league's Flaim responses: the latest current roster per team, the latest dated
     roster per team and day, the latest matchup response per week, the latest available-player list."""
     since = LL.since_instant(since)
-    rosters, daily, weeks, fa = {}, {}, {}, None
+    rosters, daily, weeks, fa, standings = {}, {}, {}, None, None
 
     def take(d):
-        nonlocal fa
+        nonlocal fa, standings
         snap = d.get("snapshot") or {}
         if "players" in d and _ours(d.get("teamKey")) and snap.get("type") == "current":
             rosters[d["teamKey"]] = d
@@ -71,6 +72,8 @@ def extract_pull(transcript, since=None):
             weeks[str(d.get("matchupWeek") or d.get("currentWeek"))] = d
         elif "freeAgents" in d and d.get("leagueKey") == LEAGUE_KEY:
             fa = d
+        elif "standings" in d and d.get("leagueKey") == LEAGUE_KEY:
+            standings = d
 
     def walk(x):
         if isinstance(x, str):
@@ -93,7 +96,7 @@ def extract_pull(transcript, since=None):
             if o is not None and LL.recent(o, since):
                 walk(o.get("message") if isinstance(o, dict) and "message" in o else o)
     return {"source": "flaim", "league_key": LEAGUE_KEY, "rosters": rosters, "daily": daily, "matchups": weeks,
-            "free_agents": fa}
+            "free_agents": fa, "standings": standings}
 
 
 def keep_daily(pull, path):
@@ -112,7 +115,7 @@ def keep_daily(pull, path):
         daily.setdefault(team, {}).update(days)
     out = dict(pull, daily=daily)
     carried = set(pin.get("carried_forward") or ())
-    for key in ("matchups", "free_agents"):
+    for key in ("matchups", "free_agents", "standings"):
         if not pull.get(key) and pin.get(key):
             out[key] = pin[key]
             carried.add(key)
