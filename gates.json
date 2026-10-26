@@ -1,13 +1,25 @@
 {
- "ran_at_utc": "2026-10-26T18:10:55Z",
+ "ran_at_utc": "2026-10-26T18:13:34Z",
  "inputs": {
-  "scripts/test_league_live.py": "761dd2f304213e95902be3d3d2cafd11abda04aed66dc8b7405201bdfccb4c3e",
-  "scripts/test_matchup_live.py": "72551a269a082a811aed65e19b607e30d0cb9c1ab93fe4f9dc0296fb418d3159"
+  "report/after-reports/redteam-2026-10-26/sweep.json": "9a8afd3a6d67d5f394871350753d3dde25530be019705d8b20487cd112213008"
  },
  "gates": [
   {
-   "name": "kit test_league_live",
-   "cmd": "python3 scripts/test_league_live.py",
+   "name": "redteam attacks",
+   "cmd": "python3 scripts/redteam/run_attacks.py --check",
+   "cwd": ".",
+   "pass_re": "^ATTACKS CHECK: PASS",
+   "exit": 0,
+   "pass_line": "ATTACKS CHECK: PASS \u2014 9 attacks on engine c11b05b (engine files last changed 95ebade); CURRENT 5, UNFINGERPRINTED 4",
+   "verdict": "PASS",
+   "why": "",
+   "tail": [
+    "ATTACKS CHECK: PASS \u2014 9 attacks on engine c11b05b (engine files last changed 95ebade); CURRENT 5, UNFINGERPRINTED 4"
+   ]
+  },
+  {
+   "name": "kit test_redteam_sweep",
+   "cmd": "python3 scripts/test_redteam_sweep.py",
    "cwd": ".",
    "pass_re": "^OK",
    "exit": 0,
@@ -16,13 +28,13 @@
    "why": "",
    "tail": [
     "----------------------------------------------------------------------",
-    "Ran 24 tests in 0.683s",
+    "Ran 10 tests in 0.756s",
     "OK"
    ]
   },
   {
-   "name": "kit test_matchup_live",
-   "cmd": "python3 scripts/test_matchup_live.py",
+   "name": "kit test_redteam_attacks",
+   "cmd": "python3 scripts/test_redteam_attacks.py",
    "cwd": ".",
    "pass_re": "^OK",
    "exit": 0,
@@ -31,7 +43,7 @@
    "why": "",
    "tail": [
     "----------------------------------------------------------------------",
-    "Ran 8 tests in 0.135s",
+    "Ran 7 tests in 0.003s",
     "OK"
    ]
   },
@@ -51,5 +63,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "925cec9450b1ab50ff0a560aa35d6bb32e057f13"
+ "base_commit": "5b90019159f1c3849665f7f870ff0f130f955076"
 }
