@@ -262,6 +262,7 @@ select,input[type=search],input[type=text]{background:var(--surface); color:var(
 .positions hr{border:0; border-top:1px solid var(--line); margin:0; width:min(100%,22em)}
 .posrow{display:flex; flex-wrap:wrap; gap:2px 12px; justify-content:center}
 .poschip{display:inline-flex; gap:3px; align-items:baseline; font-size:13.5px} .poschip b{font-weight:600}
+.poschip.moved span{color:var(--mine); font-weight:600}
 @media (max-width:640px){ .h2row:has(.positions){flex-wrap:wrap} .positions{flex-basis:100%; order:3} }  /* phone: the counts take their own line under the title */
 .plist{border:1px solid var(--line); border-radius:6px; height:230px; overflow-y:auto; padding:4px; box-sizing:border-box}
 .plist label{display:flex; gap:8px; align-items:center; padding:6px 8px; border-radius:4px; font-size:13.5px; min-height:32px}
@@ -606,12 +607,22 @@ function myHeld(){ const ob=(D.league.rosters[D.my_team]||{}).off_board||[];
   return ob.length? h("p",{class:"note"},"You also roster, off the board (held, no z line): "+ob.join(", ")) : null; }
 // owner 2026-10-26: my roster's positional breakdown, as the Draft Deck's roster header — eligibility counts on top,
 // each player once per family (G = PG/SG, F = SF/PF) beneath; counted at build time (D.league.my_positions), not here
-function myPositions(){ const P=D.league.my_positions; if(!P) return null;
-  const row=(pairs)=>h("div",{class:"posrow"},pairs.map(([k,v])=>h("span",{class:"poschip"},h("b",{},k),h("span",{},"("+v+")"))));
-  return h("div",{id:"fa-positions",class:"positions",title:"Your positions: "+P.rostered+" rostered"+(P.il?" incl. "+P.il+" IL":"")+". Top: every position each player is eligible for; below: each player once per family."},
-    row(["PG","SG","SF","PF","C"].map(k=>[k,P.positions[k]])),
+// owner 2026-10-26: my roster's positional breakdown, as the Draft Deck's roster header — eligibility counts on top,
+// each player once per family (G = PG/SG, F = SF/PF) beneath; counted at build time (D.league.my_positions). With a
+// picked move (owner 2026-10-26, item 3) each count reads before→after: the dropped and added players' board pos,
+// which is Yahoo's eligibility (equal for 14/14 rostered and 87/87 board free agents on 10/26)
+const POSFAM={G:["PG","SG"],F:["SF","PF"],C:["C"]};
+function myPositions(drop,add){ const P=D.league.my_positions; if(!P) return null;
+  const pos={...P.positions}, fam={...P.families};
+  const toks=(n)=>{ const r=BYNAME[n]; return r&&r.pos? r.pos.split(",").map(x=>x.trim()).filter(x=>x in pos) : []; };
+  const shift=(n,d)=>{ const t=toks(n); t.forEach(k=>{pos[k]+=d;}); Object.keys(fam).forEach(f=>{ if(t.some(k=>POSFAM[f].includes(k))) fam[f]+=d; }); };
+  (drop||[]).forEach(n=>shift(n,-1)); (add||[]).forEach(n=>shift(n,+1));
+  const cell=(a,b)=>a===b? "("+a+")" : "("+a+"→"+b+")";
+  const row=(keys,base,now)=>h("div",{class:"posrow"},keys.map(k=>h("span",{class:"poschip"+(base[k]!==now[k]?" moved":"")},h("b",{},k),h("span",{},cell(base[k],now[k])))));
+  return h("div",{id:"fa-positions",class:"positions",title:"Your positions: "+P.rostered+" rostered"+(P.il?" incl. "+P.il+" IL":"")+". Top: every position each player is eligible for; below: each player once per family. A picked move shows before→after."},
+    row(["PG","SG","SF","PF","C"],P.positions,pos),
     h("hr",{}),
-    row(["G","F","C"].map(k=>[k,P.families[k]]))); }
+    row(["G","F","C"],P.families,fam)); }
 function myField(){ return h("div",{class:"field static",title:T(D.my_team)},T(D.my_team)+" · "+MINE.length+" on the board"); }
 function pickList(rows, set, rerender, empty, extra){ return h("div",{class:"plist"}, rows.length? rows.map(r=>h("label",{},
   h("input",{type:"checkbox",...(set.has(r.name)?{checked:""}:{}),onchange:(e)=>{e.target.checked?set.add(r.name):set.delete(r.name);rerender();}}),
@@ -667,7 +678,7 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
       return (x&&y)? y.d_exp-x.d_exp : x? -1 : y? 1 : 0; });                         // the rest keep their z order (stable sort)
     pool=pool.slice(0,60);
     root.replaceChildren(
-      h("div",{class:"h2row"},h("h2",{},"Free-Agent Adder"),myPositions(),
+      h("div",{class:"h2row"},h("h2",{},"Free-Agent Adder"),myPositions([...drop],[...add]),
         h("button",{id:"fa-reset",class:"resetbtn",onclick:()=>{drop.clear();add.clear();search="";inp.value="";render();}},"Reset")),
       h("div",{class:"pick"},
         h("div",{},h("h2",{},"I drop"),myField(),pickList(MINE,drop,render,"No players of yours on the board."),myHeld()),
