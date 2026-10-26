@@ -28,7 +28,13 @@ OUTDIR = os.path.join(CG.KIT, "report", "briefs")
 SEEDS = (2026, 2027)
 
 
-SWEEP = os.path.join(CG.KIT, "report", "after-reports", "redteam-2026-10-19", "sweep.json")
+# owner 2026-10-26 ("re-measure the uncertainty ranges ... now that they use the updated stats"): the sweep on the season
+# configuration (the 2026-10-26 rosters on the season pool); the draft configuration's record stays at redteam-2026-10-19
+SWEEP = os.path.join(CG.KIT, "report", "after-reports", "redteam-2026-10-26-season", "sweep.json")
+
+
+def sweep_config(sw):
+    return "season sweep (current rosters, season pool)" if sw.get("state_sha256") else "draft sweep (draft rosters, frozen pool)"
 
 
 def band_line(path=SWEEP):
@@ -43,7 +49,7 @@ def band_line(path=SWEEP):
     for key in sw.get("fragile", []):
         c = sw["constants"][key]
         parts.append(f"{key.split('.')[-1]} is FRAGILE: " + " / ".join(f"{v['shift_mean']:+.1f} ({v['label']})" for v in c["variants"]))
-    return "Structural band (standing sweep, deck " + str(sw.get("engine_commit", "?")) + "): " + ("; ".join(parts) if parts else "no FRAGILE constant") + "."
+    return "Structural band (" + sweep_config(sw) + ", deck " + str(sw.get("engine_commit", "?")) + "): " + ("; ".join(parts) if parts else "no FRAGILE constant") + "."
 
 
 def odds_line(a, b, n):

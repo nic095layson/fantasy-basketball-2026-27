@@ -62,16 +62,18 @@ def variants_from_registry(reg):
 
 
 def _job(args):
-    label, patch, seed, seasons, deck = args
+    # owner 2026-10-26: an optional state and pool (absolute paths) run the season configuration; absent, the draft one
+    label, patch, seed, seasons, deck = args[:5]
+    state_path, pool_path = (tuple(args[5:7]) + (None, None))[:2]
     for d in (os.path.join(deck, "scripts"), os.path.join(deck, "arena")):
         if d not in sys.path:
             sys.path.insert(0, d)
     hoops = importlib.import_module("hoops")
     arena = importlib.import_module("arena")
     importlib.reload(arena)  # a fresh module per job: patches must not leak between jobs sharing a worker
-    hoops.DATA_PATH = os.path.join(deck, POOL)
+    hoops.DATA_PATH = pool_path or os.path.join(deck, POOL)
     by = {p["player"]: p for p in hoops.zscores(hoops.load_players())}
-    with open(os.path.join(deck, STATE), encoding="utf-8") as f:
+    with open(state_path or os.path.join(deck, STATE), encoding="utf-8") as f:
         st = json.load(f)
     ros = {s: [] for s in range(1, arena.TEAMS + 1)}
     for pk in st["picks"]:
@@ -121,7 +123,41 @@ def summarize(titles, variants, seeds):
             "sensitive": [k for k, c in consts.items() if c["tier"] == "SENSITIVE"]}
 
 
-def run_sweep(seasons, seeds, out, workers=4, registry=None, deck=DECK, registry_path=REGISTRY):
+def _sha(path):
+    with open(path, "rb") as f:
+        return hashlib.sha256(f.read()).hexdigest()
+
+
+def season_inputs(out_dir, league_state, pool, seeds, ref_seasons=10000, deck=DECK):
+    """Owner 2026-10-26: the season configuration the title odds run on — the league state's rosters (IL excluded,
+    D-IS-8, as the brief builds them) on the season pool — written as a picks file in out_dir, and each seed's 10k
+    reference from league_sim --verify --pool on it. Returns (state_path, {seed: reference_path})."""
+    kit_scripts = os.path.dirname(HERE)
+    if kit_scripts not in sys.path:
+        sys.path.insert(0, kit_scripts)
+    os.environ["SEASON_POOL"] = pool
+    import co_gm as CG
+    _, by = CG.load_pool()
+    with open(league_state, encoding="utf-8") as f:
+        ros = CG.rosters(json.load(f), by)
+    os.makedirs(out_dir, exist_ok=True)
+    state_path = os.path.join(out_dir, "state_season.json")
+    with open(state_path, "w", encoding="utf-8") as f:
+        json.dump(CG.sim_state(ros), f, indent=1, ensure_ascii=False)
+    refs = {}
+    for sd in seeds:
+        refs[sd] = os.path.join(out_dir, f"reference_10k_s{sd}.json")
+        subprocess.run([sys.executable, os.path.join(deck, "arena", "mocks", "league_sim.py"), state_path, "v69",
+                        str(ref_seasons), str(sd), refs[sd], "--verify", "--season-cv", "--pool", pool],
+                       check=True, capture_output=True)
+    return state_path, refs
+
+
+def run_sweep(seasons, seeds, out, workers=4, registry=None, deck=DECK, registry_path=REGISTRY, state=None, pool=None,
+              references=None):
+    """state/pool: absolute paths of a draft-state-shaped picks file and a deck-schema pool (the season configuration,
+    owner 2026-10-26); references: {seed: path} of that configuration's 10k league_sim --verify records, each required.
+    All three absent: the draft configuration and its standing references, as before."""
     if registry is None:
         with open(registry_path, encoding="utf-8") as f:
             registry = json.load(f)
@@ -129,8 +165,12 @@ def run_sweep(seasons, seeds, out, workers=4, registry=None, deck=DECK, registry
     labels = [v["label"] for v in variants]
     if len(set(labels)) != len(labels):
         raise ValueError("two band variants share a label")
-    jobs = [("baseline", {}, sd, seasons, deck) for sd in seeds]
-    jobs += [(v["label"], v["patch"], sd, seasons, deck) for v in variants for sd in seeds]
+    if references:
+        for sd in seeds:
+            if not os.path.exists(references[sd]):
+                raise FileNotFoundError(f"no 10k reference for seed {sd}: {references[sd]}")
+    jobs = [("baseline", {}, sd, seasons, deck, state, pool) for sd in seeds]
+    jobs += [(v["label"], v["patch"], sd, seasons, deck, state, pool) for v in variants for sd in seeds]
     with ProcessPoolExecutor(workers) as ex:
         res = list(ex.map(_job, jobs))
     titles, playoffs = {}, {}
@@ -140,7 +180,7 @@ def run_sweep(seasons, seeds, out, workers=4, registry=None, deck=DECK, registry
     se = math.sqrt(0.22 * 0.78 / seasons) * 100
     ref, within = {}, {}
     for sd in seeds:
-        rp = os.path.join(deck, REFERENCE.format(seed=sd))
+        rp = references[sd] if references else os.path.join(deck, REFERENCE.format(seed=sd))
         if os.path.exists(rp):
             with open(rp, encoding="utf-8") as f:
                 ref[str(sd)] = json.load(f)["teams"][str(OWNER_SEAT)]["champ"]
@@ -151,11 +191,14 @@ def run_sweep(seasons, seeds, out, workers=4, registry=None, deck=DECK, registry
     except (OSError, subprocess.CalledProcessError):
         commit = ""
     rec = dict(seasons=seasons, seeds=list(seeds), workers=workers, mc_se_points=round(se, 3),
-               engine_commit=commit, state=STATE, pool=POOL, owner_seat=OWNER_SEAT,
+               engine_commit=commit, state=state or STATE, pool=pool or POOL, owner_seat=OWNER_SEAT,
                registry_sha256=hashlib.sha256(json.dumps(registry, sort_keys=True).encode()).hexdigest()[:12],
                reference_10k=ref, baseline_within_3se=within,
                tier_rule="mean shift over seeds: ROBUST < 1, SENSITIVE 1-2, FRAGILE >= 2 title points",
                variants={lb: dict(title=titles[lb], playoff=playoffs[lb]) for lb in ["baseline"] + labels})
+    if state or pool:
+        rec.update(state_sha256=_sha(state or os.path.join(deck, STATE)), pool_sha256=_sha(pool or os.path.join(deck, POOL)),
+                   references={str(sd): references[sd] for sd in seeds} if references else None)
     rec.update(summarize(titles, variants, seeds))
     with open(out, "w", encoding="utf-8") as f:
         json.dump(rec, f, indent=1, ensure_ascii=False)
@@ -171,9 +214,17 @@ def main():
     ap.add_argument("--workers", type=int, default=4)
     ap.add_argument("--deck", default=DECK)
     ap.add_argument("--registry", default=REGISTRY)
+    ap.add_argument("--season", nargs=2, metavar=("LEAGUE_STATE", "POOL"),
+                    help="the season configuration (owner 2026-10-26): rosters from the league state on the named pool; "
+                         "the picks file and each seed's 10k reference are written beside --out")
     a = ap.parse_args()
+    state = pool = refs = None
+    if a.season:
+        pool = os.path.abspath(a.season[1])
+        state, refs = season_inputs(os.path.dirname(os.path.abspath(a.out)), os.path.abspath(a.season[0]), pool,
+                                    tuple(a.seeds), deck=os.path.abspath(a.deck))
     rec = run_sweep(a.seasons, tuple(a.seeds), a.out, a.workers, deck=os.path.abspath(a.deck),
-                    registry_path=a.registry)
+                    registry_path=a.registry, state=state, pool=pool, references=refs)
     print(f"SWEEP: {rec['seasons']:,} seasons x seeds {rec['seeds']} on deck {rec['engine_commit']}; "
           f"MC SE {rec['mc_se_points']:.2f}; baseline within 3 SE of the 10k reference: {rec['baseline_within_3se']}")
     b = rec["variants"]["baseline"]["title"]
