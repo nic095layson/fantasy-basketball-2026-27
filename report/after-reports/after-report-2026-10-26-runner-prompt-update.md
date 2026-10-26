@@ -57,7 +57,7 @@ The paste came with two files: `pm_new.txt` and `morning_new_v2.txt`.
 ## Decisions for the owner
 
 1. After today's 22:04Z afternoon run, should the runner confirm in its report that the morning moves file was left untouched (the byte check above)? The new prompt does not ask for this explicitly.
-2. Past days' overwritten morning moves files (10-22 to 10-25) can be recovered from git, from each morning's commit. Back-fill them or leave them? Nothing was done.
+2. The 10-25 overnight record was already restored by another session: da198c6 on season/daily, "Back-fill the 2026-10-25 league moves … (owner 2026-10-26, 'Proceed 3')". I found it on push. Earlier days (10-22 to 10-24) were not re-checked here (NOT-ATTEMPTED). Should they be back-filled the same way? This session did nothing about it.
 
 ## Provenance
 
