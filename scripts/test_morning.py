@@ -22,9 +22,10 @@ class Steps(unittest.TestCase):
         st = M.steps("2026-10-21", fetch=True, seasons=10000)
         # 2026-10-21: "preflight" became step 0 (independent-audit adoption); the indices below moved by one.
         # 2026-10-23 (owner, Build 1): "league table" after the week matchup, before the deck that draws it
-        self.assertEqual([s["name"] for s in st], ["preflight", "league live", "matchup live", "box scores 2026-10-20", "season lines", "season board", "status feed", "transactions", "daily brief", "week matchup", "league table", "form board", "season deck"])
+        # 2026-10-26 (owner, "results so far"): "league pairings" before the brief that runs the simulator
+        self.assertEqual([s["name"] for s in st], ["preflight", "league live", "matchup live", "box scores 2026-10-20", "season lines", "season board", "status feed", "transactions", "league pairings", "daily brief", "week matchup", "league table", "form board", "season deck"])
         self.assertIn("2026-10-20", st[3]["cmd"])
-        self.assertIn("2026-10-21", st[8]["cmd"])
+        self.assertIn("2026-10-21", st[9]["cmd"])
         self.assertTrue(all(s["pass_re"] for s in st))
 
     def test_no_fetch_skips_the_box_score_step(self):
@@ -101,6 +102,92 @@ class NonFatal(unittest.TestCase):
         rec = M.run_steps(st, out)
         self.assertEqual([x["verdict"] for x in rec["steps"]], ["FAIL (non-fatal)", "PASS"])
         self.assertEqual(rec["verdict"], "PASS")
+
+
+class Pairings(unittest.TestCase):
+    def test_the_morning_refreshes_the_schedules_played_weeks_before_the_brief(self):
+        # owner 2026-10-26 ("full pairings + results so far"): the simulator starts each season from the weeks already
+        # final, so the schedule file's played block is recompiled every morning from data/weeks, before the brief
+        # that runs the simulator; non-fatal (a failed compile leaves the last schedule file standing)
+        names = [s["name"] for s in M.steps("2026-10-27")]
+        self.assertIn("league pairings", names)
+        self.assertLess(names.index("league pairings"), names.index("daily brief"))
+        st = next(s for s in M.steps("2026-10-27") if s["name"] == "league pairings")
+        self.assertFalse(st.get("fatal", True))
+        self.assertIn("league_pairings.py", " ".join(st["cmd"]))
+
+
+class MondaySweep(unittest.TestCase):
+    """Owner 2026-10-26 ("re-measure the ranges every Monday"): on a Monday the season sweep runs on the real schedule
+    before the brief, writes a dated record with its inputs pinned, and a failure does not stop the morning."""
+    def test_a_monday_runs_the_season_sweep_before_the_brief(self):
+        st = M.steps("2026-11-02")
+        names = [s["name"] for s in st]
+        self.assertIn("season sweep", names)
+        self.assertLess(names.index("league pairings"), names.index("season sweep"))
+        self.assertLess(names.index("season sweep"), names.index("daily brief"))
+        sw = next(s for s in st if s["name"] == "season sweep")
+        self.assertFalse(sw.get("fatal", True))
+        cmd = " ".join(sw["cmd"])
+        for part in ("sweep.py", "--season", "--real-schedule", os.path.join("redteam-2026-11-02-season", "sweep.json")):
+            self.assertIn(part, cmd)
+
+    def test_another_day_does_not(self):
+        self.assertNotIn("season sweep", [s["name"] for s in M.steps("2026-11-03")])
+
+
+class Manifest(unittest.TestCase):
+    """Owner 2026-10-26, option 2A: the run says which paths it wrote, measured from the tree, so a new output script
+    can never go silently uncommitted (report/league, report/form and report/calibration* each drifted out of the
+    prompt's hand-kept list)."""
+    def repo(self):
+        import subprocess, tempfile, os
+        d = tempfile.mkdtemp()
+        for c in (["init", "-q", "-b", "main"], ["config", "user.email", "t@t"], ["config", "user.name", "t"]):
+            subprocess.run(["git", *c], cwd=d, capture_output=True)
+        os.makedirs(os.path.join(d, "data"), exist_ok=True)
+        open(os.path.join(d, "data", "seed.txt"), "w").write("x\n")
+        subprocess.run(["git", "add", "-A"], cwd=d, capture_output=True)
+        subprocess.run(["git", "-c", "commit.gpgsign=false", "commit", "-qm", "seed"], cwd=d, capture_output=True)
+        return d
+
+    def test_each_step_reports_the_paths_it_wrote_and_the_run_lists_them_all(self):
+        import os
+        d = self.repo()
+        mk = lambda name, rel: dict(name=name, cwd=d, pass_re="STEP: PASS", env={},
+                                    cmd=[PY, "-c", f"import os,pathlib;p=pathlib.Path({rel!r});p.parent.mkdir(parents=True,exist_ok=True);p.write_text('v');print('STEP: PASS')"])
+        st = [mk("a", "report/league/league_2026-10-26.json"), mk("b", "report/form/form_2026-10-26.csv")]
+        rec = M.run_steps(st, os.path.join(d, "m.json"), root=d)
+        self.assertEqual(rec["steps"][0]["wrote"], ["report/league/league_2026-10-26.json"])
+        self.assertEqual(rec["steps"][1]["wrote"], ["report/form/form_2026-10-26.csv"])
+        self.assertEqual(rec["wrote"], ["report/form/form_2026-10-26.csv", "report/league/league_2026-10-26.json"])
+
+    def test_a_step_that_writes_nothing_reports_an_empty_list(self):
+        import os
+        d = self.repo()
+        st = [dict(name="quiet", cwd=d, pass_re="STEP: PASS", env={}, cmd=[PY, "-c", "print('STEP: PASS')"])]
+        rec = M.run_steps(st, os.path.join(d, "m.json"), root=d)
+        self.assertEqual(rec["steps"][0]["wrote"], []); self.assertEqual(rec["wrote"], [])
+
+    def test_outside_a_git_tree_the_manifest_says_unattributed_not_empty(self):
+        import os, tempfile
+        d = tempfile.mkdtemp()
+        st = [dict(name="a", cwd=d, pass_re="STEP: PASS", env={}, cmd=[PY, "-c", "print('STEP: PASS')"])]
+        rec = M.run_steps(st, os.path.join(d, "m.json"), root=d)
+        self.assertIsNone(rec["steps"][0]["wrote"])
+        self.assertEqual(rec["wrote"], "unattributed (not a git checkout)")
+
+    def test_the_wrote_block_is_printed_for_the_runner_to_commit(self):
+        import os, io, contextlib
+        d = self.repo()
+        st = [dict(name="a", cwd=d, pass_re="STEP: PASS", env={},
+                   cmd=[PY, "-c", "import pathlib;p=pathlib.Path('report/league/x.json');p.parent.mkdir(parents=True,exist_ok=True);p.write_text('v');print('STEP: PASS')"])]
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            rec = M.run_steps(st, os.path.join(d, "m.json"), root=d)
+            M.print_manifest(rec)
+        out = buf.getvalue()
+        self.assertIn("WROTE: 1 path(s)", out); self.assertIn("report/league/x.json", out)
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

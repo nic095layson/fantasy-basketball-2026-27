@@ -85,6 +85,42 @@ class Band(unittest.TestCase):
         self.assertRegex(line, r"[+-]\d\.\d")
 
 
+class SeasonBand(unittest.TestCase):
+    """Owner 2026-10-26 ("re-measure the uncertainty ranges shown with the title odds now that they use the updated
+    stats"): the brief quotes the sweep run on the season configuration and says which configuration it is."""
+    def test_the_brief_reads_the_season_sweep(self):
+        self.assertTrue(DB.SR.latest("2026-10-27").endswith(os.path.join("redteam-2026-10-26-season-real", "sweep.json")))
+
+    def test_the_band_line_names_the_configuration(self):
+        import json, tempfile
+        rec = dict(engine_commit="abc1234", fragile=["arena.TEAM_WEEK_SHOCK"], constants={"arena.TEAM_WEEK_SHOCK": dict(
+            tier="FRAGILE", variants=[dict(label="no shock", shift_mean=3.0), dict(label="doubled", shift_mean=-2.5)])})
+        d = tempfile.mkdtemp()
+        json.dump(rec, open(os.path.join(d, "draft.json"), "w"))
+        json.dump(dict(rec, state_sha256="x", pool_sha256="y"), open(os.path.join(d, "season.json"), "w"))
+        self.assertIn("draft sweep", DB.band_line(os.path.join(d, "draft.json")))
+        self.assertIn("season sweep", DB.band_line(os.path.join(d, "season.json")))
+
+
+class LinesLabel(unittest.TestCase):
+    """Owner 2026-10-26 ("You can change the v69 label"): the brief names the lines it actually ran on."""
+    def test_with_the_season_pool_the_label_names_it(self):
+        old = os.environ.get("SEASON_POOL")
+        os.environ["SEASON_POOL"] = "/x/data/season/pool_season.csv"
+        try:
+            self.assertEqual(DB.lines_label(), "season pool")
+        finally:
+            os.environ.pop("SEASON_POOL") if old is None else os.environ.__setitem__("SEASON_POOL", old)
+
+    def test_without_it_the_label_stays_the_frozen_tag(self):
+        old = os.environ.pop("SEASON_POOL", None)
+        try:
+            self.assertEqual(DB.lines_label(), CG.LINES_TAG)
+        finally:
+            if old is not None:
+                os.environ["SEASON_POOL"] = old
+
+
 class SeasonPool(unittest.TestCase):
     """In-season tool: SEASON_POOL (a deck-schema CSV path) overrides the preseason v69 pool for the brief, the
     preview and the waiver scan; unset, the preseason pool loads as before."""
@@ -191,6 +227,47 @@ class SimulatorPool(unittest.TestCase):
         rec = CG.run_league_sim(ros, 2026, 20, tempfile.mkdtemp())
         self.assertEqual(rec["absent_from_sim"], ["Pickup Nobody"])
         self.assertIn(str(CG.OWNER_SEAT), rec["teams"])
+
+    def test_with_a_season_pool_the_simulator_plays_its_pickups_and_names_the_pool(self):
+        """Owner 2026-10-26 ("use the season pool"): with SEASON_POOL set, the title odds run on that pool (the lines
+        the board plays, pickups included) through league_sim --pool, so a pickup only it carries is not left out."""
+        import csv
+        import json
+        import tempfile
+        d = tempfile.mkdtemp()
+        frozen = os.path.join(CG.DECK, "arena", "results", f"players_{CG.LINES_TAG}.csv")
+        with open(frozen, encoding="utf-8") as f:
+            r = csv.DictReader(f); fields = r.fieldnames; rows = list(r)
+        pool = os.path.join(d, "pool.csv")
+        with open(pool, "w", newline="", encoding="utf-8") as f:
+            w = csv.DictWriter(f, fieldnames=fields); w.writeheader(); w.writerows(rows + [dict(rows[0], player="Pickup Nobody")])
+        old = os.environ.get("SEASON_POOL")
+        os.environ["SEASON_POOL"] = pool
+        try:
+            P, by = CG.load_pool()
+            ros = CG.rosters(json.load(open(CG.STATE, encoding="utf-8")), by)
+            rival = next(s for s in sorted(ros) if s != CG.OWNER_SEAT)
+            ros[rival] = ros[rival] + [by["Pickup Nobody"]]
+            rec = CG.run_league_sim(ros, 2026, 20, d)
+        finally:
+            if old is None:
+                os.environ.pop("SEASON_POOL", None)
+            else:
+                os.environ["SEASON_POOL"] = old
+        self.assertEqual(rec["absent_from_sim"], [])
+        self.assertEqual(rec["pool"]["file"], os.path.abspath(pool))
+
+    def test_without_a_season_pool_the_record_names_no_pool(self):
+        import json
+        import tempfile
+        old = os.environ.pop("SEASON_POOL", None)
+        try:
+            P, by = CG.load_pool()
+            rec = CG.run_league_sim(CG.rosters(json.load(open(CG.STATE, encoding="utf-8")), by), 2026, 20, tempfile.mkdtemp())
+        finally:
+            if old is not None:
+                os.environ["SEASON_POOL"] = old
+        self.assertNotIn("pool", rec)
 
     def test_the_brief_names_who_the_simulation_left_out(self):
         self.assertEqual(DB.sim_absent_line([]), None)

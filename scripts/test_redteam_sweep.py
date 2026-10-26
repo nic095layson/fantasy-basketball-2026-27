@@ -120,5 +120,88 @@ class Smoke(unittest.TestCase):
             self.assertTrue(os.path.exists(out))
 
 
+
+class SeasonConfiguration(unittest.TestCase):
+    """Owner 2026-10-26 ("re-measure the uncertainty ranges ... now that they use the updated stats"): the sweep runs
+    on a named state and pool (the season configuration the title odds use) and records both with their sha256; the
+    draft configuration stays the default."""
+    def setUp(self):
+        if not os.path.isdir(S.DECK):
+            self.skipTest("deck not present")
+        import csv
+        self.d = tempfile.mkdtemp()
+        st = json.load(open(os.path.join(S.DECK, S.STATE), encoding="utf-8"))
+        first = st["picks"][0]["player"]; st["picks"][0]["player"] = "Season Pickup Zzz"
+        self.state = os.path.join(self.d, "state.json"); json.dump(st, open(self.state, "w"))
+        with open(os.path.join(S.DECK, S.POOL), encoding="utf-8") as f:
+            r = csv.DictReader(f); fields = r.fieldnames; rows = list(r)
+        rows.append(dict(next(x for x in rows if x["player"] == first), player="Season Pickup Zzz"))
+        self.pool = os.path.join(self.d, "pool.csv")
+        with open(self.pool, "w", newline="", encoding="utf-8") as f:
+            w = csv.DictWriter(f, fieldnames=fields); w.writeheader(); w.writerows(rows)
+
+    def test_a_job_plays_the_named_state_and_pool(self):
+        label, seed, title, playoff = S._job(("baseline", {}, 1, 20, S.DECK, self.state, self.pool))
+        self.assertEqual((label, seed), ("baseline", 1))
+        self.assertGreaterEqual(title, 0.0)
+
+    def test_the_record_names_the_configuration_with_hashes_and_its_own_references(self):
+        import hashlib
+        refs = {}
+        for sd in (1, 2):
+            refs[sd] = os.path.join(self.d, f"ref_{sd}.json")
+            json.dump({"teams": {str(S.OWNER_SEAT): {"champ": 50.0}}}, open(refs[sd], "w"))
+        rec = S.run_sweep(seasons=10, seeds=(1, 2), out=os.path.join(self.d, "sweep.json"), workers=2,
+                          registry=registry(SHOCK, FIXED), state=self.state, pool=self.pool, references=refs)
+        self.assertEqual(rec["state"], self.state); self.assertEqual(rec["pool"], self.pool)
+        self.assertEqual(rec["state_sha256"], hashlib.sha256(open(self.state, "rb").read()).hexdigest())
+        self.assertEqual(rec["pool_sha256"], hashlib.sha256(open(self.pool, "rb").read()).hexdigest())
+        self.assertEqual(rec["reference_10k"], {"1": 50.0, "2": 50.0})
+
+    def test_a_missing_reference_is_an_error_not_a_silent_skip(self):
+        with self.assertRaises(FileNotFoundError):
+            S.run_sweep(seasons=10, seeds=(1,), out=os.path.join(self.d, "sweep.json"), workers=1,
+                        registry=registry(SHOCK, FIXED), state=self.state, pool=self.pool,
+                        references={1: os.path.join(self.d, "nope.json")})
+
+
+class RealSchedule(unittest.TestCase):
+    """Owner 2026-10-26 ("build the real-schedule re-measurement"): every variant through league_sim on the league's
+    real pairings and the weeks already final; the inputs pinned beside the record; the reference the plain run."""
+    SCHED = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", "league_schedule.json")
+
+    def setUp(self):
+        if not os.path.isdir(S.DECK):
+            self.skipTest("deck not present")
+        sc = SeasonConfiguration(); sc.setUp(); self.d, self.state, self.pool = sc.d, sc.state, sc.pool
+        st = json.load(open(self.state))
+        self.ls = os.path.join(self.d, "ls.json")
+        json.dump(dict(as_of="2026-10-26", teams=[dict(name=f"T{s}", seat=s, players=[dict(player=pk["player"], slot="BN")
+                  for pk in st["picks"] if pk["slot"] == s]) for s in range(1, 13)]), open(self.ls, "w"))
+
+    def test_inputs_are_pinned_and_the_reference_is_the_plain_real_schedule_run(self):
+        out = os.path.join(self.d, "rec")
+        state, refs, pool, sched = S.season_inputs(out, self.ls, self.pool, (1,), ref_seasons=20, schedule=self.SCHED)
+        for f in ("league_state.json", "pool_season.csv", "league_schedule.json", "state_season.json"):
+            self.assertTrue(os.path.exists(os.path.join(out, f)), f)
+        self.assertEqual((os.path.dirname(pool), os.path.dirname(sched)), (out, out))
+        ref = json.load(open(refs[1]))
+        self.assertFalse(ref["verified_against_arena"])
+        self.assertIn("schedule", ref)
+
+    def test_every_variant_runs_through_league_sim_and_the_record_says_so(self):
+        out = os.path.join(self.d, "rec")
+        state, refs, pool, sched = S.season_inputs(out, self.ls, self.pool, (1,), ref_seasons=20, schedule=self.SCHED)
+        rec = S.run_sweep(seasons=10, seeds=(1,), out=os.path.join(out, "sweep.json"), workers=2, registry=registry(SHOCK, FIXED),
+                          state=state, pool=pool, references=refs, schedule=sched)
+        self.assertEqual(rec["simulator"], "league_sim (real pairings, weeks already final)")
+        self.assertEqual(rec["schedule"], sched)
+        self.assertEqual(sorted(rec["variants"]), sorted(["baseline", "no shock", "shock doubled"]))
+
+    def test_the_real_schedule_needs_the_season_configuration(self):
+        with self.assertRaises(ValueError):
+            S.run_sweep(seasons=10, seeds=(1,), out=os.path.join(self.d, "x.json"), workers=1, registry=registry(SHOCK, FIXED),
+                        schedule=self.SCHED)
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

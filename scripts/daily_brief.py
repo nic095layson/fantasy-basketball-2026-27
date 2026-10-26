@@ -14,6 +14,7 @@ this week; title odds on the real schedule (the average of two seeded runs, the 
 Writes report/briefs/brief_<date>.md and brief_<date>.json (the numbers behind the note).
 """
 import argparse
+import datetime
 import glob
 import json
 import math
@@ -28,12 +29,21 @@ OUTDIR = os.path.join(CG.KIT, "report", "briefs")
 SEEDS = (2026, 2027)
 
 
-SWEEP = os.path.join(CG.KIT, "report", "after-reports", "redteam-2026-10-19", "sweep.json")
+# owner 2026-10-26 ("re-measure the uncertainty ranges ... now that they use the updated stats"; "every Monday"): the
+# newest season sweep dated on or before the brief's day (sweep_record.latest), named with its date and configuration
+import sweep_record as SR  # noqa: E402
 
 
-def band_line(path=SWEEP):
+def lines_label():
+    """Owner 2026-10-26: the lines the brief ran on — the season pool when SEASON_POOL is set (the morning run sets it),
+    else the frozen tag."""
+    return "season pool" if os.environ.get("SEASON_POOL") else CG.LINES_TAG
+
+
+def band_line(path=None, date=None):
     """The structural band every title figure carries (post-mortem 2026-10-19 D-PM-6, D-RT-2): each FRAGILE constant
     of the standing sweep with its shifts, read from the record, never typed."""
+    path = path or SR.latest(date or datetime.date.today().isoformat())
     try:
         with open(path, encoding="utf-8") as f:
             sw = json.load(f)
@@ -43,7 +53,7 @@ def band_line(path=SWEEP):
     for key in sw.get("fragile", []):
         c = sw["constants"][key]
         parts.append(f"{key.split('.')[-1]} is FRAGILE: " + " / ".join(f"{v['shift_mean']:+.1f} ({v['label']})" for v in c["variants"]))
-    return "Structural band (standing sweep, deck " + str(sw.get("engine_commit", "?")) + "): " + ("; ".join(parts) if parts else "no FRAGILE constant") + "."
+    return "Structural band (" + SR.describe(sw, path) + ", deck " + str(sw.get("engine_commit", "?")) + "): " + ("; ".join(parts) if parts else "no FRAGILE constant") + "."
 
 
 def odds_line(a, b, n):
@@ -195,7 +205,7 @@ def main():
     lm = league_moves_for(a.date)
     rec = {"date": a.date, "week": wk, "week_window": [wstart, wend], "league_state_as_of": state["as_of"],
            "unpooled": state.get("unpooled") or [],
-           "status_file": status_file, "lines": CG.LINES_TAG, "opponent": opp_team["name"] if opp_team else None,
+           "status_file": status_file, "lines": lines_label(), "opponent": opp_team["name"] if opp_team else None,
            "today": rows_today, "lineup": lineup, "bench": bench, "waiver_base_ecw": round(base_ecw, 4),
            "waiver_positive_pairs": len(pos), "waiver_pairs_scored": len(pairs), "waiver_top": top, "streaming": stream,
            "streaming_vs": {"player": weakest["player"], "games_left": weak_games,
@@ -209,7 +219,7 @@ def main():
     L = [f"# Daily brief — {a.date} (week {wk}, {wstart} to {wend})", ""]
     L.append(f"Opponent this week: **{rec['opponent']}**. Rosters as of {state['as_of']} "
              f"({'FantasyBot live pull' if 'fantasybot' in (state.get('sources') or {}) else chr(39).join(['owner', 's Yahoo page'])}); "
-             f"statuses from `{status_file}`; lines {CG.LINES_TAG}.")
+             f"statuses from `{status_file}`; lines: {lines_label()}.")
     if unpooled_line(state):
         L += ["", unpooled_line(state)]
     L += ["", "## Your players today", "", "| player | NBA | game | status | availability | games left this week |", "|---|---|---|---|---|---|"]
@@ -239,7 +249,7 @@ def main():
     L += [f"- {r['player']} ({r['team']}): {r['games_left']} games, {r['value_per_game']:+.2f} per game" for r in stream] or ["- none"]
     L += ["", "## Title odds (real schedule)", "", f"- Title: {odds_line(base[SEEDS[0]]['champ'], base[SEEDS[1]]['champ'], a.seasons)}",
           f"- Playoffs: {(base[SEEDS[0]]['playoff'] + base[SEEDS[1]]['playoff']) / 2:.1f}%",
-          f"- {band_line()}"] + ([f"- {sim_absent_line(absent)}"] if absent else []) + ["",
+          f"- {band_line(date=a.date)}"] + ([f"- {sim_absent_line(absent)}"] if absent else []) + ["",
           "_Cannot see: news after the morning FantasyBot pull (or the last paste) beyond ESPN's transactions feed; ESPN injuries (network-denied); minutes limits; "
           "other managers' pending claims. Q counts as a coin flip._"]
     path = os.path.join(OUTDIR, f"brief_{a.date}.md")
@@ -249,10 +259,10 @@ def main():
 
 def sim_absent_line(names):
     """The title odds' caveat when the season simulator could not play a rostered player (owner option (b),
-    2026-10-21: a pickup in data/pool_additions.csv is not in the simulator's frozen v69 pool)."""
+    2026-10-21; since 2026-10-26 the simulator plays SEASON_POOL when set, so this names a player missing from that pool)."""
     if not names:
         return None
-    return (f"{', '.join(names)}: left out of the season simulation (not in its frozen {CG.LINES_TAG} pool; the rule "
+    return (f"{', '.join(names)}: left out of the season simulation (not in its pool; the rule "
             f"for IL players, D-IS-8); the waiver scan still counts {'him' if len(names) == 1 else 'them'}.")
 
 

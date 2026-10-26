@@ -47,5 +47,22 @@ class Diff(unittest.TestCase):
         self.assertEqual(league_moves.diff(old, new), [])
 
 
+
+class Phase(unittest.TestCase):
+    """Owner 2026-10-26, option 1A: the afternoon run writes its own record and never touches the morning's."""
+    def test_pm_path_is_suffixed_and_am_is_not(self):
+        self.assertTrue(league_moves.record_path("2026-10-26", "am").endswith(os.path.join("data", "news", "league_moves_2026-10-26.json")))
+        self.assertTrue(league_moves.record_path("2026-10-26", "pm").endswith(os.path.join("data", "news", "league_moves_2026-10-26_pm.json")))
+
+    def test_write_record_takes_a_phase_and_records_it(self):
+        import json, tempfile
+        d = tempfile.mkdtemp()
+        old = {"as_of": "2026-10-25", "teams": []}; new = {"as_of": "2026-10-26", "teams": []}
+        rec, out = league_moves.write_record(old, new, "2026-10-26", out=os.path.join(d, "x.json"), phase="pm")
+        self.assertEqual(rec["phase"], "pm")
+        self.assertEqual(json.load(open(out))["phase"], "pm")
+        rec2, _ = league_moves.write_record(old, new, "2026-10-26", out=os.path.join(d, "y.json"))
+        self.assertEqual(rec2["phase"], "am")       # the default never changes today's behaviour
+
 if __name__ == "__main__":
     unittest.main()

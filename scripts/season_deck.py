@@ -8,7 +8,7 @@ Inputs (all must exist; a missing or malformed record halts the build):
   status        data/status/status_<date>.json          (status_feed.py)
   league_state  data/league_state.json                  (league_intake.py)
   season_lines  data/season/season_lines_<date>.json    (season_lines.py)
-  sweep         report/after-reports/redteam-2026-10-19/sweep.json  (standing red-team sweep)
+  sweep         report/after-reports/redteam-<date>-season/sweep.json, the newest on or before the day (sweep_record.py)
   calibration   report/calibration.json                 (weekly_preview.py)
 
 The page embeds those records verbatim as JSON and renders every figure from them in the browser; the static shell
@@ -23,6 +23,7 @@ deck_<date>.failed.html and prints SEASON DECK: FAIL.
 import argparse, datetime, hashlib, json, os, sys
 HERE = os.path.dirname(os.path.abspath(__file__)); KIT = os.path.dirname(HERE)
 sys.path.insert(0, HERE)
+import sweep_record as SR  # noqa: E402
 
 class DeckError(Exception): pass
 
@@ -41,7 +42,8 @@ def default_paths(date):
                 status=os.path.join(KIT, "data", "status", f"status_{date}.json"),
                 league_state=os.path.join(KIT, "data", "league_state.json"),
                 season_lines=os.path.join(KIT, "data", "season", f"season_lines_{date}.json"),
-                sweep=os.path.join(KIT, "report", "after-reports", "redteam-2026-10-19", "sweep.json"),
+                # owner 2026-10-26 ("every Monday"): the newest season sweep dated on or before the day
+                sweep=SR.latest(date),
                 calibration=os.path.join(KIT, "report", "calibration.json"),
                 # optional (owner 2026-10-20; trade finder removed on the owner's veto 2026-10-20): absent renders nothing
                 matchup_live=os.path.join(KIT, "data", "news", f"matchup_live_{date}.json"),
@@ -89,6 +91,31 @@ def resolve_rostered(rostered, board_names, held_names, aliases):
     return out
 
 
+POSITIONS = ("PG", "SG", "SF", "PF", "C")                      # Yahoo's eligibility tokens, the only ones league_state carries
+FAMILIES = (("G", ("PG", "SG")), ("F", ("SF", "PF")), ("C", ("C",)))
+
+
+def positional_breakdown(players):
+    """My roster's positional breakdown for the Free Agents tab (owner 2026-10-26, "similar to the Draft Deck").
+    The top row counts every position a player is eligible for; the bottom row counts each player once per family
+    (the Draft Deck's roster-header rule: a PG,SG guard is one G). Every rostered player counts, IL included; the
+    page says how many. A token outside POSITIONS is a DeckError, never a silent zero."""
+    pos = {k: 0 for k in POSITIONS}; fam = {k: 0 for k, _ in FAMILIES}; il = 0
+    for p in players:
+        toks = p.get("positions") or []
+        bad = [t for t in toks if t not in POSITIONS]
+        if bad:
+            raise DeckError(f"{p.get('player')}: position token(s) {bad} not in {POSITIONS}")
+        for t in toks:
+            pos[t] += 1
+        for k, members in FAMILIES:
+            if any(t in members for t in toks):
+                fam[k] += 1
+        if (p.get("slot") or "").startswith("IL"):
+            il += 1
+    return dict(positions=pos, families=fam, rostered=len(players), il=il)
+
+
 def build(paths, date):
     import co_gm
     import box_pull as BP
@@ -114,6 +141,7 @@ def build(paths, date):
         if t["seat"] == my_seat: my_team = t["name"]
         for p in t["players"]: own[rmap[p["player"]]] = (t["name"], t["seat"])
     if my_team is None: raise DeckError(f"league state has no seat {my_seat}")
+    my_positions = positional_breakdown(next(t for t in league["teams"] if t["seat"] == my_seat)["players"])
     for r in board["board"]:
         o = own.get(r["name"])
         r["owner"] = o[0] if o else None; r["seat"] = o[1] if o else None
@@ -137,12 +165,14 @@ def build(paths, date):
             dict(label=v.get("label"), shift=v.get("shift_mean_1dp", f"{v['shift_mean']:+.1f}")) for v in c["variants"]]))
         if not bands[-1]["variants"]: raise DeckError(f"FRAGILE band {key} with no variants")
     band_engine = sweep.get("engine_commit") or sweep.get("engine")
+    # owner 2026-10-26: which configuration and day the bands were measured on (sweep_record.describe, the brief's wording)
+    band_config = SR.describe(sweep, paths["sweep"])
     wk = calib.get("weeks", {}).get(str(brief.get("week"))) or {}
     data = dict(date=date, generated_utc=datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
                 my_team=my_team, my_seat=my_seat, brief=brief, board=board, status=status,
                 league=dict(as_of=league["as_of"], rosters=rosters, managers={t["name"]: t.get("manager") for t in league["teams"]},
-                            unpooled=league.get("unpooled") or []), season_lines=lines, matchup=wk,
-                ledger=calib.get("weeks", {}), bands=bands, band_engine=band_engine, matchup_live=matchup_live,
+                            unpooled=league.get("unpooled") or [], my_positions=my_positions), season_lines=lines, matchup=wk,
+                ledger=calib.get("weeks", {}), bands=bands, band_engine=band_engine, band_config=band_config, matchup_live=matchup_live,
                 week_matchup=week_matchup, league_table=league_rec, form=form_rec, scores=scores,
                 config=dict(cats=["FG%", "FT%", "3PM", "PTS", "REB", "AST", "STL", "BLK", "TOV"],
                             tier_low=0.3, tier_high=1.0, verdict_edge=0.5, verdict_strong=1.5,
@@ -232,6 +262,13 @@ select,input[type=search],input[type=text]{background:var(--surface); color:var(
 .pick h2{margin:0}
 .field{width:100%; height:40px; box-sizing:border-box}
 .field.static{display:flex; align-items:center; border:1px solid var(--line); border-radius:6px; padding:0 10px; background:var(--chip); color:var(--ink2); font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.positions{flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; min-width:0}
+.positions hr{border:0; border-top:1px solid var(--line); margin:0; width:min(100%,22em)}
+.posrow{display:flex; flex-wrap:wrap; gap:2px 12px; justify-content:center}
+.poschip{display:inline-flex; gap:3px; align-items:baseline; font-size:13.5px} .poschip b{font-weight:600}
+.poschip.moved span{color:var(--mine); font-weight:600}
+.more{cursor:help; color:var(--ink2)} .how summary{cursor:pointer; font-family:var(--disp); font-weight:600; letter-spacing:.04em; text-transform:uppercase}
+@media (max-width:640px){ .h2row:has(.positions){flex-wrap:wrap} .positions{flex-basis:100%; order:3} }  /* phone: the counts take their own line under the title */
 .plist{border:1px solid var(--line); border-radius:6px; height:230px; overflow-y:auto; padding:4px; box-sizing:border-box}
 .plist label{display:flex; gap:8px; align-items:center; padding:6px 8px; border-radius:4px; font-size:13.5px; min-height:32px}
 .plist label:hover{background:var(--chip)}
@@ -273,6 +310,7 @@ select,input[type=search],input[type=text]{background:var(--surface); color:var(
 .lg .rk.top{background:var(--mine); color:#fff} .lg .rk.low{color:var(--negtx)}
 .fm td.name{white-space:nowrap} .fm td, .fm th{font-size:12px; padding-left:5px; padding-right:5px}
 details.how{margin-top:8px} details.how summary{cursor:pointer; font-size:12px; color:var(--ink2)}
+.lg tr.cut td{border-bottom:2px dashed var(--ink2)}  /* owner 2026-10-26: the playoff line under 8th */
 .lg .bar{display:inline-block; height:8px; background:var(--pos); border-radius:4px; vertical-align:middle; margin-left:6px}
 .zneg{color:var(--negtx)}  /* text red: 4.5:1+ on surface, bg and chip in both themes (--neg is for fills) */
 .h2row{display:flex; justify-content:space-between; align-items:center; gap:10px; margin:0 0 8px}
@@ -332,6 +370,11 @@ function swapMath(inRows, outRows, cats){
 /*SWAP_MATH_END*/
 function tier(x, lo, hi){ const a=Math.abs(x); return a<lo?"low":(a<hi?"medium":"high"); }
 function bandLine(){ if(!D.bands.length) return "no FRAGILE constant — engine "+(D.band_engine||"?"); return D.bands.map(b=>b.name.replace("arena.","")+" is "+b.tier+": "+b.variants.map(v=>v.shift+" ("+v.label+")").join(" / ")).join("; ")+" title points — engine "+(D.band_engine||"?"); }
+// owner 2026-10-26 (item 10, "concise and precise"): a short visible note; the full definition it replaces stays on
+// the page as the hover title of a trailing ⓘ (long-press on a phone)
+function more(full){ return full? h("span",{class:"more",title:full,tabindex:"0","aria-label":full}," ⓘ") : null; }
+function noteMore(text, full, cls){ return h("p",{class:"note"+(cls?" "+cls:"")},text,more(full)); }
+function day(d){ try{ return new Date(d+"T00:00:00Z").toLocaleDateString("en-US",{month:"short",day:"numeric",timeZone:"UTC"}); }catch(e){ return d; } }
 function T(t){ if(t===D.my_team) return t+" (you)"; const m=(D.league.managers||{})[t]; return m? t+" ("+m+")" : t; }
 function ownChip(r){ return r.mine? h("span",{class:"chip mine"},"mine") : r.fa? h("span",{class:"chip fa"},"FA") : h("span",{class:"chip"},T(r.owner)); }
 function statusChip(letter){ if(!letter) return null; const cls=letter==="O"?"crit":(letter==="Q"?"warn":"ok"); return h("span",{class:"chip "+cls},letter); }
@@ -342,16 +385,18 @@ function thisWeek(W){ const K=W.pickups, TW=K&&K.this_week; if(!TW) return null;
   if(TW.status!=="ran") return h("p",{class:"note"},"This week's adds: "+(TW.status==="no drop candidate"?"no lower-valued player to drop.":"no free agent to score."));
   const moved=(dc)=>Object.keys(dc).filter(c=>Math.abs(dc[c])>=0.005).sort((a,b)=>Math.abs(dc[b])-Math.abs(dc[a])).map(c=>c+" "+swk(dc[c],2)).join(", ")||"none";
   const da=TW.drop_alone||{}, das=Object.keys(da).map(d=>d+" "+swk(da[d],2));
-  return [h("p",{},h("b",{},"This week's adds. "),"Each free agent from tomorrow in place of the lower-valued player whose drop helps most, by the change in expected categories won against "+W.opponent.name+" ("+TW.pool_size+" scored; best "+Math.min(8,TW.rows.length)+" shown):"),
+  return [h("p",{},h("b",{},"Best adds this week")," ("+Math.min(8,TW.rows.length)+" of "+TW.pool_size+" scored):",
+      more("Each free agent from tomorrow in place of the lower-valued player whose drop helps most, by the change in expected categories won against "+W.opponent.name+" ("+TW.pool_size+" scored; best "+Math.min(8,TW.rows.length)+" shown).")),
     TW.rows.length? h("div",{class:"tablebox"},h("table",{},
-      h("tr",{},h("th",{},"move"),h("th",{class:"num"},"Δ cats"),h("th",{class:"num"},"games"),h("th",{class:"num"},"drop's part"),h("th",{class:"num"},"season"),h("th",{},"categories moved")),
+      h("tr",{},h("th",{},"move"),h("th",{class:"num",title:"Δ cats = the change in expected categories won this week (the sum of the nine changes in each category's chance); categories moved = those changes, largest first; season = the change in expected weekly categories over the season against the other eleven teams, the cost or gain beyond this week. Chances are normal approximations on the projected finals, with the variation of each remaining game (season per-game CV); the league allows 4 adds a week."},"Δ cats",more("Δ cats = the change in expected categories won this week (the sum of the nine changes in each category's chance); categories moved = those changes, largest first; season = the change in expected weekly categories over the season against the other eleven teams, the cost or gain beyond this week. Chances are normal approximations on the projected finals, with the variation of each remaining game (season per-game CV); the league allows 4 adds a week.")),h("th",{class:"num"},"games"),h("th",{class:"num"},"drop's part"),h("th",{class:"num"},"season"),h("th",{},"categories moved")),
       TW.rows.slice(0,8).map(r=>h("tr",{},h("td",{style:"white-space:normal;min-width:9em"},r.add+" ("+r.team+")"+(r.status?" · "+r.status:"")+(r.missed?" · sat out "+r.missed:""),
           h("div",{class:"note"},"for "+r.drop)),
         h("td",{class:"num"},swk(r.d_exp,2)),h("td",{class:"num"},String(r.games)),h("td",{class:"num"},swk(r.d_exp_drop,2)),
         h("td",{class:"num"},r.season_d_ecw==null?"—":swk(r.season_d_ecw,3)),h("td",{style:"white-space:normal;min-width:10em"},moved(r.d_cat)))))) : h("div",{class:"zero"},"No free agent has a playable game after today."),
-    das.length? h("p",{class:"note"},"Dropping with nobody added (from tomorrow): "+das.join("; ")+". A positive figure means that player's remaining games cost you categories this week; it is part of every move that drops him.") : null,
+    das.length? noteMore("Dropping with nobody added (from tomorrow): "+das.join("; "),
+      "A positive figure means that player's remaining games cost you categories this week; it is part of every move that drops him.") : null,
     (TW.no_games||[]).length? h("p",{class:"note"},"No playable game after today, so not ranked: "+TW.no_games.join(", ")+".") : null,
-    h("p",{class:"note"},"Δ cats = the change in expected categories won this week (the sum of the nine changes in each category's chance); categories moved = those changes, largest first; season = the change in expected weekly categories over the season against the other eleven teams, the cost or gain beyond this week. Chances are normal approximations on the projected finals, with the variation of each remaining game (season per-game CV); the league allows 4 adds a week.")];
+    null];
 }
 
 // ---- Week categories card (owner 2026-10-21): to date from box scores in full ink, projected final faded ----
@@ -409,11 +454,15 @@ function weekCard(){ const W=D.week_matchup, wk=D.brief.week;
       h("p",{class:"note"},"You vs "+T(W.opponent.name)+" · to date: "+through+" · ",
         h("span",{class:"proj"},"faded = projected final through "+W.window[1])),
       tbl, srcLine,
-      h("p",{},"Projected "+P.wins+"–"+P.losses+"–"+P.ties+" (W–L–T)."+(W.exp_cats!=null?" Expected categories this week: "+W.exp_cats.toFixed(2)+" of 9.":"")+" "+games),
+      h("p",{},"Projected "+P.wins+"–"+P.losses+"–"+P.ties+(W.exp_cats!=null?" · "+W.exp_cats.toFixed(2)+" cats":"")+" · games left "+G.me.remaining_started+" v "+G.opp.remaining_started+
+          (yahoo&&S.yahoo_games_remaining? " (Yahoo: "+S.yahoo_games_remaining.me+" v "+S.yahoo_games_remaining.opp+")":""),
+        more("Projected "+P.wins+"–"+P.losses+"–"+P.ties+" (W–L–T)."+(W.exp_cats!=null?" Expected categories this week: "+W.exp_cats.toFixed(2)+" of 9.":"")+" "+games)),
       W.missing_days.length? h("p",{class:"note zneg"},"No box scores on file for "+W.missing_days.join(", ")+(yahoo? ": the rebuild cross-check lacks those days." : ": those days are not in the to-date totals.")):null,
       (W.unpooled_active||[]).length? h("p",{class:"note zneg"},"Not counted (no pool row, so no box-score join or projection): "+W.unpooled_active.join(", ")+"."):null,
       pk, thisWeek(W),
-      h("p",{class:"note"},(yahoo?"":rebuilt)+"Projected = each player's season line × his games left × today's availability, ten a day. The card further down, recorded before the week, assumes 3.5 games per player; this one uses the real schedule."));
+      noteMore(yahoo? "Projected = season line × games left × availability"
+          : "To date rebuilt from box scores ("+(/value '\/'/.test(S.reason||"")? "Yahoo's totals not posted yet" : (S.reason||"Yahoo's daily lineups are not in any record"))+")",
+        (yahoo?"":rebuilt)+"Projected = each player's season line × his games left × today's availability, ten a day. The card further down, recorded before the week, assumes 3.5 games per player; this one uses the real schedule."));
   } catch(e){
     return h("div",{class:"card wk"},h("h2",{},"Week "+wk+" categories"),h("div",{class:"zero"},"Week categories could not be drawn: "+e.message));
   }
@@ -423,15 +472,16 @@ function weekCard(){ const W=D.week_matchup, wk=D.brief.week;
 // notice to me on the 'Today' tab"; drawn only when a free agent passes a bar ----
 function faNotice(){ const W=D.week_matchup, N=W&&W.fa_notice; if(!N || (!(N.rows||[]).length && !N.this_week)) return null;
   const tw=N.this_week;
-  return h("div",{class:"card"},h("h2",{},"Worth a look"),
+  const why="Season gap = the free agent's season value per game minus that of your weakest non-IL player (listed only at "+
+      N.gap.toFixed(1)+" or more, best "+N.rows.length+" shown). This week = the best move in the week card's scan, shown when it adds "+
+      N.d_exp.toFixed(2)+" or more expected categories. A notice, not a move: the league allows 4 adds a week.";
+  return h("div",{class:"card"},h("h2",{title:why},"Worth a look",more(why)),
     N.rows.length? h("div",{class:"tablebox"},h("table",{},
       h("tr",{},h("th",{},"add"),h("th",{class:"num"},"season gap")),
       N.rows.map(r=>h("tr",{},h("td",{style:"white-space:normal;min-width:9em"},r.add+" ("+r.team+")",h("div",{class:"note"},"for "+r.drop)),
         h("td",{class:"num"},swk(r.gap,2)))))) : null,
     tw? h("p",{},h("b",{},"This week: "),tw.add+(tw.team?" ("+tw.team+")":"")+" for "+tw.drop+", "+swk(tw.d_exp,2)+" expected categories won this week.") : null,
-    h("p",{class:"note"},"Season gap = the free agent's season value per game minus that of your weakest non-IL player (listed only at "+
-      N.gap.toFixed(1)+" or more, best "+N.rows.length+" shown). This week = the best move in the week card's scan, shown when it adds "+
-      N.d_exp.toFixed(2)+" or more expected categories. A notice, not a move: the league allows 4 adds a week."));
+    null);
 }
 
 // ---- the live week tile (owner 2026-10-22): expected categories now and the chance of 5+ of 9, from the week card ----
@@ -484,10 +534,14 @@ function matchupBoard(){ const W=D.week_matchup, B=W&&W.board; if(!B) return nul
   const gone=(s)=>(s.departed&&s.departed.names.length)? h("p",{class:"note"},s.name+": counted this week but no longer on the roster: "+s.departed.names.join(", ")+".") : null;
   const S=W.to_date_source||{};
   return h("div",{class:"card",id:"mboard"},h("h2",{},"Week "+W.week+" matchup"),
-    h("p",{class:"note"},W.window[0]+" to "+W.window[1]+" · totals "+(S.source==="yahoo"?"from Yahoo's scoreboard at the morning pull":"rebuilt from box scores")+
-      " · player rows rebuilt from box scores through "+((W.to_date_days||[]).slice(-1)[0]||"—")+" · rosters and slots as of "+(W.league_state_as_of||D.league.as_of)),
+    // T1: the "through —" empty date (no box-score day yet) never prints; the method moves to the hover
+    noteMore(day(W.window[0])+" – "+day(W.window[1])+" · rosters as of "+day(W.league_state_as_of||D.league.as_of),
+      "Totals "+(S.source==="yahoo"?"from Yahoo's scoreboard at the morning pull":"rebuilt from box scores")+
+      ((W.to_date_days||[]).length? "; player rows rebuilt from box scores through "+(W.to_date_days||[]).slice(-1)[0] : "; no box-score day yet this week")+
+      "; rosters and slots as of "+(W.league_state_as_of||D.league.as_of)+"."),
     head, cats, players, diffNote(me), diffNote(op), gone(me), gone(op),
-    h("p",{class:"note"},"Score = categories each side leads to date. A dash: no game counted in an active slot this week. Today's game has no tip-off time: the kit's schedule file carries dates only."));
+    noteMore("Score = categories led to date · — = no game yet",
+      "Score = categories each side leads to date. A dash: no game counted in an active slot this week. Today's game has no tip-off time: the kit's schedule file carries dates only."));
 }
 
 // ---- Today ----
@@ -522,7 +576,8 @@ function matchupBoard(){ const W=D.week_matchup, B=W&&W.board; if(!B) return nul
   p.append(weekCard());
   p.append(
     h("div",{class:"cols"},
-      h("div",{class:"card span2"},h("h2",{},"Odds"),tiles,h("p",{class:"note"},"Structural band (standing sweep): "+bandLine())),
+      h("div",{class:"card span2"},h("h2",{},"Odds"),tiles,noteMore("Model bands: "+(D.bands||[]).map(b=>b.name.split(".").pop()+" "+b.variants.map(v=>v.shift).join("/")).join(" · ")+" title pts",
+        "Structural band ("+D.band_config+"): "+bandLine())),
       h("div",{class:"card"},h("h2",{},"Lineup"),h("div",{class:"tablebox"},h("table",{},
         b.lineup.map(([slot,name])=>h("tr",{},h("td",{},h("span",{class:"chip"},slot)),h("td",{},name))))),
         b.bench.length?h("p",{class:"note"},"Bench: "+b.bench.join(", ")):null),
@@ -537,7 +592,7 @@ function matchupBoard(){ const W=D.week_matchup, B=W&&W.board; if(!B) return nul
 // ---- Trade Analyzer + Free-Agent Adder (owner 2026-10-19: two tabs; z screen, stated defaults D-SD-1) ----
 const BOARD=D.board.board, BYNAME={}; BOARD.forEach(r=>BYNAME[r.name]=r);
 const MINE=BOARD.filter(r=>r.mine);
-function howItWorks(){ return h("div",{class:"card"},h("h2",{},"How this screen works"),
+function howItWorks(){ return h("details",{class:"card how"},h("summary",{},"How this screen works"),
   h("p",{class:"note"},"Per-category z-scores come from today's board (the same vectors the rankings sum; the turnover column already credits low turnovers). Gains are the incoming players' z minus the outgoing players' z, tiered low (<"+C.tier_low+"), medium (<"+C.tier_high+"), high (≥"+C.tier_high+"). The verdict is the net z against ±"+C.verdict_edge+" (strong at ±"+C.verdict_strong+") — "+C.thresholds_note+". For the 10,000-season title-odds verdict on a specific move, ask Claude in session.")); }
 function keepTyping(inp, rerender){ const had=document.activeElement===inp, a=inp.selectionStart, b=inp.selectionEnd; rerender();
   if(had){ inp.focus(); try{ inp.setSelectionRange(a,b); }catch(e){} } }
@@ -566,13 +621,32 @@ function buildStrip(id, deltas, active){ const after=active? leagueRanks(deltas)
         title:c+": rank "+shown+" of "+NTEAMS+(moved?" (was "+b+")":"")},
         h("span",{class:"bn"},c==="TOV"?"TO↑":c),
         h("span",{class:"br"},moved? b+"→"+a : String(a===null?b:a))); })),
-    h("p",{class:"note"},(active? "Before → after the picked move; summed board z per category, ranked against the other "+(NTEAMS-1)+" teams. "
+    noteMore((active? "Before → after the picked move · " : "")+"IL counts 0 · z screen, not the simulator",
+      (active? "Before → after the picked move; summed board z per category, ranked against the other "+(NTEAMS-1)+" teams. "
       : "Current build; picking a move shows before → after. ")
       +"IL players count 0 (owner rule D-IS-8) · z screen only — not the simulator."));
 }
 // owner 2026-10-20 (Strus on IL "not showing up"): my rostered players held off the board, named under my list
 function myHeld(){ const ob=(D.league.rosters[D.my_team]||{}).off_board||[];
   return ob.length? h("p",{class:"note"},"You also roster, off the board (held, no z line): "+ob.join(", ")) : null; }
+// owner 2026-10-26: my roster's positional breakdown, as the Draft Deck's roster header — eligibility counts on top,
+// each player once per family (G = PG/SG, F = SF/PF) beneath; counted at build time (D.league.my_positions), not here
+// owner 2026-10-26: my roster's positional breakdown, as the Draft Deck's roster header — eligibility counts on top,
+// each player once per family (G = PG/SG, F = SF/PF) beneath; counted at build time (D.league.my_positions). With a
+// picked move (owner 2026-10-26, item 3) each count reads before→after: the dropped and added players' board pos,
+// which is Yahoo's eligibility (equal for 14/14 rostered and 87/87 board free agents on 10/26)
+const POSFAM={G:["PG","SG"],F:["SF","PF"],C:["C"]};
+function myPositions(drop,add){ const P=D.league.my_positions; if(!P) return null;
+  const pos={...P.positions}, fam={...P.families};
+  const toks=(n)=>{ const r=BYNAME[n]; return r&&r.pos? r.pos.split(",").map(x=>x.trim()).filter(x=>x in pos) : []; };
+  const shift=(n,d)=>{ const t=toks(n); t.forEach(k=>{pos[k]+=d;}); Object.keys(fam).forEach(f=>{ if(t.some(k=>POSFAM[f].includes(k))) fam[f]+=d; }); };
+  (drop||[]).forEach(n=>shift(n,-1)); (add||[]).forEach(n=>shift(n,+1));
+  const cell=(a,b)=>a===b? "("+a+")" : "("+a+"→"+b+")";
+  const row=(keys,base,now)=>h("div",{class:"posrow"},keys.map(k=>h("span",{class:"poschip"+(base[k]!==now[k]?" moved":"")},h("b",{},k),h("span",{},cell(base[k],now[k])))));
+  return h("div",{id:"fa-positions",class:"positions",title:"Your positions: "+P.rostered+" rostered"+(P.il?" incl. "+P.il+" IL":"")+". Top: every position each player is eligible for; below: each player once per family. A picked move shows before→after."},
+    row(["PG","SG","SF","PF","C"],P.positions,pos),
+    h("hr",{}),
+    row(["G","F","C"],P.families,fam)); }
 function myField(){ return h("div",{class:"field static",title:T(D.my_team)},T(D.my_team)+" · "+MINE.length+" on the board"); }
 function pickList(rows, set, rerender, empty, extra){ return h("div",{class:"plist"}, rows.length? rows.map(r=>h("label",{},
   h("input",{type:"checkbox",...(set.has(r.name)?{checked:""}:{}),onchange:(e)=>{e.target.checked?set.add(r.name):set.delete(r.name);rerender();}}),
@@ -610,7 +684,6 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
   render();
 })();
 (function(){ const p=$("#pane-fa"); let search=""; const drop=new Set(), add=new Set(); const root=h("div",{class:"card"}); p.append(root, howItWorks());
-  const nfa=BOARD.filter(r=>r.fa).length;
   const inp=h("input",{type:"search",id:"fa-search",class:"field",placeholder:"Search free agents",oninput:()=>{search=inp.value; keepTyping(inp,render);}});
   // owner 2026-10-22 (P1): this week's matchup value beside z; the sort defaults to it when the morning's scan ran
   const W=D.week_matchup, TWR=((W&&W.pickups&&W.pickups.this_week&&W.pickups.this_week.rows)||[]), TWM={};
@@ -629,15 +702,14 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
       return (x&&y)? y.d_exp-x.d_exp : x? -1 : y? 1 : 0; });                         // the rest keep their z order (stable sort)
     pool=pool.slice(0,60);
     root.replaceChildren(
-      h("div",{class:"h2row"},h("h2",{},"Free-Agent Adder"),
+      h("div",{class:"h2row"},h("h2",{},"Free-Agent Adder"),myPositions([...drop],[...add]),
         h("button",{id:"fa-reset",class:"resetbtn",onclick:()=>{drop.clear();add.clear();search="";inp.value="";render();}},"Reset")),
-      h("p",{class:"note"},nfa+" unrostered players on today's board, matched to all 12 rosters as of "+D.league.as_of+"."),
       h("div",{class:"pick"},
         h("div",{},h("h2",{},"I drop"),myField(),pickList(MINE,drop,render,"No players of yours on the board."),myHeld()),
         h("div",{},h("h2",{},"I add"),
           inp, sortSel,
-          TWR.length? h("p",{class:"note"},"This week = the change in expected categories won against "+W.opponent.name+" if you add him from tomorrow in place of the lower-valued player named (Today tab, \"This week's adds\")."+
-            (offBoard.length? " Scored this week but not on this board: "+offBoard.join(", ")+".":"")) : null,
+          TWR.length? h("p",{class:"note"},"This week = Δ cats vs opponent if added tomorrow"+(offBoard.length? " · not on this board: "+offBoard.join(", "):""),
+            more("This week = the change in expected categories won against "+W.opponent.name+" if you add him from tomorrow in place of the lower-valued player named (Today tab, \"This week's adds\").")) : null,
           pickList(pool,add,render,"No free agents match.",wk))),
       buildStrip("fa-build",{[D.my_team]:{out:drop,inc:add}},add.size||drop.size),
       scoreBlock([...add].map(n=>BYNAME[n]),[...drop].map(n=>BYNAME[n])));
@@ -658,7 +730,8 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
   const tbl=h("div",{});
   box.append(h("div",{class:"h2row"},h("h2",{},"Season board — "+rows.length+" ranked players"),
       h("button",{id:"bd-reset",class:"resetbtn",onclick:()=>{q="";inp.value="";fa=false;faBox.checked=false;key="rank";asc=true;ca=null;cb=null;render();}},"Reset")),
-    h("p",{class:"note"},"Blended season lines ("+D.season_lines.players_with_games+" players with regular-season games so far). Held off the board: "+(D.board.held.length?D.board.held.join(", "):"none")+"."),
+    noteMore("Season lines blended with games so far ("+D.season_lines.players_with_games+" players) · "+(D.board.held.length? D.board.held.length+" held off the board" : "none held off the board"),
+      D.board.held.length? "Held off the board: "+D.board.held.join(", ")+"." : null),
     h("div",{class:"pick"},inp,h("label",{style:"display:flex;align-items:center;gap:6px"},faBox,"free agents only")),
     tbl);
   function cmpRender(){ const a=ca&&rows.find(r=>r.name===ca), b=cb&&rows.find(r=>r.name===cb);
@@ -723,7 +796,7 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
   const sel=h("select",{id:"fm-view",class:"field",style:"max-width:12em",onchange:(e)=>{view=e.target.value; render();}},h("option",{value:"all"},"all"),h("option",{value:"mine"},"my roster"),h("option",{value:"fa"},"free agents"));
   const c=F.counts, w=F.window;
   p.append(h("div",{class:"card"},h("div",{class:"h2row"},h("h2",{},"Minutes & role"),sel),
-    h("p",{class:"note"},"Box scores "+(w?w[0]+" → "+w[1]:"")+" · "+c.days+" day"+(c.days===1?"":"s")+" · "+c.rostered+" rostered + "+c.free_agents+" FA · per-36 rates · not a projection."),
+    h("p",{class:"note"},"Box scores "+(w?w[0]+" → "+w[1]:"")+" · "+c.rostered+" rostered + "+c.free_agents+" FA · per-36 · not a projection"),
     box,
     h("details",{class:"how"},h("summary",{},"How to read it"),
       h("p",{class:"note"},"Regular-season box scores only; DNPs excluded. Rates are per 36 minutes on minutes actually played. Role: S started every game, B none, M some; starts/games beside it. Last 3 = minutes over the last three games against the games before them, from "+F.method.trend_min_games+" games on; ▲/▼ at ±"+F.method.trend_min+" min. The season line stays the per-game line the board and simulator run on; this shows the minutes behind it, and a one-game row is one game."),
@@ -738,13 +811,14 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
   const ML={fgp:"FG%",ftp:"FT%",fga:"FGA",fta:"FTA",tpm:"3PM",pts:"PTS",reb:"REB",ast:"AST",stl:"STL",blk:"BLK",tov:"TOV"};
   const mv=(c,v)=>(ML[c]||c)+" "+(Array.isArray(v)?v[0]+" → "+v[1]:String(v));
   p.append(h("div",{class:"card"},h("h2",{},"Season-line movers (per-game line moved "+L.threshold+"+; FG%/FT% 0.01+)"),
-    h("p",{class:"note"},L.players_with_games+" pool players with regular-season games; each category's season line = the preseason line carried as a per-category prior (games: "+CATS.map(c=>{const k=(c==="TOV"?"TO":(c==="STL"?"STL":c)); return k+" "+(L.prior_games[k]!=null?L.prior_games[k]:"—");}).join(", ")+") blended with what the games show."),
+    noteMore("Season line = preseason line blended with games played ("+L.players_with_games+" players)",
+      L.players_with_games+" pool players with regular-season games; each category's season line = the preseason line carried as a per-category prior (games: "+CATS.map(c=>{const k=(c==="TOV"?"TO":(c==="STL"?"STL":c)); return k+" "+(L.prior_games[k]!=null?L.prior_games[k]:"—");}).join(", ")+") blended with what the games show."),
     L.movers.length? h("div",{class:"tablebox"},h("table",{},
       h("tr",{},h("th",{},"player"),h("th",{class:"num"},"games"),h("th",{},"moved")),
       L.movers.map(m=>h("tr",{},h("td",{},m.name),h("td",{class:"num"},String(m.games)),
         h("td",{},Object.entries(m.moved).map(([c,v])=>h("span",{class:"chip",style:"margin-right:4px"},mv(c,v))))))))
       : h("div",{class:"zero"},"No movers yet — the first regular-season games land 2026-10-21."),
-    L.unpooled_with_games.length? h("p",{class:"note"},"Unpooled with games: "+L.unpooled_with_games.join(", ")):null));
+    L.unpooled_with_games.length? noteMore(L.unpooled_with_games.length+" player"+(L.unpooled_with_games.length===1?"":"s")+" with games aren't in the pool", "Unpooled with games: "+L.unpooled_with_games.join(", ")):null));
 })();
 
 // ---- Week / ledger ----
@@ -758,12 +832,13 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
         h("div",{class:"tile"},h("div",{class:"v"},String(L.my_left_to_play)),h("div",{class:"l"},"my player-games left")),
         h("div",{class:"tile"},h("div",{class:"v"},String(L.opp_left_to_play)),h("div",{class:"l"},(L.opp_team||"opponent")+" left")),
         pw2!=null?h("div",{class:"tile"},h("div",{class:"v"},pct(pw2)),h("div",{class:"l"},"P(win week) — pre-week forecast")):null),
-      h("p",{class:"note"},"Counts from the FantasyBot matchup pull ("+L.date+(L.games_in_progress?", games in progress":"")+"); the win probability is the kit's own record, not FantasyBot's.")));
+      noteMore("Counts: FantasyBot pull, "+L.date+(L.games_in_progress?" (games in progress)":"")+" · win chance: the kit's own",
+        "Counts from the FantasyBot matchup pull ("+L.date+(L.games_in_progress?", games in progress":"")+"); the win probability is the kit's own record, not FantasyBot's.")));
   }
   // owner 2026-10-20 (option a): show each opponent's CURRENT team name by seat; the ledger record stays frozen
   const seatName={}; for(const r of D.board.board){ if(r.seat!=null) seatName[r.seat]=r.owner; }
   p.append(h("div",{class:"card"},h("h2",{},"Week "+b.week+" — "+(b.week_window?b.week_window.join(" to "):"")),
-    h("p",{class:"note"},"Each week's prediction is recorded before the week starts and never rewritten; results land when you paste the scoreboard."),
+    h("p",{class:"note"},"Recorded before each week, never rewritten; results from Monday's scoreboard intake (Yahoo's finals)."),
     weeks.length? h("div",{class:"tablebox"},h("table",{},
       h("tr",{},h("th",{class:"num"},"wk"),h("th",{},"opponent"),h("th",{class:"num"},"P(win)"),h("th",{class:"num"},"exp cats"),h("th",{},"recorded on rosters"),h("th",{},"result")),
       weeks.map(w=>{ const sd=Object.values(w.by_seed||{}); const pw=sd.length?avg2(sd.map(x=>x.p_win)):null, ec=sd.length?avg2(sd.map(x=>x.exp_cats)):null;
@@ -775,7 +850,8 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
   (function(){ const S=D.scores, wks=S? Object.values(S.weeks||{}).sort((a,z)=>a.week-z.week) : [];
     const sg=(x)=>x==null?"–":(x<0?"−":"+")+Math.abs(x).toFixed(3), f3=(x)=>x==null?"–":x.toFixed(3);
     const card=h("div",{class:"card"},h("h2",{},"Scorecard — the morning card's P(win) against the finals"),
-      h("p",{class:"note"},"Each morning the Today card states, per category, the chance of winning it. At the week's intake every stated chance is scored: Brier = (p − outcome)², 0 perfect, 0.25 a coin flip (won 1, tied ½, lost 0). Baseline = that morning's lead as a forecast; skill = baseline − card, positive when the card beats the scoreboard."));
+      noteMore("How the Today card's category chances scored: lower Brier is better; skill > 0 = beat the lead-only guess",
+        "Each morning the Today card states, per category, the chance of winning it. At the week's intake every stated chance is scored: Brier = (p − outcome)², 0 perfect, 0.25 a coin flip (won 1, tied ½, lost 0). Baseline = that morning's lead as a forecast; skill = baseline − card, positive when the card beats the scoreboard."));
     if(!wks.length){ card.append(h("div",{class:"zero"},"No week scored yet — the first finals land at Monday's intake.")); p.append(card); return; }
     const total=(w)=>{ if(!w.window) return null; const a=new Date(w.window[0]), b=new Date(w.window[1]); return Math.round((b-a)/864e5)+1; };
     card.append(h("div",{class:"tablebox"},h("table",{id:"sc-table",class:"lg"},
@@ -786,7 +862,7 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
           h("td",{class:"num"},String(w.n_forecasts)),h("td",{class:"num"},f3(w.brier)),h("td",{class:"num"},f3(w.baseline_brier)),h("td",{class:"num"+(w.skill<0?" zneg":"")},sg(w.skill))); }))));
     // reliability over every scored week
     const agg={}; wks.forEach(w=>(w.reliability||[]).forEach(x=>{ const a=agg[x.bin]||(agg[x.bin]={n:0,p:0,h:0}); if(x.n){ a.n+=x.n; a.p+=x.mean_p*x.n; a.h+=x.hit_rate*x.n; } }));
-    card.append(h("p",{class:"note"},"Reliability, all scored weeks — a calibrated card has hit rate ≈ stated P in every bin:"),
+    card.append(noteMore("Reliability: hit rate vs stated chance, all scored weeks", "Reliability, all scored weeks — a calibrated card has hit rate ≈ stated P in every bin."),
       h("div",{class:"tablebox"},h("table",{class:"lg"},h("tr",{},h("th",{},"stated P"),h("th",{class:"num"},"forecasts"),h("th",{class:"num"},"mean P"),h("th",{class:"num"},"hit rate")),
         ["0.0-0.2","0.2-0.4","0.4-0.6","0.6-0.8","0.8-1.0"].map(b=>{ const a=agg[b]||{n:0}; return h("tr",{},h("td",{},b),h("td",{class:"num"},String(a.n)),h("td",{class:"num"},a.n?(a.p/a.n).toFixed(2):"–"),h("td",{class:"num"},a.n?(a.h/a.n).toFixed(2):"–")); }))));
     p.append(card); })();
@@ -816,7 +892,7 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
     const wkNote=cur? (cur.status==="not_started"? (view==="season"? "Season to date: "+finished.length+" finished week"+(finished.length===1?"":"s")+"; week "+cur.week+" not started (Yahoo shows no stats yet). " : "Week "+cur.week+" ("+cur.window[0]+" to "+cur.window[1]+"): no stats yet. ")
       : (view==="season"? "Season to date: "+finished.length+" finished week"+(finished.length===1?"":"s")+(cur.status==="in_progress"?" plus week "+cur.week+" to date":"")+". " : "Week "+cur.week+" to date ("+cur.window[0]+" to "+cur.window[1]+"), from "+(cur.source==="yahoo"?"Yahoo's scoreboard at the morning pull":"the box-score rebuild")+". ")) : "";
     box.replaceChildren(h("div",{},
-      h("p",{class:"note"},wkNote+"Percentages are total makes over total attempts. Click a column to sort; turnovers sort fewest first. Badge = rank of "+N+" in that category."),
+      noteMore(wkNote+"Click a column to sort", "Percentages are total makes over total attempts. Turnovers sort fewest first. Badge = rank of "+N+" in that category."),
       h("div",{class:"tablebox"},h("table",{id:"lg-table",class:"lg"},
         h("tr",{},hd("#","power",true),hd("team","team"),hd("all-play","pct",true),CAT.map(c=>hd(c,c,true)),view==="season"?h("th",{class:"num"},"wks"):h("th",{},"this week")),
         rs.map(r=>h("tr",{class:r.mine?"mine":""},h("td",{class:"num"},String(r.power)),
@@ -824,18 +900,42 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
           h("td",{class:"num"},r.pct==null?"–":(r.pct*100).toFixed(1)+"%"),
           CAT.map(c=>h("td",{class:"num"},fv(c,r.cats[c]),r.ranks[c]?badge(r.ranks[c]):null)),
           view==="season"?h("td",{class:"num"},String(r.weeks)):h("td",{},(r.score?r.score.wins+"–"+r.score.losses+"–"+r.score.ties:"–")+" vs "+(r.opp||"?")+(r.left!=null?" · "+r.left+" games left":"")))))),
-      L.weeks.some(w=>w.source==="rebuild")? h("p",{class:"note zneg"},"Week"+(L.weeks.filter(w=>w.source==="rebuild").length>1?"s ":" ")+L.weeks.filter(w=>w.source==="rebuild").map(w=>w.week).join(", ")+" rebuilt from box scores (no pull carried Yahoo's finals): active slots per the pinned lineups, today's roster on a day with none; no Yahoo result for those weeks.") : null)); }
+      L.weeks.some(w=>w.source==="rebuild")? (()=>{ const rb=L.weeks.filter(w=>w.source==="rebuild"), scored=rb.every(w=>w.score_source);
+        return noteMore("Week"+(rb.length>1?"s ":" ")+rb.map(w=>w.week).join(", ")+" totals rebuilt from box scores"+(scored? "; score from the week record" : "; no Yahoo score for "+(rb.length>1?"them":"it")),
+          "No pull carried Yahoo's finals for "+(rb.length>1?"those weeks":"that week")+": the category totals count each team's active slots per the pinned lineups, today's roster on a day with none."+(scored? " The matchup score comes from the verified week record ("+rb.map(w=>w.score_source).join(", ")+")." : ""),
+          scored? "" : "zneg"); })() : null)); }
   const sel=h("select",{class:"field",onchange:(e)=>{view=e.target.value; render();}},h("option",{value:"season"},"season to date"),h("option",{value:"week"},"this week only"));
   const top=L.power.slice();
   const powerCard=h("div",{class:"card"},h("h2",{},"Power rankings"),
-    h("p",{class:"note"},"All-play: each week every team is scored against all "+(N-1)+" others on the nine categories (a tie counts half). Power = the season's all-play win rate, recomputed every morning. Luck = the actual category win rate (Yahoo's matchup scores) minus the all-play rate: positive means the schedule has been kind."),
+    noteMore("Power = all-play win rate (each week vs all "+(N-1)+") · Luck = actual minus all-play",
+      "All-play: each week every team is scored against all "+(N-1)+" others on the nine categories (a tie counts half). Power = the season's all-play win rate, recomputed every morning. Luck = the actual category win rate (Yahoo's matchup scores) minus the all-play rate: positive means the schedule has been kind."),
     h("div",{class:"tablebox"},h("table",{id:"lg-power",class:"lg"},
       h("tr",{},h("th",{class:"num"},"#"),h("th",{},"team"),h("th",{class:"num"},"all-play"),h("th",{},""),h("th",{class:"num"},"W–L–T"),h("th",{class:"num"},"actual"),h("th",{class:"num"},"luck")),
       top.map(x=>h("tr",{class:x.mine?"mine":""},h("td",{class:"num"},String(x.rank)),h("td",{class:"team","data-team":x.team},h("b",{},x.team),x.mine?h("span",{class:"chip mine"},"you"):null,h("small",{style:"display:block;color:var(--ink2)"},x.manager||"")),
         h("td",{class:"num"},x.allplay.pct==null?"–":(x.allplay.pct*100).toFixed(1)+"%"),h("td",{},h("span",{class:"bar",style:"width:"+Math.round((x.allplay.pct||0)*90)+"px"})),
         h("td",{class:"num"},x.allplay.w+"–"+x.allplay.l+"–"+x.allplay.t),h("td",{class:"num"},x.actual?x.actual.w+"–"+x.actual.l+"–"+x.actual.t:"–"),
         h("td",{class:"num"+(x.luck!=null&&x.luck<0?" zneg":"")},x.luck==null?"–":((x.luck>=0?"+":"")+(x.luck*100).toFixed(1)+" pts")))))));
-  p.append(powerCard, h("div",{class:"card"},h("h2",{},"League categories"),h("div",{class:"pick"},h("label",{},"view ",sel)),box));
+  // owner 2026-10-26 ("Standings card + fix records"): Yahoo's standings from the latest pull that carries them, the playoff
+  // line under 8th, the distance from it in category games, and the kit's week records checked against Yahoo's W-L-T
+  const S=L.standings, rec3=(a)=>a[0]+"–"+a[1]+"–"+a[2];
+  const vsl=(v)=>v==null?"–":(v>0? "+"+v : (v<0? "−"+(-v) : "0"));
+  const stCard=h("div",{class:"card",id:"lg-standings-card"},h("h2",{},"Standings"),
+    !S? h("div",{class:"zero"},"No Yahoo standings pinned on or before "+D.date+" (the morning pull carries them from 2026-10-27).")
+    : h("div",{},
+        noteMore("Yahoo, as of "+S.pull_date+" · dashed line = playoff line (top "+S.playoff_teams+") · vs line in category games",
+          "Yahoo's standings as of "+S.pull_date+". The dashed line is the playoff line: the top "+S.playoff_teams+" of "+S.rows.length+" make it. "+
+          "vs line = category games ahead of 9th (+) for the top "+S.playoff_teams+", behind "+S.playoff_teams+"th (−) for the rest."),
+        h("div",{class:"tablebox"},h("table",{id:"lg-standings",class:"lg"},
+          h("tr",{},h("th",{class:"num"},"#"),h("th",{},"team"),h("th",{class:"num"},"W–L–T"),h("th",{class:"num"},"win %"),h("th",{class:"num"},"vs line"),h("th",{class:"num"},"waiver")),
+          S.rows.map(r=>h("tr",{class:[r.mine?"mine":"", r.rank===S.playoff_teams?"cut":""].join(" ").trim()},
+            h("td",{class:"num"},String(r.rank)),
+            h("td",{class:"team","data-team":r.team},h("b",{},r.team),r.mine?h("span",{class:"chip mine"},"you"):null,h("small",{style:"display:block;color:var(--ink2)"},r.manager||"")),
+            h("td",{class:"num"},r.w+"–"+r.l+"–"+r.t),h("td",{class:"num"},r.pct.toFixed(3).replace(/^0/,"")),
+            h("td",{class:"num"+(r.vs_line!=null&&r.vs_line<0?" zneg":"")},vsl(r.vs_line)),h("td",{class:"num"},r.waiver==null?"–":String(r.waiver)))))),
+        S.check.mismatches.length
+          ? h("p",{class:"note zneg"},"Yahoo's W–L–T differs from the kit's week records for "+S.check.mismatches.map(m=>m.team+" (kit "+rec3(m.kit)+", Yahoo "+rec3(m.yahoo)+")").join("; ")+".")
+          : h("p",{class:"note"},"Yahoo's W–L–T matches the kit's week records for all "+S.check.teams_checked+" teams (finished week"+(S.check.finished_weeks.length===1?" ":"s ")+S.check.finished_weeks.join(", ")+").")));
+  p.append(stCard, powerCard, h("div",{class:"card"},h("h2",{},"League categories"),h("div",{class:"pick"},h("label",{},"view ",sel)),box));
   render();
 })();
 

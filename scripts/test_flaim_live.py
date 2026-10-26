@@ -54,6 +54,14 @@ def free_agents(players):
                                                      for n, t, pos, st in players]}}
 
 
+def standings(rows):
+    """A get_standings response: rows = [(team_id, name, wins, losses, ties)]."""
+    return {"success": True, "data": {"leagueKey": KEY, "leagueName": "x", "seasonPhase": "regular_season",
+                                      "standings": [{"teamKey": f"{KEY}.t.{i}", "teamId": str(i), "name": n,
+                                                     "wins": str(w), "losses": str(l), "ties": t, "rank": str(k + 1)}
+                                                    for k, (i, n, w, l, t) in enumerate(rows)]}}
+
+
 def line(ts, payload):
     """One transcript entry carrying a tool result whose text is the JSON response, as the harness writes it."""
     o = {"type": "user", "message": {"role": "user", "content": [
@@ -87,6 +95,20 @@ class Extract(unittest.TestCase):
         self.assertEqual(sorted(pull["matchups"]), ["1"])
         self.assertEqual(pull["free_agents"]["freeAgents"][0]["name"], "Jrue Holiday")
         FL.check_pull(pull)
+
+    def test_the_standings_response_is_read_and_pinned(self):
+        # owner 2026-10-26 (item 7): Yahoo's standings pinned daily beside the rosters, for the record
+        tr = self.write(twelve("2026-10-27T12:55:00Z") + line("2026-10-27T12:56:00Z", standings([(12, "Team 12", 6, 2, 1), (1, "Team 1", 6, 3, 0)])))
+        pull = FL.extract_pull(tr)
+        self.assertEqual([r["name"] for r in pull["standings"]["standings"]], ["Team 12", "Team 1"])
+        other = self.write(line("2026-10-27T12:56:00Z", {"success": True, "data": dict(standings([])["data"], leagueKey="478.l.1")}))
+        self.assertIsNone(FL.extract_pull(other)["standings"])          # another league's standings are ignored
+
+    def test_a_later_pin_with_no_standings_keeps_the_earlier_pins(self):
+        path = self.pin({}, standings={"standings": [{"name": "A"}]})
+        pull = FL.keep_daily({"source": "flaim", "daily": {}, "matchups": {}, "free_agents": None, "standings": None}, path)
+        self.assertEqual(pull["standings"], {"standings": [{"name": "A"}]})
+        self.assertIn("standings", pull["carried_forward"])
 
     def test_a_dated_snapshot_is_never_read_as_todays_roster(self):
         tr = self.write(twelve("2026-10-22T12:55:00Z")
@@ -144,6 +166,14 @@ class Extract(unittest.TestCase):
         pull = FL.keep_daily(later, path)
         self.assertEqual((pull["matchups"], pull["free_agents"], "carried_forward" in pull),
                          ({"1": {"m": "new"}}, {"freeAgents": []}, False))
+
+    def test_a_same_day_re_pin_keeps_a_week_the_earlier_pin_had_and_the_new_pull_lacks(self):
+        # owner 2026-10-26 ("same-day re-runs keep earlier final results"): the 15:12Z morning re-run re-pinned
+        # pull_2026-10-26.json with week 2 only, and week 1's finals, pinned by the first run, were lost
+        path = self.pin({}, matchups={"1": {"m": "week 1 finals"}, "2": {"m": "old 2"}})
+        pull = FL.keep_daily({"source": "flaim", "daily": {}, "matchups": {"2": {"m": "new 2"}}}, path)
+        self.assertEqual(pull["matchups"], {"1": {"m": "week 1 finals"}, "2": {"m": "new 2"}})
+        self.assertEqual(pull["carried_forward"], ["matchups week 1"])
 
     def test_with_no_earlier_pin_the_pull_is_pinned_as_it_is(self):
         pull = {"source": "flaim", "daily": {}}

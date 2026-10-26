@@ -44,9 +44,12 @@ class LeagueSimSchedule(unittest.TestCase):
                                 "--schedule", SCHED], cwd=DECK, capture_output=True, text=True)
             self.assertEqual(p.returncode, 0, p.stderr[-2000:])
             rec = json.load(open(out))
-        weeks = json.load(open(SCHED))["regular_season_weeks"]
+        sched = json.load(open(SCHED))
+        weeks = sched["regular_season_weeks"]
+        # 2026-10-26 (#196): the weeks already final in "played" are not simulated, so the owner's opponent is honoured
+        # in the remaining weeks only
         self.assertEqual(rec["schedule"]["owner_seat"], 10)
-        self.assertEqual(rec["schedule"]["honored"], seasons * weeks)
+        self.assertEqual(rec["schedule"]["honored"], seasons * (weeks - len(sched.get("played") or {})))
         self.assertEqual(rec["weeks"], weeks)
 
 
