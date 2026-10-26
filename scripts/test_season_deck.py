@@ -689,7 +689,7 @@ def league_dom(html_path, clicks=(), width=1280):
 class SeasonBandDeck(unittest.TestCase):
     """Owner 2026-10-26: the deck's band note quotes the season sweep and says so."""
     def test_default_paths_name_the_season_sweep(self):
-        self.assertTrue(SD.default_paths("2026-10-27")["sweep"].endswith(os.path.join("redteam-2026-10-26-season", "sweep.json")))
+        self.assertTrue(SD.default_paths("2026-10-27")["sweep"].endswith(os.path.join("redteam-2026-10-26-season-real", "sweep.json")))
         self.assertTrue(SD.default_paths("2026-10-21")["sweep"].endswith(os.path.join("redteam-2026-10-19", "sweep.json")))
 
     def test_the_band_note_names_the_configuration(self):
