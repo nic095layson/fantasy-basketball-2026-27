@@ -249,10 +249,10 @@ def main():
 
 def sim_absent_line(names):
     """The title odds' caveat when the season simulator could not play a rostered player (owner option (b),
-    2026-10-21: a pickup in data/pool_additions.csv is not in the simulator's frozen v69 pool)."""
+    2026-10-21; since 2026-10-26 the simulator plays SEASON_POOL when set, so this names a player missing from that pool)."""
     if not names:
         return None
-    return (f"{', '.join(names)}: left out of the season simulation (not in its frozen {CG.LINES_TAG} pool; the rule "
+    return (f"{', '.join(names)}: left out of the season simulation (not in its pool; the rule "
             f"for IL players, D-IS-8); the waiver scan still counts {'him' if len(names) == 1 else 'them'}.")
 
 

@@ -192,6 +192,47 @@ class SimulatorPool(unittest.TestCase):
         self.assertEqual(rec["absent_from_sim"], ["Pickup Nobody"])
         self.assertIn(str(CG.OWNER_SEAT), rec["teams"])
 
+    def test_with_a_season_pool_the_simulator_plays_its_pickups_and_names_the_pool(self):
+        """Owner 2026-10-26 ("use the season pool"): with SEASON_POOL set, the title odds run on that pool (the lines
+        the board plays, pickups included) through league_sim --pool, so a pickup only it carries is not left out."""
+        import csv
+        import json
+        import tempfile
+        d = tempfile.mkdtemp()
+        frozen = os.path.join(CG.DECK, "arena", "results", f"players_{CG.LINES_TAG}.csv")
+        with open(frozen, encoding="utf-8") as f:
+            r = csv.DictReader(f); fields = r.fieldnames; rows = list(r)
+        pool = os.path.join(d, "pool.csv")
+        with open(pool, "w", newline="", encoding="utf-8") as f:
+            w = csv.DictWriter(f, fieldnames=fields); w.writeheader(); w.writerows(rows + [dict(rows[0], player="Pickup Nobody")])
+        old = os.environ.get("SEASON_POOL")
+        os.environ["SEASON_POOL"] = pool
+        try:
+            P, by = CG.load_pool()
+            ros = CG.rosters(json.load(open(CG.STATE, encoding="utf-8")), by)
+            rival = next(s for s in sorted(ros) if s != CG.OWNER_SEAT)
+            ros[rival] = ros[rival] + [by["Pickup Nobody"]]
+            rec = CG.run_league_sim(ros, 2026, 20, d)
+        finally:
+            if old is None:
+                os.environ.pop("SEASON_POOL", None)
+            else:
+                os.environ["SEASON_POOL"] = old
+        self.assertEqual(rec["absent_from_sim"], [])
+        self.assertEqual(rec["pool"]["file"], os.path.abspath(pool))
+
+    def test_without_a_season_pool_the_record_names_no_pool(self):
+        import json
+        import tempfile
+        old = os.environ.pop("SEASON_POOL", None)
+        try:
+            P, by = CG.load_pool()
+            rec = CG.run_league_sim(CG.rosters(json.load(open(CG.STATE, encoding="utf-8")), by), 2026, 20, tempfile.mkdtemp())
+        finally:
+            if old is not None:
+                os.environ["SEASON_POOL"] = old
+        self.assertNotIn("pool", rec)
+
     def test_the_brief_names_who_the_simulation_left_out(self):
         self.assertEqual(DB.sim_absent_line([]), None)
         line = DB.sim_absent_line(["Andre Drummond"])
