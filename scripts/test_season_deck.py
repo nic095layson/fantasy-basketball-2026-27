@@ -34,8 +34,8 @@ def fixtures(d):
                                         yahoo_status="P", tier="probable", availability=0.75,
                                         receipts=[dict(source="Yahoo", captured="2026-10-19", text="P beside Alpha Man")])]))
     league = j("league.json", dict(as_of="2026-10-19", teams=[
-        dict(name="MY TEAM", seat=10, manager="David", players=[dict(player="Alpha Man", slot="PG", status="P"),
-                                                                dict(player="Bench Guy", slot="BN", status=None)],
+        dict(name="MY TEAM", seat=10, manager="David", players=[dict(player="Alpha Man", slot="PG", status="P", positions=["PG"]),
+                                                                dict(player="Bench Guy", slot="BN", status=None, positions=["PF"])],
              empty_slots=[], unpooled_il=[], added_since_draft=[], dropped_since_draft=[]),
         dict(name="THEM", seat=11, manager="Cayas", players=[], empty_slots=[], unpooled_il=[],
              added_since_draft=[], dropped_since_draft=[])]))
@@ -164,6 +164,28 @@ class Deck(unittest.TestCase):
         self.assertNotIn("box.replaceChildren", board)
         self.assertIn('id:"bd-reset"', board)
         self.assertNotIn("tbl.replaceChildren(\n      h(", board)  # a bare null child prints "null" (Chromium-checked)
+
+    def test_my_positional_breakdown_counts_eligibility_and_families_by_hand(self):
+        # owner 2026-10-26: the Free Agents tab shows my roster's positional breakdown as the Draft Deck does —
+        # the top row counts every position a player is eligible for, the bottom row counts each player once per
+        # family (G = PG or SG, F = SF or PF; the deck's rule, test_draft.py "G (4) F (2) C (2)"). IL players count.
+        players = [dict(player="A", slot="PG", positions=["PG", "SG"]), dict(player="B", slot="SG", positions=["SG", "SF", "PF"]),
+                   dict(player="C", slot="C", positions=["C"]), dict(player="D", slot="IL", positions=["PF", "C"]),
+                   dict(player="E", slot="BN", positions=["SF"])]
+        bd = SD.positional_breakdown(players)
+        self.assertEqual(bd["positions"], dict(PG=1, SG=2, SF=2, PF=2, C=2))   # by hand from the five rows
+        self.assertEqual(bd["families"], dict(G=2, F=3, C=2))                 # A,B guards; B,D,E forwards; C,D centers
+        self.assertEqual((bd["rostered"], bd["il"]), (5, 1))
+        with self.assertRaises(SD.DeckError):                                   # a token the kit does not know is never a silent 0
+            SD.positional_breakdown([dict(player="X", slot="BN", positions=["G"])])
+
+    def test_the_fa_tab_carries_my_positional_breakdown(self):
+        html, data, rec = self.build()
+        bd = data["league"]["my_positions"]
+        self.assertEqual(bd["positions"], dict(PG=1, SG=0, SF=0, PF=1, C=0))   # fixture: Alpha Man PG, Bench Guy PF
+        self.assertEqual(bd["families"], dict(G=1, F=1, C=0))
+        self.assertIn('id:"fa-positions"', html)                                    # the page builds the block in script
+        self.assertIn("my_positions", html)
 
     def test_my_held_players_are_named_on_trade_and_fa(self):
         # owner 2026-10-20: "I have Max Strus on my IL but he is not showing up" -> option (b): my side of the Trade
