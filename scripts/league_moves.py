@@ -42,9 +42,17 @@ def diff(old, new):
     return moves
 
 
-def write_record(old, new, date, out=None):
-    rec = {"date": date, "old_as_of": old["as_of"], "new_as_of": new["as_of"], "moves": diff(old, new)}
-    out = out or os.path.join(OUTDIR, f"league_moves_{date}.json")
+def record_path(date, phase="am", outdir=None):
+    """The day's moves record. Owner 2026-10-26 (option 1A): the afternoon run writes its own file, so the morning's
+    overnight record is never overwritten (before this, both runs wrote league_moves_<date>.json and the afternoon
+    replaced the morning's — 2026-10-25, commits d887553 then 13597a2)."""
+    suffix = "" if phase == "am" else f"_{phase}"
+    return os.path.join(outdir or OUTDIR, f"league_moves_{date}{suffix}.json")
+
+
+def write_record(old, new, date, out=None, phase="am"):
+    rec = {"date": date, "phase": phase, "old_as_of": old["as_of"], "new_as_of": new["as_of"], "moves": diff(old, new)}
+    out = out or record_path(date, phase)
     os.makedirs(os.path.dirname(out), exist_ok=True)
     with open(out, "w", encoding="utf-8") as f:
         json.dump(rec, f, indent=1, ensure_ascii=False)

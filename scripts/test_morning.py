@@ -102,6 +102,60 @@ class NonFatal(unittest.TestCase):
         self.assertEqual([x["verdict"] for x in rec["steps"]], ["FAIL (non-fatal)", "PASS"])
         self.assertEqual(rec["verdict"], "PASS")
 
+
+class Manifest(unittest.TestCase):
+    """Owner 2026-10-26, option 2A: the run says which paths it wrote, measured from the tree, so a new output script
+    can never go silently uncommitted (report/league, report/form and report/calibration* each drifted out of the
+    prompt's hand-kept list)."""
+    def repo(self):
+        import subprocess, tempfile, os
+        d = tempfile.mkdtemp()
+        for c in (["init", "-q", "-b", "main"], ["config", "user.email", "t@t"], ["config", "user.name", "t"]):
+            subprocess.run(["git", *c], cwd=d, capture_output=True)
+        os.makedirs(os.path.join(d, "data"), exist_ok=True)
+        open(os.path.join(d, "data", "seed.txt"), "w").write("x\n")
+        subprocess.run(["git", "add", "-A"], cwd=d, capture_output=True)
+        subprocess.run(["git", "-c", "commit.gpgsign=false", "commit", "-qm", "seed"], cwd=d, capture_output=True)
+        return d
+
+    def test_each_step_reports_the_paths_it_wrote_and_the_run_lists_them_all(self):
+        import os
+        d = self.repo()
+        mk = lambda name, rel: dict(name=name, cwd=d, pass_re="STEP: PASS", env={},
+                                    cmd=[PY, "-c", f"import os,pathlib;p=pathlib.Path({rel!r});p.parent.mkdir(parents=True,exist_ok=True);p.write_text('v');print('STEP: PASS')"])
+        st = [mk("a", "report/league/league_2026-10-26.json"), mk("b", "report/form/form_2026-10-26.csv")]
+        rec = M.run_steps(st, os.path.join(d, "m.json"), root=d)
+        self.assertEqual(rec["steps"][0]["wrote"], ["report/league/league_2026-10-26.json"])
+        self.assertEqual(rec["steps"][1]["wrote"], ["report/form/form_2026-10-26.csv"])
+        self.assertEqual(rec["wrote"], ["report/form/form_2026-10-26.csv", "report/league/league_2026-10-26.json"])
+
+    def test_a_step_that_writes_nothing_reports_an_empty_list(self):
+        import os
+        d = self.repo()
+        st = [dict(name="quiet", cwd=d, pass_re="STEP: PASS", env={}, cmd=[PY, "-c", "print('STEP: PASS')"])]
+        rec = M.run_steps(st, os.path.join(d, "m.json"), root=d)
+        self.assertEqual(rec["steps"][0]["wrote"], []); self.assertEqual(rec["wrote"], [])
+
+    def test_outside_a_git_tree_the_manifest_says_unattributed_not_empty(self):
+        import os, tempfile
+        d = tempfile.mkdtemp()
+        st = [dict(name="a", cwd=d, pass_re="STEP: PASS", env={}, cmd=[PY, "-c", "print('STEP: PASS')"])]
+        rec = M.run_steps(st, os.path.join(d, "m.json"), root=d)
+        self.assertIsNone(rec["steps"][0]["wrote"])
+        self.assertEqual(rec["wrote"], "unattributed (not a git checkout)")
+
+    def test_the_wrote_block_is_printed_for_the_runner_to_commit(self):
+        import os, io, contextlib
+        d = self.repo()
+        st = [dict(name="a", cwd=d, pass_re="STEP: PASS", env={},
+                   cmd=[PY, "-c", "import pathlib;p=pathlib.Path('report/league/x.json');p.parent.mkdir(parents=True,exist_ok=True);p.write_text('v');print('STEP: PASS')"])]
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            rec = M.run_steps(st, os.path.join(d, "m.json"), root=d)
+            M.print_manifest(rec)
+        out = buf.getvalue()
+        self.assertIn("WROTE: 1 path(s)", out); self.assertIn("report/league/x.json", out)
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
 

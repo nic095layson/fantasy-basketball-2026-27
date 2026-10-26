@@ -274,6 +274,60 @@ class FlaimFirst(unittest.TestCase):
         self.assertEqual({t: sorted(d) for t, d in pinned["daily"].items()}, {f"{TFL.KEY}.t.11": ["2026-10-20"]})
 
 
+
+class Phases(unittest.TestCase):
+    """Owner 2026-10-26, option 1A with the am baseline: the afternoon never overwrites the morning's record, and a
+    morning re-run after an afternoon run still diffs overnight (the 10/25 defect: d887553 then 13597a2)."""
+    PIN = os.path.join(HERE, "..", "data", "source", "flaim", "pull_2026-10-26.json")
+
+    def state(self, as_of, teams):
+        return {"as_of": as_of, "sources": {}, "unpooled_il": {}, "unpooled": [], "standings": None, "scoreboard": None,
+                "teams": teams, "nba_team_disagreements": []}
+
+    def team(self, name, seat, players):
+        return {"name": name, "seat": seat, "manager": "M", "players": [dict(player=p, yahoo_name=p, slot="BN",
+                yahoo_nba_team="DEN", pool_team="DEN", positions=["PF"], status=None) for p in players],
+                "empty_slots": [], "unpooled_il": [], "unpooled": []}
+
+    def test_am_writes_the_baseline_copy_and_pm_writes_only_its_own_record(self):
+        import json, tempfile
+        d = tempfile.mkdtemp(); news = os.path.join(d, "news"); os.makedirs(news)
+        st = os.path.join(d, "league_state.json")
+        yday = self.state("2026-10-25", [self.team("A", 1, ["X"])])
+        json.dump(yday, open(st, "w"))
+        morning = self.state("2026-10-26", [self.team("A", 1, ["Y"])])
+        rec, out = league_live.record_moves(yday, morning, "2026-10-26", "am", news)
+        self.assertTrue(out.endswith("league_moves_2026-10-26.json"))
+        self.assertTrue(os.path.exists(os.path.join(news, "league_state_am_2026-10-26.json")))
+        before = open(out, "rb").read()
+        afternoon = self.state("2026-10-26", [self.team("A", 1, ["Z"])])
+        rec2, out2 = league_live.record_moves(morning, afternoon, "2026-10-26", "pm", news)
+        self.assertTrue(out2.endswith("league_moves_2026-10-26_pm.json"))
+        self.assertEqual(open(out, "rb").read(), before)                 # the morning record is untouched
+        self.assertFalse(os.path.exists(os.path.join(news, "league_state_am_2026-10-26_pm.json")))
+
+    def test_a_morning_rerun_after_the_afternoon_still_diffs_overnight(self):
+        import json, tempfile
+        d = tempfile.mkdtemp(); news = os.path.join(d, "news"); os.makedirs(news)
+        yday = self.state("2026-10-25", [self.team("A", 1, ["X"])])
+        league_live.record_moves(self.state("2026-10-24", [self.team("A", 1, ["W"])]), yday, "2026-10-25", "am", news)
+        morning = self.state("2026-10-26", [self.team("A", 1, ["Y"])])
+        league_live.record_moves(yday, morning, "2026-10-26", "am", news)
+        afternoon = self.state("2026-10-26", [self.team("A", 1, ["Z"])])
+        league_live.record_moves(morning, afternoon, "2026-10-26", "pm", news)
+        # the re-run's "old" state on disk is now the afternoon's; the am baseline must win
+        base = league_live.am_baseline("2026-10-26", news, afternoon)
+        self.assertEqual(base["as_of"], "2026-10-25")
+        self.assertEqual([p["player"] for p in base["teams"][0]["players"]], ["X"])
+        rec, out = league_live.record_moves(base, morning, "2026-10-26", "am", news)
+        self.assertEqual((rec["old_as_of"], rec["new_as_of"]), ("2026-10-25", "2026-10-26"))
+
+    def test_no_baseline_falls_back_to_the_state_on_disk(self):
+        import tempfile
+        d = tempfile.mkdtemp(); news = os.path.join(d, "news"); os.makedirs(news)
+        cur = self.state("2026-10-26", [self.team("A", 1, ["Y"])])
+        self.assertIs(league_live.am_baseline("2026-10-26", news, cur), cur)
+
 if __name__ == "__main__":
     unittest.main()
 
