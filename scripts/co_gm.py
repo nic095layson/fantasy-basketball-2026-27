@@ -159,23 +159,28 @@ def sim_state(ros):
     return {"teams": len(ros), "picks": [{"slot": s, "player": p["player"]} for s, r in sorted(ros.items()) for p in r]}
 
 
-def sim_pool_names(tag=LINES_TAG):
-    """The names the deck's season simulator can play: it loads only its frozen players_<tag>.csv."""
-    with open(os.path.join(DECK, "arena", "results", f"players_{tag}.csv"), encoding="utf-8") as f:
+def sim_pool_names(path=None):
+    """The names the deck's season simulator can play: the pool it is given (SEASON_POOL, owner 2026-10-26), else its
+    frozen players_<LINES_TAG>.csv."""
+    with open(path or os.path.join(DECK, "arena", "results", f"players_{LINES_TAG}.csv"), encoding="utf-8") as f:
         return {r["player"] for r in csv.DictReader(f)}
 
 
 def run_league_sim(ros, seed, seasons, workdir, tag="cur"):
     # 2026-10-21 (owner option (b), data/pool_additions.csv): a rostered pickup the simulator's frozen pool lacks is left
     # out of the simulation, as an IL player is (D-IS-8), and named in the record's absent_from_sim
-    known = sim_pool_names()
+    # 2026-10-26 (owner, "use the season pool"): with SEASON_POOL set the simulator plays that pool (league_sim --pool),
+    # the lines the board plays with the pickups in them; unset, the frozen v69 pool as before
+    pool = os.path.abspath(os.environ["SEASON_POOL"]) if os.environ.get("SEASON_POOL") else None
+    known = sim_pool_names(pool)
     absent = sorted(p["player"] for r in ros.values() for p in r if p["player"] not in known)
     ros = {s: [p for p in r if p["player"] in known] for s, r in ros.items()}
     sp = os.path.join(workdir, f"_state_{tag}_{seed}.json")
     op = os.path.join(workdir, f"_sim_{tag}_{seed}.json")
     json.dump(sim_state(ros), open(sp, "w", encoding="utf-8"), ensure_ascii=False)
     subprocess.run([sys.executable, os.path.join(DECK, "arena", "mocks", "league_sim.py"), sp, LINES_TAG,
-                    str(seasons), str(seed), op, "--schedule", SCHEDULE, "--season-cv"], check=True, capture_output=True)
+                    str(seasons), str(seed), op, "--schedule", SCHEDULE, "--season-cv"] + (["--pool", pool] if pool else []),
+                   check=True, capture_output=True)
     rec = json.load(open(op, encoding="utf-8"))
     os.remove(sp)
     os.remove(op)
