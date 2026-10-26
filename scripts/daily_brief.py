@@ -33,6 +33,12 @@ SEEDS = (2026, 2027)
 SWEEP = os.path.join(CG.KIT, "report", "after-reports", "redteam-2026-10-26-season", "sweep.json")
 
 
+def lines_label():
+    """Owner 2026-10-26: the lines the brief ran on — the season pool when SEASON_POOL is set (the morning run sets it),
+    else the frozen tag."""
+    return "season pool" if os.environ.get("SEASON_POOL") else CG.LINES_TAG
+
+
 def sweep_config(sw):
     return "season sweep (current rosters, season pool)" if sw.get("state_sha256") else "draft sweep (draft rosters, frozen pool)"
 
@@ -201,7 +207,7 @@ def main():
     lm = league_moves_for(a.date)
     rec = {"date": a.date, "week": wk, "week_window": [wstart, wend], "league_state_as_of": state["as_of"],
            "unpooled": state.get("unpooled") or [],
-           "status_file": status_file, "lines": CG.LINES_TAG, "opponent": opp_team["name"] if opp_team else None,
+           "status_file": status_file, "lines": lines_label(), "opponent": opp_team["name"] if opp_team else None,
            "today": rows_today, "lineup": lineup, "bench": bench, "waiver_base_ecw": round(base_ecw, 4),
            "waiver_positive_pairs": len(pos), "waiver_pairs_scored": len(pairs), "waiver_top": top, "streaming": stream,
            "streaming_vs": {"player": weakest["player"], "games_left": weak_games,
@@ -215,7 +221,7 @@ def main():
     L = [f"# Daily brief — {a.date} (week {wk}, {wstart} to {wend})", ""]
     L.append(f"Opponent this week: **{rec['opponent']}**. Rosters as of {state['as_of']} "
              f"({'FantasyBot live pull' if 'fantasybot' in (state.get('sources') or {}) else chr(39).join(['owner', 's Yahoo page'])}); "
-             f"statuses from `{status_file}`; lines {CG.LINES_TAG}.")
+             f"statuses from `{status_file}`; lines: {lines_label()}.")
     if unpooled_line(state):
         L += ["", unpooled_line(state)]
     L += ["", "## Your players today", "", "| player | NBA | game | status | availability | games left this week |", "|---|---|---|---|---|---|"]
