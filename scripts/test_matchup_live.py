@@ -36,10 +36,22 @@ class Record(unittest.TestCase):
         with self.assertRaises(ML.PullError):
             ML.record(outlook(leagueName="OTHER"))
 
-    def test_todays_transcript_yields_todays_outlook(self):
-        o = ML.extract_outlook(ML.newest_transcript())
-        self.assertIsNotNone(o)
-        self.assertEqual(o.get("oppTeamName"), "KEVIN ELEVEN DOUBLES")
+    def test_a_transcript_yields_its_outlook_and_the_cli_records_it(self):
+        # 2026-10-26: until now this read this session's live transcript (newest_transcript) and expected the 10/21
+        # opponent, so it failed in every other checkout; a fixture transcript carries the same path end to end
+        import json, subprocess, sys, tempfile
+        fd, tr = tempfile.mkstemp(suffix=".jsonl")
+        with os.fdopen(fd, "w", encoding="utf-8") as f:
+            f.write(json.dumps({"type": "user", "timestamp": "2026-10-22T12:56:00Z", "message": {"content": [
+                {"type": "tool_result", "content": [{"type": "text", "text": json.dumps(outlook(oppTeamName="FIXTURE OPP"))}]}]}}) + "\n")
+        self.assertEqual(ML.extract_outlook(tr)["oppTeamName"], "FIXTURE OPP")
+        out_dir = tempfile.mkdtemp()
+        p = subprocess.run([sys.executable, ML.__file__, "--date", "2026-10-22", "--transcript", tr, "--out-dir", out_dir,
+                            "--pin-dir", out_dir], capture_output=True, text=True)
+        self.assertIn("MATCHUP LIVE: PASS", p.stdout, p.stdout + p.stderr)
+        rec = json.load(open(os.path.join(out_dir, "matchup_live_2026-10-22.json"), encoding="utf-8"))
+        self.assertEqual(rec["opp_team"], "FIXTURE OPP")
+        os.remove(tr)
 
 
 

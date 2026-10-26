@@ -157,20 +157,34 @@ class PullChecks(unittest.TestCase):
 
 
 class EndToEnd(unittest.TestCase):
-    def test_todays_transcript_builds_a_passing_state_without_overwriting(self):
-        """The real pull from this session's transcript resolves 12 teams; written to a scratch path."""
+    """The whole path from a transcript to a passing state, on a fixture transcript (2026-10-26: until now this read
+    this session's live transcript through newest_transcript(), so it failed in every checkout but the one it was
+    written in). The pinned 10/21 Flaim pull is carried as the tool results of a transcript line each."""
+    PIN = os.path.join(os.path.dirname(HERE), "data", "source", "flaim", "pull_2026-10-21.json")
+
+    @unittest.skipUnless(os.path.exists(PIN), "no pinned Flaim pull")
+    def test_a_fixture_transcript_builds_a_passing_state_and_pins_the_pull(self):
+        import test_flaim_live as TFL
+        pull = json.load(open(self.PIN, encoding="utf-8"))
+        fd, tr = tempfile.mkstemp(suffix=".jsonl")
+        with os.fdopen(fd, "w", encoding="utf-8") as f:
+            for r in pull["rosters"].values():
+                f.write(TFL.line("2026-10-21T12:55:00Z", {"success": True, "data": r}))
+            for m in pull["matchups"].values():
+                f.write(TFL.line("2026-10-21T12:55:30Z", {"success": True, "data": m}))
+            if pull.get("free_agents"):
+                f.write(TFL.line("2026-10-21T12:55:40Z", {"success": True, "data": pull["free_agents"]}))
         tdir = tempfile.mkdtemp()
         out = os.path.join(tdir, "league_state.json")
-        p = subprocess.run([sys.executable, os.path.join(HERE, "league_live.py"),
-                            "--as-of", "2026-10-20", "--out", out, "--source", "fantasybot",
-                            "--pin-dir", tdir, "--ledger", ""], capture_output=True, text=True)
-        self.assertIn("LEAGUE INTAKE: PASS", p.stdout, p.stdout + p.stderr)
-        self.assertIn("LEAGUE LIVE: PASS", p.stdout, p.stdout + p.stderr)
+        p = subprocess.run([sys.executable, os.path.join(HERE, "league_live.py"), "--as-of", "2026-10-21", "--out", out,
+                            "--transcript", tr, "--since", "2026-10-21T12:50:00Z", "--pin-dir", tdir, "--flaim-pin-dir", tdir,
+                            "--ledger", ""], capture_output=True, text=True)
+        self.assertIn("LEAGUE LIVE: PASS — rosters from Flaim", p.stdout, p.stdout + p.stderr)
         state = json.load(open(out, encoding="utf-8"))
         self.assertEqual(len(state["teams"]), 12)
-        self.assertIn("fantasybot", state["sources"])
-        pin = os.path.join(tdir, "pull_2026-10-20.json")
-        self.assertTrue(os.path.exists(pin), "raw pull not pinned")
+        self.assertIn("flaim", state["sources"])
+        self.assertTrue(os.path.exists(os.path.join(tdir, "pull_2026-10-21.json")), "raw pull not pinned")
+        os.remove(tr)
 
 
 class FlaimFirst(unittest.TestCase):
