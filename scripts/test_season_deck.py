@@ -1258,5 +1258,63 @@ class UnpooledAndNotStarted(unittest.TestCase):
                 b.close()
         self.assertEqual(errs, []); self.assertIn("no stats yet", txt)
 
+
+class WordingPassTwo(unittest.TestCase):
+    """Owner 2026-10-26 (item 4, "Build all 13 lines"): Board, Movers, Week and League notes shortened; every definition
+    and name list they carried stays on the page as a hover; two lines that had become wrong now read true."""
+    def setUp(self):
+        self.d = tempfile.mkdtemp(); self.fx = fixtures(self.d)
+        j = lambda name, obj: (json.dump(obj, open(os.path.join(self.d, name), "w")), os.path.join(self.d, name))[1]
+        b = json.load(open(self.fx["board"])); b["held"] = ["Jusuf Nurkic", "Jimmy Butler"]; self.fx["board"] = j("board2.json", b)
+        sl = json.load(open(self.fx["season_lines"])); sl["players_with_games"] = 287; sl["unpooled_with_games"] = ["Alex Karaban", "Baba Miller"]
+        self.fx["season_lines"] = j("lines2.json", sl)
+        self.fx["form"] = j("form.json", form_record())
+        self.fx["scores"] = j("scores.json", score_record())
+        self.fx["matchup_live"] = j("ml.json", {"date": "2026-10-21", "week": 1, "my_left_to_play": 30, "opp_left_to_play": 37,
+                                                "games_in_progress": False, "opp_team": "OPP", "my_team": "ME", "my_starters": [], "opp_starters": []})
+        lr = league_record()
+        lr["weeks"][0].update(status="finished", source="rebuild", score_source="week_1.json")
+        lr["standings"] = dict(pull="pull_2026-10-21.json", pull_date="2026-10-21", playoff_teams=8,
+                               rows=[dict(rank=i + 1, team=f"Team {i + 1}", seat=i + 1, manager=f"M{i + 1}", mine=i == 9, w=5, l=4, t=0,
+                                          pct=0.556, seed=None, waiver=1, faab=500, vs_line=0.0) for i in range(12)],
+                               check=dict(finished_weeks=[1], teams_checked=12, mismatches=[]))
+        self.fx["league"] = j("league_table.json", lr)
+        html, data, rec = SD.build(self.fx, date="2026-10-21")
+        self.page = os.path.join(self.d, "deck.html")
+        with open(self.page, "w", encoding="utf-8") as f:
+            f.write(html)
+
+    def check(self, tab, pane, gone, kept_in_hover, shown):
+        v = visible_dom(self.page, tab, pane)
+        self.assertEqual(v["errors"], [])
+        hov = " ".join(v["titles"])
+        for g in gone:
+            self.assertNotIn(g, v["text"], f"{tab}: still visible: {g}")
+        for k in kept_in_hover:
+            self.assertIn(k, hov, f"{tab}: lost from the hovers: {k}")
+        for s in shown:
+            self.assertIn(s, v["text"], f"{tab}: missing: {s}")
+        return v
+
+    def test_board(self):
+        self.check("Board", "pane-board", ["Held off the board: Jusuf Nurkic"], ["Jusuf Nurkic, Jimmy Butler"],
+                   ["2 held off the board", "287 players"])
+
+    def test_movers(self):
+        self.check("Movers", "pane-movers", ["Unpooled with games", "carried as a per-category prior"],
+                   ["Alex Karaban, Baba Miller", "per-category prior"], ["2 players with games aren't in the pool", "287 players", "not a projection"])
+
+    def test_week(self):
+        v = self.check("Week", "pane-week", ["Brier = (p − outcome)²", "a calibrated card has hit rate", "not FantasyBot's"],
+                       ["Brier = (p − outcome)²", "a calibrated card has hit rate", "not FantasyBot's"],
+                       ["lower Brier is better", "Reliability", "never rewritten", "Monday's scoreboard intake"])
+        self.assertNotIn("paste the scoreboard", v["text"] + " ".join(v["titles"]))
+
+    def test_league(self):
+        v = self.check("League", "pane-league", ["Luck = the actual category win rate", "Badge = rank of", "no Yahoo result for those weeks"],
+                       ["Luck = the actual category win rate", "Badge = rank of"],
+                       ["Power = all-play win rate", "Click a column to sort", "playoff line", "score from the week record"])
+        self.assertNotIn("no Yahoo result", v["text"] + " ".join(v["titles"]))
+
 if __name__ == "__main__":
     unittest.main()

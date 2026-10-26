@@ -726,7 +726,8 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
   const tbl=h("div",{});
   box.append(h("div",{class:"h2row"},h("h2",{},"Season board — "+rows.length+" ranked players"),
       h("button",{id:"bd-reset",class:"resetbtn",onclick:()=>{q="";inp.value="";fa=false;faBox.checked=false;key="rank";asc=true;ca=null;cb=null;render();}},"Reset")),
-    h("p",{class:"note"},"Blended season lines ("+D.season_lines.players_with_games+" players with regular-season games so far). Held off the board: "+(D.board.held.length?D.board.held.join(", "):"none")+"."),
+    noteMore("Season lines blended with games so far ("+D.season_lines.players_with_games+" players) · "+(D.board.held.length? D.board.held.length+" held off the board" : "none held off the board"),
+      D.board.held.length? "Held off the board: "+D.board.held.join(", ")+"." : null),
     h("div",{class:"pick"},inp,h("label",{style:"display:flex;align-items:center;gap:6px"},faBox,"free agents only")),
     tbl);
   function cmpRender(){ const a=ca&&rows.find(r=>r.name===ca), b=cb&&rows.find(r=>r.name===cb);
@@ -791,7 +792,7 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
   const sel=h("select",{id:"fm-view",class:"field",style:"max-width:12em",onchange:(e)=>{view=e.target.value; render();}},h("option",{value:"all"},"all"),h("option",{value:"mine"},"my roster"),h("option",{value:"fa"},"free agents"));
   const c=F.counts, w=F.window;
   p.append(h("div",{class:"card"},h("div",{class:"h2row"},h("h2",{},"Minutes & role"),sel),
-    h("p",{class:"note"},"Box scores "+(w?w[0]+" → "+w[1]:"")+" · "+c.days+" day"+(c.days===1?"":"s")+" · "+c.rostered+" rostered + "+c.free_agents+" FA · per-36 rates · not a projection."),
+    h("p",{class:"note"},"Box scores "+(w?w[0]+" → "+w[1]:"")+" · "+c.rostered+" rostered + "+c.free_agents+" FA · per-36 · not a projection"),
     box,
     h("details",{class:"how"},h("summary",{},"How to read it"),
       h("p",{class:"note"},"Regular-season box scores only; DNPs excluded. Rates are per 36 minutes on minutes actually played. Role: S started every game, B none, M some; starts/games beside it. Last 3 = minutes over the last three games against the games before them, from "+F.method.trend_min_games+" games on; ▲/▼ at ±"+F.method.trend_min+" min. The season line stays the per-game line the board and simulator run on; this shows the minutes behind it, and a one-game row is one game."),
@@ -806,13 +807,14 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
   const ML={fgp:"FG%",ftp:"FT%",fga:"FGA",fta:"FTA",tpm:"3PM",pts:"PTS",reb:"REB",ast:"AST",stl:"STL",blk:"BLK",tov:"TOV"};
   const mv=(c,v)=>(ML[c]||c)+" "+(Array.isArray(v)?v[0]+" → "+v[1]:String(v));
   p.append(h("div",{class:"card"},h("h2",{},"Season-line movers (per-game line moved "+L.threshold+"+; FG%/FT% 0.01+)"),
-    h("p",{class:"note"},L.players_with_games+" pool players with regular-season games; each category's season line = the preseason line carried as a per-category prior (games: "+CATS.map(c=>{const k=(c==="TOV"?"TO":(c==="STL"?"STL":c)); return k+" "+(L.prior_games[k]!=null?L.prior_games[k]:"—");}).join(", ")+") blended with what the games show."),
+    noteMore("Season line = preseason line blended with games played ("+L.players_with_games+" players)",
+      L.players_with_games+" pool players with regular-season games; each category's season line = the preseason line carried as a per-category prior (games: "+CATS.map(c=>{const k=(c==="TOV"?"TO":(c==="STL"?"STL":c)); return k+" "+(L.prior_games[k]!=null?L.prior_games[k]:"—");}).join(", ")+") blended with what the games show."),
     L.movers.length? h("div",{class:"tablebox"},h("table",{},
       h("tr",{},h("th",{},"player"),h("th",{class:"num"},"games"),h("th",{},"moved")),
       L.movers.map(m=>h("tr",{},h("td",{},m.name),h("td",{class:"num"},String(m.games)),
         h("td",{},Object.entries(m.moved).map(([c,v])=>h("span",{class:"chip",style:"margin-right:4px"},mv(c,v))))))))
       : h("div",{class:"zero"},"No movers yet — the first regular-season games land 2026-10-21."),
-    L.unpooled_with_games.length? h("p",{class:"note"},"Unpooled with games: "+L.unpooled_with_games.join(", ")):null));
+    L.unpooled_with_games.length? noteMore(L.unpooled_with_games.length+" player"+(L.unpooled_with_games.length===1?"":"s")+" with games aren't in the pool", "Unpooled with games: "+L.unpooled_with_games.join(", ")):null));
 })();
 
 // ---- Week / ledger ----
@@ -826,12 +828,13 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
         h("div",{class:"tile"},h("div",{class:"v"},String(L.my_left_to_play)),h("div",{class:"l"},"my player-games left")),
         h("div",{class:"tile"},h("div",{class:"v"},String(L.opp_left_to_play)),h("div",{class:"l"},(L.opp_team||"opponent")+" left")),
         pw2!=null?h("div",{class:"tile"},h("div",{class:"v"},pct(pw2)),h("div",{class:"l"},"P(win week) — pre-week forecast")):null),
-      h("p",{class:"note"},"Counts from the FantasyBot matchup pull ("+L.date+(L.games_in_progress?", games in progress":"")+"); the win probability is the kit's own record, not FantasyBot's.")));
+      noteMore("Counts: FantasyBot pull, "+L.date+(L.games_in_progress?" (games in progress)":"")+" · win chance: the kit's own",
+        "Counts from the FantasyBot matchup pull ("+L.date+(L.games_in_progress?", games in progress":"")+"); the win probability is the kit's own record, not FantasyBot's.")));
   }
   // owner 2026-10-20 (option a): show each opponent's CURRENT team name by seat; the ledger record stays frozen
   const seatName={}; for(const r of D.board.board){ if(r.seat!=null) seatName[r.seat]=r.owner; }
   p.append(h("div",{class:"card"},h("h2",{},"Week "+b.week+" — "+(b.week_window?b.week_window.join(" to "):"")),
-    h("p",{class:"note"},"Each week's prediction is recorded before the week starts and never rewritten; results land when you paste the scoreboard."),
+    h("p",{class:"note"},"Recorded before each week, never rewritten; results from Monday's scoreboard intake (Yahoo's finals)."),
     weeks.length? h("div",{class:"tablebox"},h("table",{},
       h("tr",{},h("th",{class:"num"},"wk"),h("th",{},"opponent"),h("th",{class:"num"},"P(win)"),h("th",{class:"num"},"exp cats"),h("th",{},"recorded on rosters"),h("th",{},"result")),
       weeks.map(w=>{ const sd=Object.values(w.by_seed||{}); const pw=sd.length?avg2(sd.map(x=>x.p_win)):null, ec=sd.length?avg2(sd.map(x=>x.exp_cats)):null;
@@ -843,7 +846,8 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
   (function(){ const S=D.scores, wks=S? Object.values(S.weeks||{}).sort((a,z)=>a.week-z.week) : [];
     const sg=(x)=>x==null?"–":(x<0?"−":"+")+Math.abs(x).toFixed(3), f3=(x)=>x==null?"–":x.toFixed(3);
     const card=h("div",{class:"card"},h("h2",{},"Scorecard — the morning card's P(win) against the finals"),
-      h("p",{class:"note"},"Each morning the Today card states, per category, the chance of winning it. At the week's intake every stated chance is scored: Brier = (p − outcome)², 0 perfect, 0.25 a coin flip (won 1, tied ½, lost 0). Baseline = that morning's lead as a forecast; skill = baseline − card, positive when the card beats the scoreboard."));
+      noteMore("How the Today card's category chances scored: lower Brier is better; skill > 0 = beat the lead-only guess",
+        "Each morning the Today card states, per category, the chance of winning it. At the week's intake every stated chance is scored: Brier = (p − outcome)², 0 perfect, 0.25 a coin flip (won 1, tied ½, lost 0). Baseline = that morning's lead as a forecast; skill = baseline − card, positive when the card beats the scoreboard."));
     if(!wks.length){ card.append(h("div",{class:"zero"},"No week scored yet — the first finals land at Monday's intake.")); p.append(card); return; }
     const total=(w)=>{ if(!w.window) return null; const a=new Date(w.window[0]), b=new Date(w.window[1]); return Math.round((b-a)/864e5)+1; };
     card.append(h("div",{class:"tablebox"},h("table",{id:"sc-table",class:"lg"},
@@ -854,7 +858,7 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
           h("td",{class:"num"},String(w.n_forecasts)),h("td",{class:"num"},f3(w.brier)),h("td",{class:"num"},f3(w.baseline_brier)),h("td",{class:"num"+(w.skill<0?" zneg":"")},sg(w.skill))); }))));
     // reliability over every scored week
     const agg={}; wks.forEach(w=>(w.reliability||[]).forEach(x=>{ const a=agg[x.bin]||(agg[x.bin]={n:0,p:0,h:0}); if(x.n){ a.n+=x.n; a.p+=x.mean_p*x.n; a.h+=x.hit_rate*x.n; } }));
-    card.append(h("p",{class:"note"},"Reliability, all scored weeks — a calibrated card has hit rate ≈ stated P in every bin:"),
+    card.append(noteMore("Reliability: hit rate vs stated chance, all scored weeks", "Reliability, all scored weeks — a calibrated card has hit rate ≈ stated P in every bin."),
       h("div",{class:"tablebox"},h("table",{class:"lg"},h("tr",{},h("th",{},"stated P"),h("th",{class:"num"},"forecasts"),h("th",{class:"num"},"mean P"),h("th",{class:"num"},"hit rate")),
         ["0.0-0.2","0.2-0.4","0.4-0.6","0.6-0.8","0.8-1.0"].map(b=>{ const a=agg[b]||{n:0}; return h("tr",{},h("td",{},b),h("td",{class:"num"},String(a.n)),h("td",{class:"num"},a.n?(a.p/a.n).toFixed(2):"–"),h("td",{class:"num"},a.n?(a.h/a.n).toFixed(2):"–")); }))));
     p.append(card); })();
@@ -884,7 +888,7 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
     const wkNote=cur? (cur.status==="not_started"? (view==="season"? "Season to date: "+finished.length+" finished week"+(finished.length===1?"":"s")+"; week "+cur.week+" not started (Yahoo shows no stats yet). " : "Week "+cur.week+" ("+cur.window[0]+" to "+cur.window[1]+"): no stats yet. ")
       : (view==="season"? "Season to date: "+finished.length+" finished week"+(finished.length===1?"":"s")+(cur.status==="in_progress"?" plus week "+cur.week+" to date":"")+". " : "Week "+cur.week+" to date ("+cur.window[0]+" to "+cur.window[1]+"), from "+(cur.source==="yahoo"?"Yahoo's scoreboard at the morning pull":"the box-score rebuild")+". ")) : "";
     box.replaceChildren(h("div",{},
-      h("p",{class:"note"},wkNote+"Percentages are total makes over total attempts. Click a column to sort; turnovers sort fewest first. Badge = rank of "+N+" in that category."),
+      noteMore(wkNote+"Click a column to sort", "Percentages are total makes over total attempts. Turnovers sort fewest first. Badge = rank of "+N+" in that category."),
       h("div",{class:"tablebox"},h("table",{id:"lg-table",class:"lg"},
         h("tr",{},hd("#","power",true),hd("team","team"),hd("all-play","pct",true),CAT.map(c=>hd(c,c,true)),view==="season"?h("th",{class:"num"},"wks"):h("th",{},"this week")),
         rs.map(r=>h("tr",{class:r.mine?"mine":""},h("td",{class:"num"},String(r.power)),
@@ -892,11 +896,15 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
           h("td",{class:"num"},r.pct==null?"–":(r.pct*100).toFixed(1)+"%"),
           CAT.map(c=>h("td",{class:"num"},fv(c,r.cats[c]),r.ranks[c]?badge(r.ranks[c]):null)),
           view==="season"?h("td",{class:"num"},String(r.weeks)):h("td",{},(r.score?r.score.wins+"–"+r.score.losses+"–"+r.score.ties:"–")+" vs "+(r.opp||"?")+(r.left!=null?" · "+r.left+" games left":"")))))),
-      L.weeks.some(w=>w.source==="rebuild")? h("p",{class:"note zneg"},"Week"+(L.weeks.filter(w=>w.source==="rebuild").length>1?"s ":" ")+L.weeks.filter(w=>w.source==="rebuild").map(w=>w.week).join(", ")+" rebuilt from box scores (no pull carried Yahoo's finals): active slots per the pinned lineups, today's roster on a day with none; no Yahoo result for those weeks.") : null)); }
+      L.weeks.some(w=>w.source==="rebuild")? (()=>{ const rb=L.weeks.filter(w=>w.source==="rebuild"), scored=rb.every(w=>w.score_source);
+        return noteMore("Week"+(rb.length>1?"s ":" ")+rb.map(w=>w.week).join(", ")+" totals rebuilt from box scores"+(scored? "; score from the week record" : "; no Yahoo score for "+(rb.length>1?"them":"it")),
+          "No pull carried Yahoo's finals for "+(rb.length>1?"those weeks":"that week")+": the category totals count each team's active slots per the pinned lineups, today's roster on a day with none."+(scored? " The matchup score comes from the verified week record ("+rb.map(w=>w.score_source).join(", ")+")." : ""),
+          scored? "" : "zneg"); })() : null)); }
   const sel=h("select",{class:"field",onchange:(e)=>{view=e.target.value; render();}},h("option",{value:"season"},"season to date"),h("option",{value:"week"},"this week only"));
   const top=L.power.slice();
   const powerCard=h("div",{class:"card"},h("h2",{},"Power rankings"),
-    h("p",{class:"note"},"All-play: each week every team is scored against all "+(N-1)+" others on the nine categories (a tie counts half). Power = the season's all-play win rate, recomputed every morning. Luck = the actual category win rate (Yahoo's matchup scores) minus the all-play rate: positive means the schedule has been kind."),
+    noteMore("Power = all-play win rate (each week vs all "+(N-1)+") · Luck = actual minus all-play",
+      "All-play: each week every team is scored against all "+(N-1)+" others on the nine categories (a tie counts half). Power = the season's all-play win rate, recomputed every morning. Luck = the actual category win rate (Yahoo's matchup scores) minus the all-play rate: positive means the schedule has been kind."),
     h("div",{class:"tablebox"},h("table",{id:"lg-power",class:"lg"},
       h("tr",{},h("th",{class:"num"},"#"),h("th",{},"team"),h("th",{class:"num"},"all-play"),h("th",{},""),h("th",{class:"num"},"W–L–T"),h("th",{class:"num"},"actual"),h("th",{class:"num"},"luck")),
       top.map(x=>h("tr",{class:x.mine?"mine":""},h("td",{class:"num"},String(x.rank)),h("td",{class:"team","data-team":x.team},h("b",{},x.team),x.mine?h("span",{class:"chip mine"},"you"):null,h("small",{style:"display:block;color:var(--ink2)"},x.manager||"")),
@@ -910,7 +918,8 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
   const stCard=h("div",{class:"card",id:"lg-standings-card"},h("h2",{},"Standings"),
     !S? h("div",{class:"zero"},"No Yahoo standings pinned on or before "+D.date+" (the morning pull carries them from 2026-10-27).")
     : h("div",{},
-        h("p",{class:"note"},"Yahoo's standings as of "+S.pull_date+". The dashed line is the playoff line: the top "+S.playoff_teams+" of "+S.rows.length+" make it. "+
+        noteMore("Yahoo, as of "+S.pull_date+" · dashed line = playoff line (top "+S.playoff_teams+") · vs line in category games",
+          "Yahoo's standings as of "+S.pull_date+". The dashed line is the playoff line: the top "+S.playoff_teams+" of "+S.rows.length+" make it. "+
           "vs line = category games ahead of 9th (+) for the top "+S.playoff_teams+", behind "+S.playoff_teams+"th (−) for the rest."),
         h("div",{class:"tablebox"},h("table",{id:"lg-standings",class:"lg"},
           h("tr",{},h("th",{class:"num"},"#"),h("th",{},"team"),h("th",{class:"num"},"W–L–T"),h("th",{class:"num"},"win %"),h("th",{class:"num"},"vs line"),h("th",{class:"num"},"waiver")),
