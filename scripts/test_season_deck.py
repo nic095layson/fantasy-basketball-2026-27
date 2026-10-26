@@ -1039,5 +1039,61 @@ class Scorecard(unittest.TestCase):
         self.assertLessEqual(dom["page_overflow"], 0)
 
 
+
+class UnpooledAndNotStarted(unittest.TestCase):
+    """Owner 2026-10-26: the Today tab names unpooled players; the League tab survives a week with no stats yet."""
+    def setUp(self):
+        self.d = tempfile.mkdtemp(); self.fx = fixtures(self.d)
+
+    def build(self, league_patch=None, league_rec=None):
+        if league_patch:
+            st = json.load(open(self.fx["league_state"])); st.update(league_patch)
+            json.dump(st, open(self.fx["league_state"], "w"))
+        if league_rec is not None:
+            self.fx["league"] = os.path.join(self.d, "league_table.json"); json.dump(league_rec, open(self.fx["league"], "w"))
+        html, data, rec = SD.build(self.fx, date="2026-10-21")
+        p = os.path.join(self.d, "deck.html"); open(p, "w", encoding="utf-8").write(html)
+        return p, data
+
+    def test_today_names_each_unpooled_player(self):
+        p, data = self.build(dict(unpooled=[dict(player="Trevon Brazile", fantasy_team="THEM", seat=11, slot="BN", nba_team="DEN", status=None)]))
+        self.assertEqual(data["league"]["unpooled"][0]["player"], "Trevon Brazile")
+        self.assertEqual(DRC.check(p)["status"], "PASS")
+        from playwright.sync_api import sync_playwright
+        with sync_playwright() as pw:
+            b, exe, tried = DRC._launch(pw)
+            try:
+                pg = b.new_page(); errs = []; pg.on("pageerror", lambda e: errs.append(str(e)))
+                pg.route(re.compile(r"^https?://"), lambda r: r.abort())
+                pg.goto("file://" + os.path.abspath(p), wait_until="load")
+                txt = pg.evaluate("() => document.getElementById('pane-today').textContent")
+            finally:
+                b.close()
+        self.assertEqual(errs, [])
+        self.assertIn("Not in the pool, not simulated: Trevon Brazile (THEM, BN)", txt)
+
+    def test_league_tab_draws_a_not_started_week_without_error(self):
+        rec = league_record()
+        teams = {t: dict(x, totals=None, not_started=True, score=dict(wins=0, losses=0, ties=9)) for t, x in rec["weeks"][0]["teams"].items()}
+        rec["weeks"].append(dict(week=2, window=["2026-10-26", "2026-11-01"], status="not_started", source="yahoo", pull="pull_2026-10-26.json", teams=teams))
+        p, data = self.build(league_rec=rec)
+        self.assertEqual(DRC.check(p)["status"], "PASS")
+        dom = league_dom(p)
+        self.assertEqual(dom["errors"], [])
+        self.assertIn("week 2 not started", dom["text"])
+        from playwright.sync_api import sync_playwright
+        with sync_playwright() as pw:
+            b, exe, tried = DRC._launch(pw)
+            try:
+                pg = b.new_page(); errs = []; pg.on("pageerror", lambda e: errs.append(str(e)))
+                pg.route(re.compile(r"^https?://"), lambda r: r.abort())
+                pg.goto("file://" + os.path.abspath(p), wait_until="load")
+                pg.evaluate("() => document.querySelector('nav.tabs button[data-tab=league]').click()")
+                pg.evaluate("() => { const s=document.querySelector('#pane-league select'); s.value='week'; s.dispatchEvent(new Event('change')); }")
+                txt = pg.evaluate("() => document.getElementById('pane-league').textContent")
+            finally:
+                b.close()
+        self.assertEqual(errs, []); self.assertIn("no stats yet", txt)
+
 if __name__ == "__main__":
     unittest.main()

@@ -86,7 +86,7 @@ def owners_of(state):
     for t in state["teams"]:
         for p in t["players"]:
             out[p["player"]] = {"team": t["name"], "seat": t.get("seat")}
-        for n in t.get("unpooled_il", []):
+        for n in t.get("unpooled_il", []) + [u["player"] for u in t.get("unpooled") or []]:
             out[n] = {"team": t["name"], "seat": t.get("seat")}
     return out
 

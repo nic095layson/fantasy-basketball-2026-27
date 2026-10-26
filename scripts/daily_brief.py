@@ -89,6 +89,16 @@ def transactions_for(date):
     return json.load(open(path, encoding="utf-8")) if os.path.exists(path) else None
 
 
+def unpooled_line(state):
+    """Owner 2026-10-26, option (a): the names the intake carried without a pool row, or None. Never silent."""
+    un = (state or {}).get("unpooled") or []
+    if not un:
+        return None
+    return (f"**Not in the pool, not simulated ({len(un)}):** "
+            + ", ".join(f"{u['player']} ({u['fantasy_team']}, {u['slot']}, {u['nba_team']})" for u in un)
+            + ". Each needs a data/pool_additions.csv row before the simulator counts him.")
+
+
 def transactions_lines(rec, my_team, opp_team):
     """Rostered players first (yours, then this week's opponent, then the league), then board players on no roster."""
     if rec is None:
@@ -184,6 +194,7 @@ def main():
 
     lm = league_moves_for(a.date)
     rec = {"date": a.date, "week": wk, "week_window": [wstart, wend], "league_state_as_of": state["as_of"],
+           "unpooled": state.get("unpooled") or [],
            "status_file": status_file, "lines": CG.LINES_TAG, "opponent": opp_team["name"] if opp_team else None,
            "today": rows_today, "lineup": lineup, "bench": bench, "waiver_base_ecw": round(base_ecw, 4),
            "waiver_positive_pairs": len(pos), "waiver_pairs_scored": len(pairs), "waiver_top": top, "streaming": stream,
@@ -199,6 +210,8 @@ def main():
     L.append(f"Opponent this week: **{rec['opponent']}**. Rosters as of {state['as_of']} "
              f"({'FantasyBot live pull' if 'fantasybot' in (state.get('sources') or {}) else chr(39).join(['owner', 's Yahoo page'])}); "
              f"statuses from `{status_file}`; lines {CG.LINES_TAG}.")
+    if unpooled_line(state):
+        L += ["", unpooled_line(state)]
     L += ["", "## Your players today", "", "| player | NBA | game | status | availability | games left this week |", "|---|---|---|---|---|---|"]
     for n, t, g, s, av, gl in rows_today:
         L.append(f"| {n} | {t} | {g or '—'} | {s or '—'} | {av:.2f} | {gl} |")

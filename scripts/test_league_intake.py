@@ -60,26 +60,52 @@ class UnpooledIL(unittest.TestCase):
             self.assertEqual(team["unpooled_il"], ["Y. Konan Niederhäuser"])
             self.assertNotIn("Y. Konan Niederhäuser", [p["yahoo_name"] for p in team["players"]])
 
-    def test_listed_name_off_il_still_halts(self):
+    def test_listed_name_off_il_is_carried_unpooled_not_unpooled_il(self):
+        # owner 2026-10-26, option (a): off IL the Council exemption does not apply; the name rides as `unpooled`
+        # (flagged, not simulated) instead of halting the whole league; on IL the Council path is unchanged (above)
         with tempfile.TemporaryDirectory() as d:
             src = write([["A", 1, "PG", "Tyrese Haliburton", "IND", "PG", ""],
                          ["A", 1, "BN", "Y. Konan Niederhäuser", "LAC", "C", "O"]], d)
             out = os.path.join(d, "state.json")
             rc = LI.run(src, out, POOL, ABBR, draft={10: ["Tyrese Haliburton"]}, as_of="2026-10-15",
                         unpooled=self.UNPOOLED)
-            self.assertEqual(rc, 1)
-            self.assertFalse(os.path.exists(out))
+            self.assertEqual(rc, 0)
+            st = json.load(open(out)); team = st["teams"][0]
+            self.assertEqual(team["unpooled_il"], [])
+            self.assertEqual([u["player"] for u in team["unpooled"]], ["Y. Konan Niederhäuser"])
+            self.assertEqual(st["unpooled_il"], {})
 
 
 class Intake(unittest.TestCase):
-    def test_halts_and_writes_nothing_on_a_miss(self):
+    def test_a_miss_on_a_rival_bench_is_carried_unpooled_and_announced(self):
+        # owner 2026-10-26, option (a): one unknown pickup no longer freezes the league (the 10/26 Brazile halt)
+        import contextlib, io
         with tempfile.TemporaryDirectory() as d:
             src = write([["A", 1, "PG", "Tyrese Haliburton", "IND", "PG", ""],
-                         ["A", 1, "IL", "Nobody Atall", "LAC", "C", "O"]], d)
+                         ["B", 1, "C", "Nikola Jokic", "DEN", "C", ""],
+                         ["B", 1, "BN", "Trevon Brazile", "DEN", "PF", ""]], d)
+            out = os.path.join(d, "state.json"); buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                rc = LI.run(src, out, POOL, ABBR, draft={10: ["Tyrese Haliburton"], 1: ["Nikola Jokic"]}, as_of="2026-10-26")
+            self.assertEqual(rc, 0)
+            st = json.load(open(out))
+            b = next(t for t in st["teams"] if t["name"] == "B")
+            self.assertEqual([p["player"] for p in b["players"]], ["Nikola Jokic"])          # no line, not in players
+            self.assertEqual(b["unpooled"], [dict(player="Trevon Brazile", slot="BN", nba_team="DEN", positions=["PF"], status=None)])
+            self.assertEqual(st["unpooled"], [dict(player="Trevon Brazile", fantasy_team="B", seat=1, slot="BN", nba_team="DEN", status=None)])
+            o = buf.getvalue()
+            self.assertIn("LEAGUE INTAKE: WARN — 1 name(s) not in the pool, carried as unpooled (no line, not simulated): Trevon Brazile (B, BN, DEN)", o)
+            self.assertIn("1 unpooled", o.splitlines()[-1]); self.assertTrue(o.splitlines()[-1].startswith("LEAGUE INTAKE: PASS"))
+
+    def test_an_unpooled_player_never_reaches_the_simulator_rosters(self):
+        import co_gm as CG
+        with tempfile.TemporaryDirectory() as d:
+            src = write([["A", 1, "PG", "Tyrese Haliburton", "IND", "PG", ""],
+                         ["A", 1, "BN", "Trevon Brazile", "DEN", "PF", ""]], d)
             out = os.path.join(d, "state.json")
-            rc = LI.run(src, out, POOL, ABBR, draft={}, as_of="2026-10-15")
-            self.assertEqual(rc, 1)
-            self.assertFalse(os.path.exists(out))
+            LI.run(src, out, POOL, ABBR, draft={10: ["Tyrese Haliburton"]}, as_of="2026-10-26")
+            ros = CG.rosters(json.load(open(out)), {p["player"]: p for p in POOL})
+            self.assertEqual([p["player"] for p in ros[10]], ["Tyrese Haliburton"])
 
     def test_writes_dated_state_when_all_resolve(self):
         with tempfile.TemporaryDirectory() as d:

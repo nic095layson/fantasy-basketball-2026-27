@@ -1,0 +1,305 @@
+{
+ "captured_utc": "2026-10-26T14:42:29.550Z",
+ "input": {
+  "player_name": "Trevon Brazile",
+  "sport": "nba"
+ },
+ "response": {
+  "player": {
+   "id": "4922",
+   "name": "Trevon Brazile",
+   "firstName": "Trevon",
+   "lastName": "Brazile",
+   "position": "PF",
+   "team": "DEN",
+   "age": 23,
+   "experience": 0,
+   "college": "Arkansas",
+   "imageUrl": "https://api.fantasybot.ai/img/player/4922.webp?sport=nba",
+   "sport": "nba",
+   "season": "2026",
+   "statsSeason": "2026",
+   "offseason": false,
+   "injury": null,
+   "statusTag": null,
+   "statusText": "",
+   "newsText": "",
+   "seasonAvg": {
+    "ppg": 23,
+    "totalPoints": 46,
+    "gamesPlayed": 2,
+    "ppr": 46,
+    "halfPpr": 46,
+    "standard": 46
+   },
+   "currentMatchup": null,
+   "weeklyLog": [],
+   "trend": {
+    "last3Avg": 23,
+    "last5Avg": 23,
+    "direction": "stable",
+    "consistency": 1
+   },
+   "projection": {
+    "points": 23,
+    "rank": 39
+   },
+   "news": [],
+   "seasonStats": {
+    "blk": 2,
+    "dreb": 15,
+    "fga": 17,
+    "fgm": 7,
+    "fgmi": 10,
+    "fta": 6,
+    "ftm": 4,
+    "ftmi": 2,
+    "gp": 2,
+    "oreb": 6,
+    "pf": 6,
+    "pts": 21,
+    "reb": 21,
+    "sp": 2820,
+    "stl": 1,
+    "to": 3,
+    "tpa": 11,
+    "tpm": 3,
+    "tpmi": 8
+   },
+   "keyStats": {
+    "Pts Avg": 10.5,
+    "Reb Avg": 10.5,
+    "Ast Avg": 0,
+    "Stl Avg": 0.5,
+    "Blk Avg": 1,
+    "3PM Avg": 1.5,
+    "TO Avg": 1.5,
+    "FG%": 41.2,
+    "FT%": 66.7,
+    "Min Avg": 23.5
+   },
+   "positionCompetition": [],
+   "qbRisk": null,
+   "ageRisk": null,
+   "yearOverYear": null,
+   "strengthOfSchedule": null,
+   "newsReport": null,
+   "adp": null,
+   "expertRank": null,
+   "board": {
+    "mode": "ros",
+    "week": null,
+    "rank": 54,
+    "blurb": "solid TO, costs you AST and PTS"
+   },
+   "week": null,
+   "finishedWeek": null,
+   "nba": {
+    "season": "2026",
+    "statsSeason": "2026",
+    "preTipOff": false,
+    "asOfDate": "2026-10-26",
+    "projected": {
+     "pts": 10.5,
+     "reb": 10.5,
+     "ast": 0,
+     "stl": 0.5,
+     "blk": 1,
+     "tpm": 1.5,
+     "tov": 1.5,
+     "fgPct": 41.2,
+     "ftPct": 66.7,
+     "min": 23.4
+    },
+    "seasonLine": {
+     "pts": 10.5,
+     "reb": 10.5,
+     "ast": 0,
+     "stl": 0.5,
+     "blk": 1,
+     "tpm": 1.5,
+     "tov": 1.5,
+     "fgPct": 41.2,
+     "ftPct": 66.7,
+     "min": 23.5
+    },
+    "seasonGames": 2,
+    "seasonFptsPerGame": 23,
+    "recent": [
+     {
+      "days": 7,
+      "games": 2,
+      "fptsPerGame": 23
+     },
+     {
+      "days": 15,
+      "games": 2,
+      "fptsPerGame": 23
+     },
+     {
+      "days": 30,
+      "games": 2,
+      "fptsPerGame": 23
+     }
+    ],
+    "recentSeason": "2026",
+    "points": {
+     "key": "espn_points",
+     "label": "ESPN default points",
+     "perGame": 23,
+     "unit": "fpts",
+     "rank": 300,
+     "posRank": 39,
+     "position": "PF",
+     "expectedGames": 63,
+     "total": 1449,
+     "aboveReplacement": -297.3,
+     "drivers": "23.0 fantasy points a game, mostly PTS and REB; FGA costs 8.5",
+     "replacement": 27.72
+    },
+    "categories": {
+     "key": "nine_cat",
+     "label": "9-cat H2H",
+     "perGame": -3.48,
+     "unit": "value",
+     "rank": 366,
+     "posRank": 54,
+     "position": "PF",
+     "expectedGames": 63,
+     "total": -219.5,
+     "aboveReplacement": -40.4,
+     "drivers": "solid TO, costs you AST and PTS",
+     "scores": [
+      {
+       "z": -0.26,
+       "stat": "fg_pct",
+       "label": "FG%"
+      },
+      {
+       "z": -0.36,
+       "stat": "ft_pct",
+       "label": "FT%"
+      },
+      {
+       "z": -0.54,
+       "stat": "tpm",
+       "label": "3PM"
+      },
+      {
+       "z": -0.73,
+       "stat": "pts",
+       "label": "PTS"
+      },
+      {
+       "z": -0.22,
+       "stat": "reb",
+       "label": "REB"
+      },
+      {
+       "z": -1.01,
+       "stat": "ast",
+       "label": "AST"
+      },
+      {
+       "z": -0.67,
+       "stat": "stl",
+       "label": "STL"
+      },
+      {
+       "z": -0.32,
+       "stat": "blk",
+       "label": "BLK"
+      },
+      {
+       "z": 0.62,
+       "stat": "tov",
+       "label": "TO"
+      }
+     ],
+     "replacement": -2.84,
+     "replacementScores": [
+      {
+       "stat": "fg_pct",
+       "z": -0.08333333333333333
+      },
+      {
+       "stat": "ft_pct",
+       "z": 0.04416666666666667
+      },
+      {
+       "stat": "tpm",
+       "z": -0.49750000000000005
+      },
+      {
+       "stat": "pts",
+       "z": -0.6699999999999999
+      },
+      {
+       "stat": "reb",
+       "z": -0.6333333333333332
+      },
+      {
+       "stat": "ast",
+       "z": -0.6566666666666667
+      },
+      {
+       "stat": "stl",
+       "z": -0.4716666666666667
+      },
+      {
+       "stat": "blk",
+       "z": -0.47500000000000003
+      },
+      {
+       "stat": "tov",
+       "z": 0.5983333333333334
+      }
+     ],
+     "replacementGames": 67.15
+    },
+    "leagueLens": null,
+    "expectedGames": 63,
+    "teamGamesLeft": 78,
+    "healthyRate": 0.81,
+    "nextGame": {
+     "date": "2026-10-26",
+     "opponent": "GSW",
+     "home": true,
+     "tipUtc": "2026-10-27T02:00:00.000Z",
+     "tipEt": "10:00 PM ET",
+     "backToBack": false
+    },
+    "week": {
+     "kind": "this_week",
+     "label": "Oct 26 – Nov 1",
+     "start": "2026-10-26",
+     "end": "2026-11-01",
+     "games": 3,
+     "gamesLeft": 3,
+     "dates": [
+      "2026-10-26",
+      "2026-10-28",
+      "2026-10-30"
+     ],
+     "backToBacks": []
+    },
+    "status": null,
+    "market": {
+     "adp": 431.2,
+     "espnRank": null,
+     "percentOwned": null
+    },
+    "marketNote": null,
+    "notes": [
+     "Schedule not final until the NBA Cup knockouts are set (after Nov 27); games-remaining counts may rise by one or two"
+    ]
+   },
+   "positions": [
+    "SF",
+    "PF"
+   ]
+  }
+ },
+ "source_transcript_sha256": "62dac5c35b50fc7d",
+ "tool": "mcp__FantasyBot__get_player_value"
+}
