@@ -89,6 +89,31 @@ def resolve_rostered(rostered, board_names, held_names, aliases):
     return out
 
 
+POSITIONS = ("PG", "SG", "SF", "PF", "C")                      # Yahoo's eligibility tokens, the only ones league_state carries
+FAMILIES = (("G", ("PG", "SG")), ("F", ("SF", "PF")), ("C", ("C",)))
+
+
+def positional_breakdown(players):
+    """My roster's positional breakdown for the Free Agents tab (owner 2026-10-26, "similar to the Draft Deck").
+    The top row counts every position a player is eligible for; the bottom row counts each player once per family
+    (the Draft Deck's roster-header rule: a PG,SG guard is one G). Every rostered player counts, IL included; the
+    page says how many. A token outside POSITIONS is a DeckError, never a silent zero."""
+    pos = {k: 0 for k in POSITIONS}; fam = {k: 0 for k, _ in FAMILIES}; il = 0
+    for p in players:
+        toks = p.get("positions") or []
+        bad = [t for t in toks if t not in POSITIONS]
+        if bad:
+            raise DeckError(f"{p.get('player')}: position token(s) {bad} not in {POSITIONS}")
+        for t in toks:
+            pos[t] += 1
+        for k, members in FAMILIES:
+            if any(t in members for t in toks):
+                fam[k] += 1
+        if (p.get("slot") or "").startswith("IL"):
+            il += 1
+    return dict(positions=pos, families=fam, rostered=len(players), il=il)
+
+
 def build(paths, date):
     import co_gm
     import box_pull as BP
@@ -114,6 +139,7 @@ def build(paths, date):
         if t["seat"] == my_seat: my_team = t["name"]
         for p in t["players"]: own[rmap[p["player"]]] = (t["name"], t["seat"])
     if my_team is None: raise DeckError(f"league state has no seat {my_seat}")
+    my_positions = positional_breakdown(next(t for t in league["teams"] if t["seat"] == my_seat)["players"])
     for r in board["board"]:
         o = own.get(r["name"])
         r["owner"] = o[0] if o else None; r["seat"] = o[1] if o else None
@@ -141,7 +167,7 @@ def build(paths, date):
     data = dict(date=date, generated_utc=datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
                 my_team=my_team, my_seat=my_seat, brief=brief, board=board, status=status,
                 league=dict(as_of=league["as_of"], rosters=rosters, managers={t["name"]: t.get("manager") for t in league["teams"]},
-                            unpooled=league.get("unpooled") or []), season_lines=lines, matchup=wk,
+                            unpooled=league.get("unpooled") or [], my_positions=my_positions), season_lines=lines, matchup=wk,
                 ledger=calib.get("weeks", {}), bands=bands, band_engine=band_engine, matchup_live=matchup_live,
                 week_matchup=week_matchup, league_table=league_rec, form=form_rec, scores=scores,
                 config=dict(cats=["FG%", "FT%", "3PM", "PTS", "REB", "AST", "STL", "BLK", "TOV"],
@@ -232,6 +258,11 @@ select,input[type=search],input[type=text]{background:var(--surface); color:var(
 .pick h2{margin:0}
 .field{width:100%; height:40px; box-sizing:border-box}
 .field.static{display:flex; align-items:center; border:1px solid var(--line); border-radius:6px; padding:0 10px; background:var(--chip); color:var(--ink2); font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.positions{flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; min-width:0}
+.positions hr{border:0; border-top:1px solid var(--line); margin:0; width:min(100%,22em)}
+.posrow{display:flex; flex-wrap:wrap; gap:2px 12px; justify-content:center}
+.poschip{display:inline-flex; gap:3px; align-items:baseline; font-size:13.5px} .poschip b{font-weight:600}
+@media (max-width:640px){ .h2row:has(.positions){flex-wrap:wrap} .positions{flex-basis:100%; order:3} }  /* phone: the counts take their own line under the title */
 .plist{border:1px solid var(--line); border-radius:6px; height:230px; overflow-y:auto; padding:4px; box-sizing:border-box}
 .plist label{display:flex; gap:8px; align-items:center; padding:6px 8px; border-radius:4px; font-size:13.5px; min-height:32px}
 .plist label:hover{background:var(--chip)}
@@ -573,6 +604,14 @@ function buildStrip(id, deltas, active){ const after=active? leagueRanks(deltas)
 // owner 2026-10-20 (Strus on IL "not showing up"): my rostered players held off the board, named under my list
 function myHeld(){ const ob=(D.league.rosters[D.my_team]||{}).off_board||[];
   return ob.length? h("p",{class:"note"},"You also roster, off the board (held, no z line): "+ob.join(", ")) : null; }
+// owner 2026-10-26: my roster's positional breakdown, as the Draft Deck's roster header — eligibility counts on top,
+// each player once per family (G = PG/SG, F = SF/PF) beneath; counted at build time (D.league.my_positions), not here
+function myPositions(){ const P=D.league.my_positions; if(!P) return null;
+  const row=(pairs)=>h("div",{class:"posrow"},pairs.map(([k,v])=>h("span",{class:"poschip"},h("b",{},k),h("span",{},"("+v+")"))));
+  return h("div",{id:"fa-positions",class:"positions",title:"Your positions: "+P.rostered+" rostered"+(P.il?" incl. "+P.il+" IL":"")+". Top: every position each player is eligible for; below: each player once per family."},
+    row(["PG","SG","SF","PF","C"].map(k=>[k,P.positions[k]])),
+    h("hr",{}),
+    row(["G","F","C"].map(k=>[k,P.families[k]]))); }
 function myField(){ return h("div",{class:"field static",title:T(D.my_team)},T(D.my_team)+" · "+MINE.length+" on the board"); }
 function pickList(rows, set, rerender, empty, extra){ return h("div",{class:"plist"}, rows.length? rows.map(r=>h("label",{},
   h("input",{type:"checkbox",...(set.has(r.name)?{checked:""}:{}),onchange:(e)=>{e.target.checked?set.add(r.name):set.delete(r.name);rerender();}}),
@@ -610,7 +649,6 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
   render();
 })();
 (function(){ const p=$("#pane-fa"); let search=""; const drop=new Set(), add=new Set(); const root=h("div",{class:"card"}); p.append(root, howItWorks());
-  const nfa=BOARD.filter(r=>r.fa).length;
   const inp=h("input",{type:"search",id:"fa-search",class:"field",placeholder:"Search free agents",oninput:()=>{search=inp.value; keepTyping(inp,render);}});
   // owner 2026-10-22 (P1): this week's matchup value beside z; the sort defaults to it when the morning's scan ran
   const W=D.week_matchup, TWR=((W&&W.pickups&&W.pickups.this_week&&W.pickups.this_week.rows)||[]), TWM={};
@@ -629,9 +667,8 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
       return (x&&y)? y.d_exp-x.d_exp : x? -1 : y? 1 : 0; });                         // the rest keep their z order (stable sort)
     pool=pool.slice(0,60);
     root.replaceChildren(
-      h("div",{class:"h2row"},h("h2",{},"Free-Agent Adder"),
+      h("div",{class:"h2row"},h("h2",{},"Free-Agent Adder"),myPositions(),
         h("button",{id:"fa-reset",class:"resetbtn",onclick:()=>{drop.clear();add.clear();search="";inp.value="";render();}},"Reset")),
-      h("p",{class:"note"},nfa+" unrostered players on today's board, matched to all 12 rosters as of "+D.league.as_of+"."),
       h("div",{class:"pick"},
         h("div",{},h("h2",{},"I drop"),myField(),pickList(MINE,drop,render,"No players of yours on the board."),myHeld()),
         h("div",{},h("h2",{},"I add"),
