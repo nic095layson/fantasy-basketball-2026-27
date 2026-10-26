@@ -1,4 +1,8 @@
 {
+ "carried_forward": [
+  "free_agents",
+  "matchups"
+ ],
  "daily": {
   "478.l.36464.t.1": {
    "2026-10-25": {
@@ -5082,6 +5086,7 @@
      "playerKey": "478.p.6170",
      "position": "C",
      "selectedPosition": "C",
+     "status": "Q",
      "team": "UTA"
     },
     {
@@ -5441,12 +5446,12 @@
       "kept": false,
       "status": false
      },
-     "name": "Collin Gillespie",
-     "playerId": "6751",
-     "playerKey": "478.p.6751",
+     "name": "Ty Jerome",
+     "playerId": "6212",
+     "playerKey": "478.p.6212",
      "position": "PG,SG",
      "selectedPosition": "G",
-     "team": "PHX"
+     "team": "MEM"
     },
     {
      "isKeeper": {
@@ -5545,12 +5550,12 @@
       "kept": false,
       "status": false
      },
-     "name": "Ty Jerome",
-     "playerId": "6212",
-     "playerKey": "478.p.6212",
+     "name": "Collin Gillespie",
+     "playerId": "6751",
+     "playerKey": "478.p.6751",
      "position": "PG,SG",
      "selectedPosition": "BN",
-     "team": "MEM"
+     "team": "PHX"
     },
     {
      "isKeeper": {
@@ -5647,12 +5652,12 @@
       "kept": false,
       "status": false
      },
-     "name": "Saddiq Bey",
-     "playerId": "6411",
-     "playerKey": "478.p.6411",
+     "name": "Jayson Tatum",
+     "playerId": "5765",
+     "playerKey": "478.p.5765",
      "position": "SF,PF",
      "selectedPosition": "SF",
-     "team": "NOP"
+     "team": "BOS"
     },
     {
      "isKeeper": {
@@ -5686,40 +5691,12 @@
       "kept": false,
       "status": false
      },
-     "name": "Ivica Zubac",
-     "playerId": "5663",
-     "playerKey": "478.p.5663",
-     "position": "C",
+     "name": "Aaron Gordon",
+     "playerId": "5295",
+     "playerKey": "478.p.5295",
+     "position": "PF,C",
      "selectedPosition": "C",
-     "status": "D",
-     "team": "IND"
-    },
-    {
-     "isKeeper": {
-      "cost": false,
-      "kept": false,
-      "status": false
-     },
-     "name": "Jakob Poeltl",
-     "playerId": "5640",
-     "playerKey": "478.p.5640",
-     "position": "C",
-     "selectedPosition": "C",
-     "team": "TOR"
-    },
-    {
-     "isKeeper": {
-      "cost": false,
-      "kept": false,
-      "status": false
-     },
-     "name": "Yves Missi",
-     "playerId": "10289",
-     "playerKey": "478.p.10289",
-     "position": "C",
-     "selectedPosition": "Util",
-     "status": "O",
-     "team": "NOP"
+     "team": "DEN"
     },
     {
      "isKeeper": {
@@ -5731,8 +5708,60 @@
      "playerId": "4472",
      "playerKey": "478.p.4472",
      "position": "C",
-     "selectedPosition": "Util",
+     "selectedPosition": "C",
      "team": "LAC"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Jay Huff",
+     "playerId": "6617",
+     "playerKey": "478.p.6617",
+     "position": "C",
+     "selectedPosition": "Util",
+     "team": "IND"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Kyle Kuzma",
+     "playerId": "5840",
+     "playerKey": "478.p.5840",
+     "position": "SF,PF",
+     "selectedPosition": "Util",
+     "team": "MIL"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Jakob Poeltl",
+     "playerId": "5640",
+     "playerKey": "478.p.5640",
+     "position": "C",
+     "selectedPosition": "BN",
+     "team": "TOR"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Saddiq Bey",
+     "playerId": "6411",
+     "playerKey": "478.p.6411",
+     "position": "SF,PF",
+     "selectedPosition": "BN",
+     "team": "NOP"
     },
     {
      "isKeeper": {
@@ -5753,39 +5782,13 @@
       "kept": false,
       "status": false
      },
-     "name": "Aaron Gordon",
-     "playerId": "5295",
-     "playerKey": "478.p.5295",
-     "position": "PF,C",
-     "selectedPosition": "BN",
-     "team": "DEN"
-    },
-    {
-     "isKeeper": {
-      "cost": false,
-      "kept": false,
-      "status": false
-     },
-     "name": "Jayson Tatum",
-     "playerId": "5765",
-     "playerKey": "478.p.5765",
-     "position": "SF,PF",
-     "selectedPosition": "BN",
-     "team": "BOS"
-    },
-    {
-     "isKeeper": {
-      "cost": false,
-      "kept": false,
-      "status": false
-     },
-     "name": "Cameron Johnson",
-     "playerId": "6173",
-     "playerKey": "478.p.6173",
-     "position": "SF,PF",
+     "name": "Ivica Zubac",
+     "playerId": "5663",
+     "playerKey": "478.p.5663",
+     "position": "C",
      "selectedPosition": "IL",
-     "status": "D",
-     "team": "DEN"
+     "status": "O",
+     "team": "IND"
     },
     {
      "isKeeper": {
@@ -5913,7 +5916,6 @@
      "playerKey": "478.p.10287",
      "position": "C",
      "selectedPosition": "C",
-     "status": "P",
      "team": "MEM"
     },
     {
@@ -5992,7 +5994,7 @@
      "playerKey": "478.p.6694",
      "position": "SF,PF",
      "selectedPosition": "IL",
-     "status": "Q",
+     "status": "O",
      "team": "SAC"
     },
     {
@@ -6108,6 +6110,7 @@
      "playerKey": "478.p.6692",
      "position": "PF,C",
      "selectedPosition": "C",
+     "status": "O",
      "team": "OKC"
     },
     {
@@ -6313,6 +6316,7 @@
      "playerKey": "478.p.6721",
      "position": "PG,SG",
      "selectedPosition": "Util",
+     "status": "Q",
      "team": "IND"
     },
     {
@@ -6487,19 +6491,6 @@
       "kept": false,
       "status": false
      },
-     "name": "Toumani Camara",
-     "playerId": "10065",
-     "playerKey": "478.p.10065",
-     "position": "SF,PF",
-     "selectedPosition": "Util",
-     "team": "POR"
-    },
-    {
-     "isKeeper": {
-      "cost": false,
-      "kept": false,
-      "status": false
-     },
      "name": "De'Aaron Fox",
      "playerId": "5767",
      "playerKey": "478.p.5767",
@@ -6513,13 +6504,25 @@
       "kept": false,
       "status": false
      },
-     "name": "Jalen Suggs",
-     "playerId": "6516",
-     "playerKey": "478.p.6516",
-     "position": "PG,SG",
+     "name": "Mitchell Robinson",
+     "playerId": "6047",
+     "playerKey": "478.p.6047",
+     "position": "C",
+     "selectedPosition": "Util",
+     "team": "BOS"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Toumani Camara",
+     "playerId": "10065",
+     "playerKey": "478.p.10065",
+     "position": "SF,PF",
      "selectedPosition": "BN",
-     "status": "D",
-     "team": "ORL"
+     "team": "POR"
     },
     {
      "isKeeper": {
@@ -6546,6 +6549,20 @@
      "position": "SG,SF",
      "selectedPosition": "BN",
      "team": "NOP"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Jalen Suggs",
+     "playerId": "6516",
+     "playerKey": "478.p.6516",
+     "position": "PG,SG",
+     "selectedPosition": "IL",
+     "status": "O",
+     "team": "ORL"
     }
    ],
    "snapshot": {
@@ -6633,6 +6650,7 @@
      "playerKey": "478.p.6253",
      "position": "PF,C",
      "selectedPosition": "F",
+     "status": "P",
      "team": "CHA"
     },
     {
@@ -6680,11 +6698,24 @@
       "kept": false,
       "status": false
      },
+     "name": "Cedric Coward",
+     "playerId": "10465",
+     "playerKey": "478.p.10465",
+     "position": "SG,SF",
+     "selectedPosition": "Util",
+     "team": "MEM"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
      "name": "Andrew Wiggins",
      "playerId": "5292",
      "playerKey": "478.p.5292",
      "position": "SG,SF,PF",
-     "selectedPosition": "Util",
+     "selectedPosition": "BN",
      "team": "MIA"
     },
     {
@@ -6712,19 +6743,6 @@
      "position": "PG,SG",
      "selectedPosition": "BN",
      "team": "DET"
-    },
-    {
-     "isKeeper": {
-      "cost": false,
-      "kept": false,
-      "status": false
-     },
-     "name": "Cedric Coward",
-     "playerId": "10465",
-     "playerKey": "478.p.10465",
-     "position": "SG,SF",
-     "selectedPosition": "BN",
-     "team": "MEM"
     },
     {
      "isKeeper": {
@@ -6783,12 +6801,11 @@
       "kept": false,
       "status": false
      },
-     "name": "Cason Wallace",
-     "playerId": "10107",
-     "playerKey": "478.p.10107",
-     "position": "PG,SG,SF",
+     "name": "Alex Caruso",
+     "playerId": "5754",
+     "playerKey": "478.p.5754",
+     "position": "SG,SF",
      "selectedPosition": "SG",
-     "status": "D",
      "team": "OKC"
     },
     {
@@ -7010,7 +7027,7 @@
      "playerKey": "478.p.10468",
      "position": "SG,SF,PF",
      "selectedPosition": "G",
-     "status": "O",
+     "status": "P",
      "team": "DAL"
     },
     {
@@ -7374,5 +7391,6 @@
    "teamName": "ROOKS FTW"
   }
  },
- "source": "flaim"
+ "source": "flaim",
+ "standings": null
 }
