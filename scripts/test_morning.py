@@ -117,6 +117,25 @@ class Pairings(unittest.TestCase):
         self.assertIn("league_pairings.py", " ".join(st["cmd"]))
 
 
+class MondaySweep(unittest.TestCase):
+    """Owner 2026-10-26 ("re-measure the ranges every Monday"): on a Monday the season sweep runs on the real schedule
+    before the brief, writes a dated record with its inputs pinned, and a failure does not stop the morning."""
+    def test_a_monday_runs_the_season_sweep_before_the_brief(self):
+        st = M.steps("2026-11-02")
+        names = [s["name"] for s in st]
+        self.assertIn("season sweep", names)
+        self.assertLess(names.index("league pairings"), names.index("season sweep"))
+        self.assertLess(names.index("season sweep"), names.index("daily brief"))
+        sw = next(s for s in st if s["name"] == "season sweep")
+        self.assertFalse(sw.get("fatal", True))
+        cmd = " ".join(sw["cmd"])
+        for part in ("sweep.py", "--season", "--real-schedule", os.path.join("redteam-2026-11-02-season", "sweep.json")):
+            self.assertIn(part, cmd)
+
+    def test_another_day_does_not(self):
+        self.assertNotIn("season sweep", [s["name"] for s in M.steps("2026-11-03")])
+
+
 class Manifest(unittest.TestCase):
     """Owner 2026-10-26, option 2A: the run says which paths it wrote, measured from the tree, so a new output script
     can never go silently uncommitted (report/league, report/form and report/calibration* each drifted out of the

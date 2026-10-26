@@ -89,7 +89,7 @@ class SeasonBand(unittest.TestCase):
     """Owner 2026-10-26 ("re-measure the uncertainty ranges shown with the title odds now that they use the updated
     stats"): the brief quotes the sweep run on the season configuration and says which configuration it is."""
     def test_the_brief_reads_the_season_sweep(self):
-        self.assertTrue(DB.SWEEP.endswith(os.path.join("redteam-2026-10-26-season", "sweep.json")))
+        self.assertTrue(DB.SR.latest("2026-10-27").endswith(os.path.join("redteam-2026-10-26-season", "sweep.json")))
 
     def test_the_band_line_names_the_configuration(self):
         import json, tempfile

@@ -80,6 +80,16 @@ def steps(date, fetch=True, seasons=10000, since=None):
            # schedule file stands)
            dict(name="league pairings", cmd=[PY, os.path.join(HERE, "league_pairings.py")], cwd=KIT,
                 pass_re=r"^LEAGUE PAIRINGS: PASS", env={}, fatal=False),
+           ] + ([
+           # owner 2026-10-26 ("re-measure the ranges every Monday"; "build the real-schedule re-measurement"): the
+           # assumption sweep on today's rosters and the season pool, every variant through league_sim on the real
+           # schedule, its inputs pinned in a dated folder; before the brief so Monday's brief quotes it; non-fatal (the
+           # last record stands and the brief names its date)
+           dict(name="season sweep", cmd=[PY, os.path.join(HERE, "redteam", "sweep.py"),
+                                          "--season", os.path.join(KIT, "data", "league_state.json"), season_pool,
+                                          "--real-schedule", os.path.join(KIT, "data", "league_schedule.json"),
+                                          "--out", os.path.join(KIT, "report", "after-reports", f"redteam-{date}-season", "sweep.json")],
+                cwd=KIT, pass_re=r"^SWEEP: ", env={}, fatal=False)] if datetime.date.fromisoformat(date).weekday() == 0 else []) + [
            dict(name="daily brief", cmd=[PY, os.path.join(HERE, "daily_brief.py"), "--date", date, "--seasons", str(seasons)], cwd=KIT,
                 pass_re=r"^wrote report/briefs/brief_", env={"SEASON_POOL": season_pool}),
            # owner 2026-10-21: the week's categories to date + projected, for the deck's Today tab; non-fatal (the
