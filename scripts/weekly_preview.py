@@ -149,17 +149,24 @@ def preview_league(week, n=10000):
 
 
 def snapshot(week, src=None, dst_dir=SNAPSHOTS):
-    """The in-season lines the week's forecasts rest on, copied before the week (never overwritten)."""
+    """The in-season lines the week's forecasts rest on, copied before the week, and beside them the minutes-trend
+    candidate pool (pool_season_mt.csv next to the live pool; owner 2026-10-27, build 2) when it exists. Nothing is
+    overwritten. Returns the paths written."""
     import shutil
     src = src or os.environ.get("SEASON_POOL")
     if not src:
         raise LedgerError("no SEASON_POOL to snapshot")
-    dst = os.path.join(dst_dir, f"lines_week{week}.csv")
-    if os.path.exists(dst):
-        return None
+    pairs = [(src, os.path.join(dst_dir, f"lines_week{week}.csv"))]
+    mt = os.path.join(os.path.dirname(src), "pool_season_mt.csv")
+    if os.path.exists(mt):
+        pairs.append((mt, os.path.join(dst_dir, f"lines_week{week}_mt.csv")))
+    written = []
     os.makedirs(dst_dir, exist_ok=True)
-    shutil.copyfile(src, dst)
-    return dst
+    for a, b in pairs:
+        if os.path.exists(b):
+            continue
+        shutil.copyfile(a, b); written.append(b)
+    return written
 
 
 def render_ledger(led):
@@ -244,7 +251,7 @@ def main():
                   + (f"; skipped {skipped}" if skipped else "") + f" (rosters as of {as_of})")
     if a.snapshot:
         dst = snapshot(a.week)
-        print(f"snapshot: " + (os.path.relpath(dst, CG.KIT) if dst else f"lines_week{a.week}.csv already exists; not overwritten"))
+        print("snapshot: " + (", ".join(os.path.relpath(d, CG.KIT) for d in dst) if dst else f"lines_week{a.week}.csv already exists; not overwritten"))
     if a.record or a.snapshot:
         print(f"WEEKLY PREVIEW: PASS — week {a.week}")
 
