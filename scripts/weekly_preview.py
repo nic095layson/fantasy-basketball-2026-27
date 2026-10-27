@@ -31,6 +31,8 @@ LEDGER_MD = os.path.join(CG.KIT, "report", "calibration.md")
 PREVIEWS = os.path.join(CG.KIT, "report", "previews")
 # owner 2026-10-27 (the weekly accuracy card): every matchup's pre-week forecast, and the in-season lines it rests on
 LEAGUE = os.path.join(CG.KIT, "report", "calibration_league.json")
+# owner 2026-10-27 (build 5, first slice): the same forecast on each NBA team's real games that week, candidate only
+LEAGUE_REAL = os.path.join(CG.KIT, "report", "calibration_league_real.json")
 SNAPSHOTS = os.path.join(CG.KIT, "report", "accuracy")
 SEEDS = (2026, 2027)
 
@@ -109,7 +111,7 @@ def score(pred, actual):
     return {"won": sorted(won), "cats_won": len(won), "brier_cats": bc, "brier_matchup": bm}
 
 
-def record_league(path, week, pairs, recorded_at, week_start):
+def record_league(path, week, pairs, recorded_at, week_start, method=None):
     """Every matchup's pre-week forecast for the week, recorded before it starts (append-only). Returns False, and
     rewrites nothing, when the week is already recorded."""
     if recorded_at[:10] >= week_start:
@@ -118,33 +120,49 @@ def record_league(path, week, pairs, recorded_at, week_start):
     if str(week) in led["weeks"]:
         return False
     led["weeks"][str(week)] = dict(pairs=pairs, recorded_at=recorded_at, week_start=week_start,
-                                   method="weekly_preview.simulate on team_week_model (season CV), seeds 2026/2027; p_win is seat a's")
+                                   method=method or "weekly_preview.simulate on team_week_model (season CV), seeds 2026/2027; p_win is seat a's")
     with open(path, "w", encoding="utf-8") as f:
         json.dump(led, f, indent=1, ensure_ascii=False); f.write("\n")
     return True
 
 
-def preview_league(week, n=10000):
+def preview_league(week, n=10000, real_games=False):
     """Every pairing of the week from the real schedule (data/league_schedule.json pairings), each as the owner's own
-    preview models it. A pair with a rostered player the pool has no line for is skipped and named."""
+    preview models it. A pair with a rostered player the pool has no line for is skipped and named. real_games
+    (owner 2026-10-27, build 5): the week model on each NBA team's real games in the window (real_games.py) instead
+    of the flat 3.5; the record names any NBA code the schedule lacked."""
     state = json.load(open(CG.STATE, encoding="utf-8"))
     sched = json.load(open(CG.SCHEDULE, encoding="utf-8"))
     pairs = (sched.get("pairings") or {}).get(str(week))
     if not pairs:
         raise LedgerError(f"week {week}: no pairings in {CG.SCHEDULE}")
     P, by = CG.load_pool()
-    out, skipped = [], []
+    games = None
+    if real_games:
+        import real_games as RG
+        games = RG.week_games(week)
+    out, skipped, unscheduled = [], [], set()
     for a, b in pairs:
         unlined = sorted(p["player"] for t in state["teams"] if t["seat"] in (a, b) for p in t["players"]
                          if p["slot"] != "IL" and p["player"] not in by)
         if unlined:
             skipped.append(dict(a=a, b=b, unlined=unlined)); continue
         ros = CG.rosters(dict(state, teams=[t for t in state["teams"] if t["seat"] in (a, b)]), by)
-        models = {s: CG.arena.team_week_model(r, CG.arena.SEASON_CV) for s, r in ros.items()}
+        if games is not None:
+            import real_games as RG
+            models = {}
+            for s_, r in ros.items():
+                mu, var, un = RG.team_week_model_games(r, CG.arena.SEASON_CV, games, report=True)
+                models[s_] = (mu, var); unscheduled.update(un)
+        else:
+            models = {s: CG.arena.team_week_model(r, CG.arena.SEASON_CV) for s, r in ros.items()}
         sig = {s: {c: math.sqrt(models[s][1][c]) or 1e-6 for c in CG.CATS} for s in ros}
         runs = [simulate(models, sig, a, b, n, s * 100 + week * 13 + a) for s in SEEDS]
         out.append(dict(a=a, b=b, p_win=sum(r["p_win"] for r in runs) / len(runs), exp_cats=sum(r["exp_cats"] for r in runs) / len(runs),
                         cat_p={c: sum(r["cat_p"][c] for r in runs) / len(runs) for c in CG.CATS}))
+    if real_games and unscheduled:
+        for o in out:
+            o["unscheduled_teams"] = sorted(unscheduled)
     return out, skipped, state.get("as_of")
 
 
@@ -253,6 +271,12 @@ def main():
             new = record_league(LEAGUE, a.week, pairs, now, ws)
             print(f"league: {len(pairs)} matchup(s) " + ("recorded" if new else "already recorded; not rewritten")
                   + (f"; skipped {skipped}" if skipped else "") + f" (rosters as of {as_of})")
+            # build 5, first slice: the same forecast on each NBA team's real games, its own ledger, candidate only
+            pairs_r, skipped_r, _ = preview_league(a.week, a.n, real_games=True)
+            new_r = record_league(LEAGUE_REAL, a.week, pairs_r, now, ws,
+                                  method="weekly_preview.simulate on real_games.team_week_model_games (each NBA team's games in the window x availability; season CV), seeds 2026/2027; p_win is seat a's")
+            print(f"league (real games): {len(pairs_r)} matchup(s) " + ("recorded" if new_r else "already recorded; not rewritten")
+                  + (f"; skipped {skipped_r}" if skipped_r else ""))
     if a.snapshot:
         today = datetime.date.today().isoformat()
         dst = snapshot(a.week, state=CG.STATE, status=os.path.join(CG.KIT, "data", "status", f"status_{today}.json"))

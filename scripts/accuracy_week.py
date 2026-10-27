@@ -35,6 +35,7 @@ SNAPSHOTS = os.path.join(KIT, "report", "accuracy")
 LEDGER = os.path.join(KIT, "report", "calibration.json")
 DAILY = os.path.join(KIT, "report", "calibration_daily.json")
 LEAGUE = os.path.join(KIT, "report", "calibration_league.json")
+LEAGUE_REAL = os.path.join(KIT, "report", "calibration_league_real.json")   # build 5, first slice: the real-games forecast
 CATS = ("pts", "reb", "ast", "stl", "blk", "tpm", "tov")
 MIN_GAMES = 2
 
@@ -101,6 +102,15 @@ def grade_matchups(forecast, week):
     return dict(n=len(rows), brier=sum(r["brier"] for r in rows) / len(rows), rows=rows)
 
 
+def grade_matchup_ledgers(week, wk, league=LEAGUE, league_real=LEAGUE_REAL):
+    """The flat forecast and the real-games forecast (owner 2026-10-27, build 5), each from its own ledger."""
+    out = {}
+    for key, path in (("matchups", league), ("matchups_real", league_real)):
+        lg = json.load(open(path, encoding="utf-8")) if os.path.exists(path) else {"weeks": {}}
+        out[key] = grade_matchups(lg["weeks"].get(str(week)), wk)
+    return out
+
+
 def append(path, week, row):
     rec = json.load(open(path, encoding="utf-8")) if os.path.exists(path) else {"weeks": {}}
     if str(week) in rec["weeks"]:
@@ -161,7 +171,7 @@ def grade_week_lines(week, actuals, frozen):
 
 
 def run(week, actuals=ACTUALS, out=OUT, frozen=FROZEN, weeks_dir=WEEKS, ledger=LEDGER, daily=DAILY, league=LEAGUE,
-        snapshots=SNAPSHOTS):
+        snapshots=SNAPSHOTS, league_real=LEAGUE_REAL):
     games, team_games, days = week_games(week, actuals)
     flines = _lines(frozen)
     row = dict(week=week, days=days, method=dict(min_games=MIN_GAMES, frozen=os.path.basename(frozen)))
@@ -180,9 +190,8 @@ def run(week, actuals=ACTUALS, out=OUT, frozen=FROZEN, weeks_dir=WEEKS, ledger=L
     row["owner"] = dict(p_win=w.get("p_win"), exp_cats=w.get("exp_cats"), score=w.get("score"),
                         daily=dict(n_forecasts=d.get("n_forecasts"), brier=d.get("brier"), baseline_brier=d.get("baseline_brier"),
                                    skill=d.get("skill")) if d else None)
-    lg = json.load(open(league, encoding="utf-8")) if os.path.exists(league) else {"weeks": {}}
     with open(os.path.join(weeks_dir, f"week_{week}.json"), encoding="utf-8") as f:
-        row["matchups"] = grade_matchups(lg["weeks"].get(str(week)), json.load(f))
+        row.update(grade_matchup_ledgers(week, json.load(f), league, league_real))
     rec = append(out, week, row)
     with open(out[:-5] + ".md", "w", encoding="utf-8") as f:
         f.write(render(rec))
@@ -209,13 +218,15 @@ def render(rec):
     for k in sorted(rec["weeks"], key=int):
         for t, a in sorted(rec["weeks"][k]["availability"].items()):
             L.append(f"| {k} | {t} | {a['assumed']:.2f} | {a['played']} / {a['team_games']} | {a['share']:.2f} |")
-    L += ["", "## Forecasts", "", "| week | your P(win) | result | daily card Brier vs lead | league matchups scored | league Brier |",
-          "|---|---|---|---|---|---|"]
+    L += ["", "## Forecasts", "", "| week | your P(win) | result | daily card Brier vs lead | league matchups scored | league Brier (flat 3.5) | league Brier (real games) |",
+          "|---|---|---|---|---|---|---|"]
     for k in sorted(rec["weeks"], key=int):
-        r = rec["weeks"][k]; o = r["owner"]; m = r["matchups"]; sc = o.get("score") or {}
+        r = rec["weeks"][k]; o = r["owner"]; m = r["matchups"]; mr = r.get("matchups_real") or {}; sc = o.get("score") or {}
         dly = o.get("daily") or {}
         L.append(f"| {k} | {f(o.get('p_win'), 3)} | {sc.get('cats_won', '–')} cats | {f(dly.get('brier'), 3)} vs {f(dly.get('baseline_brier'), 3)} | "
-                 f"{m.get('n', 0)} | {f(m.get('brier'), 3)} |")
+                 f"{m.get('n', 0)} | {f(m.get('brier'), 3)} | {f(mr.get('brier'), 3)} |")
+    L += ["", "Switch rule (D-RG-1, pre-committed 2026-10-27): the real-games forecast replaces the flat one only after a lower Brier "
+          "over at least 4 consecutive graded weeks, on the owner's word."]
     return "\n".join(L) + "\n"
 
 
