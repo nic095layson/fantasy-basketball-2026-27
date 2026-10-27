@@ -1,4 +1,9 @@
 {
+ "carried_forward": [
+  "free_agents",
+  "matchups",
+  "standings"
+ ],
  "daily": {
   "478.l.36464.t.1": {
    "2026-10-26": {
@@ -5332,12 +5337,12 @@
       "kept": false,
       "status": false
      },
-     "name": "Rui Hachimura",
-     "playerId": "6171",
-     "playerKey": "478.p.6171",
-     "position": "SF,PF",
+     "name": "Jrue Holiday",
+     "playerId": "4622",
+     "playerKey": "478.p.4622",
+     "position": "PG,SG",
      "selectedPosition": "Util",
-     "team": "LAC"
+     "team": "POR"
     },
     {
      "isKeeper": {
@@ -5345,12 +5350,13 @@
       "kept": false,
       "status": false
      },
-     "name": "Jrue Holiday",
-     "playerId": "4622",
-     "playerKey": "478.p.4622",
-     "position": "PG,SG",
+     "name": "Jaxson Hayes",
+     "playerId": "6170",
+     "playerKey": "478.p.6170",
+     "position": "C",
      "selectedPosition": "Util",
-     "team": "POR"
+     "status": "Q",
+     "team": "UTA"
     },
     {
      "isKeeper": {
@@ -5397,13 +5403,13 @@
       "kept": false,
       "status": false
      },
-     "name": "Jaxson Hayes",
-     "playerId": "6170",
-     "playerKey": "478.p.6170",
-     "position": "C",
+     "name": "Rui Hachimura",
+     "playerId": "6171",
+     "playerKey": "478.p.6171",
+     "position": "SF,PF",
      "selectedPosition": "IL",
-     "status": "Q",
-     "team": "UTA"
+     "status": "O",
+     "team": "LAC"
     },
     {
      "isKeeper": {
@@ -5500,12 +5506,12 @@
       "kept": false,
       "status": false
      },
-     "name": "Franz Wagner",
-     "playerId": "6550",
-     "playerKey": "478.p.6550",
-     "position": "SF,PF",
+     "name": "Matisse Thybulle",
+     "playerId": "6208",
+     "playerKey": "478.p.6208",
+     "position": "SG,SF",
      "selectedPosition": "F",
-     "team": "ORL"
+     "team": "LAL"
     },
     {
      "isKeeper": {
@@ -5539,20 +5545,6 @@
       "kept": false,
       "status": false
      },
-     "name": "Joel Embiid",
-     "playerId": "5294",
-     "playerKey": "478.p.5294",
-     "position": "C",
-     "selectedPosition": "Util",
-     "status": "P",
-     "team": "PHI"
-    },
-    {
-     "isKeeper": {
-      "cost": false,
-      "kept": false,
-      "status": false
-     },
      "name": "Darius Acuff Jr.",
      "playerId": "10582",
      "playerKey": "478.p.10582",
@@ -5566,13 +5558,12 @@
       "kept": false,
       "status": false
      },
-     "name": "Jalen Williams",
-     "playerId": "6702",
-     "playerKey": "478.p.6702",
-     "position": "SF,PF",
-     "selectedPosition": "BN",
-     "status": "O",
-     "team": "OKC"
+     "name": "Ja'Kobe Walter",
+     "playerId": "10278",
+     "playerKey": "478.p.10278",
+     "position": "PG,SG",
+     "selectedPosition": "Util",
+     "team": "TOR"
     },
     {
      "isKeeper": {
@@ -5580,12 +5571,25 @@
       "kept": false,
       "status": false
      },
-     "name": "Jalen Smith",
-     "playerId": "6402",
-     "playerKey": "478.p.6402",
-     "position": "PF,C",
+     "name": "Joel Embiid",
+     "playerId": "5294",
+     "playerKey": "478.p.5294",
+     "position": "C",
      "selectedPosition": "BN",
-     "team": "CHI"
+     "team": "PHI"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Franz Wagner",
+     "playerId": "6550",
+     "playerKey": "478.p.6550",
+     "position": "SF,PF",
+     "selectedPosition": "BN",
+     "team": "ORL"
     },
     {
      "isKeeper": {
@@ -5649,6 +5653,7 @@
      "playerKey": "478.p.5842",
      "position": "PG,SG",
      "selectedPosition": "PG",
+     "status": "P",
      "team": "BOS"
     },
     {
@@ -5714,6 +5719,7 @@
      "playerKey": "478.p.10571",
      "position": "PF",
      "selectedPosition": "F",
+     "status": "Q",
      "team": "GSW"
     },
     {
@@ -5779,6 +5785,7 @@
      "playerKey": "478.p.6404",
      "position": "PG,SG",
      "selectedPosition": "BN",
+     "status": "Q",
      "team": "IND"
     },
     {
@@ -5818,7 +5825,7 @@
      "playerKey": "478.p.4896",
      "position": "SG,SF,PF",
      "selectedPosition": "IL",
-     "status": "Q",
+     "status": "O",
      "team": "TOR"
     }
    ],
@@ -6011,7 +6018,7 @@
      "playerKey": "478.p.5663",
      "position": "C",
      "selectedPosition": "IL",
-     "status": "D",
+     "status": "O",
      "team": "IND"
     },
     {
@@ -6321,6 +6328,7 @@
      "playerKey": "478.p.6400",
      "position": "SF,PF",
      "selectedPosition": "F",
+     "status": "P",
      "team": "IND"
     },
     {
@@ -6373,6 +6381,7 @@
      "playerKey": "478.p.10312",
      "position": "SG,SF",
      "selectedPosition": "Util",
+     "status": "P",
      "team": "MIA"
     },
     {
@@ -6387,20 +6396,6 @@
      "position": "PG",
      "selectedPosition": "BN",
      "team": "LAC"
-    },
-    {
-     "isKeeper": {
-      "cost": false,
-      "kept": false,
-      "status": false
-     },
-     "name": "Jaren Jackson Jr.",
-     "playerId": "6015",
-     "playerKey": "478.p.6015",
-     "position": "PF,C",
-     "selectedPosition": "BN",
-     "status": "Q",
-     "team": "UTA"
     },
     {
      "isKeeper": {
@@ -6425,9 +6420,23 @@
      "playerId": "6692",
      "playerKey": "478.p.6692",
      "position": "PF,C",
-     "selectedPosition": "IL",
+     "selectedPosition": "BN",
      "status": "O",
      "team": "OKC"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "name": "Jaren Jackson Jr.",
+     "playerId": "6015",
+     "playerKey": "478.p.6015",
+     "position": "PF,C",
+     "selectedPosition": "IL",
+     "status": "O",
+     "team": "UTA"
     }
    ],
    "snapshot": {
@@ -6862,6 +6871,7 @@
      "playerKey": "478.p.10304",
      "position": "PG,SG",
      "selectedPosition": "G",
+     "status": "Q",
      "team": "OKC"
     },
     {
@@ -6979,6 +6989,7 @@
      "playerKey": "478.p.6597",
      "position": "SG,SF",
      "selectedPosition": "BN",
+     "status": "Q",
      "team": "ATL"
     },
     {
@@ -7056,7 +7067,7 @@
      "playerKey": "478.p.5754",
      "position": "SG,SF",
      "selectedPosition": "SG",
-     "status": "Q",
+     "status": "O",
      "team": "OKC"
     },
     {
@@ -7330,6 +7341,7 @@
      "playerKey": "478.p.6558",
      "position": "PF,C",
      "selectedPosition": "C",
+     "status": "O",
      "team": "HOU"
     },
     {
@@ -7408,7 +7420,6 @@
      "playerKey": "478.p.10454",
      "position": "PG,SG",
      "selectedPosition": "IL",
-     "status": "Q",
      "team": "PHI"
     },
     {
