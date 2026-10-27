@@ -81,6 +81,24 @@ class Matchups(unittest.TestCase):
         self.assertEqual(AW.grade_matchups(None, self.week()), dict(n=0, note="no pre-week forecast recorded for this week"))
 
 
+class RealGamesColumn(unittest.TestCase):
+    """Owner 2026-10-27 (build 5, first slice): the real-games forecast is graded beside the flat one, by the same rule."""
+    def test_both_forecasts_are_graded_from_their_own_ledgers(self):
+        import tempfile
+        d = tempfile.mkdtemp()
+        wk = Matchups().week()
+        flat = {"weeks": {"1": {"pairs": [dict(a=1, b=2, p_win=0.8, exp_cats=5.5)]}}}
+        real = {"weeks": {"1": {"pairs": [dict(a=1, b=2, p_win=0.9, exp_cats=5.7)]}}}
+        json.dump(flat, open(os.path.join(d, "calibration_league.json"), "w")); json.dump(real, open(os.path.join(d, "calibration_league_real.json"), "w"))
+        g = AW.grade_matchup_ledgers(1, wk, os.path.join(d, "calibration_league.json"), os.path.join(d, "calibration_league_real.json"))
+        self.assertAlmostEqual(g["matchups"]["brier"], (0.8 - 1) ** 2); self.assertAlmostEqual(g["matchups_real"]["brier"], (0.9 - 1) ** 2)
+
+    def test_a_missing_real_ledger_is_named(self):
+        import tempfile
+        d = tempfile.mkdtemp(); wk = Matchups().week()
+        g = AW.grade_matchup_ledgers(1, wk, os.path.join(d, "none.json"), os.path.join(d, "none_real.json"))
+        self.assertEqual(g["matchups"]["n"], 0); self.assertEqual(g["matchups_real"]["n"], 0)
+
 class Record(unittest.TestCase):
     def test_a_week_is_appended_once_and_never_rewritten(self):
         p = os.path.join(tempfile.mkdtemp(), "accuracy.json")

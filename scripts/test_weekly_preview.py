@@ -43,6 +43,22 @@ class LeagueRecord(unittest.TestCase):
         self.assertIsNone(WP.record(p, pred, "2026-11-01T13:00:00Z", "2026-11-02", if_absent=True))
 
 
+class RealGamesLedger(unittest.TestCase):
+    """Owner 2026-10-27 (build 5, first slice): the league forecast on each NBA team's real games is recorded in its
+    own append-only ledger beside the flat one, by the same rules."""
+    def test_the_real_games_ledger_is_a_separate_file_with_the_same_rules(self):
+        d = tempfile.mkdtemp(); flat = os.path.join(d, "calibration_league.json"); real = os.path.join(d, "calibration_league_real.json")
+        self.assertTrue(WP.record_league(flat, 3, PAIRS, "2026-11-01T12:00:00Z", "2026-11-02"))
+        self.assertTrue(WP.record_league(real, 3, [dict(PAIRS[0], p_win=0.65)], "2026-11-01T12:00:00Z", "2026-11-02", method="real games"))
+        self.assertEqual(json.load(open(real))["weeks"]["3"]["pairs"][0]["p_win"], 0.65)
+        self.assertEqual(json.load(open(real))["weeks"]["3"]["method"], "real games")
+        self.assertEqual(json.load(open(flat))["weeks"]["3"]["pairs"][0]["p_win"], 0.6)
+        self.assertTrue(WP.LEAGUE_REAL.endswith("calibration_league_real.json"))
+
+    def test_preview_league_takes_a_real_games_switch(self):
+        import inspect
+        self.assertIn("real_games", inspect.signature(WP.preview_league).parameters)
+
 class Snapshot(unittest.TestCase):
     """Owner 2026-10-27 (build 2): the Sunday snapshot copies the live pool and, beside it, the minutes-trend
     candidate pool when it exists; neither is ever overwritten."""
