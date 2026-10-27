@@ -24,6 +24,8 @@ Pull window: 2026-10-27 → 2026-10-27 (no pull: the records branch's box record
 
 **Out of scope by design.** The live line, the board, the brief and the simulator are unchanged; the candidate's only consumers are the Sunday snapshot and the Monday card. **In scope and unverified.** Whether the candidate forecasts better — that is the point of the card, and no graded week exists yet. HALF_LIFE and MIN_PRIOR_GAMES are hand-set; if the candidate wins, a sweep over them belongs before any switch. Minutes for a player the pool lacks a preseason mpg for (33 today) are not forecast.
 
+**For the record (this report quotes no title share; the standing band, read from the sweep record):** Structural band (season sweep of 2026-10-26 (current rosters, season pool, real schedule), deck cbfb422): TEAM_WEEK_SHOCK is FRAGILE: +2.7 (no shared games shock (0.0)) / -4.2 (shared games shock doubled (0.12)); weekly_availability is FRAGILE: -5.4 (no in-sim injury discount (risk 0.88 like healthy)) / +3.7 (harsher risk tier (0.65)) / +0.4 (healthy players play 0.95 of games) / -0.5 (healthy players play 0.80 of games).
+
 ## 5. Next steps (owner decisions)
 
 1. Merge this PR; the morning writes the candidate from 10-28 and Nov 2 grades week 2 three ways.

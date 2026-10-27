@@ -1,7 +1,7 @@
 {
- "ran_at_utc": "2026-10-27T17:09:15Z",
+ "ran_at_utc": "2026-10-27T17:16:35Z",
  "inputs": {
-  "report/after-reports/after-report-2026-10-27-minutes-line.md": "899ad84a6332d1ef780357187546bb87314932f6a106f0ee899e42ade5e92bdf",
+  "report/after-reports/after-report-2026-10-27-minutes-line.md": "0b3a1dab7c0908afba2b49a04f6175519c25829320af03b0f21466c96d6b0d0b",
   "scripts/minutes_line.py": "5f6444c81f421c4fd918213a55fbda12c982b8405ed16d1400a711cdeb468eff",
   "scripts/accuracy_week.py": "648e3f95e1e9edc35d6958cb10705260c80e6e490f29e1b5b782df85cdc6d4b9",
   "scripts/weekly_preview.py": "1f77d0bdba3f1f4b23348787eba84b602aff8317ca2afdf5065297be9e89527f",
@@ -73,7 +73,7 @@
    "why": "",
    "tail": [
     "----------------------------------------------------------------------",
-    "Ran 7 tests in 0.003s",
+    "Ran 7 tests in 0.001s",
     "OK"
    ]
   },
@@ -88,7 +88,7 @@
    "why": "",
    "tail": [
     "----------------------------------------------------------------------",
-    "Ran 10 tests in 0.006s",
+    "Ran 10 tests in 0.005s",
     "OK (skipped=1)"
    ]
   },
@@ -103,7 +103,7 @@
    "why": "",
    "tail": [
     "----------------------------------------------------------------------",
-    "Ran 7 tests in 0.008s",
+    "Ran 7 tests in 0.007s",
     "OK"
    ]
   },
@@ -118,7 +118,7 @@
    "why": "",
    "tail": [
     "----------------------------------------------------------------------",
-    "Ran 22 tests in 0.446s",
+    "Ran 22 tests in 0.416s",
     "OK"
    ]
   },
@@ -140,14 +140,12 @@
    "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/redteam/check_bands.py --report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-27-minutes-line.md --sweep /home/user/fantasy-basketball-2026-27/report/after-reports/redteam-2026-10-26-season-real/sweep.json",
    "cwd": ".",
    "pass_re": "^BANDS CHECK: PASS",
-   "exit": 1,
-   "pass_line": "",
-   "verdict": "FAIL",
-   "why": "exit 1",
+   "exit": 0,
+   "pass_line": "BANDS CHECK: PASS \u2014 2 FRAGILE band(s) quoted (arena.TEAM_WEEK_SHOCK, arena.weekly_availability); engine cbfb422",
+   "verdict": "PASS",
+   "why": "",
    "tail": [
-    "BANDS CHECK: FAIL",
-    "  arena.TEAM_WEEK_SHOCK is FRAGILE but the report never names it",
-    "  arena.weekly_availability is FRAGILE but the report never names it"
+    "BANDS CHECK: PASS \u2014 2 FRAGILE band(s) quoted (arena.TEAM_WEEK_SHOCK, arena.weekly_availability); engine cbfb422"
    ]
   },
   {
@@ -178,6 +176,6 @@
    ]
   }
  ],
- "verdict": "FAIL",
- "base_commit": "d0c670bfa04cb3daf5bf87a342a5d9ada83c0dd8"
+ "verdict": "PASS",
+ "base_commit": "890fdb236777d28e1a2691b35a8e36abc2fc8bb2"
 }
