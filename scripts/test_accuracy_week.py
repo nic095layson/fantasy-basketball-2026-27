@@ -90,6 +90,28 @@ class Record(unittest.TestCase):
             AW.append(p, 1, {"lines": {"x": 1}})
 
 
+class Snapshots(unittest.TestCase):
+    """Owner 2026-10-27 (build 2): the week's in-season snapshot and the minutes-trend candidate snapshot are graded
+    side by side; a missing file is named, never substituted."""
+    def setUp(self):
+        import csv, tempfile
+        self.d = tempfile.mkdtemp()
+        for name, pts in (("lines_week3.csv", "10.0"), ("lines_week3_mt.csv", "12.0")):
+            with open(os.path.join(self.d, name), "w", newline="") as f:
+                w = csv.DictWriter(f, fieldnames=["player", "pts", "reb", "ast", "stl", "blk", "tpm", "tov", "fg_pct", "fga", "ft_pct", "fta"])
+                w.writeheader(); w.writerow(dict(player="A", pts=pts, reb="0", ast="0", stl="0", blk="0", tpm="0", tov="0", fg_pct="0.5", fga="10", ft_pct="0.8", fta="2"))
+        self.games = {"A": [box(12), box(12)]}
+
+    def test_both_snapshots_are_graded(self):
+        g = AW.grade_snapshots(3, self.games, self.d)
+        self.assertAlmostEqual(g["in_season"]["cats"]["pts"]["mae"], 2.0)
+        self.assertAlmostEqual(g["candidate_minutes"]["cats"]["pts"]["mae"], 0.0)
+
+    def test_a_missing_candidate_is_named(self):
+        os.remove(os.path.join(self.d, "lines_week3_mt.csv"))
+        g = AW.grade_snapshots(3, self.games, self.d)
+        self.assertIn("note", g["candidate_minutes"]); self.assertEqual(g["in_season"]["players"], 1)
+
 class RealWeekOne(unittest.TestCase):
     """The back-fill reproduces the 2026-10-27 audit (preseason lines, players with 2+ games, Oct 20-25)."""
     def test_week_one_matches_the_audit(self):

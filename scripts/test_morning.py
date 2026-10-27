@@ -23,16 +23,17 @@ class Steps(unittest.TestCase):
         # 2026-10-21: "preflight" became step 0 (independent-audit adoption); the indices below moved by one.
         # 2026-10-23 (owner, Build 1): "league table" after the week matchup, before the deck that draws it
         # 2026-10-26 (owner, "results so far"): "league pairings" before the brief that runs the simulator
-        self.assertEqual([s["name"] for s in st], ["preflight", "league live", "matchup live", "box scores 2026-10-20", "tag outcomes", "season lines", "season board", "status feed", "transactions", "league pairings", "daily brief", "week matchup", "league table", "form board", "season deck"])
+        self.assertEqual([s["name"] for s in st], ["preflight", "league live", "matchup live", "box scores 2026-10-20", "tag outcomes", "season lines", "minutes line", "season board", "status feed", "transactions", "league pairings", "daily brief", "week matchup", "league table", "form board", "season deck"])
         self.assertIn("2026-10-20", st[3]["cmd"])
         self.assertIn("2026-10-20", st[4]["cmd"])   # 2026-10-27: "tag outcomes" grades yesterday; indices below moved by one
-        self.assertIn("2026-10-21", st[10]["cmd"])
+        self.assertIn("2026-10-21", st[11]["cmd"])   # 2026-10-27: "minutes line" after season lines; +1 again
         self.assertTrue(all(s["pass_re"] for s in st))
 
     def test_no_fetch_skips_the_box_score_step(self):
         st = M.steps("2026-10-21", fetch=False, seasons=10000)
         self.assertEqual(st[1]["name"], "tag outcomes")  # st[0] is the preflight since 2026-10-21; tag outcomes since 2026-10-27
         self.assertEqual(st[2]["name"], "season lines")
+        self.assertEqual(st[3]["name"], "minutes line")
         self.assertNotIn("transactions", [s["name"] for s in st])
         self.assertNotIn("league live", [s["name"] for s in st])
 
@@ -169,6 +170,18 @@ class TagOutcomes(unittest.TestCase):
 
     def test_no_fetch_still_grades_yesterday(self):
         self.assertIn("tag outcomes", [s["name"] for s in M.steps("2026-10-27", fetch=False)])
+
+
+class MinutesLine(unittest.TestCase):
+    """Owner 2026-10-27 (build 2): the minutes-trend candidate line is written every morning right after the season
+    lines it scales; non-fatal, and nothing downstream reads it."""
+    def test_the_candidate_runs_after_season_lines_and_is_non_fatal(self):
+        st = M.steps("2026-10-28")
+        names = [s["name"] for s in st]
+        self.assertEqual(names.index("minutes line"), names.index("season lines") + 1)
+        m = next(s for s in st if s["name"] == "minutes line")
+        self.assertFalse(m.get("fatal", True))
+        self.assertIn("--date 2026-10-28", " ".join(m["cmd"]))
 
 
 class Manifest(unittest.TestCase):

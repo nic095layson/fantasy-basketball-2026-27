@@ -43,5 +43,28 @@ class LeagueRecord(unittest.TestCase):
         self.assertIsNone(WP.record(p, pred, "2026-11-01T13:00:00Z", "2026-11-02", if_absent=True))
 
 
+class Snapshot(unittest.TestCase):
+    """Owner 2026-10-27 (build 2): the Sunday snapshot copies the live pool and, beside it, the minutes-trend
+    candidate pool when it exists; neither is ever overwritten."""
+    def setUp(self):
+        self.src = tempfile.mkdtemp(); self.dst = tempfile.mkdtemp()
+        open(os.path.join(self.src, "pool_season.csv"), "w").write("player,pts\nA,10.0\n")
+
+    def test_live_and_candidate_are_both_snapshotted(self):
+        open(os.path.join(self.src, "pool_season_mt.csv"), "w").write("player,pts\nA,11.0\n")
+        out = WP.snapshot(3, os.path.join(self.src, "pool_season.csv"), self.dst)
+        self.assertEqual(sorted(os.path.basename(x) for x in out), ["lines_week3.csv", "lines_week3_mt.csv"])
+        self.assertEqual(open(os.path.join(self.dst, "lines_week3_mt.csv")).read(), "player,pts\nA,11.0\n")
+
+    def test_no_candidate_file_snapshots_the_live_pool_alone(self):
+        out = WP.snapshot(3, os.path.join(self.src, "pool_season.csv"), self.dst)
+        self.assertEqual([os.path.basename(x) for x in out], ["lines_week3.csv"])
+
+    def test_an_existing_snapshot_is_not_overwritten(self):
+        WP.snapshot(3, os.path.join(self.src, "pool_season.csv"), self.dst)
+        open(os.path.join(self.src, "pool_season.csv"), "w").write("player,pts\nA,99.0\n")
+        self.assertEqual(WP.snapshot(3, os.path.join(self.src, "pool_season.csv"), self.dst), [])
+        self.assertEqual(open(os.path.join(self.dst, "lines_week3.csv")).read(), "player,pts\nA,10.0\n")
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

@@ -493,6 +493,24 @@
    "role": "prior strength in games per category for the in-season blend (derived from STABILITY and SEASON_GAMES, never tuned)",
    "status": "measured",
    "record": "season_lines.prior_games(); test_season_lines.py checks each value against the formula"
+  },
+  {
+   "module": "minutes_line",
+   "name": "HALF_LIFE",
+   "value": 5.0,
+   "role": "games over which the recency weight on a player's minutes halves (the minutes forecast of the candidate line)",
+   "status": "uncalibrated",
+   "record": "report/after-reports/after-report-2026-10-27-minutes-line.md",
+   "decision": "D-ML-1 (owner 2026-10-27, build 2): the weekly accuracy card (report/accuracy.json, column candidate_minutes) is the calibration — the candidate replaces nothing until it beats the blend's MAE on PTS, REB and AST in 3 of 4 consecutive graded weeks, on the owner's word"
+  },
+  {
+   "module": "minutes_line",
+   "name": "MIN_PRIOR_GAMES",
+   "value": 3.0,
+   "role": "games the preseason mpg is worth in the minutes forecast; the blend's own points prior (season_lines.PRIOR_GAMES['PTS']) is the denominator, read live",
+   "status": "uncalibrated",
+   "record": "report/after-reports/after-report-2026-10-27-minutes-line.md",
+   "decision": "D-ML-1 (owner 2026-10-27, build 2): the weekly accuracy card (report/accuracy.json, column candidate_minutes) is the calibration — the candidate replaces nothing until it beats the blend's MAE on PTS, REB and AST in 3 of 4 consecutive graded weeks, on the owner's word"
   }
  ]
 }

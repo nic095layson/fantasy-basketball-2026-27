@@ -144,6 +144,17 @@ def _lines(path):
         return {r["player"]: r for r in csv.DictReader(f)}
 
 
+def grade_snapshots(week, games, snapshots):
+    """The in-season line snapshotted the Sunday before the week and, beside it, the minutes-trend candidate
+    (owner 2026-10-27, build 2: lines_week<N>_mt.csv); a missing file is named, never substituted."""
+    out = {}
+    for key, name, what in (("in_season", f"lines_week{week}.csv", "in-season snapshot"),
+                            ("candidate_minutes", f"lines_week{week}_mt.csv", "minutes-trend candidate snapshot")):
+        p = os.path.join(snapshots, name)
+        out[key] = grade_lines(_lines(p), games) if os.path.exists(p) else dict(note=f"no {what} recorded before this week")
+    return out
+
+
 def grade_week_lines(week, actuals, frozen):
     games, _, days = week_games(week, actuals)
     return dict(grade_lines(_lines(frozen), games), days=days)
@@ -154,10 +165,7 @@ def run(week, actuals=ACTUALS, out=OUT, frozen=FROZEN, weeks_dir=WEEKS, ledger=L
     games, team_games, days = week_games(week, actuals)
     flines = _lines(frozen)
     row = dict(week=week, days=days, method=dict(min_games=MIN_GAMES, frozen=os.path.basename(frozen)))
-    row["lines"] = {"preseason": grade_lines(flines, games)}
-    snap = os.path.join(snapshots, f"lines_week{week}.csv")
-    row["lines"]["in_season"] = grade_lines(_lines(snap), games) if os.path.exists(snap) else \
-        dict(note="no in-season snapshot recorded before this week")
+    row["lines"] = dict(preseason=grade_lines(flines, games), **grade_snapshots(week, games, snapshots))
     for d in (os.path.join(DECK, "scripts"), os.path.join(DECK, "arena")):
         if d not in sys.path:
             sys.path.insert(0, d)
@@ -186,13 +194,16 @@ def render(rec):
     L = ["# Forecast accuracy — week by week", "",
          "Each finished week graded against the box scores and the final scores (`scripts/accuracy_week.py`; "
          "`report/accuracy.json` is the record, one row per week, never rewritten). Players with 2+ games in the week.", ""]
-    L += ["## Player lines: points per game (projected / actual, bias, rank correlation)", "",
-          "| week | players | preseason line | bias | rank | in-season line | bias | rank |", "|---|---|---|---|---|---|---|---|"]
+    L += ["## Player lines: points per game (projected / actual, bias, MAE, rank correlation)", "",
+          "| week | players | preseason | bias | MAE | rank | in-season | bias | MAE | rank | minutes candidate | bias | MAE | rank |",
+          "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|"]
+    cell = lambda s: (f"{f(s.get('proj'))} / {f(s.get('actual'))} | {f(s.get('bias_pct'), 1)}% | {f(s.get('mae'))} | {f(s.get('rank_corr'))}"
+                      if s else "no snapshot | | | ")
     for k in sorted(rec["weeks"], key=int):
-        r = rec["weeks"][k]["lines"]; p = r["preseason"]["cats"].get("pts", {}); s = r["in_season"].get("cats", {}).get("pts", {})
-        L.append(f"| {k} | {r['preseason']['players']} | {f(p.get('proj'))} / {f(p.get('actual'))} | {f(p.get('bias_pct'), 1)}% | "
-                 f"{f(p.get('rank_corr'))} | " + (f"{f(s.get('proj'))} / {f(s.get('actual'))} | {f(s.get('bias_pct'), 1)}% | {f(s.get('rank_corr'))} |"
-                                                    if s else "no snapshot | | |"))
+        r = rec["weeks"][k]["lines"]
+        L.append(f"| {k} | {r['preseason']['players']} | " + " | ".join(cell(r[x].get("cats", {}).get("pts", {})) for x in ("preseason", "in_season", "candidate_minutes")) + " |")
+    L += ["", "Switch rule (D-ML-1, pre-committed 2026-10-27): the minutes candidate replaces nothing until its MAE beats the "
+          "in-season line's on PTS, REB and AST in 3 of 4 consecutive graded weeks, on the owner's word."]
     L += ["", "## Availability: share of team games played, by the tier the simulator assumes", "",
           "| week | tier | assumed | played / team games | share |", "|---|---|---|---|---|"]
     for k in sorted(rec["weeks"], key=int):
