@@ -94,5 +94,28 @@ class Snapshot(unittest.TestCase):
         self.assertEqual(WP.snapshot(3, os.path.join(self.src, "pool_season.csv"), self.dst), [])
         self.assertEqual(open(os.path.join(self.dst, "lines_week3.csv")).read(), "player,pts\nA,10.0\n")
 
+class LinesLabel(unittest.TestCase):
+    """Owner 2026-10-27 ("Relabel future rows"): a new ledger row names the lines it ran on, by the brief's rule:
+    the season pool when SEASON_POOL is set (the Sunday step sets it), else the frozen tag. Rows already written
+    are never rewritten."""
+    def _preview(self, pool):
+        old = os.environ.pop("SEASON_POOL", None)
+        if pool:
+            os.environ["SEASON_POOL"] = pool
+        try:
+            return WP.preview(3, n=20)
+        finally:
+            os.environ.pop("SEASON_POOL", None)
+            if old is not None:
+                os.environ["SEASON_POOL"] = old
+
+    def test_on_the_season_pool_the_row_says_so(self):
+        pool = os.path.join(os.path.dirname(HERE), "data", "season", "pool_season.csv")
+        self.assertEqual(self._preview(pool)["lines"], "season pool")
+
+    def test_without_it_the_row_keeps_the_frozen_tag(self):
+        self.assertEqual(self._preview(None)["lines"], WP.CG.LINES_TAG)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
