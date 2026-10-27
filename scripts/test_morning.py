@@ -23,14 +23,16 @@ class Steps(unittest.TestCase):
         # 2026-10-21: "preflight" became step 0 (independent-audit adoption); the indices below moved by one.
         # 2026-10-23 (owner, Build 1): "league table" after the week matchup, before the deck that draws it
         # 2026-10-26 (owner, "results so far"): "league pairings" before the brief that runs the simulator
-        self.assertEqual([s["name"] for s in st], ["preflight", "league live", "matchup live", "box scores 2026-10-20", "season lines", "season board", "status feed", "transactions", "league pairings", "daily brief", "week matchup", "league table", "form board", "season deck"])
+        self.assertEqual([s["name"] for s in st], ["preflight", "league live", "matchup live", "box scores 2026-10-20", "tag outcomes", "season lines", "season board", "status feed", "transactions", "league pairings", "daily brief", "week matchup", "league table", "form board", "season deck"])
         self.assertIn("2026-10-20", st[3]["cmd"])
-        self.assertIn("2026-10-21", st[9]["cmd"])
+        self.assertIn("2026-10-20", st[4]["cmd"])   # 2026-10-27: "tag outcomes" grades yesterday; indices below moved by one
+        self.assertIn("2026-10-21", st[10]["cmd"])
         self.assertTrue(all(s["pass_re"] for s in st))
 
     def test_no_fetch_skips_the_box_score_step(self):
         st = M.steps("2026-10-21", fetch=False, seasons=10000)
-        self.assertEqual(st[1]["name"], "season lines")  # st[0] is the preflight since 2026-10-21
+        self.assertEqual(st[1]["name"], "tag outcomes")  # st[0] is the preflight since 2026-10-21; tag outcomes since 2026-10-27
+        self.assertEqual(st[2]["name"], "season lines")
         self.assertNotIn("transactions", [s["name"] for s in st])
         self.assertNotIn("league live", [s["name"] for s in st])
 
@@ -150,6 +152,23 @@ class SundayForecasts(unittest.TestCase):
 
     def test_another_day_does_not(self):
         self.assertNotIn("next week forecasts", [s["name"] for s in M.steps("2026-11-02")])
+
+
+class TagOutcomes(unittest.TestCase):
+    """Owner 2026-10-27 (build 4, "capture now"): after yesterday's box scores land, what each player flagged in
+    yesterday's status file then did is appended to the tag-outcomes ledger; non-fatal."""
+    def test_yesterdays_tags_are_graded_after_the_box_scores_and_before_the_status_feed(self):
+        st = M.steps("2026-10-27")
+        names = [s["name"] for s in st]
+        self.assertIn("tag outcomes", names)
+        self.assertLess(names.index("box scores 2026-10-26"), names.index("tag outcomes"))
+        self.assertLess(names.index("tag outcomes"), names.index("status feed"))
+        t = next(s for s in st if s["name"] == "tag outcomes")
+        self.assertFalse(t.get("fatal", True))
+        self.assertIn("--date 2026-10-26", " ".join(t["cmd"]))
+
+    def test_no_fetch_still_grades_yesterday(self):
+        self.assertIn("tag outcomes", [s["name"] for s in M.steps("2026-10-27", fetch=False)])
 
 
 class Manifest(unittest.TestCase):

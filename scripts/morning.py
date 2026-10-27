@@ -74,6 +74,10 @@ def steps(date, fetch=True, seasons=10000, since=None):
         st.append(dict(name="matchup live", cmd=[PY, os.path.join(HERE, "matchup_live.py"), "--date", date] + tail, cwd=KIT,
                        pass_re=r"^MATCHUP LIVE: PASS", env={}, fatal=False))
         st.append(dict(name=f"box scores {y}", cmd=[PY, os.path.join(HERE, "box_pull.py"), "--date", y], cwd=KIT, pass_re=r"^BOX PULL: PASS", env={}))
+    # owner 2026-10-27 (build 4, "capture now"): what yesterday's flagged players then did, from yesterday's status
+    # file and box record; append-only ledger, non-fatal (a day with neither file is named, not guessed)
+    st.append(dict(name="tag outcomes", cmd=[PY, os.path.join(HERE, "tag_outcomes.py"), "--date", y], cwd=KIT,
+                   pass_re=r"^TAG OUTCOMES: PASS", env={}, fatal=False))
     st += [dict(name="season lines", cmd=[PY, os.path.join(HERE, "season_lines.py"), "--date", date], cwd=KIT, pass_re=r"^SEASON LINES: PASS", env={}),
            dict(name="season board", cmd=[PY, os.path.join(HERE, "season_board.py"), "--date", date], cwd=KIT, pass_re=r"^SEASON BOARD: PASS", env={}),
            dict(name="status feed", cmd=["bash", "-c", f"{shlex.quote(PY)} {shlex.quote(os.path.join(HERE, 'status_feed.py'))} --date {date} && "
