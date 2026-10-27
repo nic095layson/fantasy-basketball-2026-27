@@ -29,6 +29,9 @@ import co_gm as CG  # noqa: E402
 LEDGER = os.path.join(CG.KIT, "report", "calibration.json")
 LEDGER_MD = os.path.join(CG.KIT, "report", "calibration.md")
 PREVIEWS = os.path.join(CG.KIT, "report", "previews")
+# owner 2026-10-27 (the weekly accuracy card): every matchup's pre-week forecast, and the in-season lines it rests on
+LEAGUE = os.path.join(CG.KIT, "report", "calibration_league.json")
+SNAPSHOTS = os.path.join(CG.KIT, "report", "accuracy")
 SEEDS = (2026, 2027)
 
 
@@ -83,12 +86,16 @@ def preview(week, n=10000):
                       "opponent": {c: models[o["seat"]][0][c] for c in CG.CATS}}}
 
 
-def record(path, pred, recorded_at, week_start):
+def record(path, pred, recorded_at, week_start, if_absent=False):
+    """if_absent (owner 2026-10-27, the Sunday step): a week already recorded returns None instead of an error; the
+    record is never rewritten either way."""
     if recorded_at[:10] >= week_start:
         raise LedgerError(f"week {pred['week']} starts {week_start}; a prediction recorded {recorded_at} is too late")
     led = json.load(open(path, encoding="utf-8")) if os.path.exists(path) else {"weeks": {}}
     key = str(pred["week"])
     if key in led["weeks"]:
+        if if_absent:
+            return None
         raise LedgerError(f"week {key} is already recorded ({led['weeks'][key]['recorded_at']}); the ledger is append-only")
     led["weeks"][key] = dict(pred, recorded_at=recorded_at, week_start=week_start)
     json.dump(led, open(path, "w", encoding="utf-8"), indent=1, ensure_ascii=False)
@@ -100,6 +107,59 @@ def score(pred, actual):
     bc = sum((pred["cat_p"][c] - (1.0 if c in won else 0.0)) ** 2 for c in pred["cat_p"]) / len(pred["cat_p"])
     bm = (pred["p_win"] - (1.0 if len(won) >= 5 else 0.0)) ** 2
     return {"won": sorted(won), "cats_won": len(won), "brier_cats": bc, "brier_matchup": bm}
+
+
+def record_league(path, week, pairs, recorded_at, week_start):
+    """Every matchup's pre-week forecast for the week, recorded before it starts (append-only). Returns False, and
+    rewrites nothing, when the week is already recorded."""
+    if recorded_at[:10] >= week_start:
+        raise LedgerError(f"week {week} starts {week_start}; a league forecast recorded {recorded_at} is too late")
+    led = json.load(open(path, encoding="utf-8")) if os.path.exists(path) else {"weeks": {}}
+    if str(week) in led["weeks"]:
+        return False
+    led["weeks"][str(week)] = dict(pairs=pairs, recorded_at=recorded_at, week_start=week_start,
+                                   method="weekly_preview.simulate on team_week_model (season CV), seeds 2026/2027; p_win is seat a's")
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(led, f, indent=1, ensure_ascii=False); f.write("\n")
+    return True
+
+
+def preview_league(week, n=10000):
+    """Every pairing of the week from the real schedule (data/league_schedule.json pairings), each as the owner's own
+    preview models it. A pair with a rostered player the pool has no line for is skipped and named."""
+    state = json.load(open(CG.STATE, encoding="utf-8"))
+    sched = json.load(open(CG.SCHEDULE, encoding="utf-8"))
+    pairs = (sched.get("pairings") or {}).get(str(week))
+    if not pairs:
+        raise LedgerError(f"week {week}: no pairings in {CG.SCHEDULE}")
+    P, by = CG.load_pool()
+    out, skipped = [], []
+    for a, b in pairs:
+        unlined = sorted(p["player"] for t in state["teams"] if t["seat"] in (a, b) for p in t["players"]
+                         if p["slot"] != "IL" and p["player"] not in by)
+        if unlined:
+            skipped.append(dict(a=a, b=b, unlined=unlined)); continue
+        ros = CG.rosters(dict(state, teams=[t for t in state["teams"] if t["seat"] in (a, b)]), by)
+        models = {s: CG.arena.team_week_model(r, CG.arena.SEASON_CV) for s, r in ros.items()}
+        sig = {s: {c: math.sqrt(models[s][1][c]) or 1e-6 for c in CG.CATS} for s in ros}
+        runs = [simulate(models, sig, a, b, n, s * 100 + week * 13 + a) for s in SEEDS]
+        out.append(dict(a=a, b=b, p_win=sum(r["p_win"] for r in runs) / len(runs), exp_cats=sum(r["exp_cats"] for r in runs) / len(runs),
+                        cat_p={c: sum(r["cat_p"][c] for r in runs) / len(runs) for c in CG.CATS}))
+    return out, skipped, state.get("as_of")
+
+
+def snapshot(week, src=None, dst_dir=SNAPSHOTS):
+    """The in-season lines the week's forecasts rest on, copied before the week (never overwritten)."""
+    import shutil
+    src = src or os.environ.get("SEASON_POOL")
+    if not src:
+        raise LedgerError("no SEASON_POOL to snapshot")
+    dst = os.path.join(dst_dir, f"lines_week{week}.csv")
+    if os.path.exists(dst):
+        return None
+    os.makedirs(dst_dir, exist_ok=True)
+    shutil.copyfile(src, dst)
+    return dst
 
 
 def render_ledger(led):
@@ -138,6 +198,9 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--week", type=int)
     ap.add_argument("--record", action="store_true")
+    ap.add_argument("--league", action="store_true", help="with --record: also every matchup (report/calibration_league.json); "
+                                                           "a week already recorded is reported, not an error (owner 2026-10-27)")
+    ap.add_argument("--snapshot", action="store_true", help="copy SEASON_POOL to report/accuracy/lines_week<N>.csv")
     ap.add_argument("--score", type=int)
     ap.add_argument("--won", default="")
     ap.add_argument("--n", type=int, default=10000)
@@ -168,9 +231,22 @@ def main():
     print(f"wrote {os.path.relpath(md, CG.KIT)}")
     if a.record:
         now = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-        led = record(LEDGER, {k: v for k, v in p.items() if k != "means"}, now, ws)
-        open(LEDGER_MD, "w", encoding="utf-8").write(render_ledger(led))
-        print(f"recorded week {a.week} in {os.path.relpath(LEDGER, CG.KIT)} at {now} (week starts {ws})")
+        led = record(LEDGER, {k: v for k, v in p.items() if k != "means"}, now, ws, if_absent=a.league)
+        if led is None:
+            print(f"week {a.week} already recorded in {os.path.relpath(LEDGER, CG.KIT)}; not rewritten")
+        else:
+            open(LEDGER_MD, "w", encoding="utf-8").write(render_ledger(led))
+            print(f"recorded week {a.week} in {os.path.relpath(LEDGER, CG.KIT)} at {now} (week starts {ws})")
+        if a.league:
+            pairs, skipped, as_of = preview_league(a.week, a.n)
+            new = record_league(LEAGUE, a.week, pairs, now, ws)
+            print(f"league: {len(pairs)} matchup(s) " + ("recorded" if new else "already recorded; not rewritten")
+                  + (f"; skipped {skipped}" if skipped else "") + f" (rosters as of {as_of})")
+    if a.snapshot:
+        dst = snapshot(a.week)
+        print(f"snapshot: " + (os.path.relpath(dst, CG.KIT) if dst else f"lines_week{a.week}.csv already exists; not overwritten"))
+    if a.record or a.snapshot:
+        print(f"WEEKLY PREVIEW: PASS — week {a.week}")
 
 
 if __name__ == "__main__":

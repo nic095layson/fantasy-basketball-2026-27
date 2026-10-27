@@ -136,6 +136,22 @@ class MondaySweep(unittest.TestCase):
         self.assertNotIn("season sweep", [s["name"] for s in M.steps("2026-11-03")])
 
 
+class SundayForecasts(unittest.TestCase):
+    """Owner 2026-10-27 (the weekly accuracy card): on the Sunday before a week, the morning records next week's
+    forecasts (the owner's matchup and every matchup) and snapshots the season lines they rest on; non-fatal."""
+    def test_a_sunday_records_next_weeks_forecasts(self):
+        st = next((s for s in M.steps("2026-11-01") if s["name"] == "next week forecasts"), None)
+        self.assertIsNotNone(st)
+        self.assertFalse(st.get("fatal", True))
+        cmd = " ".join(st["cmd"])
+        for part in ("weekly_preview.py", "--week 3", "--record", "--league", "--snapshot"):
+            self.assertIn(part, cmd)
+        self.assertIn("SEASON_POOL", st["env"])
+
+    def test_another_day_does_not(self):
+        self.assertNotIn("next week forecasts", [s["name"] for s in M.steps("2026-11-02")])
+
+
 class Manifest(unittest.TestCase):
     """Owner 2026-10-26, option 2A: the run says which paths it wrote, measured from the tree, so a new output script
     can never go silently uncommitted (report/league, report/form and report/calibration* each drifted out of the
