@@ -56,6 +56,18 @@ class Snapshot(unittest.TestCase):
         self.assertEqual(sorted(os.path.basename(x) for x in out), ["lines_week3.csv", "lines_week3_mt.csv"])
         self.assertEqual(open(os.path.join(self.dst, "lines_week3_mt.csv")).read(), "player,pts\nA,11.0\n")
 
+    def test_the_league_state_and_the_days_status_file_are_snapshotted_too(self):
+        # owner 2026-10-27 (build 3): the Monday fit models each week on the rosters and tags true before it
+        st = os.path.join(self.src, "league_state.json"); open(st, "w").write('{"as_of": "2026-11-01", "teams": []}')
+        sd = os.path.join(self.src, "status"); os.makedirs(sd); open(os.path.join(sd, "status_2026-11-01.json"), "w").write("{}")
+        out = WP.snapshot(3, os.path.join(self.src, "pool_season.csv"), self.dst, state=st, status=os.path.join(sd, "status_2026-11-01.json"))
+        self.assertEqual(sorted(os.path.basename(x) for x in out), ["lines_week3.csv", "state_week3.json", "status_week3.json"])
+        self.assertEqual(open(os.path.join(self.dst, "state_week3.json")).read(), '{"as_of": "2026-11-01", "teams": []}')
+
+    def test_a_missing_state_or_status_file_is_skipped_not_fatal(self):
+        out = WP.snapshot(3, os.path.join(self.src, "pool_season.csv"), self.dst, state=os.path.join(self.src, "nope.json"), status=None)
+        self.assertEqual([os.path.basename(x) for x in out], ["lines_week3.csv"])
+
     def test_no_candidate_file_snapshots_the_live_pool_alone(self):
         out = WP.snapshot(3, os.path.join(self.src, "pool_season.csv"), self.dst)
         self.assertEqual([os.path.basename(x) for x in out], ["lines_week3.csv"])
