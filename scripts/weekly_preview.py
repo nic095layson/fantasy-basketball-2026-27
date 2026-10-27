@@ -72,7 +72,7 @@ def preview(week, n=10000):
     unlined = sorted(p["player"] for t in state["teams"] if t["seat"] in seats for p in t["players"]
                      if p["slot"] != "IL" and p["player"] not in by)
     if unlined:
-        raise LedgerError(f"week {week}: no {CG.LINES_TAG} line for {', '.join(unlined)} in the matchup")
+        raise LedgerError(f"week {week}: no {CG.lines_label()} line for {', '.join(unlined)} in the matchup")
     ros = CG.rosters(dict(state, teams=[t for t in state["teams"] if t["seat"] in seats]), by)
     models = {s: CG.arena.team_week_model(r, CG.arena.SEASON_CV) for s, r in ros.items()}  # D-ZS-3: the season CV
     sig = {s: {c: math.sqrt(models[s][1][c]) or 1e-6 for c in CG.CATS} for s in ros}
@@ -82,7 +82,7 @@ def preview(week, n=10000):
             "cat_p": {c: sum(r["cat_p"][c] for r in runs.values()) / 2 for c in CG.CATS}}
     team = {t["seat"]: t["name"] for t in state["teams"]}
     return {"week": week, "opponent_seat": o["seat"], "opponent_manager": o["manager"], "opponent_team": team[o["seat"]],
-            "rosters_as_of": state["as_of"], "lines": CG.LINES_TAG, "n_per_seed": n, "seeds": list(SEEDS),
+            "rosters_as_of": state["as_of"], "lines": CG.lines_label(), "n_per_seed": n, "seeds": list(SEEDS),
             "by_seed": {str(s): r for s, r in runs.items()}, **mean,
             "means": {"owner": {c: models[CG.OWNER_SEAT][0][c] for c in CG.CATS},
                       "opponent": {c: models[o["seat"]][0][c] for c in CG.CATS}}}

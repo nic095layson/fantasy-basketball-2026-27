@@ -21,7 +21,7 @@ repo's `OPEN.md`; this kit copy is the master.
 | D-S1-4 | Sourced pool row for Y. Konan Niederhäuser (now an IL-only exception, Council 4-1) | keep exception | `after-report-2026-10-15-co-gm-league-state.md` |
 | D-S1-7 | Q availability tier 0.50 | 0.50 until calibration | `after-report-2026-10-15-co-gm-status.md` |
 | D-SA-6 | SessionStart governor hook: P1, or pull into Session 1 if under an hour | P1 | plan §7 |
-| D-LD-2 | Waiver move: Draymond Green for Christian Braun now / watch week 1 / Portis for Braun / stand pat | watch week 1 | `after-report-2026-10-14-league-draft.md` |
+| D-LD-2 | Waiver move: Draymond Green for Christian Braun now / watch week 1 / Portis for Braun / stand pat | watch week 1 — STALE: week 1 ended 10/25; needs a fresh look (flagged 10/27 on the owner's word, not decided) | `after-report-2026-10-14-league-draft.md` |
 | D-LD-1, D83-1, D82-1 | Draft-page log/shift/resolver defects | P2 per D-SA-1 | plan §6 |
 | D-1013-2 | RESYNC hardening | P2 per D-SA-2 | plan §7 |
 | D-1009-2 | Availability discount zero at replacement level | P1 (B4) | plan §4 |
@@ -29,8 +29,6 @@ repo's `OPEN.md`; this kit copy is the master.
 | D-INT-2 | Commit the two lagging tools as standing versions | after the draft | `after-report-2026-10-14-integrity.md` |
 | D-SF-1..4 | Scope-fence follow-ups (analysis-session prompt, lessons entry, Hashtag parse, usage dry run) | (a)/(b)/(b)/(a) | `after-report-2026-10-13-scope-fence.md` |
 | D-MC-1 | #156 and #29 are Global Operations' to merge (owner, 10/21 at about 20:10Z: "Global merges #156 now"); #155 and #157 were merged by the kit session. Playwright in the runner's setup script is optional until #156 merges, required after | Global Ops merges | `after-report-2026-10-21-pickups-file.md` |
-| D-RR-1 | De'Andre Hunter's `inj-eye-risk` tag: owner 10/22 about 02:25Z "Remove it (Recommended)"; route 03:41Z "Kit season override (Recommended)", replacing its 03:37Z "Deck PR + restamp" (after the deck route was found not to reach the season tools, which read the frozen `players_v69.csv`). Built: `data/tag_overrides.csv` clears it in the season pool only; the lock file, the draft page and the deck's title-odds simulation (reads v69 directly; Hunter is on no roster) are untouched. Kit draft PR from branch `claude/hunter-tag-override-2026-10-22` | merge is the owner's | `after-report-2026-10-22-hunter-override.md` |
-| D-GP-3 | Older seasons: owner 10/22 about 02:25Z "Weekly totals only (Recommended)" (D-GP-3 closed by that word). Done: 2024-25, 2023-24 and 2022-23 weekly totals pinned raw from Flaim (65 weeks, 372 matchups); all 3,348 category results recomputed from the totals equal Yahoo's, and 36 of 36 regular-season records equal Yahoo's standings. No daily rosters, so no games played for these seasons; nothing reads the files yet. Kit draft PR from branch `claude/flaim-history-totals-2026-10-22` | merge is the owner's | `after-report-2026-10-22-flaim-history-totals.md` |
 | D-GP-2 | The deck's `weekly_matchups_2025-26.csv` `gp` column: owner 10/22 01:14Z "Add a README warning" — done on deck PR #131, merged 10/22 on the owner's word (deck 077d2f1); since then the full count shows `gp` equal to the real games in 3 of 44 rows (counter minus games -7 to +8); the PR's last sentence ("being counted") can be updated to that result on the owner's word | the sentence stays until the owner's word | `after-report-2026-10-22-gp-reconstruction.md` §5, decision sheet |
 
 ## Owner inputs requested, not yet received
@@ -41,3 +39,10 @@ repo's `OPEN.md`; this kit copy is the master.
 | 2026-10-15 | Fresh rosters/status paste on brief mornings (Yahoo page) | `daily_brief.py` |
 | 2026-10-15 | Reseeding semantics (assumed: best remaining seed v worst) | `data/league_settings.json` |
 | 2026-10-15 | The other ten teams' weekly pairings (only the owner's 17 opponents were supplied; the sim pairs the rest at random) | `league_sim.py --schedule` |
+
+## Closed (the record that closed each)
+
+| id | closed | record |
+|---|---|---|
+| D-RR-1 | 2026-10-27, owner ("Close both"): the Hunter season override is merged | kit PR #166, merge d4cde27 (2026-10-22) |
+| D-GP-3 | 2026-10-27, owner ("Close both"): the 2022-23 to 2024-25 weekly totals are merged | kit PR #164, merge 46984bb (2026-10-22) |

@@ -35,9 +35,8 @@ import sweep_record as SR  # noqa: E402
 
 
 def lines_label():
-    """Owner 2026-10-26: the lines the brief ran on — the season pool when SEASON_POOL is set (the morning run sets it),
-    else the frozen tag."""
-    return "season pool" if os.environ.get("SEASON_POOL") else CG.LINES_TAG
+    """Owner 2026-10-26: the lines the brief ran on (co_gm.lines_label, shared with the forecast ledger)."""
+    return CG.lines_label()
 
 
 def band_line(path=None, date=None):

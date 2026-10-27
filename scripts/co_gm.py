@@ -21,6 +21,13 @@ import hoops  # noqa: E402
 import arena  # noqa: E402
 
 LINES_TAG = "v69"
+
+
+def lines_label():
+    """Owner 2026-10-26/27: the lines a run actually used: the season pool when SEASON_POOL is set (the morning run
+    and the Sunday step set it), else the frozen tag. The brief and the forecast ledger both stamp this."""
+    return "season pool" if os.environ.get("SEASON_POOL") else LINES_TAG
+
 STATE = os.path.join(KIT, "data", "league_state.json")
 SCHEDULE = os.path.join(KIT, "data", "league_schedule.json")
 GAMES = os.path.join(KIT, "report", "schedule", "games-2026-27.csv")
