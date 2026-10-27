@@ -128,12 +128,49 @@ class FromPull(unittest.TestCase):
                        cats=[dict(cat=c, p_win=0.5, leader_to_date="tie") for c in SI.CATS]), open(os.path.join(briefs, "week_matchup_2026-10-22.json"), "w"))
         cal = os.path.join(self.d, "calibration.json"); daily = os.path.join(self.d, "calibration_daily.json")
         p = subprocess.run([sys.executable, os.path.join(HERE, "scoreboard_intake.py"), "--week", "1", "--from-pull", self.pull,
-                            "--state", self.state, "--weeks-dir", out, "--calibration", cal, "--briefs-dir", briefs, "--daily-out", daily],
+                            "--state", self.state, "--weeks-dir", out, "--calibration", cal, "--briefs-dir", briefs, "--daily-out", daily,
+                            "--accuracy-out", os.path.join(self.d, "accuracy.json"), "--actuals-dir", self.d,
+                            "--league-calibration", os.path.join(self.d, "none.json"),
+                            "--fits-dir", os.path.join(self.d, "fits"), "--snapshots-dir", self.d],
                            capture_output=True, text=True)
         self.assertIn("SCOREBOARD INTAKE: PASS", p.stdout, p.stdout + p.stderr)
         self.assertIn("week score", p.stdout)
         rec = json.load(open(daily))["weeks"]["1"]
         self.assertEqual(rec["n_forecasts"], 9); self.assertEqual(rec["days_scored"], ["2026-10-22"])
+
+    def test_cli_grades_the_week_into_the_accuracy_card(self):
+        # owner 2026-10-27 (the weekly accuracy card): after the ledger and the daily scorer, the week is graded and
+        # appended to the accuracy record; non-fatal, named on the PASS line
+        out = os.path.join(self.d, "weeks"); acts = os.path.join(self.d, "actuals"); os.makedirs(acts)
+        acc = os.path.join(self.d, "accuracy.json"); league = os.path.join(self.d, "calibration_league.json")
+        json.dump({"weeks": {"1": {"pairs": [dict(a=1, b=2, p_win=0.6, exp_cats=5.0)], "recorded_at": "2026-10-19T12:00:00Z",
+                                   "week_start": "2026-10-20"}}}, open(league, "w"))
+        p = subprocess.run([sys.executable, os.path.join(HERE, "scoreboard_intake.py"), "--week", "1", "--from-pull", self.pull,
+                            "--state", self.state, "--weeks-dir", out, "--calibration", os.path.join(self.d, "cal.json"),
+                            "--briefs-dir", self.d, "--daily-out", os.path.join(self.d, "daily.json"),
+                            "--accuracy-out", acc, "--actuals-dir", acts, "--league-calibration", league,
+                            "--fits-dir", os.path.join(self.d, "fits"), "--snapshots-dir", self.d],
+                           capture_output=True, text=True)
+        self.assertIn("SCOREBOARD INTAKE: PASS", p.stdout, p.stdout + p.stderr)
+        self.assertIn("accuracy", p.stdout)
+        rec = json.load(open(acc))["weeks"]["1"]
+        self.assertEqual(rec["matchups"]["n"], 1)
+
+    def test_cli_runs_the_constants_fit_after_the_accuracy_card(self):
+        # owner 2026-10-27 (build 3): the Monday intake fits the hand-set constants on the finished weeks; non-fatal,
+        # named on the PASS line; with no snapshots it reports what is missing rather than failing the intake
+        out = os.path.join(self.d, "weeks"); acts = os.path.join(self.d, "actuals"); os.makedirs(acts)
+        fits = os.path.join(self.d, "fits")
+        p = subprocess.run([sys.executable, os.path.join(HERE, "scoreboard_intake.py"), "--week", "1", "--from-pull", self.pull,
+                            "--state", self.state, "--weeks-dir", out, "--calibration", os.path.join(self.d, "cal.json"),
+                            "--briefs-dir", self.d, "--daily-out", os.path.join(self.d, "daily.json"),
+                            "--accuracy-out", os.path.join(self.d, "accuracy.json"), "--actuals-dir", acts,
+                            "--league-calibration", os.path.join(self.d, "none.json"), "--fits-dir", fits, "--snapshots-dir", self.d],
+                           capture_output=True, text=True)
+        self.assertIn("SCOREBOARD INTAKE: PASS", p.stdout, p.stdout + p.stderr)
+        self.assertIn("fit ", p.stdout)
+        self.assertTrue(os.path.exists(os.path.join(fits, "fit_week1.json")))
+        self.assertEqual(json.load(open(os.path.join(fits, "fit_week1.json")))["status"], "too few weeks to propose (0 of 4)")
 
     def test_cli_from_pull_writes_the_week_and_team_weeks(self):
         out = os.path.join(self.d, "weeks")

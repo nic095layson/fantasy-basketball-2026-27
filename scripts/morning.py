@@ -51,6 +51,15 @@ BRIEFS = os.path.join(KIT, "report", "briefs")
 PREFLIGHT_SPEC = os.path.join(HERE, "independent_audit", "morning_preflight.json")
 
 
+def _week_of(date):
+    """The fantasy week containing date, from the kit's calendar (report/schedule/build_schedule.weeks)."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("build_schedule", os.path.join(KIT, "report", "schedule", "build_schedule.py"))
+    bs = importlib.util.module_from_spec(spec); spec.loader.exec_module(bs)
+    d = datetime.date.fromisoformat(date)
+    return next(n for n, s, e in bs.weeks() if s <= d <= e)
+
+
 def steps(date, fetch=True, seasons=10000, since=None):
     y = (datetime.date.fromisoformat(date) - datetime.timedelta(days=1)).isoformat()
     season_pool = os.path.join(KIT, "data", "season", "pool_season.csv")
@@ -65,7 +74,15 @@ def steps(date, fetch=True, seasons=10000, since=None):
         st.append(dict(name="matchup live", cmd=[PY, os.path.join(HERE, "matchup_live.py"), "--date", date] + tail, cwd=KIT,
                        pass_re=r"^MATCHUP LIVE: PASS", env={}, fatal=False))
         st.append(dict(name=f"box scores {y}", cmd=[PY, os.path.join(HERE, "box_pull.py"), "--date", y], cwd=KIT, pass_re=r"^BOX PULL: PASS", env={}))
+    # owner 2026-10-27 (build 4, "capture now"): what yesterday's flagged players then did, from yesterday's status
+    # file and box record; append-only ledger, non-fatal (a day with neither file is named, not guessed)
+    st.append(dict(name="tag outcomes", cmd=[PY, os.path.join(HERE, "tag_outcomes.py"), "--date", y], cwd=KIT,
+                   pass_re=r"^TAG OUTCOMES: PASS", env={}, fatal=False))
     st += [dict(name="season lines", cmd=[PY, os.path.join(HERE, "season_lines.py"), "--date", date], cwd=KIT, pass_re=r"^SEASON LINES: PASS", env={}),
+           # owner 2026-10-27 (build 2): the minutes-trend candidate line, scaled from the season lines just written;
+           # candidate only (nothing reads it; the Sunday snapshot and the Monday accuracy card grade it); non-fatal
+           dict(name="minutes line", cmd=[PY, os.path.join(HERE, "minutes_line.py"), "--date", date], cwd=KIT,
+                pass_re=r"^MINUTES LINE: PASS", env={}, fatal=False),
            dict(name="season board", cmd=[PY, os.path.join(HERE, "season_board.py"), "--date", date], cwd=KIT, pass_re=r"^SEASON BOARD: PASS", env={}),
            dict(name="status feed", cmd=["bash", "-c", f"{shlex.quote(PY)} {shlex.quote(os.path.join(HERE, 'status_feed.py'))} --date {date} && "
                                                   f"{shlex.quote(PY)} {shlex.quote(os.path.join(HERE, 'status_feed.py'))} --check "
@@ -89,7 +106,13 @@ def steps(date, fetch=True, seasons=10000, since=None):
                                           "--season", os.path.join(KIT, "data", "league_state.json"), season_pool,
                                           "--real-schedule", os.path.join(KIT, "data", "league_schedule.json"),
                                           "--out", os.path.join(KIT, "report", "after-reports", f"redteam-{date}-season", "sweep.json")],
-                cwd=KIT, pass_re=r"^SWEEP: ", env={}, fatal=False)] if datetime.date.fromisoformat(date).weekday() == 0 else []) + [
+                cwd=KIT, pass_re=r"^SWEEP: ", env={}, fatal=False)] if datetime.date.fromisoformat(date).weekday() == 0 else []) + ([
+           # owner 2026-10-27 (the weekly accuracy card): the Sunday before a week, record its forecasts (the owner's
+           # matchup and every matchup) and snapshot the season lines they rest on; non-fatal
+           dict(name="next week forecasts", cmd=[PY, os.path.join(HERE, "weekly_preview.py"), "--week", str(_week_of(date) + 1),
+                                                 "--record", "--league", "--snapshot"],
+                cwd=KIT, pass_re=r"^WEEKLY PREVIEW: PASS", env={"SEASON_POOL": season_pool}, fatal=False)]
+           if datetime.date.fromisoformat(date).weekday() == 6 else []) + [
            dict(name="daily brief", cmd=[PY, os.path.join(HERE, "daily_brief.py"), "--date", date, "--seasons", str(seasons)], cwd=KIT,
                 pass_re=r"^wrote report/briefs/brief_", env={"SEASON_POOL": season_pool}),
            # owner 2026-10-21: the week's categories to date + projected, for the deck's Today tab; non-fatal (the

@@ -1,209 +1,20 @@
 {
- "ran_at_utc": "2026-10-26T21:49:54Z",
+ "ran_at_utc": "2026-10-27T19:59:06Z",
  "inputs": {
-  "report/after-reports/after-report-2026-10-26-real-schedule-bands.md": "e65503883f052137d61bde5cdd7f10c3243e3ade3cd3ecbbdf2d4a0d1b8c8bbd",
-  "scripts/redteam/sweep.py": "f4986ee9997788bc41fd6cd3a8c929370636da5a244074be773cce99ebedc9f1",
-  "scripts/sweep_record.py": "967789f750cbed6ca606e7b5ce1dc8046b242a2616d584f99faca129f0b6bcd6",
-  "scripts/morning.py": "d0acff6a0d4f8b625aa9740757dcf3dc96913fb34aa2597ac0e7d024be600c9a",
-  "../yahoo-fantasy-basketball/arena/patches.py": "e3b05ce1866093553cf8881e395683a3c32851de34a725ddbaad4ea60789f501",
-  "../yahoo-fantasy-basketball/arena/mocks/league_sim.py": "ecb798068885920158fa065458714b2aafec9fb0a235658a75708f1b7e4df041",
-  "report/after-reports/redteam-2026-10-26-season-real/sweep.json": "f0eb804fcb16e8125e872ae35992211ba456bfdf2c505feee76ec2421c15f8c5"
+  "OPEN.md": "78fce710f5074599d6bdc9cd530c7edb710a848b922ebe79af0d4a64a392af8a"
  },
  "gates": [
   {
-   "name": "kit check_report",
-   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-26-real-schedule-bands.md",
+   "name": "open-md pointer agrees",
+   "cmd": "bash -c 'grep -q \"is a pointer to this file, the master\" OPEN.md && grep -q \"The master copy is the kit\" ../yahoo-fantasy-basketball/OPEN.md && echo POINTER OK'",
    "cwd": ".",
-   "pass_re": "^REPORT GATE: PASS",
+   "pass_re": "^POINTER OK",
    "exit": 0,
-   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-10-26-real-schedule-bands.md (structure, publication rule, pull-log row)",
+   "pass_line": "POINTER OK",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "REPORT GATE: PASS \u2014 after-report-2026-10-26-real-schedule-bands.md (structure, publication rule, pull-log row)"
-   ]
-  },
-  {
-   "name": "deck judgment_open_items --check-report",
-   "cmd": "/usr/local/bin/python3 scripts/judgment_open_items.py --check-report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-26-real-schedule-bands.md",
-   "cwd": "../yahoo-fantasy-basketball",
-   "pass_re": "^receipts check PASS",
-   "exit": 0,
-   "pass_line": "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-10-26-real-schedule-bands.md",
-   "verdict": "PASS",
-   "why": "",
-   "tail": [
-    "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-10-26-real-schedule-bands.md"
-   ]
-  },
-  {
-   "name": "deck repeat_market_check --check-report",
-   "cmd": "/usr/local/bin/python3 scripts/repeat_market_check.py --check-report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-26-real-schedule-bands.md",
-   "cwd": "../yahoo-fantasy-basketball",
-   "pass_re": "^REPEAT-NAME CHECK: PASS",
-   "exit": 0,
-   "pass_line": "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-10-26-real-schedule-bands.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)",
-   "verdict": "PASS",
-   "why": "",
-   "tail": [
-    "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-10-26-real-schedule-bands.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)"
-   ]
-  },
-  {
-   "name": "claim receipts",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/independent_audit/claim_receipts.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-26-real-schedule-bands.md",
-   "cwd": ".",
-   "pass_re": "^CLAIM RECEIPTS: (PASS|ADVISORY)",
-   "exit": 0,
-   "pass_line": "CLAIM RECEIPTS: PASS \u2014 1 file(s), every mechanism claim carries a receipt",
-   "verdict": "PASS",
-   "why": "",
-   "tail": [
-    "CLAIM RECEIPTS: PASS \u2014 1 file(s), every mechanism claim carries a receipt"
-   ]
-  },
-  {
-   "name": "kit test_redteam_sweep",
-   "cmd": "python3 scripts/test_redteam_sweep.py",
-   "cwd": ".",
-   "pass_re": "^OK",
-   "exit": 0,
-   "pass_line": "OK",
-   "verdict": "PASS",
-   "why": "",
-   "tail": [
-    "----------------------------------------------------------------------",
-    "Ran 16 tests in 2.784s",
-    "OK"
-   ]
-  },
-  {
-   "name": "kit test_sweep_record",
-   "cmd": "python3 scripts/test_sweep_record.py",
-   "cwd": ".",
-   "pass_re": "^OK",
-   "exit": 0,
-   "pass_line": "OK",
-   "verdict": "PASS",
-   "why": "",
-   "tail": [
-    "----------------------------------------------------------------------",
-    "Ran 5 tests in 0.010s",
-    "OK"
-   ]
-  },
-  {
-   "name": "kit test_morning",
-   "cmd": "python3 scripts/test_morning.py",
-   "cwd": ".",
-   "pass_re": "^OK",
-   "exit": 0,
-   "pass_line": "OK",
-   "verdict": "PASS",
-   "why": "",
-   "tail": [
-    "----------------------------------------------------------------------",
-    "Ran 17 tests in 0.350s",
-    "OK"
-   ]
-  },
-  {
-   "name": "kit test_daily_brief",
-   "cmd": "python3 scripts/test_daily_brief.py",
-   "cwd": ".",
-   "pass_re": "^OK",
-   "exit": 0,
-   "pass_line": "OK",
-   "verdict": "PASS",
-   "why": "",
-   "tail": [
-    "----------------------------------------------------------------------",
-    "Ran 25 tests in 0.932s",
-    "OK"
-   ]
-  },
-  {
-   "name": "kit test_season_deck",
-   "cmd": "python3 scripts/test_season_deck.py",
-   "cwd": ".",
-   "pass_re": "^OK",
-   "exit": 0,
-   "pass_line": "OK",
-   "verdict": "PASS",
-   "why": "",
-   "tail": [
-    "----------------------------------------------------------------------",
-    "Ran 112 tests in 53.540s",
-    "OK"
-   ]
-  },
-  {
-   "name": "deck test_patches",
-   "cmd": "python3 arena/test_patches.py",
-   "cwd": "../yahoo-fantasy-basketball",
-   "pass_re": "^OK",
-   "exit": 0,
-   "pass_line": "OK",
-   "verdict": "PASS",
-   "why": "",
-   "tail": [
-    "----------------------------------------------------------------------",
-    "Ran 8 tests in 2.486s",
-    "OK"
-   ]
-  },
-  {
-   "name": "deck test_schedule",
-   "cmd": "python3 arena/test_schedule.py",
-   "cwd": "../yahoo-fantasy-basketball",
-   "pass_re": "^OK",
-   "exit": 0,
-   "pass_line": "OK",
-   "verdict": "PASS",
-   "why": "",
-   "tail": [
-    "----------------------------------------------------------------------",
-    "Ran 6 tests in 1.439s",
-    "OK"
-   ]
-  },
-  {
-   "name": "redteam constants",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/redteam/check_constants.py --deck /home/user/yahoo-fantasy-basketball",
-   "cwd": ".",
-   "pass_re": "^CONSTANTS CHECK: PASS",
-   "exit": 0,
-   "pass_line": "CONSTANTS CHECK: PASS \u2014 32 registered = 32 live on deck cbfb422; declared_band 5, measured 7, settings 7, structural 4, uncalibrated 9",
-   "verdict": "PASS",
-   "why": "",
-   "tail": [
-    "CONSTANTS CHECK: PASS \u2014 32 registered = 32 live on deck cbfb422; declared_band 5, measured 7, settings 7, structural 4, uncalibrated 9"
-   ]
-  },
-  {
-   "name": "redteam bands",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/redteam/check_bands.py --report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-10-26-real-schedule-bands.md --sweep /home/user/fantasy-basketball-2026-27/report/after-reports/redteam-2026-10-26-season-real/sweep.json",
-   "cwd": ".",
-   "pass_re": "^BANDS CHECK: PASS",
-   "exit": 0,
-   "pass_line": "BANDS CHECK: PASS \u2014 2 FRAGILE band(s) quoted (arena.TEAM_WEEK_SHOCK, arena.weekly_availability); engine cbfb422",
-   "verdict": "PASS",
-   "why": "",
-   "tail": [
-    "BANDS CHECK: PASS \u2014 2 FRAGILE band(s) quoted (arena.TEAM_WEEK_SHOCK, arena.weekly_availability); engine cbfb422"
-   ]
-  },
-  {
-   "name": "redteam attacks",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/redteam/run_attacks.py --check --deck /home/user/yahoo-fantasy-basketball",
-   "cwd": ".",
-   "pass_re": "^ATTACKS CHECK: PASS",
-   "exit": 0,
-   "pass_line": "ATTACKS CHECK: PASS \u2014 9 attacks on engine cbfb422 (engine files last changed 95ebade); CURRENT 5, UNFINGERPRINTED 4",
-   "verdict": "PASS",
-   "why": "",
-   "tail": [
-    "ATTACKS CHECK: PASS \u2014 9 attacks on engine cbfb422 (engine files last changed 95ebade); CURRENT 5, UNFINGERPRINTED 4"
+    "POINTER OK"
    ]
   },
   {
@@ -222,5 +33,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "4b16db459ef8dc56902b396ffb3647bc8ade300d"
+ "base_commit": "cb7c4d6f58cdb5e728b8030dd4fc61b30178b840"
 }

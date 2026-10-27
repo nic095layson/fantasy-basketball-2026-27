@@ -1,0 +1,62 @@
+{
+ "week": 1,
+ "weeks_used": [
+  1
+ ],
+ "status": "too few weeks to propose (1 of 4)",
+ "notes": [
+  "week 1: 12 team-weeks"
+ ],
+ "team_week_shock": {
+  "live": 0.06,
+  "n": 12,
+  "var_factor": 0.007401541340963407,
+  "model_term": 0.003019080179850087,
+  "excess": 0.0043824611611133196,
+  "se_excess": 0.002264300661571018,
+  "bootstrap": 500,
+  "shock": null,
+  "se": null,
+  "note": "no shock detectable at this sample (excess variance 0.00438 ± 0.00226, not 2 SE clear of 0)"
+ },
+ "weekly_availability": {
+  "0.88": {
+   "live": 0.88,
+   "measured": 0.8281829419035847,
+   "se": 0.013262396847489786,
+   "n": 809,
+   "played": 670,
+   "live_within_2se": false
+  },
+  "0.75": {
+   "live": 0.75,
+   "measured": 0.5729166666666666,
+   "se": 0.05048547230415051,
+   "n": 96,
+   "played": 55,
+   "live_within_2se": false
+  },
+  "0.00": {
+   "live": 0.0,
+   "measured": 0.0,
+   "se": 0.0,
+   "n": 22,
+   "played": 0,
+   "live_within_2se": true
+  },
+  "0.79": {
+   "live": 0.79,
+   "measured": 0.8,
+   "se": 0.17888543819998315,
+   "n": 5,
+   "played": 4,
+   "live_within_2se": true
+  }
+ },
+ "method": {
+  "shock": "f = mean over 7 counting cats of actual/mu per team-week; Var(f) = shock^2 + mean(mean_c var/mu^2)/7 (cats independent under no shock, A2); shock = sqrt(excess); bootstrap SE over team-weeks",
+  "availability": "pooled share of team games played per assumed tier, binomial SE; from report/accuracy.json",
+  "inputs": "data/weeks/week_N.json actuals; report/accuracy/lines_weekN.csv + state_weekN.json for the model"
+ },
+ "proposes_only": true
+}

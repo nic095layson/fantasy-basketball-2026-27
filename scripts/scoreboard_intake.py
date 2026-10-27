@@ -143,6 +143,13 @@ def main():
     ap.add_argument("--calibration", default=None, help="weekly calibration ledger (default: weekly_preview's)")
     ap.add_argument("--briefs-dir", default=None, help="where the morning week_matchup_<date>.json cards are")
     ap.add_argument("--daily-out", default=None, help="the daily calibration record (default: report/calibration_daily.json)")
+    # owner 2026-10-27 (the weekly accuracy card): the week graded into report/accuracy.json after the scorers
+    ap.add_argument("--accuracy-out", default=None, help="the accuracy record (default: report/accuracy.json)")
+    ap.add_argument("--actuals-dir", default=None, help="box-score days (default: data/actuals)")
+    ap.add_argument("--league-calibration", default=None, help="every matchup's pre-week forecast (default: report/calibration_league.json)")
+    # owner 2026-10-27 (build 3): the hand-set constants fitted on the finished weeks after the card; proposes only
+    ap.add_argument("--fits-dir", default=None, help="where fit_week<N>.json goes (default: report/fits)")
+    ap.add_argument("--snapshots-dir", default=None, help="the Sunday snapshots the fit models on (default: report/accuracy)")
     a = ap.parse_args()
     WEEKS_DIR = a.weeks_dir
     path = a.from_pull or a.csv or os.path.join(WEEKS_DIR, f"week_{a.week}.csv")
@@ -175,8 +182,26 @@ def main():
                      f"vs lead-to-date {w['baseline_brier']:.3f}")
         except (SW.ScoreError, OSError, ValueError, KeyError) as e:
             daily = f"FAIL — {str(e)[:160]}"
+    accuracy = "skipped"
+    if not a.no_ledger:
+        # non-fatal like the daily scorer: the intake stands, and a grading failure is named on the PASS line
+        import accuracy_week as AW
+        try:
+            r = AW.run(a.week, a.actuals_dir or AW.ACTUALS, a.accuracy_out or AW.OUT, weeks_dir=WEEKS_DIR,
+                       ledger=a.calibration or AW.LEDGER, daily=a.daily_out or AW.DAILY, league=a.league_calibration or AW.LEAGUE)
+            accuracy = AW.summary(r)
+        except (AW.AccuracyError, OSError, ValueError, KeyError, StopIteration) as e:
+            accuracy = f"FAIL — {str(e)[:160]}"
+    fit = "skipped"
+    if not a.no_ledger:
+        import fit_constants as FC
+        try:
+            r = FC.run(a.week, WEEKS_DIR, a.snapshots_dir or FC.SNAPSHOTS, a.accuracy_out or FC.ACCURACY, a.fits_dir or FC.OUT)
+            fit = FC.summary(r)
+        except (FC.FitError, OSError, ValueError, KeyError) as e:
+            fit = f"FAIL — {str(e)[:160]}"
     print(f"SCOREBOARD INTAKE: PASS — week {a.week}: 6 matchups, 12 team lines; you {res['cats_won']}-{len(res['lost'])}-{res['cats_tied']} "
-          f"vs {res['opponent']} (won {', '.join(res['won']) or 'none'}); team_weeks.csv updated; ledger {ledger}; week score {daily}")
+          f"vs {res['opponent']} (won {', '.join(res['won']) or 'none'}); team_weeks.csv updated; ledger {ledger}; week score {daily}; accuracy {accuracy}; fit {fit}")
     return 0
 
 

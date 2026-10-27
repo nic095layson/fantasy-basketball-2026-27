@@ -1,0 +1,313 @@
+{
+ "header": {
+  "id": "401909861",
+  "season": {
+   "year": 2027,
+   "current": true,
+   "type": 2
+  },
+  "competitions": [
+   {
+    "id": "401909861",
+    "date": "2026-10-25T21:00Z",
+    "neutralSite": false,
+    "competitors": [
+     {
+      "homeAway": "home",
+      "score": "123",
+      "winner": false,
+      "team": {
+       "abbreviation": "UTAH",
+       "displayName": "Utah Jazz"
+      }
+     },
+     {
+      "homeAway": "away",
+      "score": "132",
+      "winner": true,
+      "team": {
+       "abbreviation": "LAL",
+       "displayName": "Los Angeles Lakers"
+      }
+     }
+    ]
+   }
+  ]
+ },
+ "boxscore": {
+  "teams": [
+   {
+    "homeAway": "away",
+    "team": {
+     "abbreviation": "LAL"
+    }
+   },
+   {
+    "homeAway": "home",
+    "team": {
+     "abbreviation": "UTAH"
+    }
+   }
+  ],
+  "players": [
+   {
+    "team": {
+     "abbreviation": "LAL"
+    },
+    "statistics": [
+     {
+      "keys": [
+       "minutes",
+       "points",
+       "fieldGoalsMade-fieldGoalsAttempted",
+       "threePointFieldGoalsMade-threePointFieldGoalsAttempted",
+       "freeThrowsMade-freeThrowsAttempted",
+       "rebounds",
+       "assists",
+       "turnovers",
+       "steals",
+       "blocks",
+       "offensiveRebounds",
+       "defensiveRebounds",
+       "fouls",
+       "plusMinus"
+      ],
+      "athletes": [
+       {
+        "active": true,
+        "athlete": {
+         "id": "4433137",
+         "uid": "s:40~l:46~a:4433137",
+         "guid": "ddb32530-906d-3a8e-94c6-e72430294a1a",
+         "displayName": "Ziaire Williams",
+         "shortName": "Z. Williams",
+         "links": [
+          {
+           "rel": [
+            "playercard",
+            "desktop",
+            "athlete"
+           ],
+           "href": "https://www.espn.com/nba/player/_/id/4433137/ziaire-williams",
+           "text": "Player Card"
+          }
+         ],
+         "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/nba/players/full/4433137.png",
+          "alt": "Ziaire Williams"
+         },
+         "jersey": "11",
+         "position": {
+          "name": "Forward",
+          "displayName": "Forward",
+          "abbreviation": "F"
+         }
+        },
+        "starter": true,
+        "didNotPlay": false,
+        "reason": "COACH'S DECISION",
+        "ejected": false,
+        "stats": [
+         "30",
+         "11",
+         "3-9",
+         "3-7",
+         "2-2",
+         "2",
+         "1",
+         "0",
+         "1",
+         "0",
+         "1",
+         "1",
+         "2",
+         "+11"
+        ]
+       },
+       {
+        "active": false,
+        "athlete": {
+         "id": "4433136",
+         "uid": "s:40~l:46~a:4433136",
+         "guid": "a362b0ba-25ef-3ceb-9dd3-039b3d8aa4aa",
+         "displayName": "Walker Kessler",
+         "shortName": "W. Kessler",
+         "links": [
+          {
+           "rel": [
+            "playercard",
+            "desktop",
+            "athlete"
+           ],
+           "href": "https://www.espn.com/nba/player/_/id/4433136/walker-kessler",
+           "text": "Player Card"
+          }
+         ],
+         "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/nba/players/full/4433136.png",
+          "alt": "Walker Kessler"
+         },
+         "jersey": "14",
+         "position": {
+          "name": "Center",
+          "displayName": "Center",
+          "abbreviation": "C"
+         }
+        },
+        "starter": true,
+        "didNotPlay": false,
+        "reason": "COACH'S DECISION",
+        "ejected": false,
+        "stats": [
+         "28",
+         "2",
+         "1-2",
+         "0-0",
+         "0-0",
+         "7",
+         "0",
+         "1",
+         "0",
+         "1",
+         "1",
+         "6",
+         "4",
+         "+6"
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "team": {
+     "abbreviation": "UTAH"
+    },
+    "statistics": [
+     {
+      "keys": [
+       "minutes",
+       "points",
+       "fieldGoalsMade-fieldGoalsAttempted",
+       "threePointFieldGoalsMade-threePointFieldGoalsAttempted",
+       "freeThrowsMade-freeThrowsAttempted",
+       "rebounds",
+       "assists",
+       "turnovers",
+       "steals",
+       "blocks",
+       "offensiveRebounds",
+       "defensiveRebounds",
+       "fouls",
+       "plusMinus"
+      ],
+      "athletes": [
+       {
+        "active": true,
+        "athlete": {
+         "id": "4066336",
+         "uid": "s:40~l:46~a:4066336",
+         "guid": "87ff7f1b-e52a-b236-308c-878d12df8446",
+         "displayName": "Lauri Markkanen",
+         "shortName": "L. Markkanen",
+         "links": [
+          {
+           "rel": [
+            "playercard",
+            "desktop",
+            "athlete"
+           ],
+           "href": "https://www.espn.com/nba/player/_/id/4066336/lauri-markkanen",
+           "text": "Player Card"
+          }
+         ],
+         "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/nba/players/full/4066336.png",
+          "alt": "Lauri Markkanen"
+         },
+         "jersey": "23",
+         "position": {
+          "name": "Forward",
+          "displayName": "Forward",
+          "abbreviation": "F"
+         }
+        },
+        "starter": true,
+        "didNotPlay": false,
+        "reason": "COACH'S DECISION",
+        "ejected": false,
+        "stats": [
+         "38",
+         "28",
+         "9-20",
+         "5-11",
+         "5-6",
+         "7",
+         "1",
+         "1",
+         "0",
+         "0",
+         "4",
+         "3",
+         "2",
+         "-6"
+        ]
+       },
+       {
+        "active": true,
+        "athlete": {
+         "id": "4277961",
+         "uid": "s:40~l:46~a:4277961",
+         "guid": "dbe0e9e5-0046-c414-000b-f4e629b08f5d",
+         "displayName": "Jaren Jackson Jr.",
+         "shortName": "J. Jackson Jr.",
+         "links": [
+          {
+           "rel": [
+            "playercard",
+            "desktop",
+            "athlete"
+           ],
+           "href": "https://www.espn.com/nba/player/_/id/4277961/jaren-jackson-jr",
+           "text": "Player Card"
+          }
+         ],
+         "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/nba/players/full/4277961.png",
+          "alt": "Jaren Jackson Jr."
+         },
+         "jersey": "20",
+         "position": {
+          "name": "Forward",
+          "displayName": "Forward",
+          "abbreviation": "F"
+         }
+        },
+        "starter": true,
+        "didNotPlay": false,
+        "reason": "COACH'S DECISION",
+        "ejected": false,
+        "stats": [
+         "33",
+         "20",
+         "7-14",
+         "1-4",
+         "5-6",
+         "2",
+         "1",
+         "4",
+         "0",
+         "0",
+         "0",
+         "2",
+         "5",
+         "-11"
+        ]
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ }
+}

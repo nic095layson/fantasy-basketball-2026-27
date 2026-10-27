@@ -36,7 +36,9 @@ IGNORE = {"arena": {"ARENA_DIR", "REPO", "DATA", "CATS", "BASE_POS", "STRATEGIES
           # the kit's in-season blend (2026-10-19): paths and column maps are not judgment constants
           # (2026-10-22, D-RR-1: OVERRIDES is a path and OVERRIDE_FIELDS a column list, like ADDITIONS)
           "season_lines": {"HERE", "KIT", "DECK", "KIT_CSV", "DECK_CSV", "ADDITIONS", "ACTUALS", "OUT", "KIT_COLS", "DECK_COLS", "DEC",
-                           "OVERRIDES", "OVERRIDE_FIELDS"}}
+                           "OVERRIDES", "OVERRIDE_FIELDS"},
+          # the minutes-trend candidate line (2026-10-27, build 2): paths and column lists are not judgment constants
+          "minutes_line": {"HERE", "KIT", "SEASON", "ACTUALS", "POOL", "KIT_CSV", "PRE_KIT", "SCALED", "DEC"}}
 TIER_NOTES = {"healthy": "", "mild": "inj-acl-mild", "risk": "inj-knee-risk", "recovery": "inj-achilles-recovery",
               "out": "out-season"}
 
@@ -69,8 +71,9 @@ def read_live(deck=DECK):
     if kit_scripts not in sys.path:
         sys.path.insert(0, kit_scripts)
     season_lines = importlib.import_module("season_lines")
+    minutes_line = importlib.import_module("minutes_line")
     live = {}
-    for modname, mod in (("arena", arena), ("hoops", hoops), ("season_lines", season_lines)):
+    for modname, mod in (("arena", arena), ("hoops", hoops), ("season_lines", season_lines), ("minutes_line", minutes_line)):
         for name, val in vars(mod).items():
             if name.isupper() and not name.startswith("_") and name not in IGNORE[modname] \
                     and not callable(val) and not inspect.ismodule(val):
