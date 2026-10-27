@@ -81,5 +81,44 @@ class Gate(unittest.TestCase):
             FC.write_fit(p, dict(week=1))
 
 
+class BoardComparison(unittest.TestCase):
+    """Owner 2026-10-27 ("Fold into the week-4 fit"): the realized risk/healthy and mild/healthy ratios, by the frozen
+    preseason tag, beside the same ratios on the deck board, the simulator and the kit board; proposals only."""
+    WEEKS = [{"0.88": dict(assumed=0.88, played=670, team_games=809), "0.75": dict(assumed=0.75, played=55, team_games=96),
+              "0.79": dict(assumed=0.79, played=4, team_games=5)}]
+    INSTR = {"risk": dict(deck=0.78, simulator=0.8523, kit=0.95), "mild": dict(deck=0.85, simulator=0.8977, kit=None)}
+
+    def test_the_ratio_and_its_delta_method_error(self):
+        a = FC.availability_pool(self.WEEKS)
+        c = FC.board_comparison(a, self.INSTR, keys=dict(healthy="0.88", risk="0.75", mild="0.79"))
+        p, q = 670 / 809, 55 / 96
+        r = q / p
+        se = r * math.sqrt((math.sqrt(q * (1 - q) / 96) / q) ** 2 + (math.sqrt(p * (1 - p) / 809) / p) ** 2)
+        self.assertAlmostEqual(c["risk"]["measured"], r); self.assertAlmostEqual(c["risk"]["se"], se)
+        self.assertEqual(c["risk"]["deck"], 0.78)
+        # by hand: r = 0.5729/0.8282 = 0.692, SE 0.062, 2 SE 0.124: the deck's 0.78 is 0.088 away (inside),
+        # the simulator's 0.852 is 0.160 away (outside)
+        self.assertTrue(c["risk"]["within_2se"]["deck"]); self.assertFalse(c["risk"]["within_2se"]["simulator"])
+        self.assertIsNone(c["mild"]["within_2se"]["kit"])      # no kit number: no verdict, never a guess
+
+    def test_a_missing_tier_is_named_not_dropped(self):
+        a = FC.availability_pool([{"0.88": dict(assumed=0.88, played=670, team_games=809)}])
+        c = FC.board_comparison(a, self.INSTR, keys=dict(healthy="0.88", risk="0.75", mild="0.79"))
+        self.assertIsNone(c["risk"]["measured"]); self.assertIn("no risk", c["risk"]["note"])
+
+    def test_the_instruments_are_read_from_the_engines(self):
+        i = FC.board_instruments()
+        self.assertEqual(i["risk"]["deck"], 0.78); self.assertEqual(i["mild"]["deck"], 0.85)
+        self.assertAlmostEqual(i["risk"]["simulator"], round(0.75 / 0.88, 4))
+        self.assertIn("kit", i["risk"])
+
+    def test_the_weekly_record_carries_the_comparison(self):
+        d = tempfile.mkdtemp(); acc = os.path.join(d, "accuracy.json")
+        json.dump({"weeks": {"1": {"availability": self.WEEKS[0]}}}, open(acc, "w"))
+        r = FC.run(1, weeks_dir=d, snapshots=d, accuracy=acc, out_dir=os.path.join(d, "fits"), boots=10)
+        self.assertIn("risk", r["board_comparison"])
+        self.assertIn("board comparison", open(os.path.join(d, "fits.md")).read())
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
