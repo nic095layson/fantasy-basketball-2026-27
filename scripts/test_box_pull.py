@@ -51,6 +51,59 @@ class Espn(unittest.TestCase):
         self.assertEqual(len({r["team"] for r in rows}), 2)
 
 
+class GameContext(unittest.TestCase):
+    """Owner 2026-10-27 (build 1, "capture now"): every game carries home/away, the final score, the margin and the
+    tip time from ESPN's summary header; every player row carries the days of rest since his NBA team's previous
+    game in the kit's own box records (the season's first game: null, never guessed)."""
+    def setUp(self):
+        # a real summary header trimmed from a live 2026-10-25 fetch (LAL at UTA, 132-123); the 10-16 fixture was
+        # trimmed to its stat tables before the header was needed
+        self.sm = json.load(open(os.path.join(FX, "espn_summary_401909861_2026-10-25.json")))
+
+    def test_the_summary_header_gives_home_away_score_margin_and_tip(self):
+        c = B.game_context(self.sm)
+        h = self.sm["header"]["competitions"][0]
+        home = next(x for x in h["competitors"] if x["homeAway"] == "home")
+        away = next(x for x in h["competitors"] if x["homeAway"] == "away")
+        self.assertEqual(c["home"], B.ESPN_CODE.get(home["team"]["abbreviation"], home["team"]["abbreviation"]))
+        self.assertEqual(c["away"], B.ESPN_CODE.get(away["team"]["abbreviation"], away["team"]["abbreviation"]))
+        self.assertEqual((c["home_score"], c["away_score"]), (int(home["score"]), int(away["score"])))
+        self.assertEqual(c["margin"], int(home["score"]) - int(away["score"]))
+        self.assertEqual(c["tip_utc"], h["date"]); self.assertIs(c["neutral"], bool(h.get("neutralSite")))
+        self.assertEqual((c["home"], c["away"], c["margin"]), ("UTA", "LAL", -9))   # the known game, by hand
+
+    def test_a_header_and_box_that_disagree_on_home_leave_it_null_and_say_so(self):
+        sm = json.loads(json.dumps(self.sm))
+        for x in sm["header"]["competitions"][0]["competitors"]:
+            x["homeAway"] = "away" if x["homeAway"] == "home" else "home"
+        c = B.game_context(sm)
+        self.assertIsNone(c["home"]); self.assertIn("disagree", c["note"])
+
+    def test_rest_days_count_from_the_kits_own_records(self):
+        prior = {"BOS": "2026-10-23", "LAL": "2026-10-24"}
+        self.assertEqual(B.rest_days("BOS", "2026-10-25", prior), 2)
+        self.assertEqual(B.rest_days("LAL", "2026-10-25", prior), 1)
+        self.assertIsNone(B.rest_days("MIA", "2026-10-25", prior))
+
+    def test_prior_game_dates_read_the_actuals_folder_before_the_date(self):
+        import tempfile
+        d = tempfile.mkdtemp()
+        json.dump(dict(date="2026-10-23", games=[dict(season_type=2)], players=[dict(team="BOS", game="g1")]),
+                  open(os.path.join(d, "2026-10-23.json"), "w"))
+        json.dump(dict(date="2026-10-24", games=[dict(season_type=2)], players=[dict(team="LAL", game="g2"), dict(team="BOS", game="g3")]),
+                  open(os.path.join(d, "2026-10-24.json"), "w"))
+        json.dump(dict(date="2026-10-25", games=[dict(season_type=2)], players=[dict(team="BOS", game="g4")]),
+                  open(os.path.join(d, "2026-10-25.json"), "w"))
+        self.assertEqual(B.prior_game_dates("2026-10-25", d), {"BOS": "2026-10-24", "LAL": "2026-10-24"})
+
+    def test_the_record_carries_context_per_game_and_rest_per_row(self):
+        games = [dict(espn_id="g1", name="x", date="2026-10-25T21:00Z", season_type=2,
+                      context=dict(home="UTA", away="LAL", home_score=123, away_score=132, margin=-9, tip_utc="2026-10-25T21:00Z", neutral=False))]
+        players = [dict(name="A", team="LAL", game="g1", pool_name="A", rest_days=1)]
+        rec = B.build_record("2026-10-25", players, games, single_source=True, sources={"espn": {}, "bref": {}})
+        self.assertEqual(rec["games"][0]["context"]["margin"], -9); self.assertEqual(rec["players"][0]["rest_days"], 1)
+
+
 class Bref(unittest.TestCase):
     def test_basic_tables_parse_with_pool_team_codes(self):
         html = open(os.path.join(FX, "bref_202604100ATL_basic_tables.html"), encoding="utf-8").read()

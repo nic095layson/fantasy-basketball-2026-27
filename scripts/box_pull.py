@@ -20,6 +20,7 @@ Prints 'BOX PULL: PASS — ...' (exit 0) when every FINAL ESPN event yielded a b
 import argparse
 import ast
 import datetime
+import glob
 import json
 import os
 import re
@@ -40,6 +41,7 @@ BREF_IDX = "https://www.basketball-reference.com/boxscores/?month={m}&day={d}&ye
 BREF_GAME = "https://www.basketball-reference.com{path}"
 TEAM_CODE = {"CHO": "CHA", "BRK": "BKN", "PHO": "PHX"}  # Basketball-Reference -> pool/Yahoo codes (co_gm.TEAM_CODE)
 ESPN_CODE = {"GS": "GSW", "NY": "NYK", "NO": "NOP", "SA": "SAS", "UTAH": "UTA", "WSH": "WAS"}  # ESPN -> pool codes
+ACTUALS_DIR = os.path.join(KIT, "data", "actuals")  # the kit's own box records, read for days of rest (owner 2026-10-27)
 STATS = ("min", "pts", "fgm", "fga", "tpm", "tpa", "ftm", "fta", "reb", "ast", "tov", "stl", "blk")
 ALIAS_FILE = os.path.join(KIT, "report", "market", "build_market.py")
 POOL_CSV = os.path.join(KIT, "report", "projections-2026-27.csv")
@@ -120,6 +122,54 @@ def parse_espn_summary(summary):
                                  tpm=tpm, tpa=tpa, ftm=ftm, fta=fta, reb=g("rebounds"), ast=g("assists"),
                                  tov=g("turnovers"), stl=g("steals"), blk=g("blocks")))
     return rows
+
+
+def game_context(summary):
+    """Owner 2026-10-27 (build 1, "capture now"): home/away, the final score, the margin (home minus away) and the tip
+    time from the summary header, checked against the boxscore block's own homeAway; a disagreement leaves home/away
+    null and says so, never picks a side."""
+    h = summary.get("header", {}).get("competitions", [{}])[0]
+    comp = {x.get("homeAway"): x for x in h.get("competitors", [])}
+    box = {t.get("homeAway"): t["team"]["abbreviation"] for t in summary.get("boxscore", {}).get("teams", []) if t.get("homeAway")}
+    code = lambda ab: ESPN_CODE.get(ab, ab)
+    out = dict(home=None, away=None, home_score=None, away_score=None, margin=None, tip_utc=h.get("date"), neutral=bool(h.get("neutralSite")))
+    if "home" not in comp or "away" not in comp:
+        out["note"] = "summary header lacks a home/away pair"; return out
+    hab, aab = comp["home"]["team"]["abbreviation"], comp["away"]["team"]["abbreviation"]
+    if box and (box.get("home", hab) != hab or box.get("away", aab) != aab):
+        out["note"] = f"header and boxscore disagree on home: header {hab} at home, boxscore {box.get('home')}"; return out
+    try:
+        hs, as_ = int(comp["home"].get("score")), int(comp["away"].get("score"))
+    except (TypeError, ValueError):
+        out["note"] = "no final score in the summary header"; hs = as_ = None
+    out.update(home=code(hab), away=code(aab), home_score=hs, away_score=as_, margin=(hs - as_) if hs is not None else None)
+    return out
+
+
+def prior_game_dates(date, actuals_dir):
+    """{NBA team: the most recent regular-season date before `date` on which it played}, from the kit's own records."""
+    out = {}
+    for f in sorted(glob.glob(os.path.join(actuals_dir, "????-??-??.json"))):
+        d = os.path.basename(f)[:10]
+        if d >= date:
+            continue
+        try:
+            with open(f, encoding="utf-8") as fh:
+                a = json.load(fh)
+        except (OSError, ValueError):
+            continue
+        if not a.get("games") or not all(g.get("season_type") == 2 for g in a["games"]):
+            continue
+        for r in a.get("players", []):
+            out[r["team"]] = d
+    return out
+
+
+def rest_days(team, date, prior):
+    """Days since the team's previous game, or None when the records hold no earlier game (never guessed)."""
+    if team not in prior:
+        return None
+    return (datetime.date.fromisoformat(date) - datetime.date.fromisoformat(prior[team])).days
 
 
 # ---------------------------------------------------------------- Basketball-Reference
@@ -285,7 +335,7 @@ def build_record(date, players, games, single_source, sources, reconciliation=No
 
 
 # ---------------------------------------------------------------- main
-def pull(date, cache=None, use_bref=True, log=print):
+def pull(date, cache=None, use_bref=True, log=print, actuals_dir=None):
     ymd = date.replace("-", "")
     receipts = {"espn": {"scoreboard": ESPN_SB.format(ymd=ymd), "summaries": [], "fetched_at_utc": None},
                 "bref": {"index": None, "pages": [], "fetched_at_utc": None}}
@@ -300,12 +350,14 @@ def pull(date, cache=None, use_bref=True, log=print):
         receipts["espn"]["summaries"].append(dict(event=e["id"], url=url, http=c2, how=h2))
         if t2 is None:
             problems.append(f"ESPN summary {e['id']} HTTP {c2}: {h2}"); continue
-        rows = parse_espn_summary(json.loads(t2))
+        summary = json.loads(t2)
+        rows = parse_espn_summary(summary)
         if not rows:
             problems.append(f"ESPN summary {e['id']} has no box score"); continue
         for r in rows:
             r["game"] = e["id"]
-        espn_rows += rows; games.append(dict(espn_id=e["id"], name=e["name"], date=e["date"], season_type=e["season_type"]))
+        espn_rows += rows; games.append(dict(espn_id=e["id"], name=e["name"], date=e["date"], season_type=e["season_type"],
+                                             context=game_context(summary)))
         time.sleep(0.3)
     bref_rows, bref_games = [], []
     if use_bref:
@@ -329,6 +381,9 @@ def pull(date, cache=None, use_bref=True, log=print):
     rec = reconcile(espn_rows, bref_rows) if bref_rows else {}
     aliases = load_aliases()
     players = resolve_names(espn_rows, load_pool_names(aliases=aliases), aliases)
+    prior = prior_game_dates(date, actuals_dir or ACTUALS_DIR)
+    for r in players:
+        r["rest_days"] = rest_days(r["team"], date, prior)
     sources = dict(espn=dict(events=len(events), final=len(finals), **receipts["espn"]),
                    bref=dict(games=len(bref_games), **receipts["bref"]))
     return build_record(date, players, games, single, sources, rec), []
@@ -347,7 +402,7 @@ def main():
         for p in problems:
             print("  " + p)
         return 1
-    out = a.out or os.path.join(KIT, "data", "actuals", f"{a.date}.json")
+    out = a.out or os.path.join(ACTUALS_DIR, f"{a.date}.json")
     os.makedirs(os.path.dirname(out), exist_ok=True)
     with open(out, "w", encoding="utf-8") as f:
         json.dump(rec, f, indent=1, ensure_ascii=False); f.write("\n")
