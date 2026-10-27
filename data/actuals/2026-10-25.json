@@ -101,43 +101,106 @@
    "espn_id": "401909861",
    "name": "Los Angeles Lakers at Utah Jazz",
    "date": "2026-10-25T21:00Z",
-   "season_type": 2
+   "season_type": 2,
+   "context": {
+    "home": "UTA",
+    "away": "LAL",
+    "home_score": 123,
+    "away_score": 132,
+    "margin": -9,
+    "tip_utc": "2026-10-25T21:00Z",
+    "neutral": false
+   }
   },
   {
    "espn_id": "401909862",
    "name": "Indiana Pacers at Brooklyn Nets",
    "date": "2026-10-25T22:00Z",
-   "season_type": 2
+   "season_type": 2,
+   "context": {
+    "home": "BKN",
+    "away": "IND",
+    "home_score": 109,
+    "away_score": 136,
+    "margin": -27,
+    "tip_utc": "2026-10-25T22:00Z",
+    "neutral": false
+   }
   },
   {
    "espn_id": "401909863",
    "name": "Orlando Magic at New York Knicks",
    "date": "2026-10-25T23:00Z",
-   "season_type": 2
+   "season_type": 2,
+   "context": {
+    "home": "NYK",
+    "away": "ORL",
+    "home_score": 102,
+    "away_score": 111,
+    "margin": -9,
+    "tip_utc": "2026-10-25T23:00Z",
+    "neutral": false
+   }
   },
   {
    "espn_id": "401909864",
    "name": "Toronto Raptors at Minnesota Timberwolves",
    "date": "2026-10-25T23:00Z",
-   "season_type": 2
+   "season_type": 2,
+   "context": {
+    "home": "MIN",
+    "away": "TOR",
+    "home_score": 117,
+    "away_score": 94,
+    "margin": 23,
+    "tip_utc": "2026-10-25T23:00Z",
+    "neutral": false
+   }
   },
   {
    "espn_id": "401909865",
    "name": "LA Clippers at Oklahoma City Thunder",
    "date": "2026-10-25T23:00Z",
-   "season_type": 2
+   "season_type": 2,
+   "context": {
+    "home": "OKC",
+    "away": "LAC",
+    "home_score": 108,
+    "away_score": 101,
+    "margin": 7,
+    "tip_utc": "2026-10-25T23:00Z",
+    "neutral": false
+   }
   },
   {
    "espn_id": "401909866",
    "name": "Detroit Pistons at Philadelphia 76ers",
    "date": "2026-10-25T23:30Z",
-   "season_type": 2
+   "season_type": 2,
+   "context": {
+    "home": "PHI",
+    "away": "DET",
+    "home_score": 93,
+    "away_score": 106,
+    "margin": -13,
+    "tip_utc": "2026-10-25T23:30Z",
+    "neutral": false
+   }
   },
   {
    "espn_id": "401909867",
    "name": "Memphis Grizzlies at Sacramento Kings",
    "date": "2026-10-26T01:00Z",
-   "season_type": 2
+   "season_type": 2,
+   "context": {
+    "home": "SAC",
+    "away": "MEM",
+    "home_score": 112,
+    "away_score": 123,
+    "margin": -11,
+    "tip_utc": "2026-10-26T01:00Z",
+    "neutral": false
+   }
   }
  ],
  "players": [
@@ -161,7 +224,8 @@
    "stl": 1,
    "blk": 0,
    "game": "401909861",
-   "pool_name": "Ziaire Williams"
+   "pool_name": "Ziaire Williams",
+   "rest_days": 2
   },
   {
    "name": "Walker Kessler",
@@ -183,7 +247,8 @@
    "stl": 0,
    "blk": 1,
    "game": "401909861",
-   "pool_name": "Walker Kessler"
+   "pool_name": "Walker Kessler",
+   "rest_days": 2
   },
   {
    "name": "Matisse Thybulle",
@@ -205,7 +270,8 @@
    "stl": 3,
    "blk": 1,
    "game": "401909861",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "Luka Doncic",
@@ -227,7 +293,8 @@
    "stl": 2,
    "blk": 0,
    "game": "401909861",
-   "pool_name": "Luka Doncic"
+   "pool_name": "Luka Doncic",
+   "rest_days": 2
   },
   {
    "name": "Austin Reaves",
@@ -249,7 +316,8 @@
    "stl": 1,
    "blk": 2,
    "game": "401909861",
-   "pool_name": "Austin Reaves"
+   "pool_name": "Austin Reaves",
+   "rest_days": 2
   },
   {
    "name": "Kevon Looney",
@@ -271,7 +339,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909861",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "Sandro Mamukelashvili",
@@ -293,7 +362,8 @@
    "stl": 0,
    "blk": 1,
    "game": "401909861",
-   "pool_name": "Sandro Mamukelashvili"
+   "pool_name": "Sandro Mamukelashvili",
+   "rest_days": 2
   },
   {
    "name": "Jake LaRavia",
@@ -315,7 +385,8 @@
    "stl": 2,
    "blk": 1,
    "game": "401909861",
-   "pool_name": "Jake LaRavia"
+   "pool_name": "Jake LaRavia",
+   "rest_days": 2
   },
   {
    "name": "Collin Sexton",
@@ -337,7 +408,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909861",
-   "pool_name": "Collin Sexton"
+   "pool_name": "Collin Sexton",
+   "rest_days": 2
   },
   {
    "name": "Quentin Grimes",
@@ -359,7 +431,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909861",
-   "pool_name": "Quentin Grimes"
+   "pool_name": "Quentin Grimes",
+   "rest_days": 2
   },
   {
    "name": "Jarred Vanderbilt",
@@ -381,7 +454,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909861",
-   "pool_name": "Jarred Vanderbilt"
+   "pool_name": "Jarred Vanderbilt",
+   "rest_days": 2
   },
   {
    "name": "Arthur Kaluma",
@@ -403,7 +477,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909861",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "Dalton Knecht",
@@ -425,7 +500,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909861",
-   "pool_name": "Dalton Knecht"
+   "pool_name": "Dalton Knecht",
+   "rest_days": 2
   },
   {
    "name": "Bronny James",
@@ -447,7 +523,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909861",
-   "pool_name": "Bronny James"
+   "pool_name": "Bronny James",
+   "rest_days": 2
   },
   {
    "name": "Chris Manon",
@@ -469,7 +546,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909861",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "Jaden Hardy",
@@ -491,7 +569,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909861",
-   "pool_name": "Jaden Hardy"
+   "pool_name": "Jaden Hardy",
+   "rest_days": 2
   },
   {
    "name": "Lauri Markkanen",
@@ -513,7 +592,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909861",
-   "pool_name": "Lauri Markkanen"
+   "pool_name": "Lauri Markkanen",
+   "rest_days": 2
   },
   {
    "name": "Jaren Jackson Jr.",
@@ -535,7 +615,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909861",
-   "pool_name": "Jaren Jackson Jr"
+   "pool_name": "Jaren Jackson Jr",
+   "rest_days": 2
   },
   {
    "name": "Keyonte George",
@@ -557,7 +638,8 @@
    "stl": 1,
    "blk": 0,
    "game": "401909861",
-   "pool_name": "Keyonte George"
+   "pool_name": "Keyonte George",
+   "rest_days": 2
   },
   {
    "name": "Ace Bailey",
@@ -579,7 +661,8 @@
    "stl": 0,
    "blk": 1,
    "game": "401909861",
-   "pool_name": "Ace Bailey"
+   "pool_name": "Ace Bailey",
+   "rest_days": 2
   },
   {
    "name": "Darryn Peterson",
@@ -601,7 +684,8 @@
    "stl": 3,
    "blk": 1,
    "game": "401909861",
-   "pool_name": "Darryn Peterson"
+   "pool_name": "Darryn Peterson",
+   "rest_days": 2
   },
   {
    "name": "Brice Sensabaugh",
@@ -623,7 +707,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909861",
-   "pool_name": "Brice Sensabaugh"
+   "pool_name": "Brice Sensabaugh",
+   "rest_days": 2
   },
   {
    "name": "Jaxson Hayes",
@@ -645,7 +730,8 @@
    "stl": 1,
    "blk": 0,
    "game": "401909861",
-   "pool_name": "Jaxson Hayes"
+   "pool_name": "Jaxson Hayes",
+   "rest_days": 2
   },
   {
    "name": "Svi Mykhailiuk",
@@ -667,7 +753,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909861",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "Josh Okogie",
@@ -689,7 +776,8 @@
    "stl": 1,
    "blk": 0,
    "game": "401909861",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "Josh Green",
@@ -711,7 +799,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909861",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "Isaiah Collier",
@@ -733,7 +822,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909861",
-   "pool_name": "Isaiah Collier"
+   "pool_name": "Isaiah Collier",
+   "rest_days": 2
   },
   {
    "name": "Blake Hinson",
@@ -755,7 +845,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909861",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "Kyle Filipowski",
@@ -777,7 +868,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909861",
-   "pool_name": "Kyle Filipowski"
+   "pool_name": "Kyle Filipowski",
+   "rest_days": 2
   },
   {
    "name": "Tony Bradley",
@@ -799,7 +891,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909861",
-   "pool_name": "Tony Bradley"
+   "pool_name": "Tony Bradley",
+   "rest_days": 2
   },
   {
    "name": "Mo Bamba",
@@ -821,7 +914,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909861",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "Pascal Siakam",
@@ -843,7 +937,8 @@
    "stl": 1,
    "blk": 0,
    "game": "401909862",
-   "pool_name": "Pascal Siakam"
+   "pool_name": "Pascal Siakam",
+   "rest_days": 2
   },
   {
    "name": "Ivica Zubac",
@@ -865,7 +960,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909862",
-   "pool_name": "Ivica Zubac"
+   "pool_name": "Ivica Zubac",
+   "rest_days": 2
   },
   {
    "name": "Andrew Nembhard",
@@ -887,7 +983,8 @@
    "stl": 1,
    "blk": 0,
    "game": "401909862",
-   "pool_name": "Andrew Nembhard"
+   "pool_name": "Andrew Nembhard",
+   "rest_days": 2
   },
   {
    "name": "Aaron Nesmith",
@@ -909,7 +1006,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909862",
-   "pool_name": "Aaron Nesmith"
+   "pool_name": "Aaron Nesmith",
+   "rest_days": 2
   },
   {
    "name": "Tyrese Haliburton",
@@ -931,7 +1029,8 @@
    "stl": 2,
    "blk": 0,
    "game": "401909862",
-   "pool_name": "Tyrese Haliburton"
+   "pool_name": "Tyrese Haliburton",
+   "rest_days": 2
   },
   {
    "name": "Larry Nance Jr.",
@@ -953,7 +1052,8 @@
    "stl": 1,
    "blk": 0,
    "game": "401909862",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "Obi Toppin",
@@ -975,7 +1075,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909862",
-   "pool_name": "Obi Toppin"
+   "pool_name": "Obi Toppin",
+   "rest_days": 2
   },
   {
    "name": "Jalen Slawson",
@@ -997,7 +1098,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909862",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "Jarace Walker",
@@ -1019,7 +1121,8 @@
    "stl": 1,
    "blk": 0,
    "game": "401909862",
-   "pool_name": "Jarace Walker"
+   "pool_name": "Jarace Walker",
+   "rest_days": 2
   },
   {
    "name": "Jay Huff",
@@ -1041,7 +1144,8 @@
    "stl": 0,
    "blk": 3,
    "game": "401909862",
-   "pool_name": "Jay Huff"
+   "pool_name": "Jay Huff",
+   "rest_days": 2
   },
   {
    "name": "Kelly Oubre Jr.",
@@ -1063,7 +1167,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909862",
-   "pool_name": "Kelly Oubre"
+   "pool_name": "Kelly Oubre",
+   "rest_days": 2
   },
   {
    "name": "Quenton Jackson",
@@ -1085,7 +1190,8 @@
    "stl": 1,
    "blk": 1,
    "game": "401909862",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "Julius Randle",
@@ -1107,7 +1213,8 @@
    "stl": 1,
    "blk": 0,
    "game": "401909862",
-   "pool_name": "Julius Randle"
+   "pool_name": "Julius Randle",
+   "rest_days": 1
   },
   {
    "name": "Michael Porter Jr.",
@@ -1129,7 +1236,8 @@
    "stl": 2,
    "blk": 0,
    "game": "401909862",
-   "pool_name": "Michael Porter Jr"
+   "pool_name": "Michael Porter Jr",
+   "rest_days": 1
   },
   {
    "name": "Day'Ron Sharpe",
@@ -1151,7 +1259,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909862",
-   "pool_name": "Day'Ron Sharpe"
+   "pool_name": "Day'Ron Sharpe",
+   "rest_days": 1
   },
   {
    "name": "Keon Ellis",
@@ -1173,7 +1282,8 @@
    "stl": 4,
    "blk": 1,
    "game": "401909862",
-   "pool_name": "Keon Ellis"
+   "pool_name": "Keon Ellis",
+   "rest_days": 1
   },
   {
    "name": "Egor Demin",
@@ -1195,7 +1305,8 @@
    "stl": 2,
    "blk": 0,
    "game": "401909862",
-   "pool_name": "Egor Demin"
+   "pool_name": "Egor Demin",
+   "rest_days": 1
   },
   {
    "name": "Josh Minott",
@@ -1217,7 +1328,8 @@
    "stl": 2,
    "blk": 0,
    "game": "401909862",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 1
   },
   {
    "name": "Noah Clowney",
@@ -1239,7 +1351,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909862",
-   "pool_name": "Noah Clowney"
+   "pool_name": "Noah Clowney",
+   "rest_days": 1
   },
   {
    "name": "Joshua Jefferson",
@@ -1261,7 +1374,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909862",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 1
   },
   {
    "name": "Danny Wolf",
@@ -1283,7 +1397,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909862",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 1
   },
   {
    "name": "Chaney Johnson",
@@ -1305,7 +1420,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909862",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 1
   },
   {
    "name": "Moritz Wagner",
@@ -1327,7 +1443,8 @@
    "stl": 1,
    "blk": 0,
    "game": "401909862",
-   "pool_name": "Moritz Wagner"
+   "pool_name": "Moritz Wagner",
+   "rest_days": 1
   },
   {
    "name": "Drake Powell",
@@ -1349,7 +1466,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909862",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 1
   },
   {
    "name": "Ben Saraf",
@@ -1371,7 +1489,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909862",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 1
   },
   {
    "name": "Nolan Traore",
@@ -1393,7 +1512,8 @@
    "stl": 1,
    "blk": 2,
    "game": "401909862",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 1
   },
   {
    "name": "Terance Mann",
@@ -1415,7 +1535,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909862",
-   "pool_name": "Terance Mann"
+   "pool_name": "Terance Mann",
+   "rest_days": 1
   },
   {
    "name": "Franz Wagner",
@@ -1437,7 +1558,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909863",
-   "pool_name": "Franz Wagner"
+   "pool_name": "Franz Wagner",
+   "rest_days": 2
   },
   {
    "name": "Wendell Carter Jr.",
@@ -1459,7 +1581,8 @@
    "stl": 1,
    "blk": 1,
    "game": "401909863",
-   "pool_name": "Wendell Carter Jr"
+   "pool_name": "Wendell Carter Jr",
+   "rest_days": 2
   },
   {
    "name": "Desmond Bane",
@@ -1481,7 +1604,8 @@
    "stl": 0,
    "blk": 2,
    "game": "401909863",
-   "pool_name": "Desmond Bane"
+   "pool_name": "Desmond Bane",
+   "rest_days": 2
   },
   {
    "name": "Jalen Suggs",
@@ -1503,7 +1627,8 @@
    "stl": 3,
    "blk": 0,
    "game": "401909863",
-   "pool_name": "Jalen Suggs"
+   "pool_name": "Jalen Suggs",
+   "rest_days": 2
   },
   {
    "name": "Jase Richardson",
@@ -1525,7 +1650,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909863",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "Jamal Cain",
@@ -1547,7 +1673,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909863",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "Tristan da Silva",
@@ -1569,7 +1696,8 @@
    "stl": 0,
    "blk": 1,
    "game": "401909863",
-   "pool_name": "Tristan da Silva"
+   "pool_name": "Tristan da Silva",
+   "rest_days": 2
   },
   {
    "name": "Nikola Vucevic",
@@ -1591,7 +1719,8 @@
    "stl": 0,
    "blk": 2,
    "game": "401909863",
-   "pool_name": "Nikola Vucevic"
+   "pool_name": "Nikola Vucevic",
+   "rest_days": 2
   },
   {
    "name": "Anthony Black",
@@ -1613,7 +1742,8 @@
    "stl": 2,
    "blk": 0,
    "game": "401909863",
-   "pool_name": "Anthony Black"
+   "pool_name": "Anthony Black",
+   "rest_days": 2
   },
   {
    "name": "Goga Bitadze",
@@ -1635,7 +1765,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909863",
-   "pool_name": "Goga Bitadze"
+   "pool_name": "Goga Bitadze",
+   "rest_days": 2
   },
   {
    "name": "Colin Castleton",
@@ -1657,7 +1788,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909863",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "Jevon Carter",
@@ -1679,7 +1811,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909863",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "Alex Morales",
@@ -1701,7 +1834,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909863",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "OG Anunoby",
@@ -1723,7 +1857,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909863",
-   "pool_name": "OG Anunoby"
+   "pool_name": "OG Anunoby",
+   "rest_days": 2
   },
   {
    "name": "Karl-Anthony Towns",
@@ -1745,7 +1880,8 @@
    "stl": 1,
    "blk": 1,
    "game": "401909863",
-   "pool_name": "Karl-Anthony Towns"
+   "pool_name": "Karl-Anthony Towns",
+   "rest_days": 2
   },
   {
    "name": "Josh Hart",
@@ -1767,7 +1903,8 @@
    "stl": 2,
    "blk": 0,
    "game": "401909863",
-   "pool_name": "Josh Hart"
+   "pool_name": "Josh Hart",
+   "rest_days": 2
   },
   {
    "name": "Mikal Bridges",
@@ -1789,7 +1926,8 @@
    "stl": 0,
    "blk": 1,
    "game": "401909863",
-   "pool_name": "Mikal Bridges"
+   "pool_name": "Mikal Bridges",
+   "rest_days": 2
   },
   {
    "name": "Jalen Brunson",
@@ -1811,7 +1949,8 @@
    "stl": 2,
    "blk": 1,
    "game": "401909863",
-   "pool_name": "Jalen Brunson"
+   "pool_name": "Jalen Brunson",
+   "rest_days": 2
   },
   {
    "name": "Andre Drummond",
@@ -1833,7 +1972,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909863",
-   "pool_name": "Andre Drummond"
+   "pool_name": "Andre Drummond",
+   "rest_days": 2
   },
   {
    "name": "James Wiseman",
@@ -1855,7 +1995,8 @@
    "stl": 0,
    "blk": 1,
    "game": "401909863",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "Jordan Clarkson",
@@ -1877,7 +2018,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909863",
-   "pool_name": "Jordan Clarkson"
+   "pool_name": "Jordan Clarkson",
+   "rest_days": 2
   },
   {
    "name": "Landry Shamet",
@@ -1899,7 +2041,8 @@
    "stl": 1,
    "blk": 0,
    "game": "401909863",
-   "pool_name": "Landry Shamet"
+   "pool_name": "Landry Shamet",
+   "rest_days": 2
   },
   {
    "name": "Miles McBride",
@@ -1921,7 +2064,8 @@
    "stl": 1,
    "blk": 0,
    "game": "401909863",
-   "pool_name": "Miles McBride"
+   "pool_name": "Miles McBride",
+   "rest_days": 2
   },
   {
    "name": "Tyler Kolek",
@@ -1943,7 +2087,8 @@
    "stl": 1,
    "blk": 0,
    "game": "401909863",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "Jaden Akins",
@@ -1965,7 +2110,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909863",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "Pacome Dadiet",
@@ -1987,7 +2133,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909863",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "Mohamed Diawara",
@@ -2009,7 +2156,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909863",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "Kevin McCullar Jr.",
@@ -2031,7 +2179,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909863",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "RJ Barrett",
@@ -2053,7 +2202,8 @@
    "stl": 3,
    "blk": 0,
    "game": "401909864",
-   "pool_name": "RJ Barrett"
+   "pool_name": "RJ Barrett",
+   "rest_days": 2
   },
   {
    "name": "Scottie Barnes",
@@ -2075,7 +2225,8 @@
    "stl": 4,
    "blk": 1,
    "game": "401909864",
-   "pool_name": "Scottie Barnes"
+   "pool_name": "Scottie Barnes",
+   "rest_days": 2
   },
   {
    "name": "Jakob Poeltl",
@@ -2097,7 +2248,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909864",
-   "pool_name": "Jakob Poeltl"
+   "pool_name": "Jakob Poeltl",
+   "rest_days": 2
   },
   {
    "name": "Immanuel Quickley",
@@ -2119,7 +2271,8 @@
    "stl": 1,
    "blk": 0,
    "game": "401909864",
-   "pool_name": "Immanuel Quickley"
+   "pool_name": "Immanuel Quickley",
+   "rest_days": 2
   },
   {
    "name": "Ja'Kobe Walter",
@@ -2141,7 +2294,8 @@
    "stl": 2,
    "blk": 1,
    "game": "401909864",
-   "pool_name": "Ja'Kobe Walter"
+   "pool_name": "Ja'Kobe Walter",
+   "rest_days": 2
   },
   {
    "name": "Kyle Anderson",
@@ -2163,7 +2317,8 @@
    "stl": 0,
    "blk": 1,
    "game": "401909864",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "Trayce Jackson-Davis",
@@ -2185,7 +2340,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909864",
-   "pool_name": "Trayce Jackson-Davis"
+   "pool_name": "Trayce Jackson-Davis",
+   "rest_days": 2
   },
   {
    "name": "Jamison Battle",
@@ -2207,7 +2363,8 @@
    "stl": 1,
    "blk": 0,
    "game": "401909864",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "Collin Murray-Boyles",
@@ -2229,7 +2386,8 @@
    "stl": 0,
    "blk": 1,
    "game": "401909864",
-   "pool_name": "Collin Murray-Boyles"
+   "pool_name": "Collin Murray-Boyles",
+   "rest_days": 2
   },
   {
    "name": "Allen Graves",
@@ -2251,7 +2409,8 @@
    "stl": 1,
    "blk": 1,
    "game": "401909864",
-   "pool_name": "Allen Graves"
+   "pool_name": "Allen Graves",
+   "rest_days": 2
   },
   {
    "name": "Jamal Shead",
@@ -2273,7 +2432,8 @@
    "stl": 2,
    "blk": 1,
    "game": "401909864",
-   "pool_name": "Jamal Shead"
+   "pool_name": "Jamal Shead",
+   "rest_days": 2
   },
   {
    "name": "Jaden Bradley",
@@ -2295,7 +2455,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909864",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "Alijah Martin",
@@ -2317,7 +2478,8 @@
    "stl": 1,
    "blk": 0,
    "game": "401909864",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "Kawhi Leonard",
@@ -2339,7 +2501,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909864",
-   "pool_name": "Kawhi Leonard"
+   "pool_name": "Kawhi Leonard",
+   "rest_days": 2
   },
   {
    "name": "Jaden McDaniels",
@@ -2361,7 +2524,8 @@
    "stl": 0,
    "blk": 3,
    "game": "401909864",
-   "pool_name": "Jaden McDaniels"
+   "pool_name": "Jaden McDaniels",
+   "rest_days": 2
   },
   {
    "name": "Jonathan Kuminga",
@@ -2383,7 +2547,8 @@
    "stl": 2,
    "blk": 0,
    "game": "401909864",
-   "pool_name": "Jonathan Kuminga"
+   "pool_name": "Jonathan Kuminga",
+   "rest_days": 2
   },
   {
    "name": "Rudy Gobert",
@@ -2405,7 +2570,8 @@
    "stl": 0,
    "blk": 1,
    "game": "401909864",
-   "pool_name": "Rudy Gobert"
+   "pool_name": "Rudy Gobert",
+   "rest_days": 2
   },
   {
    "name": "LaMelo Ball",
@@ -2427,7 +2593,8 @@
    "stl": 2,
    "blk": 0,
    "game": "401909864",
-   "pool_name": "LaMelo Ball"
+   "pool_name": "LaMelo Ball",
+   "rest_days": 2
   },
   {
    "name": "Anthony Edwards",
@@ -2449,7 +2616,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909864",
-   "pool_name": "Anthony Edwards"
+   "pool_name": "Anthony Edwards",
+   "rest_days": 2
   },
   {
    "name": "Trey Lyles",
@@ -2471,7 +2639,8 @@
    "stl": 1,
    "blk": 0,
    "game": "401909864",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "Cody Williams",
@@ -2493,7 +2662,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909864",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "Isaiah Evans",
@@ -2515,7 +2685,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909864",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "Joan Beringer",
@@ -2537,7 +2708,8 @@
    "stl": 1,
    "blk": 0,
    "game": "401909864",
-   "pool_name": "Joan Beringer"
+   "pool_name": "Joan Beringer",
+   "rest_days": 2
   },
   {
    "name": "Ayo Dosunmu",
@@ -2559,7 +2731,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909864",
-   "pool_name": "Ayo Dosunmu"
+   "pool_name": "Ayo Dosunmu",
+   "rest_days": 2
   },
   {
    "name": "Jaylen Clark",
@@ -2581,7 +2754,8 @@
    "stl": 1,
    "blk": 0,
    "game": "401909864",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "Terrence Shannon Jr.",
@@ -2603,7 +2777,8 @@
    "stl": 1,
    "blk": 0,
    "game": "401909864",
-   "pool_name": "Terrence Shannon Jr"
+   "pool_name": "Terrence Shannon Jr",
+   "rest_days": 2
   },
   {
    "name": "Bones Hyland",
@@ -2625,7 +2800,8 @@
    "stl": 2,
    "blk": 3,
    "game": "401909864",
-   "pool_name": "Bones Hyland"
+   "pool_name": "Bones Hyland",
+   "rest_days": 2
   },
   {
    "name": "Zyon Pullin",
@@ -2647,7 +2823,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909864",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "Derrick Jones Jr.",
@@ -2669,7 +2846,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909865",
-   "pool_name": "Derrick Jones Jr"
+   "pool_name": "Derrick Jones Jr",
+   "rest_days": 2
   },
   {
    "name": "Rui Hachimura",
@@ -2691,7 +2869,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909865",
-   "pool_name": "Rui Hachimura"
+   "pool_name": "Rui Hachimura",
+   "rest_days": 2
   },
   {
    "name": "Isaiah Jackson",
@@ -2713,7 +2892,8 @@
    "stl": 2,
    "blk": 1,
    "game": "401909865",
-   "pool_name": "Isaiah Jackson"
+   "pool_name": "Isaiah Jackson",
+   "rest_days": 2
   },
   {
    "name": "Kris Dunn",
@@ -2735,7 +2915,8 @@
    "stl": 5,
    "blk": 2,
    "game": "401909865",
-   "pool_name": "Kris Dunn"
+   "pool_name": "Kris Dunn",
+   "rest_days": 2
   },
   {
    "name": "Darius Garland",
@@ -2757,7 +2938,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909865",
-   "pool_name": "Darius Garland"
+   "pool_name": "Darius Garland",
+   "rest_days": 2
   },
   {
    "name": "Baba Miller",
@@ -2779,7 +2961,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909865",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "Brook Lopez",
@@ -2801,7 +2984,8 @@
    "stl": 0,
    "blk": 1,
    "game": "401909865",
-   "pool_name": "Brook Lopez"
+   "pool_name": "Brook Lopez",
+   "rest_days": 2
   },
   {
    "name": "Kobe Sanders",
@@ -2823,7 +3007,8 @@
    "stl": 1,
    "blk": 0,
    "game": "401909865",
-   "pool_name": "Kobe Sanders"
+   "pool_name": "Kobe Sanders",
+   "rest_days": 2
   },
   {
    "name": "Gradey Dick",
@@ -2845,7 +3030,8 @@
    "stl": 1,
    "blk": 0,
    "game": "401909865",
-   "pool_name": "Gradey Dick"
+   "pool_name": "Gradey Dick",
+   "rest_days": 2
   },
   {
    "name": "Keaton Wagler",
@@ -2867,7 +3053,8 @@
    "stl": 1,
    "blk": 0,
    "game": "401909865",
-   "pool_name": "Keaton Wagler"
+   "pool_name": "Keaton Wagler",
+   "rest_days": 2
   },
   {
    "name": "Nick Martinelli",
@@ -2889,7 +3076,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909865",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "Jalen Pickett",
@@ -2911,7 +3099,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909865",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "Cam Christie",
@@ -2933,7 +3122,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909865",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "Isaiah Hartenstein",
@@ -2955,7 +3145,8 @@
    "stl": 1,
    "blk": 0,
    "game": "401909865",
-   "pool_name": "Isaiah Hartenstein"
+   "pool_name": "Isaiah Hartenstein",
+   "rest_days": 3
   },
   {
    "name": "Chet Holmgren",
@@ -2977,7 +3168,8 @@
    "stl": 1,
    "blk": 1,
    "game": "401909865",
-   "pool_name": "Chet Holmgren"
+   "pool_name": "Chet Holmgren",
+   "rest_days": 3
   },
   {
    "name": "Shai Gilgeous-Alexander",
@@ -2999,7 +3191,8 @@
    "stl": 2,
    "blk": 1,
    "game": "401909865",
-   "pool_name": "Shai Gilgeous-Alexander"
+   "pool_name": "Shai Gilgeous-Alexander",
+   "rest_days": 3
   },
   {
    "name": "Jalen Williams",
@@ -3021,7 +3214,8 @@
    "stl": 2,
    "blk": 1,
    "game": "401909865",
-   "pool_name": "Jalen Williams"
+   "pool_name": "Jalen Williams",
+   "rest_days": 3
   },
   {
    "name": "Cason Wallace",
@@ -3043,7 +3237,8 @@
    "stl": 2,
    "blk": 0,
    "game": "401909865",
-   "pool_name": "Cason Wallace"
+   "pool_name": "Cason Wallace",
+   "rest_days": 3
   },
   {
    "name": "Jaylin Williams",
@@ -3065,7 +3260,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909865",
-   "pool_name": "Jaylin Williams"
+   "pool_name": "Jaylin Williams",
+   "rest_days": 3
   },
   {
    "name": "Aday Mara",
@@ -3087,7 +3283,8 @@
    "stl": 0,
    "blk": 1,
    "game": "401909865",
-   "pool_name": "Aday Mara"
+   "pool_name": "Aday Mara",
+   "rest_days": 3
   },
   {
    "name": "Alex Caruso",
@@ -3109,7 +3306,8 @@
    "stl": 2,
    "blk": 1,
    "game": "401909865",
-   "pool_name": "Alex Caruso"
+   "pool_name": "Alex Caruso",
+   "rest_days": 3
   },
   {
    "name": "Kenrich Williams",
@@ -3131,7 +3329,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909865",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 3
   },
   {
    "name": "Jared McCain",
@@ -3153,7 +3352,8 @@
    "stl": 1,
    "blk": 0,
    "game": "401909865",
-   "pool_name": "Jared McCain"
+   "pool_name": "Jared McCain",
+   "rest_days": 3
   },
   {
    "name": "Ajay Mitchell",
@@ -3175,7 +3375,8 @@
    "stl": 3,
    "blk": 0,
    "game": "401909865",
-   "pool_name": "Ajay Mitchell"
+   "pool_name": "Ajay Mitchell",
+   "rest_days": 3
   },
   {
    "name": "Bennett Stirtz",
@@ -3197,7 +3398,8 @@
    "stl": 1,
    "blk": 0,
    "game": "401909865",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 3
   },
   {
    "name": "Brooks Barnhizer",
@@ -3219,7 +3421,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909865",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 3
   },
   {
    "name": "Josh Dix",
@@ -3241,7 +3444,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909865",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 3
   },
   {
    "name": "Otega Oweh",
@@ -3263,7 +3467,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909865",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 3
   },
   {
    "name": "Duncan Robinson",
@@ -3285,7 +3490,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909866",
-   "pool_name": "Duncan Robinson"
+   "pool_name": "Duncan Robinson",
+   "rest_days": 2
   },
   {
    "name": "John Collins",
@@ -3307,7 +3513,8 @@
    "stl": 0,
    "blk": 2,
    "game": "401909866",
-   "pool_name": "John Collins"
+   "pool_name": "John Collins",
+   "rest_days": 2
   },
   {
    "name": "Paul Reed",
@@ -3329,7 +3536,8 @@
    "stl": 0,
    "blk": 3,
    "game": "401909866",
-   "pool_name": "Paul Reed"
+   "pool_name": "Paul Reed",
+   "rest_days": 2
   },
   {
    "name": "Cade Cunningham",
@@ -3351,7 +3559,8 @@
    "stl": 2,
    "blk": 2,
    "game": "401909866",
-   "pool_name": "Cade Cunningham"
+   "pool_name": "Cade Cunningham",
+   "rest_days": 2
   },
   {
    "name": "Daniss Jenkins",
@@ -3373,7 +3582,8 @@
    "stl": 0,
    "blk": 1,
    "game": "401909866",
-   "pool_name": "Daniss Jenkins"
+   "pool_name": "Daniss Jenkins",
+   "rest_days": 2
   },
   {
    "name": "Tolu Smith",
@@ -3395,7 +3605,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909866",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "Ronald Holland II",
@@ -3417,7 +3628,8 @@
    "stl": 1,
    "blk": 2,
    "game": "401909866",
-   "pool_name": "Ron Holland"
+   "pool_name": "Ron Holland",
+   "rest_days": 2
   },
   {
    "name": "Javonte Green",
@@ -3439,7 +3651,8 @@
    "stl": 0,
    "blk": 1,
    "game": "401909866",
-   "pool_name": "Javonte Green"
+   "pool_name": "Javonte Green",
+   "rest_days": 2
   },
   {
    "name": "Kevin Huerter",
@@ -3461,7 +3674,8 @@
    "stl": 1,
    "blk": 0,
    "game": "401909866",
-   "pool_name": "Kevin Huerter"
+   "pool_name": "Kevin Huerter",
+   "rest_days": 2
   },
   {
    "name": "Isaiah Joe",
@@ -3483,7 +3697,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909866",
-   "pool_name": "Isaiah Joe"
+   "pool_name": "Isaiah Joe",
+   "rest_days": 2
   },
   {
    "name": "Ebuka Okorie",
@@ -3505,7 +3720,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909866",
-   "pool_name": "Ebuka Okorie"
+   "pool_name": "Ebuka Okorie",
+   "rest_days": 2
   },
   {
    "name": "Taurean Prince",
@@ -3527,7 +3743,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909866",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "Isaac Jones",
@@ -3549,7 +3766,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909866",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "Elijah Harkless",
@@ -3571,7 +3789,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909866",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "Chaz Lanier",
@@ -3593,7 +3812,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909866",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "LeBron James",
@@ -3615,7 +3835,8 @@
    "stl": 2,
    "blk": 0,
    "game": "401909866",
-   "pool_name": "LeBron James"
+   "pool_name": "LeBron James",
+   "rest_days": 1
   },
   {
    "name": "Dean Wade",
@@ -3637,7 +3858,8 @@
    "stl": 2,
    "blk": 1,
    "game": "401909866",
-   "pool_name": "Dean Wade"
+   "pool_name": "Dean Wade",
+   "rest_days": 1
   },
   {
    "name": "Kentavious Caldwell-Pope",
@@ -3659,7 +3881,8 @@
    "stl": 1,
    "blk": 0,
    "game": "401909866",
-   "pool_name": "Kentavious Caldwell-Pope"
+   "pool_name": "Kentavious Caldwell-Pope",
+   "rest_days": 1
   },
   {
    "name": "Jaylen Brown",
@@ -3681,7 +3904,8 @@
    "stl": 0,
    "blk": 1,
    "game": "401909866",
-   "pool_name": "Jaylen Brown"
+   "pool_name": "Jaylen Brown",
+   "rest_days": 1
   },
   {
    "name": "Tyrese Maxey",
@@ -3703,7 +3927,8 @@
    "stl": 3,
    "blk": 1,
    "game": "401909866",
-   "pool_name": "Tyrese Maxey"
+   "pool_name": "Tyrese Maxey",
+   "rest_days": 1
   },
   {
    "name": "Adem Bona",
@@ -3725,7 +3950,8 @@
    "stl": 1,
    "blk": 3,
    "game": "401909866",
-   "pool_name": "Adem Bona"
+   "pool_name": "Adem Bona",
+   "rest_days": 1
   },
   {
    "name": "Anfernee Simons",
@@ -3747,7 +3973,8 @@
    "stl": 1,
    "blk": 2,
    "game": "401909866",
-   "pool_name": "Anfernee Simons"
+   "pool_name": "Anfernee Simons",
+   "rest_days": 1
   },
   {
    "name": "Labaron Philon Jr.",
@@ -3769,7 +3996,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909866",
-   "pool_name": "Labaron Philon"
+   "pool_name": "Labaron Philon",
+   "rest_days": 1
   },
   {
    "name": "Justin Edwards",
@@ -3791,7 +4019,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909866",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 1
   },
   {
    "name": "Caleb Love",
@@ -3813,7 +4042,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909866",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 1
   },
   {
    "name": "Rayan Rupert",
@@ -3835,7 +4065,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909866",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 1
   },
   {
    "name": "VJ Edgecombe",
@@ -3857,7 +4088,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909866",
-   "pool_name": "VJ Edgecombe"
+   "pool_name": "VJ Edgecombe",
+   "rest_days": 1
   },
   {
    "name": "Cedric Coward",
@@ -3879,7 +4111,8 @@
    "stl": 1,
    "blk": 0,
    "game": "401909867",
-   "pool_name": "Cedric Coward"
+   "pool_name": "Cedric Coward",
+   "rest_days": 2
   },
   {
    "name": "Cameron Boozer",
@@ -3901,7 +4134,8 @@
    "stl": 0,
    "blk": 2,
    "game": "401909867",
-   "pool_name": "Cameron Boozer"
+   "pool_name": "Cameron Boozer",
+   "rest_days": 2
   },
   {
    "name": "Jaylen Wells",
@@ -3923,7 +4157,8 @@
    "stl": 2,
    "blk": 0,
    "game": "401909867",
-   "pool_name": "Jaylen Wells"
+   "pool_name": "Jaylen Wells",
+   "rest_days": 2
   },
   {
    "name": "Isaiah Stewart",
@@ -3945,7 +4180,8 @@
    "stl": 1,
    "blk": 2,
    "game": "401909867",
-   "pool_name": "Isaiah Stewart"
+   "pool_name": "Isaiah Stewart",
+   "rest_days": 2
   },
   {
    "name": "Ty Jerome",
@@ -3967,7 +4203,8 @@
    "stl": 1,
    "blk": 0,
    "game": "401909867",
-   "pool_name": "Ty Jerome"
+   "pool_name": "Ty Jerome",
+   "rest_days": 2
   },
   {
    "name": "Jerami Grant",
@@ -3989,7 +4226,8 @@
    "stl": 1,
    "blk": 2,
    "game": "401909867",
-   "pool_name": "Jerami Grant"
+   "pool_name": "Jerami Grant",
+   "rest_days": 2
   },
   {
    "name": "Taylor Hendricks",
@@ -4011,7 +4249,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909867",
-   "pool_name": "Taylor Hendricks"
+   "pool_name": "Taylor Hendricks",
+   "rest_days": 2
   },
   {
    "name": "GG Jackson",
@@ -4033,7 +4272,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909867",
-   "pool_name": "GG Jackson"
+   "pool_name": "GG Jackson",
+   "rest_days": 2
   },
   {
    "name": "Quinten Post",
@@ -4055,7 +4295,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909867",
-   "pool_name": "Quinten Post"
+   "pool_name": "Quinten Post",
+   "rest_days": 2
   },
   {
    "name": "Scotty Pippen Jr.",
@@ -4077,7 +4318,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909867",
-   "pool_name": "Scotty Pippen Jr."
+   "pool_name": "Scotty Pippen Jr.",
+   "rest_days": 2
   },
   {
    "name": "Cam Spencer",
@@ -4099,7 +4341,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909867",
-   "pool_name": "Cam Spencer"
+   "pool_name": "Cam Spencer",
+   "rest_days": 2
   },
   {
    "name": "Kris Murray",
@@ -4121,7 +4364,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909867",
-   "pool_name": "Kris Murray"
+   "pool_name": "Kris Murray",
+   "rest_days": 2
   },
   {
    "name": "Olivier-Maxence Prosper",
@@ -4143,7 +4387,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909867",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "Carson Cooper",
@@ -4165,7 +4410,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909867",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "Jahmai Mashack",
@@ -4187,7 +4433,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909867",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "Domantas Sabonis",
@@ -4209,7 +4456,8 @@
    "stl": 2,
    "blk": 0,
    "game": "401909867",
-   "pool_name": "Domantas Sabonis"
+   "pool_name": "Domantas Sabonis",
+   "rest_days": 2
   },
   {
    "name": "De'Andre Hunter",
@@ -4231,7 +4479,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909867",
-   "pool_name": "De'Andre Hunter"
+   "pool_name": "De'Andre Hunter",
+   "rest_days": 2
   },
   {
    "name": "Precious Achiuwa",
@@ -4253,7 +4502,8 @@
    "stl": 2,
    "blk": 3,
    "game": "401909867",
-   "pool_name": "Precious Achiuwa"
+   "pool_name": "Precious Achiuwa",
+   "rest_days": 2
   },
   {
    "name": "Zach LaVine",
@@ -4275,7 +4525,8 @@
    "stl": 2,
    "blk": 0,
    "game": "401909867",
-   "pool_name": "Zach LaVine"
+   "pool_name": "Zach LaVine",
+   "rest_days": 2
   },
   {
    "name": "Darius Acuff Jr.",
@@ -4297,7 +4548,8 @@
    "stl": 0,
    "blk": 1,
    "game": "401909867",
-   "pool_name": "Darius Acuff"
+   "pool_name": "Darius Acuff",
+   "rest_days": 2
   },
   {
    "name": "Leaky Black",
@@ -4319,7 +4571,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909867",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "Jonathan Mogbo",
@@ -4341,7 +4594,8 @@
    "stl": 1,
    "blk": 0,
    "game": "401909867",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "Malik Monk",
@@ -4363,7 +4617,8 @@
    "stl": 1,
    "blk": 0,
    "game": "401909867",
-   "pool_name": "Malik Monk"
+   "pool_name": "Malik Monk",
+   "rest_days": 2
   },
   {
    "name": "Daeqwon Plowden",
@@ -4385,7 +4640,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909867",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "Emanuel Sharp",
@@ -4407,7 +4663,8 @@
    "stl": 0,
    "blk": 1,
    "game": "401909867",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "Alex Karaban",
@@ -4429,7 +4686,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909867",
-   "pool_name": null
+   "pool_name": null,
+   "rest_days": 2
   },
   {
    "name": "Nique Clifford",
@@ -4451,7 +4709,8 @@
    "stl": 0,
    "blk": 0,
    "game": "401909867",
-   "pool_name": "Nique Clifford"
+   "pool_name": "Nique Clifford",
+   "rest_days": 2
   }
  ],
  "reconciliation": {
