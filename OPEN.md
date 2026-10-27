@@ -1,8 +1,8 @@
 # OPEN — disputed results and unanswered owner questions
 
 Re-read after every compaction (RULES.md rule 8). An item leaves this file only by an owner
-decision or a record that settles it, named in the line that closes it. Mirrored in the deck
-repo's `OPEN.md`; this kit copy is the master.
+decision or a record that settles it, named in the line that closes it. The deck repo's
+`OPEN.md` is a pointer to this file, the master; deck items are added here, tagged "deck".
 
 ## DISPUTED (never cite as a finding)
 
