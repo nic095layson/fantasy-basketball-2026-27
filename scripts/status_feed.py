@@ -58,6 +58,19 @@ def try_espn(timeout=15):
         return None, {"attempted": at, "ok": False, "url": ESPN_INJURIES, "detail": f"{type(e).__name__}: {e}"}
 
 
+def espn_rows(feed):
+    """One row per listed player from ESPN's injury feed: the fields the waiver scan's status gate reads (owner
+    2026-10-28, "Status gate"). Pinned daily as data/status/espn_injuries_<date>.json so the brief re-runs from records."""
+    rows = []
+    for team in (feed or {}).get("injuries", []):
+        for i in team.get("injuries", []):
+            a = i.get("athlete") or {}
+            if a.get("displayName"):
+                rows.append({"player": a["displayName"], "team": (a.get("team") or {}).get("abbreviation"),
+                             "status": i.get("status"), "date": i.get("date"), "comment": i.get("shortComment")})
+    return rows
+
+
 def receipt_source(state):
     """(label, file, sha256) of the roster source the letters came from (owner 2026-10-21: Flaim first)."""
     s = state.get("sources", {})
@@ -140,6 +153,10 @@ def main():
     rec = {"date": a.date, "league_state_as_of": state["as_of"], "tiers": {str(k): v for k, v in TIERS.items()},
            "espn": attempt, "rows": rows}
     json.dump(rec, open(out, "w", encoding="utf-8"), indent=1, ensure_ascii=False)
+    if attempt["ok"]:
+        pin = os.path.join(OUTDIR, f"espn_injuries_{a.date}.json")
+        json.dump({"date": a.date, "fetched": attempt["attempted"], "url": ESPN_INJURIES, "rows": espn_rows(espn)},
+                  open(pin, "w", encoding="utf-8"), indent=1, ensure_ascii=False)
     mine = [r for r in rows if r["seat"] == OWNER_SEAT]
     print(f"status: {len(rows)} flagged row(s) league-wide; yours: "
           + ", ".join(f"{r['player']} {r['yahoo_status']}→{r['availability']:.2f}" for r in mine))
