@@ -1,4 +1,9 @@
 {
+ "carried_forward": [
+  "free_agents",
+  "matchups",
+  "standings"
+ ],
  "daily": {
   "478.l.36464.t.1": {
    "2026-10-27": {
@@ -5044,12 +5049,12 @@
       "status": false
      },
      "isUndroppable": false,
-     "name": "Luka Dončić",
-     "playerId": "6014",
-     "playerKey": "478.p.6014",
+     "name": "James Harden",
+     "playerId": "4563",
+     "playerKey": "478.p.4563",
      "position": "PG,SG",
      "selectedPosition": "PG",
-     "team": "LAL"
+     "team": "CLE"
     },
     {
      "isKeeper": {
@@ -5114,13 +5119,12 @@
       "status": false
      },
      "isUndroppable": false,
-     "name": "Lauri Markkanen",
-     "playerId": "5769",
-     "playerKey": "478.p.5769",
-     "position": "SF,PF",
+     "name": "Jabari Smith Jr.",
+     "playerId": "6693",
+     "playerKey": "478.p.6693",
+     "position": "PF,C",
      "selectedPosition": "F",
-     "status": "Q",
-     "team": "UTA"
+     "team": "HOU"
     },
     {
      "isKeeper": {
@@ -5157,26 +5161,13 @@
       "status": false
      },
      "isUndroppable": false,
-     "name": "James Harden",
-     "playerId": "4563",
-     "playerKey": "478.p.4563",
-     "position": "PG,SG",
+     "name": "Lauri Markkanen",
+     "playerId": "5769",
+     "playerKey": "478.p.5769",
+     "position": "SF,PF",
      "selectedPosition": "Util",
-     "team": "CLE"
-    },
-    {
-     "isKeeper": {
-      "cost": false,
-      "kept": false,
-      "status": false
-     },
-     "isUndroppable": false,
-     "name": "Jabari Smith Jr.",
-     "playerId": "6693",
-     "playerKey": "478.p.6693",
-     "position": "PF,C",
-     "selectedPosition": "Util",
-     "team": "HOU"
+     "status": "Q",
+     "team": "UTA"
     },
     {
      "isKeeper": {
@@ -5189,7 +5180,7 @@
      "playerId": "6021",
      "playerKey": "478.p.6021",
      "position": "SF,PF",
-     "selectedPosition": "BN",
+     "selectedPosition": "Util",
      "team": "NYK"
     },
     {
@@ -5232,9 +5223,24 @@
      "playerId": "10496",
      "playerKey": "478.p.10496",
      "position": "C",
-     "selectedPosition": "IL",
+     "selectedPosition": "BN",
      "status": "O",
      "team": "SAC"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "isUndroppable": false,
+     "name": "Luka Dončić",
+     "playerId": "6014",
+     "playerKey": "478.p.6014",
+     "position": "PG,SG",
+     "selectedPosition": "IL",
+     "status": "O",
+     "team": "LAL"
     },
     {
      "isKeeper": {
@@ -5507,13 +5513,12 @@
       "status": false
      },
      "isUndroppable": false,
-     "name": "Tyrese Haliburton",
-     "playerId": "6404",
-     "playerKey": "478.p.6404",
+     "name": "Derrick White",
+     "playerId": "5842",
+     "playerKey": "478.p.5842",
      "position": "PG,SG",
      "selectedPosition": "SG",
-     "status": "Q",
-     "team": "IND"
+     "team": "BOS"
     },
     {
      "isEditable": true,
@@ -5614,21 +5619,6 @@
       "status": false
      },
      "isUndroppable": false,
-     "name": "Neemias Queta",
-     "playerId": "6581",
-     "playerKey": "478.p.6581",
-     "position": "C",
-     "selectedPosition": "Util",
-     "team": "BOS"
-    },
-    {
-     "isEditable": true,
-     "isKeeper": {
-      "cost": false,
-      "kept": false,
-      "status": false
-     },
-     "isUndroppable": false,
      "name": "Jaden McDaniels",
      "playerId": "6420",
      "playerKey": "478.p.6420",
@@ -5644,10 +5634,25 @@
       "status": false
      },
      "isUndroppable": false,
-     "name": "Derrick White",
-     "playerId": "5842",
-     "playerKey": "478.p.5842",
-     "position": "PG,SG",
+     "name": "Bobby Portis Jr.",
+     "playerId": "5482",
+     "playerKey": "478.p.5482",
+     "position": "PF,C",
+     "selectedPosition": "Util",
+     "team": "MIA"
+    },
+    {
+     "isEditable": true,
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "isUndroppable": false,
+     "name": "Neemias Queta",
+     "playerId": "6581",
+     "playerKey": "478.p.6581",
+     "position": "C",
      "selectedPosition": "BN",
      "team": "BOS"
     },
@@ -5680,6 +5685,22 @@
      "position": "PF",
      "selectedPosition": "BN",
      "team": "PHX"
+    },
+    {
+     "isEditable": true,
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "isUndroppable": false,
+     "name": "Tyrese Haliburton",
+     "playerId": "6404",
+     "playerKey": "478.p.6404",
+     "position": "PG,SG",
+     "selectedPosition": "IL",
+     "status": "O",
+     "team": "IND"
     },
     {
      "isEditable": true,
@@ -6214,12 +6235,12 @@
       "status": false
      },
      "isUndroppable": false,
-     "name": "Michael Porter Jr.",
-     "playerId": "6025",
-     "playerKey": "478.p.6025",
+     "name": "Keldon Johnson",
+     "playerId": "6217",
+     "playerKey": "478.p.6217",
      "position": "SF,PF",
      "selectedPosition": "PF",
-     "team": "BKN"
+     "team": "SAS"
     },
     {
      "isKeeper": {
@@ -6257,6 +6278,20 @@
       "status": false
      },
      "isUndroppable": false,
+     "name": "Mo Bamba",
+     "playerId": "6017",
+     "playerKey": "478.p.6017",
+     "position": "C",
+     "selectedPosition": "C",
+     "team": "UTA"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "isUndroppable": false,
      "name": "Nikola Jokić",
      "playerId": "5352",
      "playerKey": "478.p.5352",
@@ -6276,8 +6311,21 @@
      "playerKey": "478.p.10312",
      "position": "SG,SF",
      "selectedPosition": "Util",
-     "status": "P",
      "team": "MIA"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "isUndroppable": false,
+     "name": "Michael Porter Jr.",
+     "playerId": "6025",
+     "playerKey": "478.p.6025",
+     "position": "SF,PF",
+     "selectedPosition": "BN",
+     "team": "BKN"
     },
     {
      "isKeeper": {
@@ -6306,20 +6354,6 @@
      "position": "PG",
      "selectedPosition": "BN",
      "team": "BOS"
-    },
-    {
-     "isKeeper": {
-      "cost": false,
-      "kept": false,
-      "status": false
-     },
-     "isUndroppable": false,
-     "name": "Precious Achiuwa",
-     "playerId": "6412",
-     "playerKey": "478.p.6412",
-     "position": "PF,C",
-     "selectedPosition": "BN",
-     "team": "SAC"
     },
     {
      "isKeeper": {
@@ -6396,12 +6430,12 @@
       "status": false
      },
      "isUndroppable": false,
-     "name": "Davion Mitchell",
-     "playerId": "6551",
-     "playerKey": "478.p.6551",
-     "position": "PG",
+     "name": "Norman Powell",
+     "playerId": "5506",
+     "playerKey": "478.p.5506",
+     "position": "SG,SF",
      "selectedPosition": "G",
-     "team": "MIA"
+     "team": "CHI"
     },
     {
      "isKeeper": {
@@ -6480,12 +6514,12 @@
       "status": false
      },
      "isUndroppable": false,
-     "name": "Norman Powell",
-     "playerId": "5506",
-     "playerKey": "478.p.5506",
-     "position": "SG,SF",
+     "name": "Davion Mitchell",
+     "playerId": "6551",
+     "playerKey": "478.p.6551",
+     "position": "PG",
      "selectedPosition": "Util",
-     "team": "CHI"
+     "team": "MIA"
     },
     {
      "isKeeper": {
@@ -6513,7 +6547,6 @@
      "playerKey": "478.p.6721",
      "position": "PG,SG",
      "selectedPosition": "BN",
-     "status": "Q",
      "team": "IND"
     },
     {
@@ -6537,11 +6570,26 @@
       "status": false
      },
      "isUndroppable": false,
+     "name": "Robert Williams III",
+     "playerId": "6038",
+     "playerKey": "478.p.6038",
+     "position": "C",
+     "selectedPosition": "BN",
+     "team": "POR"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "isUndroppable": false,
      "name": "Ziaire Williams",
      "playerId": "6552",
      "playerKey": "478.p.6552",
      "position": "SG,SF",
-     "selectedPosition": "BN",
+     "selectedPosition": "IL",
+     "status": "O",
      "team": "LAL"
     },
     {
@@ -6783,25 +6831,11 @@
       "status": false
      },
      "isUndroppable": false,
-     "name": "Jalen Brunson",
-     "playerId": "6044",
-     "playerKey": "478.p.6044",
-     "position": "PG",
-     "selectedPosition": "PG",
-     "team": "NYK"
-    },
-    {
-     "isKeeper": {
-      "cost": false,
-      "kept": false,
-      "status": false
-     },
-     "isUndroppable": false,
      "name": "Cade Cunningham",
      "playerId": "6512",
      "playerKey": "478.p.6512",
      "position": "PG,SG",
-     "selectedPosition": "SG",
+     "selectedPosition": "PG",
      "team": "DET"
     },
     {
@@ -6811,13 +6845,26 @@
       "status": false
      },
      "isUndroppable": false,
-     "name": "Ajay Mitchell",
-     "playerId": "10304",
-     "playerKey": "478.p.10304",
+     "name": "Donovan Mitchell",
+     "playerId": "5826",
+     "playerKey": "478.p.5826",
      "position": "PG,SG",
+     "selectedPosition": "SG",
+     "team": "CLE"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "isUndroppable": false,
+     "name": "Jalen Brunson",
+     "playerId": "6044",
+     "playerKey": "478.p.6044",
+     "position": "PG",
      "selectedPosition": "G",
-     "status": "Q",
-     "team": "OKC"
+     "team": "NYK"
     },
     {
      "isKeeper": {
@@ -6910,41 +6957,41 @@
       "status": false
      },
      "isUndroppable": false,
-     "name": "Andrew Wiggins",
-     "playerId": "5292",
-     "playerKey": "478.p.5292",
-     "position": "SG,SF,PF",
-     "selectedPosition": "Util",
-     "team": "MIA"
-    },
-    {
-     "isKeeper": {
-      "cost": false,
-      "kept": false,
-      "status": false
-     },
-     "isUndroppable": false,
-     "name": "Donovan Mitchell",
-     "playerId": "5826",
-     "playerKey": "478.p.5826",
-     "position": "PG,SG",
-     "selectedPosition": "BN",
-     "team": "CLE"
-    },
-    {
-     "isKeeper": {
-      "cost": false,
-      "kept": false,
-      "status": false
-     },
-     "isUndroppable": false,
      "name": "Aaron Wiggins",
      "playerId": "6597",
      "playerKey": "478.p.6597",
      "position": "SG,SF",
+     "selectedPosition": "Util",
+     "team": "ATL"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "isUndroppable": false,
+     "name": "Ajay Mitchell",
+     "playerId": "10304",
+     "playerKey": "478.p.10304",
+     "position": "PG,SG",
      "selectedPosition": "BN",
      "status": "Q",
-     "team": "ATL"
+     "team": "OKC"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "isUndroppable": false,
+     "name": "Andrew Wiggins",
+     "playerId": "5292",
+     "playerKey": "478.p.5292",
+     "position": "SG,SF,PF",
+     "selectedPosition": "BN",
+     "team": "MIA"
     },
     {
      "isKeeper": {
@@ -7082,6 +7129,7 @@
      "playerKey": "478.p.10096",
      "position": "SG,SF,PF",
      "selectedPosition": "F",
+     "status": "P",
      "team": "DET"
     },
     {
@@ -7472,7 +7520,7 @@
      "playerKey": "478.p.6499",
      "position": "SG,SF,PF",
      "selectedPosition": "G",
-     "status": "Q",
+     "status": "D",
      "team": "DAL"
     },
     {
@@ -7571,6 +7619,7 @@
      "playerKey": "478.p.10095",
      "position": "PG,SG,SF",
      "selectedPosition": "Util",
+     "status": "Q",
      "team": "ORL"
     },
     {
@@ -7627,7 +7676,6 @@
      "playerKey": "478.p.10599",
      "position": "SF",
      "selectedPosition": "IL",
-     "status": "O",
      "team": "WAS"
     },
     {
