@@ -7,7 +7,8 @@ and moved the owner's title share by ±3 points — more than the ±0.4 the repo
 because nothing recorded what each constant was FOR or what vouched for it. This check makes that a gate:
 
   * every constant in scripts/redteam/constants_registry.json must equal the live deck value (drift);
-  * every module-level UPPER_CASE constant of arena.py / hoops.py that the engine reads must be registered;
+  * every module-level UPPER_CASE constant of arena.py / hoops.py that the engine reads must be registered (and of
+    the kit's season_lines, minutes_line, co_gm and status_feed; 2026-10-28 D-WS-1 added the last two);
   * every entry carries a status — settings | structural | measured | declared_band | uncalibrated — with a
     record path for measured/declared_band/settings and a decision id for uncalibrated;
   * the deck commit is recorded (engine fingerprint).
@@ -38,7 +39,11 @@ IGNORE = {"arena": {"ARENA_DIR", "REPO", "DATA", "CATS", "BASE_POS", "STRATEGIES
           "season_lines": {"HERE", "KIT", "DECK", "KIT_CSV", "DECK_CSV", "ADDITIONS", "ACTUALS", "OUT", "KIT_COLS", "DECK_COLS", "DEC",
                            "OVERRIDES", "OVERRIDE_FIELDS"},
           # the minutes-trend candidate line (2026-10-27, build 2): paths and column lists are not judgment constants
-          "minutes_line": {"HERE", "KIT", "SEASON", "ACTUALS", "POOL", "KIT_CSV", "PRE_KIT", "SCALED", "DEC"}}
+          "minutes_line": {"HERE", "KIT", "SEASON", "ACTUALS", "POOL", "KIT_CSV", "PRE_KIT", "SCALED", "DEC"},
+          # the waiver gate's status tiers (2026-10-28, D-WS-1): paths, the owner's seat, the lines tag, the team-code
+          # map and the category alias are identifiers, not judgment constants
+          "co_gm": {"KIT", "DECK", "STATE", "SCHEDULE", "GAMES", "OWNER_SEAT", "LINES_TAG", "TEAM_CODE", "CATS"},
+          "status_feed": {"KIT", "STATE", "OVERRIDES", "OUTDIR", "ESPN_INJURIES", "OWNER_SEAT"}}
 TIER_NOTES = {"healthy": "", "mild": "inj-acl-mild", "risk": "inj-knee-risk", "recovery": "inj-achilles-recovery",
               "out": "out-season"}
 
@@ -72,8 +77,11 @@ def read_live(deck=DECK):
         sys.path.insert(0, kit_scripts)
     season_lines = importlib.import_module("season_lines")
     minutes_line = importlib.import_module("minutes_line")
+    co_gm = importlib.import_module("co_gm")
+    status_feed = importlib.import_module("status_feed")
     live = {}
-    for modname, mod in (("arena", arena), ("hoops", hoops), ("season_lines", season_lines), ("minutes_line", minutes_line)):
+    for modname, mod in (("arena", arena), ("hoops", hoops), ("season_lines", season_lines), ("minutes_line", minutes_line),
+                         ("co_gm", co_gm), ("status_feed", status_feed)):
         for name, val in vars(mod).items():
             if name.isupper() and not name.startswith("_") and name not in IGNORE[modname] \
                     and not callable(val) and not inspect.ismodule(val):

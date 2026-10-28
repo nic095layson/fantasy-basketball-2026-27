@@ -69,6 +69,30 @@ def newest_status(date):
     return (json.load(open(files[-1], encoding="utf-8")), os.path.basename(files[-1])) if files else ({"rows": []}, None)
 
 
+def add_flag(s):
+    """The waiver pair's status flag: the day's code and its source, and for a short Out ESPN's expected return
+    (owner 2026-10-28, item 5)."""
+    if s.get("short_out"):
+        return f"{s['code']} today ({s['source']}), ESPN expects back {s['return_date'][:10]}"
+    return f"{s['code']} today ({s['source']})"
+
+
+def status_inputs(date, pull_dir=None, status_dir=None):
+    """The day's status sources for the waiver gate (owner 2026-10-28, "Status gate"): Yahoo's available-player list
+    from the pinned Flaim pull, and ESPN's injury feed pinned by status_feed. Each is None when the day has none."""
+    pull_dir = pull_dir or os.path.join(CG.KIT, "data", "source", "flaim")
+    status_dir = status_dir or os.path.join(CG.KIT, "data", "status")
+    yahoo = espn = None
+    pp = os.path.join(pull_dir, f"pull_{date}.json")
+    if os.path.exists(pp):
+        fa = (json.load(open(pp, encoding="utf-8")).get("free_agents") or {}).get("freeAgents")
+        yahoo = fa or None
+    ep = os.path.join(status_dir, f"espn_injuries_{date}.json")
+    if os.path.exists(ep):
+        espn = json.load(open(ep, encoding="utf-8"))["rows"]
+    return yahoo, espn
+
+
 def league_moves_for(date):
     """The league-moves record for the brief's date (scripts/league_moves.py; owner 2026-10-20 item 2), or None."""
     path = os.path.join(CG.KIT, "data", "news", f"league_moves_{date}.json")
@@ -165,9 +189,23 @@ def main():
     lineup, bench = CG.daily_lineup(mine)
 
     # 3. waiver scan
-    fa = CG.free_agents(P, state)
-    base_ecw, pairs = CG.waiver_pairs(ros, fa)
+    # owner 2026-10-28 ("Status gate"): the day's injury status gates the candidates; with no source the scan stops
+    yahoo_fa, espn_rows = status_inputs(a.date)
+    try:
+        st = CG.fa_status(P, yahoo_fa, espn_rows, date=a.date)
+        fa, aside = CG.free_agents(P, state, st)
+        gate = {"sources": st["sources"], "set_aside": aside}
+    except CG.StatusMissing as e:
+        st, fa, aside = {"by": {}}, [], []
+        gate = {"halt": str(e)}
+        print(f"WAIVER SCAN: HALT — {e}; no waiver pairs or streaming today (never the pool unchecked)")
+    base_ecw, pairs = CG.waiver_pairs(ros, fa) if fa else (None, [])
     pos = [x for x in pairs if x["d_ecw"] > 0]
+    for x in pairs:
+        s = st["by"].get(x["add"])
+        if s:
+            x["add_status"] = {"code": s["code"], "source": s["source"], "return_date": s.get("return_date"),
+                               "short_out": s.get("short_out", False)}
     top, seen = [], set()
     for x in pos:
         if x["add"] not in seen:
@@ -196,8 +234,8 @@ def main():
     # 4. streaming: free agents by per-game board value x games left this week
     weakest = min((p for p in ros[CG.OWNER_SEAT]), key=lambda p: CG.hoops.adj_value(p, ()))
     weak_games = left.get(next(x["yahoo_nba_team"] for x in me["players"] if x["player"] == weakest["player"]), 0)
-    stream = CG.streaming([{"player": p["player"], "team": p["team"], "games_left": left.get(p["team"], 0),
-                            "value_per_game": round(CG.hoops.adj_value(p, ()), 2)} for p in fa], weak_games)
+    # owner 2026-10-28 (item 5): a short Out streams on its games from ESPN's return date
+    stream = CG.streaming(CG.stream_rows(fa, st, games, a.date, wend), weak_games)
 
     tx = transactions_for(a.date)
 
@@ -205,7 +243,8 @@ def main():
     rec = {"date": a.date, "week": wk, "week_window": [wstart, wend], "league_state_as_of": state["as_of"],
            "unpooled": state.get("unpooled") or [],
            "status_file": status_file, "lines": lines_label(), "opponent": opp_team["name"] if opp_team else None,
-           "today": rows_today, "lineup": lineup, "bench": bench, "waiver_base_ecw": round(base_ecw, 4),
+           "today": rows_today, "lineup": lineup, "bench": bench,
+           "waiver_base_ecw": round(base_ecw, 4) if base_ecw is not None else None, "waiver_gate": gate,
            "waiver_positive_pairs": len(pos), "waiver_pairs_scored": len(pairs), "waiver_top": top, "streaming": stream,
            "streaming_vs": {"player": weakest["player"], "games_left": weak_games,
                             "value_per_game": round(CG.hoops.adj_value(weakest, ()), 2)},
@@ -234,22 +273,37 @@ def main():
     L += ["", "## League moves", ""] + league_moves_lines(lm, me["name"])
     L += ["", "## Transactions", ""] + transactions_lines(tx, me["name"], rec["opponent"])
     L += ["", "## Waiver scan", ""]
-    if top:
+    if "halt" in gate:
+        L.append(f"**HALT** — {gate['halt']}. No pairs and no streaming list today: the scan never runs on the pool unchecked.")
+    elif top:
         L.append(f"{len(pos)} of {len(pairs)} add/drop pairs raise expected weekly category wins (base {base_ecw:.3f}). "
-                 f"Best three, checked in the simulator (avg of 2 runs × {a.seasons:,} seasons, real schedule):")
+                 f"Best {len(top)}, checked in the simulator (avg of 2 runs × {a.seasons:,} seasons, real schedule):")
         L += [f"- Add **{x['add']}** ({x['add_team']}), drop {x['drop']}: {x['d_ecw']:+.3f} cats/week; "
-              f"title {x['title']:.1f}% ({x['d_title']:+.1f})" for x in top]
+              f"title {x['title']:.1f}% ({x['d_title']:+.1f})"
+              + (f" — {add_flag(x['add_status'])}, check before claiming" if x.get("add_status") else "")
+              for x in top]
     else:
         L.append(f"No add/drop pair raises expected weekly category wins ({len(pairs)} scored). Stand pat.")
+    if "halt" not in gate:
+        srcs = " and ".join(k.upper() if k == "espn" else "Yahoo" for k, v in gate["sources"].items() if v)
+        miss = [("Yahoo's available list" if k == "yahoo" else "ESPN's injury feed") for k, v in gate["sources"].items() if not v]
+        L.append(f"Status from {srcs}" + (f" ({', '.join(miss)} not read today)" if miss else "") + "."
+                 + (" Set aside as Out: " + ", ".join(f"{x['player']} ({x['code']}, {x['source']}"
+                                                     + (f", ESPN expects back {x['return_date'][:10]}" if x.get("return_date") else "")
+                                                     + ")" for x in aside) + "."
+                    if aside else ""))
     L += ["", f"## Streaming ({a.date} to {wend})", "",
           f"Your weakest active player by board value is {weakest['player']} "
           f"({rec['streaming_vs']['value_per_game']:+.2f} per game, {weak_games} games left). "
           f"Free agents with more games left, best per game first:"]
-    L += [f"- {r['player']} ({r['team']}): {r['games_left']} games, {r['value_per_game']:+.2f} per game" for r in stream] or ["- none"]
+    L += [f"- {r['player']} ({r['team']}): {r['games_left']} games"
+          + (f" ({r['status']} today, back {r['return_date']}: {r['exp_games']:g} from then)" if r.get("return_date")
+             else f" ({r['status']} today: {r['exp_games']:g} expected)" if r.get("status") else "")
+          + f", {r['value_per_game']:+.2f} per game" for r in stream] or ["- none"]
     L += ["", "## Title odds (real schedule)", "", f"- Title: {odds_line(base[SEEDS[0]]['champ'], base[SEEDS[1]]['champ'], a.seasons)}",
           f"- Playoffs: {(base[SEEDS[0]]['playoff'] + base[SEEDS[1]]['playoff']) / 2:.1f}%",
           f"- {band_line(date=a.date)}"] + ([f"- {sim_absent_line(absent)}"] if absent else []) + ["",
-          "_Cannot see: news after the morning FantasyBot pull (or the last paste) beyond ESPN's transactions feed; ESPN injuries (network-denied); minutes limits; "
+          "_Cannot see: news after the morning FantasyBot pull (or the last paste) beyond ESPN's transactions and injury feeds (the injury feed gates the waiver scan only); minutes limits; "
           "other managers' pending claims. Q counts as a coin flip._"]
     path = os.path.join(OUTDIR, f"brief_{a.date}.md")
     open(path, "w", encoding="utf-8").write("\n".join(L) + "\n")

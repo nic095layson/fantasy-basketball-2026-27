@@ -1,0 +1,300 @@
+{
+ "captured_utc": "2026-10-28T18:25:46.287Z",
+ "input": {
+  "player_name": "Mo Bamba",
+  "sport": "nba"
+ },
+ "response": {
+  "player": {
+   "id": "1994",
+   "name": "Mo Bamba",
+   "firstName": "Mo",
+   "lastName": "Bamba",
+   "position": "C",
+   "team": "UTA",
+   "age": 28,
+   "experience": 8,
+   "college": "Texas",
+   "imageUrl": "https://api.fantasybot.ai/img/player/1994.webp?sport=nba",
+   "sport": "nba",
+   "season": "2026",
+   "statsSeason": "2026",
+   "offseason": false,
+   "injury": null,
+   "statusTag": null,
+   "statusText": "",
+   "newsText": "",
+   "seasonAvg": {
+    "ppg": 43,
+    "totalPoints": 43,
+    "gamesPlayed": 1,
+    "ppr": 43,
+    "halfPpr": 43,
+    "standard": 43
+   },
+   "currentMatchup": null,
+   "weeklyLog": [],
+   "trend": {
+    "last3Avg": 43,
+    "last5Avg": 43,
+    "direction": "stable",
+    "consistency": 1
+   },
+   "projection": {
+    "points": 9.3,
+    "rank": 110
+   },
+   "news": [],
+   "seasonStats": {
+    "ast": 1,
+    "blk": 4,
+    "dreb": 4,
+    "fga": 8,
+    "fgm": 7,
+    "fgmi": 1,
+    "gp": 1,
+    "oreb": 3,
+    "pf": 1,
+    "pts": 14,
+    "reb": 7,
+    "sp": 1740,
+    "to": 1
+   },
+   "keyStats": {
+    "Pts Avg": 14,
+    "Reb Avg": 7,
+    "Ast Avg": 1,
+    "Stl Avg": 0,
+    "Blk Avg": 4,
+    "3PM Avg": 0,
+    "TO Avg": 1,
+    "FG%": 87.5,
+    "Min Avg": 29
+   },
+   "positionCompetition": [],
+   "qbRisk": null,
+   "ageRisk": null,
+   "yearOverYear": null,
+   "strengthOfSchedule": null,
+   "newsReport": null,
+   "adp": null,
+   "expertRank": null,
+   "board": {
+    "mode": "ros",
+    "week": null,
+    "rank": 102,
+    "blurb": "solid TO, costs you AST and PTS"
+   },
+   "week": null,
+   "finishedWeek": null,
+   "nba": {
+    "season": "2026",
+    "statsSeason": "2026",
+    "preTipOff": false,
+    "asOfDate": "2026-10-28",
+    "projected": {
+     "pts": 3.4,
+     "reb": 2.7,
+     "ast": 0.5,
+     "stl": 0.1,
+     "blk": 0.5,
+     "tpm": 0.3,
+     "tov": 0.5,
+     "fgPct": 62.2,
+     "ftPct": 67.4,
+     "min": 8.6
+    },
+    "seasonLine": {
+     "pts": 14,
+     "reb": 7,
+     "ast": 1,
+     "stl": 0,
+     "blk": 4,
+     "tpm": 0,
+     "tov": 1,
+     "fgPct": 87.5,
+     "ftPct": null,
+     "min": 29
+    },
+    "seasonGames": 1,
+    "seasonFptsPerGame": 43,
+    "recent": [
+     {
+      "days": 7,
+      "games": 1,
+      "fptsPerGame": 43
+     },
+     {
+      "days": 15,
+      "games": 1,
+      "fptsPerGame": 43
+     },
+     {
+      "days": 30,
+      "games": 1,
+      "fptsPerGame": 43
+     }
+    ],
+    "recentSeason": "2026",
+    "points": {
+     "key": "espn_points",
+     "label": "ESPN default points",
+     "perGame": 9.3,
+     "unit": "fpts",
+     "rank": 489,
+     "posRank": 110,
+     "position": "C",
+     "expectedGames": 51.6,
+     "total": 479.7,
+     "aboveReplacement": -938.2,
+     "drivers": "9.3 fantasy points a game, mostly PTS and FGM; FGA costs 2.3",
+     "replacement": 27.49
+    },
+    "categories": {
+     "key": "nine_cat",
+     "label": "9-cat H2H",
+     "perGame": -3.91,
+     "unit": "value",
+     "rank": 428,
+     "posRank": 102,
+     "position": "C",
+     "expectedGames": 51.6,
+     "total": -201.8,
+     "aboveReplacement": -54.2,
+     "drivers": "solid TO, costs you AST and PTS",
+     "scores": [
+      {
+       "z": 0.19,
+       "stat": "fg_pct",
+       "label": "FG%"
+      },
+      {
+       "z": -0.05,
+       "stat": "ft_pct",
+       "label": "FT%"
+      },
+      {
+       "z": -0.83,
+       "stat": "tpm",
+       "label": "3PM"
+      },
+      {
+       "z": -0.93,
+       "stat": "pts",
+       "label": "PTS"
+      },
+      {
+       "z": -0.77,
+       "stat": "reb",
+       "label": "REB"
+      },
+      {
+       "z": -0.95,
+       "stat": "ast",
+       "label": "AST"
+      },
+      {
+       "z": -0.8,
+       "stat": "stl",
+       "label": "STL"
+      },
+      {
+       "z": -0.6,
+       "stat": "blk",
+       "label": "BLK"
+      },
+      {
+       "z": 0.83,
+       "stat": "tov",
+       "label": "TO"
+      }
+     ],
+     "replacement": -2.86,
+     "replacementScores": [
+      {
+       "stat": "fg_pct",
+       "z": -0.005833333333333326
+      },
+      {
+       "stat": "ft_pct",
+       "z": 0.07666666666666666
+      },
+      {
+       "stat": "tpm",
+       "z": -0.5708333333333333
+      },
+      {
+       "stat": "pts",
+       "z": -0.6466666666666666
+      },
+      {
+       "stat": "reb",
+       "z": -0.6625000000000001
+      },
+      {
+       "stat": "ast",
+       "z": -0.6216666666666667
+      },
+      {
+       "stat": "stl",
+       "z": -0.5216666666666666
+      },
+      {
+       "stat": "blk",
+       "z": -0.5175000000000001
+      },
+      {
+       "stat": "tov",
+       "z": 0.6091666666666666
+      }
+     ],
+     "replacementGames": 65.89166666666667
+    },
+    "leagueLens": null,
+    "expectedGames": 51.6,
+    "teamGamesLeft": 76,
+    "healthyRate": 0.68,
+    "nextGame": {
+     "date": "2026-10-28",
+     "opponent": "SAS",
+     "home": true,
+     "tipUtc": "2026-10-29T01:00:00.000Z",
+     "tipEt": "9:00 PM ET",
+     "backToBack": false
+    },
+    "week": {
+     "kind": "this_week",
+     "label": "Oct 26 – Nov 1",
+     "start": "2026-10-26",
+     "end": "2026-11-01",
+     "games": 3,
+     "gamesLeft": 2,
+     "dates": [
+      "2026-10-26",
+      "2026-10-28",
+      "2026-10-31"
+     ],
+     "backToBacks": [
+      {
+       "first": "2026-10-25",
+       "second": "2026-10-26"
+      }
+     ]
+    },
+    "status": null,
+    "market": {
+     "adp": 561.8,
+     "espnRank": null,
+     "percentOwned": null
+    },
+    "marketNote": null,
+    "notes": [
+     "Schedule not final until the NBA Cup knockouts are set (after Nov 27); games-remaining counts may rise by one or two"
+    ]
+   },
+   "positions": [
+    "C"
+   ]
+  }
+ }
+}

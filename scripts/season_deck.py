@@ -54,7 +54,10 @@ def default_paths(date):
                 # optional (owner 2026-10-23): minutes, starts, role and per-36 rates from the box scores (form_board.py)
                 form=os.path.join(KIT, "report", "form", f"form_{date}.json"),
                 # optional (owner 2026-10-24): the morning card's P(win) scored against each finished week (score_week.py)
-                scores=os.path.join(KIT, "report", "calibration_daily.json"))
+                scores=os.path.join(KIT, "report", "calibration_daily.json"),
+                # optional (owner 2026-10-28, item 4): the day's two status pins the brief's waiver gate reads
+                yahoo_pull=os.path.join(KIT, "data", "source", "flaim", f"pull_{date}.json"),
+                espn_injuries=os.path.join(KIT, "data", "status", f"espn_injuries_{date}.json"))
 
 
 def resolve_rostered(rostered, board_names, held_names, aliases):
@@ -146,6 +149,16 @@ def build(paths, date):
         o = own.get(r["name"])
         r["owner"] = o[0] if o else None; r["seat"] = o[1] if o else None
         r["fa"] = o is None; r["mine"] = bool(o and o[1] == my_seat)
+    # owner 2026-10-28 (item 4): each free agent's status for the day, read as the brief's waiver gate reads it
+    # (co_gm.fa_status); None when neither pin exists, and the tab says so
+    yp, ep = opt("yahoo_pull"), opt("espn_injuries")
+    fa_status = None
+    if yp is not None or ep is not None:
+        st = co_gm.fa_status([{"player": r["name"]} for r in board["board"] if r["fa"]],
+                             ((yp or {}).get("free_agents") or {}).get("freeAgents") if yp is not None else None,
+                             ep["rows"] if ep is not None else None, date=date)
+        fa_status = dict(sources=st["sources"], by={n: {k: v[k] for k in ("code", "source", "return_date", "short_out")}
+                                                     for n, v in st["by"].items()})
     rosters = {t["name"]: dict(seat=t["seat"], manager=t.get("manager"),
                                players=[rmap[p["player"]] for p in t["players"] if rmap[p["player"]] in on_board],
                                off_board=[rmap[p["player"]] for p in t["players"] if rmap[p["player"]] not in on_board],
@@ -173,9 +186,10 @@ def build(paths, date):
                 league=dict(as_of=league["as_of"], rosters=rosters, managers={t["name"]: t.get("manager") for t in league["teams"]},
                             unpooled=league.get("unpooled") or [], my_positions=my_positions), season_lines=lines, matchup=wk,
                 ledger=calib.get("weeks", {}), bands=bands, band_engine=band_engine, band_config=band_config, matchup_live=matchup_live,
-                week_matchup=week_matchup, league_table=league_rec, form=form_rec, scores=scores,
+                week_matchup=week_matchup, league_table=league_rec, form=form_rec, scores=scores, fa_status=fa_status,
                 config=dict(cats=["FG%", "FT%", "3PM", "PTS", "REB", "AST", "STL", "BLK", "TOV"],
                             tier_low=0.3, tier_high=1.0, verdict_edge=0.5, verdict_strong=1.5,
+                            short_out_days=co_gm.SHORT_OUT_DAYS,
                             thresholds_note="stated defaults, D-SD-1 (owner re-tunes); z screen only, not the simulator"))
     payload = json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
     html = SHELL.replace("__DATA__", payload)
@@ -695,7 +709,13 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
     h("option",{value:"z",...(sortBy==="z"?{selected:""}:{})},"Sort: season z"));
   const FM={}; ((D.form&&D.form.rows)||[]).forEach(r=>{FM[r.name]=r;});   // owner 2026-10-23: minutes per game from the box scores
   const mins=(r)=>{ const f=FM[r.name]; return f&&f.games? h("span",{class:"note"}," · "+f.mpg.toFixed(1)+" min/g ("+f.games+" g"+(f.role==="starter"?", starts":f.role==="bench"?", bench":"")+")") : null; };
-  const wk=(r)=>{ const t=TWM[r.name]; return h("span",{},t? h("span",{class:"note"}," · this week "+swk(t.d_exp,2)+" ("+t.games+" g, for "+t.drop+")") : null, mins(r)); };
+  // owner 2026-10-28 (item 4): the day's status beside each row, as the brief's waiver gate reads it
+  const FS=D.fa_status, SRC={yahoo:"Yahoo",espn:"ESPN"};
+  const stat=(r)=>{ const s=FS&&FS.by[r.name]; if(!s) return null;
+    const out=["O","NA","Out"].includes(s.code), cls=out?(s.short_out?"warn":"crit"):(s.code==="P"?"ok":"warn");
+    // the return date only on an Out: ESPN dates a day-to-day player's return as today
+    return h("span",{}," · ",h("span",{class:"chip "+cls},s.code+" ("+SRC[s.source]+")"+(out&&s.return_date?", back "+s.return_date.slice(0,10):""))); };
+  const wk=(r)=>{ const t=TWM[r.name]; return h("span",{},stat(r),t? h("span",{class:"note"}," · this week "+swk(t.d_exp,2)+" ("+t.games+" g, for "+t.drop+")") : null, mins(r)); };
   function render(){ let pool=BOARD.filter(r=>r.fa && (!search || r.name.toLowerCase().includes(search.toLowerCase())))
       .sort((a,b)=>b.z_adj-a.z_adj);  // owner 2026-10-20: free agents by z, descending
     if(sortBy==="week") pool=pool.sort((a,b)=>{ const x=TWM[a.name], y=TWM[b.name];  // 2026-10-22: scored ones first, by this week
@@ -710,6 +730,10 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
           inp, sortSel,
           TWR.length? h("p",{class:"note"},"This week = Δ cats vs opponent if added tomorrow"+(offBoard.length? " · not on this board: "+offBoard.join(", "):""),
             more("This week = the change in expected categories won against "+W.opponent.name+" if you add him from tomorrow in place of the lower-valued player named (Today tab, \"This week's adds\").")) : null,
+          h("p",{class:"note",id:"fa-status-note"},FS? "Status today: Yahoo's letter where it lists the player, ESPN's injury feed for the rest"
+            +(FS.sources.yahoo&&FS.sources.espn?"":" ("+(FS.sources.yahoo?"ESPN's feed":"Yahoo's list")+" not pinned today)")
+            +". An Out ESPN expects back within "+C.short_out_days+" days shows its date; the brief keeps it in the waiver scan."
+            : "No status pinned for the day: check each player before claiming."),
           pickList(pool,add,render,"No free agents match.",wk))),
       buildStrip("fa-build",{[D.my_team]:{out:drop,inc:add}},add.size||drop.size),
       scoreBlock([...add].map(n=>BYNAME[n]),[...drop].map(n=>BYNAME[n])));

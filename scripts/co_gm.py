@@ -130,11 +130,85 @@ def pwins(my, opps):
     return sum(_pcat(my, om, c) for om in opps for c in CATS) / len(opps)
 
 
-def free_agents(P, state, n=WAIVER_CANDIDATES):
+# owner 2026-10-28 ("Status gate (Recommended)"): the waiver scan and streaming read the day's injury status for the
+# unrostered. The kit's tag (hoops.availability) is a season judgement and an untagged player reads 1.0, so on 10-28 a
+# player Yahoo listed Out (Jalen Williams, ankle surgery) was the brief's top add. Yahoo's letter (the pinned available
+# list) wins; ESPN's injury feed covers players that list omits. Stated to the owner before the build:
+#   Out = Yahoo O or NA (status_feed.TIERS 0.00) or ESPN "Out"     -> set aside from the scan and streaming, named
+#   D, Q, P, ESPN Day-To-Day                                       -> kept at full season value, flagged; streaming
+#                                                                     scales this week's games by the tier
+#   ESPN Day-To-Day = 0.50: the feed has no finer grade (Yahoo's Q tier)
+# Registered uncalibrated (D-WS-1, owner 2026-10-28 "proceed"), beside status_feed.TIERS.
+ESPN_TIERS = {"Out": ("out", 0.00), "Day-To-Day": ("day-to-day", 0.50)}
+# owner 2026-10-28 (item 5, "Use ESPN return date (Recommended)"): an Out that ESPN expects back at most this many days
+# after the brief's date stays in the waiver scan at full season value, flagged with the date; streaming counts its
+# games from that date. An Out with no ESPN return date stays set aside. 7 is a stated default, uncalibrated (D-WS-2).
+SHORT_OUT_DAYS = 7
+
+
+class StatusMissing(Exception):
+    pass
+
+
+def fa_status(P, yahoo, espn, date=None):
+    """yahoo: the pinned available-player entries ({name, status}) or None when the pull has no list; espn: the pinned
+    feed rows ({player, status, return_date}) or None when it was not read. Returns {"by": {pool name: {code, source,
+    availability, return_date, short_out}}, "sources": {...}}; availability None is a code the kit does not tier. Both
+    None: StatusMissing. return_date is ESPN's expected return wherever ESPN lists the player (a Yahoo letter included);
+    short_out marks an Out back within SHORT_OUT_DAYS of `date` (never without the day's date)."""
+    if yahoo is None and espn is None:
+        raise StatusMissing("no Yahoo available-player list and no ESPN injury feed for the day")
+    import league_intake as LI
+    import status_feed as SF
+    by, ret = {}, {}
+    if espn is not None:
+        res, _ = LI.resolve([r["player"] for r in espn], P, {})
+        for r in espn:
+            if r["player"] in res:
+                t = ESPN_TIERS.get(r["status"])
+                ret[res[r["player"]]] = r.get("return_date")
+                by[res[r["player"]]] = {"code": r["status"], "source": "espn", "availability": t[1] if t else None}
+    if yahoo is not None:
+        res, _ = LI.resolve([e["name"] for e in yahoo], P, {})
+        for e in yahoo:
+            n = res.get(e["name"])
+            if n is None:
+                continue
+            st = e.get("status") or None
+            if st is None:
+                by.pop(n, None)       # listed by Yahoo with no letter: Yahoo's word wins over ESPN's
+            else:
+                by[n] = {"code": st, "source": "yahoo",
+                         "availability": SF.TIERS[st][1] if st in SF.TIERS else None}
+    for n, s in by.items():
+        s["return_date"] = ret.get(n)
+        s["short_out"] = bool(date and s["availability"] == 0 and s["return_date"] and
+                              (datetime.date.fromisoformat(s["return_date"][:10])
+                               - datetime.date.fromisoformat(date)).days <= SHORT_OUT_DAYS)
+    return {"by": by, "sources": {"yahoo": yahoo is not None, "espn": espn is not None}}
+
+
+def free_agents(P, state, status, n=WAIVER_CANDIDATES):
+    """The n best unrostered pool players by board value after the status gate, and the players the gate set aside
+    (Out beyond the short-Out line, or a code the kit does not tier) from among the n the scan would otherwise have
+    taken. A short Out stays in, flagged by its status entry."""
     rostered = {p["player"] for t in state["teams"] for p in t["players"]}
     veto = hoops.do_not_draft()
-    fa = [p for p in P if p["player"] not in rostered and hoops.availability(p) > 0 and p["player"] not in veto]
-    return sorted(fa, key=lambda p: -hoops.adj_value(p, ()))[:n]
+    pool = sorted((p for p in P if p["player"] not in rostered and hoops.availability(p) > 0 and p["player"] not in veto),
+                  key=lambda p: -hoops.adj_value(p, ()))
+    fa, aside = [], []
+    for p in pool:
+        s = status["by"].get(p["player"])
+        if s and (s["availability"] is None or (s["availability"] <= 0 and not s.get("short_out"))):
+            if len(fa) + len(aside) < n:
+                aside.append({"player": p["player"], "code": s["code"], "source": s["source"],
+                              "return_date": s.get("return_date"),
+                              "reason": "out" if s["availability"] is not None else "unknown status code, not guessed"})
+            continue
+        fa.append(p)
+        if len(fa) == n:
+            break
+    return fa, aside
 
 
 def waiver_pairs(ros, fa, owner=OWNER_SEAT):
@@ -155,10 +229,33 @@ def waiver_pairs(ros, fa, owner=OWNER_SEAT):
 
 
 def streaming(candidates, drop_games, n=5):
-    """Free agents worth a stream: more games left this week than the player they would replace,
-    ranked by per-game board value (negative values rank too: below the pool mean is not zero)."""
-    ok = [r for r in candidates if r["games_left"] > drop_games]
-    return sorted(ok, key=lambda r: (-r["value_per_game"], -r["games_left"]))[:n]
+    """Free agents worth a stream: more expected games left this week than the player they would replace,
+    ranked by per-game board value (negative values rank too: below the pool mean is not zero). Expected games are
+    games left x the day's status tier (owner 2026-10-28; a candidate without one reads as healthy); a short Out's are
+    its games on or after ESPN's return date (item 5)."""
+    rows = [dict(r, exp_games=r["games_from_return"] if "games_from_return" in r
+                 else round(r["games_left"] * r.get("availability", 1.0), 2)) for r in candidates]
+    ok = [r for r in rows if r["exp_games"] > drop_games]
+    return sorted(ok, key=lambda r: (-r["value_per_game"], -r["exp_games"]))[:n]
+
+
+def stream_rows(fa, status, games, date, end, value=None):
+    """The streaming candidates from the gated free agents: games left this week, per-game board value, the day's
+    status tier, and for a short Out the games on or after ESPN's return date (owner 2026-10-28, item 5)."""
+    value = value or (lambda p: round(hoops.adj_value(p, ()), 2))
+    left = games_left(games, date, end)
+    rows = []
+    for p in fa:
+        s = status["by"].get(p["player"])
+        r = {"player": p["player"], "team": p["team"], "games_left": left.get(p["team"], 0), "value_per_game": value(p),
+             "availability": s["availability"] if s else 1.0}
+        if s:
+            r["status"] = s["code"]
+            if s.get("short_out"):
+                r["games_from_return"] = games_left(games, max(date, s["return_date"][:10]), end).get(p["team"], 0)
+                r["return_date"] = s["return_date"][:10]
+        rows.append(r)
+    return rows
 
 
 # ---------------------------------------------------------------- simulator bridge

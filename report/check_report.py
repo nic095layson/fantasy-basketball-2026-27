@@ -29,6 +29,8 @@ Checks, for a given report (default: the newest report/after-reports/*.md):
      tables are where this report states transactions as fact; prose remains
      the operator's oath.
   3. The pull-log has a row for the report's date.
+  4. A "Runner impact: none | code-only | prompt edit" line (RULES rule 11, owner 2026-10-28): what the work does to
+     the runner's scheduled tasks. Reports written before the rule are not re-gated.
 
 Exit 0 = pass. Exit 1 = fail, problems listed on stdout.
 """
@@ -110,6 +112,12 @@ def check(path):
     ):
         if anchor not in text:
             problems.append(f"missing {why}")
+
+    # 1b. RULES rule 11 (owner 2026-10-28, "Proceed with both"): every after-report states what it does to the
+    # runner's scheduled tasks, on a line of its own: none, code-only, or a prompt edit (with its read-back state)
+    if not re.search(r"^Runner impact: (none|code-only|prompt edit)\b", text, re.M):
+        problems.append("no 'Runner impact: none | code-only | prompt edit' line (RULES rule 11: say what this "
+                        "work does to the runner's scheduled tasks, and for a prompt edit its read-back state)")
 
     # 2. publication rule over table rows. Scoped by table HEADER: a table
     # whose header names a source/evidence/receipts column cites one outlet

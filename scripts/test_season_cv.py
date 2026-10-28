@@ -48,7 +48,7 @@ class SeasonTools(unittest.TestCase):
         cls.ros = CG.rosters(cls.state, cls.by)
 
     def test_waiver_swaps_use_the_season_cv(self):
-        fa = CG.free_agents(self.P, self.state)[:2]
+        fa = CG.free_agents(self.P, self.state, CG.fa_status(self.P, [], []))[0][:2]   # status gate, nothing flagged
         with Spy() as s:
             CG.waiver_pairs(self.ros, fa)
         self.assertTrue(s.cvs)
