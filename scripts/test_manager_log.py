@@ -104,6 +104,22 @@ class Rollup(unittest.TestCase):
         self.assertEqual((t["il_player_days"], t["adds"], t["drops"]), (3, 2, 1))
         self.assertEqual(prof["window"], {"first": "2026-10-20", "last": "2026-10-21", "days": 2})
 
+    def test_each_team_carries_the_owners_name_for_its_manager_and_an_unknown_team_is_none(self):
+        # owner 2026-10-28: the profiles name each league mate as the league state does (the owner's names), not by
+        # Yahoo's account name; a team the state does not hold gets None, never a guess
+        days = [{"date": "2026-10-20", "teams": {
+            "L.t.1": {"team": "Lauri\u2019s Prime Rib", "owner": "William", "starts": 9, "best_starts": 9, "starts_lost": 0, "il_slots_used": 0},
+            "L.t.2": {"team": "Nobody's Team", "owner": "X", "starts": 9, "best_starts": 9, "starts_lost": 0, "il_slots_used": 0}}}]
+        state = {"teams": [{"name": "Lauri\u2019s Prime Rib", "manager": "Will"}, {"name": "Other", "manager": "Kyle"}]}
+        prof = ML.rollup(days, {}, ML.managers_by_team(state))
+        self.assertEqual(prof["teams"]["L.t.1"]["manager"], "Will")
+        self.assertEqual(prof["teams"]["L.t.1"]["owner"], "William")
+        self.assertIsNone(prof["teams"]["L.t.2"]["manager"])
+
+    def test_the_team_name_match_ignores_case_and_apostrophe_style(self):
+        m = ML.managers_by_team({"teams": [{"name": "Lauri\u2019s Prime Rib", "manager": "Will"}]})
+        self.assertEqual(ML.team_manager(m, "LAURI'S PRIME RIB"), "Will")
+
 
 class Pins(unittest.TestCase):
     def test_the_days_lineups_come_from_the_pinned_pulls_latest_pin_winning(self):

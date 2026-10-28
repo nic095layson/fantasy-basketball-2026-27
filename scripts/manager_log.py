@@ -190,8 +190,23 @@ def move_counts(rows):
     return out
 
 
-def rollup(days, counts):
-    """Per-team totals over the day records, with the window they cover."""
+def _team_key(name):
+    return (name or "").replace("\u2019", "'").casefold().strip()
+
+
+def managers_by_team(state):
+    """{folded team name: manager} from the league state, which names each league mate as the owner does (owner
+    2026-10-28: "assign my 11 league mates to their team ... for their fantasy profiles")."""
+    return {_team_key(t["name"]): t.get("manager") for t in (state or {}).get("teams", [])}
+
+
+def team_manager(managers, team):
+    return (managers or {}).get(_team_key(team))
+
+
+def rollup(days, counts, managers=None):
+    """Per-team totals over the day records, with the window they cover. Each team carries Yahoo's account name
+    (owner) and the league mate's name from the league state (manager; None when the state does not hold the team)."""
     teams = {}
     for day in days:
         for key, rec in day["teams"].items():
@@ -203,6 +218,7 @@ def rollup(days, counts):
                 t[k] += rec[k]
             t["il_player_days"] += rec["il_slots_used"]
     for key, t in teams.items():
+        t["manager"] = team_manager(managers, t["team"])
         t["start_rate"] = t["starts"] / t["best_starts"] if t["best_starts"] else None
         c = counts.get(key, {})
         t["adds"], t["drops"], t["moves"] = c.get("adds", 0), c.get("drops", 0), c.get("moves", 0)
@@ -268,7 +284,11 @@ def main():
                          for k in sorted(lineups, key=lambda k: int(k.rsplit(".", 1)[-1]))}}
         _dump(os.path.join(a.out_dir, f"day_{a.date}.json"), day)
     days = [_load(p, None) for p in sorted(glob.glob(os.path.join(a.out_dir, "day_*.json")))]
-    prof = rollup([d for d in days if d], move_counts(moves))
+    managers = managers_by_team(_load(os.path.join(KIT, "data", "league_state.json"), {}))
+    prof = rollup([d for d in days if d], move_counts(moves), managers)
+    unnamed = [t["team"] for t in prof["teams"].values() if t["manager"] is None]
+    if unnamed:
+        notes.append(f"no manager in the league state for {', '.join(unnamed)}")
     prof["note"] = "record only (owner 2026-10-22, option A); no engine value reads this"
     _dump(os.path.join(a.out_dir, "profile.json"), prof)
 
