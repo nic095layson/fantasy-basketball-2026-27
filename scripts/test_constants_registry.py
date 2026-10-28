@@ -102,5 +102,30 @@ class KitModules(unittest.TestCase):
         self.assertIn(("season_lines", "STABILITY"), live)
 
 
+class StatusTiers(unittest.TestCase):
+    """D-WS-1 (owner 2026-10-28, "proceed"): the waiver gate's status tiers and the short-Out line are judgment
+    constants, so the checker covers co_gm and status_feed and each is registered with its status and decision."""
+    def setUp(self):
+        if not os.path.isdir(C.DECK):
+            self.skipTest("deck not present")
+        self.live = C.read_live(C.DECK)
+        self.reg = {(e["module"], e["name"]): e for e in C.load_registry()["constants"]}
+
+    def test_live_covers_the_status_tiers_and_the_waiver_knobs(self):
+        for key in (("co_gm", "ESPN_TIERS"), ("co_gm", "SHORT_OUT_DAYS"), ("co_gm", "WAIVER_CANDIDATES"),
+                    ("status_feed", "TIERS")):
+            self.assertIn(key, self.live)
+
+    def test_paths_and_identifiers_are_not_judgment_constants(self):
+        for key in (("co_gm", "KIT"), ("co_gm", "OWNER_SEAT"), ("status_feed", "ESPN_INJURIES"), ("status_feed", "OUTDIR")):
+            self.assertNotIn(key, self.live)
+
+    def test_the_tiers_are_registered_uncalibrated_with_their_decisions(self):
+        for key, dec in ((("co_gm", "ESPN_TIERS"), "D-WS-1"), (("status_feed", "TIERS"), "D-WS-1"),
+                         (("co_gm", "SHORT_OUT_DAYS"), "D-WS-2")):
+            self.assertEqual(self.reg[key]["status"], "uncalibrated")
+            self.assertIn(dec, self.reg[key]["decision"])
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
