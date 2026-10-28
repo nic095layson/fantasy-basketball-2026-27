@@ -72,7 +72,7 @@ The deck built from the same 10-28 records with this branch's `season_deck.py` d
 
 - One read-only Flaim `get_roster` (team_id 5, as_of_date 2026-10-27) returned 14 players, the same as the read earlier today.
 - It is pinned verbatim on season/daily as `data/source/flaim/pull_2026-10-28_backfill.json` (the `daily` block only, plus a `backfill` note). It is a separate file because `pull_2026-10-28.json`'s sha256 is cited by league_state.json and four other 10-28 records (league_state_am, status, league, week_matchup).
-- Only `manager_log.py` globs the pins, and it reads `daily` and `rosters`, both safe on this file.
+- Only `manager_log.py` reads the file: its glob is `pull_*.json`, and it reads `daily` and `rosters`, both safe here. week_matchup, form_board and league_table glob `pull_????-??-??.json`, which the back-fill's name does not match.
 - `manager_log.py --date 2026-10-27 --no-transactions`: `MANAGER LOG: PASS — 2026-10-27: 12 lineups, 0 start(s) lost league-wide; profile 2026-10-22..2026-10-27 (6 day(s))`.
 - Pushed fast-forward as 264d0b6 on season/daily.
 
