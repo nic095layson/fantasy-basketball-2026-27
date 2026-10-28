@@ -1,0 +1,38 @@
+{
+ "captured_utc": "2026-10-28T18:25:49.875Z",
+ "input": {
+  "query": "Mo Bamba",
+  "platform": "yahoo",
+  "sport": "basketball",
+  "league_id": "478.l.36464",
+  "season_year": 2026,
+  "count": 3
+ },
+ "response": {
+  "success": true,
+  "data": {
+   "leagueKey": "478.l.36464",
+   "leagueName": "ANTI MARTIN MARTIN CLUB",
+   "query": "Mo Bamba",
+   "count": 1,
+   "players": [
+    {
+     "id": "6017",
+     "name": "Mo Bamba",
+     "team": "UTA",
+     "position": "C",
+     "market_percent_owned": 16,
+     "ownership_scope": "platform_global",
+     "league_status": "ROSTERED",
+     "league_team_name": "Looking Cool Joker!",
+     "league_owner_name": "Christian Oblena",
+     "isKeeper": {
+      "status": false,
+      "cost": false,
+      "kept": false
+     }
+    }
+   ]
+  }
+ }
+}
