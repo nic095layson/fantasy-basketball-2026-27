@@ -209,5 +209,18 @@ class PoolAdditions(unittest.TestCase):
                 self.assertEqual(a[deck_col], k[kit_col], f"{a['player']} {deck_col}")
 
 
+    def test_mo_bamba_is_pooled_on_fantasybots_projection_with_his_sources_pinned(self):
+        # owner 2026-10-28 ("Add Mo Bamba to pool and rerun"; line "Pool: FantasyBot; week: both"): FantasyBot's
+        # projection as-is, the Brazile precedent; shots solved from its points and FG% at his season FT rate (0 FTA)
+        row = next(r for r in csv.DictReader(open(LI.ADDITIONS, encoding="utf-8")) if r["player"] == "Mo Bamba")
+        self.assertEqual((row["team"], row["pos"], row["pts"], row["reb"], row["blk"], row["fg_pct"], row["fga"], row["fta"]),
+                         ("UTA", "C", "3.4", "2.7", "0.5", "0.622", "2.5", "0.0"))
+        src = json.load(open(os.path.join(LI.KIT, "data", "source", "fantasybot", "player_value_mo-bamba_2026-10-28.json"),
+                             encoding="utf-8"))
+        proj = src["response"]["player"]["nba"]["projected"]
+        self.assertEqual((proj["pts"], proj["reb"], proj["blk"], proj["fgPct"]), (3.4, 2.7, 0.5, 62.2))
+        self.assertTrue(os.path.exists(os.path.join(LI.KIT, "data", "source", "flaim", "players_mo-bamba_2026-10-28.json")))
+        self.assertIn("Mo Bamba", [p["player"] for p in LI.load_pool()])
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
