@@ -1365,12 +1365,14 @@ class FaStatus(unittest.TestCase):
 
     @unittest.skipUnless(RENDER_OK, RENDER_WHY)
     def test_the_tab_draws_the_status_beside_the_row(self):
-        self.pins([], [{"player": "Free Agent", "status": "Out", "return_date": "2026-10-23"}])
+        self.pins([], [{"player": "Free Agent", "status": "Out", "return_date": "2026-10-23"},
+                       {"player": "Bench Guy", "status": "Day-To-Day", "return_date": "2026-10-21"}])
         html, _, _ = SD.build(self.fx, date="2026-10-21")
         p = os.path.join(self.d, "deck.html"); open(p, "w", encoding="utf-8").write(html)
         res = DRC.check(p)
         self.assertEqual(res["status"], "PASS", res["reasons"])
         self.assertIn("Out (ESPN), back 2026-10-23", res["panes"]["fa"])
+        self.assertNotIn("Day-To-Day (ESPN), back", res["panes"]["fa"])   # a day-to-day return date is today: not shown
         self.assertIn("Status today: Yahoo's letter where it lists the player, ESPN's injury feed for the rest", res["panes"]["fa"])
 
     @unittest.skipUnless(RENDER_OK, RENDER_WHY)

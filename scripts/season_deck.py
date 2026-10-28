@@ -712,8 +712,9 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
   // owner 2026-10-28 (item 4): the day's status beside each row, as the brief's waiver gate reads it
   const FS=D.fa_status, SRC={yahoo:"Yahoo",espn:"ESPN"};
   const stat=(r)=>{ const s=FS&&FS.by[r.name]; if(!s) return null;
-    const cls=["O","NA","Out"].includes(s.code)?(s.short_out?"warn":"crit"):(s.code==="P"?"ok":"warn");
-    return h("span",{}," · ",h("span",{class:"chip "+cls},s.code+" ("+SRC[s.source]+")"+(s.return_date?", back "+s.return_date.slice(0,10):""))); };
+    const out=["O","NA","Out"].includes(s.code), cls=out?(s.short_out?"warn":"crit"):(s.code==="P"?"ok":"warn");
+    // the return date only on an Out: ESPN dates a day-to-day player's return as today
+    return h("span",{}," · ",h("span",{class:"chip "+cls},s.code+" ("+SRC[s.source]+")"+(out&&s.return_date?", back "+s.return_date.slice(0,10):""))); };
   const wk=(r)=>{ const t=TWM[r.name]; return h("span",{},stat(r),t? h("span",{class:"note"}," · this week "+swk(t.d_exp,2)+" ("+t.games+" g, for "+t.drop+")") : null, mins(r)); };
   function render(){ let pool=BOARD.filter(r=>r.fa && (!search || r.name.toLowerCase().includes(search.toLowerCase())))
       .sort((a,b)=>b.z_adj-a.z_adj);  // owner 2026-10-20: free agents by z, descending
