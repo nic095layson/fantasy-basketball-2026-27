@@ -53,7 +53,7 @@ Published to https://claude.ai/artifact/Az6vPGzG6TLWrPjdAWL2pe as Version 41 (id
 
 **Decision for David (options, recommended first):**
 1. **Hold; make no claim until his status is confirmed (Recommended).** The +4.7 is only as good as an injury-free line for a player Yahoo lists as Out.
-2. **Confirm his timeline yourself, then claim if he returns soon.** Dropping Gillespie costs little by the scan (all Gillespie drops score near zero).
+2. **Confirm his timeline yourself, then claim if he returns soon.** The other Gillespie pair in the top three (Cameron Johnson) scores +0.003.
 3. **Have the main session add an injury tag for Jalen Williams** so the scan stops counting him. That is a tag change, so only you can order it.
 
 ## Season lines movers (data/season/season_lines_2026-10-28.json)
