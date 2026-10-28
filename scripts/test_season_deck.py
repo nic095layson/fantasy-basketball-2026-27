@@ -1329,5 +1329,60 @@ class WordingPassTwo(unittest.TestCase):
                        ["Power = all-play win rate", "Click a column to sort", "playoff line", "score from the week record"])
         self.assertNotIn("no Yahoo result", v["text"] + " ".join(v["titles"]))
 
+class FaStatus(unittest.TestCase):
+    """Owner 2026-10-28 (item 4): the Free Agents tab shows each unrostered row's status for the day, read the way the
+    brief's waiver gate reads it (co_gm.fa_status: Yahoo's letter from the pinned available list, ESPN's feed for the
+    rest, ESPN's return date for an Out). A day with neither pin says so; it never halts the deck."""
+    def setUp(self):
+        self.d = tempfile.mkdtemp(); self.fx = fixtures(self.d)
+
+    def pins(self, yahoo, espn):
+        y = os.path.join(self.d, "pull.json"); e = os.path.join(self.d, "espn.json")
+        json.dump({"free_agents": {"freeAgents": yahoo}}, open(y, "w"))
+        json.dump({"date": "2026-10-21", "rows": espn}, open(e, "w"))
+        self.fx.update(yahoo_pull=y, espn_injuries=e)
+
+    def test_default_paths_name_the_days_two_status_pins(self):
+        p = SD.default_paths("2026-10-21")
+        self.assertTrue(p["yahoo_pull"].endswith(os.path.join("data", "source", "flaim", "pull_2026-10-21.json")))
+        self.assertTrue(p["espn_injuries"].endswith(os.path.join("data", "status", "espn_injuries_2026-10-21.json")))
+
+    def test_each_free_agent_carries_the_days_status_and_rostered_rows_do_not(self):
+        self.pins([{"name": "Free Agent", "status": "O"}],
+                  [{"player": "Free Agent", "status": "Out", "return_date": "2026-10-23"},
+                   {"player": "Alpha Man", "status": "Out", "return_date": "2026-12-01"}])
+        _, data, rec = SD.build(self.fx, date="2026-10-21")
+        s = data["fa_status"]["by"]
+        self.assertEqual((s["Free Agent"]["code"], s["Free Agent"]["source"], s["Free Agent"]["return_date"],
+                          s["Free Agent"]["short_out"]), ("O", "yahoo", "2026-10-23", True))
+        self.assertNotIn("Alpha Man", s)
+        self.assertEqual(data["fa_status"]["sources"], {"yahoo": True, "espn": True})
+        self.assertTrue(rec["inputs"]["yahoo_pull"]["sha256"])
+
+    def test_no_pins_builds_with_no_status_and_records_them_absent(self):
+        _, data, rec = SD.build(self.fx, date="2026-10-21")
+        self.assertIsNone(data["fa_status"])
+
+    @unittest.skipUnless(RENDER_OK, RENDER_WHY)
+    def test_the_tab_draws_the_status_beside_the_row(self):
+        self.pins([], [{"player": "Free Agent", "status": "Out", "return_date": "2026-10-23"},
+                       {"player": "Bench Guy", "status": "Day-To-Day", "return_date": "2026-10-21"}])
+        html, _, _ = SD.build(self.fx, date="2026-10-21")
+        p = os.path.join(self.d, "deck.html"); open(p, "w", encoding="utf-8").write(html)
+        res = DRC.check(p)
+        self.assertEqual(res["status"], "PASS", res["reasons"])
+        self.assertIn("Out (ESPN), back 2026-10-23", res["panes"]["fa"])
+        self.assertNotIn("Day-To-Day (ESPN), back", res["panes"]["fa"])   # a day-to-day return date is today: not shown
+        self.assertIn("Status today: Yahoo's letter where it lists the player, ESPN's injury feed for the rest", res["panes"]["fa"])
+
+    @unittest.skipUnless(RENDER_OK, RENDER_WHY)
+    def test_a_day_with_no_pins_says_so_on_the_tab(self):
+        html, _, _ = SD.build(self.fx, date="2026-10-21")
+        p = os.path.join(self.d, "deck.html"); open(p, "w", encoding="utf-8").write(html)
+        res = DRC.check(p)
+        self.assertEqual(res["status"], "PASS", res["reasons"])
+        self.assertIn("No status pinned for the day: check each player before claiming", res["panes"]["fa"])
+
+
 if __name__ == "__main__":
     unittest.main()

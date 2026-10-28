@@ -67,7 +67,9 @@ def espn_rows(feed):
             a = i.get("athlete") or {}
             if a.get("displayName"):
                 rows.append({"player": a["displayName"], "team": (a.get("team") or {}).get("abbreviation"),
-                             "status": i.get("status"), "date": i.get("date"), "comment": i.get("shortComment")})
+                             "status": i.get("status"), "date": i.get("date"), "comment": i.get("shortComment"),
+                             # owner 2026-10-28 (item 5): ESPN's expected return splits a one-game Out from a long one
+                             "return_date": (i.get("details") or {}).get("returnDate")})
     return rows
 
 

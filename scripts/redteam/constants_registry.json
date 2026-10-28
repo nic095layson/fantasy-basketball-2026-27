@@ -511,6 +511,143 @@
    "status": "uncalibrated",
    "record": "report/after-reports/after-report-2026-10-27-minutes-line.md",
    "decision": "D-ML-1 (owner 2026-10-27, build 2): the weekly accuracy card (report/accuracy.json, column candidate_minutes) is the calibration — the candidate replaces nothing until it beats the blend's MAE on PTS, REB and AST in 3 of 4 consecutive graded weeks, on the owner's word"
+  },
+  {
+   "module": "co_gm",
+   "name": "SLOTS",
+   "value": [
+    [
+     "PG",
+     [
+      "PG"
+     ]
+    ],
+    [
+     "SG",
+     [
+      "SG"
+     ]
+    ],
+    [
+     "G",
+     [
+      "PG",
+      "SG"
+     ]
+    ],
+    [
+     "SF",
+     [
+      "SF"
+     ]
+    ],
+    [
+     "PF",
+     [
+      "PF"
+     ]
+    ],
+    [
+     "F",
+     [
+      "SF",
+      "PF"
+     ]
+    ],
+    [
+     "C",
+     [
+      "C"
+     ]
+    ],
+    [
+     "C",
+     [
+      "C"
+     ]
+    ],
+    [
+     "Util",
+     null
+    ],
+    [
+     "Util",
+     null
+    ]
+   ],
+   "role": "the daily lineup's 10 active slots and the positions each takes (daily_lineup, the brief's lineup)",
+   "status": "settings",
+   "record": "data/league_settings.json roster_positions (the 10 active slots before BN and IL)"
+  },
+  {
+   "module": "co_gm",
+   "name": "WAIVER_CANDIDATES",
+   "value": 40,
+   "role": "how many unrostered players, best board value first after the status gate, the waiver scan pairs against every drop",
+   "status": "uncalibrated",
+   "record": "inherited from waiver_moves.py; stated to the owner before the first run (co_gm.py comment)",
+   "decision": "D-WS-1"
+  },
+  {
+   "module": "co_gm",
+   "name": "ESPN_TIERS",
+   "value": {
+    "Out": [
+     "out",
+     0.0
+    ],
+    "Day-To-Day": [
+     "day-to-day",
+     0.5
+    ]
+   },
+   "role": "availability for an unrostered player ESPN's injury feed lists (Yahoo's letter wins where it lists him): Out is set aside from the waiver scan unless a short Out; Day-To-Day scales streaming games",
+   "status": "uncalibrated",
+   "record": "owner 2026-10-28 \"Status gate (Recommended)\"; after-report-2026-10-28-waiver-status-gate.md §3 (stated defaults: Day-To-Day = Yahoo's Q tier)",
+   "decision": "D-WS-1"
+  },
+  {
+   "module": "co_gm",
+   "name": "SHORT_OUT_DAYS",
+   "value": 7,
+   "role": "an Out ESPN expects back within this many days of the brief's date stays in the waiver scan, flagged; streaming counts its games from the return date",
+   "status": "uncalibrated",
+   "record": "owner 2026-10-28 item 5 \"Use ESPN return date (Recommended)\"; 7 a stated default (offered beside 14)",
+   "decision": "D-WS-2"
+  },
+  {
+   "module": "status_feed",
+   "name": "TIERS",
+   "value": {
+    "None": [
+     "healthy",
+     1.0
+    ],
+    "Q": [
+     "questionable",
+     0.5
+    ],
+    "O": [
+     "out",
+     0.0
+    ],
+    "P": [
+     "probable",
+     0.75
+    ],
+    "NA": [
+     "not active",
+     0.0
+    ],
+    "D": [
+     "doubtful",
+     0.25
+    ]
+   },
+   "role": "availability per Yahoo status letter: rostered players in the brief's lineup and the status file; unrostered in the waiver gate (O/NA set aside, D/Q/P flagged, streaming scaled)",
+   "status": "uncalibrated",
+   "record": "stated to the owner 2026-10-15 (None/Q/O); P D-IS-6 2026-10-19, NA D-IS-7 2026-10-20, D D-IS-10 2026-10-21; registered 2026-10-28",
+   "decision": "D-WS-1 (with D-IS-6, D-IS-7, D-IS-10)"
   }
  ]
 }
