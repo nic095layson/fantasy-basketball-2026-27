@@ -60,7 +60,7 @@ def default_paths(date):
                 espn_injuries=os.path.join(KIT, "data", "status", f"espn_injuries_{date}.json"))
 
 
-def resolve_rostered(rostered, board_names, held_names, aliases):
+def resolve_rostered(rostered, board_names, held_names, aliases, missing=None):
     """Map each rostered name (the league paste's spelling) to its season-board row or held name (the kit's spelling).
     Owner audit 2026-10-19: Jaren Jackson Jr. / Cameron Johnson showed as free agents under an exact-string join.
     Order: exact; accent-and-punctuation fold; the kit alias table (report/market/build_market.py); suffix-dropped
@@ -86,6 +86,10 @@ def resolve_rostered(rostered, board_names, held_names, aliases):
             if a is not None and len(by_fold.get(BP.fold(a), [])) == 1: hit = by_fold[BP.fold(a)][0]
             elif len(by_key.get(BP.name_key(n), [])) == 1: hit = by_key[BP.name_key(n)][0]
         (unresolved.append(n) if hit is None else out.__setitem__(n, hit))
+    # owner 2026-10-28: the 3 PM rebuild passes a list; a player pooled after the 5 AM board is carried as off the board
+    # and named, instead of halting the afternoon page (the morning build still halts)
+    if unresolved and missing is not None:
+        missing.extend(sorted(unresolved)); out.update({n: n for n in unresolved}); unresolved = []
     if unresolved: raise DeckError(f"rostered player(s) with no season-board or held row: {sorted(unresolved)}")
     seen = {}
     for n, t in out.items():
@@ -119,7 +123,7 @@ def positional_breakdown(players):
     return dict(positions=pos, families=fam, rostered=len(players), il=il)
 
 
-def build(paths, date):
+def build(paths, date, phase=None):
     import co_gm
     import box_pull as BP
     my_seat = co_gm.OWNER_SEAT
@@ -136,7 +140,8 @@ def build(paths, date):
     # mechanical join: each board row gains its fantasy owner
     board_names = [r["name"] for r in board["board"]]
     rostered = [p["player"] for t in league["teams"] for p in t["players"]]
-    rmap = resolve_rostered(rostered, board_names, board.get("held") or [], BP.load_aliases())
+    not_on_board = [] if phase == "pm" else None
+    rmap = resolve_rostered(rostered, board_names, board.get("held") or [], BP.load_aliases(), not_on_board)
     on_board = set(board_names)
     own = {}
     my_team = None
@@ -187,6 +192,8 @@ def build(paths, date):
                             unpooled=league.get("unpooled") or [], my_positions=my_positions), season_lines=lines, matchup=wk,
                 ledger=calib.get("weeks", {}), bands=bands, band_engine=band_engine, band_config=band_config, matchup_live=matchup_live,
                 week_matchup=week_matchup, league_table=league_rec, form=form_rec, scores=scores, fa_status=fa_status,
+                # owner 2026-10-28 ("Rebuild, flag morning parts"): the 3 PM run's rebuild says which parts are the 5 AM run's
+                **({"refresh": {"phase": phase, "not_on_board": not_on_board}} if phase == "pm" else {}),
                 config=dict(cats=["FG%", "FT%", "3PM", "PTS", "REB", "AST", "STL", "BLK", "TOV"],
                             tier_low=0.3, tier_high=1.0, verdict_edge=0.5, verdict_strong=1.5,
                             short_out_days=co_gm.SHORT_OUT_DAYS,
@@ -204,6 +211,7 @@ def build(paths, date):
                   board_rows=len(board["board"]), status_rows=len(status["rows"]), panes=7,
                   join=dict(rostered=len(rostered), unresolved=0, on_board=sum(1 for n in rostered if rmap[n] in on_board),
                             off_board=sum(1 for n in rostered if rmap[n] not in on_board), respelled=respelled,
+                            **({"not_on_board": not_on_board} if not_on_board is not None else {}),
                             free_agents_on_board=sum(1 for r in board["board"] if r["fa"])))
     return html, data, record
 
@@ -563,6 +571,9 @@ function matchupBoard(){ const W=D.week_matchup, B=W&&W.board; if(!B) return nul
   // owner 2026-10-26, option (a): rostered names the intake carried without a pool row — never silent
   const UN=(D.league&&D.league.unpooled)||[];
   if(UN.length) p.append(h("div",{class:"card"},h("p",{class:"note zneg",id:"unpooled-note"},"Not in the pool, not simulated: "+UN.map(u=>u.player+" ("+u.fantasy_team+", "+u.slot+")").join(", ")+". Each needs a pool row before the simulator counts him.")));
+  if(D.refresh&&D.refresh.phase==="pm") p.append(h("div",{class:"card"},h("p",{class:"note",id:"pm-note"},
+    "Afternoon refresh: rosters, ownership and injury status are from the 3 PM run; the lineup, waiver pairs and title odds are from the 5 AM run (they can be out of date after a roster move or a new injury)."
+    +((D.refresh.not_on_board||[]).length? " Added since the 5 AM board (no season line on this page): "+D.refresh.not_on_board.join(", ")+"." : ""))));
   $("#hdate").textContent=D.date;
   $("#hsub").textContent=T(D.my_team)+" · week "+b.week+" vs "+T(b.opponent)+" · lines "+b.lines+" · rosters as-of "+D.league.as_of;
   // owner 2026-10-23: when the tool was last updated (the morning run's build time), in the viewer's own clock
@@ -985,10 +996,13 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--date", default=datetime.date.today().isoformat())
     ap.add_argument("--out", default=os.path.join(KIT, "report", "season"), help="output folder (default report/season)")
+    # owner 2026-10-28: the 3 PM run's rebuild, written beside the morning's page as deck_<date>_pm.html
+    ap.add_argument("--phase", choices=("am", "pm"), default="am")
     a = ap.parse_args()
     paths = default_paths(a.date)
+    sfx = "_pm" if a.phase == "pm" else ""
     try:
-        html, data, record = build(paths, a.date)
+        html, data, record = build(paths, a.date, phase="pm") if a.phase == "pm" else build(paths, a.date)
     except DeckError as e:
         print(f"SEASON DECK: FAIL — {a.date}: {e}"); sys.exit(1)
     outdir = a.out; os.makedirs(outdir, exist_ok=True)
@@ -996,20 +1010,20 @@ def main():
     # (deck_render_check.py). On 10/21 a page whose script threw was published with no tabs; a page that fails, or
     # that no browser could check, is kept as deck_<date>.failed.html and the step FAILs, leaving nothing to publish.
     import deck_render_check as DRC
-    op = os.path.join(outdir, f"deck_{a.date}.html"); tmp = os.path.join(outdir, f"deck_{a.date}.check.html")
+    op = os.path.join(outdir, f"deck_{a.date}{sfx}.html"); tmp = os.path.join(outdir, f"deck_{a.date}{sfx}.check.html")
     with open(tmp, "w", encoding="utf-8") as f:
         f.write(html)
     res = DRC.check(tmp)
     if res["status"] != "PASS":
-        failed = os.path.join(outdir, f"deck_{a.date}.failed.html"); os.replace(tmp, failed)
+        failed = os.path.join(outdir, f"deck_{a.date}{sfx}.failed.html"); os.replace(tmp, failed)
         print(f"SEASON DECK: FAIL — {a.date}: render {res['status']}: {'; '.join(res['reasons'])} "
-              f"(page kept as deck_{a.date}.failed.html; deck_{a.date}.html not written)")
+              f"(page kept as deck_{a.date}{sfx}.failed.html; deck_{a.date}{sfx}.html not written)")
         sys.exit(1)
     os.replace(tmp, op)
     record["render"] = dict(status="PASS", tabs=res["tabs"], page_errors=0, browser=res["browser"])
-    rp = os.path.join(outdir, f"deck_record_{a.date}.json"); json.dump(record, open(rp, "w", encoding="utf-8"), indent=1)
-    print(f"SEASON DECK: PASS — {a.date}: report/season/deck_{a.date}.html ({record['panes']} panes, {record['board_rows']} board rows, "
-          f"{record['status_rows']} status rows; record deck_record_{a.date}.json pins {len(record['inputs'])} inputs; "
+    rp = os.path.join(outdir, f"deck_record_{a.date}{sfx}.json"); json.dump(record, open(rp, "w", encoding="utf-8"), indent=1)
+    print(f"SEASON DECK: PASS — {a.date}{' (afternoon refresh)' if sfx else ''}: report/season/deck_{a.date}{sfx}.html ({record['panes']} panes, {record['board_rows']} board rows, "
+          f"{record['status_rows']} status rows; record deck_record_{a.date}{sfx}.json pins {len(record['inputs'])} inputs; "
           f"render: {len(res['tabs'])} tabs, 0 page errors)")
 
 

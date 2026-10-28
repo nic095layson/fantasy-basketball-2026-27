@@ -1384,5 +1384,79 @@ class FaStatus(unittest.TestCase):
         self.assertIn("No status pinned for the day: check each player before claiming", res["panes"]["fa"])
 
 
+class AfternoonRefresh(unittest.TestCase):
+    """Owner 2026-10-28 ("Rebuild, flag morning parts"): the 3 PM run rebuilds the deck from its fresh rosters and status
+    (--phase pm) and publishes it; the Today tab says the lineup, waiver pairs and title odds are the 5 AM run's. The
+    afternoon page is written as deck_<date>_pm.html beside the morning's, which stays as it was."""
+    def setUp(self):
+        self.d = tempfile.mkdtemp(); self.fx = fixtures(self.d); self.out = os.path.join(self.d, "out")
+        self._build = SD.build
+
+    def tearDown(self):
+        SD.build = self._build
+
+    def test_the_afternoon_build_carries_its_phase_and_the_morning_build_does_not(self):
+        _, pm, _ = SD.build(self.fx, date="2026-10-21", phase="pm")
+        _, am, _ = SD.build(self.fx, date="2026-10-21")
+        self.assertEqual(pm["refresh"]["phase"], "pm")
+        self.assertNotIn("refresh", am)
+
+    def add_rostered(self, name):
+        lg = json.load(open(self.fx["league_state"]))
+        lg["teams"][0]["players"].append(dict(player=name, slot="BN", status=None, positions=["C"]))
+        json.dump(lg, open(self.fx["league_state"], "w"))
+
+    def test_a_pickup_missing_from_the_mornings_board_is_named_not_a_halt_in_the_afternoon(self):
+        # 2026-10-28: Mo Bamba was pooled after the 5 AM board was built; the afternoon rebuild must still publish
+        self.add_rostered("New Guy")
+        _, data, rec = SD.build(self.fx, date="2026-10-21", phase="pm")
+        self.assertEqual(data["refresh"]["not_on_board"], ["New Guy"])
+        self.assertIn("New Guy", data["league"]["rosters"]["MY TEAM"]["off_board"])
+        self.assertEqual(rec["join"]["not_on_board"], ["New Guy"])
+
+    def test_the_morning_build_still_halts_on_it(self):
+        self.add_rostered("New Guy")
+        with self.assertRaises(SD.DeckError):
+            SD.build(self.fx, date="2026-10-21")
+
+    @unittest.skipUnless(RENDER_OK, RENDER_WHY)
+    def test_the_afternoon_note_names_the_players_added_since_the_morning_board(self):
+        self.add_rostered("New Guy")
+        html, _, _ = SD.build(self.fx, date="2026-10-21", phase="pm")
+        p = os.path.join(self.d, "deck.html"); open(p, "w", encoding="utf-8").write(html)
+        res = DRC.check(p)
+        self.assertEqual(res["status"], "PASS", res["reasons"])
+        self.assertIn("Added since the 5 AM board (no season line on this page): New Guy", res["panes"]["today"])
+
+    @unittest.skipUnless(RENDER_OK, RENDER_WHY)
+    def test_the_today_tab_says_which_parts_are_the_mornings(self):
+        html, _, _ = SD.build(self.fx, date="2026-10-21", phase="pm")
+        p = os.path.join(self.d, "deck.html"); open(p, "w", encoding="utf-8").write(html)
+        res = DRC.check(p)
+        self.assertEqual(res["status"], "PASS", res["reasons"])
+        self.assertIn("Afternoon refresh", res["panes"]["today"])
+        self.assertIn("lineup, waiver pairs and title odds are from the 5 AM run", res["panes"]["today"])
+
+    @unittest.skipUnless(RENDER_OK, RENDER_WHY)
+    def test_the_morning_page_has_no_afternoon_note(self):
+        html, _, _ = SD.build(self.fx, date="2026-10-21")
+        p = os.path.join(self.d, "deck.html"); open(p, "w", encoding="utf-8").write(html)
+        self.assertNotIn("Afternoon refresh", DRC.check(p)["panes"]["today"])
+
+    @unittest.skipUnless(RENDER_OK, RENDER_WHY)
+    def test_the_afternoon_page_is_written_beside_the_mornings(self):
+        built = self._build(self.fx, date="2026-10-21", phase="pm")
+        SD.build = lambda paths, date, phase=None: built
+        argv = sys.argv
+        sys.argv = ["season_deck.py", "--date", "2026-10-21", "--out", self.out, "--phase", "pm"]
+        try:
+            SD.main()
+        finally:
+            sys.argv = argv
+        self.assertTrue(os.path.exists(os.path.join(self.out, "deck_2026-10-21_pm.html")))
+        self.assertTrue(os.path.exists(os.path.join(self.out, "deck_record_2026-10-21_pm.json")))
+        self.assertFalse(os.path.exists(os.path.join(self.out, "deck_2026-10-21.html")))
+
+
 if __name__ == "__main__":
     unittest.main()
