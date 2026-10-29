@@ -39,4 +39,4 @@ vdiffs=[(k["name"],c,float(k[c]),float(d[dc])) for k,d in variant_pairs for c,dc
 out=dict(spelling_variants_resolved_by_surname={n:d for n,d in by_initial.items() if d},
          kit_only_rows=[n for n,d in by_initial.items() if not d],variant_line_differences=len(vdiffs),variant_first_differences=vdiffs[:10],
          kit_rows=len(kit),deck_rows=len(deck),alias_entries=len(AL),joined=len(pairs),how=how,unmatched=unmatched,line_differences=len(diffs),first_differences=diffs[:10])
-json.dump(out,open(os.path.join(H,"rt_join.json"),"w"),indent=1); print(json.dumps(out,indent=1))
+json.dump(dict(out,engine_commit=__import__("subprocess").check_output(["git","-C",DECK,"rev-parse","--short","HEAD"]).decode().strip()),open(os.path.join(H,"rt_join.json"),"w"),indent=1); print(json.dumps(out,indent=1))

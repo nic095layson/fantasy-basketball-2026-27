@@ -121,3 +121,18 @@ class LedgerRow(unittest.TestCase):
         env["KIT_LEDGER_PARENT"] = "morning"
         subprocess.run([sys.executable, SF.__file__, "--check", st, "--ledger", led], capture_output=True, text=True, env=env)
         self.assertEqual(len(open(led).read().splitlines()), 1)
+
+
+class AfternoonNames(unittest.TestCase):
+    """Owner 2026-10-29 (audit F3): the 3 PM run writes its own status files, so the morning's stay as the morning
+    deck record hashed them."""
+    def test_morning_and_afternoon_write_different_files(self):
+        am = SF.outputs("/d", "2026-10-29", "am")
+        pm = SF.outputs("/d", "2026-10-29", "pm")
+        self.assertEqual(am, (os.path.join("/d", "status_2026-10-29.json"), os.path.join("/d", "espn_injuries_2026-10-29.json")))
+        self.assertEqual(pm, (os.path.join("/d", "status_2026-10-29_pm.json"), os.path.join("/d", "espn_injuries_2026-10-29_pm.json")))
+
+    def test_the_help_lists_the_phase(self):
+        import subprocess
+        p = subprocess.run([sys.executable, SF.__file__, "--help"], capture_output=True, text=True)
+        self.assertIn("--phase", p.stdout)

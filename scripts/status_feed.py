@@ -123,10 +123,18 @@ def check(rows):
     return problems
 
 
+def outputs(outdir, date, phase="am"):
+    """The status file and the ESPN pin a run writes. Owner 2026-10-29 (audit F3): the 3 PM run writes
+    status_<date>_pm.json and espn_injuries_<date>_pm.json, so the morning's files stay as its brief and deck hashed them."""
+    sfx = "_pm" if phase == "pm" else ""
+    return (os.path.join(outdir, f"status_{date}{sfx}.json"), os.path.join(outdir, f"espn_injuries_{date}{sfx}.json"))
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--date", default=datetime.date.today().isoformat())
     ap.add_argument("--check", nargs="?", const="__newest__")
+    ap.add_argument("--phase", choices=("am", "pm"), default="am", help="pm: the 3 PM run's files (status_<date>_pm.json)")
     ap.add_argument("--ledger", default=run_ledger.LEDGER, help="run-ledger for a standalone run's row ('' to skip)")
     a = ap.parse_args()
     led = (lambda v, d: run_ledger.standalone_record("status_feed --check" if a.check else "status_feed", v, d, ledger=a.ledger)) if a.ledger else (lambda v, d: None)
@@ -151,12 +159,11 @@ def main():
     overrides = json.load(open(OVERRIDES, encoding="utf-8")) if os.path.exists(OVERRIDES) else {}
     rows = build(state, espn, attempt, overrides)
     os.makedirs(OUTDIR, exist_ok=True)
-    out = os.path.join(OUTDIR, f"status_{a.date}.json")
+    out, pin = outputs(OUTDIR, a.date, a.phase)
     rec = {"date": a.date, "league_state_as_of": state["as_of"], "tiers": {str(k): v for k, v in TIERS.items()},
            "espn": attempt, "rows": rows}
     json.dump(rec, open(out, "w", encoding="utf-8"), indent=1, ensure_ascii=False)
     if attempt["ok"]:
-        pin = os.path.join(OUTDIR, f"espn_injuries_{a.date}.json")
         json.dump({"date": a.date, "fetched": attempt["attempted"], "url": ESPN_INJURIES, "rows": espn_rows(espn)},
                   open(pin, "w", encoding="utf-8"), indent=1, ensure_ascii=False)
     mine = [r for r in rows if r["seat"] == OWNER_SEAT]
