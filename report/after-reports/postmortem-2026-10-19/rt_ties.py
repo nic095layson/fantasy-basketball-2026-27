@@ -26,5 +26,5 @@ for sd in (2026,2027):
                 if xa==xb: ties[c]+=1
             tot+=1
     out[sd]=dict(matchups=tot,tie_rate_by_cat={c:ties[c]/tot for c in CATS},tied_cats_per_matchup=sum(ties.values())/tot)
-json.dump(out,open(os.path.join(H,"rt_ties.json"),"w"),indent=1)
+json.dump(dict(out,engine_commit=__import__("subprocess").check_output(["git","-C",DECK,"rev-parse","--short","HEAD"]).decode().strip()),open(os.path.join(H,"rt_ties.json"),"w"),indent=1)
 for sd in out: print(sd,{c:round(v,4) for c,v in out[sd]["tie_rate_by_cat"].items()},"per matchup",round(out[sd]["tied_cats_per_matchup"],3))

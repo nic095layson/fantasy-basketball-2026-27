@@ -1,5 +1,5 @@
 {
- "ran_at_utc": "2026-10-28T23:58:03Z",
+ "ran_at_utc": "2026-10-29T02:03:18Z",
  "inputs": {
   "report/after-reports/after-report-2026-10-28-redteam-system-audit.md": "efa196f8ed0741882d4ebb17c5052b46b08dbe1573a174358a04e94e88cfed4f",
   "report/after-reports/redteam-2026-10-26-season-real/sweep.json": "f0eb804fcb16e8125e872ae35992211ba456bfdf2c505feee76ec2421c15f8c5"
@@ -89,11 +89,11 @@
    "cwd": ".",
    "pass_re": "^ATTACKS CHECK: PASS",
    "exit": 0,
-   "pass_line": "ATTACKS CHECK: PASS \u2014 9 attacks on engine 55d8e3f (engine files last changed 95ebade); CURRENT 5, UNFINGERPRINTED 4",
+   "pass_line": "ATTACKS CHECK: PASS \u2014 9 attacks on engine 55d8e3f (engine files last changed 95ebade); CURRENT 8, UNFINGERPRINTED 1",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "ATTACKS CHECK: PASS \u2014 9 attacks on engine 55d8e3f (engine files last changed 95ebade); CURRENT 5, UNFINGERPRINTED 4"
+    "ATTACKS CHECK: PASS \u2014 9 attacks on engine 55d8e3f (engine files last changed 95ebade); CURRENT 8, UNFINGERPRINTED 1"
    ]
   },
   {
@@ -112,5 +112,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "848a4efbc3f049ee9944dd88d1d769c84487071a"
+ "base_commit": "6089dcc11602d1bcfe5936ab09a91bf0ab2303e9"
 }
