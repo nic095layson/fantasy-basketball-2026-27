@@ -48,6 +48,28 @@ class Compile(unittest.TestCase):
         self.sched = dict(owner_seat=1, regular_season_weeks=2, playoff_weeks=[3],
                           owner_opponents=[dict(week=1, seat=4), dict(week=2, seat=2)])
 
+    def test_a_team_renamed_since_the_pins_is_matched_by_its_yahoo_team_key(self):
+        # owner 2026-10-29 ("Key on Yahoo team key"): the pins carry the name of the day they were pinned; the key does not change
+        for f in os.listdir(self.pins):
+            r = json.load(open(os.path.join(self.pins, f)))
+            for m in r["matchups"]:
+                for side in (m["home"], m["away"]):
+                    side["teamKey"] = f"478.l.36464.t.{side['teamId']}"
+            json.dump(r, open(os.path.join(self.pins, f), "w"))
+        state = dict(teams=[dict(name=("Alpha Renamed" if n == "Alpha" else n), seat=s) for n, s in SEATS.items()])
+        keys = {f"478.l.36464.t.{i}": ("Alpha Renamed" if n == "Alpha" else n) for i, n in NAMES.items()}
+        with self.assertRaises(LP.PairingsError):
+            LP.compile(self.sched, self.pins, self.weeks, state)
+        out = LP.compile(self.sched, self.pins, self.weeks, state, keys=keys)
+        self.assertEqual(out["pairings"], {"1": [[4, 1], [3, 2]], "2": [[4, 3], [1, 2]]})
+
+    def test_the_key_to_name_map_comes_from_the_newest_pull(self):
+        d = tempfile.mkdtemp()
+        json.dump(dict(rosters={"478.l.36464.t.1": dict(teamKey="478.l.36464.t.1", teamName="Old")}), open(os.path.join(d, "pull_2026-10-28.json"), "w"))
+        json.dump(dict(rosters={"478.l.36464.t.1": dict(teamKey="478.l.36464.t.1", teamName="New")}), open(os.path.join(d, "pull_2026-10-29.json"), "w"))
+        self.assertEqual(LP.names_by_key(d), {"478.l.36464.t.1": "New"})
+        self.assertEqual(LP.names_by_key(tempfile.mkdtemp()), {})
+
     def test_pairings_are_seat_pairs_per_week_from_the_pins(self):
         out = LP.compile(self.sched, self.pins, self.weeks, self.state)
         # week 1: Alpha(4)-Bravo(1), Charlie(3)-Delta(2); week 2: Alpha(4)-Charlie(3), Bravo(1)-Delta(2)

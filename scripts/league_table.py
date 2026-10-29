@@ -288,12 +288,14 @@ def build(date, paths):
                 # owner 2026-10-26 (M3): a rebuilt week carries no Yahoo score; the verified week record has it
                 rf = os.path.join(paths["weeks"], f"week_{n}.json") if paths.get("weeks") else None
                 if rf and os.path.exists(rf):
-                    scores = {t: x.get("yahoo_score") for t, x in json.load(open(rf, encoding="utf-8"))["teams"].items()}
-                    lacking = sorted(t for t in teams if not scores.get(t))
+                    # owner 2026-10-29 ("Key on Yahoo team key"): matched by seat, since a team can rename itself after
+                    # its week record was written (team 5, 10-29)
+                    scores = {x.get("seat"): x.get("yahoo_score") for x in json.load(open(rf, encoding="utf-8"))["teams"].values()}
+                    lacking = sorted(t for t, x in teams.items() if not scores.get(x["seat"]))
                     if lacking:
                         raise TableError(f"week_{n}.json has no yahoo_score for {lacking}")
                     for t, x in teams.items():
-                        x["score"] = {k: scores[t][k] for k in ("wins", "losses", "ties")}
+                        x["score"] = {k: scores[x["seat"]][k] for k in ("wins", "losses", "ties")}
                     wk_rec["score_source"] = os.path.basename(rf)
                     inputs[os.path.basename(rf)] = _fingerprint(rf)
                 weeks.append(wk_rec)

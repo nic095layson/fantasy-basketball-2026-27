@@ -200,3 +200,4 @@ A pull that is not pushed to main did not happen — see DATA-PULL.md §0.
 | 2026-10-28 | owner: "Rebuild, flag morning parts" — the 3 PM run refreshes the deck (~22:30Z); no kit pull: the 10-28 afternoon records on season/daily, read only | 0 | 0 | 0 | after-report-2026-10-28-pm-deck-refresh.md |
 | 2026-10-28 | owner: "critical red team audit … after report" — read-only system audit (~00:10Z 10-29); no pull: standing checks, re-hashed receipts, runner prompt reads | 0 | 0 | 0 | after-report-2026-10-28-redteam-system-audit.md |
 | 2026-10-29 | owner: F1 "Run it on today's pairs", F2 "Re-run and fingerprint", F3 "Pin the morning copies" (~01:00Z); no pull: 10-28 afternoon records on season/daily, read only | 0 | 0 | 0 | after-report-2026-10-29-redteam-followups.md |
+| 2026-10-29 | owner: "Measure it first", "Key on Yahoo team key" (~15:00Z); no pull: 10-29 morning records on season/daily, read only | 0 | 0 | 0 | after-report-2026-10-29-il-rule-and-team-key.md |
