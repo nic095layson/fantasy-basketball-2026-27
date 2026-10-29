@@ -48,6 +48,8 @@ Published to https://claude.ai/artifact/Az6vPGzG6TLWrPjdAWL2pe as Version 42 (17
 
 ## Surprise: title share 32.6% → 15.6% in one day (not root-caused)
 
+> **Correction (2026-10-29, after-report-2026-10-29-morning-run.md §3):** the line below that says Haliburton was "already tagged Out on 10-28" is wrong. The 10-28 *morning* record (2beeb16) had him Q (0.5) in the SG slot. The branch-tip status_2026-10-28.json is the 3 PM overwrite. He moved to IL on 10-29, and the season simulator zeroes IL players for the season (D-IS-8, co_gm.py:50-54): the likely main driver, not yet measured.
+
 - EVIDENCE:
   - The brief's title went from 32.57/32.64 (10-28) to 15.0/16.27 (10-29), and playoffs from 99.9% to 96.1%.
   - The base expected weekly category wins went from 5.57 to 5.03.
