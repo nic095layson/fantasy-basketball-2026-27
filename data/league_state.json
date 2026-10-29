@@ -4,14 +4,14 @@
   "flaim": {
    "transcript": "f7b74300-8501-5e41-b8c5-d2c75dd06ce4.jsonl",
    "method": "mechanical json extraction of Flaim (Yahoo) tool results from the session transcript",
-   "since": "2026-10-29T12:04:06Z",
+   "since": "2026-10-29T22:04:31Z",
    "pull_file": "data/source/flaim/pull_2026-10-29.json",
-   "pull_sha256": "a409ab3e9b0ab7a81419cc1e076f50afe9e08b755a33ed6d2630679bcb1221a3",
+   "pull_sha256": "841c2ca45532a34e965946757c18c7ef621617e88a296d568cea5723ecb05f57",
    "view": "Flaim connector (Yahoo, read-only): get_roster per team (current), get_matchups, get_free_agents"
   },
   "transcription": {
    "file": "data/source/flaim/rosters_2026-10-29.transcribed.csv",
-   "sha256": "91637eb61bf87d406a9cc0f7a3129eb88e235b1f24258b72c8f7a11b6417237d",
+   "sha256": "fbaab6452b86dfd371041c5b45d6e16b92197bfeb600b3f50f17797ab9686b82",
    "method": "flaim_live.to_rows (mechanical; Yahoo slots and status letters for every team)"
   },
   "draft_board": "report/after-reports/draft-league-2026-10-14/recap.json",
@@ -240,11 +240,11 @@
    "name": "Booker T Floppers",
    "players": [
     {
-     "player": "Damian Lillard",
-     "yahoo_name": "Damian Lillard",
+     "player": "Dejounte Murray",
+     "yahoo_name": "Dejounte Murray",
      "slot": "PG",
-     "yahoo_nba_team": "POR",
-     "pool_team": "POR",
+     "yahoo_nba_team": "NOP",
+     "pool_team": "NOP",
      "positions": [
       "PG"
      ],
@@ -264,14 +264,13 @@
      "status": null
     },
     {
-     "player": "Grayson Allen",
-     "yahoo_name": "Grayson Allen",
+     "player": "Damian Lillard",
+     "yahoo_name": "Damian Lillard",
      "slot": "G",
-     "yahoo_nba_team": "CHA",
-     "pool_team": "CHA",
+     "yahoo_nba_team": "POR",
+     "pool_team": "POR",
      "positions": [
-      "SG",
-      "SF"
+      "PG"
      ],
      "status": null
     },
@@ -286,7 +285,7 @@
       "SF",
       "PF"
      ],
-     "status": null
+     "status": "Q"
     },
     {
      "player": "Tristan da Silva",
@@ -336,22 +335,23 @@
      "status": null
     },
     {
+     "player": "Grayson Allen",
+     "yahoo_name": "Grayson Allen",
+     "slot": "UTIL",
+     "yahoo_nba_team": "CHA",
+     "pool_team": "CHA",
+     "positions": [
+      "SG",
+      "SF"
+     ],
+     "status": null
+    },
+    {
      "player": "Fred VanVleet",
      "yahoo_name": "Fred VanVleet",
      "slot": "UTIL",
      "yahoo_nba_team": "HOU",
      "pool_team": "HOU",
-     "positions": [
-      "PG"
-     ],
-     "status": null
-    },
-    {
-     "player": "Dejounte Murray",
-     "yahoo_name": "Dejounte Murray",
-     "slot": "UTIL",
-     "yahoo_nba_team": "NOP",
-     "pool_team": "NOP",
      "positions": [
       "PG"
      ],
@@ -720,7 +720,7 @@
      "positions": [
       "C"
      ],
-     "status": null
+     "status": "D"
     },
     {
      "player": "Davion Mitchell",
@@ -766,7 +766,7 @@
       "PG",
       "SG"
      ],
-     "status": null
+     "status": "P"
     },
     {
      "player": "DeMar DeRozan",
@@ -949,7 +949,7 @@
       "PG",
       "SG"
      ],
-     "status": null
+     "status": "O"
     },
     {
      "player": "Giannis Antetokounmpo",
@@ -964,12 +964,13 @@
      "status": null
     },
     {
-     "player": "Mitchell Robinson",
-     "yahoo_name": "Mitchell Robinson",
+     "player": "Sandro Mamukelashvili",
+     "yahoo_name": "Sandro Mamukelashvili",
      "slot": "BN",
-     "yahoo_nba_team": "BOS",
-     "pool_team": "BOS",
+     "yahoo_nba_team": "LAL",
+     "pool_team": "LAL",
      "positions": [
+      "PF",
       "C"
      ],
      "status": null
@@ -994,7 +995,7 @@
    "manager": "Kyle",
    "draft_overlap": 12,
    "added_since_draft": [
-    "Mitchell Robinson",
+    "Sandro Mamukelashvili",
     "Zaccharie Risacher"
    ],
    "dropped_since_draft": [
@@ -1300,14 +1301,14 @@
      "status": null
     },
     {
-     "player": "Alex Caruso",
-     "yahoo_name": "Alex Caruso",
+     "player": "Jimmy Butler",
+     "yahoo_name": "Jimmy Butler III",
      "slot": "UTIL",
-     "yahoo_nba_team": "OKC",
-     "pool_team": "OKC",
+     "yahoo_nba_team": "GSW",
+     "pool_team": "GSW",
      "positions": [
-      "SG",
-      "SF"
+      "SF",
+      "PF"
      ],
      "status": "O"
     },
@@ -1332,7 +1333,7 @@
       "PG",
       "SG"
      ],
-     "status": "Q"
+     "status": "O"
     },
     {
      "player": "Day'Ron Sharpe",
@@ -1346,14 +1347,14 @@
      "status": null
     },
     {
-     "player": "Jimmy Butler",
-     "yahoo_name": "Jimmy Butler III",
+     "player": "Alex Caruso",
+     "yahoo_name": "Alex Caruso",
      "slot": "IL",
-     "yahoo_nba_team": "GSW",
-     "pool_team": "GSW",
+     "yahoo_nba_team": "OKC",
+     "pool_team": "OKC",
      "positions": [
-      "SF",
-      "PF"
+      "SG",
+      "SF"
      ],
      "status": "O"
     },
@@ -1785,11 +1786,11 @@
      "status": null
     },
     {
-     "player": "Daniss Jenkins",
-     "yahoo_name": "Daniss Jenkins",
+     "player": "Keyonte George",
+     "yahoo_name": "Keyonte George",
      "slot": "SG",
-     "yahoo_nba_team": "DET",
-     "pool_team": "DET",
+     "yahoo_nba_team": "UTA",
+     "pool_team": "UTA",
      "positions": [
       "PG",
       "SG"
@@ -1797,14 +1798,13 @@
      "status": null
     },
     {
-     "player": "Keyonte George",
-     "yahoo_name": "Keyonte George",
+     "player": "Mikel Brown Jr.",
+     "yahoo_name": "Mikel Brown Jr.",
      "slot": "G",
-     "yahoo_nba_team": "UTA",
-     "pool_team": "UTA",
+     "yahoo_nba_team": "BKN",
+     "pool_team": "BKN",
      "positions": [
-      "PG",
-      "SG"
+      "PG"
      ],
      "status": null
     },
@@ -1957,9 +1957,9 @@
    "draft_overlap": 9,
    "added_since_draft": [
     "Bradley Beal",
-    "Daniss Jenkins",
     "Duncan Robinson",
     "Ja'Kobe Walter",
+    "Mikel Brown Jr.",
     "Paul Reed"
    ],
    "dropped_since_draft": [
@@ -2240,17 +2240,6 @@
      "status": null
     },
     {
-     "player": "Jakob Poeltl",
-     "yahoo_name": "Jakob Poeltl",
-     "slot": "C",
-     "yahoo_nba_team": "TOR",
-     "pool_team": "TOR",
-     "positions": [
-      "C"
-     ],
-     "status": null
-    },
-    {
      "player": "Donovan Clingan",
      "yahoo_name": "Donovan Clingan",
      "slot": "C",
@@ -2262,22 +2251,33 @@
      "status": null
     },
     {
-     "player": "Jay Huff",
-     "yahoo_name": "Jay Huff",
-     "slot": "UTIL",
-     "yahoo_nba_team": "IND",
-     "pool_team": "IND",
+     "player": "Brook Lopez",
+     "yahoo_name": "Brook Lopez",
+     "slot": "C",
+     "yahoo_nba_team": "LAC",
+     "pool_team": "LAC",
      "positions": [
       "C"
      ],
      "status": null
     },
     {
-     "player": "Kyle Kuzma",
-     "yahoo_name": "Kyle Kuzma",
+     "player": "Ivica Zubac",
+     "yahoo_name": "Ivica Zubac",
      "slot": "UTIL",
-     "yahoo_nba_team": "MIL",
-     "pool_team": "MIL",
+     "yahoo_nba_team": "IND",
+     "pool_team": "IND",
+     "positions": [
+      "C"
+     ],
+     "status": "O"
+    },
+    {
+     "player": "De'Andre Hunter",
+     "yahoo_name": "De'Andre Hunter",
+     "slot": "UTIL",
+     "yahoo_nba_team": "SAC",
+     "pool_team": "SAC",
      "positions": [
       "SF",
       "PF"
@@ -2285,13 +2285,14 @@
      "status": null
     },
     {
-     "player": "Brook Lopez",
-     "yahoo_name": "Brook Lopez",
+     "player": "Kyle Kuzma",
+     "yahoo_name": "Kyle Kuzma",
      "slot": "BN",
-     "yahoo_nba_team": "LAC",
-     "pool_team": "LAC",
+     "yahoo_nba_team": "MIL",
+     "pool_team": "MIL",
      "positions": [
-      "C"
+      "SF",
+      "PF"
      ],
      "status": null
     },
@@ -2319,17 +2320,6 @@
      "status": null
     },
     {
-     "player": "Ivica Zubac",
-     "yahoo_name": "Ivica Zubac",
-     "slot": "IL",
-     "yahoo_nba_team": "IND",
-     "pool_team": "IND",
-     "positions": [
-      "C"
-     ],
-     "status": "D"
-    },
-    {
      "player": "Brandon Ingram",
      "yahoo_name": "Brandon Ingram",
      "slot": "IL",
@@ -2348,14 +2338,15 @@
    "unpooled": [],
    "seat": 7,
    "manager": "John",
-   "draft_overlap": 12,
+   "draft_overlap": 11,
    "added_since_draft": [
     "Brook Lopez",
-    "Jay Huff",
+    "De'Andre Hunter",
     "Kyle Kuzma"
    ],
    "dropped_since_draft": [
-    "Cameron Johnson"
+    "Cameron Johnson",
+    "Jakob Poeltl"
    ]
   }
  ],

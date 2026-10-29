@@ -1,4 +1,9 @@
 {
+ "carried_forward": [
+  "free_agents",
+  "matchups",
+  "standings"
+ ],
  "daily": {
   "478.l.36464.t.1": {
    "2026-10-28": {
@@ -5502,12 +5507,12 @@
       "status": false
      },
      "isUndroppable": false,
-     "name": "Daniss Jenkins",
-     "playerId": "10316",
-     "playerKey": "478.p.10316",
+     "name": "Keyonte George",
+     "playerId": "10100",
+     "playerKey": "478.p.10100",
      "position": "PG,SG",
      "selectedPosition": "SG",
-     "team": "DET"
+     "team": "UTA"
     },
     {
      "isKeeper": {
@@ -5516,12 +5521,12 @@
       "status": false
      },
      "isUndroppable": false,
-     "name": "Keyonte George",
-     "playerId": "10100",
-     "playerKey": "478.p.10100",
-     "position": "PG,SG",
+     "name": "Mikel Brown Jr.",
+     "playerId": "10588",
+     "playerKey": "478.p.10588",
+     "position": "PG",
      "selectedPosition": "G",
-     "team": "UTA"
+     "team": "BKN"
     },
     {
      "isKeeper": {
@@ -6031,20 +6036,6 @@
       "status": false
      },
      "isUndroppable": false,
-     "name": "Jakob Poeltl",
-     "playerId": "5640",
-     "playerKey": "478.p.5640",
-     "position": "C",
-     "selectedPosition": "C",
-     "team": "TOR"
-    },
-    {
-     "isKeeper": {
-      "cost": false,
-      "kept": false,
-      "status": false
-     },
-     "isUndroppable": false,
      "name": "Donovan Clingan",
      "playerId": "10285",
      "playerKey": "478.p.10285",
@@ -6059,12 +6050,41 @@
       "status": false
      },
      "isUndroppable": false,
-     "name": "Jay Huff",
-     "playerId": "6617",
-     "playerKey": "478.p.6617",
+     "name": "Brook Lopez",
+     "playerId": "4472",
+     "playerKey": "478.p.4472",
+     "position": "C",
+     "selectedPosition": "C",
+     "team": "LAC"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "isUndroppable": false,
+     "name": "Ivica Zubac",
+     "playerId": "5663",
+     "playerKey": "478.p.5663",
      "position": "C",
      "selectedPosition": "Util",
+     "status": "O",
      "team": "IND"
+    },
+    {
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "isUndroppable": false,
+     "name": "De'Andre Hunter",
+     "playerId": "6166",
+     "playerKey": "478.p.6166",
+     "position": "SF,PF",
+     "selectedPosition": "Util",
+     "team": "SAC"
     },
     {
      "isKeeper": {
@@ -6077,22 +6097,8 @@
      "playerId": "5840",
      "playerKey": "478.p.5840",
      "position": "SF,PF",
-     "selectedPosition": "Util",
-     "team": "MIL"
-    },
-    {
-     "isKeeper": {
-      "cost": false,
-      "kept": false,
-      "status": false
-     },
-     "isUndroppable": false,
-     "name": "Brook Lopez",
-     "playerId": "4472",
-     "playerKey": "478.p.4472",
-     "position": "C",
      "selectedPosition": "BN",
-     "team": "LAC"
+     "team": "MIL"
     },
     {
      "isKeeper": {
@@ -6129,21 +6135,6 @@
       "status": false
      },
      "isUndroppable": false,
-     "name": "Ivica Zubac",
-     "playerId": "5663",
-     "playerKey": "478.p.5663",
-     "position": "C",
-     "selectedPosition": "IL",
-     "status": "D",
-     "team": "IND"
-    },
-    {
-     "isKeeper": {
-      "cost": false,
-      "kept": false,
-      "status": false
-     },
-     "isUndroppable": false,
      "name": "Brandon Ingram",
      "playerId": "5601",
      "playerKey": "478.p.5601",
@@ -6169,12 +6160,12 @@
       "status": false
      },
      "isUndroppable": false,
-     "name": "Damian Lillard",
-     "playerId": "5012",
-     "playerKey": "478.p.5012",
+     "name": "Dejounte Murray",
+     "playerId": "5660",
+     "playerKey": "478.p.5660",
      "position": "PG",
      "selectedPosition": "PG",
-     "team": "POR"
+     "team": "NOP"
     },
     {
      "isKeeper": {
@@ -6197,12 +6188,12 @@
       "status": false
      },
      "isUndroppable": false,
-     "name": "Grayson Allen",
-     "playerId": "6032",
-     "playerKey": "478.p.6032",
-     "position": "SG,SF",
+     "name": "Damian Lillard",
+     "playerId": "5012",
+     "playerKey": "478.p.5012",
+     "position": "PG",
      "selectedPosition": "G",
-     "team": "CHA"
+     "team": "POR"
     },
     {
      "isKeeper": {
@@ -6216,6 +6207,7 @@
      "playerKey": "478.p.5602",
      "position": "SG,SF,PF",
      "selectedPosition": "SF",
+     "status": "Q",
      "team": "PHI"
     },
     {
@@ -6281,12 +6273,12 @@
       "status": false
      },
      "isUndroppable": false,
-     "name": "Fred VanVleet",
-     "playerId": "5727",
-     "playerKey": "478.p.5727",
-     "position": "PG",
+     "name": "Grayson Allen",
+     "playerId": "6032",
+     "playerKey": "478.p.6032",
+     "position": "SG,SF",
      "selectedPosition": "Util",
-     "team": "HOU"
+     "team": "CHA"
     },
     {
      "isKeeper": {
@@ -6295,12 +6287,12 @@
       "status": false
      },
      "isUndroppable": false,
-     "name": "Dejounte Murray",
-     "playerId": "5660",
-     "playerKey": "478.p.5660",
+     "name": "Fred VanVleet",
+     "playerId": "5727",
+     "playerKey": "478.p.5727",
      "position": "PG",
      "selectedPosition": "Util",
-     "team": "NOP"
+     "team": "HOU"
     },
     {
      "isKeeper": {
@@ -6716,6 +6708,7 @@
      "playerKey": "478.p.6038",
      "position": "C",
      "selectedPosition": "C",
+     "status": "D",
      "team": "POR"
     },
     {
@@ -6772,6 +6765,7 @@
      "playerKey": "478.p.6721",
      "position": "PG,SG",
      "selectedPosition": "BN",
+     "status": "P",
      "team": "IND"
     },
     {
@@ -6980,6 +6974,7 @@
      "playerKey": "478.p.10288",
      "position": "PG,SG",
      "selectedPosition": "BN",
+     "status": "O",
      "team": "HOU"
     },
     {
@@ -7003,12 +6998,12 @@
       "status": false
      },
      "isUndroppable": false,
-     "name": "Mitchell Robinson",
-     "playerId": "6047",
-     "playerKey": "478.p.6047",
-     "position": "C",
+     "name": "Sandro Mamukelashvili",
+     "playerId": "6596",
+     "playerKey": "478.p.6596",
+     "position": "PF,C",
      "selectedPosition": "BN",
-     "team": "BOS"
+     "team": "LAL"
     },
     {
      "isKeeper": {
@@ -7390,13 +7385,13 @@
       "status": false
      },
      "isUndroppable": false,
-     "name": "Alex Caruso",
-     "playerId": "5754",
-     "playerKey": "478.p.5754",
-     "position": "SG,SF",
+     "name": "Jimmy Butler III",
+     "playerId": "4912",
+     "playerKey": "478.p.4912",
+     "position": "SF,PF",
      "selectedPosition": "Util",
      "status": "O",
-     "team": "OKC"
+     "team": "GSW"
     },
     {
      "isKeeper": {
@@ -7424,7 +7419,7 @@
      "playerKey": "478.p.10445",
      "position": "PG,SG",
      "selectedPosition": "BN",
-     "status": "Q",
+     "status": "O",
      "team": "BKN"
     },
     {
@@ -7448,13 +7443,13 @@
       "status": false
      },
      "isUndroppable": false,
-     "name": "Jimmy Butler III",
-     "playerId": "4912",
-     "playerKey": "478.p.4912",
-     "position": "SF,PF",
+     "name": "Alex Caruso",
+     "playerId": "5754",
+     "playerKey": "478.p.5754",
+     "position": "SG,SF",
      "selectedPosition": "IL",
      "status": "O",
-     "team": "GSW"
+     "team": "OKC"
     },
     {
      "isKeeper": {
