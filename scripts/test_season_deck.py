@@ -295,6 +295,17 @@ class WeekResult(Deck):
         self.assertIn("result_text", data["ledger"]["1"])
 
 
+class PickKeepsScroll(Deck):
+    """Owner 2026-10-29: picking a player on the Trade or Free-Agent tab sent the pick list back to its top, because
+    the card (and each .plist scroll box in it) is rebuilt on every pick. The rebuild restores each list's scroll."""
+
+    def test_the_trade_and_fa_rebuilds_keep_the_scroll_position(self):
+        html, data, rec = self.build()
+        self.assertIn("function keepScroll(", html)
+        self.assertEqual(html.count("keepScroll(root,()=>root.replaceChildren("), 2)
+        self.assertIn('e.scrollTop=tops[i]', html)
+
+
 class FantasyBotCards(Deck):
     """Owner 2026-10-20 ("1, 2, 5 build"): the Trades-worth-proposing card and the This-week-live
     card render from data/news records when present, and FantasyBot's verdict text never appears."""
