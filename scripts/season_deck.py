@@ -63,7 +63,7 @@ def default_paths(date, phase="am"):
                 # optional (owner 2026-10-24): the morning card's P(win) scored against each finished week (score_week.py)
                 scores=os.path.join(KIT, "report", "calibration_daily.json"),
                 # optional (owner 2026-10-28, item 4): the day's two status pins the brief's waiver gate reads
-                yahoo_pull=os.path.join(KIT, "data", "source", "flaim", f"pull_{date}.json"),
+                yahoo_pull=os.path.join(KIT, "data", "source", "flaim", f"pull_{date}{sfx}.json"),
                 espn_injuries=os.path.join(KIT, "data", "status", f"espn_injuries_{date}{sfx}.json"))
 
 
