@@ -1458,5 +1458,30 @@ class AfternoonRefresh(unittest.TestCase):
         self.assertFalse(os.path.exists(os.path.join(self.out, "deck_2026-10-21.html")))
 
 
+class PhasePaths(unittest.TestCase):
+    """Owner 2026-10-29 (audit F3): the morning record hashes the morning's own copies, which the 3 PM run no longer
+    overwrites; the afternoon page reads the afternoon's status files and the live league state."""
+    def setUp(self):
+        self.kit = tempfile.mkdtemp(); self._kit = SD.KIT; SD.KIT = self.kit
+        os.makedirs(os.path.join(self.kit, "data", "news"))
+
+    def tearDown(self):
+        SD.KIT = self._kit
+
+    def test_the_morning_reads_the_pinned_morning_state_when_it_exists(self):
+        self.assertEqual(SD.default_paths("2026-10-29")["league_state"], os.path.join(self.kit, "data", "league_state.json"))
+        open(os.path.join(self.kit, "data", "news", "league_state_am_2026-10-29.json"), "w").write("{}")
+        p = SD.default_paths("2026-10-29")
+        self.assertEqual(p["league_state"], os.path.join(self.kit, "data", "news", "league_state_am_2026-10-29.json"))
+        self.assertEqual(p["status"], os.path.join(self.kit, "data", "status", "status_2026-10-29.json"))
+
+    def test_the_afternoon_reads_its_own_status_and_the_live_state(self):
+        open(os.path.join(self.kit, "data", "news", "league_state_am_2026-10-29.json"), "w").write("{}")
+        p = SD.default_paths("2026-10-29", phase="pm")
+        self.assertEqual(p["league_state"], os.path.join(self.kit, "data", "league_state.json"))
+        self.assertEqual(p["status"], os.path.join(self.kit, "data", "status", "status_2026-10-29_pm.json"))
+        self.assertEqual(p["espn_injuries"], os.path.join(self.kit, "data", "status", "espn_injuries_2026-10-29_pm.json"))
+
+
 if __name__ == "__main__":
     unittest.main()

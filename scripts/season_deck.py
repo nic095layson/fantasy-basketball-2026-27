@@ -36,11 +36,18 @@ def _load(path, what):
         raise DeckError(f"{what} record unreadable: {path}: {e}")
 
 
-def default_paths(date):
+def default_paths(date, phase="am"):
+    # owner 2026-10-29 (audit F3): the 3 PM run no longer overwrites what the morning record hashes. The morning reads
+    # its own pinned state copy (league_live's league_state_am_<date>.json, byte-identical to the state it produced)
+    # and status_<date>.json; the afternoon reads the live state and status_<date>_pm.json (required: no afternoon
+    # status file halts the afternoon page, and the morning page stands)
+    sfx = "_pm" if phase == "pm" else ""
+    am_state = os.path.join(KIT, "data", "news", f"league_state_am_{date}.json")
+    state = am_state if phase != "pm" and os.path.exists(am_state) else os.path.join(KIT, "data", "league_state.json")
     return dict(brief=os.path.join(KIT, "report", "briefs", f"brief_{date}.json"),
                 board=os.path.join(KIT, "report", "season", f"board_{date}.json"),
-                status=os.path.join(KIT, "data", "status", f"status_{date}.json"),
-                league_state=os.path.join(KIT, "data", "league_state.json"),
+                status=os.path.join(KIT, "data", "status", f"status_{date}{sfx}.json"),
+                league_state=state,
                 season_lines=os.path.join(KIT, "data", "season", f"season_lines_{date}.json"),
                 # owner 2026-10-26 ("every Monday"): the newest season sweep dated on or before the day
                 sweep=SR.latest(date),
@@ -57,7 +64,7 @@ def default_paths(date):
                 scores=os.path.join(KIT, "report", "calibration_daily.json"),
                 # optional (owner 2026-10-28, item 4): the day's two status pins the brief's waiver gate reads
                 yahoo_pull=os.path.join(KIT, "data", "source", "flaim", f"pull_{date}.json"),
-                espn_injuries=os.path.join(KIT, "data", "status", f"espn_injuries_{date}.json"))
+                espn_injuries=os.path.join(KIT, "data", "status", f"espn_injuries_{date}{sfx}.json"))
 
 
 def resolve_rostered(rostered, board_names, held_names, aliases, missing=None):
@@ -999,7 +1006,7 @@ def main():
     # owner 2026-10-28: the 3 PM run's rebuild, written beside the morning's page as deck_<date>_pm.html
     ap.add_argument("--phase", choices=("am", "pm"), default="am")
     a = ap.parse_args()
-    paths = default_paths(a.date)
+    paths = default_paths(a.date, a.phase)
     sfx = "_pm" if a.phase == "pm" else ""
     try:
         html, data, record = build(paths, a.date, phase="pm") if a.phase == "pm" else build(paths, a.date)

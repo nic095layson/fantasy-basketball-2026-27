@@ -20,9 +20,10 @@ def ecw(s):
             tot+=v; cats[c]+=v/11
     return tot/11,cats
 E={s:ecw(s) for s in ros}
-# 2026-10-21 (owner "implement fixes", decision 5 (a)): pinned by design to the _w17r references of the 0.60-recovery
-# engine this post-mortem studied; the live engine's references are the _w17r_av0 files (deck #128).
-S={sd:json.load(open(f"{DECK}/arena/results/m100_league_sim_10k_s{sd}_w17r.json"))["teams"] for sd in (2026,2027)}  # the shipped engine's reference runs (17 weeks, reseeded; Session 1 item 2)
+# 2026-10-21 (owner "implement fixes", decision 5 (a)) pinned this to the _w17r references of the 0.60-recovery engine;
+# 2026-10-29 (owner "Repoint to current runs", audit F2): the live engine's references, the _w17r_av0 files (deck #128),
+# so the card and the seasons come from one engine and the record carries that engine's commit
+S={sd:json.load(open(f"{DECK}/arena/results/m100_league_sim_10k_s{sd}_w17r_av0.json"))["teams"] for sd in (2026,2027)}  # the shipped engine's reference runs (17 weeks, reseeded; Session 1 item 2)
 def rank(vals):
     o=sorted(vals,key=lambda k:-vals[k]); return {k:i+1 for i,k in enumerate(o)}
 def spearman(a,b):
@@ -42,7 +43,7 @@ for sd,T in S.items():
         per_seat=per_seat)
     # the owner's per-category: ECW vs sim
     out[sd]["owner"]={c:dict(ecw=round(E[10][1][c],3),sim=round(T["10"]["cat_win_pct"][c]/100,3)) for c in CATS}
-json.dump(out,open(os.path.join(H,"rt_consistency.json"),"w"),indent=1)
+json.dump(dict(out,engine_commit=__import__("subprocess").check_output(["git","-C",DECK,"rev-parse","--short","HEAD"]).decode().strip()),open(os.path.join(H,"rt_consistency.json"),"w"),indent=1)
 for sd in out:
     o=out[sd]; print(sd,"cats at 50:",o["all_cats_at_50"],"max gap",round(o["max_abs_gap_ecw_vs_sim"],4),"mean gap",round(o["mean_abs_gap"],4),"rho title",o["spearman_ecw_vs_title"],"rho cats/wk",o["spearman_ecw_vs_cats_per_week"])
     print("  owner:",{c:(v["ecw"],v["sim"]) for c,v in o["owner"].items()})
