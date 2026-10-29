@@ -203,3 +203,4 @@ A pull that is not pushed to main did not happen — see DATA-PULL.md §0.
 | 2026-10-29 | owner: "Measure it first", "Key on Yahoo team key" (~15:00Z); no pull: 10-29 morning records on season/daily, read only | 0 | 0 | 0 | after-report-2026-10-29-il-rule-and-team-key.md |
 | 2026-10-29 | owner: "how come the Week 1 result was not updated? … correct" (~15:30Z); no pull: calibration ledger and week 1 record on season/daily, read only | 0 | 0 | 0 | after-report-2026-10-29-week-result.md |
 | 2026-10-29 | owner: "stay on the selected player" (Trade / Free Agent picks) (~16:45Z); no pull: 10-29 records on season/daily, read only | 0 | 0 | 0 | after-report-2026-10-29-pick-scroll.md |
+| 2026-10-29 | owner: "confidence % report … update as of today", "create after-report … run this report again … Week 5, 10 and 15" (~20:00Z); no pull: records read only | 0 | 0 | 0 | after-report-2026-10-29-confidence.md |
