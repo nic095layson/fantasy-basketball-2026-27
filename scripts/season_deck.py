@@ -130,6 +130,17 @@ def positional_breakdown(players):
     return dict(positions=pos, families=fam, rostered=len(players), il=il)
 
 
+def ledger_result(w):
+    """A ledger week's result for the Week card, from its `score` (weekly_preview --score: categories won of nine, a
+    tie counted as a loss, the ledger's rule since 2026-10-15); None until the week is scored. Owner 2026-10-29: the
+    card read a `result` field nothing writes, so a scored week still said "pending"."""
+    sc = (w or {}).get("score")
+    if not sc:
+        return None
+    n = sc.get("cats_won", len(sc.get("won") or []))
+    return f"{'Won' if n >= 5 else 'Lost'} — {n} of 9 cats ({', '.join(sc.get('won') or []) or 'none'})"
+
+
 def build(paths, date, phase=None):
     import co_gm
     import box_pull as BP
@@ -197,7 +208,7 @@ def build(paths, date, phase=None):
                 my_team=my_team, my_seat=my_seat, brief=brief, board=board, status=status,
                 league=dict(as_of=league["as_of"], rosters=rosters, managers={t["name"]: t.get("manager") for t in league["teams"]},
                             unpooled=league.get("unpooled") or [], my_positions=my_positions), season_lines=lines, matchup=wk,
-                ledger=calib.get("weeks", {}), bands=bands, band_engine=band_engine, band_config=band_config, matchup_live=matchup_live,
+                ledger={k: dict(v, result_text=ledger_result(v)) for k, v in calib.get("weeks", {}).items()}, bands=bands, band_engine=band_engine, band_config=band_config, matchup_live=matchup_live,
                 week_matchup=week_matchup, league_table=league_rec, form=form_rec, scores=scores, fa_status=fa_status,
                 # owner 2026-10-28 ("Rebuild, flag morning parts"): the 3 PM run's rebuild says which parts are the 5 AM run's
                 **({"refresh": {"phase": phase, "not_on_board": not_on_board}} if phase == "pm" else {}),
@@ -886,7 +897,7 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
       weeks.map(w=>{ const sd=Object.values(w.by_seed||{}); const pw=sd.length?avg2(sd.map(x=>x.p_win)):null, ec=sd.length?avg2(sd.map(x=>x.exp_cats)):null;
         const oname=seatName[w.opponent_seat]||w.opponent_team;
         return h("tr",{},h("td",{class:"num"},String(w.week)),h("td",{},oname+" ("+(w.opponent_manager||"?")+")"),
-          h("td",{class:"num"},pct(pw)),h("td",{class:"num"},f2(ec)),h("td",{},w.rosters_as_of||"—"),h("td",{},w.result||"pending"));})))
+          h("td",{class:"num"},pct(pw)),h("td",{class:"num"},f2(ec)),h("td",{},w.rosters_as_of||"—"),h("td",{},w.result_text||"pending"));})))
       : h("div",{class:"zero"},"No weeks recorded yet.")));
   // owner 2026-10-24 (the scoring loop): how the morning card's stated chances scored once the week was final
   (function(){ const S=D.scores, wks=S? Object.values(S.weeks||{}).sort((a,z)=>a.week-z.week) : [];
