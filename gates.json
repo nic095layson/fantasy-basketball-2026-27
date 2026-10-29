@@ -1,7 +1,7 @@
 {
- "ran_at_utc": "2026-10-29T00:32:47Z",
+ "ran_at_utc": "2026-10-29T01:09:36Z",
  "inputs": {
-  "report/after-reports/after-report-2026-10-29-redteam-followups.md": "4a3e0aae62b6203553a0c65f6c4e94c18c74c4f32c1e73ebbe3fc1b598d903ea",
+  "report/after-reports/after-report-2026-10-29-redteam-followups.md": "cd9fee5d9d4feb5ca748e04847d7ddd9416bd7919affffe058f85e629ef53000",
   "report/after-reports/redteam-followups-2026-10-29/f1_decisions.json": "8d78320063adb87728b77f6ce1422a8c14d918dfe3f601a95babfafb09ae54a9",
   "report/after-reports/redteam-2026-10-26-season-real/sweep.json": "f0eb804fcb16e8125e872ae35992211ba456bfdf2c505feee76ec2421c15f8c5"
  },
@@ -103,11 +103,11 @@
    "cwd": ".",
    "pass_re": "^ATTACKS CHECK: PASS",
    "exit": 0,
-   "pass_line": "ATTACKS CHECK: PASS \u2014 9 attacks on engine 55d8e3f (engine files last changed 95ebade); CURRENT 7, UNFINGERPRINTED 2",
+   "pass_line": "ATTACKS CHECK: PASS \u2014 9 attacks on engine 55d8e3f (engine files last changed 95ebade); CURRENT 8, UNFINGERPRINTED 1",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "ATTACKS CHECK: PASS \u2014 9 attacks on engine 55d8e3f (engine files last changed 95ebade); CURRENT 7, UNFINGERPRINTED 2"
+    "ATTACKS CHECK: PASS \u2014 9 attacks on engine 55d8e3f (engine files last changed 95ebade); CURRENT 8, UNFINGERPRINTED 1"
    ]
   },
   {
@@ -126,5 +126,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "848a4efbc3f049ee9944dd88d1d769c84487071a"
+ "base_commit": "38b6e80a488d3877d7ad22783451872dbc815fe7"
 }

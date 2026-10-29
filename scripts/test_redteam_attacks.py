@@ -67,14 +67,14 @@ class Check(unittest.TestCase):
 
 
 class ShippedList(unittest.TestCase):
-    """Owner 2026-10-29 (audit F2): the known-answer, join and ties attacks carry the engine they ran on. A-3 stays
-    unfingerprinted: it is pinned to the 0.60-recovery engine's references (decision 5 (a), 2026-10-21)."""
+    """Owner 2026-10-29 (audit F2): the known-answer, join, consistency and ties attacks carry the engine they ran on;
+    A-3 compares against the live engine's references (owner "Repoint to current runs", 2026-10-29)."""
 
-    def test_attacks_a1_a2_a4_name_a_commit_field_their_records_carry(self):
+    def test_attacks_a1_to_a4_name_a_commit_field_their_records_carry(self):
         root = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
         with open(os.path.join(root, "scripts", "redteam", "attacks.json"), encoding="utf-8") as f:
             attacks = {a["id"]: a for a in json.load(f)["attacks"]}
-        for i in ("A-1", "A-2", "A-4"):
+        for i in ("A-1", "A-2", "A-3", "A-4"):
             a = attacks[i]
             self.assertTrue(a.get("commit_field"), i)
             with open(os.path.join(root, a["record"]), encoding="utf-8") as f:

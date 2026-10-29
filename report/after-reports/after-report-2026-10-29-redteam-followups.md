@@ -4,7 +4,7 @@ Pull window: 2026-10-28 → 2026-10-28 (no pull: the 10-28 afternoon records on 
 
 **Method up front.** The owner picked all three follow-ups from the 10-28 system audit (PR #224): "Run it on today's pairs", "Re-run and fingerprint", "Pin the morning copies". F1 is an assessment only. F2 and F3 are code. The method parameters below were stated to the owner before each run. EVIDENCE marks what a run or read showed; INFERENCE marks what is derived.
 
-**Verdict: F1 — Cameron Johnson for Gillespie holds under all 12 variants, and Tobias Harris for Queta is negative except with no shared-games shock. F2 — 7 of 9 attacks are CURRENT; A-3 cannot be stamped as it stands (owner decision). F3 — fixed from the next run on; it needs a Runner prompt edit (pm_v4).**
+**Verdict: F1 — Cameron Johnson for Gillespie holds under all 12 variants, and Tobias Harris for Queta is negative except with no shared-games shock. F2 — 8 of 9 attacks are CURRENT; A-3 was repointed to the live engine's references on the owner's pick and holds. F3 — fixed from the next run on; it needs a Runner prompt edit (pm_v4).**
 
 ## 1. F1: today's waiver pairs under every sweep variant (EVIDENCE: f1_decisions.json)
 
@@ -48,12 +48,13 @@ Correction to the 10-28 audit: it named A-1 to A-4 as the unfingerprinted attack
 |---|---|---|---|
 | A-1 category math | yes | z and availability diffs 0.0, board identical; kit rows 325 to 327 (Brazile, Bamba) | CURRENT (55d8e3f) |
 | A-2 kit/deck join | yes, now writes `engine_commit` | 0 line differences; Brazile and Bamba kit-only (not in the frozen v69 deck pool) | CURRENT |
-| A-3 card vs simulator | yes | **does not hold as pinned**: max gap 0.044 to 0.221, ρ 0.99 to 0.93 | UNFINGERPRINTED (owner decision) |
+| A-3 card vs simulator | yes, against the 10-19 pinned references | **did not hold as pinned**: max gap 0.044 to 0.221, ρ 0.99 to 0.93 | repointed (owner pick), see below |
+| A-3 repointed to `_w17r_av0` | yes, now writes `engine_commit` | max gap 0.036 / 0.038, ρ title 0.993 / 0.986; all categories at 50 | CURRENT |
 | A-4 integer ties | yes, now writes `engine_commit` | tied categories per matchup 0.174 to 0.175 (2026); per-category rates within 0.001 | CURRENT |
 
-**Why A-3 moved.** The script compares a card computed on the live engine with reference sims pinned, by design (decision 5 (a), 10-21), to the old 0.60-recovery engine (files of 10-15). After deck #127/#128 those are two different engines, so stamping today's fingerprint would call a stale comparison CURRENT. The same attack against today's references (`_w17r_av0`, made 10-20 on the live engine): max gap 0.036 / 0.038, ρ title 0.993 / 0.986, which holds (`rt_consistency_av0.json`). A-3 is left as it was until the owner picks (§5).
+**Why A-3 moved.** The script compares a card computed on the live engine with reference sims pinned, by design (decision 5 (a), 10-21), to the old 0.60-recovery engine (files of 10-15). After deck #127/#128 those are two different engines, so stamping today's fingerprint would call a stale comparison CURRENT. The same attack against today's references (`_w17r_av0`, made 10-20 on the live engine): max gap 0.036 / 0.038, ρ title 0.993 / 0.986, which holds (`rt_consistency_av0.json`). Owner 2026-10-29: "Repoint to current runs". rt_consistency.py now reads the `_w17r_av0` references and writes `engine_commit`; the re-run record equals the scratch run above (key for key).
 
-Attack check after: `ATTACKS CHECK: PASS — 9 attacks on engine 55d8e3f; CURRENT 7, UNFINGERPRINTED 2` (A-3, A-6).
+Attack check after: `ATTACKS CHECK: PASS — 9 attacks on engine 55d8e3f; CURRENT 8, UNFINGERPRINTED 1` (A-6).
 
 ## 3. F3: the 3 PM run stops overwriting the morning's pinned files (EVIDENCE)
 
@@ -83,7 +84,7 @@ Every title share above carries the standing structural band (season sweep 2026-
 
 **In scope and unverified.** The 10-29 morning's own pairs (its 12:02Z run) may differ: a new status, Bamba pooled. A-6 is still the draft-day record.
 
-Open decisions for the owner: A-3's reference (repoint to the live `_w17r_av0` sims, or retire it as a historical record); whether F1 becomes a standing attack; PR merge order (paste pm_v4 first).
+Owner decisions taken 2026-10-29: A-3 repointed to the live references; F1 stays a one-off assessment ("Not yet"). Open: PR merge order (paste pm_v4 first).
 
 ## Watchlist
 
@@ -95,7 +96,7 @@ Open decisions for the owner: A-3's reference (repoint to the live `_w17r_av0` s
 | item | status | receipt |
 |---|---|---|
 | F1 decision robustness in-season | **ASSESSED** (one day) | §1, f1_decisions.json |
-| F2 unfingerprinted attacks | **CLOSED** for A-1, A-2, A-4; **OPEN** A-3 (owner), A-6 | §2 |
+| F2 unfingerprinted attacks | **CLOSED** for A-1 to A-4; **OPEN** A-6 (draft-day record) | §2 |
 | F3 afternoon overwrites morning-pinned files | **FIXED** in code; Runner paste pending | §3, RUNNER-ASK-v7 |
 | F4 week-1 bias and generous tiers | **WATCH**, the week-4 fit | 10-28 audit §3 |
 
