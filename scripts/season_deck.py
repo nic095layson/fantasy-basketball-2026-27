@@ -637,6 +637,10 @@ const BOARD=D.board.board, BYNAME={}; BOARD.forEach(r=>BYNAME[r.name]=r);
 const MINE=BOARD.filter(r=>r.mine);
 function howItWorks(){ return h("details",{class:"card how"},h("summary",{},"How this screen works"),
   h("p",{class:"note"},"Per-category z-scores come from today's board (the same vectors the rankings sum; the turnover column already credits low turnovers). Gains are the incoming players' z minus the outgoing players' z, tiered low (<"+C.tier_low+"), medium (<"+C.tier_high+"), high (≥"+C.tier_high+"). The verdict is the net z against ±"+C.verdict_edge+" (strong at ±"+C.verdict_strong+") — "+C.thresholds_note+". For the 10,000-season title-odds verdict on a specific move, ask Claude in session.")); }
+// owner 2026-10-29: a pick rebuilds its card, and each pick list (.plist, its own 230px scroll box) came back at its
+// top; the rebuild puts every list in the card, and the window, back where they were
+function keepScroll(root, rebuild){ const x=window.scrollX, y=window.scrollY, tops=[...root.querySelectorAll(".plist")].map(e=>e.scrollTop);
+  rebuild(); root.querySelectorAll(".plist").forEach((e,i)=>{ if(i<tops.length) e.scrollTop=tops[i]; }); window.scrollTo(x,y); }
 function keepTyping(inp, rerender){ const had=document.activeElement===inp, a=inp.selectionStart, b=inp.selectionEnd; rerender();
   if(had){ inp.focus(); try{ inp.setSelectionRange(a,b); }catch(e){} } }
 /* Build strip (owner 2026-10-20): each team's per-category z totals over its ACTIVE on-board roster (IL counts 0,
@@ -712,7 +716,7 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
   function render(){ const R=D.league.rosters[team]||{players:[],off_board:[]};
     const theirs=R.players.map(n=>BYNAME[n]).filter(Boolean).sort((a,b)=>a.rank-b.rank);
     inc.forEach(n=>{ if(!R.players.includes(n)) inc.delete(n); });
-    root.replaceChildren(
+    keepScroll(root,()=>root.replaceChildren(
       h("div",{class:"h2row"},h("h2",{},"Trade Analyzer"),
         h("button",{id:"tr-reset",class:"resetbtn",onclick:()=>{out.clear();inc.clear();render();}},"Reset")),
       h("div",{class:"pick"},
@@ -722,7 +726,7 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
           pickList(theirs,inc,render,"No board rows on this roster."))),
       ...(R.off_board.length? [h("p",{class:"note"},T(team)+" also rosters, off the board (held, no z line): "+R.off_board.join(", "))] : []),
       buildStrip("tr-build",{[D.my_team]:{out:out,inc:inc},[team]:{out:inc,inc:out}},inc.size||out.size),
-      scoreBlock([...inc].map(n=>BYNAME[n]),[...out].map(n=>BYNAME[n]),"TRADE"));
+      scoreBlock([...inc].map(n=>BYNAME[n]),[...out].map(n=>BYNAME[n]),"TRADE")));
   }
   render();
 })();
@@ -750,7 +754,7 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
     if(sortBy==="week") pool=pool.sort((a,b)=>{ const x=TWM[a.name], y=TWM[b.name];  // 2026-10-22: scored ones first, by this week
       return (x&&y)? y.d_exp-x.d_exp : x? -1 : y? 1 : 0; });                         // the rest keep their z order (stable sort)
     pool=pool.slice(0,60);
-    root.replaceChildren(
+    keepScroll(root,()=>root.replaceChildren(
       h("div",{class:"h2row"},h("h2",{},"Free-Agent Adder"),myPositions([...drop],[...add]),
         h("button",{id:"fa-reset",class:"resetbtn",onclick:()=>{drop.clear();add.clear();search="";inp.value="";render();}},"Reset")),
       h("div",{class:"pick"},
@@ -765,7 +769,7 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
             : "No status pinned for the day: check each player before claiming."),
           pickList(pool,add,render,"No free agents match.",wk))),
       buildStrip("fa-build",{[D.my_team]:{out:drop,inc:add}},add.size||drop.size),
-      scoreBlock([...add].map(n=>BYNAME[n]),[...drop].map(n=>BYNAME[n])));
+      scoreBlock([...add].map(n=>BYNAME[n]),[...drop].map(n=>BYNAME[n]))));
   }
   render();
 })();
