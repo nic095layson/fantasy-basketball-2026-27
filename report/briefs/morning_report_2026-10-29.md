@@ -70,4 +70,4 @@ Published to https://claude.ai/artifact/Az6vPGzG6TLWrPjdAWL2pe as Version 42 (17
    - (Recommended) Have the main session key league_pairings and league_table on Yahoo team id instead of name. A rename then can't break them.
    - Alternatively, add a one-time alias for team 5's rename.
    - Or accept both steps failing until week 1's files are regenerated.
-3. **Afternoon run:** #225 is now on main, so today's 3 PM run should write status_2026-10-29_pm.json for the first time. No action needed.
+3. **Afternoon run:** #225 is now on main. `status_feed.py --help` and `season_deck.py --help` both list `--phase` (checked 10-29), so today's 3 PM run should write status_2026-10-29_pm.json for the first time and rebuild and republish the deck. No action needed.
