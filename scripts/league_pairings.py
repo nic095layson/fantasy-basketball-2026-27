@@ -29,6 +29,7 @@ SCHEDULE = os.path.join(KIT, "data", "league_schedule.json")
 PINS = os.path.join(KIT, "data", "source", "flaim", "pairings", "478.l.36464")
 WEEKS = os.path.join(KIT, "data", "weeks")
 STATE = os.path.join(KIT, "data", "league_state.json")
+PULLS = os.path.join(KIT, "data", "source", "flaim")
 
 
 class PairingsError(Exception):
@@ -40,12 +41,28 @@ def seat_map(state):
     return {t["name"]: t["seat"] for t in state["teams"]}
 
 
-def week_pairs(resp, seats):
-    """One week's matchups as seat pairs; every team exactly once or PairingsError."""
+def names_by_key(pull_dir):
+    """Yahoo team key -> today's team name, from the newest pinned Flaim pull's rosters ({} with none). Owner 2026-10-29
+    ("Key on Yahoo team key"): a pin carries the name of the day it was pinned, and a team that renames itself after
+    that (team 5, 10-29) must still find its seat; the key never changes."""
+    files = sorted(glob.glob(os.path.join(pull_dir, "pull_????-??-??.json")))
+    if not files:
+        return {}
+    rosters = json.load(open(files[-1], encoding="utf-8")).get("rosters") or {}
+    return {k: r["teamName"] for k, r in rosters.items() if r.get("teamName")}
+
+
+def _name(side, keys):
+    return (keys or {}).get(side.get("teamKey")) or side["teamName"]
+
+
+def week_pairs(resp, seats, keys=None):
+    """One week's matchups as seat pairs; every team exactly once or PairingsError. With `keys` (team key -> today's
+    name) a side is matched by its Yahoo team key, else by the name it was pinned under."""
     pairs, seen = [], []
     for m in resp.get("matchups") or []:
         try:
-            a, b = seats[m["home"]["teamName"]], seats[m["away"]["teamName"]]
+            a, b = seats[_name(m["home"], keys)], seats[_name(m["away"], keys)]
         except KeyError as e:
             raise PairingsError(f"week {resp.get('matchupWeek')}: team {e} is not in the league state")
         pairs.append([a, b]); seen += [a, b]
@@ -55,7 +72,7 @@ def week_pairs(resp, seats):
     return pairs
 
 
-def compile(sched, pins, weeks_dir, state):
+def compile(sched, pins, weeks_dir, state, keys=None):
     """The schedule with pairings and played weeks added; the owner's listed opponents checked against the pins."""
     seats = seat_map(state)
     n_weeks = int(sched["regular_season_weeks"])
@@ -65,7 +82,7 @@ def compile(sched, pins, weeks_dir, state):
         w = int(resp.get("matchupWeek") or 0)
         if not 1 <= w <= n_weeks:
             continue
-        pairings[str(w)] = week_pairs(resp, seats); srcs.append(os.path.relpath(p, KIT) if p.startswith(KIT) else p)
+        pairings[str(w)] = week_pairs(resp, seats, keys); srcs.append(os.path.relpath(p, KIT) if p.startswith(KIT) else p)
     missing = [w for w in range(1, n_weeks + 1) if str(w) not in pairings]
     if missing:
         raise PairingsError(f"no pinned matchups for week(s) {missing}")
@@ -92,7 +109,7 @@ def compile(sched, pins, weeks_dir, state):
             raise PairingsError(f"week {w}: played records cover seats {sorted(played[w])}, not every team")
     out = dict(sched)
     out["pairings"] = dict(sorted(pairings.items(), key=lambda kv: int(kv[0])))
-    out["pairings_source"] = dict(files=srcs, weeks=len(pairings), seat_map="team name -> seat through data/league_state.json")
+    out["pairings_source"] = dict(files=srcs, weeks=len(pairings), seat_map="Yahoo team key -> today's name (newest pinned pull) -> seat through data/league_state.json" if keys else "team name -> seat through data/league_state.json")
     out["owner_opponents_check"] = "match"
     out["played"] = dict(sorted(played.items(), key=lambda kv: int(kv[0])))
     return out
@@ -104,11 +121,12 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--schedule", default=SCHEDULE); ap.add_argument("--pins", default=PINS)
     ap.add_argument("--weeks", default=WEEKS); ap.add_argument("--state", default=STATE)
+    ap.add_argument("--pulls", default=PULLS, help="the pinned Flaim pulls; the newest gives team key -> today's name")
     ap.add_argument("--ledger", default=run_ledger.LEDGER, help="run-ledger for the row ('' to skip)")
     a = ap.parse_args()
     try:
         sched = json.load(open(a.schedule, encoding="utf-8"))
-        out = compile(sched, a.pins, a.weeks, json.load(open(a.state, encoding="utf-8")))
+        out = compile(sched, a.pins, a.weeks, json.load(open(a.state, encoding="utf-8")), keys=names_by_key(a.pulls))
     except (PairingsError, OSError, ValueError, KeyError) as e:
         msg = f"LEAGUE PAIRINGS: FAIL — {e}"
         print(msg)

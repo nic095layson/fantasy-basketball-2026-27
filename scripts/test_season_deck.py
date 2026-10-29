@@ -278,6 +278,34 @@ class WeekTabCurrentNames(Deck):
         self.assertNotIn('h("td",{},w.opponent_team+" ("', html)
 
 
+class WeekResult(Deck):
+    """Owner 2026-10-29 ("how come the Week 1 result was not updated?"): the ledger keeps a scored week under
+    `score` (weekly_preview --score); the Week card read a `result` field nothing writes, so it said "pending"."""
+
+    def test_a_scored_week_shows_its_result_and_an_unscored_one_stays_pending(self):
+        self.assertEqual(SD.ledger_result({"score": {"won": ["FG%", "FT%", "TO"], "cats_won": 3}}),
+                         "Lost — 3 of 9 cats (FG%, FT%, TO)")
+        self.assertEqual(SD.ledger_result({"score": {"won": ["FG%", "FT%", "3PTM", "PTS", "TO"], "cats_won": 5}}),
+                         "Won — 5 of 9 cats (FG%, FT%, 3PTM, PTS, TO)")
+        self.assertIsNone(SD.ledger_result({"result": "pending"}))
+
+    def test_the_card_reads_the_result_the_build_derives(self):
+        html, data, rec = self.build()
+        self.assertIn("w.result_text", html)
+        self.assertIn("result_text", data["ledger"]["1"])
+
+
+class PickKeepsScroll(Deck):
+    """Owner 2026-10-29: picking a player on the Trade or Free-Agent tab sent the pick list back to its top, because
+    the card (and each .plist scroll box in it) is rebuilt on every pick. The rebuild restores each list's scroll."""
+
+    def test_the_trade_and_fa_rebuilds_keep_the_scroll_position(self):
+        html, data, rec = self.build()
+        self.assertIn("function keepScroll(", html)
+        self.assertEqual(html.count("keepScroll(root,()=>root.replaceChildren("), 2)
+        self.assertIn('e.scrollTop=tops[i]', html)
+
+
 class FantasyBotCards(Deck):
     """Owner 2026-10-20 ("1, 2, 5 build"): the Trades-worth-proposing card and the This-week-live
     card render from data/news records when present, and FantasyBot's verdict text never appears."""
