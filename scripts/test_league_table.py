@@ -239,6 +239,20 @@ class Standings(unittest.TestCase):
         with self.assertRaises(LT.TableError):
             LT.build("2026-10-28", self.paths)
 
+    def test_a_team_renamed_since_the_week_record_is_matched_by_seat(self):
+        # owner 2026-10-29 ("Key on Yahoo team key"): team 5 renamed itself after week 1; the week record still carries
+        # the old name, and the score follows the seat, never the name
+        os.remove(os.path.join(self.pulls, "pull_2026-10-26.json"))
+        json.dump(pull("2026-10-27", {2: block(2)}), open(os.path.join(self.pulls, "pull_2026-10-27.json"), "w"))
+        os.makedirs(self.paths["actuals"])
+        json.dump(dict(date="2026-10-21", games=[], players=[]), open(os.path.join(self.paths["actuals"], "2026-10-21.json"), "w"))
+        seat_of = {t["name"]: t["seat"] for t in STATE["teams"]}
+        rows = {("Old Name" if t == "Team 10" else t): dict(seat=seat_of[t], yahoo_score=dict(wins=w, losses=l, ties=tt))
+                for (t, w, l, tt) in self.week1()}
+        json.dump(dict(week=1, teams=rows), open(os.path.join(self.weeks, "week_1.json"), "w"))
+        rec = LT.build("2026-10-28", self.paths)
+        self.assertEqual(rec["weeks"][0]["teams"]["Team 10"]["score"], dict(wins=4, losses=5, ties=0))
+
     def test_a_rebuilt_week_takes_its_score_from_the_week_record(self):
         os.remove(os.path.join(self.pulls, "pull_2026-10-26.json"))
         json.dump(pull("2026-10-27", {2: block(2)}), open(os.path.join(self.pulls, "pull_2026-10-27.json"), "w"))
