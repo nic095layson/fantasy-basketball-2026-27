@@ -1,0 +1,76 @@
+{
+ "actuals_files": 6,
+ "check_date": "2026-11-17",
+ "instruments": {
+  "mild": {
+   "deck": 0.85,
+   "kit_mean": 0.8066,
+   "simulator": 0.8977
+  },
+  "risk": {
+   "deck": 0.78,
+   "kit_mean": 0.8833,
+   "simulator": 0.8523
+  }
+ },
+ "league_state_as_of": "2026-10-24",
+ "median_team_games": 2.0,
+ "min_risk": 10,
+ "min_team_games": 15,
+ "population": 155,
+ "ratio": {
+  "mild": 1.0538461538461539,
+  "risk": 0.9879807692307693
+ },
+ "team_games": {
+  "ATL": 2,
+  "BKN": 1,
+  "BOS": 2,
+  "CHA": 2,
+  "CHI": 2,
+  "CLE": 1,
+  "DAL": 2,
+  "DEN": 1,
+  "DET": 2,
+  "GSW": 2,
+  "HOU": 2,
+  "IND": 2,
+  "LAC": 2,
+  "LAL": 2,
+  "MEM": 2,
+  "MIA": 2,
+  "MIL": 2,
+  "MIN": 2,
+  "NOP": 2,
+  "NYK": 2,
+  "OKC": 2,
+  "ORL": 2,
+  "PHI": 2,
+  "PHX": 1,
+  "POR": 2,
+  "SAC": 2,
+  "SAS": 2,
+  "TOR": 2,
+  "UTA": 2,
+  "WAS": 2
+ },
+ "tiers": {
+  "healthy": {
+   "mean_share": 0.948905109489051,
+   "n": 137,
+   "n_measured": 137
+  },
+  "mild": {
+   "mean_share": 1.0,
+   "n": 2,
+   "n_measured": 2
+  },
+  "risk": {
+   "mean_share": 0.9375,
+   "n": 16,
+   "n_measured": 16
+  }
+ },
+ "verdict": "INSUFFICIENT",
+ "why": "median team games 2 < 15"
+}
