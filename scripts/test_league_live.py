@@ -342,6 +342,18 @@ class Phases(unittest.TestCase):
         cur = self.state("2026-10-26", [self.team("A", 1, ["Y"])])
         self.assertIs(league_live.am_baseline("2026-10-26", news, cur), cur)
 
+class AfternoonPin(unittest.TestCase):
+    """Owner 2026-10-29 ("Fix like #225"): the 3 PM run pins its pull and roster transcription under _pm names, so the
+    morning's pull_<date>.json stays as the morning records hashed it; the afternoon pin starts from the morning's."""
+    def test_the_morning_and_afternoon_pin_to_different_files(self):
+        am = league_live.pin_paths("/p", "2026-10-29", "am")
+        pm = league_live.pin_paths("/p", "2026-10-29", "pm")
+        self.assertEqual(am, (os.path.join("/p", "pull_2026-10-29.json"), os.path.join("/p", "rosters_2026-10-29.transcribed.csv"),
+                              os.path.join("/p", "pull_2026-10-29.json")))
+        self.assertEqual(pm, (os.path.join("/p", "pull_2026-10-29_pm.json"), os.path.join("/p", "rosters_2026-10-29_pm.transcribed.csv"),
+                              os.path.join("/p", "pull_2026-10-29.json")))
+
+
 if __name__ == "__main__":
     unittest.main()
 

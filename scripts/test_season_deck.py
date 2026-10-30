@@ -1509,6 +1509,8 @@ class PhasePaths(unittest.TestCase):
         self.assertEqual(p["league_state"], os.path.join(self.kit, "data", "league_state.json"))
         self.assertEqual(p["status"], os.path.join(self.kit, "data", "status", "status_2026-10-29_pm.json"))
         self.assertEqual(p["espn_injuries"], os.path.join(self.kit, "data", "status", "espn_injuries_2026-10-29_pm.json"))
+        # owner 2026-10-29 ("Fix like #225"): and the afternoon's own Flaim pull
+        self.assertEqual(p["yahoo_pull"], os.path.join(self.kit, "data", "source", "flaim", "pull_2026-10-29_pm.json"))
 
 
 if __name__ == "__main__":
