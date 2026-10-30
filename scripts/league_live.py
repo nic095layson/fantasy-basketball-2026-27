@@ -225,8 +225,8 @@ def _main():
                 # the week card reads Yahoo's matchup totals, available-player list and past days' lineups from this
                 # pin (A, D, E); an earlier pin's lineups for this date are kept
                 os.makedirs(a.flaim_pin_dir, exist_ok=True)
-                fpin = os.path.join(a.flaim_pin_dir, f"pull_{a.as_of}.json")
-                keep = FL.keep_daily(pull, fpin)
+                fpin, _, fam = pin_paths(a.flaim_pin_dir, a.as_of, a.phase)
+                keep = FL.keep_daily(pull, fam)
                 with open(fpin, "w", encoding="utf-8") as f:
                     json.dump(keep, f, indent=1, ensure_ascii=False, sort_keys=True)
                     f.write("\n")
@@ -251,13 +251,12 @@ def _main():
             return 1
     pin_dir = a.flaim_pin_dir if used == "flaim" else a.pin_dir
     os.makedirs(pin_dir, exist_ok=True)
-    pin = os.path.join(pin_dir, f"pull_{a.as_of}.json")
+    pin, src, am_pin = pin_paths(pin_dir, a.as_of, a.phase)
     if used == "flaim":
-        pull = FL.keep_daily(pull, pin)  # a second run for this date (the afternoon check) keeps the morning's lineups
+        pull = FL.keep_daily(pull, am_pin)  # a second run for this date (the afternoon check) keeps the morning's lineups
     with open(pin, "w", encoding="utf-8") as f:
         json.dump(pull, f, indent=1, ensure_ascii=False, sort_keys=True)
         f.write("\n")
-    src = os.path.join(pin_dir, f"rosters_{a.as_of}.transcribed.csv")
     league_intake.write_rows(rows, src)
     try:
         pool = league_intake.load_pool()  # the deck pool, then the kit's in-season additions (owner 2026-10-21, option (b))
@@ -302,6 +301,15 @@ def _main():
     flag = (f"; {len(un)} not in the pool, not simulated: " + ", ".join(f"{u['player']} ({u['fantasy_team']}, {u['slot']})" for u in un)) if un else ""
     print(f"LEAGUE LIVE: PASS — rosters from {'Flaim (Yahoo)' if used == 'flaim' else 'FantasyBot'}, pinned {rel(pin)}{flag}")
     return 0
+
+
+def pin_paths(pin_dir, as_of, phase="am"):
+    """(pull pin, roster transcription, the morning's pull pin) for a run. Owner 2026-10-29 ("Fix like #225"): the 3 PM
+    run pins under _pm names, so the morning's pull_<date>.json and its transcription stay as the morning records hashed
+    them; the afternoon pin still starts from the morning's (keep_daily carries its lineups, matchups and list)."""
+    sfx = "_pm" if phase == "pm" else ""
+    return (os.path.join(pin_dir, f"pull_{as_of}{sfx}.json"), os.path.join(pin_dir, f"rosters_{as_of}{sfx}.transcribed.csv"),
+            os.path.join(pin_dir, f"pull_{as_of}.json"))
 
 
 BASELINE_LOOKBACK_DAYS = 7   # how far back the morning looks for the last am baseline (hand-set, owner 2026-10-26)
