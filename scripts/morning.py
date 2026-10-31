@@ -113,6 +113,11 @@ def steps(date, fetch=True, seasons=10000, since=None):
                                                  "--record", "--league", "--snapshot"],
                 cwd=KIT, pass_re=r"^WEEKLY PREVIEW: PASS", env={"SEASON_POOL": season_pool}, fatal=False)]
            if datetime.date.fromisoformat(date).weekday() == 6 else []) + [
+           # owner 2026-10-31 ("take espn injury return as a variable title odds in a separate section"; "Proceed with
+           # recommendations", 4a): the IL-return scenario range before the brief, so the brief and the deck draw it
+           # from the record; non-fatal (no record, no section; the headline never reads it)
+           dict(name="il return", cmd=[PY, os.path.join(HERE, "il_return.py"), "--date", date, "--seasons", str(seasons)], cwd=KIT,
+                pass_re=r"^IL RETURN: PASS", env={"SEASON_POOL": season_pool}, fatal=False),
            dict(name="daily brief", cmd=[PY, os.path.join(HERE, "daily_brief.py"), "--date", date, "--seasons", str(seasons)], cwd=KIT,
                 pass_re=r"^wrote report/briefs/brief_", env={"SEASON_POOL": season_pool}),
            # owner 2026-10-31 (the decision log): the brief's top pair to the recommendations ledger and every unlogged

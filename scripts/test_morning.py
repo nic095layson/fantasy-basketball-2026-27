@@ -23,7 +23,7 @@ class Steps(unittest.TestCase):
         # 2026-10-21: "preflight" became step 0 (independent-audit adoption); the indices below moved by one.
         # 2026-10-23 (owner, Build 1): "league table" after the week matchup, before the deck that draws it
         # 2026-10-26 (owner, "results so far"): "league pairings" before the brief that runs the simulator
-        self.assertEqual([s["name"] for s in st], ["preflight", "league live", "matchup live", "box scores 2026-10-20", "tag outcomes", "season lines", "minutes line", "season board", "status feed", "transactions", "league pairings", "daily brief", "decision log", "week matchup", "league table", "form board", "season deck"])
+        self.assertEqual([s["name"] for s in st], ["preflight", "league live", "matchup live", "box scores 2026-10-20", "tag outcomes", "season lines", "minutes line", "season board", "status feed", "transactions", "league pairings", "il return", "daily brief", "decision log", "week matchup", "league table", "form board", "season deck"])
         self.assertIn("2026-10-20", st[3]["cmd"])
         self.assertIn("2026-10-20", st[4]["cmd"])   # 2026-10-27: "tag outcomes" grades yesterday; indices below moved by one
         self.assertIn("2026-10-21", st[11]["cmd"])   # 2026-10-27: "minutes line" after season lines; +1 again
@@ -254,6 +254,20 @@ class DecisionLog(unittest.TestCase):
                 g = next(s for s in st if s["name"] == "decision grades")
                 self.assertEqual(g["cmd"][-2:], ["--as-of", day]); self.assertFalse(g["fatal"])
                 self.assertLess(names.index("decision log"), names.index("decision grades"))
+
+
+
+class IlReturn(unittest.TestCase):
+    """Owner 2026-10-31 (4a): the IL-return scenario range runs right before the brief every day, on the season pool,
+    non-fatal."""
+
+    def test_il_return_runs_before_the_brief_on_the_season_pool_and_is_not_fatal(self):
+        st = M.steps("2026-11-03", fetch=False, seasons=10)
+        names = [s["name"] for s in st]
+        self.assertEqual(names.index("il return"), names.index("daily brief") - 1)
+        step = next(s for s in st if s["name"] == "il return")
+        self.assertEqual(step["cmd"][-4:], ["--date", "2026-11-03", "--seasons", "10"]); self.assertFalse(step["fatal"])
+        self.assertEqual(step["env"], next(s for s in st if s["name"] == "daily brief")["env"])
 
 
 if __name__ == "__main__":

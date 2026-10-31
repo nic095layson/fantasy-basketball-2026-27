@@ -64,19 +64,19 @@ Every title share above carries the standing structural band (season sweep 2026-
 - **weekly_availability is FRAGILE:** -5.4 (no in-sim injury discount (risk 0.88 like healthy)) / +3.7 (harsher risk tier (0.65)) / +0.4 (healthy players play 0.95 of games) / -0.5 (healthy players play 0.80 of games).
 - The section's own: **ROOM_RULE_ON is FRAGILE:** +13.4 (rule off).
 
-## 6. Open decisions (the owner's; options, recommended first)
+## 6. Decisions (the owner picked the recommended option on each: "Proceed with recommendations", 2026-10-31)
 
 1. **Engine path**: (a) Recommended: the deck-repo window change (draft PR open), kit-only is not possible without it; (b) a kit-only approximation that scales a returning player's season availability by the share of weeks he plays, labelled an approximation (not built).
 2. **Roster-room rule**: (a) Recommended: lowest-value active player leaves from the return week, as run; (b) rule off, the returning player joins the roster as a 14th man (+13.4, the simulator's known inflation); (c) a named drop list the owner supplies per team.
 3. **The blended figure**: (a) Recommended: not shown (FRAGILE on its weights); (b) shown with its band beside it.
 4. **When the section turns on**: (a) Recommended: a non-fatal morning step before the brief from the next merge, so the section appears daily; (b) on request only (the script exists, the brief draws the section whenever a record for the day exists); (c) after the first long-term return is observed so the grid can be checked against one real case.
 
-Runner impact: none as built (no morning step added; option 4a would be code-only).
+Runner impact: code-only. Owner "Proceed with recommendations" (2026-10-31, after the first delivery): 1a, 2a, 3a stand as built; 4a added a non-fatal "il return" step to morning.py right before the brief (about 8 extra simulator runs, roughly 8 minutes on the morning run); no prompt change.
 
 ## 7. Bounds
 
 - Out of scope by design: changing the headline, any line, tag, roster or engine constant; the mixed per-player draw inside one simulation (the windows are fixed per run; a mixed scenario would need a per-season random window).
-- In scope and unverified: no long-term IL return has happened yet, so the grid's realism is unmeasured; the "team games" of the room rule's removed player are not tracked (he simply leaves). The deck-repo PR is open and unmerged; the kit PR's section draws only when a record exists, so nothing shows until the owner picks 4a or runs the script.
+- In scope and unverified: no long-term IL return has happened yet, so the grid's realism is unmeasured; the "team games" of the room rule's removed player are not tracked (he simply leaves). The deck-repo PR is open and unmerged; the kit PR must merge after it. From the first morning run after both merge, the section appears daily.
 
 ## Watchlist
 

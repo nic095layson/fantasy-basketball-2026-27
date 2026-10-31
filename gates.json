@@ -1,7 +1,7 @@
 {
- "ran_at_utc": "2026-10-31T17:44:15Z",
+ "ran_at_utc": "2026-10-31T18:11:40Z",
  "inputs": {
-  "report/after-reports/after-report-2026-10-31-il-return.md": "af977e6f8689f47fd488313b8a9b8d1a667560d040f18ae3ad777624470e7a0b",
+  "report/after-reports/after-report-2026-10-31-il-return.md": "40a7683116adece0ebf354d39dcc0e1141e2a8a5baf870118dfbfadd357dc5ac",
   "report/after-reports/redteam-2026-10-26-season-real/sweep.json": "f0eb804fcb16e8125e872ae35992211ba456bfdf2c505feee76ec2421c15f8c5"
  },
  "gates": [
@@ -59,7 +59,7 @@
   },
   {
    "name": "touched tests",
-   "cmd": "bash -c 'cd scripts && DECK_REPO=/home/user/yahoo-fantasy-basketball python3 -m unittest test_il_return test_daily_brief test_season_deck 2>&1 | tail -1'",
+   "cmd": "bash -c 'cd scripts && DECK_REPO=/home/user/yahoo-fantasy-basketball python3 -m unittest test_il_return test_morning test_daily_brief 2>&1 | tail -1'",
    "cwd": ".",
    "pass_re": "^OK",
    "exit": 0,
@@ -125,5 +125,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "0093486ddd8e75b5f674a5839d4de35667b3bd99"
+ "base_commit": "92087338cc065d5a6579d045150787355d4dd09d"
 }
