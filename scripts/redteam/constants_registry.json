@@ -675,6 +675,40 @@
    "status": "uncalibrated",
    "record": "report/after-reports/after-report-2026-10-31-decision-log.md (red team 2026-10-31: per-game z noise sd 3.65, so the verdict reads the board's blended z_adj, not box sums)",
    "decision": "D-DL-1: the owner picks the window, the line and the game minimum before the first grade (2026-11-30, the first elapsed window); re-decided at season end on the scorecard"
+  },
+  {
+   "module": "il_return",
+   "name": "SLIPS",
+   "value": {
+    "on_time": 0,
+    "late_2": 2,
+    "late_4": 4
+   },
+   "role": "the IL-return scenario grid: weeks after ESPN's expected return date each IL player comes back (never = the headline); a stated range, not a distribution",
+   "status": "declared_band",
+   "record": "report/after-reports/after-report-2026-10-31-il-return.md (ESPN date drift: 34 revisions over 6 pins, all later, median +2 days; 16 short returns on file, no long-term one yet, so no distribution is fitted); the grid is its own band: the section shows every row"
+  },
+  {
+   "module": "il_return",
+   "name": "BLEND_WEIGHTS",
+   "value": {
+    "on_time": 0.4,
+    "late_2": 0.3,
+    "late_4": 0.2,
+    "never": 0.1
+   },
+   "role": "hand-set weights for the optional blended IL-return figure; carried in the record, not shown in the brief",
+   "status": "uncalibrated",
+   "record": "report/after-reports/after-report-2026-10-31-il-return.md (ESPN date drift: 34 revisions over 6 pins, all later, median +2 days; 16 short returns on file, no long-term one yet, so no distribution is fitted); sweep room_rule_and_blend.json: FRAGILE, -6.2 (never 0.5) / +1.6 (never 0.0) on the blend, so the blend is not shown",
+   "decision": "D-ILR-1: the owner decides whether the blend is shown at all; no history of long-term returns exists to fit it"
+  },
+  {
+   "module": "il_return",
+   "name": "ROOM_RULE_ON",
+   "value": true,
+   "role": "the IL-return scenarios' roster-room rule: on a return the team's lowest-value active player leaves for the rest of the season (active roster stays its size); off, the returning player joins a larger roster",
+   "status": "declared_band",
+   "record": "report/after-reports/il-return-2026-10-31/room_rule_and_blend.json: FRAGILE, +13.4 title points with the rule off (on time 29.9 -> 43.3; +4 wk 29.6 -> 43.4); the owner's method choice (A1), the section names it"
   }
  ]
 }

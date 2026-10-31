@@ -240,6 +240,7 @@ def main():
     tx = transactions_for(a.date)
 
     lm = league_moves_for(a.date)
+    ilr = il_return_for(a.date)
     rec = {"date": a.date, "week": wk, "week_window": [wstart, wend], "league_state_as_of": state["as_of"],
            "unpooled": state.get("unpooled") or [],
            "status_file": status_file, "lines": lines_label(), "opponent": opp_team["name"] if opp_team else None,
@@ -250,7 +251,12 @@ def main():
                             "value_per_game": round(CG.hoops.adj_value(weakest, ()), 2)},
            "title": {str(s): base[s]["champ"] for s in SEEDS}, "playoffs": {str(s): base[s]["playoff"] for s in SEEDS},
            "seasons": a.seasons, "absent_from_sim": absent, "transactions": tx and {"window": tx["window"], "ok": tx["source"].get("ok"), "hits": tx["hits"]},
-           "league_moves": lm and lm["moves"]}
+           "league_moves": lm and lm["moves"],
+           # owner 2026-10-31: the IL-return scenario range, read from il_return.py's record when one exists for the
+           # day; a separate section, never the headline
+           "il_return": ilr and {k: ilr[k] for k in ("espn_date", "n_il", "room_rule", "error", "seasons", "label") if k in ilr}
+           | {"scenarios": {k: {"title": v["title"], "playoffs": v["playoffs"]} for k, v in ilr["scenarios"].items()
+                            if k in ("never", "on_time", "late_2", "late_4")}}}
     os.makedirs(OUTDIR, exist_ok=True)
     json.dump(rec, open(os.path.join(OUTDIR, f"brief_{a.date}.json"), "w", encoding="utf-8"), indent=1, ensure_ascii=False)
 
@@ -302,12 +308,24 @@ def main():
           + f", {r['value_per_game']:+.2f} per game" for r in stream] or ["- none"]
     L += ["", "## Title odds (real schedule)", "", f"- Title: {odds_line(base[SEEDS[0]]['champ'], base[SEEDS[1]]['champ'], a.seasons)}",
           f"- Playoffs: {(base[SEEDS[0]]['playoff'] + base[SEEDS[1]]['playoff']) / 2:.1f}%",
-          f"- {band_line(date=a.date)}"] + ([f"- {sim_absent_line(absent)}"] if absent else []) + ["",
+          f"- {band_line(date=a.date)}"] + ([f"- {sim_absent_line(absent)}"] if absent else []) + (
+          ["", "### If IL players return (scenario range)", ""] + ["- " + x if not x.startswith("- ") else x for x in ilr["lines"]] if ilr else []) + ["",
           "_Cannot see: news after the morning FantasyBot pull (or the last paste) beyond ESPN's transactions and injury feeds (the injury feed gates the waiver scan only); minutes limits; "
           "other managers' pending claims. Q counts as a coin flip._"]
     path = os.path.join(OUTDIR, f"brief_{a.date}.md")
     open(path, "w", encoding="utf-8").write("\n".join(L) + "\n")
     print(f"wrote {os.path.relpath(path, CG.KIT)}")
+
+
+def il_return_for(date, outdir=None):
+    """il_return.py's record for the day, or None (the section is drawn only from a record; nothing is simulated here)."""
+    p = os.path.join(outdir or os.path.join(CG.KIT, "report", "il_return"), f"il_return_{date}.json")
+    if not os.path.exists(p):
+        return None
+    try:
+        return json.load(open(p, encoding="utf-8"))
+    except (OSError, ValueError):
+        return None
 
 
 def sim_absent_line(names):

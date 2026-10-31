@@ -45,7 +45,9 @@ IGNORE = {"arena": {"ARENA_DIR", "REPO", "DATA", "CATS", "BASE_POS", "STRATEGIES
           "co_gm": {"KIT", "DECK", "STATE", "SCHEDULE", "GAMES", "OWNER_SEAT", "LINES_TAG", "TEAM_CODE", "CATS"},
           "status_feed": {"KIT", "STATE", "OVERRIDES", "OUTDIR", "ESPN_INJURIES", "OWNER_SEAT"},
           # the decision log's grader (2026-10-31): paths and the stat column list are not judgment constants
-          "decision_grade": {"HERE", "KIT", "BOARDS", "ACTUALS", "OUTDIR", "GRADES", "SCORECARD", "STATS"}}
+          "decision_grade": {"HERE", "KIT", "BOARDS", "ACTUALS", "OUTDIR", "GRADES", "SCORECARD", "STATS"},
+          # the IL-return scenarios (2026-10-31): paths, the seeds and the rule's label are not judgment constants
+          "il_return": {"HERE", "KIT", "SEEDS", "STATUS_DIR", "OUTDIR", "ROOM_RULE"}}
 TIER_NOTES = {"healthy": "", "mild": "inj-acl-mild", "risk": "inj-knee-risk", "recovery": "inj-achilles-recovery",
               "out": "out-season"}
 
@@ -82,9 +84,11 @@ def read_live(deck=DECK):
     co_gm = importlib.import_module("co_gm")
     status_feed = importlib.import_module("status_feed")
     decision_grade = importlib.import_module("decision_grade")
+    il_return = importlib.import_module("il_return")
     live = {}
     for modname, mod in (("arena", arena), ("hoops", hoops), ("season_lines", season_lines), ("minutes_line", minutes_line),
-                         ("co_gm", co_gm), ("status_feed", status_feed), ("decision_grade", decision_grade)):
+                         ("co_gm", co_gm), ("status_feed", status_feed), ("decision_grade", decision_grade),
+                         ("il_return", il_return)):
         for name, val in vars(mod).items():
             if name.isupper() and not name.startswith("_") and name not in IGNORE[modname] \
                     and not callable(val) and not inspect.ismodule(val):
