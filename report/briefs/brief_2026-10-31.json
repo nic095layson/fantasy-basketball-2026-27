@@ -1,0 +1,401 @@
+{
+ "date": "2026-10-31",
+ "week": 2,
+ "week_window": [
+  "2026-10-26",
+  "2026-11-01"
+ ],
+ "league_state_as_of": "2026-10-31",
+ "unpooled": [
+  {
+   "player": "Nolan Traore",
+   "fantasy_team": "ANONG NANGIANNIS?!",
+   "seat": 5,
+   "slot": "BN",
+   "nba_team": "BKN",
+   "status": null
+  },
+  {
+   "player": "Matisse Thybulle",
+   "fantasy_team": "MAXEY-MUM OVERDRIVE",
+   "seat": 11,
+   "slot": "F",
+   "nba_team": "LAL",
+   "status": null
+  }
+ ],
+ "status_file": "status_2026-10-31.json",
+ "lines": "season pool",
+ "opponent": "Looking Cool Joker!",
+ "today": [
+  [
+   "Ty Jerome",
+   "MEM",
+   "vs SAC",
+   "Q",
+   0.5,
+   1
+  ],
+  [
+   "Derrick White",
+   "BOS",
+   null,
+   null,
+   1.0,
+   1
+  ],
+  [
+   "Collin Gillespie",
+   "PHX",
+   null,
+   null,
+   1.0,
+   0
+  ],
+  [
+   "Kevin Durant",
+   "HOU",
+   "vs OKC",
+   null,
+   1.0,
+   1
+  ],
+  [
+   "Miles Bridges",
+   "PHX",
+   null,
+   null,
+   1.0,
+   0
+  ],
+  [
+   "Yaxel Lendeborg",
+   "GSW",
+   null,
+   null,
+   1.0,
+   1
+  ],
+  [
+   "Neemias Queta",
+   "BOS",
+   null,
+   null,
+   1.0,
+   1
+  ],
+  [
+   "Kel'el Ware",
+   "MIL",
+   "vs CLE",
+   null,
+   1.0,
+   1
+  ],
+  [
+   "Jaden McDaniels",
+   "MIN",
+   "@ SAS",
+   null,
+   1.0,
+   1
+  ],
+  [
+   "Bobby Portis",
+   "MIA",
+   null,
+   null,
+   1.0,
+   0
+  ],
+  [
+   "Kyrie Irving",
+   "DAL",
+   null,
+   null,
+   1.0,
+   0
+  ],
+  [
+   "PJ Washington",
+   "DAL",
+   null,
+   null,
+   1.0,
+   0
+  ],
+  [
+   "Cameron Johnson",
+   "DEN",
+   null,
+   null,
+   1.0,
+   0
+  ]
+ ],
+ "lineup": [
+  [
+   "PG",
+   "Ty Jerome"
+  ],
+  [
+   "SG",
+   "Kevin Durant"
+  ],
+  [
+   "SF",
+   "Jaden McDaniels"
+  ],
+  [
+   "C",
+   "Kel'el Ware"
+  ]
+ ],
+ "bench": [],
+ "waiver_base_ecw": 5.0385,
+ "waiver_gate": {
+  "sources": {
+   "yahoo": true,
+   "espn": true
+  },
+  "set_aside": [
+   {
+    "player": "Jalen Williams",
+    "code": "Out",
+    "source": "espn",
+    "return_date": "2027-03-02",
+    "reason": "out"
+   },
+   {
+    "player": "Cason Wallace",
+    "code": "O",
+    "source": "yahoo",
+    "return_date": "2027-03-02",
+    "reason": "out"
+   },
+   {
+    "player": "Kevin Porter Jr.",
+    "code": "NA",
+    "source": "yahoo",
+    "return_date": null,
+    "reason": "out"
+   },
+   {
+    "player": "Justin Champagnie",
+    "code": "O",
+    "source": "yahoo",
+    "return_date": "2027-02-25",
+    "reason": "out"
+   },
+   {
+    "player": "Yves Missi",
+    "code": "O",
+    "source": "yahoo",
+    "return_date": "2026-11-08",
+    "reason": "out"
+   }
+  ]
+ },
+ "waiver_positive_pairs": 7,
+ "waiver_pairs_scored": 520,
+ "waiver_top": [
+  {
+   "add": "Julian Champagnie",
+   "add_team": "SAS",
+   "drop": "Neemias Queta",
+   "d_ecw": 0.0254,
+   "title_by_seed": {
+    "2026": 14.81,
+    "2027": 14.99
+   },
+   "title": 14.9,
+   "d_title": 0.62
+  },
+  {
+   "add": "Jalen Smith",
+   "add_team": "CHI",
+   "drop": "Neemias Queta",
+   "d_ecw": 0.0134,
+   "title_by_seed": {
+    "2026": 15.0,
+    "2027": 14.55
+   },
+   "title": 14.78,
+   "d_title": 0.5
+  },
+  {
+   "add": "Tobias Harris",
+   "add_team": "SAS",
+   "drop": "Neemias Queta",
+   "d_ecw": 0.0117,
+   "add_status": {
+    "code": "O",
+    "source": "yahoo",
+    "return_date": "2026-11-06",
+    "short_out": true
+   },
+   "title_by_seed": {
+    "2026": 14.81,
+    "2027": 13.98
+   },
+   "title": 14.39,
+   "d_title": 0.12
+  }
+ ],
+ "streaming": [
+  {
+   "player": "Julian Champagnie",
+   "team": "SAS",
+   "games_left": 1,
+   "value_per_game": -1.35,
+   "availability": 1.0,
+   "exp_games": 1.0
+  },
+  {
+   "player": "Robert Williams III",
+   "team": "POR",
+   "games_left": 1,
+   "value_per_game": -1.66,
+   "availability": 0.5,
+   "status": "Q",
+   "exp_games": 0.5
+  },
+  {
+   "player": "Darryn Peterson",
+   "team": "UTA",
+   "games_left": 1,
+   "value_per_game": -2.04,
+   "availability": 1.0,
+   "exp_games": 1.0
+  },
+  {
+   "player": "De'Anthony Melton",
+   "team": "GSW",
+   "games_left": 1,
+   "value_per_game": -2.14,
+   "availability": 1.0,
+   "exp_games": 1.0
+  },
+  {
+   "player": "Jakob Poeltl",
+   "team": "TOR",
+   "games_left": 1,
+   "value_per_game": -2.67,
+   "availability": 1.0,
+   "exp_games": 1.0
+  }
+ ],
+ "streaming_vs": {
+  "player": "PJ Washington",
+  "games_left": 0,
+  "value_per_game": -2.39
+ },
+ "title": {
+  "2026": 14.25,
+  "2027": 14.3
+ },
+ "playoffs": {
+  "2026": 96.79,
+  "2027": 96.94
+ },
+ "seasons": 10000,
+ "absent_from_sim": [],
+ "transactions": {
+  "window": [
+   "2026-10-29",
+   "2026-10-31"
+  ],
+  "ok": true,
+  "hits": []
+ },
+ "league_moves": [
+  {
+   "team": "Lauri’s Prime Rib",
+   "seat": 3,
+   "added": [],
+   "dropped": [
+    "Jaxson Hayes"
+   ],
+   "to_il": [],
+   "from_il": [
+    "Rui Hachimura"
+   ]
+  },
+  {
+   "team": "Looking Cool Joker!",
+   "seat": 1,
+   "added": [
+    "Aaron Nesmith"
+   ],
+   "dropped": [
+    "Keldon Johnson"
+   ],
+   "to_il": [
+    "Ja Morant"
+   ],
+   "from_il": [
+    "Chet Holmgren"
+   ]
+  },
+  {
+   "team": "Splash Mountain",
+   "seat": 8,
+   "added": [
+    "Precious Achiuwa"
+   ],
+   "dropped": [
+    "Robert Williams III"
+   ],
+   "to_il": [
+    "Ziaire Williams"
+   ],
+   "from_il": []
+  },
+  {
+   "team": "ANONG NANGIANNIS?!",
+   "seat": 5,
+   "added": [
+    "Nolan Traore"
+   ],
+   "dropped": [],
+   "to_il": [],
+   "from_il": []
+  },
+  {
+   "team": "Thompson Telepathy",
+   "seat": 12,
+   "added": [],
+   "dropped": [],
+   "to_il": [
+    "Egor Demin"
+   ],
+   "from_il": [
+    "Jimmy Butler"
+   ]
+  },
+  {
+   "team": "KEL'EL YAXEL HALQUETA",
+   "seat": 10,
+   "added": [
+    "Cameron Johnson"
+   ],
+   "dropped": [
+    "Julian Champagnie"
+   ],
+   "to_il": [],
+   "from_il": []
+  },
+  {
+   "team": "John's Cool Team",
+   "seat": 7,
+   "added": [
+    "Christian Braun"
+   ],
+   "dropped": [],
+   "to_il": [
+    "Ivica Zubac"
+   ],
+   "from_il": []
+  }
+ ]
+}
