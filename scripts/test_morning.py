@@ -23,7 +23,7 @@ class Steps(unittest.TestCase):
         # 2026-10-21: "preflight" became step 0 (independent-audit adoption); the indices below moved by one.
         # 2026-10-23 (owner, Build 1): "league table" after the week matchup, before the deck that draws it
         # 2026-10-26 (owner, "results so far"): "league pairings" before the brief that runs the simulator
-        self.assertEqual([s["name"] for s in st], ["preflight", "league live", "matchup live", "box scores 2026-10-20", "tag outcomes", "season lines", "minutes line", "season board", "status feed", "transactions", "league pairings", "daily brief", "week matchup", "league table", "form board", "season deck"])
+        self.assertEqual([s["name"] for s in st], ["preflight", "league live", "matchup live", "box scores 2026-10-20", "tag outcomes", "season lines", "minutes line", "season board", "status feed", "transactions", "league pairings", "daily brief", "decision log", "week matchup", "league table", "form board", "season deck"])
         self.assertIn("2026-10-20", st[3]["cmd"])
         self.assertIn("2026-10-20", st[4]["cmd"])   # 2026-10-27: "tag outcomes" grades yesterday; indices below moved by one
         self.assertIn("2026-10-21", st[11]["cmd"])   # 2026-10-27: "minutes line" after season lines; +1 again
@@ -236,6 +236,25 @@ class Manifest(unittest.TestCase):
             M.print_manifest(rec)
         out = buf.getvalue()
         self.assertIn("WROTE: 1 path(s)", out); self.assertIn("report/league/x.json", out)
+
+
+class DecisionLog(unittest.TestCase):
+    """Owner 2026-10-31 (the decision log): the brief's row and the owner's moves are logged right after the brief every
+    day; on a Monday the grader runs after them. Both non-fatal."""
+
+    def test_log_follows_the_brief_every_day_and_the_grader_runs_on_mondays(self):
+        for day, monday in (("2026-10-30", False), ("2026-11-02", True)):
+            st = M.steps(day, fetch=False, seasons=10)
+            names = [s["name"] for s in st]
+            self.assertEqual(names.index("decision log"), names.index("daily brief") + 1, day)
+            self.assertEqual("decision grades" in names, monday, day)
+            log = next(s for s in st if s["name"] == "decision log")
+            self.assertEqual(log["cmd"][-3:], ["--brief", day, "--moves"]); self.assertFalse(log["fatal"])
+            if monday:
+                g = next(s for s in st if s["name"] == "decision grades")
+                self.assertEqual(g["cmd"][-2:], ["--as-of", day]); self.assertFalse(g["fatal"])
+                self.assertLess(names.index("decision log"), names.index("decision grades"))
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

@@ -648,6 +648,33 @@
    "status": "uncalibrated",
    "record": "stated to the owner 2026-10-15 (None/Q/O); P D-IS-6 2026-10-19, NA D-IS-7 2026-10-20, D D-IS-10 2026-10-21; registered 2026-10-28",
    "decision": "D-WS-1 (with D-IS-6, D-IS-7, D-IS-10)"
+  },
+  {
+   "module": "decision_grade",
+   "name": "WINDOW_DAYS",
+   "value": 28,
+   "role": "the decision log's grading window in days from the move (or the recommendation): long enough that a 3-game start does not decide it, short enough that the role at the time still applies",
+   "status": "uncalibrated",
+   "record": "report/after-reports/after-report-2026-10-31-decision-log.md (red team 2026-10-31: per-game z noise sd 3.65, so the verdict reads the board's blended z_adj, not box sums)",
+   "decision": "D-DL-1: the owner picks the window, the line and the game minimum before the first grade (2026-11-30, the first elapsed window); re-decided at season end on the scorecard"
+  },
+  {
+   "module": "decision_grade",
+   "name": "LINE",
+   "value": 0.5,
+   "role": "the verdict line on z_adj (add minus drop on the window-end board; owner's pair minus the kit's): inside it is TOO CLOSE",
+   "status": "uncalibrated",
+   "record": "report/after-reports/after-report-2026-10-31-decision-log.md (red team 2026-10-31: per-game z noise sd 3.65, so the verdict reads the board's blended z_adj, not box sums)",
+   "decision": "D-DL-1: the owner picks the window, the line and the game minimum before the first grade (2026-11-30, the first elapsed window); re-decided at season end on the scorecard"
+  },
+  {
+   "module": "decision_grade",
+   "name": "MIN_GAMES",
+   "value": 10,
+   "role": "fewer games than this for either player in the window keeps the row PENDING; never folded into the verdict",
+   "status": "uncalibrated",
+   "record": "report/after-reports/after-report-2026-10-31-decision-log.md (red team 2026-10-31: per-game z noise sd 3.65, so the verdict reads the board's blended z_adj, not box sums)",
+   "decision": "D-DL-1: the owner picks the window, the line and the game minimum before the first grade (2026-11-30, the first elapsed window); re-decided at season end on the scorecard"
   }
  ]
 }
