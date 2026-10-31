@@ -43,7 +43,9 @@ IGNORE = {"arena": {"ARENA_DIR", "REPO", "DATA", "CATS", "BASE_POS", "STRATEGIES
           # the waiver gate's status tiers (2026-10-28, D-WS-1): paths, the owner's seat, the lines tag, the team-code
           # map and the category alias are identifiers, not judgment constants
           "co_gm": {"KIT", "DECK", "STATE", "SCHEDULE", "GAMES", "OWNER_SEAT", "LINES_TAG", "TEAM_CODE", "CATS"},
-          "status_feed": {"KIT", "STATE", "OVERRIDES", "OUTDIR", "ESPN_INJURIES", "OWNER_SEAT"}}
+          "status_feed": {"KIT", "STATE", "OVERRIDES", "OUTDIR", "ESPN_INJURIES", "OWNER_SEAT"},
+          # the decision log's grader (2026-10-31): paths and the stat column list are not judgment constants
+          "decision_grade": {"HERE", "KIT", "BOARDS", "ACTUALS", "OUTDIR", "GRADES", "SCORECARD", "STATS"}}
 TIER_NOTES = {"healthy": "", "mild": "inj-acl-mild", "risk": "inj-knee-risk", "recovery": "inj-achilles-recovery",
               "out": "out-season"}
 
@@ -79,9 +81,10 @@ def read_live(deck=DECK):
     minutes_line = importlib.import_module("minutes_line")
     co_gm = importlib.import_module("co_gm")
     status_feed = importlib.import_module("status_feed")
+    decision_grade = importlib.import_module("decision_grade")
     live = {}
     for modname, mod in (("arena", arena), ("hoops", hoops), ("season_lines", season_lines), ("minutes_line", minutes_line),
-                         ("co_gm", co_gm), ("status_feed", status_feed)):
+                         ("co_gm", co_gm), ("status_feed", status_feed), ("decision_grade", decision_grade)):
         for name, val in vars(mod).items():
             if name.isupper() and not name.startswith("_") and name not in IGNORE[modname] \
                     and not callable(val) and not inspect.ismodule(val):
