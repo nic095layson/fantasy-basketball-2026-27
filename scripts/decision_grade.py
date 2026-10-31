@@ -73,7 +73,6 @@ def value(name, vals, index):
 def games_in(name, start, end, actuals=ACTUALS, aliases=None):
     """(games played, team games, totals) for `name` over [start, end] from the box files on disk; a day with no file
     is not a game (the count is on the files, named in `days`)."""
-    index = None
     played, team_games, tot, days, team = 0, 0, {k: 0.0 for k in STATS}, [], None
     for p in sorted(glob.glob(os.path.join(actuals, "*.json"))):
         d = os.path.basename(p)[:10]
@@ -85,9 +84,9 @@ def games_in(name, start, end, actuals=ACTUALS, aliases=None):
             continue
         rows = a.get("players") or []
         days.append(d)
-        if index is None:
-            names = sorted({r["pool_name"] for r in rows if r.get("pool_name")})
-            index = box_pull.name_index(names, aliases if aliases is not None else box_pull.load_aliases())
+        # the index is rebuilt per file: a day's box file names only the players who played that day
+        index = box_pull.name_index(sorted({r["pool_name"] for r in rows if r.get("pool_name")}),
+                                    aliases if aliases is not None else box_pull.load_aliases())
         hit = box_pull.match_name(name, index) if name else None
         mine = [r for r in rows if hit and r.get("pool_name") == hit]
         if mine:

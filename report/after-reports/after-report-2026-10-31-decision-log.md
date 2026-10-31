@@ -31,7 +31,7 @@ Parameters: the 12 box-score files on disk (2026-10-16 to 2026-10-29), the 10-30
 | grader | `scripts/decision_grade.py` | per recommendation: window = 28 days from the matched move (or the recommendation); grade = add's z_adj minus drop's on the newest season board at the window's end; owner's pair against the kit's when the drop differs; box-score games and totals beside, never inside, the verdict; final rows append to `report/decisions/grades.jsonl` with input sha256s; `scorecard.md` regenerated |
 | morning wiring | `scripts/morning.py` | "decision log" right after the brief every day; "decision grades" on Mondays; both non-fatal |
 | registry | `scripts/redteam/constants_registry.json` | WINDOW_DAYS 28, LINE 0.5, MIN_GAMES 10 as uncalibrated, decision D-DL-1 |
-| tests | `scripts/test_decision_log.py` (12), `test_morning.DecisionLog` (1) | red-first: duplicate day refused, the join's five answers, pm/am repeat is one row, games change the totals and never the verdict, open window and under-10 games stay PENDING, the same window is never graded twice |
+| tests | `scripts/test_decision_log.py` (13), `test_morning.DecisionLog` (1) | red-first: duplicate day refused, the join's five answers, pm/am repeat is one row, games change the totals and never the verdict, open window and under-10 games stay PENDING, the same window is never graded twice, a player absent from the first box file of the window is still counted (a defect the verification pass found and fixed) |
 
 Method parameters (D-DL-1, the owner's to change before the first grade lands on 2026-11-17, a Tuesday, so the Monday 2026-11-23 run writes it):
 
@@ -61,11 +61,19 @@ Method parameters (D-DL-1, the owner's to change before the first grade lands on
 
 Runner impact: code-only (two new morning.py steps, both non-fatal; no prompt changes: the afternoon's moves are picked up by the next morning's step).
 
-## 4. Bounds and open decisions
+## 4. Bands quoted
+
+The title-point figures in the session rows (+0.65, +1.15) are the simulator's, and carry the standing structural band (season sweep 2026-10-26, real schedule), which is larger than either figure:
+- **TEAM_WEEK_SHOCK is FRAGILE:** +2.7 (no shared games shock (0.0)) / -4.2 (shared games shock doubled (0.12)).
+- **weekly_availability is FRAGILE:** -5.4 (no in-sim injury discount (risk 0.88 like healthy)) / +3.7 (harsher risk tier (0.65)) / +0.4 (healthy players play 0.95 of games) / -0.5 (healthy players play 0.80 of games).
+- The grader's own figures (z_adj gaps) are not simulator outputs and carry no sweep band; their uncertainty is the line's, which the weekly accuracy card measures.
+
+## 5. Bounds and open decisions
 
 - Out of scope by design: the deck's Decisions tab and the matchup-replay grade (slice 2, after 10+ rows); grading hold rows (the free-agent-set-aside comparison); any feedback from the log into the engine this season.
 - In scope and unverified: the 10-31 moves row for Johnson-in, Champagnie-out waits for the 10-31 morning record (the records branch ends at the 10-30 afternoon as of this report); the morning step will write it. No real grade has run (the first window closes 2026-11-17), so the grader's final-row path is exercised by its tests only.
 - The three parameters are the owner's (D-DL-1); the default stands until changed, and a change before 2026-11-23 regrades nothing.
+- The "team games" count beside each player's games starts at the player's first box-score appearance in the window (the box file carries no team for a player who did not play), so a player who sat the first days of the window shows fewer team games than his team played. The games count itself is exact on the files.
 
 ## Watchlist
 

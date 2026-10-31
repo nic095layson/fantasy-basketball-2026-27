@@ -143,6 +143,13 @@ class Grader(unittest.TestCase):
         self.assertEqual(g2["games"]["kit_drop"]["totals"]["pts"], 1740.0)
         self.assertEqual((g2["verdict"], g2["kit_gap_end"]), (g["verdict"], g["kit_gap_end"]))
 
+    def test_a_player_absent_from_the_first_box_file_is_still_counted(self):
+        # the first day of the window lists only one team's game; the add plays from day two
+        first = sorted(os.listdir(self.acts))[0]
+        actuals(os.path.join(self.acts, first), first[:10], [("Julian Champagnie", "SAS", 25, 9)])
+        g = DG.grade(self.rec, [self.move], "2026-11-30", self.boards, self.acts, aliases=ALIASES)
+        self.assertEqual((g["games"]["kit_add"]["games"], g["games"]["kit_drop"]["games"]), (28, 28))
+
     def test_open_window_and_too_few_games_stay_pending(self):
         g = DG.grade(self.rec, [self.move], "2026-11-10", self.boards, self.acts, aliases=ALIASES)
         self.assertEqual(g["verdict"], "PENDING"); self.assertIn("window open until 2026-11-28", g["note"])
