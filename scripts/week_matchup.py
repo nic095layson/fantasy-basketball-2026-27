@@ -501,7 +501,9 @@ def yahoo_to_date(pull, wk, me_t, opp_t):
     if me is None:
         return None, None, None, None, f"no week {wk} Yahoo matchup names both {names['me']} and {names['opp']}"
     try:
-        return (FL.side_totals(me), FL.side_totals(opp), dict(me=me.get("gamesRemaining"), opp=opp.get("gamesRemaining")),
+        # owner 2026-11-02 (runner finding 6): on a week's first morning Yahoo shows '/' for makes/attempts; a side with
+        # no stats yet reads as zeros, so the card keeps Yahoo as its source instead of falling back to the rebuild
+        return (FL.side_totals(me, empty_ok=True), FL.side_totals(opp, empty_ok=True), dict(me=me.get("gamesRemaining"), opp=opp.get("gamesRemaining")),
                 names, None)
     except FL.PullError as e:
         return None, None, None, None, f"Yahoo's week {wk} totals could not be read: {e}"

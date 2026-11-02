@@ -685,8 +685,8 @@
     "late_4": 4
    },
    "role": "the IL-return scenario grid: weeks after ESPN's expected return date each IL player comes back (never = the headline); a stated range, not a distribution",
-   "status": "declared_band",
-   "record": "report/after-reports/after-report-2026-10-31-il-return.md (ESPN date drift: 34 revisions over 6 pins, all later, median +2 days; 16 short returns on file, no long-term one yet, so no distribution is fitted); the grid is its own band: the section shows every row"
+   "status": "structural",
+   "record": "a reporting grid, not a point value: the IL-return section shows every row; re-registered 2026-11-02 after the 11-02 Monday sweep raised 'declared_band with no band' (runner finding 1)"
   },
   {
    "module": "il_return",
@@ -707,8 +707,9 @@
    "name": "ROOM_RULE_ON",
    "value": true,
    "role": "the IL-return scenarios' roster-room rule: on a return the team's lowest-value active player leaves for the rest of the season (active roster stays its size); off, the returning player joins a larger roster",
-   "status": "declared_band",
-   "record": "report/after-reports/il-return-2026-10-31/room_rule_and_blend.json: FRAGILE, +13.4 title points with the rule off (on time 29.9 -> 43.3; +4 wk 29.6 -> 43.4); the owner's method choice (A1), the section names it"
+   "status": "uncalibrated",
+   "record": "report/after-reports/il-return-2026-10-31/room_rule_and_blend.json: +13.4 title points with the rule off (on time 29.9 to 43.3); since 2026-11-02 il_return.py measures the band every run (room_band in its record) and the brief quotes it; not an engine constant, so the engine sweep cannot move it",
+   "decision": "D-ILR-2: the owner picked the rule on 2026-10-31 (proceed with recommendations, 2a); re-decided when the first long-term IL return is observed"
   }
  ]
 }

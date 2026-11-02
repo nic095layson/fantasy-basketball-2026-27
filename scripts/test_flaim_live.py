@@ -245,5 +245,23 @@ class Matchup(unittest.TestCase):
         self.assertEqual(FL.find_sides(m, "Me", "Nobody"), (None, None))
 
 
+
+class NotStarted(unittest.TestCase):
+    """Runner finding 6 (2026-11-02): on a week's first morning Yahoo shows '/' for makes/attempts and empty counts.
+    A caller that allows it reads zeros; the strict read (scoreboard_intake) still raises."""
+
+    def test_a_side_with_no_stats_reads_as_zeros_only_when_allowed(self):
+        side = {"teamName": "T", "categories": [{"displayName": "FGM/A", "value": "/"}, {"displayName": "FTM/A", "value": "/"}] +
+                [{"displayName": c, "value": ""} for c in FL.COUNT_CATS]}
+        self.assertTrue(FL.not_started(side))
+        self.assertEqual(FL.side_totals(side, empty_ok=True), {k: 0 for k in FL.STATS})
+        with self.assertRaises(FL.PullError):
+            FL.side_totals(side)
+        side["categories"][2]["value"] = "7"   # a started side with a bad pair still raises either way
+        self.assertFalse(FL.not_started(side))
+        with self.assertRaises(FL.PullError):
+            FL.side_totals(side, empty_ok=True)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
