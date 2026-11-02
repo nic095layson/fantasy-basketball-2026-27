@@ -226,11 +226,11 @@
    "drop": "Cameron Johnson",
    "d_ecw": 0.0219,
    "title_by_seed": {
-    "2026": 14.21,
-    "2027": 14.49
+    "2026": 15.17,
+    "2027": 15.06
    },
-   "title": 14.35,
-   "d_title": 0.76
+   "title": 15.12,
+   "d_title": 0.55
   }
  ],
  "streaming": [],
@@ -240,12 +240,12 @@
   "value_per_game": -2.42
  },
  "title": {
-  "2026": 13.05,
-  "2027": 14.12
+  "2026": 14.88,
+  "2027": 14.26
  },
  "playoffs": {
-  "2026": 95.85,
-  "2027": 96.02
+  "2026": 98.56,
+  "2027": 98.62
  },
  "seasons": 10000,
  "absent_from_sim": [],
@@ -332,25 +332,35 @@
   "espn_date": "2026-11-02",
   "n_il": 21,
   "room_rule": "lowest adj_value active player leaves from the return week",
-  "error": 0.47,
+  "error": 0.49,
   "seasons": 10000,
   "label": "scenario range, not a forecast; never replaces or averages into the headline",
+  "room_band": {
+   "constant": "il_return.ROOM_RULE_ON",
+   "shift": 12.7,
+   "label": "rule off",
+   "tier": "FRAGILE"
+  },
+  "slip_range": [
+   30.5,
+   30.7
+  ],
   "scenarios": {
    "never": {
-    "title": 13.59,
-    "playoffs": 95.94
+    "title": 14.57,
+    "playoffs": 98.59
    },
    "on_time": {
-    "title": 30.11,
-    "playoffs": 99.52
+    "title": 30.59,
+    "playoffs": 99.9
    },
    "late_2": {
-    "title": 30.51,
-    "playoffs": 99.49
+    "title": 30.69,
+    "playoffs": 99.91
    },
    "late_4": {
-    "title": 30.11,
-    "playoffs": 99.12
+    "title": 30.48,
+    "playoffs": 99.8
    }
   }
  }

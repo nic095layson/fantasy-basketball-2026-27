@@ -17,12 +17,18 @@
  "to_date_days": [],
  "missing_days": [],
  "to_date_source": {
-  "source": "rebuild",
-  "reason": "Yahoo's week 3 totals could not be read: unreadable makes/attempts value '/'",
-  "rebuild_agrees": null,
+  "source": "yahoo",
+  "reason": null,
+  "rebuild_agrees": true,
   "differences": [],
-  "yahoo_games_remaining": null,
-  "yahoo_names": null
+  "yahoo_games_remaining": {
+   "me": 43,
+   "opp": 40
+  },
+  "yahoo_names": {
+   "me": "KEL'EL YAXEL HALQUETA",
+   "opp": "Podz save the league"
+  }
  },
  "remaining_days": [
   "2026-11-02",
@@ -338,13 +344,13 @@
      "status": "O"
     },
     {
-     "name": "Mitchell Robinson",
-     "team": "BOS",
+     "name": "Tobias Harris",
+     "team": "SAS",
      "status": "O"
     },
     {
-     "name": "Tobias Harris",
-     "team": "SAS",
+     "name": "Gui Santos",
+     "team": "GSW",
      "status": "O"
     },
     {
@@ -1381,6 +1387,31 @@
      "season_d_ecw": -0.261
     },
     {
+     "add": "Mitchell Robinson",
+     "team": "BOS",
+     "drop": "Cameron Johnson",
+     "d_exp": 0.07295853900773197,
+     "d_cat": {
+      "FG%": 0.02823369646096885,
+      "FT%": -0.06509319128071844,
+      "3PTM": -0.06052121526838938,
+      "PTS": -0.017381285913241895,
+      "REB": 0.1211100145213897,
+      "AST": -0.012977769502021064,
+      "ST": 0.024281019194612896,
+      "BLK": 0.05654215214200253,
+      "TO": -0.0012348813468712194
+     },
+     "d_exp_drop": -0.26048150917554563,
+     "d_exp_add": 0.3334400481832776,
+     "games": 2,
+     "games_left": 3,
+     "value": -3.32,
+     "status": "P",
+     "missed": "2026-11-01",
+     "season_d_ecw": -0.1969
+    },
+    {
      "add": "Bones Hyland",
      "team": "MIN",
      "drop": "Cameron Johnson",
@@ -2029,31 +2060,6 @@
      "status": null,
      "missed": null,
      "season_d_ecw": -0.1507
-    },
-    {
-     "add": "Gui Santos",
-     "team": "GSW",
-     "drop": "Cameron Johnson",
-     "d_exp": -0.06589901596628245,
-     "d_cat": {
-      "FG%": 0.001989313826306627,
-      "FT%": -0.013586113240260822,
-      "3PTM": -0.02991405700821803,
-      "PTS": -0.020860888774361597,
-      "REB": 0.004868442546491547,
-      "AST": -0.0022811149670220465,
-      "ST": 0.00012789256677347982,
-      "BLK": -0.004541901075885035,
-      "TO": -0.00170058984010657
-     },
-     "d_exp_drop": -0.26048150917554563,
-     "d_exp_add": 0.19458249320926319,
-     "games": 2,
-     "games_left": 2,
-     "value": -4.71,
-     "status": "Q",
-     "missed": null,
-     "season_d_ecw": -0.1877
     },
     {
      "add": "Javonte Green",
@@ -2899,7 +2905,7 @@
   }
  },
  "method": {
-  "to_date": "reconstructed from box scores (Yahoo's week 3 totals could not be read: unreadable makes/attempts value '/')",
+  "to_date": "Yahoo's week totals (get_matchups through Flaim, the morning pull); the box-score rebuild is the cross-check",
   "rebuild": "a day with Yahoo's pinned lineup counts its active slots (not BN, IL or IL+); any other day counts every non-IL player on today's roster who played, ten per day by the daily-fill rule when more played; each day's source is in rebuild_rosters",
   "projection": "season-pool per-game line x each remaining game x today's status availability; ten-slot daily fill; IL counts 0",
   "percentages": "total makes / total attempts, actual plus projected",
@@ -2911,11 +2917,11 @@
  "inputs": {
   "state": {
    "path": "data/league_state.json",
-   "sha256": "f865d6b75bd92cf8c537dc88d50431477dfe4d5714cf5e77d0765f8a38006f14"
+   "sha256": "fb10791bbfce2a4210f0a5b8cfeffb088a770c0ec0a9e63a91e9a8fd3e414af9"
   },
   "schedule": {
    "path": "data/league_schedule.json",
-   "sha256": "bb76da33f15ed71bc1984370633bb9000caa1195602fd7a82b4aa5539122301c"
+   "sha256": "b56a937fa33390da98da6dc6cc5342f43a64cfe26d2b701607f6a238100de8b7"
   },
   "games": {
    "path": "report/schedule/games-2026-27.csv",
@@ -2931,11 +2937,11 @@
   },
   "yahoo_pull": {
    "path": "data/source/flaim/pull_2026-11-02.json",
-   "sha256": "250cc9cb7a7707323d6e9eb79bb2d0fe0ed3c925bd1534977756313290143299"
+   "sha256": "2883abfde990b839640e77c884aaa92d57334cd0ae036d6e325d0182c87a3b8b"
   },
   "status_file": {
    "path": "data/status/status_2026-11-02.json",
-   "sha256": "3837a9a386332f4f7c95876910256aff5ca1fae3bae1388f2ea0d97ed15d3795"
+   "sha256": "0ad8b15636eac85c5dd1bfc165e5e731119a5db986d3b15dbad63b39a27c7f23"
   },
   "pool": {
    "path": "data/season/pool_season.csv",

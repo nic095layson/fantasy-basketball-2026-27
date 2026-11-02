@@ -2388,7 +2388,7 @@
     },
     "name": "Jared McCain",
     "ownershipType": "waivers",
-    "percentOwned": 44,
+    "percentOwned": 43,
     "playerId": "10276",
     "playerKey": "478.p.10276",
     "position": "PG,SG",
@@ -2405,7 +2405,7 @@
     },
     "name": "Jakob Poeltl",
     "ownershipType": "waivers",
-    "percentOwned": 37,
+    "percentOwned": 36,
     "playerId": "5640",
     "playerKey": "478.p.5640",
     "position": "C",
@@ -2474,7 +2474,7 @@
     },
     "name": "Cason Wallace",
     "ownershipType": "freeagents",
-    "percentOwned": 28,
+    "percentOwned": 27,
     "playerId": "10107",
     "playerKey": "478.p.10107",
     "position": "PG,SG,SF",
@@ -2491,7 +2491,7 @@
     },
     "name": "Quentin Grimes",
     "ownershipType": "freeagents",
-    "percentOwned": 28,
+    "percentOwned": 27,
     "playerId": "6567",
     "playerKey": "478.p.6567",
     "position": "SG,SF",
@@ -2507,7 +2507,7 @@
     },
     "name": "Jaylen Wells",
     "ownershipType": "waivers",
-    "percentOwned": 27,
+    "percentOwned": 26,
     "playerId": "10340",
     "playerKey": "478.p.10340",
     "position": "SG,SF",
@@ -2597,22 +2597,6 @@
    },
    {
     "acquisitionState": "free_agent",
-    "id": "10316",
-    "isKeeper": {
-     "cost": false,
-     "kept": false,
-     "status": false
-    },
-    "name": "Daniss Jenkins",
-    "ownershipType": "freeagents",
-    "percentOwned": 18,
-    "playerId": "10316",
-    "playerKey": "478.p.10316",
-    "position": "PG,SG",
-    "team": "DET"
-   },
-   {
-    "acquisitionState": "free_agent",
     "id": "6047",
     "isKeeper": {
      "cost": false,
@@ -2625,8 +2609,24 @@
     "playerId": "6047",
     "playerKey": "478.p.6047",
     "position": "C",
-    "status": "O",
+    "status": "P",
     "team": "BOS"
+   },
+   {
+    "acquisitionState": "free_agent",
+    "id": "10316",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Daniss Jenkins",
+    "ownershipType": "freeagents",
+    "percentOwned": 17,
+    "playerId": "10316",
+    "playerKey": "478.p.10316",
+    "position": "PG,SG",
+    "team": "DET"
    },
    {
     "acquisitionState": "free_agent",
@@ -2695,22 +2695,6 @@
    },
    {
     "acquisitionState": "free_agent",
-    "id": "5475",
-    "isKeeper": {
-     "cost": false,
-     "kept": false,
-     "status": false
-    },
-    "name": "Kelly Oubre Jr.",
-    "ownershipType": "freeagents",
-    "percentOwned": 13,
-    "playerId": "5475",
-    "playerKey": "478.p.5475",
-    "position": "SF,PF",
-    "team": "IND"
-   },
-   {
-    "acquisitionState": "free_agent",
     "id": "6038",
     "isKeeper": {
      "cost": false,
@@ -2755,7 +2739,7 @@
     "playerId": "6745",
     "playerKey": "478.p.6745",
     "position": "SF,PF",
-    "status": "Q",
+    "status": "O",
     "team": "GSW"
    },
    {
@@ -2773,6 +2757,22 @@
     "playerKey": "478.p.5350",
     "position": "SF,PF",
     "team": "MEM"
+   },
+   {
+    "acquisitionState": "free_agent",
+    "id": "5475",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Kelly Oubre Jr.",
+    "ownershipType": "freeagents",
+    "percentOwned": 12,
+    "playerId": "5475",
+    "playerKey": "478.p.5475",
+    "position": "SF,PF",
+    "team": "IND"
    },
    {
     "acquisitionState": "free_agent",
@@ -2841,6 +2841,22 @@
    },
    {
     "acquisitionState": "free_agent",
+    "id": "6408",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Isaiah Stewart",
+    "ownershipType": "freeagents",
+    "percentOwned": 10,
+    "playerId": "6408",
+    "playerKey": "478.p.6408",
+    "position": "PF,C",
+    "team": "MEM"
+   },
+   {
+    "acquisitionState": "free_agent",
     "id": "10333",
     "isKeeper": {
      "cost": false,
@@ -2873,19 +2889,19 @@
    },
    {
     "acquisitionState": "free_agent",
-    "id": "6617",
+    "id": "4892",
     "isKeeper": {
      "cost": false,
      "kept": false,
      "status": false
     },
-    "name": "Jay Huff",
+    "name": "Klay Thompson",
     "ownershipType": "freeagents",
     "percentOwned": 10,
-    "playerId": "6617",
-    "playerKey": "478.p.6617",
-    "position": "C",
-    "team": "IND"
+    "playerId": "4892",
+    "playerKey": "478.p.4892",
+    "position": "SG,SF",
+    "team": "MIA"
    },
    {
     "acquisitionState": "free_agent",
@@ -2921,51 +2937,19 @@
    },
    {
     "acquisitionState": "free_agent",
-    "id": "6408",
+    "id": "6617",
     "isKeeper": {
      "cost": false,
      "kept": false,
      "status": false
     },
-    "name": "Isaiah Stewart",
+    "name": "Jay Huff",
     "ownershipType": "freeagents",
     "percentOwned": 9,
-    "playerId": "6408",
-    "playerKey": "478.p.6408",
-    "position": "PF,C",
-    "team": "MEM"
-   },
-   {
-    "acquisitionState": "free_agent",
-    "id": "6217",
-    "isKeeper": {
-     "cost": false,
-     "kept": false,
-     "status": false
-    },
-    "name": "Keldon Johnson",
-    "ownershipType": "freeagents",
-    "percentOwned": 9,
-    "playerId": "6217",
-    "playerKey": "478.p.6217",
-    "position": "SF,PF",
-    "team": "SAS"
-   },
-   {
-    "acquisitionState": "free_agent",
-    "id": "4892",
-    "isKeeper": {
-     "cost": false,
-     "kept": false,
-     "status": false
-    },
-    "name": "Klay Thompson",
-    "ownershipType": "freeagents",
-    "percentOwned": 9,
-    "playerId": "4892",
-    "playerKey": "478.p.4892",
-    "position": "SG,SF",
-    "team": "MIA"
+    "playerId": "6617",
+    "playerKey": "478.p.6617",
+    "position": "C",
+    "team": "IND"
    },
    {
     "acquisitionState": "free_agent",
@@ -2999,6 +2983,22 @@
     "playerKey": "478.p.6709",
     "position": "SF,PF",
     "team": "LAL"
+   },
+   {
+    "acquisitionState": "free_agent",
+    "id": "6217",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Keldon Johnson",
+    "ownershipType": "freeagents",
+    "percentOwned": 8,
+    "playerId": "6217",
+    "playerKey": "478.p.6217",
+    "position": "SF,PF",
+    "team": "SAS"
    },
    {
     "acquisitionState": "free_agent",
@@ -3246,6 +3246,22 @@
    },
    {
     "acquisitionState": "free_agent",
+    "id": "6616",
+    "isKeeper": {
+     "cost": false,
+     "kept": false,
+     "status": false
+    },
+    "name": "Jordan Goodwin",
+    "ownershipType": "freeagents",
+    "percentOwned": 4,
+    "playerId": "6616",
+    "playerKey": "478.p.6616",
+    "position": "PG,SG",
+    "team": "PHX"
+   },
+   {
+    "acquisitionState": "free_agent",
     "id": "10315",
     "isKeeper": {
      "cost": false,
@@ -3438,22 +3454,6 @@
     "playerKey": "478.p.10070",
     "position": "SF,PF,C",
     "team": "MEM"
-   },
-   {
-    "acquisitionState": "free_agent",
-    "id": "6616",
-    "isKeeper": {
-     "cost": false,
-     "kept": false,
-     "status": false
-    },
-    "name": "Jordan Goodwin",
-    "ownershipType": "freeagents",
-    "percentOwned": 3,
-    "playerId": "6616",
-    "playerKey": "478.p.6616",
-    "position": "PG,SG",
-    "team": "PHX"
    },
    {
     "acquisitionState": "free_agent",
@@ -5556,7 +5556,7 @@
        "ties": 9,
        "wins": 0
       },
-      "gamesRemaining": 33,
+      "gamesRemaining": 44,
       "points": 0,
       "teamId": "9",
       "teamKey": "478.l.36464.t.9",
@@ -5659,7 +5659,7 @@
        "ties": 9,
        "wins": 0
       },
-      "gamesRemaining": 39,
+      "gamesRemaining": 41,
       "points": 0,
       "teamId": "2",
       "teamKey": "478.l.36464.t.2",
@@ -6083,7 +6083,7 @@
        "ties": 9,
        "wins": 0
       },
-      "gamesRemaining": 34,
+      "gamesRemaining": 37,
       "points": 0,
       "teamId": "4",
       "teamKey": "478.l.36464.t.4",
@@ -6192,7 +6192,7 @@
        "ties": 9,
        "wins": 0
       },
-      "gamesRemaining": 34,
+      "gamesRemaining": 41,
       "points": 0,
       "teamId": "12",
       "teamKey": "478.l.36464.t.12",
@@ -7070,7 +7070,7 @@
      "playerKey": "478.p.10588",
      "position": "PG",
      "selectedPosition": "BN",
-     "status": "Q",
+     "status": "P",
      "team": "BKN"
     },
     {
@@ -7478,6 +7478,28 @@
     },
     {
      "eligiblePositions": [
+      "SG",
+      "G",
+      "SF",
+      "PF",
+      "F",
+      "Util"
+     ],
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "isUndroppable": false,
+     "name": "Christian Braun",
+     "playerId": "6711",
+     "playerKey": "478.p.6711",
+     "position": "SG,SF,PF",
+     "selectedPosition": "SG",
+     "team": "DEN"
+    },
+    {
+     "eligiblePositions": [
       "PG",
       "SG",
       "G",
@@ -7596,28 +7618,6 @@
     },
     {
      "eligiblePositions": [
-      "SG",
-      "G",
-      "SF",
-      "PF",
-      "F",
-      "Util"
-     ],
-     "isKeeper": {
-      "cost": false,
-      "kept": false,
-      "status": false
-     },
-     "isUndroppable": false,
-     "name": "Christian Braun",
-     "playerId": "6711",
-     "playerKey": "478.p.6711",
-     "position": "SG,SF,PF",
-     "selectedPosition": "Util",
-     "team": "DEN"
-    },
-    {
-     "eligiblePositions": [
       "SF",
       "PF",
       "F",
@@ -7653,7 +7653,7 @@
      "playerId": "6562",
      "playerKey": "478.p.6562",
      "position": "SF,PF",
-     "selectedPosition": "BN",
+     "selectedPosition": "Util",
      "status": "Q",
      "team": "ATL"
     },
@@ -7772,11 +7772,9 @@
     },
     {
      "eligiblePositions": [
+      "PG",
       "SG",
       "G",
-      "SF",
-      "PF",
-      "F",
       "Util"
      ],
      "isKeeper": {
@@ -7785,12 +7783,12 @@
       "status": false
      },
      "isUndroppable": false,
-     "name": "Tari Eason",
-     "playerId": "6707",
-     "playerKey": "478.p.6707",
-     "position": "SG,SF,PF",
+     "name": "Devin Booker",
+     "playerId": "5473",
+     "playerKey": "478.p.5473",
+     "position": "PG,SG",
      "selectedPosition": "SG",
-     "team": "HOU"
+     "team": "PHX"
     },
     {
      "eligiblePositions": [
@@ -7813,6 +7811,28 @@
     },
     {
      "eligiblePositions": [
+      "SG",
+      "G",
+      "SF",
+      "PF",
+      "F",
+      "Util"
+     ],
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "isUndroppable": false,
+     "name": "Jaylen Brown",
+     "playerId": "5602",
+     "playerKey": "478.p.5602",
+     "position": "SG,SF,PF",
+     "selectedPosition": "SF",
+     "team": "PHI"
+    },
+    {
+     "eligiblePositions": [
       "SF",
       "PF",
       "F",
@@ -7828,29 +7848,8 @@
      "playerId": "10275",
      "playerKey": "478.p.10275",
      "position": "SF,PF",
-     "selectedPosition": "SF",
-     "team": "ORL"
-    },
-    {
-     "eligiblePositions": [
-      "SF",
-      "PF",
-      "F",
-      "Util"
-     ],
-     "isKeeper": {
-      "cost": false,
-      "kept": false,
-      "status": false
-     },
-     "isUndroppable": false,
-     "name": "Derrick Jones Jr.",
-     "playerId": "5747",
-     "playerKey": "478.p.5747",
-     "position": "SF,PF",
      "selectedPosition": "PF",
-     "status": "Q",
-     "team": "LAC"
+     "team": "ORL"
     },
     {
      "eligiblePositions": [
@@ -7875,24 +7874,6 @@
     },
     {
      "eligiblePositions": [
-      "C",
-      "Util"
-     ],
-     "isKeeper": {
-      "cost": false,
-      "kept": false,
-      "status": false
-     },
-     "isUndroppable": false,
-     "name": "Daniel Gafford",
-     "playerId": "6226",
-     "playerKey": "478.p.6226",
-     "position": "C",
-     "selectedPosition": "C",
-     "team": "DAL"
-    },
-    {
-     "eligiblePositions": [
       "PF",
       "F",
       "C",
@@ -7910,6 +7891,24 @@
      "position": "PF,C",
      "selectedPosition": "C",
      "team": "MIA"
+    },
+    {
+     "eligiblePositions": [
+      "C",
+      "Util"
+     ],
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "isUndroppable": false,
+     "name": "Daniel Gafford",
+     "playerId": "6226",
+     "playerKey": "478.p.6226",
+     "position": "C",
+     "selectedPosition": "C",
+     "team": "DAL"
     },
     {
      "eligiblePositions": [
@@ -7952,48 +7951,6 @@
     },
     {
      "eligiblePositions": [
-      "SG",
-      "G",
-      "SF",
-      "PF",
-      "F",
-      "Util"
-     ],
-     "isKeeper": {
-      "cost": false,
-      "kept": false,
-      "status": false
-     },
-     "isUndroppable": false,
-     "name": "Jaylen Brown",
-     "playerId": "5602",
-     "playerKey": "478.p.5602",
-     "position": "SG,SF,PF",
-     "selectedPosition": "BN",
-     "team": "PHI"
-    },
-    {
-     "eligiblePositions": [
-      "PG",
-      "SG",
-      "G",
-      "Util"
-     ],
-     "isKeeper": {
-      "cost": false,
-      "kept": false,
-      "status": false
-     },
-     "isUndroppable": false,
-     "name": "Devin Booker",
-     "playerId": "5473",
-     "playerKey": "478.p.5473",
-     "position": "PG,SG",
-     "selectedPosition": "BN",
-     "team": "PHX"
-    },
-    {
-     "eligiblePositions": [
       "C",
       "Util"
      ],
@@ -8009,6 +7966,49 @@
      "position": "C",
      "selectedPosition": "BN",
      "team": "MEM"
+    },
+    {
+     "eligiblePositions": [
+      "SF",
+      "PF",
+      "F",
+      "Util"
+     ],
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "isUndroppable": false,
+     "name": "Derrick Jones Jr.",
+     "playerId": "5747",
+     "playerKey": "478.p.5747",
+     "position": "SF,PF",
+     "selectedPosition": "BN",
+     "status": "Q",
+     "team": "LAC"
+    },
+    {
+     "eligiblePositions": [
+      "SG",
+      "G",
+      "SF",
+      "PF",
+      "F",
+      "Util"
+     ],
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "isUndroppable": false,
+     "name": "Tari Eason",
+     "playerId": "6707",
+     "playerKey": "478.p.6707",
+     "position": "SG,SF,PF",
+     "selectedPosition": "BN",
+     "team": "HOU"
     },
     {
      "eligiblePositions": [
@@ -8380,8 +8380,7 @@
      "eligiblePositions": [
       "PG",
       "G",
-      "Util",
-      "IL"
+      "Util"
      ],
      "isKeeper": {
       "cost": false,
@@ -8394,7 +8393,7 @@
      "playerKey": "478.p.4612",
      "position": "PG",
      "selectedPosition": "PG",
-     "status": "O",
+     "status": "P",
      "team": "GSW"
     },
     {
@@ -10039,6 +10038,26 @@
     },
     {
      "eligiblePositions": [
+      "PF",
+      "F",
+      "C",
+      "Util"
+     ],
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "isUndroppable": false,
+     "name": "Evan Mobley",
+     "playerId": "6514",
+     "playerKey": "478.p.6514",
+     "position": "PF,C",
+     "selectedPosition": "C",
+     "team": "CLE"
+    },
+    {
+     "eligiblePositions": [
       "PG",
       "SG",
       "G",
@@ -10098,26 +10117,6 @@
     },
     {
      "eligiblePositions": [
-      "PF",
-      "F",
-      "C",
-      "Util"
-     ],
-     "isKeeper": {
-      "cost": false,
-      "kept": false,
-      "status": false
-     },
-     "isUndroppable": false,
-     "name": "Evan Mobley",
-     "playerId": "6514",
-     "playerKey": "478.p.6514",
-     "position": "PF,C",
-     "selectedPosition": "BN",
-     "team": "CLE"
-    },
-    {
-     "eligiblePositions": [
       "SF",
       "PF",
       "F",
@@ -10160,8 +10159,7 @@
       "PF",
       "F",
       "C",
-      "Util",
-      "IL"
+      "Util"
      ],
      "isKeeper": {
       "cost": false,
@@ -10174,7 +10172,7 @@
      "playerKey": "478.p.5069",
      "position": "PF,C",
      "selectedPosition": "IL",
-     "status": "O",
+     "status": "P",
      "team": "GSW"
     },
     {
