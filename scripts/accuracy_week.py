@@ -193,9 +193,20 @@ def run(week, actuals=ACTUALS, out=OUT, frozen=FROZEN, weeks_dir=WEEKS, ledger=L
     with open(os.path.join(weeks_dir, f"week_{week}.json"), encoding="utf-8") as f:
         row.update(grade_matchup_ledgers(week, json.load(f), league, league_real))
     rec = append(out, week, row)
-    with open(out[:-5] + ".md", "w", encoding="utf-8") as f:
-        f.write(render(rec))
+    write_md(out, rec)
     return row
+
+
+def write_md(out, rec=None):
+    """Render the card to a string first, then write it (owner 2026-11-02, runner finding 2: the 11-02 run opened the
+    file for writing before render() raised, and committed a 0-byte accuracy.md). rec defaults to the record on disk."""
+    if rec is None:
+        with open(out, encoding="utf-8") as f:
+            rec = json.load(f)
+    text = render(rec)
+    with open(out[:-5] + ".md", "w", encoding="utf-8") as f:
+        f.write(text)
+    return text
 
 
 def render(rec):
@@ -210,7 +221,8 @@ def render(rec):
                       if s else "no snapshot | | | ")
     for k in sorted(rec["weeks"], key=int):
         r = rec["weeks"][k]["lines"]
-        L.append(f"| {k} | {r['preseason']['players']} | " + " | ".join(cell(r[x].get("cats", {}).get("pts", {})) for x in ("preseason", "in_season", "candidate_minutes")) + " |")
+        # a week graded before a snapshot column existed (week 1 predates candidate_minutes) renders "no snapshot"
+        L.append(f"| {k} | {r['preseason']['players']} | " + " | ".join(cell((r.get(x) or {}).get("cats", {}).get("pts", {})) for x in ("preseason", "in_season", "candidate_minutes")) + " |")
     L += ["", "Switch rule (D-ML-1, pre-committed 2026-10-27): the minutes candidate replaces nothing until its MAE beats the "
           "in-season line's on PTS, REB and AST in 3 of 4 consecutive graded weeks, on the owner's word."]
     L += ["", "## Availability: share of team games played, by the tier the simulator assumes", "",
@@ -232,11 +244,20 @@ def render(rec):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--week", type=int, required=True)
+    ap.add_argument("--week", type=int)
+    ap.add_argument("--render", action="store_true", help="re-render accuracy.md from accuracy.json; grades nothing, appends nothing")
     ap.add_argument("--actuals", default=ACTUALS); ap.add_argument("--out", default=OUT)
     ap.add_argument("--weeks-dir", default=WEEKS); ap.add_argument("--league", default=LEAGUE)
     ap.add_argument("--ledger", default=LEDGER); ap.add_argument("--daily", default=DAILY)
     a = ap.parse_args()
+    if a.render:
+        try:
+            text = write_md(a.out)
+        except (OSError, ValueError, KeyError) as e:
+            print(f"ACCURACY RENDER: FAIL — {e}"); return 1
+        print(f"ACCURACY RENDER: PASS — {os.path.relpath(a.out[:-5] + '.md', KIT)} ({len(text)} chars)"); return 0
+    if a.week is None:
+        print("ACCURACY: FAIL — --week is required (or --render)"); return 1
     try:
         r = run(a.week, a.actuals, a.out, weeks_dir=a.weeks_dir, ledger=a.ledger, daily=a.daily, league=a.league)
     except (AccuracyError, OSError, ValueError, KeyError, StopIteration) as e:

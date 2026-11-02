@@ -99,9 +99,15 @@ class Headline(unittest.TestCase):
         rec = dict(espn_date="2026-10-31", n_il=3, room_rule="r", error=0.7, seasons=10000,
                    scenarios={k: dict(title=t) for k, t in (("never", 15.0), ("on_time", 25.0), ("late_2", 22.0), ("late_4", 20.0))},
                    il_players=[dict(seat=2, team="T2", player="Naji", return_date=None, week=None), dict(seat=10, team="Me", player="Hali", return_date="2026-11-13", week=4)])
+        rec["scenarios"]["on_time_rule_flipped"] = dict(title=38.4)
         L = IR.lines(rec)
-        self.assertIn("on time 25.0% · +2 wk 22.0% · +4 wk 20.0% · never = headline 15.0%", L[0])
+        self.assertIn("if they return ≈22% (20.0 to 25.0 across on time / +2 wk / +4 wk) · never = headline 15.0%", L[0])
+        self.assertIn("ROOM_RULE_ON is FRAGILE: +13.4 (rule off)", L[0])
         self.assertIn("not a forecast", L[0])
+        self.assertEqual(IR.room_band(rec["scenarios"]), dict(constant="il_return.ROOM_RULE_ON", shift=13.4, label="rule off", tier="FRAGILE"))
+        self.assertEqual(IR.room_band(dict(on_time=dict(title=25.0), on_time_rule_flipped=dict(title=25.6)))["tier"], "ROBUST")
+        del rec["scenarios"]["on_time_rule_flipped"]
+        self.assertIn("band not measured this run", IR.lines(rec)[0])
         self.assertTrue(L[1].startswith("- Me: Hali (2026-11-13, wk 4)")); self.assertIn("Naji (no ESPN date, never)", L[2])
 
 

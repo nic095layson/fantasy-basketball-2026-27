@@ -170,11 +170,31 @@ def _pair(v):
     return int(m.group(1)), int(m.group(2))
 
 
-def side_totals(side):
-    """One matchup side's Yahoo category values as the kit's stat totals (makes and attempts, counts)."""
+def not_started(side):
+    """True when a side carries no stats at all: FGM/A and FTM/A read '/' (or empty) and every other cell is empty,
+    Yahoo on a week's first morning before any game (owner 2026-11-02, runner finding 6: the week card said
+    "unreadable makes/attempts value '/'" every Monday)."""
+    cats = side.get("categories") or []
+    if not cats:
+        return False
+    for c in cats:
+        v = str(c.get("value") if c.get("value") is not None else "").strip()
+        if c.get("displayName") in ("FGM/A", "FTM/A"):
+            if v not in ("/", ""):
+                return False
+        elif v != "":
+            return False
+    return True
+
+
+def side_totals(side, empty_ok=False):
+    """One matchup side's Yahoo category values as the kit's stat totals (makes and attempts, counts). With empty_ok a
+    side that has not started (not_started) reads as all zeros; without it, as before, '/' is unreadable and raises."""
     by = {c.get("displayName"): c.get("value") for c in side.get("categories") or []}
     if "FGM/A" not in by or "FTM/A" not in by:
         raise PullError(f"{side.get('teamName')}: no FGM/A or FTM/A in the matchup categories")
+    if empty_ok and not_started(side):
+        return {k: 0 for k in STATS}
     t = {}
     t["fgm"], t["fga"] = _pair(by["FGM/A"])
     t["ftm"], t["fta"] = _pair(by["FTM/A"])

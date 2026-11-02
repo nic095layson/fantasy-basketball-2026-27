@@ -137,13 +137,21 @@ def main():
     with open(a.attacks, encoding="utf-8") as f:
         attacks = json.load(f)
     rec = check(attacks, KIT, live_commit(os.path.abspath(a.deck)), deck=os.path.abspath(a.deck))
+    # 2026-11-02 (after-report il-return, runner F): the season simulator is not an engine file; its last commit is
+    # named beside the fingerprint so a record can be read against the simulator that made it
+    try:
+        rec["live_sim_commit"] = subprocess.run(["git", "-C", os.path.abspath(a.deck), "log", "-1", "--format=%h", "--abbrev=7", "HEAD", "--",
+                                                 "arena/mocks/league_sim.py"], capture_output=True, text=True, check=True).stdout.strip()
+    except (OSError, subprocess.CalledProcessError):
+        rec["live_sim_commit"] = ""
     if a.out:
         with open(a.out, "w", encoding="utf-8") as f:
             json.dump(rec, f, indent=1, ensure_ascii=False)
             f.write("\n")
     if rec["verdict"] == "PASS":
         print(f"ATTACKS CHECK: PASS — {len(rec['attacks'])} attacks on engine {rec['live_engine_commit']}"
-              + (f" (engine files last changed {rec['live_engine_files_commit']})" if rec.get('live_engine_files_commit') else "") + "; "
+              + (f" (engine files last changed {rec['live_engine_files_commit']})" if rec.get('live_engine_files_commit') else "")
+              + (f", simulator {rec['live_sim_commit']}" if rec.get("live_sim_commit") else "") + "; "
               + ", ".join(f"{k} {v}" for k, v in sorted(rec["by_status"].items())))
     else:
         print("ATTACKS CHECK: FAIL")

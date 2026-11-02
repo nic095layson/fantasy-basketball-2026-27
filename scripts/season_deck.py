@@ -414,10 +414,14 @@ function bandLine(){ if(!D.bands.length) return "no FRAGILE constant — engine 
 // the page as the hover title of a trailing ⓘ (long-press on a phone)
 function more(full){ return full? h("span",{class:"more",title:full,tabindex:"0","aria-label":full}," ⓘ") : null; }
 // owner 2026-10-31: the IL-return scenario range under the title tile, faded like a projection; never in the tile
-function ilReturn(r){ if(!r||!r.scenarios) return null; const S=r.scenarios; const row=(k,l)=>S[k]?h("tr",{class:"proj"},h("td",{},l),h("td",{class:"num"},f1(S[k].title)+"%"),h("td",{class:"num"},f1(S[k].playoffs)+"%")):null;
+function ilReturn(r){ if(!r||!r.scenarios) return null; const S=r.scenarios; const slips=["on_time","late_2","late_4"].filter(k=>S[k]); const vals=slips.map(k=>S[k].title);
+  // owner 2026-11-02 (runner finding 3; council): one "if they return" row with its range, since the slip rows sit within one error bar, and the room rule's band
+  const lo=Math.min(...vals), hi=Math.max(...vals), mid=(lo+hi)/2, pl=slips.length?slips.map(k=>S[k].playoffs).reduce((a,b)=>a+b,0)/slips.length:null;
+  const band=r.room_band? "ROOM_RULE_ON is "+r.room_band.tier+": "+(r.room_band.shift>=0?"+":"")+f1(r.room_band.shift)+" ("+r.room_band.label+")" : "room-rule band not measured";
   return h("div",{class:"tablebox"},h("table",{class:"wk"},h("tr",{},h("th",{class:"projh"},"if IL players return (ESPN dates of "+r.espn_date+", all teams, "+r.n_il+" players)"),h("th",{class:"num projh"},"title"),h("th",{class:"num projh"},"playoffs")),
-    row("on_time","on ESPN's date"),row("late_2","2 weeks late"),row("late_4","4 weeks late"),row("never","never (the headline)")),
-    h("p",{class:"note"},"Scenario range, not a forecast: ± "+r.error+" each; returns are uncertain and the headline counts the current roster. Room rule: "+r.room_rule+".")); }
+    slips.length?h("tr",{class:"proj"},h("td",{},"if they return ("+f1(lo)+" to "+f1(hi)+" across on time / +2 wk / +4 wk)"),h("td",{class:"num"},f1(mid)+"%"),h("td",{class:"num"},f1(pl)+"%")):null,
+    S.never?h("tr",{class:"proj"},h("td",{},"never (the headline)"),h("td",{class:"num"},f1(S.never.title)+"%"),h("td",{class:"num"},f1(S.never.playoffs)+"%")):null),
+    h("p",{class:"note"},"Scenario range, not a forecast: ± "+r.error+" each; "+band+". Returns are uncertain and the headline counts the current roster. Room rule: "+r.room_rule+".")); }
 function noteMore(text, full, cls){ return h("p",{class:"note"+(cls?" "+cls:"")},text,more(full)); }
 function day(d){ try{ return new Date(d+"T00:00:00Z").toLocaleDateString("en-US",{month:"short",day:"numeric",timeZone:"UTC"}); }catch(e){ return d; } }
 function T(t){ if(t===D.my_team) return t+" (you)"; const m=(D.league.managers||{})[t]; return m? t+" ("+m+")" : t; }

@@ -254,7 +254,7 @@ def main():
            "league_moves": lm and lm["moves"],
            # owner 2026-10-31: the IL-return scenario range, read from il_return.py's record when one exists for the
            # day; a separate section, never the headline
-           "il_return": ilr and {k: ilr[k] for k in ("espn_date", "n_il", "room_rule", "error", "seasons", "label") if k in ilr}
+           "il_return": ilr and {k: ilr[k] for k in ("espn_date", "n_il", "room_rule", "error", "seasons", "label", "room_band", "slip_range") if k in ilr}
            | {"scenarios": {k: {"title": v["title"], "playoffs": v["playoffs"]} for k, v in ilr["scenarios"].items()
                             if k in ("never", "on_time", "late_2", "late_4")}}}
     os.makedirs(OUTDIR, exist_ok=True)
