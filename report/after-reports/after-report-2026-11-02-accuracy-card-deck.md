@@ -4,13 +4,13 @@ Pull window: 2026-11-02 → 2026-11-02 (no pull: the records on season/daily 463
 
 **Method up front.** The one-shot task of 10-27 fired at 20:00Z: `report/accuracy.json` holds weeks 1 and 2 (EVIDENCE: the record's `weeks` keys). The deck's Week tab carried the daily-card Brier scorecard but not the weekly card (EVIDENCE: 0 "MAE" hits in `deck_2026-11-02.html`; `season_deck.py` never read `accuracy.json`). This session had said the card was already on the deck; that was wrong and is corrected here. The owner picked "Build now". Plan-gate's criteria were stated before the build; adversarial-verify graded the result against them. EVIDENCE marks what a run or read showed; INFERENCE what is derived.
 
-**Verdict: the Week tab now renders the weekly accuracy card from `accuracy.json`, read-only, beside the daily-card scorecard; 3 red-first tests green, the deck suite green (167), both real builds PASS with 0 page errors; nothing merged.**
+**Verdict: the Week tab now renders the weekly accuracy card from `accuracy.json`, read-only, beside the daily-card scorecard; 3 new tests green (2 red first; the third, the input pin, was green before the change because the deck pins every named path generically), the deck suite green (164: 161 before this PR plus 3), both real builds PASS with 0 page errors; nothing merged.**
 
 ## 1. What was built (EVIDENCE: the diff, the suite)
 
 | change | where | test |
 |---|---|---|
-| `accuracy=report/accuracy.json` is an optional deck input, pinned in the record (15 inputs today, sha256 recorded; absent reads as absent, never hashed) | `season_deck.default_paths`, `build` | `AccuracyCard.test_record_pins_the_accuracy_input` |
+| `accuracy=report/accuracy.json` is an optional deck input, pinned in the record (15 inputs today, sha256 recorded; absent reads as absent, never hashed) | `season_deck.default_paths`, `build` | `AccuracyCard.test_record_pins_the_accuracy_input` (green before the change: the pin loop is generic; the default path is asserted in the zero-state test, which was red) |
 | The card: three tables under "Forecast accuracy — week by week": player lines (preseason, in-season, minutes candidate: projected / actual PTS, bias, MAE, rank correlation; a week without a snapshot column reads "no snapshot"), availability by tier (assumed vs played share, a share more than 0.05 under the assumption in the negative colour), forecasts (your P(win), result, daily-card Brier vs the lead-only Brier, league matchups scored). The two switch rules D-ML-1 and D-RG-1 are quoted as pre-committed, not decided | the Week pane, after the scorecard block | `AccuracyCard.test_two_graded_weeks_render_lines_availability_and_forecasts` (browser read-back, 0 errors, 0 overflow) |
 | Zero state: "No week graded yet — the card fills at Monday's intake." | same | `AccuracyCard.test_default_paths_name_the_record_and_an_absent_one_builds_with_a_pending_line` |
 
@@ -34,6 +34,7 @@ Runner impact: none. The morning run's "season deck" step picks the card up from
 ## 4. Bounds and open items
 
 - Out of scope by design: the per-category line tables (REB, AST and the rest stay in the record and the markdown card; the deck shows PTS, the card's headline); the league-matchup Brier columns (0 scored weeks so far, the ledgers began 10-27).
+- Correction to the first commit message on this branch (c3a2b04), which says "suite 167 OK": the suite is 164. The message is history and stays; this report and the PR carry the right count.
 - In scope and unverified: the first live render on the records branch (the 11-03 morning run after merge); the 10-27 one-shot task has fired and is closed by this build.
 
 ## Watchlist
