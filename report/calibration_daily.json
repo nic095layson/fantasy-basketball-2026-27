@@ -428,6 +428,648 @@
     }
    },
    "scored_at": "2026-10-26T14:34:40Z"
+  },
+  "2": {
+   "week": 2,
+   "window": [
+    "2026-10-26",
+    "2026-11-01"
+   ],
+   "team": "KEL'EL YAXEL HALQUETA",
+   "opponent": "Looking Cool Joker!",
+   "result": {
+    "won": [
+     "3PTM",
+     "BLK",
+     "FG%",
+     "PTS",
+     "REB",
+     "ST",
+     "TO"
+    ],
+    "lost": [
+     "AST",
+     "FT%"
+    ],
+    "tied": []
+   },
+   "days": {
+    "2026-10-26": {
+     "FG%": {
+      "p": 0.51,
+      "outcome": 1.0,
+      "brier": 0.24009999999999998,
+      "lead": "tie",
+      "baseline_brier": 0.25
+     },
+     "FT%": {
+      "p": 0.6807,
+      "outcome": 0.0,
+      "brier": 0.46335248999999995,
+      "lead": "tie",
+      "baseline_brier": 0.25
+     },
+     "3PTM": {
+      "p": 0.7534,
+      "outcome": 1.0,
+      "brier": 0.06081156000000002,
+      "lead": "tie",
+      "baseline_brier": 0.25
+     },
+     "PTS": {
+      "p": 0.334,
+      "outcome": 1.0,
+      "brier": 0.4435559999999999,
+      "lead": "tie",
+      "baseline_brier": 0.25
+     },
+     "REB": {
+      "p": 0.1781,
+      "outcome": 1.0,
+      "brier": 0.6755196099999999,
+      "lead": "tie",
+      "baseline_brier": 0.25
+     },
+     "AST": {
+      "p": 0.1302,
+      "outcome": 0.0,
+      "brier": 0.01695204,
+      "lead": "tie",
+      "baseline_brier": 0.25
+     },
+     "ST": {
+      "p": 0.5552,
+      "outcome": 1.0,
+      "brier": 0.19784703999999997,
+      "lead": "tie",
+      "baseline_brier": 0.25
+     },
+     "BLK": {
+      "p": 0.8422,
+      "outcome": 1.0,
+      "brier": 0.024900840000000018,
+      "lead": "tie",
+      "baseline_brier": 0.25
+     },
+     "TO": {
+      "p": 0.9366,
+      "outcome": 1.0,
+      "brier": 0.004019560000000002,
+      "lead": "tie",
+      "baseline_brier": 0.25
+     }
+    },
+    "2026-10-27": {
+     "FG%": {
+      "p": 0.4714,
+      "outcome": 1.0,
+      "brier": 0.27941795999999997,
+      "lead": "opp",
+      "baseline_brier": 1.0
+     },
+     "FT%": {
+      "p": 0.8027,
+      "outcome": 0.0,
+      "brier": 0.64432729,
+      "lead": "me",
+      "baseline_brier": 1.0
+     },
+     "3PTM": {
+      "p": 0.7344,
+      "outcome": 1.0,
+      "brier": 0.07054335999999997,
+      "lead": "me",
+      "baseline_brier": 0.0
+     },
+     "PTS": {
+      "p": 0.7037,
+      "outcome": 1.0,
+      "brier": 0.08779369000000001,
+      "lead": "me",
+      "baseline_brier": 0.0
+     },
+     "REB": {
+      "p": 0.9776,
+      "outcome": 1.0,
+      "brier": 0.0005017599999999989,
+      "lead": "me",
+      "baseline_brier": 0.0
+     },
+     "AST": {
+      "p": 0.2157,
+      "outcome": 0.0,
+      "brier": 0.046526490000000004,
+      "lead": "me",
+      "baseline_brier": 1.0
+     },
+     "ST": {
+      "p": 0.5662,
+      "outcome": 1.0,
+      "brier": 0.18818243999999998,
+      "lead": "me",
+      "baseline_brier": 0.0
+     },
+     "BLK": {
+      "p": 0.9947,
+      "outcome": 1.0,
+      "brier": 2.8089999999999695e-05,
+      "lead": "me",
+      "baseline_brier": 0.0
+     },
+     "TO": {
+      "p": 0.5462,
+      "outcome": 1.0,
+      "brier": 0.20593444,
+      "lead": "opp",
+      "baseline_brier": 1.0
+     }
+    },
+    "2026-10-28": {
+     "FG%": {
+      "p": 0.4945,
+      "outcome": 1.0,
+      "brier": 0.25553025000000007,
+      "lead": "opp",
+      "baseline_brier": 1.0
+     },
+     "FT%": {
+      "p": 0.7701,
+      "outcome": 0.0,
+      "brier": 0.59305401,
+      "lead": "me",
+      "baseline_brier": 1.0
+     },
+     "3PTM": {
+      "p": 0.7464,
+      "outcome": 1.0,
+      "brier": 0.06431296000000003,
+      "lead": "me",
+      "baseline_brier": 0.0
+     },
+     "PTS": {
+      "p": 0.6155,
+      "outcome": 1.0,
+      "brier": 0.14784024999999995,
+      "lead": "me",
+      "baseline_brier": 0.0
+     },
+     "REB": {
+      "p": 0.9444,
+      "outcome": 1.0,
+      "brier": 0.0030913599999999983,
+      "lead": "me",
+      "baseline_brier": 0.0
+     },
+     "AST": {
+      "p": 0.0915,
+      "outcome": 0.0,
+      "brier": 0.00837225,
+      "lead": "me",
+      "baseline_brier": 1.0
+     },
+     "ST": {
+      "p": 0.4857,
+      "outcome": 1.0,
+      "brier": 0.26450449,
+      "lead": "me",
+      "baseline_brier": 0.0
+     },
+     "BLK": {
+      "p": 0.9727,
+      "outcome": 1.0,
+      "brier": 0.0007452899999999995,
+      "lead": "me",
+      "baseline_brier": 0.0
+     },
+     "TO": {
+      "p": 0.5511,
+      "outcome": 1.0,
+      "brier": 0.20151120999999997,
+      "lead": "opp",
+      "baseline_brier": 1.0
+     }
+    },
+    "2026-10-29": {
+     "FG%": {
+      "p": 0.4094,
+      "outcome": 1.0,
+      "brier": 0.34880836000000004,
+      "lead": "opp",
+      "baseline_brier": 1.0
+     },
+     "FT%": {
+      "p": 0.7945,
+      "outcome": 0.0,
+      "brier": 0.63123025,
+      "lead": "me",
+      "baseline_brier": 1.0
+     },
+     "3PTM": {
+      "p": 0.8049,
+      "outcome": 1.0,
+      "brier": 0.03806401000000002,
+      "lead": "me",
+      "baseline_brier": 0.0
+     },
+     "PTS": {
+      "p": 0.7006,
+      "outcome": 1.0,
+      "brier": 0.08964036,
+      "lead": "me",
+      "baseline_brier": 0.0
+     },
+     "REB": {
+      "p": 0.9964,
+      "outcome": 1.0,
+      "brier": 1.2960000000000343e-05,
+      "lead": "me",
+      "baseline_brier": 0.0
+     },
+     "AST": {
+      "p": 0.0073,
+      "outcome": 0.0,
+      "brier": 5.329e-05,
+      "lead": "opp",
+      "baseline_brier": 0.0
+     },
+     "ST": {
+      "p": 0.5559,
+      "outcome": 1.0,
+      "brier": 0.19722481000000006,
+      "lead": "me",
+      "baseline_brier": 0.0
+     },
+     "BLK": {
+      "p": 0.9991,
+      "outcome": 1.0,
+      "brier": 8.100000000000215e-07,
+      "lead": "me",
+      "baseline_brier": 0.0
+     },
+     "TO": {
+      "p": 0.6813,
+      "outcome": 1.0,
+      "brier": 0.10156968999999999,
+      "lead": "opp",
+      "baseline_brier": 1.0
+     }
+    },
+    "2026-10-30": {
+     "FG%": {
+      "p": 0.299,
+      "outcome": 1.0,
+      "brier": 0.4914010000000001,
+      "lead": "opp",
+      "baseline_brier": 1.0
+     },
+     "FT%": {
+      "p": 0.8353,
+      "outcome": 0.0,
+      "brier": 0.6977260900000001,
+      "lead": "me",
+      "baseline_brier": 1.0
+     },
+     "3PTM": {
+      "p": 0.7378,
+      "outcome": 1.0,
+      "brier": 0.06874883999999999,
+      "lead": "me",
+      "baseline_brier": 0.0
+     },
+     "PTS": {
+      "p": 0.7641,
+      "outcome": 1.0,
+      "brier": 0.05564881,
+      "lead": "me",
+      "baseline_brier": 0.0
+     },
+     "REB": {
+      "p": 0.9995,
+      "outcome": 1.0,
+      "brier": 2.4999999999994493e-07,
+      "lead": "me",
+      "baseline_brier": 0.0
+     },
+     "AST": {
+      "p": 0.0135,
+      "outcome": 0.0,
+      "brier": 0.00018224999999999998,
+      "lead": "opp",
+      "baseline_brier": 0.0
+     },
+     "ST": {
+      "p": 0.7242,
+      "outcome": 1.0,
+      "brier": 0.07606564000000003,
+      "lead": "me",
+      "baseline_brier": 0.0
+     },
+     "BLK": {
+      "p": 0.9997,
+      "outcome": 1.0,
+      "brier": 8.999999999998017e-08,
+      "lead": "me",
+      "baseline_brier": 0.0
+     },
+     "TO": {
+      "p": 0.5603,
+      "outcome": 1.0,
+      "brier": 0.19333609,
+      "lead": "opp",
+      "baseline_brier": 1.0
+     }
+    },
+    "2026-10-31": {
+     "FG%": {
+      "p": 0.5365,
+      "outcome": 1.0,
+      "brier": 0.21483225000000003,
+      "lead": "opp",
+      "baseline_brier": 1.0
+     },
+     "FT%": {
+      "p": 0.2407,
+      "outcome": 0.0,
+      "brier": 0.05793649,
+      "lead": "opp",
+      "baseline_brier": 0.0
+     },
+     "3PTM": {
+      "p": 0.7939,
+      "outcome": 1.0,
+      "brier": 0.04247720999999998,
+      "lead": "me",
+      "baseline_brier": 0.0
+     },
+     "PTS": {
+      "p": 0.8761,
+      "outcome": 1.0,
+      "brier": 0.015351210000000002,
+      "lead": "me",
+      "baseline_brier": 0.0
+     },
+     "REB": {
+      "p": 1.0,
+      "outcome": 1.0,
+      "brier": 0.0,
+      "lead": "me",
+      "baseline_brier": 0.0
+     },
+     "AST": {
+      "p": 0.0141,
+      "outcome": 0.0,
+      "brier": 0.00019881,
+      "lead": "opp",
+      "baseline_brier": 0.0
+     },
+     "ST": {
+      "p": 0.8802,
+      "outcome": 1.0,
+      "brier": 0.014352040000000003,
+      "lead": "me",
+      "baseline_brier": 0.0
+     },
+     "BLK": {
+      "p": 1.0,
+      "outcome": 1.0,
+      "brier": 0.0,
+      "lead": "me",
+      "baseline_brier": 0.0
+     },
+     "TO": {
+      "p": 0.8661,
+      "outcome": 1.0,
+      "brier": 0.017929210000000004,
+      "lead": "me",
+      "baseline_brier": 0.0
+     }
+    },
+    "2026-11-01": {
+     "FG%": {
+      "p": 0.2747,
+      "outcome": 1.0,
+      "brier": 0.5260600900000001,
+      "lead": "opp",
+      "baseline_brier": 1.0
+     },
+     "FT%": {
+      "p": 0.1949,
+      "outcome": 0.0,
+      "brier": 0.037986009999999994,
+      "lead": "opp",
+      "baseline_brier": 0.0
+     },
+     "3PTM": {
+      "p": 0.8491,
+      "outcome": 1.0,
+      "brier": 0.02277081000000001,
+      "lead": "me",
+      "baseline_brier": 0.0
+     },
+     "PTS": {
+      "p": 0.9591,
+      "outcome": 1.0,
+      "brier": 0.001672810000000004,
+      "lead": "me",
+      "baseline_brier": 0.0
+     },
+     "REB": {
+      "p": 1.0,
+      "outcome": 1.0,
+      "brier": 0.0,
+      "lead": "me",
+      "baseline_brier": 0.0
+     },
+     "AST": {
+      "p": 0.001,
+      "outcome": 0.0,
+      "brier": 1e-06,
+      "lead": "opp",
+      "baseline_brier": 0.0
+     },
+     "ST": {
+      "p": 0.9687,
+      "outcome": 1.0,
+      "brier": 0.0009796899999999996,
+      "lead": "me",
+      "baseline_brier": 0.0
+     },
+     "BLK": {
+      "p": 1.0,
+      "outcome": 1.0,
+      "brier": 0.0,
+      "lead": "me",
+      "baseline_brier": 0.0
+     },
+     "TO": {
+      "p": 0.9046,
+      "outcome": 1.0,
+      "brier": 0.009101160000000007,
+      "lead": "tie",
+      "baseline_brier": 0.25
+     }
+    }
+   },
+   "by_day": {
+    "2026-10-26": {
+     "n": 9,
+     "brier": 0.23633990444444442,
+     "baseline_brier": 0.25
+    },
+    "2026-10-27": {
+     "n": 9,
+     "brier": 0.16925061333333333,
+     "baseline_brier": 0.4444444444444444
+    },
+    "2026-10-28": {
+     "n": 9,
+     "brier": 0.17099578555555556,
+     "baseline_brier": 0.4444444444444444
+    },
+    "2026-10-29": {
+     "n": 9,
+     "brier": 0.15628939333333333,
+     "baseline_brier": 0.3333333333333333
+    },
+    "2026-10-30": {
+     "n": 9,
+     "brier": 0.1759010066666667,
+     "baseline_brier": 0.3333333333333333
+    },
+    "2026-10-31": {
+     "n": 9,
+     "brier": 0.04034191333333334,
+     "baseline_brier": 0.1111111111111111
+    },
+    "2026-11-01": {
+     "n": 9,
+     "brier": 0.06650795222222222,
+     "baseline_brier": 0.1388888888888889
+    }
+   },
+   "by_cat": {
+    "FG%": {
+     "n": 7,
+     "brier": 0.3365928442857143,
+     "baseline_brier": 0.8928571428571429,
+     "outcome": 1.0
+    },
+    "FT%": {
+     "n": 7,
+     "brier": 0.44651609,
+     "baseline_brier": 0.6071428571428571,
+     "outcome": 0.0
+    },
+    "3PTM": {
+     "n": 7,
+     "brier": 0.05253267857142858,
+     "baseline_brier": 0.03571428571428571,
+     "outcome": 1.0
+    },
+    "PTS": {
+     "n": 7,
+     "brier": 0.12021473285714282,
+     "baseline_brier": 0.03571428571428571,
+     "outcome": 1.0
+    },
+    "REB": {
+     "n": 7,
+     "brier": 0.09701799142857141,
+     "baseline_brier": 0.03571428571428571,
+     "outcome": 1.0
+    },
+    "AST": {
+     "n": 7,
+     "brier": 0.010326589999999998,
+     "baseline_brier": 0.32142857142857145,
+     "outcome": 0.0
+    },
+    "ST": {
+     "n": 7,
+     "brier": 0.1341651642857143,
+     "baseline_brier": 0.03571428571428571,
+     "outcome": 1.0
+    },
+    "BLK": {
+     "n": 7,
+     "brier": 0.003667874285714288,
+     "baseline_brier": 0.03571428571428571,
+     "outcome": 1.0
+    },
+    "TO": {
+     "n": 7,
+     "brier": 0.10477162285714285,
+     "baseline_brier": 0.6428571428571429,
+     "outcome": 1.0
+    }
+   },
+   "reliability": [
+    {
+     "bin": "0.0-0.2",
+     "n": 8,
+     "mean_p": 0.078825,
+     "hit_rate": 0.125
+    },
+    {
+     "bin": "0.2-0.4",
+     "n": 5,
+     "mean_p": 0.27281999999999995,
+     "hit_rate": 0.6
+    },
+    {
+     "bin": "0.4-0.6",
+     "n": 12,
+     "mean_p": 0.5202,
+     "hit_rate": 1.0
+    },
+    {
+     "bin": "0.6-0.8",
+     "n": 14,
+     "mean_p": 0.7286142857142858,
+     "hit_rate": 0.7857142857142857
+    },
+    {
+     "bin": "0.8-1.0",
+     "n": 24,
+     "mean_p": 0.9337374999999999,
+     "hit_rate": 0.9166666666666666
+    }
+   ],
+   "n_forecasts": 63,
+   "brier": 0.14508950984126984,
+   "baseline_brier": 0.29365079365079366,
+   "days_scored": [
+    "2026-10-26",
+    "2026-10-27",
+    "2026-10-28",
+    "2026-10-29",
+    "2026-10-30",
+    "2026-10-31",
+    "2026-11-01"
+   ],
+   "days_missing": [],
+   "method": {
+    "outcome": "won 1, tied 0.5, lost 0",
+    "brier": "(p - outcome)^2; 0 perfect, 0.25 a coin flip",
+    "baseline": "the lead to date as a forecast: 1 led, 0 behind, 0.5 level",
+    "skill": "baseline Brier - card Brier",
+    "bins": "five bins of width 0.2 over every morning x category forecast",
+    "note": "the weekly ledger (weekly_preview.py) scores the pre-week prediction and counts a tie as a loss, its 2026-10-15 rule; this record scores the daily card"
+   },
+   "skill": 0.14856128380952383,
+   "inputs": {
+    "week_file": "a641f6fa4035",
+    "cards": {
+     "week_matchup_2026-10-26.json": "88985b66d785",
+     "week_matchup_2026-10-27.json": "a08a22a06226",
+     "week_matchup_2026-10-28.json": "f906e1d26c9a",
+     "week_matchup_2026-10-29.json": "713f8486700d",
+     "week_matchup_2026-10-30.json": "57a493f918da",
+     "week_matchup_2026-10-31.json": "185688d36d69",
+     "week_matchup_2026-11-01.json": "3ee2970a4804"
+    }
+   },
+   "scored_at": "2026-11-02T13:26:52Z"
   }
  }
 }
