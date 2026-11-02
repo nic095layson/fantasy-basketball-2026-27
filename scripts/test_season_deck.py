@@ -1515,3 +1515,77 @@ class PhasePaths(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+def accuracy_record():
+    """Two graded weeks in accuracy_week.py's shape (accuracy.json on season/daily, 2026-11-02): week 1 has no
+    minutes snapshot; week 2 has all three line columns."""
+    cat = lambda bias, mae, rc: dict(proj=13.0, actual=11.9, bias_pct=bias, mae=mae, rank_corr=rc)
+    line = lambda n, bias, mae, rc: dict(players=n, cats=dict(pts=cat(bias, mae, rc), reb=cat(5.0, 1.4, 0.70)),
+                                         pct=dict(fg_pct=dict(proj=0.476, actual=0.461, attempts=7224)))
+    av = lambda s, p, g: dict(assumed=s, played=p, team_games=g, share=(p / g) if g else 0.0)
+    owner = lambda pw, won, brier, base: dict(p_win=pw, exp_cats=4.9, score=dict(won=won, cats_won=len(won)),
+                                              daily=dict(n_forecasts=36, brier=brier, baseline_brier=base))
+    return dict(weeks={
+        "1": dict(week=1, days=["2026-10-20"], method=dict(min_games=2, frozen="players_v69.csv"),
+                  lines=dict(preseason=line(261, 13.0, 3.50, 0.77), in_season=None),
+                  availability={"0.88": av(0.88, 670, 809), "0.75": av(0.75, 55, 96)},
+                  owner=owner(0.606, ["FG%", "FT%", "TO"], 0.034, 0.174),
+                  matchups=dict(n=0), matchups_real=dict(n=0)),
+        "2": dict(week=2, days=["2026-10-26"], method=dict(min_games=2, frozen="players_v69.csv"),
+                  lines=dict(preseason=line(252, 10.6, 3.60, 0.77), in_season=line(252, 8.7, 3.46, 0.79),
+                             candidate_minutes=line(252, 7.6, 3.34, 0.81)),
+                  availability={"0.88": av(0.88, 727, 918), "0.75": av(0.75, 59, 111)},
+                  owner=owner(0.576, ["3PTM", "BLK", "FG%", "PTS", "REB", "ST", "TO"], 0.145, 0.294),
+                  matchups=dict(n=0), matchups_real=dict(n=0))})
+
+
+class AccuracyCard(unittest.TestCase):
+    """Owner 2026-10-27 ("After week 2 grades"), built 2026-11-02: the Week tab shows the weekly accuracy card from
+    report/accuracy.json (lines bias / MAE / rank, availability by tier, the forecasts) beside the daily-card
+    scorecard. Read-only from the record; nothing on the deck computes accuracy."""
+    def setUp(self):
+        self.d = tempfile.mkdtemp(); self.fx = fixtures(self.d)
+
+    def page(self, record):
+        if record is not None:
+            self.fx["accuracy"] = os.path.join(self.d, "accuracy.json")
+            with open(self.fx["accuracy"], "w") as f:
+                json.dump(record, f)
+        html, data, rec = SD.build(self.fx, date="2026-10-21")
+        p = os.path.join(self.d, "deck.html")
+        with open(p, "w", encoding="utf-8") as f:
+            f.write(html)
+        return p, rec
+
+    def test_default_paths_name_the_record_and_an_absent_one_builds_with_a_pending_line(self):
+        self.assertTrue(SD.default_paths("2026-11-02")["accuracy"].endswith(os.path.join("report", "accuracy.json")))
+        p, rec = self.page(None)
+        self.assertEqual(DRC.check(p)["status"], "PASS")
+        dom = week_dom(p)
+        self.assertEqual(dom["errors"], [])
+        self.assertIn("Forecast accuracy", dom["text"]); self.assertIn("No week graded yet", dom["text"])
+        self.assertNotIn("MAE", dom["text"])
+
+    def test_two_graded_weeks_render_lines_availability_and_forecasts(self):
+        p, rec = self.page(accuracy_record())
+        self.assertEqual(DRC.check(p)["status"], "PASS")
+        dom = week_dom(p)
+        self.assertEqual(dom["errors"], [])
+        t = dom["text"]
+        # lines: the three columns, week 1's missing snapshot named, bias and MAE as the markdown card prints them
+        for s in ("Forecast accuracy", "MAE", "preseason", "in-season", "minutes candidate", "no snapshot",
+                  "13.0%", "3.50", "0.77", "7.6%", "3.34", "0.81"):
+            self.assertIn(s, t)
+        # availability by tier: assumed vs played share
+        self.assertIn("0.88", t); self.assertIn("0.79", t); self.assertIn("727 / 918", t)
+        # forecasts: P(win), result, daily Brier vs the lead-only baseline
+        self.assertIn("0.606", t); self.assertIn("3 cats", t); self.assertIn("0.145", t); self.assertIn("0.294", t)
+        # the switch rules are named, not decided, on the page
+        self.assertIn("D-ML-1", t); self.assertIn("D-RG-1", t)
+        self.assertEqual(dom["page_overflow"], 0)
+
+    def test_record_pins_the_accuracy_input(self):
+        p, rec = self.page(accuracy_record())
+        self.assertIn("accuracy", rec["inputs"]); self.assertTrue(rec["inputs"]["accuracy"]["present"])
+        self.assertEqual(len(rec["inputs"]["accuracy"]["sha256"]), 64)
