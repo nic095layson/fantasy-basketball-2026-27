@@ -1,0 +1,76 @@
+{
+ "attack": "A-10 IL-return scenario known answers",
+ "date": "2026-10-31",
+ "inputs": {
+  "state": "2026-10-31",
+  "espn": "../wtsd/data/status/espn_injuries_2026-10-31.json",
+  "pool": "/home/user/wtsd/data/season/pool_season.csv",
+  "seasons": 10000,
+  "seeds": [
+   2026,
+   2027
+  ]
+ },
+ "fingerprint": {
+  "deck_head": "95ebade",
+  "deck_checkout": "aa470f8",
+  "note": "league_sim.py is not in ENGINE_FILES (hoops.py, arena.py); its window change lives at deck aa470f8"
+ },
+ "checks": {
+  "never_equals_brief_headline": {
+   "ok": true,
+   "never": {
+    "2026": 14.25,
+    "2027": 14.3
+   },
+   "brief": {
+    "2026": 14.25,
+    "2027": 14.3
+   }
+  },
+  "week1_no_room_equals_include_il": {
+   "ok": true,
+   "a": {
+    "2026": 42.37,
+    "2027": 41.98
+   },
+   "b": {
+    "2026": 42.37,
+    "2027": 41.98
+   },
+   "note": "exact: identical windows give identical models and draws"
+  },
+  "after_last_week_equals_headline": {
+   "ok": true,
+   "a": {
+    "2026": 14.25,
+    "2027": 14.3
+   },
+   "b": {
+    "2026": 14.25,
+    "2027": 14.3
+   }
+  },
+  "seat10_monotonic_within_error": {
+   "ok": true,
+   "values": [
+    29.88,
+    29.86,
+    29.57,
+    14.28
+   ],
+   "error": 0.48
+  },
+  "two_seeds_spread": {
+   "never": 0.05,
+   "on_time": 0.78,
+   "late_2": 0.25,
+   "late_4": 0.28,
+   "seat10_only_on_time": 0.23,
+   "check_week1_no_room": 0.39,
+   "check_include_il": 0.39,
+   "check_after_last_week": 0.05
+  }
+ },
+ "verdict": "PASS"
+}

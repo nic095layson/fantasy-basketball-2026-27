@@ -259,8 +259,18 @@ def stream_rows(fa, status, games, date, end, value=None):
 
 
 # ---------------------------------------------------------------- simulator bridge
-def sim_state(ros):
-    return {"teams": len(ros), "picks": [{"slot": s, "player": p["player"]} for s, r in sorted(ros.items()) for p in r]}
+def sim_state(ros, windows=None):
+    """The simulator's state. windows (owner 2026-10-31, the IL-return scenarios): {seat: {player: (from_week, to_week)}};
+    a pick in it carries the window and counts only inside it. None, the state as before, byte for byte."""
+    picks = []
+    for s, r in sorted(ros.items()):
+        for p in r:
+            pk = {"slot": s, "player": p["player"]}
+            w = (windows or {}).get(s, {}).get(p["player"])
+            if w:
+                pk["from_week"], pk["to_week"] = int(w[0]), int(w[1])
+            picks.append(pk)
+    return {"teams": len(ros), "picks": picks}
 
 
 def sim_pool_names(path=None):
@@ -270,7 +280,7 @@ def sim_pool_names(path=None):
         return {r["player"] for r in csv.DictReader(f)}
 
 
-def run_league_sim(ros, seed, seasons, workdir, tag="cur"):
+def run_league_sim(ros, seed, seasons, workdir, tag="cur", windows=None):
     # 2026-10-21 (owner option (b), data/pool_additions.csv): a rostered pickup the simulator's frozen pool lacks is left
     # out of the simulation, as an IL player is (D-IS-8), and named in the record's absent_from_sim
     # 2026-10-26 (owner, "use the season pool"): with SEASON_POOL set the simulator plays that pool (league_sim --pool),
@@ -281,7 +291,7 @@ def run_league_sim(ros, seed, seasons, workdir, tag="cur"):
     ros = {s: [p for p in r if p["player"] in known] for s, r in ros.items()}
     sp = os.path.join(workdir, f"_state_{tag}_{seed}.json")
     op = os.path.join(workdir, f"_sim_{tag}_{seed}.json")
-    json.dump(sim_state(ros), open(sp, "w", encoding="utf-8"), ensure_ascii=False)
+    json.dump(sim_state(ros, windows), open(sp, "w", encoding="utf-8"), ensure_ascii=False)
     subprocess.run([sys.executable, os.path.join(DECK, "arena", "mocks", "league_sim.py"), sp, LINES_TAG,
                     str(seasons), str(seed), op, "--schedule", SCHEDULE, "--season-cv"] + (["--pool", pool] if pool else []),
                    check=True, capture_output=True)

@@ -413,6 +413,11 @@ function bandLine(){ if(!D.bands.length) return "no FRAGILE constant — engine 
 // owner 2026-10-26 (item 10, "concise and precise"): a short visible note; the full definition it replaces stays on
 // the page as the hover title of a trailing ⓘ (long-press on a phone)
 function more(full){ return full? h("span",{class:"more",title:full,tabindex:"0","aria-label":full}," ⓘ") : null; }
+// owner 2026-10-31: the IL-return scenario range under the title tile, faded like a projection; never in the tile
+function ilReturn(r){ if(!r||!r.scenarios) return null; const S=r.scenarios; const row=(k,l)=>S[k]?h("tr",{class:"proj"},h("td",{},l),h("td",{class:"num"},f1(S[k].title)+"%"),h("td",{class:"num"},f1(S[k].playoffs)+"%")):null;
+  return h("div",{class:"tablebox"},h("table",{class:"wk"},h("tr",{},h("th",{class:"projh"},"if IL players return (ESPN dates of "+r.espn_date+", all teams, "+r.n_il+" players)"),h("th",{class:"num projh"},"title"),h("th",{class:"num projh"},"playoffs")),
+    row("on_time","on ESPN's date"),row("late_2","2 weeks late"),row("late_4","4 weeks late"),row("never","never (the headline)")),
+    h("p",{class:"note"},"Scenario range, not a forecast: ± "+r.error+" each; returns are uncertain and the headline counts the current roster. Room rule: "+r.room_rule+".")); }
 function noteMore(text, full, cls){ return h("p",{class:"note"+(cls?" "+cls:"")},text,more(full)); }
 function day(d){ try{ return new Date(d+"T00:00:00Z").toLocaleDateString("en-US",{month:"short",day:"numeric",timeZone:"UTC"}); }catch(e){ return d; } }
 function T(t){ if(t===D.my_team) return t+" (you)"; const m=(D.league.managers||{})[t]; return m? t+" ("+m+")" : t; }
@@ -619,7 +624,7 @@ function matchupBoard(){ const W=D.week_matchup, B=W&&W.board; if(!B) return nul
   p.append(weekCard());
   p.append(
     h("div",{class:"cols"},
-      h("div",{class:"card span2"},h("h2",{},"Odds"),tiles,noteMore("Model bands: "+(D.bands||[]).map(b=>b.name.split(".").pop()+" "+b.variants.map(v=>v.shift).join("/")).join(" · ")+" title pts",
+      h("div",{class:"card span2"},h("h2",{},"Odds"),tiles,ilReturn(b.il_return),noteMore("Model bands: "+(D.bands||[]).map(b=>b.name.split(".").pop()+" "+b.variants.map(v=>v.shift).join("/")).join(" · ")+" title pts",
         "Structural band ("+D.band_config+"): "+bandLine())),
       h("div",{class:"card"},h("h2",{},"Lineup"),h("div",{class:"tablebox"},h("table",{},
         b.lineup.map(([slot,name])=>h("tr",{},h("td",{},h("span",{class:"chip"},slot)),h("td",{},name))))),
