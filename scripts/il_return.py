@@ -136,6 +136,9 @@ def run_scenarios(state, by, il, weeks, seasons, work, room=True, checks=False, 
         out[name]["windows"] = {str(k): {p: list(v) for p, v in d.items()} for k, d in sorted(win.items())}
     win = windows_for(il, 0, ros_all, weeks, room=room, seats=[CG.OWNER_SEAT])
     out["seat10_only_on_time"] = odds({s: CG.run_league_sim(ros_all, s, seasons, work, tag="s10", windows=win) for s in SEEDS})
+    # owner 2026-11-02 (runner finding 3): the room rule's band, measured on today's inputs so the section can quote it
+    win = windows_for(il, 0, ros_all, weeks, room=not room)
+    out["on_time_rule_flipped"] = odds({s: CG.run_league_sim(ros_all, s, seasons, work, tag="rf", windows=win) for s in SEEDS})
     if checks:
         # known answers: every IL player back in week 1 with the room rule off = include_il (within sampling error);
         # every IL player back after the last week = the headline exactly
@@ -151,6 +154,21 @@ def run_scenarios(state, by, il, weeks, seasons, work, room=True, checks=False, 
     return out
 
 
+def room_band(sc, room=True):
+    """The room rule's structural band on the on-time title: the figure with the rule flipped minus the figure as run,
+    tiered by the kit's thresholds (1 / 2 title points: ROBUST / SENSITIVE / FRAGILE)."""
+    if "on_time_rule_flipped" not in sc:
+        return None
+    shift = round(sc["on_time_rule_flipped"]["title"] - sc["on_time"]["title"], 1)
+    tier = "FRAGILE" if abs(shift) >= 2 else "SENSITIVE" if abs(shift) >= 1 else "ROBUST"
+    return dict(constant="il_return.ROOM_RULE_ON", shift=shift, label="rule off" if room else "rule on", tier=tier)
+
+
+def slip_range(sc):
+    vals = [sc[k]["title"] for k in SLIPS if k in sc]
+    return (round(min(vals), 1), round(max(vals), 1)) if vals else None
+
+
 def blend(sc, weights=BLEND_WEIGHTS):
     return round(sum(weights[k] * sc[k]["title"] for k in weights), 2)
 
@@ -159,10 +177,15 @@ def lines(rec):
     """The brief's section, after "Title odds"."""
     sc, e = rec["scenarios"], rec["error"]
     il = rec["il_players"]
+    lo, hi = slip_range(sc)
+    band = rec.get("room_band") or room_band(sc)
+    # owner 2026-11-02 (runner finding 3; council): one range line, since the three slip rows sit within one error bar
+    # of each other, and the room rule's band beside it, the two error bars the red-team rule asks for
     L = [f"**If IL players return** (scenario range, not a forecast; ESPN dates of {rec['espn_date']}, all 12 teams, {rec['n_il']} IL players): "
-         f"on time {sc['on_time']['title']:.1f}% · +2 wk {sc['late_2']['title']:.1f}% · +4 wk {sc['late_4']['title']:.1f}% · "
-         f"never = headline {sc['never']['title']:.1f}%. Error ± {e} each (2 runs × {rec['seasons']:,} seasons). "
-         f"Returns are uncertain; the headline counts the current roster. Room rule: {rec['room_rule']}."]
+         f"if they return ≈{(lo + hi) / 2:.0f}% ({lo:.1f} to {hi:.1f} across on time / +2 wk / +4 wk) · never = headline {sc['never']['title']:.1f}%. "
+         f"Error ± {e} each (2 runs × {rec['seasons']:,} seasons). Returns are uncertain; the headline counts the current roster. "
+         f"Room rule ({rec['room_rule']}): "
+         + (f"**ROOM_RULE_ON is {band['tier']}: {band['shift']:+.1f} ({band['label']})**." if band else "band not measured this run.")]
     by_seat = {}
     for x in il:
         by_seat.setdefault(x["seat"], []).append(x)
@@ -199,6 +222,7 @@ def main(argv=None):
                room_rule=ROOM_RULE if not a.no_room else "off (returning players join a larger active roster)",
                slips=SLIPS, n_il=len(il), il_players=il, scenarios=sc, error=err(sc["never"]["title"], a.seasons),
                blend=dict(weights=BLEND_WEIGHTS, title=blend(sc), status="UNCALIBRATED; not shown in the brief"),
+               room_band=room_band(sc, room=not a.no_room), slip_range=slip_range(sc),
                label="scenario range, not a forecast; never replaces or averages into the headline")
     rec["lines"] = lines(rec)
     os.makedirs(a.out, exist_ok=True)

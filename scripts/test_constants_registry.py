@@ -20,8 +20,30 @@ def reg(*entries):
 
 
 GOOD = {"module": "arena", "name": "TEAM_WEEK_SHOCK", "value": 0.06, "role": "shock",
-        "status": "declared_band", "record": "rt_sensitivity.json shock 0/0.12", "decision": "D-PM-1"}
+        "status": "declared_band", "record": "rt_sensitivity.json shock 0/0.12", "decision": "D-PM-1",
+        "band": [{"label": "no shock", "TEAM_WEEK_SHOCK": 0.0}, {"label": "doubled", "TEAM_WEEK_SHOCK": 0.12}]}
 LIVE = {("arena", "TEAM_WEEK_SHOCK"): 0.06}
+
+
+class DeclaredBand(unittest.TestCase):
+    """Runner finding 1 (2026-11-02): two declared_band entries without a band passed this checker and crashed the
+    Monday sweep. The checker now asks for the band, and the live registry must load through the sweep's own reader."""
+
+    def test_declared_band_without_band_fails_the_checker(self):
+        reg = {"constants": [dict(module="m", name="X", value=1, role="r", status="declared_band", record="rec")]}
+        ok, problems = C.check(reg, {("m", "X"): 1})
+        self.assertFalse(ok); self.assertTrue(any("needs a band" in p for p in problems), problems)
+        reg["constants"][0]["band"] = [{"label": "doubled", "X": 2}]
+        ok, problems = C.check(reg, {("m", "X"): 1})
+        self.assertTrue(ok, problems)
+
+    def test_the_live_registry_loads_through_the_sweeps_reader(self):
+        import sweep as S
+        reg = C.load_registry()
+        variants = S.variants_from_registry(reg)
+        self.assertTrue(variants)
+        bands = {e["name"] for e in reg["constants"] if e["status"] == "declared_band"}
+        self.assertEqual(bands, {v["constant"].split(".")[1] for v in variants})
 
 
 class Drift(unittest.TestCase):
@@ -50,7 +72,7 @@ class Drift(unittest.TestCase):
 
     def test_dict_values_compare_by_content(self):
         cv = {"module": "arena", "name": "CV", "value": {"PTS": 0.30, "REB": 0.35}, "role": "cv",
-              "status": "declared_band", "record": "r", "decision": "d"}
+              "status": "declared_band", "record": "r", "decision": "d", "band": [{"label": "x", "CV": {"PTS": 0.3}}]}
         live = {("arena", "CV"): {"REB": 0.35, "PTS": 0.30}}
         self.assertTrue(C.check(reg(cv), live)[0])
         self.assertFalse(C.check(reg(cv), {("arena", "CV"): {"REB": 0.35, "PTS": 0.31}})[0])

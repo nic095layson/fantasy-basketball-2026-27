@@ -122,6 +122,11 @@ def check(registry, live):
             problems.append(f"{label}: status {e.get('status')!r} is not one of {', '.join(STATUSES)}")
         elif not (e.get("record") or "").strip():
             problems.append(f"{label}: status {e['status']} needs a record path or note")
+        # 2026-11-02 (runner finding 1): the sweep raises on a declared_band entry without a band, so the checker that
+        # runs at merge time asks for the same thing the Monday sweep will
+        if e.get("status") == "declared_band" and not (isinstance(e.get("band"), list) and e["band"]
+                                                        and all(isinstance(b, dict) and b.get("label") for b in e["band"])):
+            problems.append(f"{label}: declared_band needs a band (a list of labelled variants the sweep can patch)")
         if e.get("status") == "uncalibrated" and not (e.get("decision") or "").strip():
             problems.append(f"{label}: uncalibrated needs a decision id (where the calibration is decided)")
         if not (e.get("role") or "").strip():

@@ -142,5 +142,35 @@ class RealWeekOne(unittest.TestCase):
         self.assertAlmostEqual(g["cats"]["pts"]["actual"], 11.95, places=2)
 
 
+
+class RenderSafety(unittest.TestCase):
+    """Runner finding 2 (2026-11-02): render() indexed candidate_minutes on week 1's row, which predates that key, after
+    the file had been opened for writing; accuracy.md was committed at 0 bytes. The md is rendered to a string first,
+    a week without a snapshot column reads "no snapshot", and --render regenerates the md from the record."""
+
+    def _rec(self):
+        wk = lambda cm: dict(lines=dict(preseason=dict(players=5, cats=dict(pts=dict(proj=10.0, actual=11.0, bias_pct=10.0, mae=1.0, rank_corr=0.9))),
+                                        in_season=dict(cats=dict(pts=dict(proj=10.5, actual=11.0, bias_pct=5.0, mae=0.8, rank_corr=0.9))),
+                                        **({"candidate_minutes": dict(cats=dict(pts=dict(proj=10.2, actual=11.0, bias_pct=7.0, mae=0.9, rank_corr=0.9)))} if cm else {})),
+                             availability={}, owner=dict(p_win=0.6, exp_cats=5.0, score={}, daily=None), matchups={}, matchups_real={}, days=[], week=1)
+        return {"weeks": {"1": wk(False), "2": wk(True)}}
+
+    def test_a_week_without_a_snapshot_column_renders_no_snapshot(self):
+        text = AW.render(self._rec())
+        self.assertIn("no snapshot", text); self.assertIn("| 2 | 5 |", text)
+
+    def test_the_md_is_written_only_after_a_successful_render(self):
+        import tempfile, json as _json
+        d = tempfile.mkdtemp(); out = os.path.join(d, "accuracy.json")
+        _json.dump(self._rec(), open(out, "w"))
+        text = AW.write_md(out)
+        self.assertEqual(open(out[:-5] + ".md").read(), text); self.assertGreater(len(text), 100)
+        open(out[:-5] + ".md", "w").write("keep me")
+        _json.dump({"weeks": {"1": {"lines": None}}}, open(out, "w"))
+        with self.assertRaises((TypeError, AttributeError, KeyError)):
+            AW.write_md(out)
+        self.assertEqual(open(out[:-5] + ".md").read(), "keep me")  # a failed render leaves the file as it was
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
