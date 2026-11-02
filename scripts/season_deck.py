@@ -62,6 +62,9 @@ def default_paths(date, phase="am"):
                 form=os.path.join(KIT, "report", "form", f"form_{date}.json"),
                 # optional (owner 2026-10-24): the morning card's P(win) scored against each finished week (score_week.py)
                 scores=os.path.join(KIT, "report", "calibration_daily.json"),
+                # optional (owner 2026-10-27 "after week 2 grades", built 2026-11-02): the weekly accuracy card's record
+                # (accuracy_week.py; lines bias / MAE / rank, availability by tier, the forecasts), read-only here
+                accuracy=os.path.join(KIT, "report", "accuracy.json"),
                 # optional (owner 2026-10-28, item 4): the day's two status pins the brief's waiver gate reads
                 yahoo_pull=os.path.join(KIT, "data", "source", "flaim", f"pull_{date}{sfx}.json"),
                 espn_injuries=os.path.join(KIT, "data", "status", f"espn_injuries_{date}{sfx}.json"))
@@ -152,6 +155,7 @@ def build(paths, date, phase=None):
     opt = lambda k: (json.load(open(paths[k], encoding="utf-8"))
                      if paths.get(k) and os.path.exists(paths[k]) else None)
     matchup_live = opt("matchup_live"); week_matchup = opt("week_matchup"); league_rec = opt("league"); form_rec = opt("form"); scores = opt("scores")
+    accuracy = opt("accuracy")
     for k in ("date", "opponent", "title", "lineup"):
         if k not in brief: raise DeckError(f"brief lacks {k}")
     if brief["date"] != date: raise DeckError(f"brief is for {brief['date']}, not {date}")
@@ -209,7 +213,7 @@ def build(paths, date, phase=None):
                 league=dict(as_of=league["as_of"], rosters=rosters, managers={t["name"]: t.get("manager") for t in league["teams"]},
                             unpooled=league.get("unpooled") or [], my_positions=my_positions), season_lines=lines, matchup=wk,
                 ledger={k: dict(v, result_text=ledger_result(v)) for k, v in calib.get("weeks", {}).items()}, bands=bands, band_engine=band_engine, band_config=band_config, matchup_live=matchup_live,
-                week_matchup=week_matchup, league_table=league_rec, form=form_rec, scores=scores, fa_status=fa_status,
+                week_matchup=week_matchup, league_table=league_rec, form=form_rec, scores=scores, accuracy=accuracy, fa_status=fa_status,
                 # owner 2026-10-28 ("Rebuild, flag morning parts"): the 3 PM run's rebuild says which parts are the 5 AM run's
                 **({"refresh": {"phase": phase, "not_on_board": not_on_board}} if phase == "pm" else {}),
                 config=dict(cats=["FG%", "FT%", "3PM", "PTS", "REB", "AST", "STL", "BLK", "TOV"],
@@ -931,6 +935,35 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
     card.append(noteMore("Reliability: hit rate vs stated chance, all scored weeks", "Reliability, all scored weeks — a calibrated card has hit rate ≈ stated P in every bin."),
       h("div",{class:"tablebox"},h("table",{class:"lg"},h("tr",{},h("th",{},"stated P"),h("th",{class:"num"},"forecasts"),h("th",{class:"num"},"mean P"),h("th",{class:"num"},"hit rate")),
         ["0.0-0.2","0.2-0.4","0.4-0.6","0.6-0.8","0.8-1.0"].map(b=>{ const a=agg[b]||{n:0}; return h("tr",{},h("td",{},b),h("td",{class:"num"},String(a.n)),h("td",{class:"num"},a.n?(a.p/a.n).toFixed(2):"–"),h("td",{class:"num"},a.n?(a.h/a.n).toFixed(2):"–")); }))));
+    p.append(card); })();
+  // owner 2026-10-27 ("after week 2 grades"), built 2026-11-02: the weekly accuracy card, read from accuracy.json
+  // (accuracy_week.py's record: one row per graded week, never rewritten). Nothing here computes; it renders.
+  (function(){ const A=D.accuracy, wks=A? Object.values(A.weeks||{}).sort((a,z)=>a.week-z.week) : [];
+    const f2=(x)=>x==null?"–":x.toFixed(2), f3=(x)=>x==null?"–":x.toFixed(3), pc=(x)=>x==null?"–":x.toFixed(1)+"%";
+    const card=h("div",{class:"card"},h("h2",{},"Forecast accuracy — week by week"),
+      noteMore("Each finished week graded against the box scores and the finals (accuracy_week.py); players with 2+ games.",
+        "Lines: projected vs actual points per game over the week's players with 2+ games — bias (projected over actual, %), MAE (mean absolute error per game) and rank correlation, for the preseason line, the in-season blend and the minutes-trend candidate. Availability: the share of team games each status tier's players actually played, beside what the simulator assumes. Forecasts: the pre-week P(win) and result, and the morning card's Brier against the lead-only guess."));
+    if(!wks.length){ card.append(h("div",{class:"zero"},"No week graded yet — the card fills at Monday's intake.")); p.append(card); return; }
+    const cols=[["preseason","preseason"],["in_season","in-season"],["candidate_minutes","minutes candidate"]];
+    const L=(w,k)=>{ const l=(w.lines||{})[k]; return l&&l.cats&&l.cats.pts? l.cats.pts : null; };
+    const lt=h("table",{class:"lg"},h("tr",{},h("th",{class:"num"},"wk"),h("th",{class:"num"},"players"),
+      ...cols.map(c=>[h("th",{},c[1]),h("th",{class:"num"},"bias"),h("th",{class:"num"},"MAE"),h("th",{class:"num"},"rank")]).flat()));
+    wks.forEach(w=>{ const n=((w.lines||{}).preseason||{}).players;
+      lt.append(h("tr",{},h("td",{class:"num wk"},String(w.week)),h("td",{class:"num"},n==null?"–":String(n)),
+        ...cols.map(c=>{ const x=L(w,c[0]); return x? [h("td",{},f2(x.proj)+" / "+f2(x.actual)),h("td",{class:"num"},pc(x.bias_pct)),h("td",{class:"num"},f2(x.mae)),h("td",{class:"num"},f2(x.rank_corr))]
+          : [h("td",{class:"muted"},"no snapshot"),h("td",{},""),h("td",{},""),h("td",{},"")]; }).flat())); });
+    card.append(h("h3",{},"Player lines: points per game (projected / actual)"),h("div",{class:"tablebox"},lt),
+      h("p",{class:"note"},"Switch rule D-ML-1 (pre-committed 2026-10-27): the minutes candidate replaces nothing until its MAE beats the in-season line's on PTS, REB and AST in 3 of 4 consecutive graded weeks, on the owner's word."));
+    const at=h("table",{class:"lg"},h("tr",{},h("th",{class:"num"},"wk"),h("th",{class:"num"},"tier"),h("th",{class:"num"},"assumed"),h("th",{},"played / team games"),h("th",{class:"num"},"share")));
+    wks.forEach(w=>Object.keys(w.availability||{}).sort((a,z)=>Number(z)-Number(a)).forEach(t=>{ const v=w.availability[t];
+      at.append(h("tr",{},h("td",{class:"num"},String(w.week)),h("td",{class:"num"},t),h("td",{class:"num"},f2(v.assumed)),h("td",{},v.played+" / "+v.team_games),h("td",{class:"num"+(v.share<v.assumed-0.05?" zneg":"")},f2(v.share)))); }));
+    card.append(h("h3",{},"Availability: share of team games played, by the tier the simulator assumes"),h("div",{class:"tablebox"},at));
+    const ft=h("table",{class:"lg"},h("tr",{},h("th",{class:"num"},"wk"),h("th",{class:"num"},"your P(win)"),h("th",{},"result"),h("th",{class:"num"},"daily card Brier"),h("th",{class:"num"},"lead-only Brier"),h("th",{class:"num"},"league matchups scored")));
+    wks.forEach(w=>{ const o=w.owner||{}, s=o.score||{}, d=o.daily||{}, m=w.matchups||{};
+      ft.append(h("tr",{},h("td",{class:"num"},String(w.week)),h("td",{class:"num"},f3(o.p_win)),h("td",{},s.cats_won==null?"–":s.cats_won+" cats"),
+        h("td",{class:"num"},f3(d.brier)),h("td",{class:"num"},f3(d.baseline_brier)),h("td",{class:"num"},String(m.n==null?"–":m.n)))); });
+    card.append(h("h3",{},"Forecasts"),h("div",{class:"tablebox"},ft),
+      h("p",{class:"note"},"Switch rule D-RG-1 (pre-committed 2026-10-27): the real-games forecast replaces the flat one only after a lower Brier over at least 4 consecutive graded weeks, on the owner's word."));
     p.append(card); })();
 })();
 
