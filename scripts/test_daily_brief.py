@@ -287,3 +287,26 @@ class Unpooled(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
+
+
+class WaiverNotes(unittest.TestCase):
+    """Owner pick 2026-11-03 (display only): the suffix on a scan pair or streaming line, and the record fields."""
+    INFO = {"read": True, "by": {"Julian Champagnie": {"waiver_date": "2026-11-04", "own_drop_date": "2026-11-03"},
+                                 "Kris Dunn": {"waiver_date": "2026-11-02", "own_drop_date": None},
+                                 "Bobby Portis": {"waiver_date": None, "own_drop_date": "2026-11-01"}}}
+
+    def test_the_suffix_reads_as_the_build_order_says(self):
+        self.assertEqual(DB.waiver_note("Julian Champagnie", self.INFO), "on waivers until 2026-11-04 · you dropped him 2026-11-03")
+        self.assertEqual(DB.waiver_note("Kris Dunn", self.INFO), "on waivers until 2026-11-02")
+        self.assertEqual(DB.waiver_note("Bobby Portis", self.INFO), "you dropped him 2026-11-01")
+        self.assertEqual(DB.waiver_note("Tobias Harris", self.INFO), "")
+        self.assertEqual(DB.waiver_note("Tobias Harris", None), "")
+
+    def test_the_record_gains_two_fields_and_nothing_else_moves(self):
+        rows = [{"add": "Julian Champagnie", "d_ecw": 0.03}, {"add": "Tobias Harris", "d_ecw": 0.02}]
+        before = [dict(r) for r in rows]
+        DB.annotate_waivers(rows, "add", self.INFO)
+        self.assertEqual(rows[0]["add_waiver_date"], "2026-11-04"); self.assertEqual(rows[0]["add_own_drop_date"], "2026-11-03")
+        self.assertIsNone(rows[1]["add_waiver_date"]); self.assertIsNone(rows[1]["add_own_drop_date"])
+        for r, b in zip(rows, before):
+            self.assertEqual({k: v for k, v in r.items() if not k.startswith("add_waiver") and k != "add_own_drop_date"}, b)

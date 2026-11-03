@@ -246,3 +246,53 @@ class EspnReturnDate(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
+
+
+class WaiverDate(unittest.TestCase):
+    """Owner pick 2026-11-03 (after-report-2026-11-03-waiver-readds.md, option 1, display only): Yahoo's waiver date
+    and a "you dropped him <date>" note beside each scan and streaming pick. The pin's names resolve through the kit's
+    Yahoo-to-pool resolver (league_intake), never a raw string: the pin spells him "Bobby Portis Jr."."""
+    PIN = [{"name": "Bobby Portis Jr.", "acquisitionState": "waivers", "waiverDate": "2026-11-03"},
+           {"name": "Kris Dunn", "acquisitionState": "waivers", "waiverDate": "2026-11-02"},
+           {"name": "Tobias Harris", "acquisitionState": "free_agent", "waiverDate": None, "status": "O"}]
+
+    def moves(self, day, seat10_dropped, other_dropped=()):
+        return {"date": day, "moves": [
+            dict(team="KEL'EL YAXEL HALQUETA", seat=10, added=[], dropped=list(seat10_dropped), to_il=[], from_il=[]),
+            dict(team="Podz save the league", seat=9, added=[], dropped=list(other_dropped), to_il=[], from_il=[])]}
+
+    def test_waivers_and_own_drop_through_the_name_resolver(self):
+        info = CG.waiver_info(P, self.PIN, {"2026-11-01": [self.moves("2026-11-01", ["Bobby Portis"], ["Kris Dunn"])]})
+        self.assertTrue(info["read"])
+        self.assertEqual(info["by"]["Bobby Portis"], {"waiver_date": "2026-11-03", "own_drop_date": "2026-11-01"})
+
+    def test_waivers_only_when_another_team_dropped_him(self):
+        info = CG.waiver_info(P, self.PIN, {"2026-11-01": [self.moves("2026-11-01", ["Bobby Portis"], ["Kris Dunn"])]})
+        self.assertEqual(info["by"]["Kris Dunn"], {"waiver_date": "2026-11-02", "own_drop_date": None})
+
+    def test_a_free_agent_and_a_player_off_the_list_get_nothing(self):
+        info = CG.waiver_info(P, self.PIN, {})
+        self.assertNotIn("Tobias Harris", info["by"])          # free agent: no waiver date
+        self.assertNotIn(top_healthy(1)[0], info["by"])          # missing from the 100-row list: unknown, not free
+
+    def test_no_pin_reads_no_waiver_date_and_never_crashes(self):
+        info = CG.waiver_info(P, None, {"2026-11-01": [self.moves("2026-11-01", ["Bobby Portis"])]})
+        self.assertFalse(info["read"])
+        # the own drop comes from the moves record, not the pin, so it still shows
+        self.assertEqual(info["by"]["Bobby Portis"], {"waiver_date": None, "own_drop_date": "2026-11-01"})
+
+    def test_the_window_keeps_three_days_and_names_the_missing_ones(self):
+        import json
+        import tempfile
+        import daily_brief as DB
+        d = tempfile.mkdtemp()
+        for day, dropped in (("2026-10-31", ["Bobby Portis"]), ("2026-11-02", ["Kris Dunn"])):
+            json.dump(self.moves(day, dropped), open(os.path.join(d, f"league_moves_{day}.json"), "w"))
+        json.dump(self.moves("2026-11-03", ["Tobias Harris"]), open(os.path.join(d, "league_moves_2026-11-03_pm.json"), "w"))
+        by_day, missing = DB.own_moves("2026-11-03", 3, news_dir=d)
+        self.assertEqual(sorted(by_day), ["2026-11-02", "2026-11-03"])   # 10-31 is outside today and the two before
+        self.assertEqual(missing, ["2026-11-01"])
+        info = CG.waiver_info(P, None, by_day)
+        self.assertNotIn("Bobby Portis", info["by"])                       # dropped outside the window
+        self.assertEqual(info["by"]["Tobias Harris"]["own_drop_date"], "2026-11-03")   # the afternoon record counts
+        self.assertEqual(CG.WAIVER_DROP_WINDOW, 3)                          # the owner's pick, 2026-11-03

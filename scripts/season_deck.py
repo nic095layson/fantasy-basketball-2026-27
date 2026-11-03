@@ -243,6 +243,21 @@ def build(paths, date, phase=None):
                              ep["rows"] if ep is not None else None, date=date)
         fa_status = dict(sources=st["sources"], by={n: {k: v[k] for k in ("code", "source", "return_date", "short_out")}
                                                      for n, v in st["by"].items()})
+    # owner pick 2026-11-03 (display only): the brief's waiver dates and own drops (waiver_notes, 5 AM run), keyed by
+    # the brief's spelling and by the board's ("Cameron Johnson" / "Cam Johnson"); a name the board cannot place keeps
+    # its own spelling, and a resolver clash never stops the build for a display note
+    wn = brief.get("waiver_notes")
+    waiver_notes = None
+    if wn is not None:
+        wby = dict(wn.get("by") or {})
+        try:
+            wmap = resolve_rostered(list(wby), board_names, board.get("held") or [], BP.load_aliases(), [])
+        except DeckError:
+            wmap = {}
+        for n, v in list(wby.items()):
+            if wmap.get(n) and wmap[n] != n:
+                wby[wmap[n]] = v
+        waiver_notes = dict(read=wn.get("read"), window_days=wn.get("window_days"), missing_days=wn.get("missing_days") or [], by=wby)
     rosters = {t["name"]: dict(seat=t["seat"], manager=t.get("manager"),
                                players=[rmap[p["player"]] for p in t["players"] if rmap[p["player"]] in on_board],
                                off_board=[rmap[p["player"]] for p in t["players"] if rmap[p["player"]] not in on_board],
@@ -270,7 +285,7 @@ def build(paths, date, phase=None):
                 league=dict(as_of=league["as_of"], rosters=rosters, managers={t["name"]: t.get("manager") for t in league["teams"]},
                             unpooled=league.get("unpooled") or [], my_positions=my_positions), season_lines=lines, matchup=wk,
                 ledger={k: dict(v, result_text=ledger_result(v)) for k, v in calib.get("weeks", {}).items()}, bands=bands, band_engine=band_engine, band_config=band_config, matchup_live=matchup_live,
-                week_matchup=week_matchup, league_table=league_rec, form=form_rec, scores=scores, accuracy=accuracy, fa_status=fa_status, out_today=out_now,
+                week_matchup=week_matchup, league_table=league_rec, form=form_rec, scores=scores, accuracy=accuracy, fa_status=fa_status, out_today=out_now, waiver_notes=waiver_notes,
                 # owner 2026-10-28 ("Rebuild, flag morning parts"): the 3 PM run's rebuild says which parts are the 5 AM run's
                 **({"refresh": {"phase": phase, "not_on_board": not_on_board}} if phase == "pm" else {}),
                 config=dict(cats=["FG%", "FT%", "3PM", "PTS", "REB", "AST", "STL", "BLK", "TOV"],
@@ -490,6 +505,10 @@ function ownChip(r){ return r.mine? h("span",{class:"chip mine"},"mine") : r.fa?
 function statusChip(letter){ if(!letter) return null; const cls=letter==="O"?"crit":(letter==="Q"?"warn":"ok"); return h("span",{class:"chip "+cls},letter); }
 
 const swk=(x,d)=>{ const r=Number(x.toFixed(d)); return (r>0?"+":r<0?"−":"")+Math.abs(r).toFixed(d); };  // a true minus; 0 unsigned
+// owner pick 2026-11-03 (display only): Yahoo's waiver date and the owner's own recent drop beside a free agent
+function waiverChip(name){ const N=D.waiver_notes, r=N&&N.by&&N.by[name]; if(!r||(!r.waiver_date&&!r.own_drop_date)) return null;
+  const t=[r.waiver_date?"on waivers until "+r.waiver_date:null, r.own_drop_date?"you dropped him "+r.own_drop_date:null].filter(Boolean).join(" · ");
+  return h("span",{class:"wvchip"}," · ",h("span",{class:"chip warn"},t)); }
 // ---- This week's adds (owner 2026-10-22, P1): free agents by the change in expected categories won this week ----
 function thisWeek(W){ const K=W.pickups, TW=K&&K.this_week; if(!TW) return null;
   if(TW.status!=="ran") return h("p",{class:"note"},"This week's adds: "+(TW.status==="no drop candidate"?"no lower-valued player to drop.":"no free agent to score."));
@@ -499,7 +518,7 @@ function thisWeek(W){ const K=W.pickups, TW=K&&K.this_week; if(!TW) return null;
       more("Each free agent from tomorrow in place of the lower-valued player whose drop helps most, by the change in expected categories won against "+W.opponent.name+" ("+TW.pool_size+" scored; best "+Math.min(8,TW.rows.length)+" shown).")),
     TW.rows.length? h("div",{class:"tablebox"},h("table",{},
       h("tr",{},h("th",{},"move"),h("th",{class:"num",title:"Δ cats = the change in expected categories won this week (the sum of the nine changes in each category's chance); categories moved = those changes, largest first; season = the change in expected weekly categories over the season against the other eleven teams, the cost or gain beyond this week. Chances are normal approximations on the projected finals, with the variation of each remaining game (season per-game CV); the league allows 4 adds a week."},"Δ cats",more("Δ cats = the change in expected categories won this week (the sum of the nine changes in each category's chance); categories moved = those changes, largest first; season = the change in expected weekly categories over the season against the other eleven teams, the cost or gain beyond this week. Chances are normal approximations on the projected finals, with the variation of each remaining game (season per-game CV); the league allows 4 adds a week.")),h("th",{class:"num"},"games"),h("th",{class:"num"},"drop's part"),h("th",{class:"num"},"season"),h("th",{},"categories moved")),
-      TW.rows.slice(0,8).map(r=>h("tr",{},h("td",{style:"white-space:normal;min-width:9em"},r.add+" ("+r.team+")"+(r.status?" · "+r.status:"")+(r.missed?" · sat out "+r.missed:""),
+      TW.rows.slice(0,8).map(r=>h("tr",{},h("td",{style:"white-space:normal;min-width:9em"},r.add+" ("+r.team+")"+(r.status?" · "+r.status:"")+(r.missed?" · sat out "+r.missed:""),waiverChip(r.add),
           h("div",{class:"note"},"for "+r.drop)),
         h("td",{class:"num"},swk(r.d_exp,2)),h("td",{class:"num"},String(r.games)),h("td",{class:"num"},swk(r.d_exp_drop,2)),
         h("td",{class:"num"},r.season_d_ecw==null?"—":swk(r.season_d_ecw,3)),h("td",{style:"white-space:normal;min-width:10em"},moved(r.d_cat)))))) : h("div",{class:"zero"},"No free agent has a playable game after today."),
@@ -828,7 +847,7 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
     const out=["O","NA","Out"].includes(s.code), cls=out?(s.short_out?"warn":"crit"):(s.code==="P"?"ok":"warn");
     // the return date only on an Out: ESPN dates a day-to-day player's return as today
     return h("span",{}," · ",h("span",{class:"chip "+cls},s.code+" ("+SRC[s.source]+")"+(out&&s.return_date?", back "+s.return_date.slice(0,10):""))); };
-  const wk=(r)=>{ const t=TWM[r.name]; return h("span",{},stat(r),t? h("span",{class:"note"}," · this week "+swk(t.d_exp,2)+" ("+t.games+" g, for "+t.drop+")") : null, mins(r)); };
+  const wk=(r)=>{ const t=TWM[r.name]; return h("span",{},stat(r),waiverChip(r.name),t? h("span",{class:"note"}," · this week "+swk(t.d_exp,2)+" ("+t.games+" g, for "+t.drop+")") : null, mins(r)); };
   function render(){ let pool=BOARD.filter(r=>r.fa && (!search || r.name.toLowerCase().includes(search.toLowerCase())))
       .sort((a,b)=>b.z_adj-a.z_adj);  // owner 2026-10-20: free agents by z, descending
     if(sortBy==="week") pool=pool.sort((a,b)=>{ const x=TWM[a.name], y=TWM[b.name];  // 2026-10-22: scored ones first, by this week
