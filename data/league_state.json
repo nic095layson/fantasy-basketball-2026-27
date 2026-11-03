@@ -4,14 +4,14 @@
   "flaim": {
    "transcript": "f7b74300-8501-5e41-b8c5-d2c75dd06ce4.jsonl",
    "method": "mechanical json extraction of Flaim (Yahoo) tool results from the session transcript",
-   "since": "2026-11-03T13:03:40Z",
-   "pull_file": "data/source/flaim/pull_2026-11-03.json",
-   "pull_sha256": "cb1a5c27d474f2461e26bd91075fe9deb30b9e1ab8aba3376bb9a3c7d346d1da",
+   "since": "2026-11-03T23:03:55Z",
+   "pull_file": "data/source/flaim/pull_2026-11-03_pm.json",
+   "pull_sha256": "ceffa9aa43d2b3bb0213f88e67e5ba3f09677e89bff8dc42fe7351105b1f0202",
    "view": "Flaim connector (Yahoo, read-only): get_roster per team (current), get_matchups, get_free_agents"
   },
   "transcription": {
-   "file": "data/source/flaim/rosters_2026-11-03.transcribed.csv",
-   "sha256": "03001f3eb8ade6678682e02a0d72afc2c38cf568434799a72ed9a3d8ca2efa9d",
+   "file": "data/source/flaim/rosters_2026-11-03_pm.transcribed.csv",
+   "sha256": "ffcb033bdde1bdf16ea784cb669f56cacf3aa4326ac3e9174dec6208eb548093",
    "method": "flaim_live.to_rows (mechanical; Yahoo slots and status letters for every team)"
   },
   "draft_board": "report/after-reports/draft-league-2026-10-14/recap.json",
@@ -180,7 +180,7 @@
       "SG",
       "SF"
      ],
-     "status": null
+     "status": "Q"
     },
     {
      "player": "Jrue Holiday",
@@ -352,7 +352,7 @@
       "PG",
       "SG"
      ],
-     "status": "O"
+     "status": null
     },
     {
      "player": "Jaylen Brown",
@@ -532,7 +532,7 @@
      "positions": [
       "PG"
      ],
-     "status": null
+     "status": "Q"
     },
     {
      "player": "Scoot Henderson",
@@ -856,7 +856,7 @@
       "SG",
       "SF"
      ],
-     "status": null
+     "status": "P"
     },
     {
      "player": "Toumani Camara",
@@ -1247,7 +1247,7 @@
       "SG",
       "SF"
      ],
-     "status": "O"
+     "status": null
     },
     {
      "player": "Peyton Watson",
@@ -1259,7 +1259,7 @@
       "SF",
       "PF"
      ],
-     "status": "Q"
+     "status": "O"
     },
     {
      "player": "Austin Reaves",
@@ -1354,7 +1354,7 @@
       "PG",
       "SG"
      ],
-     "status": null
+     "status": "P"
     },
     {
      "player": "Egor Demin",
@@ -1631,7 +1631,7 @@
       "SF",
       "PF"
      ],
-     "status": "P"
+     "status": null
     },
     {
      "player": "AJ Dybantsa",
@@ -2092,7 +2092,7 @@
       "PG",
       "SG"
      ],
-     "status": "Q"
+     "status": null
     },
     {
      "player": "Karlo Matkovic",
@@ -2209,7 +2209,7 @@
       "SF",
       "PF"
      ],
-     "status": null
+     "status": "Q"
     },
     {
      "player": "Julius Randle",
