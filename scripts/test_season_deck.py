@@ -1589,3 +1589,97 @@ class AccuracyCard(unittest.TestCase):
         p, rec = self.page(accuracy_record())
         self.assertIn("accuracy", rec["inputs"]); self.assertTrue(rec["inputs"]["accuracy"]["present"])
         self.assertEqual(len(rec["inputs"]["accuracy"]["sha256"]), 64)
+
+
+class OutToday(unittest.TestCase):
+    """Owner 2026-11-02 ("Kyrie Irving is out today ... flag this at the top of the Today tab, and who is the best
+    player from my bench to play in his spot?") and 2026-11-03 ("dynamic based on categorical needs for the
+    matchup"): a starter whose live status reads Out, in his Yahoo slot, gets a banner at the top of the Today tab
+    with the bench player who adds the most expected categories this week (week_matchup's replacement table from the
+    5 AM run); season value is the labelled fallback when the table has no row for him."""
+    def setUp(self):
+        self.d = tempfile.mkdtemp(); self.fx = fixtures(self.d)
+        j = lambda name, obj: (json.dump(obj, open(os.path.join(self.d, name), "w")), os.path.join(self.d, name))[1]
+        self.j = j
+        b = json.load(open(self.fx["brief"]))
+        b["today"] = [["Alpha Man", "DEN", "@ LAL", None, 1.0, 3], ["Star Guard", "DAL", "vs SAC", "Q", 0.5, 4],
+                      ["Wing One", "SAS", "vs UTA", None, 1.0, 4], ["Big Two", "DAL", "vs SAC", None, 1.0, 4],
+                      ["Idle Guard", "MEM", None, None, 1.0, 3]]
+        b["lineup"] = [["PG", "Alpha Man"], ["Util", "Star Guard"]]; b["bench"] = ["Wing One", "Big Two"]
+        self.fx["brief"] = j("brief_ot.json", b)
+        bd = json.load(open(self.fx["board"]))
+        z = lambda v: {c: v for c in ["FG%", "FT%", "3PM", "PTS", "REB", "AST", "STL", "BLK", "TOV"]}
+        bd["board"] += [dict(rank=4, name="Star Guard", team="DAL", pos="PG,SG", gp=60.0, z_adj=3.0, z_total=3.9, z=z(0.4)),
+                        dict(rank=5, name="Wing One", team="SAS", pos="SF,PF", gp=76.0, z_adj=-1.2, z_total=-1.17, z=z(-0.1)),
+                        dict(rank=6, name="Big Two", team="DAL", pos="PF,C", gp=70.0, z_adj=-2.0, z_total=-2.04, z=z(-0.2)),
+                        dict(rank=7, name="Idle Guard", team="MEM", pos="PG", gp=70.0, z_adj=5.0, z_total=5.0, z=z(0.5))]
+        self.fx["board"] = j("board_ot.json", bd)
+        lg = json.load(open(self.fx["league_state"]))
+        lg["teams"][0]["players"] += [dict(player="Star Guard", slot="UTIL", status="O", positions=["PG", "SG"]),
+                                      dict(player="Wing One", slot="BN", status=None, positions=["SF", "PF"]),
+                                      dict(player="Big Two", slot="BN", status=None, positions=["PF", "C"]),
+                                      dict(player="Idle Guard", slot="BN", status=None, positions=["PG"])]
+        self.fx["league_state"] = j("league_ot.json", lg)
+        st = json.load(open(self.fx["status"]))
+        st["rows"].append(dict(player="Star Guard", fantasy_team="MY TEAM", seat=10, slot="UTIL", yahoo_status="O",
+                               tier="out", availability=0.0, receipts=[]))
+        self.fx["status"] = j("status_ot.json", st)
+        self.me = [dict(player="Alpha Man", slot="PG", positions=["PG"]), dict(player="Star Guard", slot="UTIL", positions=["PG", "SG"]),
+                   dict(player="Wing One", slot="BN", positions=["SF", "PF"]), dict(player="Big Two", slot="BN", positions=["PF", "C"]),
+                   dict(player="Idle Guard", slot="BN", positions=["PG"])]
+        self.val = {"Alpha Man": 11.29, "Star Guard": 3.9, "Wing One": -1.17, "Big Two": -2.04, "Idle Guard": 5.0}
+        # the 5 AM table: Big Two helps this matchup more than Wing One, though Wing One has the higher season value
+        self.repl = {"Star Guard": dict(slot="UTIL", candidates=[
+            dict(player="Big Two", d_exp=0.06, cats={"REB": 0.04, "BLK": 0.03, "PTS": -0.01}),
+            dict(player="Wing One", d_exp=0.02, cats={"PTS": 0.02})])}
+
+    def test_the_swap_follows_the_matchup_table_and_names_the_categories(self):
+        b = json.load(open(self.fx["brief"]))
+        out = SD.out_today(b["today"], self.me, {"Star Guard": 0.0}, self.val, self.repl)
+        self.assertEqual(len(out), 1); o = out[0]
+        self.assertEqual((o["player"], o["slot"], o["swap"], o["basis"]), ("Star Guard", "UTIL", "Big Two", "matchup"))
+        self.assertEqual(o["d_exp"], 0.06); self.assertEqual(o["helps"], ["REB", "BLK"])
+        self.assertEqual([a["player"] for a in o["alternatives"]], ["Wing One"])
+        # no table row for him: the season value decides, and says so; Idle Guard has no game and is never the swap
+        out = SD.out_today(b["today"], self.me, {"Star Guard": 0.0}, self.val, {})
+        self.assertEqual((out[0]["swap"], out[0]["basis"]), ("Wing One", "season"))
+        # a starter in a slot no bench player fits: no swap, the re-filled lineup from the daily-fill rule instead
+        me = [dict(x, slot="G") if x["player"] == "Star Guard" else x for x in self.me]
+        out = SD.out_today(b["today"], me, {"Star Guard": 0.0}, self.val, {})
+        self.assertIsNone(out[0]["swap"]); self.assertNotIn("Star Guard", [n for s, n in out[0]["refill"]])
+        # nobody Out: nothing to flag (Q is the brief's own "check before lock" line, not this banner)
+        self.assertEqual(SD.out_today(b["today"], self.me, {"Star Guard": 0.5}, self.val, self.repl), [])
+
+    def page(self):
+        html, data, rec = SD.build(self.fx, date="2026-10-21")
+        p = os.path.join(self.d, "deck.html")
+        with open(p, "w", encoding="utf-8") as f:
+            f.write(html)
+        return p, data
+
+    def test_the_banner_is_the_first_thing_on_the_today_tab_and_reads_the_matchup_table(self):
+        wm = dict(date="2026-10-21", week=1, opponent=dict(name="THEM", seat=11),
+                  lineup_today=dict(date="2026-10-21", replacements=self.repl))
+        self.fx["week_matchup"] = self.j("wm_ot.json", wm)
+        p, data = self.page()
+        self.assertEqual([o["swap"] for o in data["out_today"]], ["Big Two"])
+        v = visible_dom(p, "Today", "pane-today")
+        self.assertEqual(v["errors"], [])
+        self.assertTrue(v["text"].lstrip().lower().startswith("out today"), v["text"][:200])  # h2 is upper-cased by CSS
+        self.assertIn("Star Guard (UTIL) is Out today", v["text"]); self.assertIn("start Big Two at UTIL", v["text"])
+        self.assertIn("+0.06 expected categories this week", v["text"]); self.assertIn("REB, BLK", v["text"])
+
+    def test_without_the_table_the_banner_uses_season_value_and_says_so(self):
+        p, data = self.page()
+        self.assertEqual([(o["swap"], o["basis"]) for o in data["out_today"]], [("Wing One", "season")])
+        v = visible_dom(p, "Today", "pane-today")
+        self.assertEqual(v["errors"], []); self.assertIn("start Wing One at UTIL", v["text"])
+        self.assertIn("season value", v["text"])
+
+    def test_no_banner_when_no_starter_is_out(self):
+        st = json.load(open(self.fx["status"])); st["rows"][-1].update(yahoo_status="Q", tier="questionable", availability=0.5)
+        json.dump(st, open(self.fx["status"], "w"))
+        p, data = self.page()
+        self.assertEqual(data["out_today"], [])
+        v = visible_dom(p, "Today", "pane-today")
+        self.assertEqual(v["errors"], []); self.assertNotIn("out today", v["text"].lower())
