@@ -1,43 +1,48 @@
-# Out-today banner on the Today tab, with the best bench swap (owner request 2026-11-02)
+# Out-today banner on the Today tab, with the best bench swap for this week's matchup (owner requests 2026-11-02 and 2026-11-03)
 
 Pull window: 2026-11-02 → 2026-11-02 (no pull: the records on season/daily 00e71b6 read only, the 3 PM run's status file among them; kit main 2831565, deck main e14cc42).
 
-**Method up front.** The owner saw Kyrie Irving Out on the afternoon page and asked for a flag at the top of the Today tab with the best bench player for his spot. The 3 PM status file reads Kyrie `O`, availability 0.0; the 5 AM file read `Q`, 0.5 (EVIDENCE: `status_2026-11-02_pm.json`, `status_2026-11-02.json`). Method stated to the owner before the build: the swap is chosen by the brief's own daily-fill value, the season-board z total, which reproduces the 5 AM lineup and bench exactly (EVIDENCE: `co_gm.daily_lineup` on board z totals with the 5 AM status gives the brief's 10 slots and 3 bench names, checked in this session). EVIDENCE marks what a run or read showed; INFERENCE what is derived.
+**Method up front.** The owner saw Kyrie Irving Out on the afternoon page and asked for a flag at the top of the Today tab with the best bench player for his spot (11-02), then asked that the pick follow the matchup's categorical needs (11-03). The 3 PM status file reads Kyrie `O`, availability 0.0; the 5 AM file read `Q`, 0.5 (EVIDENCE: `status_2026-11-02_pm.json`, `status_2026-11-02.json`). Method stated to the owner before each run: first the brief's daily-fill value (season-board z total), then, on the second request, the change in this week's expected categories won against the opponent from week_matchup's existing category model (the Week card's normal approximation on projected finals, the model the 3 PM lineup alerts already use), with season value only as a labelled fallback. EVIDENCE marks what a run or read showed; INFERENCE what is derived.
 
-**Verdict: the Today tab now opens with an "Out today" card naming each starter whose status reads Out and the best bench swap for his slot; on today's afternoon records it reads "Kyrie Irving (Util) is Out today, start Julian Champagnie at Util"; the morning records show no card; 3 red-first tests green, the deck suite green (167); nothing merged.**
+**Verdict: the Today tab now opens with an "Out today" card naming each starter Out in the live status and the bench player who adds the most expected categories this week, with the categories he helps; on the 11-02 afternoon records it reads "Kyrie Irving (UTIL) is Out today — start PJ Washington at UTIL: +0.09 expected categories this week (helps REB, BLK, ST)"; the season-value rule had named Julian Champagnie; existing week_matchup figures are unchanged; nothing merged.**
 
-## 1. What was built (EVIDENCE: the diff, the suite)
+## 1. What was built (EVIDENCE: the diff, the suites)
 
 | change | where | test |
 |---|---|---|
-| `out_today(brief, avail, positions, values)`: each lineup slot whose availability today is 0, by the build's own status file (the 3 PM one in the afternoon build), with the highest-value bench player who has a game today, is not Out and is eligible for that slot (`co_gm.SLOTS`); if none fits, the lineup re-filled by `co_gm.daily_lineup` instead; two Outs never get the same swap | `season_deck.py` | `OutToday.test_the_swap_is_the_best_bench_player_with_a_game_who_fits_the_slot` (a higher-value bench player with no game is never the swap; a slot nobody fits gives the re-fill; Q is not Out) |
-| The build passes it to the page as `out_today`; the Today pane renders it first, above every other card, with a note naming the status file (3 PM or 5 AM) and the value rule | `season_deck.py` | `OutToday.test_the_banner_is_the_first_thing_on_the_today_tab`, `OutToday.test_no_banner_when_no_starter_is_out` (browser read-back, 0 errors) |
+| `today_swap_cats`: today's swap split by category (change in P(win) per category this week); `today_swap_value` is now its sum, same model | `week_matchup.py` | `LineupToday.test_the_per_category_split_sums_to_the_week_value_of_the_swap` (sum equal to 12 places) |
+| `replacement_table`: for each starter with a game today, every bench player with a game who is not Out and fits his Yahoo slot, ranked by that change, never by season value; written each morning as `lineup_today.replacements` | `week_matchup.py` | `LineupToday.test_replacements_rank_by_this_weeks_categories_not_season_value` |
+| The owner's late-week case (11-03: "by Friday, if I am significantly up in Rebounds, but need Assists, this should suggest the corresponding player"): already how the model works, since to-date totals are fixed and only today's games vary, so a locked category's chance barely moves and a close one moves most; pinned by a test, not new code | `week_matchup.py` (no change) | `LineupToday.test_late_in_the_week_a_locked_category_yields_to_the_close_one` (REB won by 50, AST 2 behind: the passer outranks a higher-season-value rebounder; green on the built code, and a season-value ranking would fail it) |
+| `out_today`: a starter (live Yahoo slot) with a game today and availability 0 in the build's status file (3 PM in the afternoon build) gets the top row of that table still on the bench, with its gain, the categories it helps and the next two; no row for him in that slot: season value, labelled; nobody fits: the re-filled lineup | `season_deck.py` | `OutToday` (4 tests, browser read-back, 0 errors) |
+| The card renders first on the Today tab, with the status file and the ranking basis named | `season_deck.py` | same |
 
-Read-only: the card names a swap; it changes no lineup, roster, line, tag or constant. The 5 AM lineup card below it is unchanged.
+Read-only: the card names a swap; it changes no lineup, roster, line, tag or constant.
 
-## 2. Re-runs on the 11-02 records (EVIDENCE: two builds in scratch)
+## 2. Re-runs on the 11-02 records (EVIDENCE: scratch runs, records tree restored)
 
-| build | top of the Today tab |
+| check | result |
 |---|---|
-| afternoon (`--phase pm`, status 3 PM: Kyrie `O`) | "Out today · Kyrie Irving (Util) is Out today — start Julian Champagnie at Util"; SEASON DECK: PASS, 0 page errors |
-| morning (status 5 AM: Kyrie `Q`) | no card; the brief's "Q, check before lock" line stands; SEASON DECK: PASS, 0 page errors |
+| week_matchup, old vs new code, same inputs | lineup moves, category chances and expected categories (4.9718) identical; the new record adds `replacements` |
+| Kyrie's ranked replacements at UTIL (5 AM model) | PJ Washington +0.092 (REB +0.086, BLK +0.032, ST +0.013), Julian Champagnie +0.072 (REB +0.040, 3PTM +0.036), Cameron Johnson +0.066 (REB +0.037, 3PTM +0.019) |
+| afternoon deck (`--phase pm`) on that record | "Kyrie Irving (UTIL) is Out today — start PJ Washington at UTIL: +0.09 expected categories this week (helps REB, BLK, ST). Next: Julian Champagnie +0.07, Cameron Johnson +0.07."; SEASON DECK: PASS, 0 page errors |
+| morning deck (Kyrie `Q`) | no card; SEASON DECK: PASS, 0 page errors |
 
-Why Champagnie (EVIDENCE: board 11-02): the three bench players with a game today are Julian Champagnie (z total -1.17), Cameron Johnson (-1.44) and PJ Washington (-2.04); Util takes any of them, so the highest value goes in. INFERENCE: re-running the whole daily-fill rule with Kyrie Out also brings Champagnie in, with other starters shuffled between guard slots; the card names the one swap to make in Yahoo instead.
+INFERENCE: rebounds is the week's coin-flip category (P(win) 0.51, projected margin +0.7), so a rebounder's one game moves the most; that is why PJ Washington, last of the three by season value, ranks first. The ranking among candidates does not depend on Kyrie's own figure: every candidate's gain is measured against the same baseline.
 
 ## 3. Bands quoted
 
 No title share is quoted in this report. The standing structural band for any title figure on the deck is the season sweep of 2026-11-02 (deck e14cc42): **weekly_availability is FRAGILE:** -2.6 (no in-sim injury discount (risk 0.88 like healthy)) / +2.2 (harsher risk tier (0.65)) / -0.2 (healthy players play 0.95 of games) / +0.0 (healthy players play 0.80 of games), mean of the two seeds, as the 11-02 brief quotes it.
 
-Runner impact: none. The morning and afternoon "season deck" steps pick the card up on their next build after merge; no new step, no prompt change.
+Runner impact: code-only. The morning "week matchup" step computes the replacement table (about ten swaps per starter set, same model as the lineup alerts); the morning and afternoon "season deck" steps read it. No new step, no prompt change.
 
 ## 4. Bounds and open items
 
-- Out of scope by design: Questionable players (the brief's own "check before lock" line covers them); bench players added after the 5 AM run in an afternoon build (the swap pool is the brief's bench, as the lineup card above it is the 5 AM one); games already started.
-- In scope and unverified: the first live render (the next afternoon run after merge that sees a starter Out).
+- Out of scope by design: Questionable players (the brief's own "check before lock" line covers them); bench players added after the 5 AM run (no ranking row; season value, labelled); games already started.
+- In scope and unverified: the first live render (the next run after merge that sees a starter Out).
 
 ## Watchlist
 
-- Next afternoon run with a starter Out: the card appears on the published page above the matchup board.
+- Next run with a starter Out: the card appears on the published page above the matchup board, ranked by the matchup.
 
 ## Open-item receipts
 

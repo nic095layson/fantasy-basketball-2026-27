@@ -70,37 +70,52 @@ def default_paths(date, phase="am"):
                 espn_injuries=os.path.join(KIT, "data", "status", f"espn_injuries_{date}{sfx}.json"))
 
 
-def out_today(brief, avail, positions, values):
-    """Owner 2026-11-02 ("Kyrie Irving is out today ... who is the best player from my bench to play in his spot?"):
-    each starter in the brief's lineup whose availability today is 0 (Out) by the deck's own status file (the 3 PM
-    one in the afternoon build), with the best bench swap for his slot: the highest-value bench player who has a
-    game today, is not Out and is eligible for the slot. Value is the brief's daily-fill value (the season-board z
-    total, which reproduces the 11-02 morning lineup exactly). When no bench player fits the slot, the lineup
-    re-filled by the same rule (co_gm.daily_lineup) is given instead. avail: {name: availability}; positions and
-    values keyed by the brief's spelling. Read-only: it names a swap, it changes nothing."""
+def out_today(today_rows, me, avail, values, repl=None):
+    """Owner 2026-11-02 ("Kyrie Irving is out today ... who is the best player from my bench to play in his spot?")
+    and 2026-11-03 ("dynamic based on categorical needs for the matchup"). me: my players [{player, slot, positions}]
+    with their live Yahoo slots; a starter with a game today whose availability by the build's own status file (the
+    3 PM one in the afternoon build) is 0 is Out. His swap is the bench player (game today, not Out, fits the slot)
+    who adds the most expected categories this week by week_matchup's replacement table from the 5 AM run (repl:
+    {starter: {slot, candidates: [{player, d_exp, cats}]}}), basis "matchup", with the categories it helps; with no
+    table row for him in that slot, the highest season value (board z total), basis "season". When nobody fits the
+    slot, the lineup re-filled by co_gm.daily_lineup is given instead. Read-only: it names a swap, it changes nothing."""
     import co_gm  # local, as build() imports it (the engine path is set up by then)
-    today = {r[0]: r for r in brief.get("today") or []}
+    today = {r[0]: r for r in today_rows or []}
     av = lambda n: avail.get(n, today[n][4] if n in today else 1.0)
     game = lambda n: bool(n in today and today[n][2])
-    outs = [(slot, n) for slot, n in brief.get("lineup") or [] if av(n) is not None and av(n) <= 0]
+    bench_slots = ("BN", "IL", "IL+")
+    outs = [p for p in me if p["slot"] not in bench_slots and game(p["player"]) and (av(p["player"]) or 0) <= 0]
     if not outs:
         return []
-    elig = dict(co_gm.SLOTS)
-    fits = lambda slot, n: elig.get(slot) is None or any(x in elig[slot] for x in positions.get(n) or [])
-    pool = [n for n in brief.get("bench") or [] if game(n) and (av(n) or 0) > 0 and n in values]
+    elig = {k.upper(): v for k, v in co_gm.SLOTS}
+    fits = lambda slot, p: elig.get(slot.upper()) is None or any(x in elig[slot.upper()] for x in p.get("positions") or [])
+    bench = {p["player"]: p for p in me if p["slot"] == "BN" and game(p["player"]) and (av(p["player"]) or 0) > 0}
     used, res = set(), []
-    for slot, n in outs:
-        c = sorted((x for x in pool if x not in used and fits(slot, x)), key=lambda x: -values[x])
-        swap = c[0] if c else None
-        refill = None
-        if swap:
-            used.add(swap)
+    for o in outs:
+        n, slot = o["player"], o["slot"]
+        ok = [b for b in bench.values() if b["player"] not in used and fits(slot, b)]
+        row = (repl or {}).get(n)
+        ranked = ([c for c in row["candidates"] if c["player"] in {b["player"] for b in ok}]
+                  if row and (row.get("slot") or "").upper() == slot.upper() else [])
+        r = dict(player=n, slot=slot, availability=av(n), swap=None, basis=None, d_exp=None, helps=[],
+                 alternatives=[], refill=None)
+        if ranked:
+            top = ranked[0]
+            r.update(swap=top["player"], basis="matchup", d_exp=top["d_exp"],
+                     helps=[c for c, v in sorted(top["cats"].items(), key=lambda kv: -kv[1]) if v > 0][:3],
+                     alternatives=[dict(player=c["player"], d_exp=c["d_exp"]) for c in ranked[1:3]])
+        elif ok:
+            byv = sorted((b["player"] for b in ok if b["player"] in values), key=lambda x: -values[x])
+            if byv:
+                r.update(swap=byv[0], basis="season", alternatives=[dict(player=x, d_exp=None) for x in byv[1:3]])
+        if r["swap"]:
+            used.add(r["swap"])
         else:
-            players = [dict(player=x, positions=positions.get(x) or [], value=values[x], availability=av(x) or 0)
-                       for x in [m for _, m in brief["lineup"]] + list(brief.get("bench") or []) if x in values and game(x)]
-            refill = [[sl, x] for sl, x in co_gm.daily_lineup(players)[0]]
-        res.append(dict(player=n, slot=slot, availability=av(n), swap=swap,
-                        swap_value=values.get(swap) if swap else None, refill=refill))
+            players = [dict(player=p["player"], positions=p.get("positions") or [], value=values[p["player"]],
+                            availability=av(p["player"]) or 0)
+                       for p in me if p["slot"] not in ("IL", "IL+") and game(p["player"]) and p["player"] in values]
+            r["refill"] = [[sl, x] for sl, x in co_gm.daily_lineup(players)[0]]
+        res.append(r)
     return res
 
 
@@ -209,9 +224,11 @@ def build(paths, date, phase=None):
     # owner 2026-11-02: a starter Out today and the best bench swap for his slot (out_today), from this build's status
     mine_l = next(t for t in league["teams"] if t["seat"] == my_seat)["players"]
     zt = {r["name"]: r.get("z_total") for r in board["board"]}
-    out_now = out_today(brief, {r["player"]: r.get("availability") for r in status["rows"]},
-                        {p["player"]: p.get("positions") or [] for p in mine_l},
-                        {p["player"]: zt[rmap[p["player"]]] for p in mine_l if zt.get(rmap[p["player"]]) is not None})
+    out_now = out_today(brief.get("today"), [dict(player=p["player"], slot=p.get("slot") or "BN",
+                                                  positions=p.get("positions") or []) for p in mine_l],
+                        {r["player"]: r.get("availability") for r in status["rows"]},
+                        {p["player"]: zt[rmap[p["player"]]] for p in mine_l if zt.get(rmap[p["player"]]) is not None},
+                        ((week_matchup or {}).get("lineup_today") or {}).get("replacements"))
     for r in board["board"]:
         o = own.get(r["name"])
         r["owner"] = o[0] if o else None; r["seat"] = o[1] if o else None
@@ -642,10 +659,13 @@ function matchupBoard(){ const W=D.week_matchup, B=W&&W.board; if(!B) return nul
   // owner 2026-11-02: a starter Out today and the best bench swap for his slot, first thing on the tab (out_today)
   const OT=D.out_today||[];
   if(OT.length) p.append(h("div",{class:"card",id:"out-today"},h("h2",{class:"zneg"},"Out today"),
-    OT.map(o=>h("p",{},h("b",{},o.player+" ("+o.slot+") is Out today"),
-      o.swap? " — start "+o.swap+" at "+o.slot+" (best bench player with a game today who fits the slot)."
-            : " — no bench player with a game today fits "+o.slot+"; the lineup re-filled by the same rule: "+(o.refill||[]).map(x=>x[0]+" "+x[1]).join(", ")+".")),
-    h("p",{class:"note"},"Status from "+(D.refresh&&D.refresh.phase==="pm"?"the 3 PM":"the 5 AM")+" status file; swap by the brief's daily-fill value (season-board z total). Set it in Yahoo before lock.")));
+    OT.map(o=>{ const sg=(x)=>(x<0?"−":"+")+Math.abs(x).toFixed(2);
+      const alt=(o.alternatives||[]).map(a=>a.player+(a.d_exp==null?"":" "+sg(a.d_exp))).join(", ");
+      return h("p",{},h("b",{},o.player+" ("+o.slot+") is Out today"),
+        !o.swap? " — no bench player with a game today fits "+o.slot+"; the lineup re-filled by the daily-fill rule: "+(o.refill||[]).map(x=>x[0]+" "+x[1]).join(", ")+"."
+        : o.basis==="matchup"? " — start "+o.swap+" at "+o.slot+": "+sg(o.d_exp)+" expected categories this week"+(o.helps.length?" (helps "+o.helps.join(", ")+")":"")+"."+(alt?" Next: "+alt+".":"")
+        : " — start "+o.swap+" at "+o.slot+" (season value: no matchup ranking for him from the 5 AM run)."+(alt?" Next: "+alt+".":"")); }),
+    h("p",{class:"note"},"Status from "+(D.refresh&&D.refresh.phase==="pm"?"the 3 PM":"the 5 AM")+" status file. Ranked by the change in this week's expected categories won (the Week card's model, 5 AM run), else season value. Set it in Yahoo before lock.")));
   // owner 2026-10-26, option (a): rostered names the intake carried without a pool row — never silent
   const UN=(D.league&&D.league.unpooled)||[];
   if(UN.length) p.append(h("div",{class:"card"},h("p",{class:"note zneg",id:"unpooled-note"},"Not in the pool, not simulated: "+UN.map(u=>u.player+" ("+u.fantasy_team+", "+u.slot+")").join(", ")+". Each needs a pool row before the simulator counts him.")));

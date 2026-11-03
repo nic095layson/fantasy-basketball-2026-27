@@ -1,7 +1,7 @@
 {
- "ran_at_utc": "2026-11-03T00:02:06Z",
+ "ran_at_utc": "2026-11-03T00:21:00Z",
  "inputs": {
-  "report/after-reports/after-report-2026-11-02-out-today.md": "589e0a5b583c52fabb804421a3d56377a6217034a6605e6d981d7784f1eb0afb",
+  "report/after-reports/after-report-2026-11-02-out-today.md": "e70980477fbcd760cfd1742e96f9e23399ba255b6855598582bedf3abe1a5c8a",
   "../wtsd/report/after-reports/redteam-2026-11-02-season/sweep.json": "1b8566531da1d0b666610a9383c063baa951d7879f045cb823faf3e0a384a87c"
  },
  "gates": [
@@ -59,7 +59,7 @@
   },
   {
    "name": "touched tests",
-   "cmd": "bash -c 'cd scripts && DECK_REPO=/home/user/yahoo-fantasy-basketball python3 -m unittest test_season_deck.OutToday test_season_deck.AccuracyCard 2>&1 | tail -1'",
+   "cmd": "bash -c 'cd scripts && DECK_REPO=/home/user/yahoo-fantasy-basketball python3 -m unittest test_season_deck.OutToday test_week_matchup.LineupToday 2>&1 | tail -1'",
    "cwd": ".",
    "pass_re": "^OK",
    "exit": 0,
@@ -125,5 +125,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "28315656eb52f2c1a8b917829bfe2dc060c13021"
+ "base_commit": "6fbea004b4586fa06963615b1cbae588204eb52b"
 }

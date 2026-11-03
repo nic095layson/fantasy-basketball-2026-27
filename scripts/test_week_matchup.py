@@ -351,6 +351,60 @@ class LineupToday(unittest.TestCase):
         self.assertAlmostEqual(d, sum(new[c] - base[c] for c in WM.CATS))
         self.assertGreater(d, 0)
 
+    def test_the_per_category_split_sums_to_the_week_value_of_the_swap(self):
+        # owner 2026-11-03 ("dynamic based on categorical needs"): the Out-today card names the categories a swap
+        # helps; the split must be the same model, so its sum is today_swap_value exactly
+        me_now = box(fgm=100, fga=210, pts=280, reb=120, blk=10, tov=30)
+        opp_now = box(fgm=100, fga=210, pts=280, reb=120, blk=12, tov=30)
+        roster = [dict(player="Weak", team="BOS", positions=["C"], value=0.0),
+                  dict(player="Strong", team="BOS", positions=["C"], value=2.0)]
+        lines = {"Weak": line(pts=4, fga=4, fg_pct=0.4), "Strong": line(pts=30, blk=3, fga=20, fg_pct=0.5)}
+        sched = {"t0": {"BOS"}}
+        opp_rem = dict(totals=box(), var={k: 0.0 for k in ("3PTM", "PTS", "REB", "AST", "ST", "BLK", "TO", "fg_mk", "ft_mk")})
+        args = (me_now, opp_now, opp_rem, roster, ["Weak"], ("Strong", "Weak"), sched, "t0", {}, lines)
+        cats = WM.today_swap_cats(*args)
+        self.assertEqual(set(cats), set(WM.CATS))
+        self.assertAlmostEqual(sum(cats.values()), WM.today_swap_value(*args), places=12)
+        self.assertGreater(cats["BLK"], 0)   # 10 vs 12 blocks: Strong's 3 flip it; PTS is won either way here
+
+    def test_replacements_rank_by_this_weeks_categories_not_season_value(self):
+        # for each starter with a game today: every bench player with a game who is not Out and fits his Yahoo slot,
+        # ranked by the change in expected categories this week (score), never by season value
+        me = self.me(("Star", "UTIL", ["PG", "SG"], "DAL"), ("Cee", "C", ["C"], "BOS"),
+                     ("Shooter", "BN", ["SF"], "SAS"), ("Glass", "BN", ["PF", "C"], "DAL"),
+                     ("Hurt", "BN", ["C"], "DAL"), ("Idle", "BN", ["C"], "MIA"))
+        gain = {"Shooter": {"PTS": 0.01, "REB": -0.01}, "Glass": {"REB": 0.04, "BLK": 0.03}}
+        score = lambda b, s: dict({c: 0.0 for c in WM.CATS}, **gain.get(b["player"], {}))
+        t = WM.replacement_table(me, {"DAL", "BOS", "SAS"}, {"Hurt": 0.0}, score)
+        self.assertEqual(t["Star"]["slot"], "UTIL")
+        self.assertEqual([c["player"] for c in t["Star"]["candidates"]], ["Glass", "Shooter"])
+        self.assertEqual(t["Star"]["candidates"][0]["d_exp"], 0.07)
+        self.assertEqual(t["Star"]["candidates"][0]["cats"]["REB"], 0.04)
+        self.assertEqual([c["player"] for c in t["Cee"]["candidates"]], ["Glass"])   # only Glass fits C; Hurt is Out
+        self.assertNotIn("Shooter", t)   # bench players are candidates, not rows
+
+    def test_late_in_the_week_a_locked_category_yields_to_the_close_one(self):
+        # owner 2026-11-03: "by Friday, if I am significantly up in Rebounds, but need Assists, this should suggest
+        # the corresponding player". To date is fixed and only today's games vary: REB is won by 50, AST is 2 behind,
+        # so the passer outranks the rebounder even though the rebounder's season value is higher
+        me_now = box(fgm=300, fga=640, pts=800, reb=400, ast=180, blk=30, tov=80, stl=40)
+        opp_now = box(fgm=300, fga=640, pts=800, reb=350, ast=182, blk=30, tov=80, stl=40)
+        roster = [dict(player="Out Star", team="DAL", positions=["PG"], value=4.0),
+                  dict(player="Rebounder", team="DAL", positions=["C"], value=1.5),
+                  dict(player="Passer", team="DAL", positions=["PG"], value=0.5)]
+        lines = {"Out Star": line(), "Rebounder": line(reb=13, ast=1, fga=6, fg_pct=0.55, pts=10),
+                 "Passer": line(reb=3, ast=8, fga=6, fg_pct=0.45, pts=8)}
+        sched = {"fri": {"DAL"}}
+        opp_rem = dict(totals=box(), var={k: 0.0 for k in ("3PTM", "PTS", "REB", "AST", "ST", "BLK", "TO", "fg_mk", "ft_mk")})
+        me = self.me(("Out Star", "UTIL", ["PG"], "DAL"), ("Rebounder", "BN", ["C"], "DAL"), ("Passer", "BN", ["PG"], "DAL"))
+        score = lambda b, st: WM.today_swap_cats(me_now, opp_now, opp_rem, roster, [], (b["player"], st["player"]),
+                                                 sched, "fri", {"Out Star": 0.0}, lines)
+        t = WM.replacement_table(me, {"DAL"}, {"Out Star": 0.0}, score)
+        rows = t["Out Star"]["candidates"]
+        self.assertEqual([r["player"] for r in rows], ["Passer", "Rebounder"])
+        self.assertGreater(rows[0]["cats"]["AST"], 0.1)          # the close category moves
+        self.assertLess(abs(rows[1]["cats"]["REB"]), 0.01)       # the locked one barely does
+
     def test_alert_flags_empty_slots_and_swaps_that_help_this_week(self):
         # owner 2026-10-23: "I'd rather start Queta for Washington if it would better help me win this week's matchup"
         # — the season gap alone (B, the Queta case: +1.13 season, −0.02 this week) no longer alerts
