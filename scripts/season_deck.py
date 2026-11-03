@@ -70,6 +70,40 @@ def default_paths(date, phase="am"):
                 espn_injuries=os.path.join(KIT, "data", "status", f"espn_injuries_{date}{sfx}.json"))
 
 
+def out_today(brief, avail, positions, values):
+    """Owner 2026-11-02 ("Kyrie Irving is out today ... who is the best player from my bench to play in his spot?"):
+    each starter in the brief's lineup whose availability today is 0 (Out) by the deck's own status file (the 3 PM
+    one in the afternoon build), with the best bench swap for his slot: the highest-value bench player who has a
+    game today, is not Out and is eligible for the slot. Value is the brief's daily-fill value (the season-board z
+    total, which reproduces the 11-02 morning lineup exactly). When no bench player fits the slot, the lineup
+    re-filled by the same rule (co_gm.daily_lineup) is given instead. avail: {name: availability}; positions and
+    values keyed by the brief's spelling. Read-only: it names a swap, it changes nothing."""
+    import co_gm  # local, as build() imports it (the engine path is set up by then)
+    today = {r[0]: r for r in brief.get("today") or []}
+    av = lambda n: avail.get(n, today[n][4] if n in today else 1.0)
+    game = lambda n: bool(n in today and today[n][2])
+    outs = [(slot, n) for slot, n in brief.get("lineup") or [] if av(n) is not None and av(n) <= 0]
+    if not outs:
+        return []
+    elig = dict(co_gm.SLOTS)
+    fits = lambda slot, n: elig.get(slot) is None or any(x in elig[slot] for x in positions.get(n) or [])
+    pool = [n for n in brief.get("bench") or [] if game(n) and (av(n) or 0) > 0 and n in values]
+    used, res = set(), []
+    for slot, n in outs:
+        c = sorted((x for x in pool if x not in used and fits(slot, x)), key=lambda x: -values[x])
+        swap = c[0] if c else None
+        refill = None
+        if swap:
+            used.add(swap)
+        else:
+            players = [dict(player=x, positions=positions.get(x) or [], value=values[x], availability=av(x) or 0)
+                       for x in [m for _, m in brief["lineup"]] + list(brief.get("bench") or []) if x in values and game(x)]
+            refill = [[sl, x] for sl, x in co_gm.daily_lineup(players)[0]]
+        res.append(dict(player=n, slot=slot, availability=av(n), swap=swap,
+                        swap_value=values.get(swap) if swap else None, refill=refill))
+    return res
+
+
 def resolve_rostered(rostered, board_names, held_names, aliases, missing=None):
     """Map each rostered name (the league paste's spelling) to its season-board row or held name (the kit's spelling).
     Owner audit 2026-10-19: Jaren Jackson Jr. / Cameron Johnson showed as free agents under an exact-string join.
@@ -172,6 +206,12 @@ def build(paths, date, phase=None):
         for p in t["players"]: own[rmap[p["player"]]] = (t["name"], t["seat"])
     if my_team is None: raise DeckError(f"league state has no seat {my_seat}")
     my_positions = positional_breakdown(next(t for t in league["teams"] if t["seat"] == my_seat)["players"])
+    # owner 2026-11-02: a starter Out today and the best bench swap for his slot (out_today), from this build's status
+    mine_l = next(t for t in league["teams"] if t["seat"] == my_seat)["players"]
+    zt = {r["name"]: r.get("z_total") for r in board["board"]}
+    out_now = out_today(brief, {r["player"]: r.get("availability") for r in status["rows"]},
+                        {p["player"]: p.get("positions") or [] for p in mine_l},
+                        {p["player"]: zt[rmap[p["player"]]] for p in mine_l if zt.get(rmap[p["player"]]) is not None})
     for r in board["board"]:
         o = own.get(r["name"])
         r["owner"] = o[0] if o else None; r["seat"] = o[1] if o else None
@@ -213,7 +253,7 @@ def build(paths, date, phase=None):
                 league=dict(as_of=league["as_of"], rosters=rosters, managers={t["name"]: t.get("manager") for t in league["teams"]},
                             unpooled=league.get("unpooled") or [], my_positions=my_positions), season_lines=lines, matchup=wk,
                 ledger={k: dict(v, result_text=ledger_result(v)) for k, v in calib.get("weeks", {}).items()}, bands=bands, band_engine=band_engine, band_config=band_config, matchup_live=matchup_live,
-                week_matchup=week_matchup, league_table=league_rec, form=form_rec, scores=scores, accuracy=accuracy, fa_status=fa_status,
+                week_matchup=week_matchup, league_table=league_rec, form=form_rec, scores=scores, accuracy=accuracy, fa_status=fa_status, out_today=out_now,
                 # owner 2026-10-28 ("Rebuild, flag morning parts"): the 3 PM run's rebuild says which parts are the 5 AM run's
                 **({"refresh": {"phase": phase, "not_on_board": not_on_board}} if phase == "pm" else {}),
                 config=dict(cats=["FG%", "FT%", "3PM", "PTS", "REB", "AST", "STL", "BLK", "TOV"],
@@ -599,6 +639,13 @@ function matchupBoard(){ const W=D.week_matchup, B=W&&W.board; if(!B) return nul
 
 // ---- Today ----
 (function(){ const b=D.brief, p=$("#pane-today");
+  // owner 2026-11-02: a starter Out today and the best bench swap for his slot, first thing on the tab (out_today)
+  const OT=D.out_today||[];
+  if(OT.length) p.append(h("div",{class:"card",id:"out-today"},h("h2",{class:"zneg"},"Out today"),
+    OT.map(o=>h("p",{},h("b",{},o.player+" ("+o.slot+") is Out today"),
+      o.swap? " — start "+o.swap+" at "+o.slot+" (best bench player with a game today who fits the slot)."
+            : " — no bench player with a game today fits "+o.slot+"; the lineup re-filled by the same rule: "+(o.refill||[]).map(x=>x[0]+" "+x[1]).join(", ")+".")),
+    h("p",{class:"note"},"Status from "+(D.refresh&&D.refresh.phase==="pm"?"the 3 PM":"the 5 AM")+" status file; swap by the brief's daily-fill value (season-board z total). Set it in Yahoo before lock.")));
   // owner 2026-10-26, option (a): rostered names the intake carried without a pool row — never silent
   const UN=(D.league&&D.league.unpooled)||[];
   if(UN.length) p.append(h("div",{class:"card"},h("p",{class:"note zneg",id:"unpooled-note"},"Not in the pool, not simulated: "+UN.map(u=>u.player+" ("+u.fantasy_team+", "+u.slot+")").join(", ")+". Each needs a pool row before the simulator counts him.")));
