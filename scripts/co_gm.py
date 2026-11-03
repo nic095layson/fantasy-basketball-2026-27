@@ -36,6 +36,9 @@ TEAM_CODE = {"CHO": "CHA", "BRK": "BKN", "PHO": "PHX"}  # Basketball-Reference -
 SLOTS = [("PG", ("PG",)), ("SG", ("SG",)), ("G", ("PG", "SG")), ("SF", ("SF",)), ("PF", ("PF",)),
          ("F", ("SF", "PF")), ("C", ("C",)), ("C", ("C",)), ("Util", None), ("Util", None)]
 WAIVER_CANDIDATES = 40  # inherited from waiver_moves.py; stated to the owner before the first run
+# owner pick 2026-11-03 (after-report-2026-11-03-waiver-readds.md, option 1; window chosen on the card, "3 days
+# (Recommended)"): the "you dropped him <date>" note looks back over today and the two days before it. Display only.
+WAIVER_DROP_WINDOW = 3
 
 
 def load_pool():
@@ -186,6 +189,35 @@ def fa_status(P, yahoo, espn, date=None):
                               (datetime.date.fromisoformat(s["return_date"][:10])
                                - datetime.date.fromisoformat(date)).days <= SHORT_OUT_DAYS)
     return {"by": by, "sources": {"yahoo": yahoo is not None, "espn": espn is not None}}
+
+
+def waiver_info(P, yahoo, moves_by_day, seat=OWNER_SEAT):
+    """Owner pick 2026-11-03 (display only; nothing ranks on it): for a waiver-scan or streaming pick, Yahoo's waiver
+    date and the day the owner's seat dropped him. yahoo: the pin's free_agents.freeAgents rows, or None when the day
+    has no pin; only acquisitionState "waivers" gives a date (Yahoo's calendar date, no time). A player missing from the
+    100-row list gets nothing: unknown, not free. moves_by_day: {date: [league_moves records]} for the look-back window
+    (daily_brief.own_moves); the seat's "dropped" names, latest date kept. Every name resolves through league_intake's
+    resolver, never a raw string (the pin spells him "Bobby Portis Jr."). Returns {"read": bool, "by": {pool name:
+    {"waiver_date", "own_drop_date"}}}."""
+    import league_intake as LI
+    by = {}
+    row = lambda n: by.setdefault(n, {"waiver_date": None, "own_drop_date": None})
+    if yahoo is not None:
+        res, _ = LI.resolve([e["name"] for e in yahoo], P, {})
+        for e in yahoo:
+            n = res.get(e["name"])
+            if n is not None and e.get("acquisitionState") == "waivers" and e.get("waiverDate"):
+                row(n)["waiver_date"] = e["waiverDate"]
+    for day in sorted(moves_by_day or {}):
+        for rec in moves_by_day[day] or []:
+            for m in rec.get("moves") or []:
+                if m.get("seat") != seat:
+                    continue
+                dropped = m.get("dropped") or []
+                res, _ = LI.resolve(dropped, P, {})
+                for name in dropped:
+                    row(res.get(name, name))["own_drop_date"] = day
+    return {"read": yahoo is not None, "by": by}
 
 
 def free_agents(P, state, status, n=WAIVER_CANDIDATES):

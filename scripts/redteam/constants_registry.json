@@ -616,6 +616,14 @@
    "decision": "D-WS-2"
   },
   {
+   "module": "co_gm",
+   "name": "WAIVER_DROP_WINDOW",
+   "value": 3,
+   "role": "display only: how many days (today included) of the owner's own drops the \"you dropped him <date>\" note looks back over beside a waiver-scan or streaming pick; no ranking, candidate or figure reads it",
+   "status": "structural",
+   "record": "owner pick 2026-11-03, clickable card \"3 days (Recommended)\" (basis: Yahoo waiver period 1 day; the evidence's re-adds were 0 to 2 days old); after-report-2026-11-03-waiver-date.md"
+  },
+  {
    "module": "status_feed",
    "name": "TIERS",
    "value": {
