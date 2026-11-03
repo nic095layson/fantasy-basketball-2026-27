@@ -105,3 +105,7 @@
 - Earlier runner reports:
   - `after-report-2026-11-02-runner-window.md`
   - `after-report-2026-11-03-waiver-readds.md`
+
+**Owner's picks, 2026-11-03 (clickable cards in the runner session):**
+- **A: option 1, mark scheduled runs.** Main builds the turn boundary for scheduled-trigger notifications, red-first, with a replay of today's two events.
+- **B: option 1, leave it.** No split of the title drop is run.
