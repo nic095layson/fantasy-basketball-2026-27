@@ -1683,3 +1683,42 @@ class OutToday(unittest.TestCase):
         self.assertEqual(data["out_today"], [])
         v = visible_dom(p, "Today", "pane-today")
         self.assertEqual(v["errors"], []); self.assertNotIn("out today", v["text"].lower())
+
+
+class WaiverChips(unittest.TestCase):
+    """Owner pick 2026-11-03 (display only): the brief's waiver dates and own drops show beside free agents on the
+    Free Agents tab, matched to the board's spelling through the deck's resolver."""
+    def setUp(self):
+        self.d = tempfile.mkdtemp(); self.fx = fixtures(self.d)
+
+    def page(self, notes):
+        b = json.load(open(self.fx["brief"]))
+        if notes is not None:
+            b["waiver_notes"] = notes
+        p = os.path.join(self.d, "brief_wn.json"); json.dump(b, open(p, "w")); self.fx["brief"] = p
+        html, data, rec = SD.build(self.fx, date="2026-10-21")
+        out = os.path.join(self.d, "deck.html")
+        with open(out, "w", encoding="utf-8") as f:
+            f.write(html)
+        return out, data
+
+    def test_waiver_date_and_own_drop_show_on_the_free_agent_row(self):
+        out, data = self.page(dict(read=True, window_days=3, missing_days=[],
+                                   by={"Free Agent": {"waiver_date": "2026-11-04", "own_drop_date": "2026-11-03"}}))
+        v = visible_dom(out, "Free Agents", "pane-fa")
+        self.assertEqual(v["errors"], [])
+        self.assertIn("on waivers until 2026-11-04 · you dropped him 2026-11-03", v["text"])
+
+    def test_the_briefs_spelling_reaches_the_boards_row(self):
+        out, data = self.page(dict(read=True, window_days=3, missing_days=[],
+                                   by={"Free Agent Jr.": {"waiver_date": "2026-11-02", "own_drop_date": None}}))
+        self.assertIn("Free Agent", data["waiver_notes"]["by"])
+        v = visible_dom(out, "Free Agents", "pane-fa")
+        self.assertEqual(v["errors"], []); self.assertIn("on waivers until 2026-11-02", v["text"])
+        self.assertNotIn("you dropped him", v["text"])
+
+    def test_an_older_brief_without_notes_renders_as_before(self):
+        out, data = self.page(None)
+        self.assertIsNone(data["waiver_notes"])
+        v = visible_dom(out, "Free Agents", "pane-fa")
+        self.assertEqual(v["errors"], []); self.assertNotIn("on waivers until", v["text"])

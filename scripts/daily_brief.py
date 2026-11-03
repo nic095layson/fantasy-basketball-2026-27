@@ -93,6 +93,43 @@ def status_inputs(date, pull_dir=None, status_dir=None):
     return yahoo, espn
 
 
+def own_moves(date, window, news_dir=None):
+    """The league-moves records for the "you dropped him" look-back (owner pick 2026-11-03): today and the window - 1
+    days before it, the morning record and the afternoon one (_pm) of each day. Returns ({day: [records]}, [days with
+    neither record]). Not data/managers/transactions.json: manager_log runs after the brief and misses that morning."""
+    news_dir = news_dir or os.path.join(CG.KIT, "data", "news")
+    d0 = datetime.date.fromisoformat(date)
+    by_day, missing = {}, []
+    for k in range(window - 1, -1, -1):
+        day = (d0 - datetime.timedelta(days=k)).isoformat()
+        recs = [json.load(open(p, encoding="utf-8")) for p in (os.path.join(news_dir, f"league_moves_{day}.json"),
+                                                              os.path.join(news_dir, f"league_moves_{day}_pm.json"))
+                if os.path.exists(p)]
+        if recs:
+            by_day[day] = recs
+        else:
+            missing.append(day)
+    return by_day, missing
+
+
+def waiver_note(name, info):
+    """The display suffix for a pick (owner pick 2026-11-03): "on waivers until <date>" and/or "you dropped him
+    <date>", joined by " · "; empty when neither holds or there is no record."""
+    r = ((info or {}).get("by") or {}).get(name) or {}
+    parts = ([f"on waivers until {r['waiver_date']}"] if r.get("waiver_date") else []) + \
+            ([f"you dropped him {r['own_drop_date']}"] if r.get("own_drop_date") else [])
+    return " · ".join(parts)
+
+
+def annotate_waivers(rows, key, info):
+    """Adds add_waiver_date and add_own_drop_date (None when none) to each pick; nothing else on the row changes."""
+    for x in rows:
+        r = ((info or {}).get("by") or {}).get(x[key]) or {}
+        x["add_waiver_date"] = r.get("waiver_date")
+        x["add_own_drop_date"] = r.get("own_drop_date")
+    return rows
+
+
 def league_moves_for(date):
     """The league-moves record for the brief's date (scripts/league_moves.py; owner 2026-10-20 item 2), or None."""
     path = os.path.join(CG.KIT, "data", "news", f"league_moves_{date}.json")
@@ -236,6 +273,12 @@ def main():
     weak_games = left.get(next(x["yahoo_nba_team"] for x in me["players"] if x["player"] == weakest["player"]), 0)
     # owner 2026-10-28 (item 5): a short Out streams on its games from ESPN's return date
     stream = CG.streaming(CG.stream_rows(fa, st, games, a.date, wend), weak_games)
+    # owner pick 2026-11-03 (display only): Yahoo's waiver date and the owner's own recent drop beside each pick; the
+    # ranking, the candidates and every number above are untouched
+    mv_days, mv_missing = own_moves(a.date, CG.WAIVER_DROP_WINDOW)
+    winfo = CG.waiver_info(P, yahoo_fa, mv_days)
+    annotate_waivers(top, "add", winfo)
+    annotate_waivers(stream, "player", winfo)
 
     tx = transactions_for(a.date)
 
@@ -247,6 +290,8 @@ def main():
            "today": rows_today, "lineup": lineup, "bench": bench,
            "waiver_base_ecw": round(base_ecw, 4) if base_ecw is not None else None, "waiver_gate": gate,
            "waiver_positive_pairs": len(pos), "waiver_pairs_scored": len(pairs), "waiver_top": top, "streaming": stream,
+           "waiver_notes": {"read": winfo["read"], "window_days": CG.WAIVER_DROP_WINDOW, "missing_days": mv_missing,
+                            "by": winfo["by"]},
            "streaming_vs": {"player": weakest["player"], "games_left": weak_games,
                             "value_per_game": round(CG.hoops.adj_value(weakest, ()), 2)},
            "title": {str(s): base[s]["champ"] for s in SEEDS}, "playoffs": {str(s): base[s]["playoff"] for s in SEEDS},
@@ -287,6 +332,7 @@ def main():
         L += [f"- Add **{x['add']}** ({x['add_team']}), drop {x['drop']}: {x['d_ecw']:+.3f} cats/week; "
               f"title {x['title']:.1f}% ({x['d_title']:+.1f})"
               + (f" — {add_flag(x['add_status'])}, check before claiming" if x.get("add_status") else "")
+              + ((" · " if x.get("add_status") else " — ") + waiver_note(x["add"], winfo) if waiver_note(x["add"], winfo) else "")
               for x in top]
     else:
         L.append(f"No add/drop pair raises expected weekly category wins ({len(pairs)} scored). Stand pat.")
@@ -298,6 +344,10 @@ def main():
                                                      + (f", ESPN expects back {x['return_date'][:10]}" if x.get("return_date") else "")
                                                      + ")" for x in aside) + "."
                     if aside else ""))
+        if not winfo["read"]:
+            L.append("Waiver dates not read today (no Yahoo available-player list pinned): a pick may be on waivers.")
+        if mv_missing:
+            L.append(f"Own drops checked over {CG.WAIVER_DROP_WINDOW} days; no league-moves record for {', '.join(mv_missing)}.")
     L += ["", f"## Streaming ({a.date} to {wend})", "",
           f"Your weakest active player by board value is {weakest['player']} "
           f"({rec['streaming_vs']['value_per_game']:+.2f} per game, {weak_games} games left). "
@@ -305,7 +355,8 @@ def main():
     L += [f"- {r['player']} ({r['team']}): {r['games_left']} games"
           + (f" ({r['status']} today, back {r['return_date']}: {r['exp_games']:g} from then)" if r.get("return_date")
              else f" ({r['status']} today: {r['exp_games']:g} expected)" if r.get("status") else "")
-          + f", {r['value_per_game']:+.2f} per game" for r in stream] or ["- none"]
+          + f", {r['value_per_game']:+.2f} per game"
+          + (f" — {waiver_note(r['player'], winfo)}" if waiver_note(r["player"], winfo) else "") for r in stream] or ["- none"]
     L += ["", "## Title odds (real schedule)", "", f"- Title: {odds_line(base[SEEDS[0]]['champ'], base[SEEDS[1]]['champ'], a.seasons)}",
           f"- Playoffs: {(base[SEEDS[0]]['playoff'] + base[SEEDS[1]]['playoff']) / 2:.1f}%",
           f"- {band_line(date=a.date)}"] + ([f"- {sim_absent_line(absent)}"] if absent else []) + (
