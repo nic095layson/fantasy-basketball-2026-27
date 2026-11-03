@@ -326,16 +326,44 @@ def lineup_moves(me, playing, avail, value):
     return moves
 
 
-def today_swap_value(me_now, opp_now, opp_rem, roster, today_names, swap, sched, today, avail, lines):
-    """The change in expected categories won this week from today's swap (start, sit): today's counted players are the
-    actual starters who play (today_names) with the swap applied; the rest of the week keeps the daily fill."""
+def today_swap_cats(me_now, opp_now, opp_rem, roster, today_names, swap, sched, today, avail, lines):
+    """today_swap_value split by category (owner 2026-11-03, "dynamic based on categorical needs for the matchup"):
+    {category: change in P(win it) this week} from today's swap (start, sit); the same model, so the sum is the
+    swap's change in expected categories."""
     now_s, rest = _split(sched, today)
     r_rest = remaining(roster, rest, avail, lines)
     start, sit = swap
     new = [n for n in today_names if n != sit] + [start]
-    exp = lambda names: sum(cat_chances(me_now, _both(remaining([r for r in roster if r["player"] in names], now_s,
-                                                                avail, lines), r_rest), opp_now, opp_rem).values())
-    return exp(new) - exp(today_names)
+    ch = lambda names: cat_chances(me_now, _both(remaining([r for r in roster if r["player"] in names], now_s,
+                                                           avail, lines), r_rest), opp_now, opp_rem)
+    a, b = ch(new), ch(today_names)
+    return {c: a[c] - b[c] for c in CATS}
+
+
+def today_swap_value(me_now, opp_now, opp_rem, roster, today_names, swap, sched, today, avail, lines):
+    """The change in expected categories won this week from today's swap (start, sit): today's counted players are the
+    actual starters who play (today_names) with the swap applied; the rest of the week keeps the daily fill."""
+    return sum(today_swap_cats(me_now, opp_now, opp_rem, roster, today_names, swap, sched, today, avail, lines).values())
+
+
+def replacement_table(me, playing, avail, score):
+    """Owner 2026-11-03 (the Out-today card, "dynamic based on categorical needs for the matchup"): for each starter
+    with a game today, every bench player with a game today who is not Out and fits the starter's Yahoo slot, ranked
+    by the change in expected categories this week from starting him in that slot (score(bench, starter) ->
+    {category: change}); never by season value. The deck reads it for whichever starter the live status calls Out."""
+    elig = {k.upper(): v for k, v in CG.SLOTS}
+    fits = lambda slot, p: elig.get(slot.upper()) is None or any(x in elig[slot.upper()] for x in p["positions"])
+    bench = [p for p in me if p["slot"] == "BN" and p["team"] in playing and avail.get(p["player"], 1.0) > 0]
+    out = {}
+    for s in (p for p in me if p["slot"] not in BENCH_SLOTS and p["team"] in playing):
+        rows = []
+        for b in (x for x in bench if fits(s["slot"], x)):
+            cats = score(b, s)
+            rows.append(dict(player=b["player"], d_exp=round(sum(cats.values()), 3),
+                             cats={c: round(v, 3) for c, v in cats.items()}))
+        rows.sort(key=lambda r: (-r["d_exp"], r["player"]))
+        out[s["player"]] = dict(slot=s["slot"], candidates=rows)
+    return out
 
 
 def lineup_alerts(moves):
@@ -739,8 +767,12 @@ def build(date, paths):
     for m in moves:
         m["d_exp"] = round(today_swap_value(me_now, opp_now, opp_rem, mine, on_today, (m["start"], m["sit"]), sched,
                                             date, avail, lines), 3) if date in sched else 0.0
+    # owner 2026-11-03: every starter's ranked bench replacements for today, by this week's categories (the deck's
+    # Out-today card reads it when the live status calls a starter Out)
+    score = (lambda b, s: today_swap_cats(me_now, opp_now, opp_rem, mine, on_today, (b["player"], s["player"]), sched,
+                                          date, avail, lines)) if date in sched else (lambda b, s: {c: 0.0 for c in CATS})
     lineup_today = dict(date=date, games_today=bool(playing), moves=moves, alerts=lineup_alerts(moves),
-                        d_exp=LINEUP_D_EXP,
+                        d_exp=LINEUP_D_EXP, replacements=replacement_table(me_slots, playing, avail, score),
                         slots={r["player"]: r["slot"] for r in me_slots})
     notice = fa_notice(mine, fas, (pick["this_week"] or {}).get("rows") or [])
 
