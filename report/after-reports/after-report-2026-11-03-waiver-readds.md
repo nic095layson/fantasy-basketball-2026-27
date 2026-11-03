@@ -75,6 +75,8 @@ Champagnie was re-added 11-01 08:15Z with a 10 FAAB bid (tr.107), the day after 
 3. Option 1, plus a minimum gain before a pair is printed as the top pick (the line set from a measured scan error, stated before the run).
 4. Keep the 11-02 decision as is: nothing built. The runner keeps recording re-adds in its morning report.
 
+**Owner's pick, 2026-11-03 (clickable card in the runner session): option 1, "Show waiver date".** This is the display-only change: Yahoo's waiverDate and a "you dropped him on <date>" note beside each scan and streaming pick, with no ranking change. Options 2 and 3 were not chosen. Main builds this on that word.
+
 ## 5. Provenance
 
 - Produced by the persistent runner session (claude.ai/code/session_01BsJA4wttu98TKVNoh6HBz1), 2026-11-03, after the morning run's commit 39b38ee.
