@@ -60,6 +60,7 @@ Runner impact: code-only (the governance hooks, no prompt change). The runner's 
 ## 6. Bounds and open items
 
 - Out of scope by design: the prompt classifier; the library patch (not attached).
+- Flagged, not fixed (adjacent, found in the refutation pass): the Stop gate's second half, the prompt-class check in `governance-enforce.py`, finds "the prompt" itself and counts governor loads from the owner's latest message, so it still spans a scheduled run with the owner's previous prompt (the run inherits that prompt's class and its loads). The build order named F1, F2 and F3; this one needs its own decision.
 - In scope and unverified: the first live scheduled run after merge (the 05:00 Pacific morning run).
 
 ## Watchlist
