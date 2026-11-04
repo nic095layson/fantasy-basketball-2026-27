@@ -104,3 +104,4 @@ INFERENCE (not tested): the error text says "try again later". A single wait-and
 - **A: option 1.** Add `YAHOO_TRANSIENT_ERROR` to both stored prompts' retry rule (wait about 30 s, retry once). This is a prompt-text change only.
 - **B: option 1.** Leave the 11-03 manager-log hole, recorded here.
 - **C: option 1.** Meleek Thomas stays with the standing unpooled-player process.
+- **A applied 2026-11-04 ~17:00Z by the runner (owner: "You update both prompts").** In both scheduled-task prompts (morning trig_01V43…, afternoon trig_015cH…), the retry sentence now reads "YAHOO_AUTH_UNAVAILABLE or YAHOO_TRANSIENT_ERROR (owner 2026-11-04)". No other character changed: each saved prompt was compared with the expected text and matched exactly. The first run under it is the 11-04 afternoon run.
