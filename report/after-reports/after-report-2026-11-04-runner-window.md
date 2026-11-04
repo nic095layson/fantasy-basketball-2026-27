@@ -99,3 +99,8 @@ INFERENCE (not tested): the error text says "try again later". A single wait-and
   - `after-report-2026-11-03-runner-window.md`
   - `after-report-2026-11-03-waiver-readds.md`
   - `prompt-2026-11-03-main-waiver-date.md`
+
+**Owner's picks, 2026-11-04 (clickable cards in the runner session):**
+- **A: option 1.** Add `YAHOO_TRANSIENT_ERROR` to both stored prompts' retry rule (wait about 30 s, retry once). This is a prompt-text change only.
+- **B: option 1.** Leave the 11-03 manager-log hole, recorded here.
+- **C: option 1.** Meleek Thomas stays with the standing unpooled-player process.
