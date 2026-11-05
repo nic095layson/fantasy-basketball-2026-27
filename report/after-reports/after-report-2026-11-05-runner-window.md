@@ -118,6 +118,6 @@ No scheduled run in this span. Each item was done on the owner's word in the run
 **Governance misses, both caught by the Stop hook (EVIDENCE: hook output in the runner session):**
 - Item 4 was saved before adversarial-verify was loaded. The byte check then ran and passed.
 - Item 5 was committed before plan-gate was loaded. The plan was then stated after the fact.
-- Neither result needed undoing. The hook (main's #238 turn gate) judged both owner turns correctly.
+- Neither result needed undoing. Both hook blocks were correct calls on owner turns.
 
 **For main:** nothing new to build beyond the A1 prompt (item 2). The next afternoon run (2026-11-06 ~23:03Z) is the first under the new step-5 wording.
