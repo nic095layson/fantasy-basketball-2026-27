@@ -47,7 +47,7 @@
 ### Finding 3: afternoon deck record mislabel (EVIDENCE)
 
 - `scripts/season_deck.py:333`: `record = dict(date=date, out=f"report/season/deck_{date}.html", …`. The phase is not in the path.
-- `deck_record_2026-11-05_pm.json` → `"out": "report/season/deck_2026-11-05.html"`. `deck_record_2026-11-04_pm.json` has the same mislabel.
+- `deck_record_2026-11-05_pm.json` → `"out": "report/season/deck_2026-11-05.html"`. `deck_record_2026-11-04_pm.json` has the same mislabel. Correction, 2026-11-05, while writing the build prompt: all 8 afternoon records since 10-29 have it (8 of 8 checked).
 - No data harm: the page itself is written to `deck_<date>_pm.html`, and the morning file was unchanged in git after both afternoon runs. Only the record's pointer is wrong. A reader following it would open the morning page.
 
 ### Finding 4: stale waiver pairs on the afternoon page
