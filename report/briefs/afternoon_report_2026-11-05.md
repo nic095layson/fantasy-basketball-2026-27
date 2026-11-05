@@ -12,10 +12,10 @@
 - **ANONG NANGIANNIS?!** — added Oso Ighodaro; dropped Zaccharie Risacher
 - **MAXEY-MUM OVERDRIVE** — added Jalen Green; to IL: Kon Knueppel
 
-## Status since the morning (status_2026-11-05_pm.json vs status_2026-11-05.json)
+## Injury status since the morning (status_2026-11-05_pm.json vs status_2026-11-05.json)
 
-- **Your roster:** no change.
-- **Opponent (Podz save the league):** no change.
+- **Your players:** no injury-status change (Kawhi Leonard and Tyrese Haliburton still Out). Roster moves are in the league-moves section above.
+- **Opponent's players (Podz save the league):** no injury-status change (Nic Claxton still Out).
 - **Elsewhere:**
   - Out → questionable: DeMar DeRozan, Jalen Johnson, Josh Hart, Peyton Watson.
   - Out → probable: Trey Murphy III.
