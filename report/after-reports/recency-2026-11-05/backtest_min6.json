@@ -1,0 +1,827 @@
+{
+ "players": 243,
+ "min_games": 6,
+ "player_games": 1029,
+ "cats": {
+  "PTS": {
+   "preseason": {
+    "mae": 5.307,
+    "bias": -1.106,
+    "d_vs_blend": 0.277,
+    "lo": 0.197,
+    "hi": 0.36,
+    "beats_blend_share": 0.394
+   },
+   "blend (current)": {
+    "mae": 5.03,
+    "bias": -0.679,
+    "d_vs_blend": 0,
+    "lo": 0,
+    "hi": 0,
+    "beats_blend_share": null
+   },
+   "season mean": {
+    "mae": 5.035,
+    "bias": 0.234,
+    "d_vs_blend": 0.005,
+    "lo": -0.136,
+    "hi": 0.14,
+    "beats_blend_share": 0.504
+   },
+   "last 4": {
+    "mae": 5.114,
+    "bias": 0.004,
+    "d_vs_blend": 0.084,
+    "lo": -0.08,
+    "hi": 0.249,
+    "beats_blend_share": 0.491
+   },
+   "ewma hl3": {
+    "mae": 5.044,
+    "bias": 0.073,
+    "d_vs_blend": 0.014,
+    "lo": -0.13,
+    "hi": 0.154,
+    "beats_blend_share": 0.506
+   },
+   "ewma hl6": {
+    "mae": 5.031,
+    "bias": 0.148,
+    "d_vs_blend": 0.001,
+    "lo": -0.13,
+    "hi": 0.142,
+    "beats_blend_share": 0.507
+   },
+   "blend, prior /2": {
+    "mae": 4.955,
+    "bias": -0.462,
+    "d_vs_blend": -0.074,
+    "lo": -0.11,
+    "hi": -0.038,
+    "beats_blend_share": 0.563
+   },
+   "blend, prior x2": {
+    "mae": 5.12,
+    "bias": -0.851,
+    "d_vs_blend": 0.091,
+    "lo": 0.06,
+    "hi": 0.123,
+    "beats_blend_share": 0.407
+   },
+   "blend + ewma hl3 actuals": {
+    "mae": 5.025,
+    "bias": -0.731,
+    "d_vs_blend": -0.005,
+    "lo": -0.026,
+    "hi": 0.014,
+    "beats_blend_share": 0.504
+   },
+   "blend + ewma hl6 actuals": {
+    "mae": 5.026,
+    "bias": -0.707,
+    "d_vs_blend": -0.004,
+    "lo": -0.014,
+    "hi": 0.006,
+    "beats_blend_share": 0.509
+   }
+  },
+  "REB": {
+   "preseason": {
+    "mae": 2.014,
+    "bias": -0.135,
+    "d_vs_blend": 0.075,
+    "lo": 0.047,
+    "hi": 0.104,
+    "beats_blend_share": 0.42
+   },
+   "blend (current)": {
+    "mae": 1.939,
+    "bias": -0.063,
+    "d_vs_blend": 0,
+    "lo": 0,
+    "hi": 0,
+    "beats_blend_share": null
+   },
+   "season mean": {
+    "mae": 1.964,
+    "bias": 0.11,
+    "d_vs_blend": 0.025,
+    "lo": -0.03,
+    "hi": 0.077,
+    "beats_blend_share": 0.497
+   },
+   "last 4": {
+    "mae": 2.036,
+    "bias": 0.014,
+    "d_vs_blend": 0.097,
+    "lo": 0.032,
+    "hi": 0.159,
+    "beats_blend_share": 0.464
+   },
+   "ewma hl3": {
+    "mae": 1.992,
+    "bias": 0.047,
+    "d_vs_blend": 0.053,
+    "lo": -0.001,
+    "hi": 0.105,
+    "beats_blend_share": 0.477
+   },
+   "ewma hl6": {
+    "mae": 1.974,
+    "bias": 0.076,
+    "d_vs_blend": 0.035,
+    "lo": -0.019,
+    "hi": 0.085,
+    "beats_blend_share": 0.5
+   },
+   "blend, prior /2": {
+    "mae": 1.918,
+    "bias": -0.024,
+    "d_vs_blend": -0.021,
+    "lo": -0.035,
+    "hi": -0.008,
+    "beats_blend_share": 0.54
+   },
+   "blend, prior x2": {
+    "mae": 1.965,
+    "bias": -0.092,
+    "d_vs_blend": 0.026,
+    "lo": 0.015,
+    "hi": 0.038,
+    "beats_blend_share": 0.427
+   },
+   "blend + ewma hl3 actuals": {
+    "mae": 1.936,
+    "bias": -0.083,
+    "d_vs_blend": -0.004,
+    "lo": -0.012,
+    "hi": 0.004,
+    "beats_blend_share": 0.516
+   },
+   "blend + ewma hl6 actuals": {
+    "mae": 1.937,
+    "bias": -0.074,
+    "d_vs_blend": -0.002,
+    "lo": -0.007,
+    "hi": 0.002,
+    "beats_blend_share": 0.519
+   }
+  },
+  "AST": {
+   "preseason": {
+    "mae": 1.505,
+    "bias": -0.117,
+    "d_vs_blend": 0.054,
+    "lo": 0.031,
+    "hi": 0.077,
+    "beats_blend_share": 0.431
+   },
+   "blend (current)": {
+    "mae": 1.452,
+    "bias": -0.029,
+    "d_vs_blend": 0,
+    "lo": 0,
+    "hi": 0,
+    "beats_blend_share": null
+   },
+   "season mean": {
+    "mae": 1.478,
+    "bias": 0.161,
+    "d_vs_blend": 0.026,
+    "lo": -0.01,
+    "hi": 0.064,
+    "beats_blend_share": 0.453
+   },
+   "last 4": {
+    "mae": 1.518,
+    "bias": 0.082,
+    "d_vs_blend": 0.067,
+    "lo": 0.027,
+    "hi": 0.104,
+    "beats_blend_share": 0.439
+   },
+   "ewma hl3": {
+    "mae": 1.493,
+    "bias": 0.103,
+    "d_vs_blend": 0.042,
+    "lo": 0.002,
+    "hi": 0.079,
+    "beats_blend_share": 0.466
+   },
+   "ewma hl6": {
+    "mae": 1.483,
+    "bias": 0.131,
+    "d_vs_blend": 0.032,
+    "lo": -0.004,
+    "hi": 0.066,
+    "beats_blend_share": 0.47
+   },
+   "blend, prior /2": {
+    "mae": 1.437,
+    "bias": 0.016,
+    "d_vs_blend": -0.015,
+    "lo": -0.026,
+    "hi": -0.004,
+    "beats_blend_share": 0.512
+   },
+   "blend, prior x2": {
+    "mae": 1.47,
+    "bias": -0.064,
+    "d_vs_blend": 0.018,
+    "lo": 0.009,
+    "hi": 0.027,
+    "beats_blend_share": 0.446
+   },
+   "blend + ewma hl3 actuals": {
+    "mae": 1.449,
+    "bias": -0.048,
+    "d_vs_blend": -0.002,
+    "lo": -0.009,
+    "hi": 0.005,
+    "beats_blend_share": 0.515
+   },
+   "blend + ewma hl6 actuals": {
+    "mae": 1.45,
+    "bias": -0.039,
+    "d_vs_blend": -0.001,
+    "lo": -0.005,
+    "hi": 0.002,
+    "beats_blend_share": 0.52
+   }
+  },
+  "STL": {
+   "preseason": {
+    "mae": 0.759,
+    "bias": -0.031,
+    "d_vs_blend": 0.007,
+    "lo": 0.001,
+    "hi": 0.014,
+    "beats_blend_share": 0.449
+   },
+   "blend (current)": {
+    "mae": 0.752,
+    "bias": -0.033,
+    "d_vs_blend": 0,
+    "lo": 0,
+    "hi": 0,
+    "beats_blend_share": null
+   },
+   "season mean": {
+    "mae": 0.785,
+    "bias": -0.041,
+    "d_vs_blend": 0.034,
+    "lo": 0.012,
+    "hi": 0.055,
+    "beats_blend_share": 0.451
+   },
+   "last 4": {
+    "mae": 0.808,
+    "bias": -0.042,
+    "d_vs_blend": 0.056,
+    "lo": 0.031,
+    "hi": 0.08,
+    "beats_blend_share": 0.461
+   },
+   "ewma hl3": {
+    "mae": 0.794,
+    "bias": -0.042,
+    "d_vs_blend": 0.042,
+    "lo": 0.019,
+    "hi": 0.064,
+    "beats_blend_share": 0.48
+   },
+   "ewma hl6": {
+    "mae": 0.788,
+    "bias": -0.042,
+    "d_vs_blend": 0.036,
+    "lo": 0.015,
+    "hi": 0.057,
+    "beats_blend_share": 0.473
+   },
+   "blend, prior /2": {
+    "mae": 0.752,
+    "bias": -0.034,
+    "d_vs_blend": -0.0,
+    "lo": -0.004,
+    "hi": 0.004,
+    "beats_blend_share": 0.493
+   },
+   "blend, prior x2": {
+    "mae": 0.754,
+    "bias": -0.032,
+    "d_vs_blend": 0.002,
+    "lo": -0.001,
+    "hi": 0.005,
+    "beats_blend_share": 0.462
+   },
+   "blend + ewma hl3 actuals": {
+    "mae": 0.753,
+    "bias": -0.034,
+    "d_vs_blend": 0.001,
+    "lo": -0.001,
+    "hi": 0.003,
+    "beats_blend_share": 0.463
+   },
+   "blend + ewma hl6 actuals": {
+    "mae": 0.752,
+    "bias": -0.033,
+    "d_vs_blend": 0.001,
+    "lo": -0.0,
+    "hi": 0.002,
+    "beats_blend_share": 0.465
+   }
+  },
+  "BLK": {
+   "preseason": {
+    "mae": 0.578,
+    "bias": -0.034,
+    "d_vs_blend": 0.01,
+    "lo": 0.003,
+    "hi": 0.018,
+    "beats_blend_share": 0.401
+   },
+   "blend (current)": {
+    "mae": 0.567,
+    "bias": -0.026,
+    "d_vs_blend": 0,
+    "lo": 0,
+    "hi": 0,
+    "beats_blend_share": null
+   },
+   "season mean": {
+    "mae": 0.57,
+    "bias": -0.003,
+    "d_vs_blend": 0.002,
+    "lo": -0.015,
+    "hi": 0.021,
+    "beats_blend_share": 0.509
+   },
+   "last 4": {
+    "mae": 0.571,
+    "bias": -0.009,
+    "d_vs_blend": 0.003,
+    "lo": -0.02,
+    "hi": 0.027,
+    "beats_blend_share": 0.515
+   },
+   "ewma hl3": {
+    "mae": 0.571,
+    "bias": -0.006,
+    "d_vs_blend": 0.004,
+    "lo": -0.016,
+    "hi": 0.023,
+    "beats_blend_share": 0.53
+   },
+   "ewma hl6": {
+    "mae": 0.57,
+    "bias": -0.005,
+    "d_vs_blend": 0.002,
+    "lo": -0.016,
+    "hi": 0.021,
+    "beats_blend_share": 0.526
+   },
+   "blend, prior /2": {
+    "mae": 0.566,
+    "bias": -0.021,
+    "d_vs_blend": -0.002,
+    "lo": -0.006,
+    "hi": 0.002,
+    "beats_blend_share": 0.525
+   },
+   "blend, prior x2": {
+    "mae": 0.571,
+    "bias": -0.029,
+    "d_vs_blend": 0.003,
+    "lo": 0.0,
+    "hi": 0.006,
+    "beats_blend_share": 0.414
+   },
+   "blend + ewma hl3 actuals": {
+    "mae": 0.566,
+    "bias": -0.026,
+    "d_vs_blend": -0.001,
+    "lo": -0.004,
+    "hi": 0.001,
+    "beats_blend_share": 0.438
+   },
+   "blend + ewma hl6 actuals": {
+    "mae": 0.567,
+    "bias": -0.026,
+    "d_vs_blend": -0.001,
+    "lo": -0.002,
+    "hi": 0.0,
+    "beats_blend_share": 0.437
+   }
+  },
+  "3PM": {
+   "preseason": {
+    "mae": 1.022,
+    "bias": -0.095,
+    "d_vs_blend": 0.039,
+    "lo": 0.022,
+    "hi": 0.058,
+    "beats_blend_share": 0.386
+   },
+   "blend (current)": {
+    "mae": 0.983,
+    "bias": -0.047,
+    "d_vs_blend": 0,
+    "lo": 0,
+    "hi": 0,
+    "beats_blend_share": null
+   },
+   "season mean": {
+    "mae": 1.002,
+    "bias": 0.037,
+    "d_vs_blend": 0.019,
+    "lo": -0.006,
+    "hi": 0.045,
+    "beats_blend_share": 0.455
+   },
+   "last 4": {
+    "mae": 1.026,
+    "bias": 0.0,
+    "d_vs_blend": 0.043,
+    "lo": 0.012,
+    "hi": 0.073,
+    "beats_blend_share": 0.435
+   },
+   "ewma hl3": {
+    "mae": 1.006,
+    "bias": 0.01,
+    "d_vs_blend": 0.023,
+    "lo": -0.006,
+    "hi": 0.05,
+    "beats_blend_share": 0.471
+   },
+   "ewma hl6": {
+    "mae": 1.003,
+    "bias": 0.023,
+    "d_vs_blend": 0.02,
+    "lo": -0.006,
+    "hi": 0.045,
+    "beats_blend_share": 0.475
+   },
+   "blend, prior /2": {
+    "mae": 0.977,
+    "bias": -0.025,
+    "d_vs_blend": -0.006,
+    "lo": -0.014,
+    "hi": 0.001,
+    "beats_blend_share": 0.492
+   },
+   "blend, prior x2": {
+    "mae": 0.994,
+    "bias": -0.066,
+    "d_vs_blend": 0.011,
+    "lo": 0.005,
+    "hi": 0.018,
+    "beats_blend_share": 0.405
+   },
+   "blend + ewma hl3 actuals": {
+    "mae": 0.98,
+    "bias": -0.057,
+    "d_vs_blend": -0.003,
+    "lo": -0.008,
+    "hi": 0.002,
+    "beats_blend_share": 0.473
+   },
+   "blend + ewma hl6 actuals": {
+    "mae": 0.981,
+    "bias": -0.052,
+    "d_vs_blend": -0.002,
+    "lo": -0.004,
+    "hi": 0.001,
+    "beats_blend_share": 0.475
+   }
+  },
+  "TO": {
+   "preseason": {
+    "mae": 1.003,
+    "bias": -0.007,
+    "d_vs_blend": 0.014,
+    "lo": 0.002,
+    "hi": 0.029,
+    "beats_blend_share": 0.461
+   },
+   "blend (current)": {
+    "mae": 0.988,
+    "bias": -0.029,
+    "d_vs_blend": 0,
+    "lo": 0,
+    "hi": 0,
+    "beats_blend_share": null
+   },
+   "season mean": {
+    "mae": 1.053,
+    "bias": -0.087,
+    "d_vs_blend": 0.065,
+    "lo": 0.04,
+    "hi": 0.092,
+    "beats_blend_share": 0.434
+   },
+   "last 4": {
+    "mae": 1.068,
+    "bias": -0.087,
+    "d_vs_blend": 0.08,
+    "lo": 0.053,
+    "hi": 0.108,
+    "beats_blend_share": 0.461
+   },
+   "ewma hl3": {
+    "mae": 1.062,
+    "bias": -0.084,
+    "d_vs_blend": 0.074,
+    "lo": 0.05,
+    "hi": 0.098,
+    "beats_blend_share": 0.457
+   },
+   "ewma hl6": {
+    "mae": 1.056,
+    "bias": -0.086,
+    "d_vs_blend": 0.067,
+    "lo": 0.043,
+    "hi": 0.092,
+    "beats_blend_share": 0.455
+   },
+   "blend, prior /2": {
+    "mae": 0.991,
+    "bias": -0.042,
+    "d_vs_blend": 0.003,
+    "lo": -0.004,
+    "hi": 0.009,
+    "beats_blend_share": 0.465
+   },
+   "blend, prior x2": {
+    "mae": 0.991,
+    "bias": -0.02,
+    "d_vs_blend": 0.003,
+    "lo": -0.002,
+    "hi": 0.009,
+    "beats_blend_share": 0.477
+   },
+   "blend + ewma hl3 actuals": {
+    "mae": 0.991,
+    "bias": -0.028,
+    "d_vs_blend": 0.003,
+    "lo": -0.001,
+    "hi": 0.006,
+    "beats_blend_share": 0.477
+   },
+   "blend + ewma hl6 actuals": {
+    "mae": 0.99,
+    "bias": -0.029,
+    "d_vs_blend": 0.001,
+    "lo": -0.001,
+    "hi": 0.003,
+    "beats_blend_share": 0.482
+   }
+  },
+  "FG%": {
+   "preseason": {
+    "mae": 1.2,
+    "bias": -0.217,
+    "d_vs_blend": -0.003,
+    "lo": -0.01,
+    "hi": 0.005,
+    "beats_blend_share": 0.495
+   },
+   "blend (current)": {
+    "mae": 1.203,
+    "bias": -0.191,
+    "d_vs_blend": 0,
+    "lo": 0,
+    "hi": 0,
+    "beats_blend_share": null
+   },
+   "season mean": {
+    "mae": 1.312,
+    "bias": -0.058,
+    "d_vs_blend": 0.109,
+    "lo": 0.078,
+    "hi": 0.139,
+    "beats_blend_share": 0.444
+   },
+   "last 4": {
+    "mae": 1.359,
+    "bias": -0.056,
+    "d_vs_blend": 0.156,
+    "lo": 0.121,
+    "hi": 0.193,
+    "beats_blend_share": 0.405
+   },
+   "ewma hl3": {
+    "mae": 1.328,
+    "bias": -0.063,
+    "d_vs_blend": 0.125,
+    "lo": 0.092,
+    "hi": 0.158,
+    "beats_blend_share": 0.434
+   },
+   "ewma hl6": {
+    "mae": 1.317,
+    "bias": -0.061,
+    "d_vs_blend": 0.114,
+    "lo": 0.082,
+    "hi": 0.144,
+    "beats_blend_share": 0.431
+   },
+   "blend, prior /2": {
+    "mae": 1.207,
+    "bias": -0.173,
+    "d_vs_blend": 0.004,
+    "lo": -0.001,
+    "hi": 0.009,
+    "beats_blend_share": 0.491
+   },
+   "blend, prior x2": {
+    "mae": 1.201,
+    "bias": -0.203,
+    "d_vs_blend": -0.002,
+    "lo": -0.005,
+    "hi": 0.001,
+    "beats_blend_share": 0.498
+   },
+   "blend + ewma hl3 actuals": {
+    "mae": 1.203,
+    "bias": -0.192,
+    "d_vs_blend": 0.0,
+    "lo": -0.003,
+    "hi": 0.003,
+    "beats_blend_share": 0.504
+   },
+   "blend + ewma hl6 actuals": {
+    "mae": 1.203,
+    "bias": -0.192,
+    "d_vs_blend": -0.0,
+    "lo": -0.002,
+    "hi": 0.001,
+    "beats_blend_share": 0.518
+   }
+  },
+  "FT%": {
+   "preseason": {
+    "mae": 0.632,
+    "bias": -0.057,
+    "d_vs_blend": -0.002,
+    "lo": -0.007,
+    "hi": 0.004,
+    "beats_blend_share": 0.487
+   },
+   "blend (current)": {
+    "mae": 0.634,
+    "bias": -0.047,
+    "d_vs_blend": 0,
+    "lo": 0,
+    "hi": 0,
+    "beats_blend_share": null
+   },
+   "season mean": {
+    "mae": 0.716,
+    "bias": 0.033,
+    "d_vs_blend": 0.082,
+    "lo": 0.05,
+    "hi": 0.113,
+    "beats_blend_share": 0.438
+   },
+   "last 4": {
+    "mae": 0.767,
+    "bias": 0.014,
+    "d_vs_blend": 0.133,
+    "lo": 0.093,
+    "hi": 0.174,
+    "beats_blend_share": 0.401
+   },
+   "ewma hl3": {
+    "mae": 0.731,
+    "bias": 0.023,
+    "d_vs_blend": 0.097,
+    "lo": 0.065,
+    "hi": 0.13,
+    "beats_blend_share": 0.406
+   },
+   "ewma hl6": {
+    "mae": 0.722,
+    "bias": 0.028,
+    "d_vs_blend": 0.088,
+    "lo": 0.057,
+    "hi": 0.121,
+    "beats_blend_share": 0.41
+   },
+   "blend, prior /2": {
+    "mae": 0.637,
+    "bias": -0.039,
+    "d_vs_blend": 0.003,
+    "lo": -0.0,
+    "hi": 0.007,
+    "beats_blend_share": 0.475
+   },
+   "blend, prior x2": {
+    "mae": 0.633,
+    "bias": -0.051,
+    "d_vs_blend": -0.001,
+    "lo": -0.004,
+    "hi": 0.001,
+    "beats_blend_share": 0.491
+   },
+   "blend + ewma hl3 actuals": {
+    "mae": 0.634,
+    "bias": -0.048,
+    "d_vs_blend": 0.0,
+    "lo": -0.002,
+    "hi": 0.002,
+    "beats_blend_share": 0.481
+   },
+   "blend + ewma hl6 actuals": {
+    "mae": 0.634,
+    "bias": -0.047,
+    "d_vs_blend": 0.0,
+    "lo": -0.001,
+    "hi": 0.001,
+    "beats_blend_share": 0.487
+   }
+  },
+  "MIN": {
+   "preseason": {
+    "mae": 4.797,
+    "bias": 1.301,
+    "d_vs_blend": 0.117,
+    "lo": 0.082,
+    "hi": 0.155,
+    "beats_blend_share": 0.313
+   },
+   "blend (current)": {
+    "mae": 4.68,
+    "bias": 1.16,
+    "d_vs_blend": 0,
+    "lo": 0,
+    "hi": 0,
+    "beats_blend_share": null
+   },
+   "season mean": {
+    "mae": 4.538,
+    "bias": 0.916,
+    "d_vs_blend": -0.141,
+    "lo": -0.203,
+    "hi": -0.082,
+    "beats_blend_share": 0.471
+   },
+   "last 4": {
+    "mae": 4.475,
+    "bias": 0.321,
+    "d_vs_blend": -0.204,
+    "lo": -0.341,
+    "hi": -0.071,
+    "beats_blend_share": 0.447
+   },
+   "ewma hl3": {
+    "mae": 4.446,
+    "bias": 0.523,
+    "d_vs_blend": -0.233,
+    "lo": -0.361,
+    "hi": -0.119,
+    "beats_blend_share": 0.568
+   },
+   "ewma hl6": {
+    "mae": 4.474,
+    "bias": 0.706,
+    "d_vs_blend": -0.206,
+    "lo": -0.293,
+    "hi": -0.12,
+    "beats_blend_share": 0.581
+   },
+   "blend, prior /2": {
+    "mae": 4.633,
+    "bias": 1.095,
+    "d_vs_blend": -0.047,
+    "lo": -0.064,
+    "hi": -0.03,
+    "beats_blend_share": 0.505
+   },
+   "blend, prior x2": {
+    "mae": 4.722,
+    "bias": 1.214,
+    "d_vs_blend": 0.043,
+    "lo": 0.029,
+    "hi": 0.058,
+    "beats_blend_share": 0.302
+   },
+   "blend + ewma hl3 actuals": {
+    "mae": 4.609,
+    "bias": 1.029,
+    "d_vs_blend": -0.071,
+    "lo": -0.095,
+    "hi": -0.048,
+    "beats_blend_share": 0.597
+   },
+   "blend + ewma hl6 actuals": {
+    "mae": 4.642,
+    "bias": 1.089,
+    "d_vs_blend": -0.037,
+    "lo": -0.049,
+    "hi": -0.026,
+    "beats_blend_share": 0.6
+   }
+  }
+ }
+}
