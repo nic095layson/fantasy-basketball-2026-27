@@ -65,6 +65,8 @@ def default_paths(date, phase="am"):
                 # optional (owner 2026-10-27 "after week 2 grades", built 2026-11-02): the weekly accuracy card's record
                 # (accuracy_week.py; lines bias / MAE / rank, availability by tier, the forecasts), read-only here
                 accuracy=os.path.join(KIT, "report", "accuracy.json"),
+                # optional (owner 2026-11-05 "track these on a ledger"): the start/sit scorecard (lineup_log.py), read-only
+                lineup=os.path.join(KIT, "report", "decisions", "lineup_scorecard.json"),
                 # optional (owner 2026-10-28, item 4): the day's two status pins the brief's waiver gate reads
                 yahoo_pull=os.path.join(KIT, "data", "source", "flaim", f"pull_{date}{sfx}.json"),
                 espn_injuries=os.path.join(KIT, "data", "status", f"espn_injuries_{date}{sfx}.json"))
@@ -204,7 +206,7 @@ def build(paths, date, phase=None):
     opt = lambda k: (json.load(open(paths[k], encoding="utf-8"))
                      if paths.get(k) and os.path.exists(paths[k]) else None)
     matchup_live = opt("matchup_live"); week_matchup = opt("week_matchup"); league_rec = opt("league"); form_rec = opt("form"); scores = opt("scores")
-    accuracy = opt("accuracy")
+    accuracy = opt("accuracy"); lineup_sc = opt("lineup")
     for k in ("date", "opponent", "title", "lineup"):
         if k not in brief: raise DeckError(f"brief lacks {k}")
     if brief["date"] != date: raise DeckError(f"brief is for {brief['date']}, not {date}")
@@ -285,7 +287,7 @@ def build(paths, date, phase=None):
                 league=dict(as_of=league["as_of"], rosters=rosters, managers={t["name"]: t.get("manager") for t in league["teams"]},
                             unpooled=league.get("unpooled") or [], my_positions=my_positions), season_lines=lines, matchup=wk,
                 ledger={k: dict(v, result_text=ledger_result(v)) for k, v in calib.get("weeks", {}).items()}, bands=bands, band_engine=band_engine, band_config=band_config, matchup_live=matchup_live,
-                week_matchup=week_matchup, league_table=league_rec, form=form_rec, scores=scores, accuracy=accuracy, fa_status=fa_status, out_today=out_now, waiver_notes=waiver_notes,
+                week_matchup=week_matchup, league_table=league_rec, form=form_rec, scores=scores, accuracy=accuracy, lineup_scorecard=lineup_sc, fa_status=fa_status, out_today=out_now, waiver_notes=waiver_notes,
                 # owner 2026-10-28 ("Rebuild, flag morning parts"): the 3 PM run's rebuild says which parts are the 5 AM run's
                 **({"refresh": {"phase": phase, "not_on_board": not_on_board}} if phase == "pm" else {}),
                 config=dict(cats=["FG%", "FT%", "3PM", "PTS", "REB", "AST", "STL", "BLK", "TOV"],
@@ -1050,6 +1052,23 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
         h("td",{class:"num"},f3(d.brier)),h("td",{class:"num"},f3(d.baseline_brier)),h("td",{class:"num"},String(m.n==null?"–":m.n)))); });
     card.append(h("h3",{},"Forecasts"),h("div",{class:"tablebox"},ft),
       h("p",{class:"note"},"Switch rule D-RG-1 (pre-committed 2026-10-27): the real-games forecast replaces the flat one only after a lower Brier over at least 4 consecutive graded weeks, on the owner's word."));
+    p.append(card); })();
+  // owner 2026-11-05 ("track these on a ledger ... hit/miss rate"): the start/sit scorecard, read from
+  // report/decisions/lineup_scorecard.json (lineup_log.py's roll-up of the append-only ledger). Nothing here computes.
+  (function(){ const S=D.lineup_scorecard;
+    const card=h("div",{class:"card"},h("h2",{},"Start/sit calls — followed, and how the night went"),
+      noteMore("Each morning's start/sit suggestion against the lineup you locked that day and the night's box lines (lineup_log.py).",
+        "Suggested: the morning card's start/sit pairs (the best daily fill over who plays, when it differs from your lineup). Followed: the named bench player was in an active slot at lock (start), the named starter was not (sit). Night: the start's box-line z minus the sit's, scored with the engine's own z over that day's box lines. The night is the outcome, not a verdict — per-game z noise is sd 3.65 against a 0.5 line (red team), so one box score cannot judge a pair; the rates that carry meaning are the followed rates and the season-z gap, over weeks."));
+    if(!S||!S.days){ card.append(h("div",{class:"zero"},"No start/sit day on the ledger yet — the card fills each morning after the box scores land.")); p.append(card); return; }
+    const y=(v)=>v==null?"–":(v?"yes":"no"), r1=(x)=>x==null?"–":(x*100).toFixed(0)+"%";
+    card.append(h("div",{class:"note"},
+      h("div",{},h("b",{},String(S.days))," days · ",h("b",{},String(S.days_agreed))," agreed (no move suggested) · ",h("b",{},String(S.days_graded))," with a suggestion"),
+      h("div",{},"Start followed ",h("b",{},S.start_followed+" / "+S.pairs_with_lineup+" ("+r1(S.start_followed_rate)+")")," · sit followed ",h("b",{},S.sit_followed+" / "+S.pairs_with_lineup+" ("+r1(S.sit_followed_rate)+")")," · both ",h("b",{},String(S.both_followed))),
+      h("div",{},"Night went the kit's way ",h("b",{},String(S.night_kit)),", against ",h("b",{},String(S.night_against)),", no grade ",h("b",{},String(S.night_no_grade+S.night_no_box)))));
+    const t=h("table",{class:"lg"},h("tr",{},h("th",{},"day"),h("th",{},"start"),h("th",{},"sit"),h("th",{class:"num"},"gap"),h("th",{},"start followed"),h("th",{},"sit followed"),h("th",{},"night"),h("th",{class:"num"},"z gap")));
+    (S.rows||[]).filter(r=>r.pairs&&r.pairs.length).slice(-20).forEach(r=>r.pairs.forEach(q=>t.append(h("tr",{},h("td",{class:"wk"},r.date),h("td",{},q.start||"–"),h("td",{},q.sit||"–"),
+      h("td",{class:"num"},q.gap==null?"–":q.gap.toFixed(2)),h("td",{class:q.start_followed?"":"zneg"},y(q.start_followed)),h("td",{},y(q.sit_followed)),h("td",{},q.night||"no box"),h("td",{class:"num"},q.z_gap==null?"–":q.z_gap.toFixed(2))))));
+    card.append(h("h3",{},"Suggestions, by day"),h("div",{class:"tablebox"},S.days_graded? t : h("div",{class:"zero"},"No suggestion yet: every morning's best fill was your lineup as it stood.")));
     p.append(card); })();
 })();
 

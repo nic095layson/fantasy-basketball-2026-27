@@ -78,6 +78,11 @@ def steps(date, fetch=True, seasons=10000, since=None):
     # file and box record; append-only ledger, non-fatal (a day with neither file is named, not guessed)
     st.append(dict(name="tag outcomes", cmd=[PY, os.path.join(HERE, "tag_outcomes.py"), "--date", y], cwd=KIT,
                    pass_re=r"^TAG OUTCOMES: PASS", env={}, fatal=False))
+    # owner 2026-11-05 ("track these on a ledger ... hit/miss rate"): yesterday's start/sit suggestions against the
+    # lineup the owner locked and the night's box lines; append-only ledger + scorecard, non-fatal (a day whose box
+    # scores are not in yet waits; a missing lineup pin is named in the row)
+    st.append(dict(name="lineup log", cmd=[PY, os.path.join(HERE, "lineup_log.py"), "--date", date], cwd=KIT,
+                   pass_re=r"^LINEUP LOG: PASS", env={}, fatal=False))
     # owner 2026-11-02 (runner finding 2): the accuracy card's Markdown re-rendered from its record every morning, so a
     # render fault never leaves an empty file on the branch for a week; non-fatal
     st.append(dict(name="accuracy render", cmd=[PY, os.path.join(HERE, "accuracy_week.py"), "--render"], cwd=KIT,

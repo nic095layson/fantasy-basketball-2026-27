@@ -23,18 +23,20 @@ class Steps(unittest.TestCase):
         # 2026-10-21: "preflight" became step 0 (independent-audit adoption); the indices below moved by one.
         # 2026-10-23 (owner, Build 1): "league table" after the week matchup, before the deck that draws it
         # 2026-10-26 (owner, "results so far"): "league pairings" before the brief that runs the simulator
-        self.assertEqual([s["name"] for s in st], ["preflight", "league live", "matchup live", "box scores 2026-10-20", "tag outcomes", "accuracy render", "season lines", "minutes line", "season board", "status feed", "transactions", "league pairings", "il return", "daily brief", "decision log", "week matchup", "league table", "form board", "season deck"])
+        self.assertEqual([s["name"] for s in st], ["preflight", "league live", "matchup live", "box scores 2026-10-20", "tag outcomes", "lineup log", "accuracy render", "season lines", "minutes line", "season board", "status feed", "transactions", "league pairings", "il return", "daily brief", "decision log", "week matchup", "league table", "form board", "season deck"])
         self.assertIn("2026-10-20", st[3]["cmd"])
         self.assertIn("2026-10-20", st[4]["cmd"])   # 2026-10-27: "tag outcomes" grades yesterday; indices below moved by one
-        self.assertIn("2026-10-21", st[12]["cmd"])   # 2026-10-27: "minutes line" after season lines; +1 again; 2026-11-02: "accuracy render"; +1
+        self.assertIn("2026-10-21", st[5]["cmd"])    # 2026-11-05: "lineup log" takes the morning date and grades the day before
+        self.assertIn("2026-10-21", st[13]["cmd"])   # 2026-10-27: "minutes line" after season lines; +1 again; 2026-11-02: "accuracy render"; +1; 2026-11-05: "lineup log"; +1
         self.assertTrue(all(s["pass_re"] for s in st))
 
     def test_no_fetch_skips_the_box_score_step(self):
         st = M.steps("2026-10-21", fetch=False, seasons=10000)
         self.assertEqual(st[1]["name"], "tag outcomes")  # st[0] is the preflight since 2026-10-21; tag outcomes since 2026-10-27
-        self.assertEqual(st[2]["name"], "accuracy render")  # since 2026-11-02
-        self.assertEqual(st[3]["name"], "season lines")
-        self.assertEqual(st[4]["name"], "minutes line")
+        self.assertEqual(st[2]["name"], "lineup log")  # since 2026-11-05
+        self.assertEqual(st[3]["name"], "accuracy render")  # since 2026-11-02
+        self.assertEqual(st[4]["name"], "season lines")
+        self.assertEqual(st[5]["name"], "minutes line")
         self.assertNotIn("transactions", [s["name"] for s in st])
         self.assertNotIn("league live", [s["name"] for s in st])
 

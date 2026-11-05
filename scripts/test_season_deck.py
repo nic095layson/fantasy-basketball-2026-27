@@ -1722,3 +1722,60 @@ class WaiverChips(unittest.TestCase):
         self.assertIsNone(data["waiver_notes"])
         v = visible_dom(out, "Free Agents", "pane-fa")
         self.assertEqual(v["errors"], []); self.assertNotIn("on waivers until", v["text"])
+
+
+def lineup_scorecard_record():
+    """lineup_log.py's scorecard shape (report/decisions/lineup_scorecard.json): two days with a suggestion, one agreed."""
+    pair = lambda s, t, gap, sf, tf, night, zg: dict(start=s, sit=t, kind="better", gap=gap, start_followed=sf, sit_followed=tf, night=night, z_gap=zg)
+    return dict(as_of="2026-11-04", days=3, days_agreed=1, days_graded=2, days_no_brief=0, pairs=3, pairs_with_lineup=3,
+                start_followed=2, sit_followed=1, both_followed=1, night_kit=2, night_against=1, night_no_grade=0, night_no_box=0,
+                gap_sum_followed=8.88, gap_sum_ignored=0.36, start_followed_rate=0.667, sit_followed_rate=0.333,
+                rows=[dict(date="2026-10-26", status="graded", lineup_record=True,
+                           pairs=[pair("Ty Jerome", "PJ Washington", 4.48, True, False, "against", -5.12),
+                                  pair("Miles Bridges", "Collin Gillespie", 0.36, False, True, "kit", 0.54)]),
+                      dict(date="2026-10-27", status="agreed", lineup_record=True, pairs=[]),
+                      dict(date="2026-11-04", status="graded", lineup_record=True,
+                           pairs=[pair("Kyrie Irving", "Karlo Matkovic", 7.44, True, False, "kit", 3.29)])],
+                method=dict(suggested="week_matchup_<day>.json lineup_today.moves", locked="pinned Flaim daily block",
+                            night="engine z over the day's box lines", caveat="per-game z noise sd 3.65 vs a 0.5 line"))
+
+
+class LineupCard(unittest.TestCase):
+    """Owner 2026-11-05 ("track these on a ledger ... hit/miss rate"): the Week tab shows the start/sit scorecard from
+    report/decisions/lineup_scorecard.json. Read-only from the record; nothing on the deck computes a rate."""
+    def setUp(self):
+        self.d = tempfile.mkdtemp(); self.fx = fixtures(self.d)
+
+    def page(self, record):
+        if record is not None:
+            self.fx["lineup"] = os.path.join(self.d, "lineup_scorecard.json")
+            with open(self.fx["lineup"], "w") as f:
+                json.dump(record, f)
+        html, data, rec = SD.build(self.fx, date="2026-10-21")
+        p = os.path.join(self.d, "deck.html")
+        with open(p, "w", encoding="utf-8") as f:
+            f.write(html)
+        return p, rec, data
+
+    def test_default_path_names_the_scorecard_and_an_absent_one_builds_with_a_pending_line(self):
+        self.assertTrue(SD.default_paths("2026-11-05")["lineup"].endswith(os.path.join("report", "decisions", "lineup_scorecard.json")))
+        p, rec, data = self.page(None)
+        self.assertEqual(DRC.check(p)["status"], "PASS")
+        self.assertIsNone(data["lineup_scorecard"])
+        dom = week_dom(p)
+        self.assertEqual(dom["errors"], [])
+        self.assertIn("Start/sit calls", dom["text"]); self.assertIn("No start/sit day on the ledger yet", dom["text"])
+
+    def test_record_renders_the_rates_and_the_pairs_from_the_record_only(self):
+        p, rec, data = self.page(lineup_scorecard_record())
+        self.assertEqual(DRC.check(p)["status"], "PASS")
+        self.assertTrue(rec["inputs"]["lineup"]["present"])
+        dom = week_dom(p)
+        self.assertEqual(dom["errors"], [])
+        t = dom["text"]
+        self.assertIn("2 / 3 (67%)", t)          # start followed, from the record's rate
+        self.assertIn("1 / 3 (33%)", t)          # sit followed
+        for s in ("Ty Jerome", "Miles Bridges", "Kyrie Irving", "Karlo Matkovic", "against", "7.44", "-5.12"):
+            self.assertIn(s, t)
+        self.assertNotIn("No start/sit day", t)
+        self.assertLessEqual(week_dom(p, width=390)["page_overflow"], 0)
