@@ -4,14 +4,14 @@
   "flaim": {
    "transcript": "f7b74300-8501-5e41-b8c5-d2c75dd06ce4.jsonl",
    "method": "mechanical json extraction of Flaim (Yahoo) tool results from the session transcript",
-   "since": "2026-11-05T13:05:06Z",
-   "pull_file": "data/source/flaim/pull_2026-11-05.json",
-   "pull_sha256": "2499088333e4a927069b90d2ccaa25b77825f72c34c9c65ddecd12a3d33e8149",
+   "since": "2026-11-05T23:04:14Z",
+   "pull_file": "data/source/flaim/pull_2026-11-05_pm.json",
+   "pull_sha256": "0d449ed4811d08f6a4a8393408842d4a8f2f2c3a7c77135082a6fe5277925bfc",
    "view": "Flaim connector (Yahoo, read-only): get_roster per team (current), get_matchups, get_free_agents"
   },
   "transcription": {
-   "file": "data/source/flaim/rosters_2026-11-05.transcribed.csv",
-   "sha256": "f4ec08f980336a5bf1cfbcdb48a1f64153b8cbad742a503a58b10dd2d547c92a",
+   "file": "data/source/flaim/rosters_2026-11-05_pm.transcribed.csv",
+   "sha256": "cfd6111bc2ce058f1f7f49209c2671dfb852a421190be3083290954f750334a1",
    "method": "flaim_live.to_rows (mechanical; Yahoo slots and status letters for every team)"
   },
   "draft_board": "report/after-reports/draft-league-2026-10-14/recap.json",
@@ -232,7 +232,7 @@
       "SG",
       "SF"
      ],
-     "status": "O"
+     "status": "Q"
     },
     {
      "player": "Maxime Raynaud",
@@ -793,7 +793,7 @@
       "PF",
       "C"
      ],
-     "status": null
+     "status": "Q"
     },
     {
      "player": "Precious Achiuwa",
@@ -817,7 +817,7 @@
       "SF",
       "PF"
      ],
-     "status": "O"
+     "status": "Q"
     },
     {
      "player": "Anthony Edwards",
@@ -898,25 +898,14 @@
      "status": null
     },
     {
-     "player": "Zaccharie Risacher",
-     "yahoo_name": "Zaccharie Risacher",
+     "player": "OG Anunoby",
+     "yahoo_name": "OG Anunoby",
      "slot": "F",
-     "yahoo_nba_team": "DAL",
-     "pool_team": "DAL",
+     "yahoo_nba_team": "NYK",
+     "pool_team": "NYK",
      "positions": [
       "SF",
       "PF"
-     ],
-     "status": null
-    },
-    {
-     "player": "Rudy Gobert",
-     "yahoo_name": "Rudy Gobert",
-     "slot": "C",
-     "yahoo_nba_team": "MIN",
-     "pool_team": "MIN",
-     "positions": [
-      "C"
      ],
      "status": null
     },
@@ -928,6 +917,17 @@
      "pool_team": "TOR",
      "positions": [
       "PF",
+      "C"
+     ],
+     "status": null
+    },
+    {
+     "player": "Oso Ighodaro",
+     "yahoo_name": "Oso Ighodaro",
+     "slot": "C",
+     "yahoo_nba_team": "PHX",
+     "pool_team": "PHX",
+     "positions": [
       "C"
      ],
      "status": null
@@ -956,14 +956,13 @@
      "status": null
     },
     {
-     "player": "OG Anunoby",
-     "yahoo_name": "OG Anunoby",
+     "player": "Rudy Gobert",
+     "yahoo_name": "Rudy Gobert",
      "slot": "BN",
-     "yahoo_nba_team": "NYK",
-     "pool_team": "NYK",
+     "yahoo_nba_team": "MIN",
+     "pool_team": "MIN",
      "positions": [
-      "SF",
-      "PF"
+      "C"
      ],
      "status": null
     },
@@ -1012,7 +1011,7 @@
       "SG",
       "SF"
      ],
-     "status": "O"
+     "status": "P"
     }
    ],
    "empty_slots": [],
@@ -1032,8 +1031,8 @@
    "manager": "Kyle",
    "draft_overlap": 12,
    "added_since_draft": [
-    "Sandro Mamukelashvili",
-    "Zaccharie Risacher"
+    "Oso Ighodaro",
+    "Sandro Mamukelashvili"
    ],
    "dropped_since_draft": [
     "Collin Gillespie"
@@ -1135,7 +1134,7 @@
      "positions": [
       "C"
      ],
-     "status": null
+     "status": "Q"
     },
     {
      "player": "Caleb Wilson",
@@ -1286,7 +1285,7 @@
       "SF",
       "PF"
      ],
-     "status": "O"
+     "status": "Q"
     },
     {
      "player": "Austin Reaves",
@@ -1854,16 +1853,16 @@
      "status": null
     },
     {
-     "player": "Kon Knueppel",
-     "yahoo_name": "Kon Knueppel",
+     "player": "Jalen Green",
+     "yahoo_name": "Jalen Green",
      "slot": "F",
-     "yahoo_nba_team": "CHA",
-     "pool_team": "CHA",
+     "yahoo_nba_team": "PHX",
+     "pool_team": "PHX",
      "positions": [
       "SG",
       "SF"
      ],
-     "status": "O"
+     "status": null
     },
     {
      "player": "Myles Turner",
@@ -1935,6 +1934,18 @@
      "status": null
     },
     {
+     "player": "Kon Knueppel",
+     "yahoo_name": "Kon Knueppel",
+     "slot": "IL",
+     "yahoo_nba_team": "CHA",
+     "pool_team": "CHA",
+     "positions": [
+      "SG",
+      "SF"
+     ],
+     "status": "O"
+    },
+    {
      "player": "Bradley Beal",
      "yahoo_name": "Bradley Beal",
      "slot": "IL",
@@ -1968,6 +1979,7 @@
     "Bradley Beal",
     "Duncan Robinson",
     "Ja'Kobe Walter",
+    "Jalen Green",
     "Paul Reed"
    ],
    "dropped_since_draft": [
@@ -2040,14 +2052,14 @@
      "status": null
     },
     {
-     "player": "Karlo Matkovic",
-     "yahoo_name": "Karlo Matković",
+     "player": "Ziaire Williams",
+     "yahoo_name": "Ziaire Williams",
      "slot": "F",
-     "yahoo_nba_team": "NOP",
-     "pool_team": "NOP",
+     "yahoo_nba_team": "LAL",
+     "pool_team": "LAL",
      "positions": [
-      "PF",
-      "C"
+      "SG",
+      "SF"
      ],
      "status": null
     },
@@ -2167,8 +2179,8 @@
    "draft_overlap": 12,
    "added_since_draft": [
     "Collin Gillespie",
-    "Karlo Matkovic",
-    "Kris Dunn"
+    "Kris Dunn",
+    "Ziaire Williams"
    ],
    "dropped_since_draft": [
     "Christian Braun"
@@ -2305,7 +2317,7 @@
       "SF",
       "PF"
      ],
-     "status": "O"
+     "status": null
     },
     {
      "player": "Jalen Johnson",
@@ -2317,7 +2329,7 @@
       "SF",
       "PF"
      ],
-     "status": "O"
+     "status": "Q"
     },
     {
      "player": "Brandon Ingram",
