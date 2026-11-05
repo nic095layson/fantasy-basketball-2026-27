@@ -1,75 +1,61 @@
 {
- "ran_at_utc": "2026-11-04T17:55:33Z",
+ "ran_at_utc": "2026-11-05T17:43:55Z",
  "inputs": {
-  "report/after-reports/after-report-2026-11-04-turn-gate-scheduled.md": "a6089fab4c99035448aedb761b443f6d7c927e784c48a85265d50cb9cf3b1d01",
+  "report/after-reports/after-report-2026-11-05-recency.md": "eca3fae42a7f44b6880c5be31df38c67cc44b4a6dd7999a76fda662a75d4919f",
   "../wtsd/report/after-reports/redteam-2026-11-02-season/sweep.json": "1b8566531da1d0b666610a9383c063baa951d7879f045cb823faf3e0a384a87c"
  },
  "gates": [
   {
    "name": "kit check_report",
-   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-04-turn-gate-scheduled.md",
+   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-05-recency.md",
    "cwd": ".",
    "pass_re": "^REPORT GATE: PASS",
    "exit": 0,
-   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-11-04-turn-gate-scheduled.md (structure, publication rule, pull-log row)",
+   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-11-05-recency.md (structure, publication rule, pull-log row)",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "REPORT GATE: PASS \u2014 after-report-2026-11-04-turn-gate-scheduled.md (structure, publication rule, pull-log row)"
+    "REPORT GATE: PASS \u2014 after-report-2026-11-05-recency.md (structure, publication rule, pull-log row)"
    ]
   },
   {
    "name": "deck judgment_open_items --check-report",
-   "cmd": "/usr/local/bin/python3 scripts/judgment_open_items.py --check-report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-04-turn-gate-scheduled.md",
+   "cmd": "/usr/local/bin/python3 scripts/judgment_open_items.py --check-report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-05-recency.md",
    "cwd": "../yahoo-fantasy-basketball",
    "pass_re": "^receipts check PASS",
    "exit": 0,
-   "pass_line": "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-11-04-turn-gate-scheduled.md",
+   "pass_line": "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-11-05-recency.md",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-11-04-turn-gate-scheduled.md"
+    "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-11-05-recency.md"
    ]
   },
   {
    "name": "deck repeat_market_check --check-report",
-   "cmd": "/usr/local/bin/python3 scripts/repeat_market_check.py --check-report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-04-turn-gate-scheduled.md",
+   "cmd": "/usr/local/bin/python3 scripts/repeat_market_check.py --check-report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-05-recency.md",
    "cwd": "../yahoo-fantasy-basketball",
    "pass_re": "^REPEAT-NAME CHECK: PASS",
    "exit": 0,
-   "pass_line": "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-11-04-turn-gate-scheduled.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)",
+   "pass_line": "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-11-05-recency.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-11-04-turn-gate-scheduled.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)"
+    "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-11-05-recency.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)"
    ]
   },
   {
    "name": "claim receipts",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/independent_audit/claim_receipts.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-04-turn-gate-scheduled.md",
+   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/independent_audit/claim_receipts.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-05-recency.md",
    "cwd": ".",
    "pass_re": "^CLAIM RECEIPTS: (PASS|ADVISORY)",
    "exit": 0,
-   "pass_line": "CLAIM RECEIPTS: PASS \u2014 1 file(s), every mechanism claim carries a receipt",
+   "pass_line": "CLAIM RECEIPTS: ADVISORY \u2014 1 unreceipted claim(s) in 1 file(s); show a receipt or mark the status",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "CLAIM RECEIPTS: PASS \u2014 1 file(s), every mechanism claim carries a receipt"
-   ]
-  },
-  {
-   "name": "touched tests",
-   "cmd": "python3 hooks/selftest-turn-gates.py",
-   "cwd": ".",
-   "pass_re": "passed, 0 failed",
-   "exit": 0,
-   "pass_line": "== 44 passed, 0 failed ==",
-   "verdict": "PASS",
-   "why": "",
-   "tail": [
-    "  ok   pretool malformed stdin -> ALLOW, exit 0 (fail open)",
-    "  ok   stop malformed stdin -> ALLOW, exit 0 (fail open)",
-    "== 44 passed, 0 failed =="
+    "  /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-05-recency.md:35: 'changes nothing' \u2014 Recency-weighting the actuals inside the blend (              ) changes nothing, so the issue is the prior's weight, not the order of the games.",
+    "CLAIM RECEIPTS: ADVISORY \u2014 1 unreceipted claim(s) in 1 file(s); show a receipt or mark the status"
    ]
   },
   {
@@ -87,7 +73,7 @@
   },
   {
    "name": "redteam bands",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/redteam/check_bands.py --report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-04-turn-gate-scheduled.md --sweep /home/user/wtsd/report/after-reports/redteam-2026-11-02-season/sweep.json",
+   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/redteam/check_bands.py --report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-05-recency.md --sweep /home/user/wtsd/report/after-reports/redteam-2026-11-02-season/sweep.json",
    "cwd": ".",
    "pass_re": "^BANDS CHECK: PASS",
    "exit": 0,
@@ -127,5 +113,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "b040962260dc1e7f78c2018bf314ce88b9378616"
+ "base_commit": "249fadebb70bb478d20539651bb2cd94898dff2c"
 }
