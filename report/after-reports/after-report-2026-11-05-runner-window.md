@@ -100,3 +100,24 @@
 **Owner's picks, 2026-11-05 (clickable cards in the runner session):**
 - **A: option 1.** Put the phase in the deck record's `out` path (`season_deck.py:333`), plus a test. Main builds it.
 - **B: option 1.** Leave the afternoon waiver pairs as they are; the page's morning-parts flag stands.
+
+## Addendum, 2026-11-05 23:08Z → 23:54Z: owner-directed changes after the window (owner pick: "Addendum")
+
+No scheduled run in this span. Each item was done on the owner's word in the runner session. EVIDENCE: git log `d54022b..0d655f8`, and the saved scheduled task's `updated_at`.
+
+| # | Change | Where | Evidence |
+|---|---|---|---|
+| 1 | This report and the owner's picks (A1 fix the deck record label, B1 leave afternoon pairs) | this file | 6b9b20b, 4232453 |
+| 2 | Build prompt for A1, with known answers and two adjacent observations for main to raise with David (page footer `:1211`; replay gate counts `_pm` records as mornings) | `report/after-reports/prompt-2026-11-05-main-deck-record-label.md` | eb91716 |
+| 3 | Correction to Finding 3: all 8 afternoon records since 10-29 carry the mislabel, not just 11-04 and 11-05 (8 of 8 checked) | Finding 3 above | eb91716 |
+| 4 | **Afternoon stored prompt, step 5:** the status line now asks for "injury-status changes on David's players and his current opponent's players … or "no injury-status change", labelled as injury status, not roster (roster moves are the league-moves line; owner 2026-11-05)". Nothing else changed. | scheduled task trig_015cH… (afternoon); the morning prompt has no such line | saved 2026-11-05T23:43:16Z; byte-compared to the intended text (6,803 bytes, equal) and diffed against the prior prompt (only that clause) |
+| 5 | Today's afternoon report relabelled the same way. Your players: Leonard and Haliburton still Out; Podz: Claxton still Out. | `report/briefs/afternoon_report_2026-11-05.md` | 0d655f8 (3 lines out, 3 in) |
+
+**Why item 4 (EVIDENCE: owner's question, 2026-11-05).** The afternoon report listed the owner's Ziaire-for-Matković swap under league moves and then said "Your roster: no change" under status. The owner read that as a contradiction. The status diff only covers flagged players, and neither Ziaire nor Matković is flagged, so the facts were right but the label was wrong.
+
+**Governance misses, both caught by the Stop hook (EVIDENCE: hook output in the runner session):**
+- Item 4 was saved before adversarial-verify was loaded. The byte check then ran and passed.
+- Item 5 was committed before plan-gate was loaded. The plan was then stated after the fact.
+- Neither result needed undoing. The hook (main's #238 turn gate) judged both owner turns correctly.
+
+**For main:** nothing new to build beyond the A1 prompt (item 2). The next afternoon run (2026-11-06 ~23:03Z) is the first under the new step-5 wording.
