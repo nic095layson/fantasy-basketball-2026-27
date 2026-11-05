@@ -96,3 +96,7 @@
   - `python3 -c "import json;b=json.load(open('report/briefs/brief_2026-11-05.json'));print(b['waiver_notes'],[t['drop'] for t in b['waiver_top']])"`
   - `sed -n 59p scripts/season_lines.py`
 - Earlier runner reports: `after-report-2026-11-04-runner-window.md`, `after-report-2026-11-03-runner-window.md`.
+
+**Owner's picks, 2026-11-05 (clickable cards in the runner session):**
+- **A: option 1.** Put the phase in the deck record's `out` path (`season_deck.py:333`), plus a test. Main builds it.
+- **B: option 1.** Leave the afternoon waiver pairs as they are; the page's morning-parts flag stands.
