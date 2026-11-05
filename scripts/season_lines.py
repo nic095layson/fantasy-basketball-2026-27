@@ -51,6 +51,15 @@ OUT = os.path.join(KIT, "data", "season")
 STABILITY = {"FG%": 0.714, "FT%": 0.634, "3PM": 0.872, "PTS": 0.848, "REB": 0.840, "AST": 0.847,
              "STL": 0.750, "BLK": 0.818, "TO": 0.823}
 SEASON_GAMES = 65  # the games a full season of the stability sample carries (25+ game players; stated assumption)
+# Owner 2026-11-05 ("Not in the pool ... is this not something the tool can pull during the morning runner?"), pick
+# "auto season line": a rostered player the pool lacks (league_state.unpooled) with AUTO_MIN_GAMES+ box-score games
+# gets a pool row whose preseason line is the replacement prior — the mean line of the deck plane's rows ranked
+# AUTO_PRIOR_LO..AUTO_PRIOR_HI by the engine's own z (the band around the 156th draftable row) — then blended with his
+# games by the same PRIOR_GAMES rule as every other row. Both are judgment constants: registered uncalibrated, D-AP-1.
+AUTO_MIN_GAMES = 3
+AUTO_PRIOR_LO = 146
+AUTO_PRIOR_HI = 166
+STATE = os.path.join(KIT, "data", "league_state.json")
 
 
 def prior_games(rho, n=SEASON_GAMES):
@@ -157,6 +166,67 @@ def _with_additions(deck_rows, deck_fields, additions_csv):
     return deck_rows + adds
 
 
+def replacement_prior(deck_rows, lo=AUTO_PRIOR_LO, hi=AUTO_PRIOR_HI):
+    """The replacement-level per-game line: the mean of the deck plane's rows ranked lo..hi (1-based) by the engine's
+    z over the plane (hoops.zscores, the top-156 fixed point); percentages attempt-weighted. A plane shorter than lo
+    uses its last hi-lo+1 rows."""
+    sys.path.insert(0, os.path.join(DECK, "scripts"))
+    import hoops
+    cols = ["fga", "fta", "tpm", "pts", "reb", "ast", "stl", "blk", "tov"]
+    rows = []
+    for r in deck_rows:
+        try:
+            x = {c: float(r[c]) for c in cols}; x["fg_pct"] = float(r["fg_pct"]); x["ft_pct"] = float(r["ft_pct"])
+        except (KeyError, ValueError):
+            continue
+        x["player"] = r["player"]; x["note"] = ""
+        rows.append(x)
+    if not rows:
+        raise ValueError("replacement prior: the deck plane has no numeric rows")
+    hoops.zscores(rows)
+    rows.sort(key=lambda x: -hoops.total_value(x))
+    band = rows[lo - 1:hi] if len(rows) >= lo else rows[-(hi - lo + 1):]
+    n = len(band)
+    out = {c: sum(x[c] for x in band) / n for c in cols}
+    fga, fta = sum(x["fga"] for x in band), sum(x["fta"] for x in band)
+    out["fg_pct"] = sum(x["fg_pct"] * x["fga"] for x in band) / fga if fga else 0.0
+    out["ft_pct"] = sum(x["ft_pct"] * x["fta"] for x in band) / fta if fta else 0.0
+    return dict(out, band=[lo, hi], rows=n)
+
+
+def auto_rows(tot, find, deck_rows, deck_fields, state, date, min_games=AUTO_MIN_GAMES):
+    """Prior rows for the rostered players the pool lacks (state["unpooled"]: player, nba_team, positions) who have
+    min_games+ regular-season games in the box scores: the replacement prior as the preseason line, the player's own
+    name, team and positions, a note that says so. run() blends them with their games like every other plane row.
+    Returns (rows, record) — the record names each player, his games and the band."""
+    un = (state or {}).get("unpooled") or []
+    if not un:
+        return [], []
+    # the state's top-level list carries no positions; each team's own unpooled entry does
+    pos_of = {u["player"]: u.get("positions") or [] for t in (state.get("teams") or []) for u in (t.get("unpooled") or [])}
+    have = {fold(r["player"]) for r in deck_rows}
+    prior = None
+    rows, rec = [], []
+    for u in un:
+        name = u.get("player")
+        if not name or fold(name) in have:
+            continue
+        t = find(name)
+        if not t or t["games"] < min_games:
+            continue
+        if prior is None:
+            prior = replacement_prior(deck_rows)
+        row = {f: "" for f in deck_fields}
+        row.update(player=name, team=u.get("nba_team") or "", pos=",".join(u.get("positions") or pos_of.get(name) or []),
+                   fg_pct=f"{prior['fg_pct']:.3f}", ft_pct=f"{prior['ft_pct']:.3f}",
+                   **{c: f"{prior[c]:.{DEC[c]}f}" for c in DEC},
+                   note=f"auto: rostered, no pool row; {t['games']}-game box line blended with the replacement prior "
+                        f"(deck rows {prior['band'][0]}-{prior['band'][1]} by z) on {date}; owner 2026-11-05")
+        rows.append(row); have.add(fold(name))
+        rec.append(dict(player=name, team=row["team"], pos=row["pos"], games=t["games"], band=prior["band"]))
+    return rows, rec
+
+
 def _with_tag_overrides(deck_rows, overrides_csv):
     """The deck plane with each override's leading tag swapped in; the prose after the tag is kept. Returns the rows
     and the overrides applied."""
@@ -204,11 +274,18 @@ def finder(tot):
 
 
 def run(date, actuals, kit_csv=KIT_CSV, deck_csv=DECK_CSV, out_dir=OUT, threshold=0.25, additions_csv=None,
-        overrides_csv=None):
+        overrides_csv=None, state_json=None):
     tot = totals(actuals)
     find = finder(tot)
     kit_rows, kit_fields = _read(kit_csv); deck_rows, deck_fields = _read(deck_csv)
     deck_rows = _with_additions(deck_rows, deck_fields, additions_csv)
+    state = None
+    if state_json and os.path.exists(state_json):
+        with open(state_json, encoding="utf-8") as f:
+            state = json.load(f)
+    auto, auto_rec = auto_rows(tot, find, deck_rows, deck_fields, state, date)
+    deck_rows = deck_rows + auto
+    auto_names = {fold(a["player"]) for a in auto}
     deck_rows, overridden = _with_tag_overrides(deck_rows, overrides_csv)
     movers, n_games = [], 0
     out_kit = []
@@ -227,8 +304,11 @@ def run(date, actuals, kit_csv=KIT_CSV, deck_csv=DECK_CSV, out_dir=OUT, threshol
     _write(os.path.join(out_dir, "pool_season.csv"), out_deck, deck_fields)
     rec = dict(date=date, records=len(actuals), players_with_games=n_games, prior_games=PRIOR_GAMES, season_games=SEASON_GAMES,
                threshold=threshold, movers=sorted(movers, key=lambda m: -m["games"]),
-               unpooled_with_games=sorted(k for k, v in tot.items() if v["unpooled"]), tag_overrides=overridden,
+               unpooled_with_games=sorted(k for k, v in tot.items() if v["unpooled"] and fold(k) not in auto_names),
+               auto_rows=auto_rec, auto_rule=dict(min_games=AUTO_MIN_GAMES, prior_band=[AUTO_PRIOR_LO, AUTO_PRIOR_HI]),
+               tag_overrides=overridden,
                inputs=dict(kit=os.path.relpath(kit_csv, KIT), deck=deck_csv,
+                           state=os.path.relpath(state_json, KIT) if state and state_json else None,
                            additions=os.path.relpath(additions_csv, KIT) if additions_csv and os.path.exists(additions_csv) else None,
                            overrides=os.path.relpath(overrides_csv, KIT) if overrides_csv and os.path.exists(overrides_csv) else None))
     with open(os.path.join(out_dir, f"season_lines_{date}.json"), "w", encoding="utf-8") as f:
@@ -248,12 +328,15 @@ def main():
     except ValueError as e:
         print(f"SEASON LINES: FAIL — unreadable actuals record: {e}"); return 1
     try:
-        rec = run(a.date, recs, out_dir=a.out, threshold=a.threshold, additions_csv=ADDITIONS, overrides_csv=OVERRIDES)
+        rec = run(a.date, recs, out_dir=a.out, threshold=a.threshold, additions_csv=ADDITIONS, overrides_csv=OVERRIDES,
+                  state_json=STATE)
     except ValueError as e:
-        print(f"SEASON LINES: FAIL — pool additions or tag overrides: {e}"); return 1
+        print(f"SEASON LINES: FAIL — pool additions, tag overrides or auto rows: {e}"); return 1
     print(f"SEASON LINES: PASS — {a.date}: {rec['records']} box-score records, {rec['players_with_games']} pool players with "
           f"regular-season games, {len(rec['movers'])} lines moved by {a.threshold}+ (priors in games: "
-          + ", ".join(f"{c} {k}" for c, k in PRIOR_GAMES.items()) + f"); {len(rec['unpooled_with_games'])} unpooled players with games; {len(rec['tag_overrides'])} tag override(s)")
+          + ", ".join(f"{c} {k}" for c, k in PRIOR_GAMES.items()) + f"); {len(rec['auto_rows'])} auto row(s) for rostered players the pool lacked"
+          + (" (" + ", ".join(f"{x['player']} {x['games']}g" for x in rec['auto_rows']) + ")" if rec['auto_rows'] else "")
+          + f"; {len(rec['unpooled_with_games'])} unpooled players with games; {len(rec['tag_overrides'])} tag override(s)")
     return 0
 
 
