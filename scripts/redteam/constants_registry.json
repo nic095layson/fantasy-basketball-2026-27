@@ -718,6 +718,33 @@
    "status": "uncalibrated",
    "record": "report/after-reports/il-return-2026-10-31/room_rule_and_blend.json: +13.4 title points with the rule off (on time 29.9 to 43.3); since 2026-11-02 il_return.py measures the band every run (room_band in its record) and the brief quotes it; not an engine constant, so the engine sweep cannot move it",
    "decision": "D-ILR-2: the owner picked the rule on 2026-10-31 (proceed with recommendations, 2a); re-decided when the first long-term IL return is observed"
+  },
+  {
+   "module": "season_lines",
+   "name": "AUTO_MIN_GAMES",
+   "value": 3,
+   "role": "box-score games a rostered player the pool lacks needs before he gets an auto pool row (owner 2026-11-05)",
+   "status": "uncalibrated",
+   "record": "after-report-2026-11-05-swap-grid-auto-pool.md; season_lines.py auto_rows/replacement_prior",
+   "decision": "D-AP-1: fit after four graded weeks of auto rows (accuracy_week grades them like any line); until then hand-set, named here"
+  },
+  {
+   "module": "season_lines",
+   "name": "AUTO_PRIOR_LO",
+   "value": 146,
+   "role": "first deck-plane rank (by the engine's z) of the replacement-prior band for auto pool rows",
+   "status": "uncalibrated",
+   "record": "after-report-2026-11-05-swap-grid-auto-pool.md; season_lines.py auto_rows/replacement_prior",
+   "decision": "D-AP-1: fit after four graded weeks of auto rows (accuracy_week grades them like any line); until then hand-set, named here"
+  },
+  {
+   "module": "season_lines",
+   "name": "AUTO_PRIOR_HI",
+   "value": 166,
+   "role": "last deck-plane rank of the replacement-prior band for auto pool rows",
+   "status": "uncalibrated",
+   "record": "after-report-2026-11-05-swap-grid-auto-pool.md; season_lines.py auto_rows/replacement_prior",
+   "decision": "D-AP-1: fit after four graded weeks of auto rows (accuracy_week grades them like any line); until then hand-set, named here"
   }
  ]
 }

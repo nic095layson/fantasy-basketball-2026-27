@@ -1722,3 +1722,123 @@ class WaiverChips(unittest.TestCase):
         self.assertIsNone(data["waiver_notes"])
         v = visible_dom(out, "Free Agents", "pane-fa")
         self.assertEqual(v["errors"], []); self.assertNotIn("on waivers until", v["text"])
+
+
+def lineup_scorecard_record():
+    """lineup_log.py's scorecard shape (report/decisions/lineup_scorecard.json): two days with a suggestion, one agreed."""
+    pair = lambda s, t, gap, sf, tf, night, zg: dict(start=s, sit=t, kind="better", gap=gap, start_followed=sf, sit_followed=tf, night=night, z_gap=zg)
+    return dict(as_of="2026-11-04", days=3, days_agreed=1, days_graded=2, days_no_brief=0, pairs=3, pairs_with_lineup=3,
+                start_followed=2, sit_followed=1, both_followed=1, night_kit=2, night_against=1, night_no_grade=0, night_no_box=0,
+                gap_sum_followed=8.88, gap_sum_ignored=0.36, start_followed_rate=0.667, sit_followed_rate=0.333,
+                rows=[dict(date="2026-10-26", status="graded", lineup_record=True,
+                           pairs=[pair("Ty Jerome", "PJ Washington", 4.48, True, False, "against", -5.12),
+                                  pair("Miles Bridges", "Collin Gillespie", 0.36, False, True, "kit", 0.54)]),
+                      dict(date="2026-10-27", status="agreed", lineup_record=True, pairs=[]),
+                      dict(date="2026-11-04", status="graded", lineup_record=True,
+                           pairs=[pair("Kyrie Irving", "Karlo Matkovic", 7.44, True, False, "kit", 3.29)])],
+                method=dict(suggested="week_matchup_<day>.json lineup_today.moves", locked="pinned Flaim daily block",
+                            night="engine z over the day's box lines", caveat="per-game z noise sd 3.65 vs a 0.5 line"))
+
+
+class LineupCard(unittest.TestCase):
+    """Owner 2026-11-05 ("track these on a ledger ... hit/miss rate"): the Week tab shows the start/sit scorecard from
+    report/decisions/lineup_scorecard.json. Read-only from the record; nothing on the deck computes a rate."""
+    def setUp(self):
+        self.d = tempfile.mkdtemp(); self.fx = fixtures(self.d)
+
+    def page(self, record):
+        if record is not None:
+            self.fx["lineup"] = os.path.join(self.d, "lineup_scorecard.json")
+            with open(self.fx["lineup"], "w") as f:
+                json.dump(record, f)
+        html, data, rec = SD.build(self.fx, date="2026-10-21")
+        p = os.path.join(self.d, "deck.html")
+        with open(p, "w", encoding="utf-8") as f:
+            f.write(html)
+        return p, rec, data
+
+    def test_default_path_names_the_scorecard_and_an_absent_one_builds_with_a_pending_line(self):
+        self.assertTrue(SD.default_paths("2026-11-05")["lineup"].endswith(os.path.join("report", "decisions", "lineup_scorecard.json")))
+        p, rec, data = self.page(None)
+        self.assertEqual(DRC.check(p)["status"], "PASS")
+        self.assertIsNone(data["lineup_scorecard"])
+        dom = week_dom(p)
+        self.assertEqual(dom["errors"], [])
+        self.assertIn("Start/sit calls", dom["text"]); self.assertIn("No start/sit day on the ledger yet", dom["text"])
+
+    def test_record_renders_the_rates_and_the_pairs_from_the_record_only(self):
+        p, rec, data = self.page(lineup_scorecard_record())
+        self.assertEqual(DRC.check(p)["status"], "PASS")
+        self.assertTrue(rec["inputs"]["lineup"]["present"])
+        dom = week_dom(p)
+        self.assertEqual(dom["errors"], [])
+        t = dom["text"]
+        self.assertIn("2 / 3 (67%)", t)          # start followed, from the record's rate
+        self.assertIn("1 / 3 (33%)", t)          # sit followed
+        for s in ("Ty Jerome", "Miles Bridges", "Kyrie Irving", "Karlo Matkovic", "against", "7.44", "-5.12"):
+            self.assertIn(s, t)
+        self.assertNotIn("No start/sit day", t)
+        self.assertLessEqual(week_dom(p, width=390)["page_overflow"], 0)
+
+
+class SwapGrid(unittest.TestCase):
+    """Owner 2026-11-05 ("recommend roster moves for daily matchups ... dynamic based on the categorical needs of the
+    matchup ... heat map"): the Today tab's swap grid — every bench->starter pair for today from the 5 AM replacement
+    table, filtered by this build's status, ranked by the change in expected categories, shaded by category."""
+    def setUp(self):
+        self.d = tempfile.mkdtemp(); self.fx = fixtures(self.d)
+        self.today = [["Alpha Man", "DEN", "@ LAL", None, 1.0, 3], ["Star Guard", "DAL", "vs SAC", None, 1.0, 4],
+                      ["Wing One", "SAS", "vs UTA", None, 1.0, 4], ["Big Two", "DAL", "vs SAC", None, 1.0, 4],
+                      ["Idle Guard", "MEM", None, None, 1.0, 3]]
+        self.me = [dict(player="Alpha Man", slot="PG", positions=["PG"]), dict(player="Star Guard", slot="UTIL", positions=["PG", "SG"]),
+                   dict(player="Wing One", slot="BN", positions=["SF", "PF"]), dict(player="Big Two", slot="BN", positions=["PF", "C"]),
+                   dict(player="Idle Guard", slot="BN", positions=["PG"])]
+        self.repl = {"Star Guard": dict(slot="UTIL", candidates=[dict(player="Big Two", d_exp=0.06, cats={"REB": 0.04, "BLK": 0.03, "PTS": -0.01}),
+                                                                   dict(player="Wing One", d_exp=0.02, cats={"PTS": 0.02}),
+                                                                   dict(player="Idle Guard", d_exp=0.5, cats={"PTS": 0.5})]),
+                     "Alpha Man": dict(slot="PG", candidates=[dict(player="Idle Guard", d_exp=0.4, cats={"AST": 0.4})])}
+
+    def test_ranked_filtered_by_todays_games_and_status_and_marked_when_the_kit_named_it(self):
+        g = SD.swap_grid(self.today, self.me, {}, self.repl, moves=[dict(start="Wing One", sit="Star Guard")])
+        self.assertEqual([(r["start"], r["sit"]) for r in g], [("Big Two", "Star Guard"), ("Wing One", "Star Guard")])  # Idle Guard: no game
+        self.assertEqual(g[0]["slot"], "UTIL"); self.assertEqual(g[0]["d_exp"], 0.06); self.assertEqual(g[0]["cats"]["REB"], 0.04)
+        self.assertFalse(g[0]["kit"]); self.assertTrue(g[1]["kit"])
+        # the starter Out by this build's status belongs to the Out-today card, not the grid; a bench player Out drops
+        self.assertEqual(SD.swap_grid(self.today, self.me, {"Star Guard": 0.0}, self.repl), [])
+        self.assertEqual([r["start"] for r in SD.swap_grid(self.today, self.me, {"Big Two": 0.0}, self.repl)], ["Wing One"])
+        self.assertEqual(SD.swap_grid(self.today, self.me, {}, None), []); self.assertEqual(SD.swap_grid(None, self.me, {}, self.repl), [])
+        self.assertEqual(len(SD.swap_grid(self.today, self.me, {}, self.repl, top=1)), 1)
+
+    def test_the_card_renders_the_heat_map_from_the_record_and_a_pending_line_without_one(self):
+        j = lambda name, obj: (json.dump(obj, open(os.path.join(self.d, name), "w")), os.path.join(self.d, name))[1]
+        b = json.load(open(self.fx["brief"])); b["today"] = self.today; b["lineup"] = [["PG", "Alpha Man"], ["Util", "Star Guard"]]; b["bench"] = ["Wing One", "Big Two"]
+        self.fx["brief"] = j("brief_sg.json", b)
+        lg = json.load(open(self.fx["league_state"]))
+        lg["teams"][0]["players"] += [dict(player="Star Guard", slot="UTIL", status=None, positions=["PG", "SG"]),
+                                      dict(player="Wing One", slot="BN", status=None, positions=["SF", "PF"]),
+                                      dict(player="Big Two", slot="BN", status=None, positions=["PF", "C"])]
+        self.fx["league_state"] = j("league_sg.json", lg)
+        bd = json.load(open(self.fx["board"])); z = lambda v: {c: v for c in ["FG%", "FT%", "3PM", "PTS", "REB", "AST", "STL", "BLK", "TOV"]}
+        bd["board"] += [dict(rank=4, name="Star Guard", team="DAL", pos="PG,SG", gp=60.0, z_adj=3.0, z_total=3.9, z=z(0.4)),
+                        dict(rank=5, name="Wing One", team="SAS", pos="SF,PF", gp=76.0, z_adj=-1.2, z_total=-1.17, z=z(-0.1)),
+                        dict(rank=6, name="Big Two", team="DAL", pos="PF,C", gp=70.0, z_adj=-2.0, z_total=-2.04, z=z(-0.2))]
+        self.fx["board"] = j("board_sg.json", bd)
+        wm = week_matchup_record(); wm["lineup_today"] = dict(date="2026-10-21", games_today=True, moves=[], replacements=self.repl)
+        self.fx["week_matchup"] = j("wm_sg.json", wm)
+        html, data, rec = SD.build(self.fx, date="2026-10-21")
+        self.assertEqual([(r["start"], r["sit"]) for r in data["swap_grid"]], [("Big Two", "Star Guard"), ("Wing One", "Star Guard")])
+        p = os.path.join(self.d, "deck.html")
+        with open(p, "w", encoding="utf-8") as f:
+            f.write(html)
+        self.assertEqual(DRC.check(p)["status"], "PASS")
+        dom = visible_dom(p, "Today", "pane-today")
+        self.assertEqual(dom["errors"], [])
+        t = dom["text"]
+        self.assertIn("Start/sit for today".upper(), t.upper()); self.assertIn("Big Two", t); self.assertIn("+4.0", t); self.assertIn("+0.060", t)
+        # no record: the card says so, nothing else changes
+        self.fx.pop("week_matchup")
+        html2, data2, _ = SD.build(self.fx, date="2026-10-21")
+        self.assertEqual(data2["swap_grid"], [])
+        with open(p, "w", encoding="utf-8") as f:
+            f.write(html2)
+        self.assertIn("nothing to swap", visible_dom(p, "Today", "pane-today")["text"])

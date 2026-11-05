@@ -164,3 +164,63 @@ class Run(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
+
+
+class AutoRows(unittest.TestCase):
+    """Owner 2026-11-05 ("Not in the pool ... is this not something the tool can pull during the morning runner?"),
+    pick "auto season line": a rostered player the pool lacks with AUTO_MIN_GAMES+ box games gets a plane row whose
+    preseason line is the replacement prior, then blends like every other row; fewer games, or a name already on
+    the plane, gets nothing; the record names each auto row and drops him from unpooled_with_games."""
+    def plane(self, d, n=3):
+        kit = os.path.join(d, "kit.csv"); deck = os.path.join(d, "deck.csv")
+        with open(kit, "w", newline="") as f:
+            w = csv.DictWriter(f, fieldnames=list(KIT_ROW)); w.writeheader(); w.writerow(KIT_ROW)
+        with open(deck, "w", newline="") as f:
+            w = csv.DictWriter(f, fieldnames=list(DECK_ROW)); w.writeheader()
+            for i in range(n):
+                w.writerow(dict(DECK_ROW, player=f"Plane {i}", pts=str(18.0 - 4 * i), reb=str(4.0 + i)))
+        return kit, deck
+
+    def state(self, d, name="New Guy", positions=("SG", "SF")):
+        p = os.path.join(d, "state.json")
+        with open(p, "w") as f:
+            json.dump(dict(unpooled=[dict(player=name, fantasy_team="THEM", seat=3, slot="BN", nba_team="LAL", status=None)],
+                           teams=[dict(name="THEM", seat=3, players=[], unpooled=[dict(player=name, slot="BN", nba_team="LAL", positions=list(positions))])]), f)
+        return p
+
+    def test_replacement_prior_is_the_band_mean_and_a_short_plane_uses_its_tail(self):
+        rows = [dict(DECK_ROW, player=f"P{i}", pts=str(20.0 - i)) for i in range(5)]
+        pr = S.replacement_prior(rows, lo=146, hi=166)
+        self.assertEqual(pr["rows"], 5); self.assertEqual(pr["band"], [146, 166])
+        self.assertAlmostEqual(pr["pts"], sum(20.0 - i for i in range(5)) / 5, places=6)
+        pr2 = S.replacement_prior(rows, lo=2, hi=3)
+        self.assertEqual(pr2["rows"], 2); self.assertAlmostEqual(pr2["pts"], (19.0 + 18.0) / 2, places=6)
+
+    def test_three_games_make_a_row_blended_from_the_prior_two_do_not(self):
+        with tempfile.TemporaryDirectory() as d:
+            kit, deck = self.plane(d); st = self.state(d)
+            rows = [dict(r, name="New Guy", pool_name=None) for r in box("x", 3, pts=30)]
+            rec = S.run(date="2026-11-05", actuals=[record("2026-11-04", rows)], kit_csv=kit, deck_csv=deck, out_dir=d, state_json=st)
+            self.assertEqual([a["player"] for a in rec["auto_rows"]], ["New Guy"]); self.assertEqual(rec["auto_rows"][0]["games"], 3)
+            self.assertEqual(rec["auto_rows"][0]["pos"], "SG,SF"); self.assertNotIn("New Guy", rec["unpooled_with_games"])
+            out = {r["player"]: r for r in csv.DictReader(open(os.path.join(d, "pool_season.csv")))}
+            self.assertIn("New Guy", out); row = out["New Guy"]
+            self.assertEqual(row["team"], "LAL"); self.assertEqual(row["pos"], "SG,SF"); self.assertTrue(row["note"].startswith("auto:"))
+            prior = S.replacement_prior([dict(DECK_ROW, player=f"Plane {i}", pts=str(18.0 - 4 * i), reb=str(4.0 + i)) for i in range(3)])
+            k = S.PRIOR_GAMES["PTS"]
+            self.assertAlmostEqual(float(row["pts"]), (k * prior["pts"] + 90) / (k + 3), places=1)
+            self.assertEqual(rec["auto_rule"], dict(min_games=S.AUTO_MIN_GAMES, prior_band=[S.AUTO_PRIOR_LO, S.AUTO_PRIOR_HI]))
+            rows2 = [dict(r, name="New Guy", pool_name=None) for r in box("x", 2, pts=30)]
+            rec2 = S.run(date="2026-11-05", actuals=[record("2026-11-04", rows2)], kit_csv=kit, deck_csv=deck, out_dir=d, state_json=st)
+            self.assertEqual(rec2["auto_rows"], []); self.assertIn("New Guy", rec2["unpooled_with_games"])
+            self.assertNotIn("New Guy", {r["player"] for r in csv.DictReader(open(os.path.join(d, "pool_season.csv")))})
+
+    def test_a_name_already_on_the_plane_and_no_state_file_make_no_row(self):
+        with tempfile.TemporaryDirectory() as d:
+            kit, deck = self.plane(d); st = self.state(d, name="Plane 0")
+            rows = [dict(r, name="Plane 0", pool_name="Plane 0") for r in box("x", 5)]
+            rec = S.run(date="2026-11-05", actuals=[record("2026-11-04", rows)], kit_csv=kit, deck_csv=deck, out_dir=d, state_json=st)
+            self.assertEqual(rec["auto_rows"], [])
+            self.assertEqual(sum(1 for r in csv.DictReader(open(os.path.join(d, "pool_season.csv"))) if r["player"] == "Plane 0"), 1)
+            rec = S.run(date="2026-11-05", actuals=[], kit_csv=kit, deck_csv=deck, out_dir=d, state_json=os.path.join(d, "missing.json"))
+            self.assertEqual(rec["auto_rows"], []); self.assertIsNone(rec["inputs"]["state"])

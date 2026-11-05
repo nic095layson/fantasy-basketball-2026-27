@@ -37,7 +37,7 @@ IGNORE = {"arena": {"ARENA_DIR", "REPO", "DATA", "CATS", "BASE_POS", "STRATEGIES
           # the kit's in-season blend (2026-10-19): paths and column maps are not judgment constants
           # (2026-10-22, D-RR-1: OVERRIDES is a path and OVERRIDE_FIELDS a column list, like ADDITIONS)
           "season_lines": {"HERE", "KIT", "DECK", "KIT_CSV", "DECK_CSV", "ADDITIONS", "ACTUALS", "OUT", "KIT_COLS", "DECK_COLS", "DEC",
-                           "OVERRIDES", "OVERRIDE_FIELDS"},
+                           "OVERRIDES", "OVERRIDE_FIELDS", "STATE"},
           # the minutes-trend candidate line (2026-10-27, build 2): paths and column lists are not judgment constants
           "minutes_line": {"HERE", "KIT", "SEASON", "ACTUALS", "POOL", "KIT_CSV", "PRE_KIT", "SCALED", "DEC"},
           # the waiver gate's status tiers (2026-10-28, D-WS-1): paths, the owner's seat, the lines tag, the team-code
