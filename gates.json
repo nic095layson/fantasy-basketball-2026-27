@@ -1,7 +1,7 @@
 {
- "ran_at_utc": "2026-11-06T00:29:04Z",
+ "ran_at_utc": "2026-11-06T00:48:06Z",
  "inputs": {
-  "report/after-reports/after-report-2026-11-06-fa-tab-season-compare.md": "71099ab64f665ec3e92fd16886684b3f562bf8bb3dec2580fc60f92e247e3a7e",
+  "report/after-reports/after-report-2026-11-06-fa-tab-season-compare.md": "532041c454b4b65da96ff42f9034e042cee452057b895faed5b44080a6e36e6a",
   "../wtsd/report/after-reports/redteam-2026-11-02-season/sweep.json": "1b8566531da1d0b666610a9383c063baa951d7879f045cb823faf3e0a384a87c"
  },
  "gates": [
@@ -59,7 +59,7 @@
   },
   {
    "name": "touched tests",
-   "cmd": "bash -c 'cd scripts && DECK_REPO=/home/user/yahoo-fantasy-basketball python3 -m unittest test_season_deck.SeasonCompare test_form_board 2>&1 | tail -1'",
+   "cmd": "bash -c 'cd scripts && DECK_REPO=/home/user/yahoo-fantasy-basketball python3 -m unittest test_season_deck.FaStatus test_season_deck.SeasonCompare 2>&1 | tail -1'",
    "cwd": ".",
    "pass_re": "^OK",
    "exit": 0,
@@ -125,5 +125,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "3fbf640c1fe7a54f2cf996fa925e5d507a9776bf"
+ "base_commit": "6d82d73f2dcd5243dcbdf6c6811b43c437912de1"
 }

@@ -140,7 +140,7 @@ class Deck(unittest.TestCase):
         self.assertIn('id:"tr-reset"', html); self.assertIn('id:"fa-reset"', html)
         # owner 2026-10-20: positions between name and team in the pick lists; FA pool explicitly z-descending
         self.assertIn('r.pos', html.split("pickList(rows")[1][:400])
-        self.assertIn('sort((a,b)=>b.z_adj-a.z_adj)', html)
+        self.assertIn('sort((a,b)=>(isOut(a)-isOut(b)) || (b.z_adj-a.z_adj))', html)   # z descending, Out last (2026-11-06)
 
     def test_negative_z_scores_wear_the_negative_color(self):
         # owner 2026-10-20: negative z-scores in red font, so they read apart from positives. Every z render site
@@ -1405,6 +1405,14 @@ class FaStatus(unittest.TestCase):
         self.assertEqual(res["status"], "PASS", res["reasons"])
         self.assertIn("Out (ESPN), back 2026-10-23", res["panes"]["fa"])
         self.assertNotIn("Day-To-Day (ESPN), back", res["panes"]["fa"])   # a day-to-day return date is today: not shown
+        # owner 2026-11-06 ("sink out to the bottom"): the Out free agent (z 2.00) sits below the available one with the lower z
+        b = json.load(open(self.fx["board"]))
+        b["board"].append(dict(rank=4, name="Lesser FA", team="LAL", pos="SF", gp=70.0, z_adj=-3.0, z_total=-3.0,
+                               z={c: -0.3 for c in ["FG%", "FT%", "3PM", "PTS", "REB", "AST", "STL", "BLK", "TOV"]}))
+        json.dump(b, open(self.fx["board"], "w"))
+        html, _, _ = SD.build(self.fx, date="2026-10-21"); open(p, "w", encoding="utf-8").write(html)
+        labels = fa_dom(p)["labels"]
+        self.assertIn("Lesser FA", labels[0]); self.assertIn("Free Agent", labels[-1]); self.assertIn("Out (ESPN)", labels[-1])
         self.assertNotIn("Status today:", res["panes"]["fa"])   # 2026-11-06: the note left the tab; the chips carry the status
 
     @unittest.skipUnless(RENDER_OK, RENDER_WHY)

@@ -19,6 +19,8 @@ Pull window: 2026-11-04 → 2026-11-05 (no pull: the records on season/daily rea
 
 INFERENCE: the injured-first ordering is the season z doing what it says; the week sort used to push scored, available players up. Decision for the owner (not built): sink players Out beyond N days to the bottom, or leave the chips to say it.
 
+**Addendum (owner pick 2026-11-06, "Sink out to the bottom, then Merge").** A free agent the day's status file calls Out (code O / NA / Out — the same codes the chip paints as out) sorts below every available one; z order holds within each group; with no status pinned nothing sinks. Test: an Out free agent at z 2.00 sits below an available one at z −3.00 (`FaStatus`); the embedded-sort assertion updated. Suite 800 OK after the addendum.
+
 ## 3. Bands quoted
 
 No title share is quoted as a new figure in this report. The standing structural band for any title figure is the season sweep of 2026-11-02 (deck e14cc42): **weekly_availability is FRAGILE:** -2.6 (no in-sim injury discount (risk 0.88 like healthy)) / +2.2 (harsher risk tier (0.65)) / -0.2 (healthy players play 0.95 of games) / +0.0 (healthy players play 0.80 of games), mean of the two seeds.

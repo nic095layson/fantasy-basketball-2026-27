@@ -922,8 +922,11 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
     // the return date only on an Out: ESPN dates a day-to-day player's return as today
     return h("span",{}," · ",h("span",{class:"chip "+cls},s.code+" ("+SRC[s.source]+")"+(out&&s.return_date?", back "+s.return_date.slice(0,10):""))); };
   const wk=(r)=>h("span",{},stat(r),waiverChip(r.name));
+  // owner 2026-11-06 ("sink out to the bottom"): a player the day's status file calls Out (O / NA / Out) sits below
+  // every available one; z order holds within each group; with no status pinned nothing sinks
+  const isOut=(r)=>{ const s=FS&&FS.by[r.name]; return !!(s&&["O","NA","Out"].includes(s.code)); };
   function render(){ let pool=BOARD.filter(r=>r.fa && (!search || r.name.toLowerCase().includes(search.toLowerCase())))
-      .sort((a,b)=>b.z_adj-a.z_adj);  // owner 2026-10-20: free agents by z, descending
+      .sort((a,b)=>(isOut(a)-isOut(b)) || (b.z_adj-a.z_adj));  // owner 2026-10-20: free agents by z, descending; 2026-11-06: Out last
     pool=pool.slice(0,60);
     keepScroll(root,()=>root.replaceChildren(
       h("div",{class:"h2row"},h("h2",{},"Free-Agent Adder"),myPositions([...drop],[...add]),
