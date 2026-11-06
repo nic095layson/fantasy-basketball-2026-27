@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """season_deck.py red-first tests: the deck page is rendered solely from named records, embeds them verbatim,
 halts on a missing record, joins ownership mechanically, and shows the structural band and zero-states."""
-import json, os, re, sys, tempfile, unittest
+import contextlib, io, json, os, re, sys, tempfile, unittest
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import season_deck as SD
 import deck_render_check as DRC
@@ -1441,6 +1441,35 @@ class AfternoonRefresh(unittest.TestCase):
         self.assertEqual(pm["refresh"]["phase"], "pm")
         self.assertNotIn("refresh", am)
 
+    def test_a_player_dropped_since_the_morning_is_marked_on_his_morning_lines(self):
+        # owner 2026-11-06 ("why does Today still show Matkovic?" -> "please build it"): the afternoon roster lost Bench
+        # Guy; the 5 AM brief's today row still names him. The afternoon page marks the row; the morning page does not.
+        lg = json.load(open(self.fx["league_state"]))
+        lg["teams"][0]["players"] = [p for p in lg["teams"][0]["players"] if p["player"] != "Bench Guy"]
+        json.dump(lg, open(self.fx["league_state"], "w"))
+        b = json.load(open(self.fx["brief"])); b["today"].append(["Bench Guy", "DAL", "vs SAC", None, 1.0, 3]); b["lineup"].append(["Util", "Bench Guy"])
+        json.dump(b, open(self.fx["brief"], "w"))
+        html, data, rec = SD.build(self.fx, date="2026-10-21", phase="pm")
+        self.assertEqual(data["refresh"]["gone"], ["Bench Guy"])
+        p = os.path.join(self.d, "pm.html"); open(p, "w", encoding="utf-8").write(html)
+        dom = visible_dom(p, "Today", "pane-today")
+        self.assertEqual(dom["errors"], [])
+        self.assertEqual(dom["text"].lower().count("no longer on your roster"), 3)   # the today row, the lineup row, the note
+        self.assertIn("No longer on your roster since the 5 AM run (their morning lines are marked): Bench Guy", dom["text"])
+        html_am, data_am, _ = SD.build(self.fx, date="2026-10-21")
+        self.assertNotIn("refresh", data_am)
+        p2 = os.path.join(self.d, "am.html"); open(p2, "w", encoding="utf-8").write(html_am)
+        self.assertNotIn("no longer on your roster", visible_dom(p2, "Today", "pane-today")["text"])
+
+    def test_gone_since_morning_folds_accents_and_reads_every_morning_list(self):
+        brief = dict(today=[["Karlo Matkovic", "NOP", None, None, 1.0, 2]], lineup=[["F", "Karlo Matkovic"]], bench=["Kyrie Irving"])
+        wm = dict(lineup_today=dict(slots={"Karlo Matkovic": "F", "Ty Jerome": "PG"}, moves=[dict(start="Kris Dunn", sit="PJ Washington")]),
+                  pickups=dict(this_week=dict(rows=[dict(add="X", drop="Karlo Matkovic")])))
+        roster = [dict(player="Karlo Matković"), dict(player="Kyrie Irving"), dict(player="Ty Jerome"), dict(player="Kris Dunn")]
+        self.assertEqual(SD.gone_since_morning(brief, wm, roster), ["PJ Washington"])   # the accent folds; PJ left
+        self.assertEqual(SD.gone_since_morning(brief, None, roster + [dict(player="PJ Washington")]), [])
+        self.assertEqual(SD.gone_since_morning({}, {}, []), [])
+
     def add_rostered(self, name):
         lg = json.load(open(self.fx["league_state"]))
         lg["teams"][0]["players"].append(dict(player=name, slot="BN", status=None, positions=["C"]))
@@ -1926,3 +1955,48 @@ class SeasonCompare(unittest.TestCase):
             f.write(html)
         d = compare_dom(self.p, "Free Agents", "pane-fa", ["Bench Guy", "Free Agent"])
         self.assertEqual(d["errors"], []); self.assertIn("No box scores yet for Free Agent", d["text"] or "")
+
+
+class AfternoonLineupRefresh(unittest.TestCase):
+    """Owner 2026-11-06 ("refresh the lineup side only"): the 3 PM build recomputes the week-matchup record from the
+    afternoon roster, status and pull (no simulator) and the page reads it; when the refresh cannot run, the 5 AM
+    record stands and the step says so."""
+    def setUp(self):
+        self.d = tempfile.mkdtemp(); self.fx = fixtures(self.d); self.out = os.path.join(self.d, "out")
+        self._refresh = SD.afternoon_lineup_refresh; self._dp = SD.default_paths
+
+    def tearDown(self):
+        SD.afternoon_lineup_refresh = self._refresh; SD.default_paths = self._dp
+
+    def run_main(self):
+        argv = sys.argv; sys.argv = ["season_deck.py", "--date", "2026-10-21", "--out", self.out, "--phase", "pm"]
+        buf = io.StringIO()
+        try:
+            with contextlib.redirect_stdout(buf):
+                SD.main()
+        finally:
+            sys.argv = argv
+        return buf.getvalue()
+
+    def test_a_refreshed_record_is_read_pinned_and_announced(self):
+        wm = week_matchup_record(); wm["phase"] = "pm"
+        wm["lineup_today"] = dict(date="2026-10-21", games_today=True, moves=[], replacements={}, slots={"Alpha Man": "PG", "Bench Guy": "BN"})
+        pm = os.path.join(self.d, "week_matchup_2026-10-21_pm.json"); json.dump(wm, open(pm, "w"))
+        SD.default_paths = lambda date, phase="am": self.fx
+        SD.afternoon_lineup_refresh = lambda date, briefs_dir=None: (pm, None)
+        out = self.run_main()
+        self.assertIn("lineup side refreshed (week_matchup_2026-10-21_pm.json)", out)
+        rec = json.load(open(os.path.join(self.out, "deck_record_2026-10-21_pm.json")))
+        self.assertTrue(rec["inputs"]["week_matchup"]["path"].endswith("week_matchup_2026-10-21_pm.json"))
+        dom = visible_dom(os.path.join(self.out, "deck_2026-10-21_pm.html"), "Today", "pane-today")
+        self.assertEqual(dom["errors"], [])
+        self.assertIn("today's lineup, the start/sit pairs and this week's adds are from the 3 PM run", dom["text"])
+        self.assertIn("Recomputed by the 3 PM run", dom["text"])
+
+    def test_a_failed_refresh_keeps_the_morning_record_and_says_so(self):
+        SD.default_paths = lambda date, phase="am": self.fx
+        SD.afternoon_lineup_refresh = lambda date, briefs_dir=None: (None, "FileNotFoundError: no pull")
+        out = self.run_main()
+        self.assertIn("lineup refresh did not run (FileNotFoundError: no pull), the 5 AM record stands", out)
+        dom = visible_dom(os.path.join(self.out, "deck_2026-10-21_pm.html"), "Today", "pane-today")
+        self.assertIn("the lineup, waiver pairs and title odds are from the 5 AM run", dom["text"])

@@ -794,3 +794,15 @@ class PoolDefault(Record):
                             "--yahoo-pull", os.path.join(self.d, "none.json"), "--out-dir", out],
                            capture_output=True, text=True, env={k: v for k, v in os.environ.items() if k != "SEASON_POOL"})
         self.assertIn("pool pool_season.csv", r.stdout, r.stdout + r.stderr)
+
+
+class StatusFileOverride(Record):
+    """Owner 2026-11-06: an afternoon refresh names its status file (status_<date>_pm.json) instead of the newest one
+    dated on or before the day."""
+    def test_a_named_status_file_is_the_one_read(self):
+        pm = os.path.join(self.d, "status", "status_2026-10-21_pm.json")
+        dump(dict(date="2026-10-21", rows=[dict(player="Nikola Jokic", availability=0.0, tier="out")]), pm)
+        rec = WM.build("2026-10-21", dict(self.paths, status_file=pm))
+        self.assertEqual(rec["status_file"], "status_2026-10-21_pm.json")
+        rec_am = WM.build("2026-10-21", self.paths)
+        self.assertNotEqual(rec_am["status_file"], "status_2026-10-21_pm.json")   # the newest dated <= day: the morning's

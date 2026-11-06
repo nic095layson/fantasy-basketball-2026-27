@@ -72,6 +72,57 @@ def default_paths(date, phase="am"):
                 espn_injuries=os.path.join(KIT, "data", "status", f"espn_injuries_{date}{sfx}.json"))
 
 
+def afternoon_lineup_refresh(date, briefs_dir=None):
+    """Owner 2026-11-06 ("would it be more efficient to have both runs conduct the same pull?" -> pick "refresh the
+    lineup side only"): the 3 PM build recomputes the week-matchup record — today's lineup, the start/sit pairs, this
+    week's adds — from the afternoon roster (data/league_state.json as the 3 PM pull left it), the 3 PM status file
+    (status_<date>_pm.json, else the morning's) and the 3 PM Yahoo pull (pull_<date>_pm.json, else the morning's),
+    written as report/briefs/week_matchup_<date>_pm.json. No simulator: the title odds, waiver pairs and every graded
+    ledger stay the morning's. Returns the record's path, or None with the reason when the refresh could not run (the
+    page then reads the 5 AM record, as before)."""
+    import week_matchup as WM
+    import co_gm as CG
+    briefs_dir = briefs_dir or os.path.join(KIT, "report", "briefs")
+    pm_status = os.path.join(KIT, "data", "status", f"status_{date}_pm.json")
+    pm_pull = os.path.join(KIT, "data", "source", "flaim", f"pull_{date}_pm.json")
+    am_pull = os.path.join(KIT, "data", "source", "flaim", f"pull_{date}.json")
+    paths = dict(state=CG.STATE, schedule=CG.SCHEDULE, games=CG.GAMES, actuals=WM.ACTUALS, status=WM.STATUS,
+                 yahoo_pull=pm_pull if os.path.exists(pm_pull) else am_pull,
+                 **({"status_file": pm_status} if os.path.exists(pm_status) else {}))
+    try:
+        rec = WM.build(date, paths)
+    except Exception as e:  # noqa: BLE001 — named, never a halt: the morning record stands
+        return None, f"{type(e).__name__}: {e}"
+    rec["phase"] = "pm"
+    rec["refreshed_from"] = dict(status=os.path.basename(paths.get("status_file") or rec.get("status_file") or ""),
+                                 pull=os.path.basename(paths["yahoo_pull"]), state=os.path.relpath(CG.STATE, KIT))
+    os.makedirs(briefs_dir, exist_ok=True)
+    out = os.path.join(briefs_dir, f"week_matchup_{date}_pm.json")
+    with open(out, "w", encoding="utf-8") as f:
+        json.dump(rec, f, indent=1, ensure_ascii=False); f.write("\n")
+    return out, None
+
+
+def gone_since_morning(brief, week_matchup, roster):
+    """Names the 5 AM brief and week-matchup record put on the owner's side (today's rows, lineup, bench, start/sit
+    slots, the drop side of this week's adds) that the afternoon roster no longer carries, by the kit's name fold.
+    Display only: the afternoon page marks those lines "no longer on your roster"; nothing is recomputed."""
+    import unicodedata
+    fold = lambda n: "".join(c for c in unicodedata.normalize("NFKD", (n or "").lower()) if not unicodedata.combining(c) and c not in "'’`.").strip()
+    have = {fold(p["player"]) for p in roster}
+    names = [r[0] for r in brief.get("today") or []] + [x[1] for x in brief.get("lineup") or []] + list(brief.get("bench") or [])
+    lt = (week_matchup or {}).get("lineup_today") or {}
+    names += list((lt.get("slots") or {}).keys())
+    names += [m.get("start") for m in lt.get("moves") or []] + [m.get("sit") for m in lt.get("moves") or []]
+    tw = ((week_matchup or {}).get("pickups") or {}).get("this_week") or {}
+    names += [r.get("drop") for r in tw.get("rows") or []]
+    out, seen = [], set()
+    for n in names:
+        if n and fold(n) not in have and fold(n) not in seen:
+            seen.add(fold(n)); out.append(n)
+    return out
+
+
 def swap_grid(today_rows, me, avail, repl, moves=None, top=6):
     """Owner 2026-11-05 ("recommend roster moves for daily matchups ... dynamic based on the categorical needs of the
     matchup ... start (Player) for (player) to bench -> [stat category] projected gains, heat map"): every (bench
@@ -323,7 +374,12 @@ def build(paths, date, phase=None):
                 ledger={k: dict(v, result_text=ledger_result(v)) for k, v in calib.get("weeks", {}).items()}, bands=bands, band_engine=band_engine, band_config=band_config, matchup_live=matchup_live,
                 week_matchup=week_matchup, league_table=league_rec, form=form_rec, scores=scores, accuracy=accuracy, lineup_scorecard=lineup_sc, fa_status=fa_status, out_today=out_now, swap_grid=grid_now, waiver_notes=waiver_notes,
                 # owner 2026-10-28 ("Rebuild, flag morning parts"): the 3 PM run's rebuild says which parts are the 5 AM run's
-                **({"refresh": {"phase": phase, "not_on_board": not_on_board}} if phase == "pm" else {}),
+                **({"refresh": {"phase": phase, "not_on_board": not_on_board,
+                                # owner 2026-11-06 ("why does Today still show Matkovic?", "please build it"): the morning brief's
+                                # names that the afternoon roster no longer carries — the page marks their lines, recomputes nothing
+                                "gone": gone_since_morning(brief, week_matchup, mine_l),
+                                # owner 2026-11-06: True when the week-matchup record is the afternoon's own
+                                "lineup_refreshed": bool(week_matchup and week_matchup.get("phase") == "pm")}} if phase == "pm" else {}),
                 config=dict(cats=["FG%", "FT%", "3PM", "PTS", "REB", "AST", "STL", "BLK", "TOV"],
                             tier_low=0.3, tier_high=1.0, verdict_edge=0.5, verdict_strong=1.5,
                             short_out_days=co_gm.SHORT_OUT_DAYS,
@@ -403,6 +459,7 @@ td.num,th.num{text-align:right}
 .chip{display:inline-block; background:var(--chip); border-radius:999px; padding:1px 8px; font-size:12px; color:var(--ink2)}
 .chip.mine{background:var(--mine); color:#fff}
 .chip.fa{border:1px solid var(--line); background:none}
+.chip.warn{background:var(--warn); color:#fff} .chip.gone{margin-left:6px}
 .cmp2 td.best{font-weight:700} .cmp2 td.best span{background:var(--lead); border-radius:999px; padding:2px 10px} .cmp2 td.num{text-align:center}
 .chip.ok{color:var(--ok)} .chip.warn{color:var(--warn)} .chip.crit{color:var(--crit)}
 .bar{display:flex; align-items:center; gap:6px; min-width:120px}
@@ -546,6 +603,8 @@ function statusChip(letter){ if(!letter) return null; const cls=letter==="O"?"cr
 
 const swk=(x,d)=>{ const r=Number(x.toFixed(d)); return (r>0?"+":r<0?"−":"")+Math.abs(r).toFixed(d); };  // a true minus; 0 unsigned
 // owner pick 2026-11-03 (display only): Yahoo's waiver date and the owner's own recent drop beside a free agent
+// owner 2026-11-06: on the afternoon page, a morning line whose player has since left the roster says so
+function goneChip(name){ const g=(D.refresh&&D.refresh.gone)||[]; return g.includes(name)? h("span",{class:"chip warn gone"}," no longer on your roster") : null; }
 function waiverChip(name){ const N=D.waiver_notes, r=N&&N.by&&N.by[name]; if(!r||(!r.waiver_date&&!r.own_drop_date)) return null;
   const t=[r.waiver_date?"on waivers until "+r.waiver_date:null, r.own_drop_date?"you dropped him "+r.own_drop_date:null].filter(Boolean).join(" · ");
   return h("span",{class:"wvchip"}," · ",h("span",{class:"chip warn"},t)); }
@@ -559,7 +618,7 @@ function thisWeek(W){ const K=W.pickups, TW=K&&K.this_week; if(!TW) return null;
     TW.rows.length? h("div",{class:"tablebox"},h("table",{},
       h("tr",{},h("th",{},"move"),h("th",{class:"num",title:"Δ cats = the change in expected categories won this week (the sum of the nine changes in each category's chance); categories moved = those changes, largest first; season = the change in expected weekly categories over the season against the other eleven teams, the cost or gain beyond this week. Chances are normal approximations on the projected finals, with the variation of each remaining game (season per-game CV); the league allows 4 adds a week."},"Δ cats",more("Δ cats = the change in expected categories won this week (the sum of the nine changes in each category's chance); categories moved = those changes, largest first; season = the change in expected weekly categories over the season against the other eleven teams, the cost or gain beyond this week. Chances are normal approximations on the projected finals, with the variation of each remaining game (season per-game CV); the league allows 4 adds a week.")),h("th",{class:"num"},"games"),h("th",{class:"num"},"drop's part"),h("th",{class:"num"},"season"),h("th",{},"categories moved")),
       TW.rows.slice(0,8).map(r=>h("tr",{},h("td",{style:"white-space:normal;min-width:9em"},r.add+" ("+r.team+")"+(r.status?" · "+r.status:"")+(r.missed?" · sat out "+r.missed:""),waiverChip(r.add),
-          h("div",{class:"note"},"for "+r.drop)),
+          h("div",{class:"note"},"for "+r.drop,goneChip(r.drop))),
         h("td",{class:"num"},swk(r.d_exp,2)),h("td",{class:"num"},String(r.games)),h("td",{class:"num"},swk(r.d_exp_drop,2)),
         h("td",{class:"num"},r.season_d_ecw==null?"—":swk(r.season_d_ecw,3)),h("td",{style:"white-space:normal;min-width:10em"},moved(r.d_cat)))))) : h("div",{class:"zero"},"No free agent has a playable game after today."),
     das.length? noteMore("Dropping with nobody added (from tomorrow): "+das.join("; "),
@@ -715,12 +774,18 @@ function matchupBoard(){ const W=D.week_matchup, B=W&&W.board; if(!B) return nul
 
 // ---- Today ----
 (function(){ const b=D.brief, p=$("#pane-today");
+  // owner 2026-11-06: on a refreshed afternoon page the Lineup card is the 3 PM slots (active slots, Yahoo order); else the brief's
+  const SLOTS=["PG","SG","G","SF","PF","F","C","UTIL","Util"];
+  function lineupRows(){ const R=D.refresh&&D.refresh.lineup_refreshed&&D.week_matchup&&D.week_matchup.lineup_today&&D.week_matchup.lineup_today.slots;
+    if(!R) return b.lineup;
+    const rows=Object.entries(R).filter(([n,s])=>!["BN","IL","IL+"].includes(s)).map(([n,s])=>[s,n]);
+    rows.sort((x,y)=>(SLOTS.indexOf(x[0])-SLOTS.indexOf(y[0]))||x[1].localeCompare(y[1])); return rows; }
   // owner 2026-11-02: a starter Out today and the best bench swap for his slot, first thing on the tab (out_today)
   const OT=D.out_today||[];
   if(OT.length) p.append(h("div",{class:"card",id:"out-today"},h("h2",{class:"zneg"},"Out today"),
     OT.map(o=>{ const sg=(x)=>(x<0?"−":"+")+Math.abs(x).toFixed(2);
       const alt=(o.alternatives||[]).map(a=>a.player+(a.d_exp==null?"":" "+sg(a.d_exp))).join(", ");
-      return h("p",{},h("b",{},o.player+" ("+o.slot+") is Out today"),
+      return h("p",{},h("b",{},o.player+" ("+o.slot+") is Out today"),goneChip(o.player),
         !o.swap? " — no bench player with a game today fits "+o.slot+"; the lineup re-filled by the daily-fill rule: "+(o.refill||[]).map(x=>x[0]+" "+x[1]).join(", ")+"."
         : o.basis==="matchup"? " — start "+o.swap+" at "+o.slot+": "+sg(o.d_exp)+" expected categories this week"+(o.helps.length?" (helps "+o.helps.join(", ")+")":"")+"."+(alt?" Next: "+alt+".":"")
         : " — start "+o.swap+" at "+o.slot+" (season value: no matchup ranking for him from the 5 AM run)."+(alt?" Next: "+alt+".":"")); }),
@@ -736,8 +801,8 @@ function matchupBoard(){ const W=D.week_matchup, B=W&&W.board; if(!B) return nul
     const cell=(v)=>{ v=v||0; const a=Math.abs(v)/vmax, pp=(v*100); const bg=v>0?"rgba(39,102,168,"+(0.12+0.78*a).toFixed(2)+")":(v<0?"rgba(193,63,46,"+(0.08+0.42*a).toFixed(2)+")":"transparent");
       return h("td",{class:"num heat",style:"background:"+bg+(v>0&&a>0.55?";color:#fff":"")},(pp>0?"+":"")+pp.toFixed(1)); };
     const t=h("table",{class:"lg heatmap"},h("tr",{},h("th",{},"start"),h("th",{},"for"),h("th",{},"slot"),...CATS.map(c=>h("th",{class:"num"},c)),h("th",{class:"num"},"Δ cats")));
-    G.forEach(r=>t.append(h("tr",{class:r.kit?"kit":""},h("td",{},h("b",{},r.start)),h("td",{},r.sit+(r.kit?" ★":"")),h("td",{},r.slot||""),...CATS.map(c=>cell(r.cats[c])),h("td",{class:"num"},(r.d_exp>0?"+":"")+r.d_exp.toFixed(3)))));
-    card.append(h("div",{class:"tablebox"},t),h("p",{class:"note"},"Δ cats: change in expected categories won this week (sum of the cells ÷ 100). The figures are the 5 AM model's; "+(pm?"the 3 PM run refreshes who plays and who is Out.":"the 3 PM page refreshes who plays and who is Out.")));
+    G.forEach(r=>t.append(h("tr",{class:r.kit?"kit":""},h("td",{},h("b",{},r.start),goneChip(r.start)),h("td",{},r.sit+(r.kit?" ★":""),goneChip(r.sit)),h("td",{},r.slot||""),...CATS.map(c=>cell(r.cats[c])),h("td",{class:"num"},(r.d_exp>0?"+":"")+r.d_exp.toFixed(3)))));
+    card.append(h("div",{class:"tablebox"},t),h("p",{class:"note"},"Δ cats: change in expected categories won this week (sum of the cells ÷ 100). "+(D.refresh&&D.refresh.lineup_refreshed? "Recomputed by the 3 PM run from the afternoon roster and status." : "The figures are the 5 AM model's; "+(pm?"the 3 PM run refreshes who plays and who is Out.":"the 3 PM page refreshes who plays and who is Out."))));
     return {card:card,has:true}; })();
   // a grid with rows leads the tab (after Out-today); the empty-state card sits under the Week card instead
   if(swapCard.has) p.append(swapCard.card);
@@ -746,8 +811,10 @@ function matchupBoard(){ const W=D.week_matchup, B=W&&W.board; if(!B) return nul
   const UN=(D.league&&D.league.unpooled)||[];
   if(UN.length) p.append(h("div",{class:"card"},h("p",{class:"note",id:"unpooled-note"},"Not in the pool, not simulated: "+UN.map(u=>u.player+" ("+u.fantasy_team+", "+u.slot+")").join(", ")+". Each needs a pool row before the simulator counts him.")));
   if(D.refresh&&D.refresh.phase==="pm") p.append(h("div",{class:"card"},h("p",{class:"note",id:"pm-note"},
-    "Afternoon refresh: rosters, ownership and injury status are from the 3 PM run; the lineup, waiver pairs and title odds are from the 5 AM run (they can be out of date after a roster move or a new injury)."
-    +((D.refresh.not_on_board||[]).length? " Added since the 5 AM board (no season line on this page): "+D.refresh.not_on_board.join(", ")+"." : ""))));
+    (D.refresh.lineup_refreshed? "Afternoon refresh: rosters, injury status, today's lineup, the start/sit pairs and this week's adds are from the 3 PM run; the waiver pairs and title odds are the 5 AM run's."
+      : "Afternoon refresh: rosters, ownership and injury status are from the 3 PM run; the lineup, waiver pairs and title odds are from the 5 AM run (they can be out of date after a roster move or a new injury).")
+    +((D.refresh.not_on_board||[]).length? " Added since the 5 AM board (no season line on this page): "+D.refresh.not_on_board.join(", ")+"." : "")
+    +((D.refresh.gone||[]).length? " No longer on your roster since the 5 AM run (their morning lines are marked): "+D.refresh.gone.join(", ")+"." : ""))));
   $("#hdate").textContent=D.date;
   $("#hsub").textContent=T(D.my_team)+" · week "+b.week+" vs "+T(b.opponent)+" · lines "+b.lines+" · rosters as-of "+D.league.as_of;
   // owner 2026-10-23: when the tool was last updated (the morning run's build time), in the viewer's own clock
@@ -779,12 +846,12 @@ function matchupBoard(){ const W=D.week_matchup, B=W&&W.board; if(!B) return nul
       h("div",{class:"card span2"},h("h2",{},"Odds"),tiles,ilReturn(b.il_return),noteMore("Model bands: "+(D.bands||[]).map(b=>b.name.split(".").pop()+" "+b.variants.map(v=>v.shift).join("/")).join(" · ")+" title pts",
         "Structural band ("+D.band_config+"): "+bandLine())),
       h("div",{class:"card"},h("h2",{},"Lineup"),h("div",{class:"tablebox"},h("table",{},
-        b.lineup.map(([slot,name])=>h("tr",{},h("td",{},h("span",{class:"chip"},slot)),h("td",{},name))))),
+        lineupRows().map(([slot,name])=>h("tr",{},h("td",{},h("span",{class:"chip"},slot)),h("td",{},name,goneChip(name)))))),
         b.bench.length?h("p",{class:"note"},"Bench: "+b.bench.join(", ")):null),
       h("div",{class:"card"},h("h2",{},"Today's games"),
         b.today.length? h("div",{class:"tablebox"},h("table",{},
           h("tr",{},h("th",{},"player"),h("th",{},"game"),h("th",{},"status"),h("th",{class:"num"},"avail"),h("th",{class:"num"},"left/wk")),
-          b.today.map(([pl,tm,g,st,av,left])=>h("tr",{},h("td",{},pl+" ("+tm+")"),h("td",{},g),h("td",{},statusChip(st)||"—"),h("td",{class:"num"},f2(av)),h("td",{class:"num"},String(left)))))) : h("div",{class:"zero"},"No games today."),
+          b.today.map(([pl,tm,g,st,av,left])=>h("tr",{},h("td",{},pl+" ("+tm+")",goneChip(pl)),h("td",{},g),h("td",{},statusChip(st)||"—"),h("td",{class:"num"},f2(av)),h("td",{class:"num"},String(left)))))) : h("div",{class:"zero"},"No games today."),
         ),
       h("div",{class:"card span2"},h("h2",{},"Week "+b.week+" categories (recorded before the week)"),catTbl)));
 })();
@@ -1238,6 +1305,13 @@ def main():
     a = ap.parse_args()
     paths = default_paths(a.date, a.phase)
     sfx = "_pm" if a.phase == "pm" else ""
+    refresh_note = ""
+    if a.phase == "pm":  # owner 2026-11-06: the lineup side recomputed from the 3 PM roster and status; odds stay the 5 AM's
+        pm_wm, why = afternoon_lineup_refresh(a.date)
+        if pm_wm:
+            paths["week_matchup"] = pm_wm; refresh_note = "; lineup side refreshed (week_matchup_" + a.date + "_pm.json)"
+        else:
+            refresh_note = "; lineup refresh did not run (" + why + "), the 5 AM record stands"
     try:
         html, data, record = build(paths, a.date, phase="pm") if a.phase == "pm" else build(paths, a.date)
     except DeckError as e:
@@ -1261,7 +1335,7 @@ def main():
     rp = os.path.join(outdir, f"deck_record_{a.date}{sfx}.json"); json.dump(record, open(rp, "w", encoding="utf-8"), indent=1)
     print(f"SEASON DECK: PASS — {a.date}{' (afternoon refresh)' if sfx else ''}: report/season/deck_{a.date}{sfx}.html ({record['panes']} panes, {record['board_rows']} board rows, "
           f"{record['status_rows']} status rows; record deck_record_{a.date}{sfx}.json pins {len(record['inputs'])} inputs; "
-          f"render: {len(res['tabs'])} tabs, 0 page errors)")
+          f"render: {len(res['tabs'])} tabs, 0 page errors{refresh_note})")
 
 
 if __name__ == "__main__":
