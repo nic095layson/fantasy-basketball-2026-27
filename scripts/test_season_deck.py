@@ -1430,10 +1430,11 @@ class AfternoonRefresh(unittest.TestCase):
     afternoon page is written as deck_<date>_pm.html beside the morning's, which stays as it was."""
     def setUp(self):
         self.d = tempfile.mkdtemp(); self.fx = fixtures(self.d); self.out = os.path.join(self.d, "out")
-        self._build = SD.build
+        self._build = SD.build; self._refresh = SD.afternoon_lineup_refresh
+        SD.afternoon_lineup_refresh = lambda date, briefs_dir=None: (None, "not run in this test")   # never the kit's briefs folder
 
     def tearDown(self):
-        SD.build = self._build
+        SD.build = self._build; SD.afternoon_lineup_refresh = self._refresh
 
     def test_the_afternoon_build_carries_its_phase_and_the_morning_build_does_not(self):
         _, pm, _ = SD.build(self.fx, date="2026-10-21", phase="pm")
@@ -1991,7 +1992,7 @@ class AfternoonLineupRefresh(unittest.TestCase):
         dom = visible_dom(os.path.join(self.out, "deck_2026-10-21_pm.html"), "Today", "pane-today")
         self.assertEqual(dom["errors"], [])
         self.assertIn("today's lineup, the start/sit pairs and this week's adds are from the 3 PM run", dom["text"])
-        self.assertIn("Recomputed by the 3 PM run", dom["text"])
+        self.assertIn("LINEUP\nPG\tAlpha Man", dom["text"])   # the Lineup card from the afternoon slots (Bench Guy on BN is not listed)
 
     def test_a_failed_refresh_keeps_the_morning_record_and_says_so(self):
         SD.default_paths = lambda date, phase="am": self.fx
