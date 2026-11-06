@@ -1,0 +1,3268 @@
+{
+ "date": "2026-11-05",
+ "week": 3,
+ "window": [
+  "2026-11-02",
+  "2026-11-08"
+ ],
+ "me": {
+  "name": "KEL'EL YAXEL HALQUETA",
+  "seat": 10
+ },
+ "opponent": {
+  "name": "Podz save the league",
+  "seat": 9
+ },
+ "league_state_as_of": "2026-11-05",
+ "to_date_days": [
+  "2026-11-02",
+  "2026-11-03",
+  "2026-11-04"
+ ],
+ "missing_days": [],
+ "to_date_source": {
+  "source": "yahoo",
+  "reason": null,
+  "rebuild_agrees": false,
+  "differences": [
+   {
+    "side": "me",
+    "stat": "tov",
+    "yahoo": 36,
+    "rebuild": 37
+   },
+   {
+    "side": "opp",
+    "stat": "tov",
+    "yahoo": 35,
+    "rebuild": 34
+   }
+  ],
+  "yahoo_games_remaining": {
+   "me": 23,
+   "opp": 20
+  },
+  "yahoo_names": {
+   "me": "KEL'EL YAXEL HALQUETA",
+   "opp": "Podz save the league"
+  }
+ },
+ "remaining_days": [
+  "2026-11-05",
+  "2026-11-06",
+  "2026-11-07",
+  "2026-11-08"
+ ],
+ "status_file": "status_2026-11-05.json",
+ "cats": [
+  {
+   "cat": "FG%",
+   "me_to_date": 0.434,
+   "opp_to_date": 0.416,
+   "me_final": 0.458,
+   "opp_final": 0.436,
+   "leader_to_date": "me",
+   "leader": "me",
+   "p_win": 0.8071,
+   "margin": 0.022
+  },
+  {
+   "cat": "FT%",
+   "me_to_date": 0.775,
+   "opp_to_date": 0.757,
+   "me_final": 0.79,
+   "opp_final": 0.769,
+   "leader_to_date": "me",
+   "leader": "me",
+   "p_win": 0.7044,
+   "margin": 0.021
+  },
+  {
+   "cat": "3PTM",
+   "me_to_date": 33,
+   "opp_to_date": 20,
+   "me_final": 70.9,
+   "opp_final": 53.1,
+   "leader_to_date": "me",
+   "leader": "me",
+   "p_win": 0.9814,
+   "margin": 17.8
+  },
+  {
+   "cat": "PTS",
+   "me_to_date": 292,
+   "opp_to_date": 295,
+   "me_final": 620.6,
+   "opp_final": 606.7,
+   "leader_to_date": "opp",
+   "leader": "me",
+   "p_win": 0.6334,
+   "margin": 13.9
+  },
+  {
+   "cat": "REB",
+   "me_to_date": 109,
+   "opp_to_date": 105,
+   "me_final": 235.6,
+   "opp_final": 211.0,
+   "leader_to_date": "me",
+   "leader": "me",
+   "p_win": 0.931,
+   "margin": 24.6
+  },
+  {
+   "cat": "AST",
+   "me_to_date": 61,
+   "opp_to_date": 78,
+   "me_final": 129.9,
+   "opp_final": 152.0,
+   "leader_to_date": "opp",
+   "leader": "opp",
+   "p_win": 0.0344,
+   "margin": -22.1
+  },
+  {
+   "cat": "ST",
+   "me_to_date": 23,
+   "opp_to_date": 10,
+   "me_final": 46.2,
+   "opp_final": 29.6,
+   "leader_to_date": "me",
+   "leader": "me",
+   "p_win": 0.9942,
+   "margin": 16.6
+  },
+  {
+   "cat": "BLK",
+   "me_to_date": 14,
+   "opp_to_date": 11,
+   "me_final": 31.6,
+   "opp_final": 23.5,
+   "leader_to_date": "me",
+   "leader": "me",
+   "p_win": 0.9269,
+   "margin": 8.1
+  },
+  {
+   "cat": "TO",
+   "me_to_date": 36,
+   "opp_to_date": 35,
+   "me_final": 73.0,
+   "opp_final": 75.3,
+   "leader_to_date": "opp",
+   "leader": "me",
+   "p_win": 0.6083,
+   "margin": 2.3
+  }
+ ],
+ "projected": {
+  "wins": 8,
+  "losses": 1,
+  "ties": 0
+ },
+ "exp_cats": 6.621252845843417,
+ "p_5plus": 0.9774239944915643,
+ "totals": {
+  "me": {
+   "to_date": {
+    "fgm": 102,
+    "fga": 235,
+    "ftm": 55,
+    "fta": 71,
+    "tpm": 33,
+    "pts": 292,
+    "reb": 109,
+    "ast": 61,
+    "stl": 23,
+    "blk": 14,
+    "tov": 36
+   },
+   "rebuild_to_date": {
+    "fgm": 102,
+    "fga": 235,
+    "ftm": 55,
+    "fta": 71,
+    "tpm": 33,
+    "pts": 292,
+    "reb": 109,
+    "ast": 61,
+    "stl": 23,
+    "blk": 14,
+    "tov": 37
+   },
+   "remaining": {
+    "fgm": 119.81,
+    "fga": 249.2,
+    "ftm": 47.59,
+    "fta": 58.9,
+    "tpm": 37.9,
+    "pts": 328.6,
+    "reb": 126.6,
+    "ast": 68.9,
+    "stl": 23.2,
+    "blk": 17.6,
+    "tov": 37.0
+   }
+  },
+  "opp": {
+   "to_date": {
+    "fgm": 111,
+    "fga": 267,
+    "ftm": 53,
+    "fta": 70,
+    "tpm": 20,
+    "pts": 295,
+    "reb": 105,
+    "ast": 78,
+    "stl": 10,
+    "blk": 11,
+    "tov": 35
+   },
+   "rebuild_to_date": {
+    "fgm": 111,
+    "fga": 267,
+    "ftm": 53,
+    "fta": 70,
+    "tpm": 20,
+    "pts": 295,
+    "reb": 105,
+    "ast": 78,
+    "stl": 10,
+    "blk": 11,
+    "tov": 34
+   },
+   "remaining": {
+    "fgm": 112.25,
+    "fga": 245.1,
+    "ftm": 56.75,
+    "fta": 72.7,
+    "tpm": 33.1,
+    "pts": 311.7,
+    "reb": 106.0,
+    "ast": 74.0,
+    "stl": 19.6,
+    "blk": 12.5,
+    "tov": 40.3
+   }
+  }
+ },
+ "games": {
+  "me": {
+   "to_date_counted": 20,
+   "to_date_benched": [
+    [
+     "2026-11-02",
+     "Karlo Matković"
+    ],
+    [
+     "2026-11-02",
+     "Kris Dunn"
+    ],
+    [
+     "2026-11-04",
+     "Collin Gillespie"
+    ],
+    [
+     "2026-11-04",
+     "P.J. Washington"
+    ]
+   ],
+   "remaining_uncapped": 23,
+   "remaining_started": 23,
+   "remaining_by_player": {
+    "Collin Gillespie": 2,
+    "Yaxel Lendeborg": 2,
+    "Miles Bridges": 2,
+    "Derrick White": 2,
+    "Ty Jerome": 1,
+    "Kyrie Irving": 2,
+    "Jaden McDaniels": 2,
+    "Karlo Matkovic": 2,
+    "PJ Washington": 2,
+    "Neemias Queta": 2,
+    "Kel'el Ware": 2,
+    "Kevin Durant": 1,
+    "Kris Dunn": 1
+   }
+  },
+  "opp": {
+   "to_date_counted": 20,
+   "to_date_benched": [
+    [
+     "2026-11-02",
+     "Matas Buzelis"
+    ],
+    [
+     "2026-11-02",
+     "John Collins"
+    ]
+   ],
+   "remaining_uncapped": 20,
+   "remaining_started": 20,
+   "remaining_by_player": {
+    "De'Anthony Melton": 2,
+    "Brandin Podziemski": 2,
+    "Anfernee Simons": 2,
+    "Stephon Castle": 2,
+    "VJ Edgecombe": 2,
+    "Deni Avdija": 2,
+    "Cooper Flagg": 2,
+    "Brandon Miller": 1,
+    "Aday Mara": 2,
+    "Alperen Sengun": 1,
+    "Matas Buzelis": 1,
+    "John Collins": 1
+   }
+  }
+ },
+ "rebuild_rosters": {
+  "me": {
+   "2026-11-02": "yahoo",
+   "2026-11-03": "today",
+   "2026-11-04": "yahoo"
+  },
+  "opp": {
+   "2026-11-02": "yahoo",
+   "2026-11-03": "today",
+   "2026-11-04": "yahoo"
+  }
+ },
+ "pickups": {
+  "status": "no finished low-value player",
+  "drop_candidates": [],
+  "next_finish": [
+   {
+    "player": "Collin Gillespie",
+    "team": "PHX",
+    "last_game": "2026-11-07",
+    "value": -1.77
+   },
+   {
+    "player": "Karlo Matkovic",
+    "team": "NOP",
+    "last_game": "2026-11-08",
+    "value": -3.85
+   },
+   {
+    "player": "PJ Washington",
+    "team": "DAL",
+    "last_game": "2026-11-08",
+    "value": -2.32
+   },
+   {
+    "player": "Neemias Queta",
+    "team": "BOS",
+    "last_game": "2026-11-08",
+    "value": -1.77
+   },
+   {
+    "player": "Kel'el Ware",
+    "team": "MIL",
+    "last_game": "2026-11-08",
+    "value": -1.16
+   },
+   {
+    "player": "Kris Dunn",
+    "team": "LAC",
+    "last_game": "2026-11-08",
+    "value": -1.16
+   }
+  ],
+  "top": [],
+  "pool_size": 0,
+  "drop": null,
+  "pool": {
+   "source": "yahoo",
+   "reason": null,
+   "listed": 100,
+   "ordering": "platform_rostered_rate_desc",
+   "out": [
+    {
+     "name": "Yves Missi",
+     "team": "NOP",
+     "status": "O"
+    },
+    {
+     "name": "Cason Wallace",
+     "team": "OKC",
+     "status": "O"
+    },
+    {
+     "name": "Terrence Shannon Jr.",
+     "team": "MIN",
+     "status": "O"
+    },
+    {
+     "name": "Kristaps Porziņģis",
+     "team": "GSW",
+     "status": "O"
+    },
+    {
+     "name": "Tobias Harris",
+     "team": "SAS",
+     "status": "O"
+    },
+    {
+     "name": "Gui Santos",
+     "team": "GSW",
+     "status": "O"
+    },
+    {
+     "name": "Kelly Oubre Jr.",
+     "team": "IND",
+     "status": "O"
+    },
+    {
+     "name": "Kevin Porter Jr.",
+     "team": "MIL",
+     "status": "NA"
+    },
+    {
+     "name": "Mark Williams",
+     "team": "PHX",
+     "status": "O"
+    },
+    {
+     "name": "Scotty Pippen Jr.",
+     "team": "MEM",
+     "status": "O"
+    },
+    {
+     "name": "Jaylin Williams",
+     "team": "OKC",
+     "status": "O"
+    },
+    {
+     "name": "Jaylon Tyson",
+     "team": "CLE",
+     "status": "O"
+    },
+    {
+     "name": "Jordan Goodwin",
+     "team": "PHX",
+     "status": "O"
+    },
+    {
+     "name": "Donte DiVincenzo",
+     "team": "MIN",
+     "status": "O"
+    },
+    {
+     "name": "Justin Champagnie",
+     "team": "WAS",
+     "status": "O"
+    },
+    {
+     "name": "Max Christie",
+     "team": "DAL",
+     "status": "O"
+    },
+    {
+     "name": "T.J. McConnell",
+     "team": "IND",
+     "status": "O"
+    },
+    {
+     "name": "Isaiah Joe",
+     "team": "DET",
+     "status": "O"
+    },
+    {
+     "name": "Daeqwon Plowden",
+     "team": "SAC",
+     "status": "O"
+    }
+   ],
+   "unknown_status": [],
+   "not_projected": [
+    {
+     "name": "Jase Richardson",
+     "team": "ORL",
+     "status": null
+    },
+    {
+     "name": "Brice Sensabaugh",
+     "team": "UTA",
+     "status": null
+    },
+    {
+     "name": "Morez Johnson Jr.",
+     "team": "DAL",
+     "status": null
+    },
+    {
+     "name": "Hugo González",
+     "team": "BOS",
+     "status": null
+    },
+    {
+     "name": "Leonard Miller",
+     "team": "CHI",
+     "status": null
+    },
+    {
+     "name": "Bennett Stirtz",
+     "team": "OKC",
+     "status": null
+    }
+   ],
+   "skipped": [
+    {
+     "name": "Max Strus",
+     "team": "LAC",
+     "status": null,
+     "reason": "out in the kit pool"
+    }
+   ],
+   "kit_pool_not_listed": 76
+  },
+  "this_week": {
+   "status": "ran",
+   "drops": [
+    "Karlo Matkovic",
+    "PJ Washington",
+    "Collin Gillespie",
+    "Neemias Queta",
+    "Kel'el Ware",
+    "Kris Dunn"
+   ],
+   "rows": [
+    {
+     "add": "Julian Champagnie",
+     "team": "SAS",
+     "drop": "Kris Dunn",
+     "d_exp": 0.1709577964470413,
+     "d_cat": {
+      "FG%": -0.011083724814333618,
+      "FT%": 0.014486585388746698,
+      "3PTM": 0.011708021028348448,
+      "PTS": 0.10886447429423673,
+      "REB": 0.03193640731762448,
+      "AST": -0.006303186908906022,
+      "ST": 0.00034710011441485555,
+      "BLK": 0.016078847563964493,
+      "TO": 0.004923272462945216
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.2491992644997565,
+     "games": 2,
+     "games_left": 2,
+     "value": -1.83,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": 0.0678
+    },
+    {
+     "add": "Keldon Johnson",
+     "team": "SAS",
+     "drop": "Kris Dunn",
+     "d_exp": 0.14542238656464862,
+     "d_cat": {
+      "FG%": 0.010553066162472646,
+      "FT%": -0.003441453537376571,
+      "3PTM": 0.003282707381382144,
+      "PTS": 0.12244032332299692,
+      "REB": 0.037606006988136764,
+      "AST": -0.006303186908906022,
+      "ST": -0.00042751306555999236,
+      "BLK": -0.004573316321001886,
+      "TO": -0.013714247457495388
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.22366385461736382,
+     "games": 2,
+     "games_left": 2,
+     "value": -4.62,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.1039
+    },
+    {
+     "add": "Sam Hauser",
+     "team": "BOS",
+     "drop": "Kris Dunn",
+     "d_exp": 0.13482567387617833,
+     "d_cat": {
+      "FG%": -0.011259900823618496,
+      "FT%": 0.004263706610232676,
+      "3PTM": 0.01111805731592086,
+      "PTS": 0.08683596803271643,
+      "REB": 0.02209852549839686,
+      "AST": -0.009512774083736686,
+      "ST": -0.0013937353982709233,
+      "BLK": 0.00029861966340727353,
+      "TO": 0.03237720706113034
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.21306714192889353,
+     "games": 2,
+     "games_left": 2,
+     "value": -4.72,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.086
+    },
+    {
+     "add": "Robert Williams III",
+     "team": "POR",
+     "drop": "Kris Dunn",
+     "d_exp": 0.131012553340837,
+     "d_cat": {
+      "FG%": 0.037383005074584474,
+      "FT%": -0.01645957395054476,
+      "3PTM": -0.0037576416077624852,
+      "PTS": 0.055269100108691016,
+      "REB": 0.048518561198089505,
+      "AST": -0.010506096491662953,
+      "ST": -1.871898906280478e-05,
+      "BLK": 0.034298165456000396,
+      "TO": -0.013714247457495388
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.2092540213935522,
+     "games": 2,
+     "games_left": 2,
+     "value": -1.68,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.0503
+    },
+    {
+     "add": "Naji Marshall",
+     "team": "DAL",
+     "drop": "Kris Dunn",
+     "d_exp": 0.1262960741470998,
+     "d_cat": {
+      "FG%": 0.01738106233079062,
+      "FT%": -0.013270137373421198,
+      "3PTM": 0.004064110315368241,
+      "PTS": 0.1522621524782628,
+      "REB": 0.028263507530492005,
+      "AST": 0.030357101098225814,
+      "ST": 0.0012279077361789792,
+      "BLK": -0.004573316321001886,
+      "TO": -0.08941631364779556
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.20453754219981501,
+     "games": 2,
+     "games_left": 2,
+     "value": -2.94,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.0136
+    },
+    {
+     "add": "Ziaire Williams",
+     "team": "LAL",
+     "drop": "Kris Dunn",
+     "d_exp": 0.12605854215510587,
+     "d_cat": {
+      "FG%": -0.00651603539713419,
+      "FT%": 0.01991243459222558,
+      "3PTM": 0.008356560121561607,
+      "PTS": 0.11495587437399035,
+      "REB": 0.012521386278474878,
+      "AST": -0.006303186908906022,
+      "ST": 0.0014609980137454404,
+      "BLK": 0.004778109435999545,
+      "TO": -0.023107598354851322
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.20430001020782107,
+     "games": 2,
+     "games_left": 2,
+     "value": -2.88,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.0429
+    },
+    {
+     "add": "Deandre Ayton",
+     "team": "WAS",
+     "drop": "Kris Dunn",
+     "d_exp": 0.12525778572749685,
+     "d_cat": {
+      "FG%": 0.04407491321053536,
+      "FT%": -0.029204751843655896,
+      "3PTM": -0.0050271786557504194,
+      "PTS": 0.08683596803271643,
+      "REB": 0.044826373681678966,
+      "AST": -0.011462938850676563,
+      "ST": -0.0008840837606526319,
+      "BLK": 0.01920708226815293,
+      "TO": -0.023107598354851322
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.20349925378021205,
+     "games": 2,
+     "games_left": 2,
+     "value": -3.99,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.0804
+    },
+    {
+     "add": "Luke Kornet",
+     "team": "SAS",
+     "drop": "Kris Dunn",
+     "d_exp": 0.12352472552732996,
+     "d_cat": {
+      "FG%": 0.020432993834280655,
+      "FT%": 0.002115479144403909,
+      "3PTM": -0.0050271786557504194,
+      "PTS": 0.025547140762326892,
+      "REB": 0.039063017735466055,
+      "AST": -0.00515315975585473,
+      "ST": -0.0013937353982709233,
+      "BLK": 0.024636110961511082,
+      "TO": 0.02330405689921744
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.20176619358004516,
+     "games": 2,
+     "games_left": 2,
+     "value": -4.19,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.1014
+    },
+    {
+     "add": "Joan Beringer",
+     "team": "MIN",
+     "drop": "Kris Dunn",
+     "d_exp": 0.11837308814061226,
+     "d_cat": {
+      "FG%": 0.031943499530595276,
+      "FT%": -0.01668381945916797,
+      "3PTM": -0.0050271786557504194,
+      "PTS": 0.051841275933282915,
+      "REB": 0.039063017735466055,
+      "AST": -0.013271402833574253,
+      "ST": -0.0013937353982709233,
+      "BLK": 0.026978158825086362,
+      "TO": 0.004923272462945216
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.19661455619332746,
+     "games": 2,
+     "games_left": 2,
+     "value": -4.36,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.1108
+    },
+    {
+     "add": "Collin Sexton",
+     "team": "LAL",
+     "drop": "Kris Dunn",
+     "d_exp": 0.1167749925260761,
+     "d_cat": {
+      "FG%": 0.005324040028735211,
+      "FT%": 0.025171909525733338,
+      "3PTM": 0.006744782383863335,
+      "PTS": 0.15897185023304772,
+      "REB": 0.008492441770189707,
+      "AST": 0.01969569676642463,
+      "ST": 0.00034710011441485555,
+      "BLK": 0.00029861966340738455,
+      "TO": -0.10827144795974009
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.1950164605787913,
+     "games": 2,
+     "games_left": 2,
+     "value": -4.04,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.0809
+    },
+    {
+     "add": "Luguentz Dort",
+     "team": "ATL",
+     "drop": "Kris Dunn",
+     "d_exp": 0.09997343628505045,
+     "d_cat": {
+      "FG%": -0.024896813034611442,
+      "FT%": 0.001367908651911831,
+      "3PTM": 0.009273511414327085,
+      "PTS": 0.09324033212353589,
+      "REB": 0.02209852549839686,
+      "AST": -0.006303186908906022,
+      "ST": 0.0006742775128403267,
+      "BLK": 0.008886572590583008,
+      "TO": -0.004367691563027076
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.17821490433776566,
+     "games": 2,
+     "games_left": 2,
+     "value": -4.19,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.076
+    },
+    {
+     "add": "Brayden Burries",
+     "team": "MIL",
+     "drop": "Kris Dunn",
+     "d_exp": 0.09519565336319302,
+     "d_cat": {
+      "FG%": -0.0029368203417239336,
+      "FT%": 0.0032042018302136377,
+      "3PTM": 0.004798394065251843,
+      "PTS": 0.10886447429423673,
+      "REB": 0.02318360609201664,
+      "AST": -0.00515315975585473,
+      "ST": 0.00034710011441485555,
+      "BLK": -0.004573316321001886,
+      "TO": -0.03253882661436014
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.17343712141590822,
+     "games": 2,
+     "games_left": 2,
+     "value": -5.19,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.1557
+    },
+    {
+     "add": "Quentin Grimes",
+     "team": "LAL",
+     "drop": "Kris Dunn",
+     "d_exp": 0.09360094485198445,
+     "d_cat": {
+      "FG%": -0.0035376466223355774,
+      "FT%": 0.002201512936740091,
+      "3PTM": 0.006744782383863335,
+      "PTS": 0.13122871549754667,
+      "REB": 0.02318360609201664,
+      "AST": 0.017743901263108985,
+      "ST": 0.0006742775128403267,
+      "BLK": 0.004778109435999545,
+      "TO": -0.08941631364779556
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.17184241290469965,
+     "games": 2,
+     "games_left": 2,
+     "value": -4.02,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.0713
+    },
+    {
+     "add": "Bennedict Mathurin",
+     "team": "NOP",
+     "drop": "Kris Dunn",
+     "d_exp": 0.09254977916869372,
+     "d_cat": {
+      "FG%": -0.010813473728686351,
+      "FT%": 0.03842089744911925,
+      "3PTM": 0.004064110315368241,
+      "PTS": 0.12832280816677066,
+      "REB": 0.02528347664544861,
+      "AST": -0.0027262619342858785,
+      "ST": -0.0008840837606526319,
+      "BLK": 0.00029861966340738455,
+      "TO": -0.08941631364779556
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.17079124722140893,
+     "games": 2,
+     "games_left": 2,
+     "value": -5.91,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.1644
+    },
+    {
+     "add": "Bilal Coulibaly",
+     "team": "WAS",
+     "drop": "Kris Dunn",
+     "d_exp": 0.08970051031788773,
+     "d_cat": {
+      "FG%": -0.005372453942592559,
+      "FT%": -0.018227529323346037,
+      "3PTM": 0.002451376485630652,
+      "PTS": 0.099557005438902,
+      "REB": 0.026299062070394896,
+      "AST": -0.0014471766667387698,
+      "ST": 0.0014609980137454404,
+      "BLK": 0.026978158825086362,
+      "TO": -0.04199893058319426
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.16794197837060293,
+     "games": 2,
+     "games_left": 2,
+     "value": -3.04,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.0521
+    },
+    {
+     "add": "Dean Wade",
+     "team": "PHI",
+     "drop": "Kris Dunn",
+     "d_exp": 0.08858163713391426,
+     "d_cat": {
+      "FG%": -0.004695264296625368,
+      "FT%": -0.010455733649740062,
+      "3PTM": 0.004798394065251843,
+      "PTS": 0.02911026603078859,
+      "REB": 0.026299062070394896,
+      "AST": -0.0027262619342858785,
+      "ST": 0.0012279077361789792,
+      "BLK": 0.012646060050820918,
+      "TO": 0.03237720706113034
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.16682310518662946,
+     "games": 2,
+     "games_left": 2,
+     "value": -3.41,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.0722
+    },
+    {
+     "add": "Harrison Barnes",
+     "team": "SAS",
+     "drop": "Kris Dunn",
+     "d_exp": 0.08751430262331994,
+     "d_cat": {
+      "FG%": -0.0013228900237439722,
+      "FT%": 0.006617043464290373,
+      "3PTM": 0.0073162370750976535,
+      "PTS": 0.07377053069626038,
+      "REB": 0.00420797579811949,
+      "AST": -0.007412402752403846,
+      "ST": -0.0008840837606526319,
+      "BLK": 0.00029861966340727353,
+      "TO": 0.004923272462945216
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.16575577067603514,
+     "games": 2,
+     "games_left": 2,
+     "value": -5.92,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.2041
+    },
+    {
+     "add": "Malik Monk",
+     "team": "SAC",
+     "drop": "Kris Dunn",
+     "d_exp": 0.07999342500908718,
+     "d_cat": {
+      "FG%": -0.016132205185096726,
+      "FT%": 0.018559123831192514,
+      "3PTM": 0.008356560121561607,
+      "PTS": 0.12832280816677066,
+      "REB": 0.0027211873033352596,
+      "AST": 0.03267593901117455,
+      "ST": -0.00042751306555999236,
+      "BLK": 0.004778109435999545,
+      "TO": -0.09886058461029024
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.15823489306180238,
+     "games": 2,
+     "games_left": 2,
+     "value": -5.25,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.1277
+    },
+    {
+     "add": "Jordan Poole",
+     "team": "NOP",
+     "drop": "Kris Dunn",
+     "d_exp": 0.07823758610357145,
+     "d_cat": {
+      "FG%": -0.029258523039556117,
+      "FT%": 0.0315168225129433,
+      "3PTM": 0.008356560121561607,
+      "PTS": 0.11039590897176632,
+      "REB": 0.0012044294297552938,
+      "AST": 0.0122325593174899,
+      "ST": -1.871898906280478e-05,
+      "BLK": 0.004778109435999545,
+      "TO": -0.06096956165732559
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.15647905415628666,
+     "games": 2,
+     "games_left": 2,
+     "value": -5.32,
+     "status": null,
+     "missed": "2026-11-04",
+     "season_d_ecw": -0.1564
+    },
+    {
+     "add": "Bones Hyland",
+     "team": "MIN",
+     "drop": "Kris Dunn",
+     "d_exp": 0.07361643190391032,
+     "d_cat": {
+      "FG%": -0.005081589650311358,
+      "FT%": 0.003841673247541144,
+      "3PTM": 0.008356560121561607,
+      "PTS": 0.08360138509613546,
+      "REB": -0.0019205391645606973,
+      "AST": 0.0122325593174899,
+      "ST": 0.00034710011441485555,
+      "BLK": 0.004778109435999545,
+      "TO": -0.03253882661436014
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.15185789995662552,
+     "games": 2,
+     "games_left": 2,
+     "value": -4.64,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.1396
+    },
+    {
+     "add": "Jaxson Hayes",
+     "team": "UTA",
+     "drop": "Kris Dunn",
+     "d_exp": 0.07286124996826793,
+     "d_cat": {
+      "FG%": 0.03233474021095262,
+      "FT%": -0.03656283820848394,
+      "3PTM": -0.0050271786557504194,
+      "PTS": 0.051841275933282915,
+      "REB": 0.03365099845661068,
+      "AST": -0.008481902533516883,
+      "ST": -0.0008840837606526319,
+      "BLK": 0.02909783688067691,
+      "TO": -0.023107598354851322
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.15110271802098313,
+     "games": 2,
+     "games_left": 2,
+     "value": -4.71,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.1565
+    },
+    {
+     "add": "Jared McCain",
+     "team": "OKC",
+     "drop": "Collin Gillespie",
+     "d_exp": 0.06717586977329032,
+     "d_cat": {
+      "FG%": -0.009045323042849995,
+      "FT%": 0.010317500813341263,
+      "3PTM": 0.005867151702427353,
+      "PTS": 0.1079935656860671,
+      "REB": 0.01689561762912284,
+      "AST": -0.00425599041390351,
+      "ST": 0.00029532324903169815,
+      "BLK": 7.461820196985602e-05,
+      "TO": -0.06096659405191629
+     },
+     "d_exp_drop": -0.08507600138895965,
+     "d_exp_add": 0.15225187116224997,
+     "games": 2,
+     "games_left": 2,
+     "value": -5.63,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.1952
+    },
+    {
+     "add": "Dylan Cardwell",
+     "team": "SAC",
+     "drop": "Kris Dunn",
+     "d_exp": 0.06431258246651039,
+     "d_cat": {
+      "FG%": 0.021302031851063385,
+      "FT%": -0.04679417380485695,
+      "3PTM": -0.0050271786557504194,
+      "PTS": 0.030885459315973973,
+      "REB": 0.05079364750304205,
+      "AST": -0.007412402752403846,
+      "ST": -1.871898906280478e-05,
+      "BLK": 0.034298165456000396,
+      "TO": -0.013714247457495388
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.1425540505192256,
+     "games": 2,
+     "games_left": 2,
+     "value": -3.03,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.118
+    },
+    {
+     "add": "Tre Johnson",
+     "team": "WAS",
+     "drop": "Kris Dunn",
+     "d_exp": 0.06256536777969057,
+     "d_cat": {
+      "FG%": -0.022518961935463433,
+      "FT%": 0.019451947550365056,
+      "3PTM": 0.008356560121561607,
+      "PTS": 0.12095505879443547,
+      "REB": 0.012521386278474878,
+      "AST": -0.00515315975585473,
+      "ST": -0.0008840837606526319,
+      "BLK": 0.00029861966340738455,
+      "TO": -0.07046199917658302
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.14080683583240577,
+     "games": 2,
+     "games_left": 2,
+     "value": -6.5,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.1931
+    },
+    {
+     "add": "Cameron Johnson",
+     "team": "DEN",
+     "drop": "Kris Dunn",
+     "d_exp": 0.05921114929681098,
+     "d_cat": {
+      "FG%": 0.000912173502785274,
+      "FT%": 0.009808591625508067,
+      "3PTM": 0.0045585015111822,
+      "PTS": 0.04691822722689665,
+      "REB": 0.004362075180875502,
+      "AST": -0.008195007572322999,
+      "ST": -0.001566036354757605,
+      "BLK": -0.002257407530054545,
+      "TO": 0.004670031706698441
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.13745261734952618,
+     "games": 1,
+     "games_left": 1,
+     "value": -2.22,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": 0.0548
+    },
+    {
+     "add": "Rui Hachimura",
+     "team": "LAC",
+     "drop": "Kris Dunn",
+     "d_exp": 0.05841794966511099,
+     "d_cat": {
+      "FG%": 0.0018890621511520322,
+      "FT%": -0.006804264581243502,
+      "3PTM": 0.004253156342299502,
+      "PTS": 0.06039757546325708,
+      "REB": 0.011021111058168609,
+      "AST": -0.013185278590409022,
+      "ST": -0.001566036354757605,
+      "BLK": -0.002257407530054545,
+      "TO": 0.004670031706698441
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.1366594177178262,
+     "games": 1,
+     "games_left": 1,
+     "value": -2.85,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": 0.034
+    },
+    {
+     "add": "Mikel Brown Jr.",
+     "team": "BKN",
+     "drop": "Kris Dunn",
+     "d_exp": 0.056881010043798974,
+     "d_cat": {
+      "FG%": -0.024901015019619832,
+      "FT%": 0.004818862335309371,
+      "3PTM": 0.008829505816685401,
+      "PTS": 0.1522621524782628,
+      "REB": 0.015070733616286747,
+      "AST": 0.04524474360389641,
+      "ST": 0.0006742775128403267,
+      "BLK": 0.00029861966340727353,
+      "TO": -0.14541686996326952
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.13512247809651418,
+     "games": 2,
+     "games_left": 2,
+     "value": -4.82,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.0842
+    },
+    {
+     "add": "Jake LaRavia",
+     "team": "LAL",
+     "drop": "Kris Dunn",
+     "d_exp": 0.05674151838289304,
+     "d_cat": {
+      "FG%": 0.003676865496670789,
+      "FT%": -0.011050146729325694,
+      "3PTM": 0.00548824473857612,
+      "PTS": 0.06878498077516237,
+      "REB": 0.026299062070394896,
+      "AST": -0.0027262619342858785,
+      "ST": 0.0016687881077447342,
+      "BLK": 0.016078847563964493,
+      "TO": -0.051478861706008794
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.13498298643560824,
+     "games": 2,
+     "games_left": 2,
+     "value": -3.0,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.0556
+    },
+    {
+     "add": "Tre Jones",
+     "team": "CHI",
+     "drop": "Kris Dunn",
+     "d_exp": 0.05544473789249488,
+     "d_cat": {
+      "FG%": 0.011542451000194687,
+      "FT%": 0.008863693901989822,
+      "3PTM": -0.0025902068743119955,
+      "PTS": 0.03658832424865288,
+      "REB": -0.005457831799994262,
+      "AST": 0.0029632955455499155,
+      "ST": -0.0011388430672364391,
+      "BLK": -0.004650108657863861,
+      "TO": 0.009323963595514129
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.13368620594521008,
+     "games": 1,
+     "games_left": 1,
+     "value": -2.47,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.0208
+    },
+    {
+     "add": "Keon Ellis",
+     "team": "BKN",
+     "drop": "Kris Dunn",
+     "d_exp": 0.050804086451132935,
+     "d_cat": {
+      "FG%": -0.008963739000592885,
+      "FT%": -0.00851801086931503,
+      "3PTM": 0.00548824473857612,
+      "PTS": 0.037942835348719894,
+      "REB": 0.0027211873033350376,
+      "AST": -0.006303186908906022,
+      "ST": 0.0014609980137454404,
+      "BLK": 0.022052485362625163,
+      "TO": 0.004923272462945216
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.12904555450384814,
+     "games": 2,
+     "games_left": 2,
+     "value": -3.81,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.1157
+    },
+    {
+     "add": "Baylor Scheierman",
+     "team": "BOS",
+     "drop": "Kris Dunn",
+     "d_exp": 0.05013723472120862,
+     "d_cat": {
+      "FG%": -0.007397484509019447,
+      "FT%": 0.006499533763814291,
+      "3PTM": 0.0073162370750976535,
+      "PTS": 0.041444937359585876,
+      "REB": 0.027292274784693538,
+      "AST": -0.006303186908906022,
+      "ST": -0.00042751306555999236,
+      "BLK": -0.004573316321001886,
+      "TO": -0.013714247457495388
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.12837870277392383,
+     "games": 2,
+     "games_left": 2,
+     "value": -5.71,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.1575
+    },
+    {
+     "add": "Cam Spencer",
+     "team": "MEM",
+     "drop": "Kris Dunn",
+     "d_exp": 0.04608411360344433,
+     "d_cat": {
+      "FG%": 0.001289949346249597,
+      "FT%": 0.01797440436455655,
+      "3PTM": 0.003605951650321737,
+      "PTS": 0.019869528097302136,
+      "REB": -0.004653113548139354,
+      "AST": 0.012315632610522487,
+      "ST": -0.0018059577357750767,
+      "BLK": -0.007182312888291631,
+      "TO": 0.004670031706697886
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.12432558165615953,
+     "games": 1,
+     "games_left": 1,
+     "value": -2.35,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": 0.0514
+    },
+    {
+     "add": "Nikola Vucevic",
+     "team": "ORL",
+     "drop": "Kris Dunn",
+     "d_exp": 0.04079898402449417,
+     "d_cat": {
+      "FG%": 0.0044760962284045025,
+      "FT%": 0.002224906692466111,
+      "3PTM": -0.0004807881988599938,
+      "PTS": 0.009095825290812098,
+      "REB": 0.011646919261443456,
+      "AST": -0.010819933529043257,
+      "ST": -0.002644514522235797,
+      "BLK": 0.004126502894732598,
+      "TO": 0.02317396990677445
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.11904045207720937,
+     "games": 1,
+     "games_left": 1,
+     "value": -4.26,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.0738
+    },
+    {
+     "add": "Kasparas Jakucionis",
+     "team": "MIL",
+     "drop": "Kris Dunn",
+     "d_exp": 0.04013224359309692,
+     "d_cat": {
+      "FG%": -0.007691380565294725,
+      "FT%": 0.018944906482461055,
+      "3PTM": 0.004064110315368241,
+      "PTS": 0.055269100108691016,
+      "REB": 0.013809453013218898,
+      "AST": 0.0217064452825399,
+      "ST": -0.00042751306555999236,
+      "BLK": -0.004573316321001886,
+      "TO": -0.06096956165732559
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.11837371164581212,
+     "games": 2,
+     "games_left": 2,
+     "value": -6.04,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.1996
+    },
+    {
+     "add": "Herbert Jones",
+     "team": "NOP",
+     "drop": "Kris Dunn",
+     "d_exp": 0.03761317401852027,
+     "d_cat": {
+      "FG%": -0.020480865582115815,
+      "FT%": 0.005352515342017972,
+      "3PTM": 0.004798394065251843,
+      "PTS": 0.0770684489685336,
+      "REB": 0.019856073279375108,
+      "AST": 0.001247815787310369,
+      "ST": 0.0018537812248897723,
+      "BLK": 0.008886572590583008,
+      "TO": -0.06096956165732559
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.11585464207123547,
+     "games": 2,
+     "games_left": 2,
+     "value": -3.94,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.1094
+    },
+    {
+     "add": "Jakob Poeltl",
+     "team": "TOR",
+     "drop": "Kris Dunn",
+     "d_exp": 0.036859707148585164,
+     "d_cat": {
+      "FG%": 0.027248991614279294,
+      "FT%": -0.027550147772363975,
+      "3PTM": -0.0050271786557504194,
+      "PTS": 0.019869528097302136,
+      "REB": 0.02226899456977338,
+      "AST": -0.010819933529043257,
+      "ST": -0.001566036354757716,
+      "BLK": 0.007765457472447279,
+      "TO": 0.004670031706698441
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.11510117520130037,
+     "games": 1,
+     "games_left": 1,
+     "value": -2.45,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.0055
+    },
+    {
+     "add": "Jaylen Wells",
+     "team": "MEM",
+     "drop": "Kris Dunn",
+     "d_exp": 0.03353345123671808,
+     "d_cat": {
+      "FG%": -0.002598465396391081,
+      "FT%": 0.0007571267336741183,
+      "3PTM": 0.003263226078461412,
+      "PTS": 0.03484899018469667,
+      "REB": -0.004653113548139354,
+      "AST": -0.0127319589317057,
+      "ST": -0.0013440109023608038,
+      "BLK": -0.007182312888291631,
+      "TO": 0.02317396990677445
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.11177491928943328,
+     "games": 1,
+     "games_left": 1,
+     "value": -4.06,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.1475
+    },
+    {
+     "add": "Jay Huff",
+     "team": "IND",
+     "drop": "Kris Dunn",
+     "d_exp": 0.03273388456931775,
+     "d_cat": {
+      "FG%": 0.003020734667847691,
+      "FT%": 0.004759987896320261,
+      "3PTM": 0.0009097613693896944,
+      "PTS": 0.0036507161716674563,
+      "REB": -0.002289368678840553,
+      "AST": -0.014488647570558955,
+      "ST": -0.0029677983633569216,
+      "BLK": 0.012390089834201312,
+      "TO": 0.027748409242647765
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.11097535262203295,
+     "games": 1,
+     "games_left": 1,
+     "value": -4.43,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.1047
+    },
+    {
+     "add": "Kyle Filipowski",
+     "team": "UTA",
+     "drop": "Kris Dunn",
+     "d_exp": 0.03216921842456072,
+     "d_cat": {
+      "FG%": 0.006435846717336657,
+      "FT%": -0.02015604015153427,
+      "3PTM": 0.002451376485630541,
+      "PTS": 0.07542208735511813,
+      "REB": 0.036078999578464166,
+      "AST": -0.0027262619342858785,
+      "ST": 0.00034710011441485555,
+      "BLK": 0.004778109435999545,
+      "TO": -0.07046199917658302
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.11041068647727592,
+     "games": 2,
+     "games_left": 2,
+     "value": -5.44,
+     "status": null,
+     "missed": "2026-11-04",
+     "season_d_ecw": -0.1677
+    },
+    {
+     "add": "Jerami Grant",
+     "team": "MEM",
+     "drop": "Kris Dunn",
+     "d_exp": 0.029576866147434266,
+     "d_cat": {
+      "FG%": -0.008918336248837644,
+      "FT%": 0.005758131612662365,
+      "3PTM": 0.003605951650321737,
+      "PTS": 0.05454271056226834,
+      "REB": -0.005457831799994484,
+      "AST": -0.009802309075088389,
+      "ST": -0.0020648812767847247,
+      "BLK": 0.006004630634491193,
+      "TO": -0.014091199911604124
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.10781833420014947,
+     "games": 1,
+     "games_left": 1,
+     "value": -4.44,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.0751
+    },
+    {
+     "add": "Bub Carrington",
+     "team": "WAS",
+     "drop": "Kris Dunn",
+     "d_exp": 0.025461127536657302,
+     "d_cat": {
+      "FG%": -0.016033294859663427,
+      "FT%": 0.0007159425173178802,
+      "3PTM": 0.008356560121561607,
+      "PTS": 0.06878498077516237,
+      "REB": 0.012521386278474878,
+      "AST": 0.02170644528253962,
+      "ST": -0.00042751306555999236,
+      "BLK": 0.00029861966340738455,
+      "TO": -0.07046199917658302
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.1037025955893725,
+     "games": 2,
+     "games_left": 2,
+     "value": -5.96,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.1731
+    },
+    {
+     "add": "Miles McBride",
+     "team": "NYK",
+     "drop": "Kris Dunn",
+     "d_exp": 0.02473259906493913,
+     "d_cat": {
+      "FG%": -0.009573415069961344,
+      "FT%": 0.0012914140669670893,
+      "3PTM": 0.005134744655619805,
+      "PTS": 0.024310720338635794,
+      "REB": -0.01046662605098092,
+      "AST": -0.010316397520698073,
+      "ST": -0.0011388430672364391,
+      "BLK": -0.002257407530054545,
+      "TO": 0.027748409242647765
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.10297406711765433,
+     "games": 1,
+     "games_left": 1,
+     "value": -3.36,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.0489
+    },
+    {
+     "add": "Mitchell Robinson",
+     "team": "BOS",
+     "drop": "Kris Dunn",
+     "d_exp": 0.02278313668114995,
+     "d_cat": {
+      "FG%": 0.03484926983643466,
+      "FT%": -0.09731223441665093,
+      "3PTM": -0.0050271786557504194,
+      "PTS": 0.04318920788363523,
+      "REB": 0.052803915076846675,
+      "AST": -0.012384359082031171,
+      "ST": 0.0006742775128403267,
+      "BLK": 0.02909783688067691,
+      "TO": -0.023107598354851322
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.10102460473386515,
+     "games": 2,
+     "games_left": 2,
+     "value": -3.61,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.138
+    },
+    {
+     "add": "Keaton Wagler",
+     "team": "LAC",
+     "drop": "Kris Dunn",
+     "d_exp": 0.022052453363265778,
+     "d_cat": {
+      "FG%": -0.0067282136654085445,
+      "FT%": 0.004682909336012564,
+      "3PTM": 0.003263226078461412,
+      "PTS": 0.05116733101263127,
+      "REB": 0.002939583933884493,
+      "AST": -0.0013998593470371246,
+      "ST": -0.0013440109023608038,
+      "BLK": -0.002257407530054545,
+      "TO": -0.02827110555286294
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.10029392141598098,
+     "games": 1,
+     "games_left": 1,
+     "value": -3.51,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.0247
+    },
+    {
+     "add": "Jalen Green",
+     "team": "PHX",
+     "drop": "Kris Dunn",
+     "d_exp": 0.021319180977544372,
+     "d_cat": {
+      "FG%": -0.01568513072606459,
+      "FT%": -0.003000481875860106,
+      "3PTM": 0.004253156342299502,
+      "PTS": 0.08941356142601253,
+      "REB": 0.004362075180875391,
+      "AST": -0.0020799475891895014,
+      "ST": -0.0013440109023608038,
+      "BLK": 0.002126477540780436,
+      "TO": -0.05672651841894849
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.09956064903025957,
+     "games": 1,
+     "games_left": 1,
+     "value": -3.99,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.002
+    },
+    {
+     "add": "Javonte Green",
+     "team": "DET",
+     "drop": "Kris Dunn",
+     "d_exp": 0.021068763344405994,
+     "d_cat": {
+      "FG%": -0.003969876477601941,
+      "FT%": 0.006585028026975137,
+      "3PTM": 0.00133984328877923,
+      "PTS": -0.0045858781611729516,
+      "REB": -0.006271048916036914,
+      "AST": -0.016482018806602605,
+      "ST": -0.0013440109023608038,
+      "BLK": 0.0,
+      "TO": 0.04579672529242684
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.0993102313971212,
+     "games": 1,
+     "games_left": 1,
+     "value": -4.37,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.1227
+    },
+    {
+     "add": "Luke Kennard",
+     "team": "PHX",
+     "drop": "Kris Dunn",
+     "d_exp": 0.018435217098911327,
+     "d_cat": {
+      "FG%": 0.004853673047148566,
+      "FT%": 0.006123531711471286,
+      "3PTM": 0.002907152210122943,
+      "PTS": 0.0036507161716674563,
+      "REB": -0.011332035627352743,
+      "AST": -0.010819933529043257,
+      "ST": -0.0020648812767847247,
+      "BLK": -0.007182312888291631,
+      "TO": 0.03229930727997343
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.09667668515162653,
+     "games": 1,
+     "games_left": 1,
+     "value": -4.64,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.1293
+    },
+    {
+     "add": "Will Riley",
+     "team": "WAS",
+     "drop": "Kris Dunn",
+     "d_exp": 0.018308628763648638,
+     "d_cat": {
+      "FG%": -0.009623901730854145,
+      "FT%": 0.005197983205180945,
+      "3PTM": 0.002451376485630541,
+      "PTS": 0.060374608610492486,
+      "REB": 0.00420797579811949,
+      "AST": -0.006303186908906022,
+      "ST": -0.0008840837606526319,
+      "BLK": -0.004573316321001886,
+      "TO": -0.03253882661436014
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.09655009681636384,
+     "games": 2,
+     "games_left": 2,
+     "value": -7.83,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.3078
+    },
+    {
+     "add": "Marvin Bagley III",
+     "team": "DEN",
+     "drop": "Kris Dunn",
+     "d_exp": 0.01670886768994767,
+     "d_cat": {
+      "FG%": 0.012843746325061023,
+      "FT%": -0.012317109484185518,
+      "3PTM": -0.003765204432530034,
+      "PTS": 0.0009141978798077321,
+      "REB": 0.007114897727454439,
+      "AST": -0.015312032586852486,
+      "ST": -0.002644514522235797,
+      "BLK": 0.002126477540780547,
+      "TO": 0.027748409242647765
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.09495033574266287,
+     "games": 1,
+     "games_left": 1,
+     "value": -5.84,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.1901
+    },
+    {
+     "add": "Tim Hardaway Jr.",
+     "team": "MIA",
+     "drop": "Kris Dunn",
+     "d_exp": 0.016485483073436058,
+     "d_cat": {
+      "FG%": -0.010371500881995122,
+      "FT%": 0.003997892531098501,
+      "3PTM": 0.003935781865487709,
+      "PTS": 0.023424797117836738,
+      "REB": -0.01046662605098092,
+      "AST": -0.014488647570558955,
+      "ST": -0.002644514522235797,
+      "BLK": -0.004650108657863861,
+      "TO": 0.027748409242647765
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.09472695112615126,
+     "games": 1,
+     "games_left": 1,
+     "value": -6.27,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.1829
+    },
+    {
+     "add": "Al Horford",
+     "team": "GSW",
+     "drop": "Kris Dunn",
+     "d_exp": 0.01507375518428905,
+     "d_cat": {
+      "FG%": -0.004740370232446001,
+      "FT%": 0.0024462063223885666,
+      "3PTM": 0.0021530805822546073,
+      "PTS": -0.0045858781611729516,
+      "REB": 0.007114897727454439,
+      "AST": -0.011313088073272415,
+      "ST": -0.0023439836848315743,
+      "BLK": 0.007765457472447279,
+      "TO": 0.0185774332314671
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.09331522323700425,
+     "games": 1,
+     "games_left": 1,
+     "value": -4.3,
+     "status": null,
+     "missed": "2026-11-02",
+     "season_d_ecw": -0.0797
+    },
+    {
+     "add": "Trevon Brazile",
+     "team": "DEN",
+     "drop": "Kris Dunn",
+     "d_exp": 0.011706674590665045,
+     "d_cat": {
+      "FG%": -0.00604076740125814,
+      "FT%": -0.025425506835656475,
+      "3PTM": 0.00133984328877923,
+      "PTS": 0.021649466186618227,
+      "REB": 0.030761960574778868,
+      "AST": -0.017927030586752435,
+      "ST": -0.0020648812767847247,
+      "BLK": 0.009413590640940495,
+      "TO": 0.0
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.08994814264338025,
+     "games": 1,
+     "games_left": 1,
+     "value": -4.39,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.0239
+    },
+    {
+     "add": "Kevin Huerter",
+     "team": "DET",
+     "drop": "Kris Dunn",
+     "d_exp": 0.010533483303429458,
+     "d_cat": {
+      "FG%": -0.005638356295457614,
+      "FT%": -0.0017943620164443397,
+      "3PTM": 0.0025372636739282584,
+      "PTS": 0.009999648021862817,
+      "REB": -0.004653113548139354,
+      "AST": -0.009277496402207153,
+      "ST": -0.0013440109023608038,
+      "BLK": 0.002126477540780547,
+      "TO": 0.0185774332314671
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.08877495135614466,
+     "games": 1,
+     "games_left": 1,
+     "value": -4.06,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.0826
+    },
+    {
+     "add": "Allen Graves",
+     "team": "TOR",
+     "drop": "Kris Dunn",
+     "d_exp": 0.004546941775466828,
+     "d_cat": {
+      "FG%": -0.002010485237555426,
+      "FT%": -0.0017875044848223443,
+      "3PTM": -0.0004807881988599938,
+      "PTS": -0.011046561630657759,
+      "REB": 0.0,
+      "AST": -0.014488647570558955,
+      "ST": -0.0020648812767847247,
+      "BLK": 0.004126502894732598,
+      "TO": 0.03229930727997343
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.08278840982818203,
+     "games": 1,
+     "games_left": 1,
+     "value": -5.48,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.1798
+    },
+    {
+     "add": "Kingston Flemings",
+     "team": "ATL",
+     "drop": "Kris Dunn",
+     "d_exp": 0.003140343477979035,
+     "d_cat": {
+      "FG%": -0.007059258748083552,
+      "FT%": -0.006185716252622098,
+      "3PTM": 0.004064110315368241,
+      "PTS": 0.0770684489685336,
+      "REB": 0.012521386278474878,
+      "AST": 0.030357101098225814,
+      "ST": 0.00034710011441485555,
+      "BLK": 0.00029861966340738455,
+      "TO": -0.10827144795974009
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.08138181153069424,
+     "games": 2,
+     "games_left": 2,
+     "value": -6.11,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.2017
+    },
+    {
+     "add": "Andre Drummond",
+     "team": "NYK",
+     "drop": "Kris Dunn",
+     "d_exp": 0.0024442049564476487,
+     "d_cat": {
+      "FG%": -0.0014500579084900656,
+      "FT%": -0.014882574778983249,
+      "3PTM": -0.003765204432530034,
+      "PTS": -0.013829355970160218,
+      "REB": 0.025624454092447846,
+      "AST": -0.014488647570558955,
+      "ST": -0.0020648812767847247,
+      "BLK": 0.004126502894732598,
+      "TO": 0.02317396990677445
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.08068567300916285,
+     "games": 1,
+     "games_left": 1,
+     "value": -5.15,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.1235
+    },
+    {
+     "add": "Royce O'Neale",
+     "team": "CHA",
+     "drop": "Kris Dunn",
+     "d_exp": 0.002151963898258613,
+     "d_cat": {
+      "FG%": -0.009416838502027236,
+      "FT%": 0.0002127272734812058,
+      "3PTM": 0.003263226078461412,
+      "PTS": -0.0045858781611729516,
+      "REB": 0.0014857207833863795,
+      "AST": -0.0127319589317057,
+      "ST": -0.001566036354757716,
+      "BLK": -0.002257407530054545,
+      "TO": 0.027748409242647765
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.08039343195097381,
+     "games": 1,
+     "games_left": 1,
+     "value": -4.73,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.108
+    },
+    {
+     "add": "Daniss Jenkins",
+     "team": "DET",
+     "drop": "Kris Dunn",
+     "d_exp": 0.001023154744796917,
+     "d_cat": {
+      "FG%": -0.008783928155614684,
+      "FT%": 0.0067278847395669805,
+      "3PTM": 0.00133984328877923,
+      "PTS": 0.019869528097302136,
+      "REB": -0.006271048916036914,
+      "AST": 0.0037391977352688177,
+      "ST": -0.001566036354757605,
+      "BLK": -0.004650108657863861,
+      "TO": -0.009382177031847183
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.07926462279751212,
+     "games": 1,
+     "games_left": 1,
+     "value": -4.79,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.1172
+    },
+    {
+     "add": "Noah Clowney",
+     "team": "BKN",
+     "drop": "Kris Dunn",
+     "d_exp": -0.0003875019542677327,
+     "d_cat": {
+      "FG%": -0.011221788183903403,
+      "FT%": 0.0012764135102124596,
+      "3PTM": 0.0008952026627137011,
+      "PTS": 0.007738545770244576,
+      "REB": 0.00028595477312154394,
+      "AST": -0.014280528993228181,
+      "ST": -0.0021804287836511005,
+      "BLK": 0.0035608830707716255,
+      "TO": 0.013538244219451046
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.07785396609844747,
+     "games": 2,
+     "games_left": 2,
+     "value": -5.68,
+     "status": "Q",
+     "missed": null,
+     "season_d_ecw": -0.159
+    },
+    {
+     "add": "Isaiah Collier",
+     "team": "UTA",
+     "drop": "Kris Dunn",
+     "d_exp": -0.000925170176689305,
+     "d_cat": {
+      "FG%": -0.0013036987022676527,
+      "FT%": -0.04200363473671431,
+      "3PTM": -0.0014336673015640233,
+      "PTS": 0.08197608244247245,
+      "REB": 0.015070733616286747,
+      "AST": 0.08234429294861473,
+      "ST": 0.00034710011441485555,
+      "BLK": 0.00029861966340738455,
+      "TO": -0.13622099822133948
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.0773162978760259,
+     "games": 2,
+     "games_left": 2,
+     "value": -6.71,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.213
+    },
+    {
+     "add": "Jalen Smith",
+     "team": "CHI",
+     "drop": "Kris Dunn",
+     "d_exp": -0.007765358307985026,
+     "d_cat": {
+      "FG%": 0.00015861382924897693,
+      "FT%": -0.0001198267246668161,
+      "3PTM": -0.0014805580508285843,
+      "PTS": -0.019524184458868388,
+      "REB": -0.005197766688974426,
+      "AST": -0.015901410993785225,
+      "ST": -0.003369630584149741,
+      "BLK": -0.001113462267364529,
+      "TO": 0.038782867631403706
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.07047610974473018,
+     "games": 1,
+     "games_left": 1,
+     "value": -2.86,
+     "status": "Q",
+     "missed": null,
+     "season_d_ecw": 0.0451
+    },
+    {
+     "add": "Kobe Sanders",
+     "team": "LAC",
+     "drop": "Kris Dunn",
+     "d_exp": -0.008723360159798965,
+     "d_cat": {
+      "FG%": -0.0020750477826729785,
+      "FT%": 0.007896673816204847,
+      "3PTM": 0.0025372636739282584,
+      "PTS": 0.010902397955292908,
+      "REB": -0.00792321050623035,
+      "AST": -0.011313088073272415,
+      "ST": -0.001566036354757605,
+      "BLK": -0.007182312888291631,
+      "TO": 0.0
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.06951810789291624,
+     "games": 1,
+     "games_left": 1,
+     "value": -5.25,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.1549
+    },
+    {
+     "add": "Isaiah Stewart",
+     "team": "MEM",
+     "drop": "Kris Dunn",
+     "d_exp": -0.009562493165192198,
+     "d_cat": {
+      "FG%": 0.006506369716783089,
+      "FT%": 0.0012196351408185757,
+      "3PTM": -0.002762380107320217,
+      "PTS": -0.020411349419945157,
+      "REB": -0.011999111309416222,
+      "AST": -0.01675650957738528,
+      "ST": -0.0035295074046204356,
+      "BLK": 0.0017046002988940767,
+      "TO": 0.03646575949699937
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.068678974887523,
+     "games": 1,
+     "games_left": 1,
+     "value": -3.25,
+     "status": "Q",
+     "missed": null,
+     "season_d_ecw": -0.1145
+    },
+    {
+     "add": "Marcus Smart",
+     "team": "HOU",
+     "drop": "Kris Dunn",
+     "d_exp": -0.01065229788495553,
+     "d_cat": {
+      "FG%": -0.011175489786746207,
+      "FT%": 0.004191252971889825,
+      "3PTM": 0.003605951650321737,
+      "PTS": 0.02076007010690306,
+      "REB": -0.005457831799994484,
+      "AST": -0.005893707406950999,
+      "ST": -0.00033393617871979586,
+      "BLK": -0.002257407530054545,
+      "TO": -0.014091199911604124
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.06758917016775967,
+     "games": 1,
+     "games_left": 1,
+     "value": -2.85,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.118
+    },
+    {
+     "add": "GG Jackson",
+     "team": "MEM",
+     "drop": "Kris Dunn",
+     "d_exp": -0.01110087308562474,
+     "d_cat": {
+      "FG%": -0.0020111767393760083,
+      "FT%": -0.008156917859470592,
+      "3PTM": 0.0009097613693896944,
+      "PTS": 0.02076007010690306,
+      "REB": 0.0014857207833863795,
+      "AST": -0.014488647570558955,
+      "ST": -0.0023439836848315743,
+      "BLK": 0.002126477540780436,
+      "TO": -0.009382177031847183
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.06714059496709046,
+     "games": 1,
+     "games_left": 1,
+     "value": -6.55,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.2052
+    },
+    {
+     "add": "Jarace Walker",
+     "team": "IND",
+     "drop": "Kris Dunn",
+     "d_exp": -0.012217749388899246,
+     "d_cat": {
+      "FG%": -0.010674851003895869,
+      "FT%": -0.010088730726353745,
+      "3PTM": 0.0025372636739282584,
+      "PTS": 0.023424797117836738,
+      "REB": 0.014080337269184562,
+      "AST": -0.008741786968443244,
+      "ST": -0.0013440109023608038,
+      "BLK": 0.002126477540780547,
+      "TO": -0.02353724538957569
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.06602371866381596,
+     "games": 1,
+     "games_left": 1,
+     "value": -4.58,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.0784
+    },
+    {
+     "add": "Gradey Dick",
+     "team": "LAC",
+     "drop": "Kris Dunn",
+     "d_exp": -0.013228149837268277,
+     "d_cat": {
+      "FG%": -0.005133650271119783,
+      "FT%": 0.008887902621942056,
+      "3PTM": -0.0009796093582252752,
+      "PTS": -0.011046561630657759,
+      "REB": -0.009610055848927379,
+      "AST": -0.016100492250232468,
+      "ST": -0.0023439836848315743,
+      "BLK": -0.004650108657863861,
+      "TO": 0.027748409242647765
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.06501331821544692,
+     "games": 1,
+     "games_left": 1,
+     "value": -7.28,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.2786
+    },
+    {
+     "add": "Oso Ighodaro",
+     "team": "PHX",
+     "drop": "Kris Dunn",
+     "d_exp": -0.013345959576038957,
+     "d_cat": {
+      "FG%": 0.017918336206424357,
+      "FT%": -0.02993890458578896,
+      "3PTM": -0.0050271786557504194,
+      "PTS": -0.0018313936280898169,
+      "REB": 0.0122656843060579,
+      "AST": -0.006486509236443616,
+      "ST": -0.001566036354757605,
+      "BLK": 0.006004630634491082,
+      "TO": -0.004684588262181877
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.06489550847667624,
+     "games": 1,
+     "games_left": 1,
+     "value": -4.47,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.1392
+    },
+    {
+     "add": "Nique Clifford",
+     "team": "SAC",
+     "drop": "Kris Dunn",
+     "d_exp": -0.023047114760959997,
+     "d_cat": {
+      "FG%": -0.016534937591339283,
+      "FT%": -0.009304631792299789,
+      "3PTM": 0.0015671862725679109,
+      "PTS": 0.03969613393181759,
+      "REB": 0.013809453013218898,
+      "AST": -0.0014471766667387698,
+      "ST": 0.00034710011441485555,
+      "BLK": 0.00029861966340738455,
+      "TO": -0.051478861706008794
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.055194353291755205,
+     "games": 2,
+     "games_left": 2,
+     "value": -7.34,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.2803
+    },
+    {
+     "add": "Adem Bona",
+     "team": "PHI",
+     "drop": "Kris Dunn",
+     "d_exp": -0.024712554723247238,
+     "d_cat": {
+      "FG%": 0.006275753174256105,
+      "FT%": -0.01025581701244982,
+      "3PTM": -0.0050271786557504194,
+      "PTS": -0.0318497337598711,
+      "REB": 0.0014612127491256954,
+      "AST": -0.016424176995028572,
+      "ST": -0.002426415976576557,
+      "BLK": 0.010649965475815648,
+      "TO": 0.022883836277231784
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.053528913329467964,
+     "games": 2,
+     "games_left": 2,
+     "value": -5.98,
+     "status": "Q",
+     "missed": null,
+     "season_d_ecw": -0.2251
+    },
+    {
+     "add": "Dennis Schroder",
+     "team": "CHA",
+     "drop": "Kris Dunn",
+     "d_exp": -0.026329549834331223,
+     "d_cat": {
+      "FG%": -0.010730812055991912,
+      "FT%": 0.00908726613194466,
+      "3PTM": 0.0,
+      "PTS": 0.02519547436839409,
+      "REB": -0.005457831799994262,
+      "AST": 0.004529469919477558,
+      "ST": -0.0018059577357750767,
+      "BLK": -0.004650108657863861,
+      "TO": -0.04249705000452242
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.05191191821838398,
+     "games": 1,
+     "games_left": 1,
+     "value": -6.17,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.1768
+    },
+    {
+     "add": "Zach Collins",
+     "team": "CHI",
+     "drop": "Kris Dunn",
+     "d_exp": -0.035988278585401434,
+     "d_cat": {
+      "FG%": -0.0004277226420759117,
+      "FT%": 0.004479701545188841,
+      "3PTM": -0.0038097635377263295,
+      "PTS": -0.03996835535989207,
+      "REB": -0.011673053507764042,
+      "AST": -0.015212640713318182,
+      "ST": -0.0032222203965792673,
+      "BLK": -0.004937091604638177,
+      "TO": 0.038782867631403706
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.04225318946731377,
+     "games": 1,
+     "games_left": 1,
+     "value": -5.58,
+     "status": "Q",
+     "missed": null,
+     "season_d_ecw": -0.1622
+    },
+    {
+     "add": "Jamal Shead",
+     "team": "TOR",
+     "drop": "Kris Dunn",
+     "d_exp": -0.03980582642629821,
+     "d_cat": {
+      "FG%": -0.012585191015381136,
+      "FT%": 0.00411730455995607,
+      "3PTM": -0.0004807881988599938,
+      "PTS": -0.006427051619803836,
+      "REB": -0.013089593033516755,
+      "AST": 0.013258527213850846,
+      "ST": -0.0011388430672364391,
+      "BLK": -0.004650108657863861,
+      "TO": -0.0188100826074431
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.038435641626416994,
+     "games": 1,
+     "games_left": 1,
+     "value": -5.45,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.1577
+    },
+    {
+     "add": "Nikola Jovic",
+     "team": "MIA",
+     "drop": "Kris Dunn",
+     "d_exp": -0.04346349679620204,
+     "d_cat": {
+      "FG%": -0.012039472266572315,
+      "FT%": -0.009591281049164069,
+      "3PTM": -0.0009796093582252752,
+      "PTS": -0.011973249750755421,
+      "REB": -0.002289368678840553,
+      "AST": -0.011313088073272415,
+      "ST": -0.0023439836848315743,
+      "BLK": -0.002257407530054545,
+      "TO": 0.009323963595514129
+     },
+     "d_exp_drop": -0.0782414680527152,
+     "d_exp_add": 0.03477797125651316,
+     "games": 1,
+     "games_left": 1,
+     "value": -8.09,
+     "status": null,
+     "missed": "2026-11-04",
+     "season_d_ecw": -0.3002
+    }
+   ],
+   "no_games": [],
+   "pool_size": 74,
+   "drop_alone": {
+    "Karlo Matkovic": -0.2409,
+    "PJ Washington": -0.3676,
+    "Collin Gillespie": -0.0851,
+    "Neemias Queta": -0.4042,
+    "Kel'el Ware": -0.4727,
+    "Kris Dunn": -0.0782
+   }
+  }
+ },
+ "lineup_today": {
+  "date": "2026-11-05",
+  "games_today": true,
+  "moves": [],
+  "alerts": [],
+  "d_exp": 0.05,
+  "replacements": {
+   "Collin Gillespie": {
+    "slot": "G",
+    "candidates": []
+   },
+   "Yaxel Lendeborg": {
+    "slot": "SF",
+    "candidates": []
+   },
+   "Miles Bridges": {
+    "slot": "PF",
+    "candidates": []
+   }
+  },
+  "slots": {
+   "Ty Jerome": "PG",
+   "Derrick White": "SG",
+   "Collin Gillespie": "G",
+   "Yaxel Lendeborg": "SF",
+   "Miles Bridges": "PF",
+   "Karlo Matkovic": "F",
+   "Neemias Queta": "C",
+   "Kel'el Ware": "C",
+   "Jaden McDaniels": "UTIL",
+   "PJ Washington": "UTIL",
+   "Kevin Durant": "BN",
+   "Kyrie Irving": "BN",
+   "Kris Dunn": "BN"
+  }
+ },
+ "fa_notice": {
+  "rows": [
+   {
+    "add": "Robert Williams III",
+    "team": "POR",
+    "drop": "Karlo Matkovic",
+    "gap": 2.17
+   },
+   {
+    "add": "Julian Champagnie",
+    "team": "SAS",
+    "drop": "Karlo Matkovic",
+    "gap": 2.02
+   },
+   {
+    "add": "Cameron Johnson",
+    "team": "DEN",
+    "drop": "Karlo Matkovic",
+    "gap": 1.63
+   }
+  ],
+  "this_week": {
+   "add": "Julian Champagnie",
+   "team": "SAS",
+   "drop": "Kris Dunn",
+   "d_exp": 0.1709577964470413,
+   "d_cat": {
+    "FG%": -0.011083724814333618,
+    "FT%": 0.014486585388746698,
+    "3PTM": 0.011708021028348448,
+    "PTS": 0.10886447429423673,
+    "REB": 0.03193640731762448,
+    "AST": -0.006303186908906022,
+    "ST": 0.00034710011441485555,
+    "BLK": 0.016078847563964493,
+    "TO": 0.004923272462945216
+   },
+   "d_exp_drop": -0.0782414680527152,
+   "d_exp_add": 0.2491992644997565,
+   "games": 2,
+   "games_left": 2,
+   "value": -1.83,
+   "status": null,
+   "missed": null,
+   "season_d_ecw": 0.0678
+  },
+  "gap": 1.0,
+  "d_exp": 0.1
+ },
+ "unpooled_active": [],
+ "board": {
+  "score": {
+   "me": 6,
+   "opp": 3,
+   "tie": 0
+  },
+  "me": {
+   "name": "KEL'EL YAXEL HALQUETA",
+   "seat": 10,
+   "manager": "Me",
+   "rows": [
+    {
+     "slot": "PG",
+     "player": "Ty Jerome",
+     "team": "MEM",
+     "positions": [
+      "PG",
+      "SG"
+     ],
+     "status": null,
+     "today": null,
+     "to_date": {
+      "fgm": 24,
+      "fga": 42,
+      "ftm": 8,
+      "fta": 10,
+      "tpm": 7,
+      "pts": 63,
+      "reb": 9,
+      "ast": 8,
+      "stl": 2,
+      "blk": 1,
+      "tov": 8
+     },
+     "games": 2
+    },
+    {
+     "slot": "SG",
+     "player": "Derrick White",
+     "team": "BOS",
+     "positions": [
+      "PG",
+      "SG"
+     ],
+     "status": null,
+     "today": null,
+     "to_date": {
+      "fgm": 10,
+      "fga": 30,
+      "ftm": 9,
+      "fta": 9,
+      "tpm": 2,
+      "pts": 31,
+      "reb": 6,
+      "ast": 10,
+      "stl": 2,
+      "blk": 2,
+      "tov": 5
+     },
+     "games": 2
+    },
+    {
+     "slot": "G",
+     "player": "Collin Gillespie",
+     "team": "PHX",
+     "positions": [
+      "PG",
+      "SG"
+     ],
+     "status": null,
+     "today": "vs ORL",
+     "to_date": {
+      "fgm": 1,
+      "fga": 8,
+      "ftm": 0,
+      "fta": 0,
+      "tpm": 1,
+      "pts": 3,
+      "reb": 1,
+      "ast": 2,
+      "stl": 2,
+      "blk": 0,
+      "tov": 0
+     },
+     "games": 1
+    },
+    {
+     "slot": "SF",
+     "player": "Yaxel Lendeborg",
+     "team": "GSW",
+     "positions": [
+      "SF",
+      "PF"
+     ],
+     "status": null,
+     "today": "vs MIA",
+     "to_date": {
+      "fgm": 3,
+      "fga": 10,
+      "ftm": 8,
+      "fta": 9,
+      "tpm": 2,
+      "pts": 16,
+      "reb": 5,
+      "ast": 5,
+      "stl": 1,
+      "blk": 1,
+      "tov": 2
+     },
+     "games": 1
+    },
+    {
+     "slot": "PF",
+     "player": "Miles Bridges",
+     "team": "PHX",
+     "positions": [
+      "PF"
+     ],
+     "status": null,
+     "today": "vs ORL",
+     "to_date": {
+      "fgm": 13,
+      "fga": 27,
+      "ftm": 6,
+      "fta": 8,
+      "tpm": 7,
+      "pts": 39,
+      "reb": 13,
+      "ast": 8,
+      "stl": 6,
+      "blk": 1,
+      "tov": 1
+     },
+     "games": 2
+    },
+    {
+     "slot": "F",
+     "player": "Karlo Matkovic",
+     "team": "NOP",
+     "positions": [
+      "PF",
+      "C"
+     ],
+     "status": null,
+     "today": null,
+     "to_date": {
+      "fgm": 2,
+      "fga": 3,
+      "ftm": 0,
+      "fta": 0,
+      "tpm": 1,
+      "pts": 5,
+      "reb": 4,
+      "ast": 2,
+      "stl": 0,
+      "blk": 1,
+      "tov": 1
+     },
+     "games": 1
+    },
+    {
+     "slot": "C",
+     "player": "Neemias Queta",
+     "team": "BOS",
+     "positions": [
+      "C"
+     ],
+     "status": null,
+     "today": null,
+     "to_date": {
+      "fgm": 10,
+      "fga": 15,
+      "ftm": 4,
+      "fta": 7,
+      "tpm": 1,
+      "pts": 25,
+      "reb": 18,
+      "ast": 4,
+      "stl": 0,
+      "blk": 2,
+      "tov": 1
+     },
+     "games": 2
+    },
+    {
+     "slot": "C",
+     "player": "Kel'el Ware",
+     "team": "MIL",
+     "positions": [
+      "C"
+     ],
+     "status": null,
+     "today": null,
+     "to_date": {
+      "fgm": 2,
+      "fga": 12,
+      "ftm": 0,
+      "fta": 0,
+      "tpm": 0,
+      "pts": 4,
+      "reb": 14,
+      "ast": 1,
+      "stl": 0,
+      "blk": 3,
+      "tov": 2
+     },
+     "games": 2
+    },
+    {
+     "slot": "UTIL",
+     "player": "Jaden McDaniels",
+     "team": "MIN",
+     "positions": [
+      "SF"
+     ],
+     "status": null,
+     "today": null,
+     "to_date": {
+      "fgm": 12,
+      "fga": 28,
+      "ftm": 1,
+      "fta": 3,
+      "tpm": 2,
+      "pts": 27,
+      "reb": 14,
+      "ast": 7,
+      "stl": 2,
+      "blk": 0,
+      "tov": 4
+     },
+     "games": 2
+    },
+    {
+     "slot": "UTIL",
+     "player": "PJ Washington",
+     "team": "DAL",
+     "positions": [
+      "PF",
+      "C"
+     ],
+     "status": null,
+     "today": null,
+     "to_date": {
+      "fgm": 2,
+      "fga": 9,
+      "ftm": 6,
+      "fta": 8,
+      "tpm": 2,
+      "pts": 12,
+      "reb": 5,
+      "ast": 1,
+      "stl": 2,
+      "blk": 0,
+      "tov": 2
+     },
+     "games": 1
+    },
+    {
+     "slot": "BN",
+     "player": "Kevin Durant",
+     "team": "HOU",
+     "positions": [
+      "SG",
+      "SF",
+      "PF"
+     ],
+     "status": null,
+     "today": null,
+     "to_date": {
+      "fgm": 12,
+      "fga": 20,
+      "ftm": 7,
+      "fta": 9,
+      "tpm": 2,
+      "pts": 33,
+      "reb": 8,
+      "ast": 5,
+      "stl": 3,
+      "blk": 2,
+      "tov": 8
+     },
+     "games": 2
+    },
+    {
+     "slot": "BN",
+     "player": "Kyrie Irving",
+     "team": "DAL",
+     "positions": [
+      "PG",
+      "SG"
+     ],
+     "status": null,
+     "today": null,
+     "to_date": {
+      "fgm": 9,
+      "fga": 27,
+      "ftm": 6,
+      "fta": 8,
+      "tpm": 5,
+      "pts": 29,
+      "reb": 7,
+      "ast": 5,
+      "stl": 1,
+      "blk": 0,
+      "tov": 1
+     },
+     "games": 1
+    },
+    {
+     "slot": "BN",
+     "player": "Kris Dunn",
+     "team": "LAC",
+     "positions": [
+      "PG",
+      "SG"
+     ],
+     "status": null,
+     "today": null,
+     "to_date": {
+      "fgm": 2,
+      "fga": 4,
+      "ftm": 0,
+      "fta": 0,
+      "tpm": 1,
+      "pts": 5,
+      "reb": 5,
+      "ast": 3,
+      "stl": 2,
+      "blk": 1,
+      "tov": 2
+     },
+     "games": 1
+    },
+    {
+     "slot": "IL",
+     "player": "Tyrese Haliburton",
+     "team": "IND",
+     "positions": [
+      "PG",
+      "SG"
+     ],
+     "status": "O",
+     "today": null,
+     "to_date": null,
+     "games": 0
+    },
+    {
+     "slot": "IL",
+     "player": "Kawhi Leonard",
+     "team": "TOR",
+     "positions": [
+      "SG",
+      "SF",
+      "PF"
+     ],
+     "status": "O",
+     "today": null,
+     "to_date": null,
+     "games": 0
+    }
+   ],
+   "departed": {
+    "names": [],
+    "to_date": {
+     "fgm": 0,
+     "fga": 0,
+     "ftm": 0,
+     "fta": 0,
+     "tpm": 0,
+     "pts": 0,
+     "reb": 0,
+     "ast": 0,
+     "stl": 0,
+     "blk": 0,
+     "tov": 0
+    },
+    "games": 0
+   },
+   "totals": {
+    "fgm": 102,
+    "fga": 235,
+    "ftm": 55,
+    "fta": 71,
+    "tpm": 33,
+    "pts": 292,
+    "reb": 109,
+    "ast": 61,
+    "stl": 23,
+    "blk": 14,
+    "tov": 36
+   },
+   "rows_match_totals": false
+  },
+  "opp": {
+   "name": "Podz save the league",
+   "seat": 9,
+   "manager": "Kevin",
+   "rows": [
+    {
+     "slot": "PG",
+     "player": "Brandin Podziemski",
+     "team": "GSW",
+     "positions": [
+      "PG",
+      "SG"
+     ],
+     "status": null,
+     "today": "vs MIA",
+     "to_date": {
+      "fgm": 7,
+      "fga": 15,
+      "ftm": 3,
+      "fta": 4,
+      "tpm": 3,
+      "pts": 20,
+      "reb": 3,
+      "ast": 2,
+      "stl": 1,
+      "blk": 0,
+      "tov": 3
+     },
+     "games": 1
+    },
+    {
+     "slot": "SG",
+     "player": "De'Anthony Melton",
+     "team": "GSW",
+     "positions": [
+      "PG",
+      "SG"
+     ],
+     "status": null,
+     "today": "vs MIA",
+     "to_date": {
+      "fgm": 1,
+      "fga": 9,
+      "ftm": 0,
+      "fta": 1,
+      "tpm": 0,
+      "pts": 2,
+      "reb": 7,
+      "ast": 2,
+      "stl": 2,
+      "blk": 0,
+      "tov": 0
+     },
+     "games": 1
+    },
+    {
+     "slot": "G",
+     "player": "Deni Avdija",
+     "team": "POR",
+     "positions": [
+      "SG",
+      "SF",
+      "PF"
+     ],
+     "status": null,
+     "today": null,
+     "to_date": {
+      "fgm": 17,
+      "fga": 38,
+      "ftm": 12,
+      "fta": 18,
+      "tpm": 3,
+      "pts": 49,
+      "reb": 10,
+      "ast": 17,
+      "stl": 0,
+      "blk": 0,
+      "tov": 5
+     },
+     "games": 2
+    },
+    {
+     "slot": "SF",
+     "player": "Cooper Flagg",
+     "team": "DAL",
+     "positions": [
+      "SG",
+      "SF",
+      "PF"
+     ],
+     "status": null,
+     "today": null,
+     "to_date": {
+      "fgm": 10,
+      "fga": 38,
+      "ftm": 16,
+      "fta": 18,
+      "tpm": 0,
+      "pts": 36,
+      "reb": 14,
+      "ast": 11,
+      "stl": 2,
+      "blk": 0,
+      "tov": 7
+     },
+     "games": 2
+    },
+    {
+     "slot": "PF",
+     "player": "Brandon Miller",
+     "team": "CHA",
+     "positions": [
+      "SF",
+      "PF"
+     ],
+     "status": null,
+     "today": null,
+     "to_date": {
+      "fgm": 9,
+      "fga": 33,
+      "ftm": 5,
+      "fta": 5,
+      "tpm": 4,
+      "pts": 27,
+      "reb": 5,
+      "ast": 5,
+      "stl": 0,
+      "blk": 0,
+      "tov": 4
+     },
+     "games": 2
+    },
+    {
+     "slot": "F",
+     "player": "Matas Buzelis",
+     "team": "CHI",
+     "positions": [
+      "SF",
+      "PF"
+     ],
+     "status": null,
+     "today": null,
+     "to_date": {
+      "fgm": 5,
+      "fga": 11,
+      "ftm": 1,
+      "fta": 1,
+      "tpm": 1,
+      "pts": 12,
+      "reb": 5,
+      "ast": 3,
+      "stl": 1,
+      "blk": 0,
+      "tov": 1
+     },
+     "games": 1
+    },
+    {
+     "slot": "C",
+     "player": "John Collins",
+     "team": "DET",
+     "positions": [
+      "PF",
+      "C"
+     ],
+     "status": null,
+     "today": null,
+     "to_date": {
+      "fgm": 7,
+      "fga": 9,
+      "ftm": 2,
+      "fta": 2,
+      "tpm": 0,
+      "pts": 16,
+      "reb": 1,
+      "ast": 0,
+      "stl": 0,
+      "blk": 0,
+      "tov": 0
+     },
+     "games": 1
+    },
+    {
+     "slot": "C",
+     "player": "Aday Mara",
+     "team": "OKC",
+     "positions": [
+      "C"
+     ],
+     "status": null,
+     "today": null,
+     "to_date": {
+      "fgm": 9,
+      "fga": 13,
+      "ftm": 1,
+      "fta": 2,
+      "tpm": 0,
+      "pts": 19,
+      "reb": 14,
+      "ast": 2,
+      "stl": 0,
+      "blk": 4,
+      "tov": 2
+     },
+     "games": 2
+    },
+    {
+     "slot": "UTIL",
+     "player": "VJ Edgecombe",
+     "team": "PHI",
+     "positions": [
+      "PG",
+      "SG"
+     ],
+     "status": null,
+     "today": null,
+     "to_date": {
+      "fgm": 14,
+      "fga": 23,
+      "ftm": 1,
+      "fta": 3,
+      "tpm": 3,
+      "pts": 32,
+      "reb": 9,
+      "ast": 8,
+      "stl": 2,
+      "blk": 1,
+      "tov": 4
+     },
+     "games": 2
+    },
+    {
+     "slot": "UTIL",
+     "player": "Alperen Sengun",
+     "team": "HOU",
+     "positions": [
+      "PF",
+      "C"
+     ],
+     "status": null,
+     "today": null,
+     "to_date": {
+      "fgm": 17,
+      "fga": 30,
+      "ftm": 8,
+      "fta": 11,
+      "tpm": 1,
+      "pts": 43,
+      "reb": 19,
+      "ast": 20,
+      "stl": 2,
+      "blk": 5,
+      "tov": 5
+     },
+     "games": 2
+    },
+    {
+     "slot": "BN",
+     "player": "Stephon Castle",
+     "team": "SAS",
+     "positions": [
+      "PG",
+      "SG"
+     ],
+     "status": null,
+     "today": null,
+     "to_date": {
+      "fgm": 13,
+      "fga": 36,
+      "ftm": 3,
+      "fta": 4,
+      "tpm": 4,
+      "pts": 33,
+      "reb": 15,
+      "ast": 7,
+      "stl": 0,
+      "blk": 1,
+      "tov": 2
+     },
+     "games": 2
+    },
+    {
+     "slot": "BN",
+     "player": "Anfernee Simons",
+     "team": "PHI",
+     "positions": [
+      "PG",
+      "SG"
+     ],
+     "status": null,
+     "today": null,
+     "to_date": {
+      "fgm": 2,
+      "fga": 12,
+      "ftm": 1,
+      "fta": 1,
+      "tpm": 1,
+      "pts": 6,
+      "reb": 3,
+      "ast": 1,
+      "stl": 0,
+      "blk": 0,
+      "tov": 1
+     },
+     "games": 2
+    },
+    {
+     "slot": "IL",
+     "player": "Nic Claxton",
+     "team": "CHI",
+     "positions": [
+      "C"
+     ],
+     "status": "O",
+     "today": null,
+     "to_date": null,
+     "games": 0
+    }
+   ],
+   "departed": {
+    "names": [],
+    "to_date": {
+     "fgm": 0,
+     "fga": 0,
+     "ftm": 0,
+     "fta": 0,
+     "tpm": 0,
+     "pts": 0,
+     "reb": 0,
+     "ast": 0,
+     "stl": 0,
+     "blk": 0,
+     "tov": 0
+    },
+    "games": 0
+   },
+   "totals": {
+    "fgm": 111,
+    "fga": 267,
+    "ftm": 53,
+    "fta": 70,
+    "tpm": 20,
+    "pts": 295,
+    "reb": 105,
+    "ast": 78,
+    "stl": 10,
+    "blk": 11,
+    "tov": 35
+   },
+   "rows_match_totals": false
+  }
+ },
+ "method": {
+  "to_date": "Yahoo's week totals (get_matchups through Flaim, the morning pull); the box-score rebuild is the cross-check",
+  "rebuild": "a day with Yahoo's pinned lineup counts its active slots (not BN, IL or IL+); any other day counts every non-IL player on today's roster who played, ten per day by the daily-fill rule when more played; each day's source is in rebuild_rosters",
+  "projection": "season-pool per-game line x each remaining game x today's status availability; ten-slot daily fill; IL counts 0",
+  "percentages": "total makes / total attempts, actual plus projected",
+  "drop": "no game left this week and board value below the active roster's median",
+  "chances": "P(win) per category: the normal approximation on the final totals; to date fixed, the remaining games' variance from the season per-game CV (FG%/FT%: binomial makes x PCT_MIX_INFL^2); the shared weekly shock left out",
+  "this_week": "each free agent in place of the below-median player whose drop helps most, from tomorrow; ranked by the change in expected categories won (the sum of the nine changes in P(win)); season cost = the change in expected weekly categories against the other eleven teams",
+  "pickups": "Yahoo's available-player list (100 listed, Yahoo-wide ownership order), each from today on at his Yahoo letter's availability, ranked by projected category wins gained, then gap closed"
+ },
+ "inputs": {
+  "state": {
+   "path": "data/league_state.json",
+   "sha256": "fc284d3e919a1408a15ea870d23baa587c8589e22f34efe829ab220d35f0fa69"
+  },
+  "schedule": {
+   "path": "data/league_schedule.json",
+   "sha256": "b56a937fa33390da98da6dc6cc5342f43a64cfe26d2b701607f6a238100de8b7"
+  },
+  "games": {
+   "path": "report/schedule/games-2026-27.csv",
+   "sha256": "7421f6cb9e69f4500df7cf2ff129dbe1718e91a2975f127e1996c96df9806687"
+  },
+  "actuals": {
+   "path": "data/actuals",
+   "sha256": null
+  },
+  "status": {
+   "path": "data/status",
+   "sha256": null
+  },
+  "yahoo_pull": {
+   "path": "data/source/flaim/pull_2026-11-05.json",
+   "sha256": "2499088333e4a927069b90d2ccaa25b77825f72c34c9c65ddecd12a3d33e8149"
+  },
+  "status_file": {
+   "path": "data/status/status_2026-11-05.json",
+   "sha256": "79148a64e7bc38568cbd35f47a05787b3b631cfe4c7ddb6f62cb952fab723617"
+  },
+  "pool": {
+   "path": "data/season/pool_season.csv",
+   "sha256": "3d82965d191c024e21f73da5898c83e9b37bc3cf5b0551462e39f31457be4b58"
+  }
+ }
+}

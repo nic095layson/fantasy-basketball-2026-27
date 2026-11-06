@@ -1,0 +1,34 @@
+{
+ "as_of": "2026-11-05",
+ "days": 1,
+ "days_agreed": 1,
+ "days_graded": 0,
+ "days_no_brief": 0,
+ "pairs": 0,
+ "pairs_with_lineup": 0,
+ "start_followed": 0,
+ "sit_followed": 0,
+ "both_followed": 0,
+ "night_kit": 0,
+ "night_against": 0,
+ "night_no_grade": 0,
+ "night_no_box": 0,
+ "gap_sum_followed": 0,
+ "gap_sum_ignored": 0,
+ "rows": [
+  {
+   "date": "2026-11-05",
+   "status": "agreed",
+   "lineup_record": true,
+   "pairs": []
+  }
+ ],
+ "method": {
+  "suggested": "week_matchup_<day>.json lineup_today.moves",
+  "locked": "pinned Flaim daily block (get_roster as of the day)",
+  "night": "start's box-line z minus the sit's, hoops.zscores over the day's box lines (engine rule)",
+  "caveat": "the night is the outcome, not a verdict: per-game z noise sd 3.65 vs a 0.5 line (red team, decision_grade.py)"
+ },
+ "start_followed_rate": null,
+ "sit_followed_rate": null
+}

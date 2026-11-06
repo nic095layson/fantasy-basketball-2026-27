@@ -1,0 +1,658 @@
+{
+ "date": "2026-11-05",
+ "league_state_as_of": "2026-11-05",
+ "tiers": {
+  "None": [
+   "healthy",
+   1.0
+  ],
+  "Q": [
+   "questionable",
+   0.5
+  ],
+  "O": [
+   "out",
+   0.0
+  ],
+  "P": [
+   "probable",
+   0.75
+  ],
+  "NA": [
+   "not active",
+   0.0
+  ],
+  "D": [
+   "doubtful",
+   0.25
+  ]
+ },
+ "espn": {
+  "attempted": "2026-11-05T23:06:02Z",
+  "ok": true,
+  "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
+ },
+ "rows": [
+  {
+   "player": "Kawhi Leonard",
+   "fantasy_team": "KEL'EL YAXEL HALQUETA",
+   "seat": 10,
+   "slot": "IL",
+   "yahoo_status": "O",
+   "tier": "out",
+   "availability": 0.0,
+   "receipts": [
+    {
+     "source": "Yahoo roster read through Flaim (get_roster, read-only)",
+     "file": "data/source/flaim/pull_2026-11-05_pm.json",
+     "sha256": "0d449ed4811d08f6a4a8393408842d4a8f2f2c3a7c77135082a6fe5277925bfc",
+     "captured": "2026-11-05",
+     "text": "O beside Kawhi Leonard (KEL'EL YAXEL HALQUETA, IL)"
+    }
+   ],
+   "espn": {
+    "attempted": "2026-11-05T23:06:02Z",
+    "ok": true,
+    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
+   }
+  },
+  {
+   "player": "Tyrese Haliburton",
+   "fantasy_team": "KEL'EL YAXEL HALQUETA",
+   "seat": 10,
+   "slot": "IL",
+   "yahoo_status": "O",
+   "tier": "out",
+   "availability": 0.0,
+   "receipts": [
+    {
+     "source": "Yahoo roster read through Flaim (get_roster, read-only)",
+     "file": "data/source/flaim/pull_2026-11-05_pm.json",
+     "sha256": "0d449ed4811d08f6a4a8393408842d4a8f2f2c3a7c77135082a6fe5277925bfc",
+     "captured": "2026-11-05",
+     "text": "O beside Tyrese Haliburton (KEL'EL YAXEL HALQUETA, IL)"
+    }
+   ],
+   "espn": {
+    "attempted": "2026-11-05T23:06:02Z",
+    "ok": true,
+    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
+   }
+  },
+  {
+   "player": "Chet Holmgren",
+   "fantasy_team": "Looking Cool Joker!",
+   "seat": 1,
+   "slot": "BN",
+   "yahoo_status": "O",
+   "tier": "out",
+   "availability": 0.0,
+   "receipts": [
+    {
+     "source": "Yahoo roster read through Flaim (get_roster, read-only)",
+     "file": "data/source/flaim/pull_2026-11-05_pm.json",
+     "sha256": "0d449ed4811d08f6a4a8393408842d4a8f2f2c3a7c77135082a6fe5277925bfc",
+     "captured": "2026-11-05",
+     "text": "O beside Chet Holmgren (Looking Cool Joker!, BN)"
+    }
+   ],
+   "espn": {
+    "attempted": "2026-11-05T23:06:02Z",
+    "ok": true,
+    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
+   }
+  },
+  {
+   "player": "Ja Morant",
+   "fantasy_team": "Looking Cool Joker!",
+   "seat": 1,
+   "slot": "IL",
+   "yahoo_status": "O",
+   "tier": "out",
+   "availability": 0.0,
+   "receipts": [
+    {
+     "source": "Yahoo roster read through Flaim (get_roster, read-only)",
+     "file": "data/source/flaim/pull_2026-11-05_pm.json",
+     "sha256": "0d449ed4811d08f6a4a8393408842d4a8f2f2c3a7c77135082a6fe5277925bfc",
+     "captured": "2026-11-05",
+     "text": "O beside Ja Morant (Looking Cool Joker!, IL)"
+    }
+   ],
+   "espn": {
+    "attempted": "2026-11-05T23:06:02Z",
+    "ok": true,
+    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
+   }
+  },
+  {
+   "player": "Jaren Jackson Jr.",
+   "fantasy_team": "Looking Cool Joker!",
+   "seat": 1,
+   "slot": "IL",
+   "yahoo_status": "O",
+   "tier": "out",
+   "availability": 0.0,
+   "receipts": [
+    {
+     "source": "Yahoo roster read through Flaim (get_roster, read-only)",
+     "file": "data/source/flaim/pull_2026-11-05_pm.json",
+     "sha256": "0d449ed4811d08f6a4a8393408842d4a8f2f2c3a7c77135082a6fe5277925bfc",
+     "captured": "2026-11-05",
+     "text": "O beside Jaren Jackson Jr. (Looking Cool Joker!, IL)"
+    }
+   ],
+   "espn": {
+    "attempted": "2026-11-05T23:06:02Z",
+    "ok": true,
+    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
+   }
+  },
+  {
+   "player": "Payton Pritchard",
+   "fantasy_team": "Looking Cool Joker!",
+   "seat": 1,
+   "slot": "UTIL",
+   "yahoo_status": "Q",
+   "tier": "questionable",
+   "availability": 0.5,
+   "receipts": [
+    {
+     "source": "Yahoo roster read through Flaim (get_roster, read-only)",
+     "file": "data/source/flaim/pull_2026-11-05_pm.json",
+     "sha256": "0d449ed4811d08f6a4a8393408842d4a8f2f2c3a7c77135082a6fe5277925bfc",
+     "captured": "2026-11-05",
+     "text": "Q beside Payton Pritchard (Looking Cool Joker!, UTIL)"
+    }
+   ],
+   "espn": {
+    "attempted": "2026-11-05T23:06:02Z",
+    "ok": true,
+    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
+   }
+  },
+  {
+   "player": "Jusuf Nurkic",
+   "fantasy_team": "ROOKS FTW",
+   "seat": 2,
+   "slot": "IL",
+   "yahoo_status": "O",
+   "tier": "out",
+   "availability": 0.0,
+   "receipts": [
+    {
+     "source": "Yahoo roster read through Flaim (get_roster, read-only)",
+     "file": "data/source/flaim/pull_2026-11-05_pm.json",
+     "sha256": "0d449ed4811d08f6a4a8393408842d4a8f2f2c3a7c77135082a6fe5277925bfc",
+     "captured": "2026-11-05",
+     "text": "O beside Jusuf Nurkic (ROOKS FTW, IL)"
+    }
+   ],
+   "espn": {
+    "attempted": "2026-11-05T23:06:02Z",
+    "ok": true,
+    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
+   }
+  },
+  {
+   "player": "Josh Hart",
+   "fantasy_team": "Lauri’s Prime Rib",
+   "seat": 3,
+   "slot": "IL",
+   "yahoo_status": "Q",
+   "tier": "questionable",
+   "availability": 0.5,
+   "receipts": [
+    {
+     "source": "Yahoo roster read through Flaim (get_roster, read-only)",
+     "file": "data/source/flaim/pull_2026-11-05_pm.json",
+     "sha256": "0d449ed4811d08f6a4a8393408842d4a8f2f2c3a7c77135082a6fe5277925bfc",
+     "captured": "2026-11-05",
+     "text": "Q beside Josh Hart (Lauri’s Prime Rib, IL)"
+    }
+   ],
+   "espn": {
+    "attempted": "2026-11-05T23:06:02Z",
+    "ok": true,
+    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
+   }
+  },
+  {
+   "player": "Maxime Raynaud",
+   "fantasy_team": "Lauri’s Prime Rib",
+   "seat": 3,
+   "slot": "IL",
+   "yahoo_status": "O",
+   "tier": "out",
+   "availability": 0.0,
+   "receipts": [
+    {
+     "source": "Yahoo roster read through Flaim (get_roster, read-only)",
+     "file": "data/source/flaim/pull_2026-11-05_pm.json",
+     "sha256": "0d449ed4811d08f6a4a8393408842d4a8f2f2c3a7c77135082a6fe5277925bfc",
+     "captured": "2026-11-05",
+     "text": "O beside Maxime Raynaud (Lauri’s Prime Rib, IL)"
+    }
+   ],
+   "espn": {
+    "attempted": "2026-11-05T23:06:02Z",
+    "ok": true,
+    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
+   }
+  },
+  {
+   "player": "Keegan Murray",
+   "fantasy_team": "Booker T Floppers",
+   "seat": 4,
+   "slot": "IL",
+   "yahoo_status": "O",
+   "tier": "out",
+   "availability": 0.0,
+   "receipts": [
+    {
+     "source": "Yahoo roster read through Flaim (get_roster, read-only)",
+     "file": "data/source/flaim/pull_2026-11-05_pm.json",
+     "sha256": "0d449ed4811d08f6a4a8393408842d4a8f2f2c3a7c77135082a6fe5277925bfc",
+     "captured": "2026-11-05",
+     "text": "O beside Keegan Murray (Booker T Floppers, IL)"
+    }
+   ],
+   "espn": {
+    "attempted": "2026-11-05T23:06:02Z",
+    "ok": true,
+    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
+   }
+  },
+  {
+   "player": "Paolo Banchero",
+   "fantasy_team": "Booker T Floppers",
+   "seat": 4,
+   "slot": "IL",
+   "yahoo_status": "O",
+   "tier": "out",
+   "availability": 0.0,
+   "receipts": [
+    {
+     "source": "Yahoo roster read through Flaim (get_roster, read-only)",
+     "file": "data/source/flaim/pull_2026-11-05_pm.json",
+     "sha256": "0d449ed4811d08f6a4a8393408842d4a8f2f2c3a7c77135082a6fe5277925bfc",
+     "captured": "2026-11-05",
+     "text": "O beside Paolo Banchero (Booker T Floppers, IL)"
+    }
+   ],
+   "espn": {
+    "attempted": "2026-11-05T23:06:02Z",
+    "ok": true,
+    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
+   }
+  },
+  {
+   "player": "Jalen Suggs",
+   "fantasy_team": "ANONG NANGIANNIS?!",
+   "seat": 5,
+   "slot": "IL",
+   "yahoo_status": "O",
+   "tier": "out",
+   "availability": 0.0,
+   "receipts": [
+    {
+     "source": "Yahoo roster read through Flaim (get_roster, read-only)",
+     "file": "data/source/flaim/pull_2026-11-05_pm.json",
+     "sha256": "0d449ed4811d08f6a4a8393408842d4a8f2f2c3a7c77135082a6fe5277925bfc",
+     "captured": "2026-11-05",
+     "text": "O beside Jalen Suggs (ANONG NANGIANNIS?!, IL)"
+    }
+   ],
+   "espn": {
+    "attempted": "2026-11-05T23:06:02Z",
+    "ok": true,
+    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
+   }
+  },
+  {
+   "player": "Trey Murphy III",
+   "fantasy_team": "ANONG NANGIANNIS?!",
+   "seat": 5,
+   "slot": "IL",
+   "yahoo_status": "P",
+   "tier": "probable",
+   "availability": 0.75,
+   "receipts": [
+    {
+     "source": "Yahoo roster read through Flaim (get_roster, read-only)",
+     "file": "data/source/flaim/pull_2026-11-05_pm.json",
+     "sha256": "0d449ed4811d08f6a4a8393408842d4a8f2f2c3a7c77135082a6fe5277925bfc",
+     "captured": "2026-11-05",
+     "text": "P beside Trey Murphy III (ANONG NANGIANNIS?!, IL)"
+    }
+   ],
+   "espn": {
+    "attempted": "2026-11-05T23:06:02Z",
+    "ok": true,
+    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
+   }
+  },
+  {
+   "player": "Jalen Duren",
+   "fantasy_team": "Cade n em",
+   "seat": 6,
+   "slot": "IL",
+   "yahoo_status": "O",
+   "tier": "out",
+   "availability": 0.0,
+   "receipts": [
+    {
+     "source": "Yahoo roster read through Flaim (get_roster, read-only)",
+     "file": "data/source/flaim/pull_2026-11-05_pm.json",
+     "sha256": "0d449ed4811d08f6a4a8393408842d4a8f2f2c3a7c77135082a6fe5277925bfc",
+     "captured": "2026-11-05",
+     "text": "O beside Jalen Duren (Cade n em, IL)"
+    }
+   ],
+   "espn": {
+    "attempted": "2026-11-05T23:06:02Z",
+    "ok": true,
+    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
+   }
+  },
+  {
+   "player": "Moussa Diabate",
+   "fantasy_team": "Cade n em",
+   "seat": 6,
+   "slot": "C",
+   "yahoo_status": "Q",
+   "tier": "questionable",
+   "availability": 0.5,
+   "receipts": [
+    {
+     "source": "Yahoo roster read through Flaim (get_roster, read-only)",
+     "file": "data/source/flaim/pull_2026-11-05_pm.json",
+     "sha256": "0d449ed4811d08f6a4a8393408842d4a8f2f2c3a7c77135082a6fe5277925bfc",
+     "captured": "2026-11-05",
+     "text": "Q beside Moussa Diabate (Cade n em, C)"
+    }
+   ],
+   "espn": {
+    "attempted": "2026-11-05T23:06:02Z",
+    "ok": true,
+    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
+   }
+  },
+  {
+   "player": "Brandon Ingram",
+   "fantasy_team": "John's Cool Team",
+   "seat": 7,
+   "slot": "IL",
+   "yahoo_status": "O",
+   "tier": "out",
+   "availability": 0.0,
+   "receipts": [
+    {
+     "source": "Yahoo roster read through Flaim (get_roster, read-only)",
+     "file": "data/source/flaim/pull_2026-11-05_pm.json",
+     "sha256": "0d449ed4811d08f6a4a8393408842d4a8f2f2c3a7c77135082a6fe5277925bfc",
+     "captured": "2026-11-05",
+     "text": "O beside Brandon Ingram (John's Cool Team, IL)"
+    }
+   ],
+   "espn": {
+    "attempted": "2026-11-05T23:06:02Z",
+    "ok": true,
+    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
+   }
+  },
+  {
+   "player": "Jalen Johnson",
+   "fantasy_team": "John's Cool Team",
+   "seat": 7,
+   "slot": "BN",
+   "yahoo_status": "Q",
+   "tier": "questionable",
+   "availability": 0.5,
+   "receipts": [
+    {
+     "source": "Yahoo roster read through Flaim (get_roster, read-only)",
+     "file": "data/source/flaim/pull_2026-11-05_pm.json",
+     "sha256": "0d449ed4811d08f6a4a8393408842d4a8f2f2c3a7c77135082a6fe5277925bfc",
+     "captured": "2026-11-05",
+     "text": "Q beside Jalen Johnson (John's Cool Team, BN)"
+    }
+   ],
+   "espn": {
+    "attempted": "2026-11-05T23:06:02Z",
+    "ok": true,
+    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
+   }
+  },
+  {
+   "player": "Anthony Davis",
+   "fantasy_team": "Scottie’s Thotties",
+   "seat": 8,
+   "slot": "BN",
+   "yahoo_status": "Q",
+   "tier": "questionable",
+   "availability": 0.5,
+   "receipts": [
+    {
+     "source": "Yahoo roster read through Flaim (get_roster, read-only)",
+     "file": "data/source/flaim/pull_2026-11-05_pm.json",
+     "sha256": "0d449ed4811d08f6a4a8393408842d4a8f2f2c3a7c77135082a6fe5277925bfc",
+     "captured": "2026-11-05",
+     "text": "Q beside Anthony Davis (Scottie’s Thotties, BN)"
+    }
+   ],
+   "espn": {
+    "attempted": "2026-11-05T23:06:02Z",
+    "ok": true,
+    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
+   }
+  },
+  {
+   "player": "Anthony Edwards",
+   "fantasy_team": "Scottie’s Thotties",
+   "seat": 8,
+   "slot": "IL",
+   "yahoo_status": "O",
+   "tier": "out",
+   "availability": 0.0,
+   "receipts": [
+    {
+     "source": "Yahoo roster read through Flaim (get_roster, read-only)",
+     "file": "data/source/flaim/pull_2026-11-05_pm.json",
+     "sha256": "0d449ed4811d08f6a4a8393408842d4a8f2f2c3a7c77135082a6fe5277925bfc",
+     "captured": "2026-11-05",
+     "text": "O beside Anthony Edwards (Scottie’s Thotties, IL)"
+    }
+   ],
+   "espn": {
+    "attempted": "2026-11-05T23:06:02Z",
+    "ok": true,
+    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
+   }
+  },
+  {
+   "player": "DeMar DeRozan",
+   "fantasy_team": "Scottie’s Thotties",
+   "seat": 8,
+   "slot": "IL",
+   "yahoo_status": "Q",
+   "tier": "questionable",
+   "availability": 0.5,
+   "receipts": [
+    {
+     "source": "Yahoo roster read through Flaim (get_roster, read-only)",
+     "file": "data/source/flaim/pull_2026-11-05_pm.json",
+     "sha256": "0d449ed4811d08f6a4a8393408842d4a8f2f2c3a7c77135082a6fe5277925bfc",
+     "captured": "2026-11-05",
+     "text": "Q beside DeMar DeRozan (Scottie’s Thotties, IL)"
+    }
+   ],
+   "espn": {
+    "attempted": "2026-11-05T23:06:02Z",
+    "ok": true,
+    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
+   }
+  },
+  {
+   "player": "Jarrett Allen",
+   "fantasy_team": "Scottie’s Thotties",
+   "seat": 8,
+   "slot": "C",
+   "yahoo_status": "Q",
+   "tier": "questionable",
+   "availability": 0.5,
+   "receipts": [
+    {
+     "source": "Yahoo roster read through Flaim (get_roster, read-only)",
+     "file": "data/source/flaim/pull_2026-11-05_pm.json",
+     "sha256": "0d449ed4811d08f6a4a8393408842d4a8f2f2c3a7c77135082a6fe5277925bfc",
+     "captured": "2026-11-05",
+     "text": "Q beside Jarrett Allen (Scottie’s Thotties, C)"
+    }
+   ],
+   "espn": {
+    "attempted": "2026-11-05T23:06:02Z",
+    "ok": true,
+    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
+   }
+  },
+  {
+   "player": "Nic Claxton",
+   "fantasy_team": "Podz save the league",
+   "seat": 9,
+   "slot": "IL",
+   "yahoo_status": "O",
+   "tier": "out",
+   "availability": 0.0,
+   "receipts": [
+    {
+     "source": "Yahoo roster read through Flaim (get_roster, read-only)",
+     "file": "data/source/flaim/pull_2026-11-05_pm.json",
+     "sha256": "0d449ed4811d08f6a4a8393408842d4a8f2f2c3a7c77135082a6fe5277925bfc",
+     "captured": "2026-11-05",
+     "text": "O beside Nic Claxton (Podz save the league, IL)"
+    }
+   ],
+   "espn": {
+    "attempted": "2026-11-05T23:06:02Z",
+    "ok": true,
+    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
+   }
+  },
+  {
+   "player": "Bradley Beal",
+   "fantasy_team": "MAXEY-MUM OVERDRIVE",
+   "seat": 11,
+   "slot": "IL",
+   "yahoo_status": "O",
+   "tier": "out",
+   "availability": 0.0,
+   "receipts": [
+    {
+     "source": "Yahoo roster read through Flaim (get_roster, read-only)",
+     "file": "data/source/flaim/pull_2026-11-05_pm.json",
+     "sha256": "0d449ed4811d08f6a4a8393408842d4a8f2f2c3a7c77135082a6fe5277925bfc",
+     "captured": "2026-11-05",
+     "text": "O beside Bradley Beal (MAXEY-MUM OVERDRIVE, IL)"
+    }
+   ],
+   "espn": {
+    "attempted": "2026-11-05T23:06:02Z",
+    "ok": true,
+    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
+   }
+  },
+  {
+   "player": "Kon Knueppel",
+   "fantasy_team": "MAXEY-MUM OVERDRIVE",
+   "seat": 11,
+   "slot": "IL",
+   "yahoo_status": "O",
+   "tier": "out",
+   "availability": 0.0,
+   "receipts": [
+    {
+     "source": "Yahoo roster read through Flaim (get_roster, read-only)",
+     "file": "data/source/flaim/pull_2026-11-05_pm.json",
+     "sha256": "0d449ed4811d08f6a4a8393408842d4a8f2f2c3a7c77135082a6fe5277925bfc",
+     "captured": "2026-11-05",
+     "text": "O beside Kon Knueppel (MAXEY-MUM OVERDRIVE, IL)"
+    }
+   ],
+   "espn": {
+    "attempted": "2026-11-05T23:06:02Z",
+    "ok": true,
+    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
+   }
+  },
+  {
+   "player": "Egor Demin",
+   "fantasy_team": "Thompson Telepathy",
+   "seat": 12,
+   "slot": "IL",
+   "yahoo_status": "O",
+   "tier": "out",
+   "availability": 0.0,
+   "receipts": [
+    {
+     "source": "Yahoo roster read through Flaim (get_roster, read-only)",
+     "file": "data/source/flaim/pull_2026-11-05_pm.json",
+     "sha256": "0d449ed4811d08f6a4a8393408842d4a8f2f2c3a7c77135082a6fe5277925bfc",
+     "captured": "2026-11-05",
+     "text": "O beside Egor Demin (Thompson Telepathy, IL)"
+    }
+   ],
+   "espn": {
+    "attempted": "2026-11-05T23:06:02Z",
+    "ok": true,
+    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
+   }
+  },
+  {
+   "player": "Jimmy Butler",
+   "fantasy_team": "Thompson Telepathy",
+   "seat": 12,
+   "slot": "IL",
+   "yahoo_status": "O",
+   "tier": "out",
+   "availability": 0.0,
+   "receipts": [
+    {
+     "source": "Yahoo roster read through Flaim (get_roster, read-only)",
+     "file": "data/source/flaim/pull_2026-11-05_pm.json",
+     "sha256": "0d449ed4811d08f6a4a8393408842d4a8f2f2c3a7c77135082a6fe5277925bfc",
+     "captured": "2026-11-05",
+     "text": "O beside Jimmy Butler (Thompson Telepathy, IL)"
+    }
+   ],
+   "espn": {
+    "attempted": "2026-11-05T23:06:02Z",
+    "ok": true,
+    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
+   }
+  },
+  {
+   "player": "Peyton Watson",
+   "fantasy_team": "Thompson Telepathy",
+   "seat": 12,
+   "slot": "PF",
+   "yahoo_status": "Q",
+   "tier": "questionable",
+   "availability": 0.5,
+   "receipts": [
+    {
+     "source": "Yahoo roster read through Flaim (get_roster, read-only)",
+     "file": "data/source/flaim/pull_2026-11-05_pm.json",
+     "sha256": "0d449ed4811d08f6a4a8393408842d4a8f2f2c3a7c77135082a6fe5277925bfc",
+     "captured": "2026-11-05",
+     "text": "Q beside Peyton Watson (Thompson Telepathy, PF)"
+    }
+   ],
+   "espn": {
+    "attempted": "2026-11-05T23:06:02Z",
+    "ok": true,
+    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
+   }
+  }
+ ]
+}
