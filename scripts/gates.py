@@ -175,7 +175,9 @@ def audit_gates(report, replay=False, last=3):
     if replay:
         specs.append({"name": "deck replay", "cwd": KIT, "pass_re": r"^REPLAY: PASS",
                       "cmd": [sys.executable, os.path.join(ia, "replay_gate.py"), "--last", str(last),
-                              "--inputs", os.path.join(KIT, "report", "season", "deck_record_*.json"),
+                              # owner 2026-11-06 (runner finding, pick "skip _pm records"): morning records only — the
+                              # replay rebuilds a date's morning deck, and an afternoon record would replay as a morning
+                              "--inputs", os.path.join(KIT, "report", "season", "deck_record_????-??-??.json"),
                               "--cmd", f"bash {os.path.join(KIT, 'scripts', 'replay_deck.sh')} {{input_date}}",
                               "--pass-re", r"^SEASON DECK: PASS"]})
     return specs
