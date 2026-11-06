@@ -80,6 +80,7 @@ def summarize(log):
     s["fg"] = dict(made=tot["fgm"], att=tot["fga"], pct=round(tot["fgm"] / tot["fga"], 4) if tot["fga"] else None)
     s["ft"] = dict(made=tot["ftm"], att=tot["fta"], pct=round(tot["ftm"] / tot["fta"], 4) if tot["fta"] else None)
     s["per_game"] = {k: round(tot[k] / n, 2) for k in PER36} if n else {}
+    s["totals"] = {k: tot[k] for k in PER36} if n else {}   # owner 2026-11-06: season totals for the deck's side-by-side compare
     if n >= TREND_MIN_GAMES:
         last3, prior = mins[-3:], mins[:-3]
         s["last3_mpg"] = round(sum(last3) / 3, 1)

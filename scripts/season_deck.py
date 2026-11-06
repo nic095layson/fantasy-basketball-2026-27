@@ -403,6 +403,7 @@ td.num,th.num{text-align:right}
 .chip{display:inline-block; background:var(--chip); border-radius:999px; padding:1px 8px; font-size:12px; color:var(--ink2)}
 .chip.mine{background:var(--mine); color:#fff}
 .chip.fa{border:1px solid var(--line); background:none}
+.cmp2 td.best{font-weight:700} .cmp2 td.best span{background:var(--lead); border-radius:999px; padding:2px 10px} .cmp2 td.num{text-align:center}
 .chip.ok{color:var(--ok)} .chip.warn{color:var(--warn)} .chip.crit{color:var(--crit)}
 .bar{display:flex; align-items:center; gap:6px; min-width:120px}
 .bar i{display:block; height:10px; border-radius:4px; min-width:2px}
@@ -854,6 +855,27 @@ function myField(){ return h("div",{class:"field static",title:T(D.my_team)},T(D
 function pickList(rows, set, rerender, empty, extra){ return h("div",{class:"plist"}, rows.length? rows.map(r=>h("label",{},
   h("input",{type:"checkbox",...(set.has(r.name)?{checked:""}:{}),onchange:(e)=>{e.target.checked?set.add(r.name):set.delete(r.name);rerender();}}),
   r.name+" · "+r.pos+" · "+r.team+" · z ",zv(r.z_adj),extra?extra(r):null)) : h("div",{class:"zero"},empty)); }
+// owner 2026-11-06 ("when I select 2 players, have their SEASON TOTAL stats displayed side by side ... add FG%, FT%, and 3PM"):
+// with exactly two players picked across both lists, their season totals from the box scores (form record, totals /
+// fg / ft, regular season, DNPs excluded), the better figure marked (turnovers: fewer). Read-only from the record.
+function seasonCompare(names){ if(names.length!==2) return null;
+  const FM={}; ((D.form&&D.form.rows)||[]).forEach(r=>{FM[r.name]=r;});
+  const A=FM[names[0]], B=FM[names[1]];
+  const tot=(r,k)=> r&&r.totals&&k in r.totals? r.totals[k] : (r&&r.per_game&&k in r.per_game&&r.games? Math.round(r.per_game[k]*r.games) : null);
+  const card=h("div",{class:"card",id:"season-compare"},h("h2",{},"Season totals — "+names[0]+" vs "+names[1]),
+    noteMore("Regular-season box scores to date (DNPs excluded); the better figure is marked, fewer turnovers being better.",
+      "Totals from the morning's form record (form_board.py: data/actuals, the same games the season lines blend in). FG% and FT% are made/attempted over the season; a player with no box line yet shows no figures."));
+  if(!A||!B||!A.games||!B.games){ card.append(h("div",{class:"zero"},"No box scores yet for "+(!A||!A.games? names[0] : names[1])+".")); return card; }
+  const rows=[["FG%",A.fg,B.fg,"pct"],["FT%",A.ft,B.ft,"pct"],["3PM",tot(A,"tpm"),tot(B,"tpm"),"hi"],["PTS",tot(A,"pts"),tot(B,"pts"),"hi"],["REB",tot(A,"reb"),tot(B,"reb"),"hi"],
+    ["AST",tot(A,"ast"),tot(B,"ast"),"hi"],["ST",tot(A,"stl"),tot(B,"stl"),"hi"],["BLK",tot(A,"blk"),tot(B,"blk"),"hi"],["TO",tot(A,"tov"),tot(B,"tov"),"lo"]];
+  const val=(x,kind)=> kind==="pct"? (x&&x.pct!=null? x.pct : null) : x;
+  const txt=(x,kind)=> kind==="pct"? (x&&x.pct!=null? (x.pct*100).toFixed(1)+"% ("+x.made+"/"+x.att+")" : "–") : (x==null? "–" : String(x));
+  const t=h("table",{class:"lg cmp2"},h("tr",{},h("th",{},"season"),h("th",{class:"num"},names[0]),h("th",{class:"num"},names[1])));
+  t.append(h("tr",{},h("td",{},"games · min/g"),h("td",{class:"num"},A.games+" · "+(A.mpg==null?"–":A.mpg.toFixed(1))),h("td",{class:"num"},B.games+" · "+(B.mpg==null?"–":B.mpg.toFixed(1)))));
+  rows.forEach(([c,a,b,kind])=>{ const va=val(a,kind), vb=val(b,kind); let wa=false, wb=false;
+    if(va!=null&&vb!=null&&va!==vb){ const aBetter = kind==="lo"? va<vb : va>vb; wa=aBetter; wb=!aBetter; }
+    t.append(h("tr",{},h("td",{},c),h("td",{class:"num"+(wa?" best":"")},h("span",{},txt(a,kind))),h("td",{class:"num"+(wb?" best":"")},h("span",{},txt(b,kind))))); });
+  card.append(h("div",{class:"tablebox"},t)); return card; }
 function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
   if(!(inRows.length||outRows.length)) return h("p",{class:"zero"},"Pick players on both sides to score a move.");
   const m=swapMath(inRows,outRows,CATS);
@@ -882,33 +904,29 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
           pickList(theirs,inc,render,"No board rows on this roster."))),
       ...(R.off_board.length? [h("p",{class:"note"},T(team)+" also rosters, off the board (held, no z line): "+R.off_board.join(", "))] : []),
       buildStrip("tr-build",{[D.my_team]:{out:out,inc:inc},[team]:{out:inc,inc:out}},inc.size||out.size),
+      ...[seasonCompare([...out,...inc])].filter(Boolean),
       scoreBlock([...inc].map(n=>BYNAME[n]),[...out].map(n=>BYNAME[n]),"TRADE")));
   }
   render();
 })();
 (function(){ const p=$("#pane-fa"); let search=""; const drop=new Set(), add=new Set(); const root=h("div",{class:"card"}); p.append(root, howItWorks());
   const inp=h("input",{type:"search",id:"fa-search",class:"field",placeholder:"Search free agents",oninput:()=>{search=inp.value; keepTyping(inp,render);}});
-  // owner 2026-10-22 (P1): this week's matchup value beside z; the sort defaults to it when the morning's scan ran
-  const W=D.week_matchup, TWR=((W&&W.pickups&&W.pickups.this_week&&W.pickups.this_week.rows)||[]), TWM={};
-  TWR.forEach(r=>{TWM[r.add]=r;});
-  const onBoard=new Set(BOARD.filter(r=>r.fa).map(r=>r.name)), offBoard=TWR.filter(r=>!onBoard.has(r.add)).map(r=>r.add);
-  let sortBy=TWR.length?"week":"z";
-  const sortSel=h("select",{id:"fa-sort",class:"field",onchange:(e)=>{sortBy=e.target.value;render();}},
-    h("option",{value:"week",...(sortBy==="week"?{selected:""}:{})},"Sort: this week"+(W?" vs "+W.opponent.name:"")),
-    h("option",{value:"z",...(sortBy==="z"?{selected:""}:{})},"Sort: season z"));
-  const FM={}; ((D.form&&D.form.rows)||[]).forEach(r=>{FM[r.name]=r;});   // owner 2026-10-23: minutes per game from the box scores
-  const mins=(r)=>{ const f=FM[r.name]; return f&&f.games? h("span",{class:"note"}," · "+f.mpg.toFixed(1)+" min/g ("+f.games+" g"+(f.role==="starter"?", starts":f.role==="bench"?", bench":"")+")") : null; };
+  // owner 2026-11-06 ("remove this and make it zscore season outlook ... so that the player fields are equal"): the list
+  // is season z only — no sort control, no this-week or minutes notes on the rows (the Week tab and the Today tab's
+  // "This week's adds" keep the matchup figures; the Movers tab keeps the minutes); the status and waiver chips stay.
+  // Supersedes the 2026-10-22 week sort and the 2026-10-23 minutes note on this tab.
   // owner 2026-10-28 (item 4): the day's status beside each row, as the brief's waiver gate reads it
   const FS=D.fa_status, SRC={yahoo:"Yahoo",espn:"ESPN"};
   const stat=(r)=>{ const s=FS&&FS.by[r.name]; if(!s) return null;
     const out=["O","NA","Out"].includes(s.code), cls=out?(s.short_out?"warn":"crit"):(s.code==="P"?"ok":"warn");
     // the return date only on an Out: ESPN dates a day-to-day player's return as today
     return h("span",{}," · ",h("span",{class:"chip "+cls},s.code+" ("+SRC[s.source]+")"+(out&&s.return_date?", back "+s.return_date.slice(0,10):""))); };
-  const wk=(r)=>{ const t=TWM[r.name]; return h("span",{},stat(r),waiverChip(r.name),t? h("span",{class:"note"}," · this week "+swk(t.d_exp,2)+" ("+t.games+" g, for "+t.drop+")") : null, mins(r)); };
+  const wk=(r)=>h("span",{},stat(r),waiverChip(r.name));
+  // owner 2026-11-06 ("sink out to the bottom"): a player the day's status file calls Out (O / NA / Out) sits below
+  // every available one; z order holds within each group; with no status pinned nothing sinks
+  const isOut=(r)=>{ const s=FS&&FS.by[r.name]; return !!(s&&["O","NA","Out"].includes(s.code)); };
   function render(){ let pool=BOARD.filter(r=>r.fa && (!search || r.name.toLowerCase().includes(search.toLowerCase())))
-      .sort((a,b)=>b.z_adj-a.z_adj);  // owner 2026-10-20: free agents by z, descending
-    if(sortBy==="week") pool=pool.sort((a,b)=>{ const x=TWM[a.name], y=TWM[b.name];  // 2026-10-22: scored ones first, by this week
-      return (x&&y)? y.d_exp-x.d_exp : x? -1 : y? 1 : 0; });                         // the rest keep their z order (stable sort)
+      .sort((a,b)=>(isOut(a)-isOut(b)) || (b.z_adj-a.z_adj));  // owner 2026-10-20: free agents by z, descending; 2026-11-06: Out last
     pool=pool.slice(0,60);
     keepScroll(root,()=>root.replaceChildren(
       h("div",{class:"h2row"},h("h2",{},"Free-Agent Adder"),myPositions([...drop],[...add]),
@@ -916,15 +934,10 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
       h("div",{class:"pick"},
         h("div",{},h("h2",{},"I drop"),myField(),pickList(MINE,drop,render,"No players of yours on the board."),myHeld()),
         h("div",{},h("h2",{},"I add"),
-          inp, sortSel,
-          TWR.length? h("p",{class:"note"},"This week = Δ cats vs opponent if added tomorrow"+(offBoard.length? " · not on this board: "+offBoard.join(", "):""),
-            more("This week = the change in expected categories won against "+W.opponent.name+" if you add him from tomorrow in place of the lower-valued player named (Today tab, \"This week's adds\").")) : null,
-          h("p",{class:"note",id:"fa-status-note"},FS? "Status today: Yahoo's letter where it lists the player, ESPN's injury feed for the rest"
-            +(FS.sources.yahoo&&FS.sources.espn?"":" ("+(FS.sources.yahoo?"ESPN's feed":"Yahoo's list")+" not pinned today)")
-            +". An Out ESPN expects back within "+C.short_out_days+" days shows its date; the brief keeps it in the waiver scan."
-            : "No status pinned for the day: check each player before claiming."),
+          inp,
           pickList(pool,add,render,"No free agents match.",wk))),
       buildStrip("fa-build",{[D.my_team]:{out:drop,inc:add}},add.size||drop.size),
+      ...[seasonCompare([...drop,...add])].filter(Boolean),
       scoreBlock([...add].map(n=>BYNAME[n]),[...drop].map(n=>BYNAME[n]))));
   }
   render();
