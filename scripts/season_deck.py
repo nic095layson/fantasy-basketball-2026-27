@@ -330,7 +330,9 @@ def build(paths, date, phase=None):
                             thresholds_note="stated defaults, D-SD-1 (owner re-tunes); z screen only, not the simulator"))
     payload = json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
     html = SHELL.replace("__DATA__", payload)
-    record = dict(date=date, out=f"report/season/deck_{date}.html",
+    # runner finding 3 (2026-11-05, owner pick A1): the record names the page this build writes — the afternoon's
+    # deck_<date>_pm.html, not the morning's (main() names the files the same way)
+    record = dict(date=date, out=f"report/season/deck_{date}{'_pm' if phase == 'pm' else ''}.html",
                   # an optional input named but absent today (matchup_live on a morning with no matchup pull) is
                   # recorded as absent, not hashed: hashing it crashed the 10/21 runner (GAUNTLET decision 4).
                   # Required inputs never reach here missing; _load halts on them above.
@@ -1208,7 +1210,7 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
   }
   for(const [id,label] of defs) tabs.append(h("button",{role:"tab","aria-selected":"false","data-tab":id,onclick:()=>show(id)},label));
   show(cur);
-  $("#foot").textContent="Built "+D.generated_utc+" from the morning records — lines "+D.brief.lines+", league state as-of "+D.league.as_of+", engine "+(D.band_engine||"?")+". The page proposes; it changes nothing. Record: report/season/deck_record_"+D.date+".json";
+  $("#foot").textContent="Built "+D.generated_utc+" from the morning records — lines "+D.brief.lines+", league state as-of "+D.league.as_of+", engine "+(D.band_engine||"?")+". The page proposes; it changes nothing. Record: report/season/deck_record_"+D.date+(D.refresh&&D.refresh.phase==="pm"?"_pm":"")+".json";
 })();
 </script>
 """

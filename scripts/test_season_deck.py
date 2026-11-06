@@ -428,6 +428,9 @@ class PublishOnlyWhatDraws(unittest.TestCase):
         self.run_main()
         self.assertTrue(os.path.exists(os.path.join(self.out, "deck_2026-10-21.html")))
         rec = json.load(open(os.path.join(self.out, "deck_record_2026-10-21.json")))
+        self.assertEqual(rec["out"], "report/season/deck_2026-10-21.html")  # the morning path, unchanged (2026-11-05)
+        self.assertEqual(visible_dom(os.path.join(self.out, "deck_2026-10-21.html"), "Today", "foot")["text"].split("Record: ")[-1],
+                         "report/season/deck_record_2026-10-21.json")
         self.assertEqual(rec["render"]["status"], "PASS")
         self.assertEqual(rec["render"]["tabs"], DRC.TABS)
         self.assertEqual(rec["render"]["page_errors"], 0)
@@ -1483,6 +1486,14 @@ class AfternoonRefresh(unittest.TestCase):
             sys.argv = argv
         self.assertTrue(os.path.exists(os.path.join(self.out, "deck_2026-10-21_pm.html")))
         self.assertTrue(os.path.exists(os.path.join(self.out, "deck_record_2026-10-21_pm.json")))
+        # runner finding 3 (2026-11-05, owner pick A1): the afternoon record names its own page, not the morning's
+        self.assertEqual(json.load(open(os.path.join(self.out, "deck_record_2026-10-21_pm.json")))["out"],
+                         "report/season/deck_2026-10-21_pm.html")
+        # and the page footer names that same record (owner 2026-11-06, "ride this PR"); the morning page keeps its own
+        pm_html = open(os.path.join(self.out, "deck_2026-10-21_pm.html"), encoding="utf-8").read()
+        self.assertIn('(D.refresh&&D.refresh.phase==="pm"?"_pm":"")', pm_html)
+        self.assertEqual(visible_dom(os.path.join(self.out, "deck_2026-10-21_pm.html"), "Today", "foot")["text"].split("Record: ")[-1],
+                         "report/season/deck_record_2026-10-21_pm.json")
         self.assertFalse(os.path.exists(os.path.join(self.out, "deck_2026-10-21.html")))
 
 
