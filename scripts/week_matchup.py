@@ -691,7 +691,12 @@ def build(date, paths):
     # remaining: today through the week's last day, status availability, the ten-slot fill
     rem_days = days_remaining(date, we)
     sched = _sched(games, rem_days)
-    status, status_file = _status(paths["status"], date)
+    if paths.get("status_file"):  # owner 2026-11-06: the afternoon lineup refresh reads the 3 PM status file by name
+        status_file = paths["status_file"]
+        with open(status_file, encoding="utf-8") as f:
+            status = json.load(f)
+    else:
+        status, status_file = _status(paths["status"], date)
     avail = {r["player"]: r["availability"] for r in status.get("rows", [])}
     lines = {p["player"]: p for p in P}
     me_rem, opp_rem = remaining(mine, sched, avail, lines), remaining(theirs, sched, avail, lines)

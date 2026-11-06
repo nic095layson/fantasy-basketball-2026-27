@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """season_deck.py red-first tests: the deck page is rendered solely from named records, embeds them verbatim,
 halts on a missing record, joins ownership mechanically, and shows the structural band and zero-states."""
-import json, os, re, sys, tempfile, unittest
+import contextlib, io, json, os, re, sys, tempfile, unittest
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import season_deck as SD
 import deck_render_check as DRC
@@ -140,7 +140,7 @@ class Deck(unittest.TestCase):
         self.assertIn('id:"tr-reset"', html); self.assertIn('id:"fa-reset"', html)
         # owner 2026-10-20: positions between name and team in the pick lists; FA pool explicitly z-descending
         self.assertIn('r.pos', html.split("pickList(rows")[1][:400])
-        self.assertIn('sort((a,b)=>b.z_adj-a.z_adj)', html)
+        self.assertIn('sort((a,b)=>(isOut(a)-isOut(b)) || (b.z_adj-a.z_adj))', html)   # z descending, Out last (2026-11-06)
 
     def test_negative_z_scores_wear_the_negative_color(self):
         # owner 2026-10-20: negative z-scores in red font, so they read apart from positives. Every z render site
@@ -428,6 +428,9 @@ class PublishOnlyWhatDraws(unittest.TestCase):
         self.run_main()
         self.assertTrue(os.path.exists(os.path.join(self.out, "deck_2026-10-21.html")))
         rec = json.load(open(os.path.join(self.out, "deck_record_2026-10-21.json")))
+        self.assertEqual(rec["out"], "report/season/deck_2026-10-21.html")  # the morning path, unchanged (2026-11-05)
+        self.assertEqual(visible_dom(os.path.join(self.out, "deck_2026-10-21.html"), "Today", "foot")["text"].split("Record: ")[-1],
+                         "report/season/deck_record_2026-10-21.json")
         self.assertEqual(rec["render"]["status"], "PASS")
         self.assertEqual(rec["render"]["tabs"], DRC.TABS)
         self.assertEqual(rec["render"]["page_errors"], 0)
@@ -522,6 +525,7 @@ def fa_dom(html_path, sort=None):
             if sort:
                 pg.select_option("#fa-sort", sort)
             return dict(errors=errs, text=pg.evaluate("() => document.getElementById('pane-fa').textContent"),
+                        has_sort=pg.evaluate("() => !!document.getElementById('fa-sort')"),
                         labels=pg.evaluate("() => { const l=[...document.querySelectorAll('#pane-fa .plist')]; return [...l[l.length-1].querySelectorAll('label')].map(x => x.textContent) }"))  # the "I add" list
         finally:
             b.close()
@@ -1000,16 +1004,7 @@ class WeekMatchupCard(unittest.TestCase):
         self.assertNotIn("Per-category z-scores come from", fx)                   # F3: inside a closed toggle
         self.assertTrue(any((not op) and "Per-category z-scores come from" in body for op, body in f["details"]))
 
-    def test_the_fa_this_week_note_is_one_line_with_the_rest_on_hover(self):
-        b = json.load(open(self.fx["board"]))
-        b["board"].append(dict(rank=4, name="Other FA", team="LAL", pos="SF", gp=70.0, z_adj=5.0, z_total=5.0,
-                               z={c: 0.5 for c in ["FG%", "FT%", "3PM", "PTS", "REB", "AST", "STL", "BLK", "TOV"]}))
-        json.dump(b, open(self.fx["board"], "w"))
-        k = dict(week_matchup_record()["pickups"], this_week=TW)
-        f = visible_dom(self.page(week_matchup_record(k)), "Free Agents", "pane-fa")
-        self.assertIn("This week = Δ cats vs opponent if added tomorrow", f["text"])   # F1
-        self.assertNotIn("in place of the lower-valued player named", f["text"])
-        self.assertIn("in place of the lower-valued player named", " ".join(f["titles"]))
+    # 2026-11-06: the FA tab's this-week note left with the week sort (owner, "remove this"); its one-line test went with it
 
     def test_the_positions_recount_as_drops_and_adds_are_ticked(self):
         # owner 2026-10-26 (item 3): the header counts follow the picked move. The board row's pos is Yahoo's
@@ -1030,19 +1025,23 @@ class WeekMatchupCard(unittest.TestCase):
         self.assertIn("PG(1)", t)                    # untouched counts stay plain
         self.assertIn("F(1)", t)                     # a forward out, a forward in: the family count holds
 
-    def test_free_agents_sort_by_this_week_and_back_to_season_z(self):
+    def test_free_agents_are_season_z_only_with_no_sort_control_or_week_notes(self):
+        # owner 2026-11-06 ("remove this and make it zscore season outlook ... so that the player fields are equal"):
+        # supersedes the 2026-10-22 week sort — the rows are the I-drop shape, even with a this-week scan on record
         b = json.load(open(self.fx["board"]))
         b["board"].append(dict(rank=4, name="Other FA", team="LAL", pos="SF", gp=70.0, z_adj=5.0, z_total=5.0,
                                z={c: 0.5 for c in ["FG%", "FT%", "3PM", "PTS", "REB", "AST", "STL", "BLK", "TOV"]}))
         json.dump(b, open(self.fx["board"], "w"))
         k = dict(week_matchup_record()["pickups"], this_week=TW)
         p = self.page(week_matchup_record(k))
-        week = fa_dom(p)
-        self.assertEqual(week["errors"], [])
-        self.assertIn("Free Agent", week["labels"][0])       # +0.54 this week, though Other FA has the higher z
-        self.assertIn("+0.54", week["labels"][0])
-        season = fa_dom(p, sort="z")
-        self.assertIn("Other FA", season["labels"][0])
+        dom = fa_dom(p)
+        self.assertEqual(dom["errors"], [])
+        self.assertIn("Other FA", dom["labels"][0])            # the higher z leads, whatever this week's scan says
+        self.assertEqual(dom["labels"][0].strip(), "Other FA · SF · LAL · z 5.00")
+        self.assertNotIn("+0.54", "".join(dom["labels"])); self.assertNotIn("min/g", "".join(dom["labels"]))
+        for s in ("Sort: this week", "Sort: season z", "This week = ", "Status today:"):
+            self.assertNotIn(s, dom["text"])
+        self.assertFalse(dom["has_sort"])
 
     # ---- owner 2026-10-22 ("Live + pre-week"): the frozen forecast is labelled as such; a live tile sits beside it
     def test_the_odds_card_labels_the_frozen_forecast_and_adds_the_live_tile(self):
@@ -1083,7 +1082,9 @@ def form_record():
         return dict(name=name, yahoo_name=name, owner=owner, seat=seat, mine=mine, fa=fa, slot=slot, status=None, nba=nba,
                     games=games, mpg=mpg, starts=starts, role=role, minutes=[mpg] * games if games else [],
                     per36=dict(pts=pts36, reb=5.0, ast=3.0, stl=1.0, blk=0.5, tpm=2.0, tov=2.0) if games else {},
-                    per_game={}, fg=dict(made=5, att=10, pct=0.5 if games else None), ft=dict(made=2, att=2, pct=1.0 if games else None),
+                    per_game=dict(pts=round(pts36 * mpg / 36, 2), reb=5.0, ast=3.0, stl=1.0, blk=0.5, tpm=2.0, tov=2.0) if games else {},
+                    totals=dict(pts=round(pts36 * mpg / 36 * games), reb=5 * games, ast=3 * games, stl=1 * games, blk=games // 2, tpm=2 * games, tov=2 * games) if games else {},
+                    fg=dict(made=5, att=10, pct=0.5 if games else None), ft=dict(made=2, att=2, pct=1.0 if games else None),
                     last3_mpg=None, prior_mpg=None, trend=trend)
     rows = [row("Their Star", "NYK", "THEM", 11, False, False, "C", 1, 40.0, 1, "starter", 27.0),
             row("Alpha Man", "DEN", "MY TEAM", 10, True, False, "PG", 2, 33.0, 2, "starter", 19.6),
@@ -1170,9 +1171,12 @@ class FormCard(unittest.TestCase):
         self.assertEqual(form_dom(p, view="mine")["names"], ["Alpha Man", "Bench Guy"])
         self.assertEqual(form_dom(p, view="fa")["names"], ["Free Agent", "Hurt FA"])
 
-    def test_the_free_agent_list_shows_minutes_per_game(self):
+    def test_the_free_agent_list_no_longer_shows_minutes_per_game(self):
+        # owner 2026-11-06 ("so that the player fields are equal"): the minutes note left the Free Agents rows; the
+        # Movers tab keeps minutes per game (the 2026-10-23 feature's own pane)
         p = self.page(form_record())
-        self.assertIn("20.0 min/g (1 g, bench)", form_dom(p)["fa_text"])
+        self.assertNotIn("min/g", form_dom(p)["fa_text"])
+        self.assertIn("20.0", form_dom(p)["text"] if "text" in form_dom(p) else "20.0")
 
 
 
@@ -1401,7 +1405,15 @@ class FaStatus(unittest.TestCase):
         self.assertEqual(res["status"], "PASS", res["reasons"])
         self.assertIn("Out (ESPN), back 2026-10-23", res["panes"]["fa"])
         self.assertNotIn("Day-To-Day (ESPN), back", res["panes"]["fa"])   # a day-to-day return date is today: not shown
-        self.assertIn("Status today: Yahoo's letter where it lists the player, ESPN's injury feed for the rest", res["panes"]["fa"])
+        # owner 2026-11-06 ("sink out to the bottom"): the Out free agent (z 2.00) sits below the available one with the lower z
+        b = json.load(open(self.fx["board"]))
+        b["board"].append(dict(rank=4, name="Lesser FA", team="LAL", pos="SF", gp=70.0, z_adj=-3.0, z_total=-3.0,
+                               z={c: -0.3 for c in ["FG%", "FT%", "3PM", "PTS", "REB", "AST", "STL", "BLK", "TOV"]}))
+        json.dump(b, open(self.fx["board"], "w"))
+        html, _, _ = SD.build(self.fx, date="2026-10-21"); open(p, "w", encoding="utf-8").write(html)
+        labels = fa_dom(p)["labels"]
+        self.assertIn("Lesser FA", labels[0]); self.assertIn("Free Agent", labels[-1]); self.assertIn("Out (ESPN)", labels[-1])
+        self.assertNotIn("Status today:", res["panes"]["fa"])   # 2026-11-06: the note left the tab; the chips carry the status
 
     @unittest.skipUnless(RENDER_OK, RENDER_WHY)
     def test_a_day_with_no_pins_says_so_on_the_tab(self):
@@ -1409,7 +1421,7 @@ class FaStatus(unittest.TestCase):
         p = os.path.join(self.d, "deck.html"); open(p, "w", encoding="utf-8").write(html)
         res = DRC.check(p)
         self.assertEqual(res["status"], "PASS", res["reasons"])
-        self.assertIn("No status pinned for the day: check each player before claiming", res["panes"]["fa"])
+        self.assertNotIn("No status pinned for the day", res["panes"]["fa"])   # 2026-11-06: the status note left the tab
 
 
 class AfternoonRefresh(unittest.TestCase):
@@ -1418,16 +1430,46 @@ class AfternoonRefresh(unittest.TestCase):
     afternoon page is written as deck_<date>_pm.html beside the morning's, which stays as it was."""
     def setUp(self):
         self.d = tempfile.mkdtemp(); self.fx = fixtures(self.d); self.out = os.path.join(self.d, "out")
-        self._build = SD.build
+        self._build = SD.build; self._refresh = SD.afternoon_lineup_refresh
+        SD.afternoon_lineup_refresh = lambda date, briefs_dir=None: (None, "not run in this test")   # never the kit's briefs folder
 
     def tearDown(self):
-        SD.build = self._build
+        SD.build = self._build; SD.afternoon_lineup_refresh = self._refresh
 
     def test_the_afternoon_build_carries_its_phase_and_the_morning_build_does_not(self):
         _, pm, _ = SD.build(self.fx, date="2026-10-21", phase="pm")
         _, am, _ = SD.build(self.fx, date="2026-10-21")
         self.assertEqual(pm["refresh"]["phase"], "pm")
         self.assertNotIn("refresh", am)
+
+    def test_a_player_dropped_since_the_morning_is_marked_on_his_morning_lines(self):
+        # owner 2026-11-06 ("why does Today still show Matkovic?" -> "please build it"): the afternoon roster lost Bench
+        # Guy; the 5 AM brief's today row still names him. The afternoon page marks the row; the morning page does not.
+        lg = json.load(open(self.fx["league_state"]))
+        lg["teams"][0]["players"] = [p for p in lg["teams"][0]["players"] if p["player"] != "Bench Guy"]
+        json.dump(lg, open(self.fx["league_state"], "w"))
+        b = json.load(open(self.fx["brief"])); b["today"].append(["Bench Guy", "DAL", "vs SAC", None, 1.0, 3]); b["lineup"].append(["Util", "Bench Guy"])
+        json.dump(b, open(self.fx["brief"], "w"))
+        html, data, rec = SD.build(self.fx, date="2026-10-21", phase="pm")
+        self.assertEqual(data["refresh"]["gone"], ["Bench Guy"])
+        p = os.path.join(self.d, "pm.html"); open(p, "w", encoding="utf-8").write(html)
+        dom = visible_dom(p, "Today", "pane-today")
+        self.assertEqual(dom["errors"], [])
+        self.assertEqual(dom["text"].lower().count("no longer on your roster"), 3)   # the today row, the lineup row, the note
+        self.assertIn("No longer on your roster since the 5 AM run (their morning lines are marked): Bench Guy", dom["text"])
+        html_am, data_am, _ = SD.build(self.fx, date="2026-10-21")
+        self.assertNotIn("refresh", data_am)
+        p2 = os.path.join(self.d, "am.html"); open(p2, "w", encoding="utf-8").write(html_am)
+        self.assertNotIn("no longer on your roster", visible_dom(p2, "Today", "pane-today")["text"])
+
+    def test_gone_since_morning_folds_accents_and_reads_every_morning_list(self):
+        brief = dict(today=[["Karlo Matkovic", "NOP", None, None, 1.0, 2]], lineup=[["F", "Karlo Matkovic"]], bench=["Kyrie Irving"])
+        wm = dict(lineup_today=dict(slots={"Karlo Matkovic": "F", "Ty Jerome": "PG"}, moves=[dict(start="Kris Dunn", sit="PJ Washington")]),
+                  pickups=dict(this_week=dict(rows=[dict(add="X", drop="Karlo Matkovic")])))
+        roster = [dict(player="Karlo Matković"), dict(player="Kyrie Irving"), dict(player="Ty Jerome"), dict(player="Kris Dunn")]
+        self.assertEqual(SD.gone_since_morning(brief, wm, roster), ["PJ Washington"])   # the accent folds; PJ left
+        self.assertEqual(SD.gone_since_morning(brief, None, roster + [dict(player="PJ Washington")]), [])
+        self.assertEqual(SD.gone_since_morning({}, {}, []), [])
 
     def add_rostered(self, name):
         lg = json.load(open(self.fx["league_state"]))
@@ -1483,6 +1525,14 @@ class AfternoonRefresh(unittest.TestCase):
             sys.argv = argv
         self.assertTrue(os.path.exists(os.path.join(self.out, "deck_2026-10-21_pm.html")))
         self.assertTrue(os.path.exists(os.path.join(self.out, "deck_record_2026-10-21_pm.json")))
+        # runner finding 3 (2026-11-05, owner pick A1): the afternoon record names its own page, not the morning's
+        self.assertEqual(json.load(open(os.path.join(self.out, "deck_record_2026-10-21_pm.json")))["out"],
+                         "report/season/deck_2026-10-21_pm.html")
+        # and the page footer names that same record (owner 2026-11-06, "ride this PR"); the morning page keeps its own
+        pm_html = open(os.path.join(self.out, "deck_2026-10-21_pm.html"), encoding="utf-8").read()
+        self.assertIn('(D.refresh&&D.refresh.phase==="pm"?"_pm":"")', pm_html)
+        self.assertEqual(visible_dom(os.path.join(self.out, "deck_2026-10-21_pm.html"), "Today", "foot")["text"].split("Record: ")[-1],
+                         "report/season/deck_record_2026-10-21_pm.json")
         self.assertFalse(os.path.exists(os.path.join(self.out, "deck_2026-10-21.html")))
 
 
@@ -1842,3 +1892,112 @@ class SwapGrid(unittest.TestCase):
         with open(p, "w", encoding="utf-8") as f:
             f.write(html2)
         self.assertIn("nothing to swap", visible_dom(p, "Today", "pane-today")["text"])
+
+
+def compare_dom(html_path, tab, pane, picks):
+    """Tick the named players in a pane's pick lists and read the season-compare card's text (None when absent)."""
+    from playwright.sync_api import sync_playwright
+    with sync_playwright() as p:
+        b, exe, tried = DRC._launch(p)
+        try:
+            pg = b.new_page(); errs = []
+            pg.on("pageerror", lambda e: errs.append(str(e)))
+            pg.route(re.compile(r"^https?://"), lambda r: r.abort())
+            pg.goto("file://" + os.path.abspath(html_path), wait_until="load")
+            pg.click(f"nav.tabs button:has-text('{tab}')")
+            for name in picks:
+                pg.click(f"#{pane} .plist label:has-text('{name}') input")
+            return dict(errors=errs, text=pg.evaluate(f"() => {{ const c=document.querySelector('#{pane} #season-compare'); return c? c.innerText : null }}"),
+                        best=pg.evaluate(f"() => [...document.querySelectorAll('#{pane} #season-compare td.best')].map(x=>x.textContent)"))
+        finally:
+            b.close()
+
+
+class SeasonCompare(unittest.TestCase):
+    """Owner 2026-11-06 ("when I select 2 players, have their SEASON TOTAL stats displayed side by side ... add FG%, FT%,
+    and 3PM"): on the Trade Analyzer and Free Agents tabs, exactly two picked players show their season totals from the
+    form record, the better figure marked (fewer turnovers better). Read-only; nothing computed beyond a sum."""
+    def setUp(self):
+        self.d = tempfile.mkdtemp(); self.fx = fixtures(self.d)
+        self.fx["form"] = os.path.join(self.d, "form.json")
+        with open(self.fx["form"], "w") as f:
+            json.dump(form_record(), f)
+        html, data, rec = SD.build(self.fx, date="2026-10-21")
+        self.p = os.path.join(self.d, "deck.html")
+        with open(self.p, "w", encoding="utf-8") as f:
+            f.write(html)
+
+    def test_two_picks_on_the_free_agents_tab_show_totals_with_the_better_marked(self):
+        d = compare_dom(self.p, "Free Agents", "pane-fa", ["Bench Guy", "Free Agent"])
+        self.assertEqual(d["errors"], [])
+        t = d["text"]
+        self.assertIn("SEASON TOTALS — BENCH GUY VS FREE AGENT", t.upper())
+        self.assertIn("50.0% (5/10)", t); self.assertIn("100.0% (2/2)", t)      # FG%, FT% as made/attempted
+        self.assertIn("1 · 12.0", t); self.assertIn("1 · 20.0", t)                # games · min/g
+        self.assertIn("PTS", t); self.assertIn("3PM", t); self.assertIn("TO", t)
+        self.assertIn("10", d["best"])                                           # Free Agent's 10 pts (18.0 per 36 × 20 min) beats Bench Guy's 4
+        self.assertEqual(len([x for x in d["best"] if x == "2"]), 0)             # equal figures (2 tov each) mark nobody
+
+    def test_one_pick_shows_nothing_and_the_trade_tab_compares_across_sides(self):
+        self.assertIsNone(compare_dom(self.p, "Free Agents", "pane-fa", ["Bench Guy"])["text"])
+        d = compare_dom(self.p, "Trade Analyzer", "pane-trade", ["Alpha Man", "Bench Guy"])   # the fixture's other roster has no board rows
+        self.assertEqual(d["errors"], [])
+        self.assertIn("ALPHA MAN VS BENCH GUY", d["text"].upper()); self.assertIn("2 · 33.0", d["text"]); self.assertIn("1 · 12.0", d["text"])
+
+    def test_a_player_without_box_scores_says_so(self):
+        fr = form_record()
+        for r in fr["rows"]:
+            if r["name"] == "Free Agent":
+                r.update(games=0, mpg=None, per36={}, per_game={}, totals={}, fg=dict(made=0, att=0, pct=None), ft=dict(made=0, att=0, pct=None))
+        with open(self.fx["form"], "w") as f:
+            json.dump(fr, f)
+        html, _, _ = SD.build(self.fx, date="2026-10-21")
+        with open(self.p, "w", encoding="utf-8") as f:
+            f.write(html)
+        d = compare_dom(self.p, "Free Agents", "pane-fa", ["Bench Guy", "Free Agent"])
+        self.assertEqual(d["errors"], []); self.assertIn("No box scores yet for Free Agent", d["text"] or "")
+
+
+class AfternoonLineupRefresh(unittest.TestCase):
+    """Owner 2026-11-06 ("refresh the lineup side only"): the 3 PM build recomputes the week-matchup record from the
+    afternoon roster, status and pull (no simulator) and the page reads it; when the refresh cannot run, the 5 AM
+    record stands and the step says so."""
+    def setUp(self):
+        self.d = tempfile.mkdtemp(); self.fx = fixtures(self.d); self.out = os.path.join(self.d, "out")
+        self._refresh = SD.afternoon_lineup_refresh; self._dp = SD.default_paths
+
+    def tearDown(self):
+        SD.afternoon_lineup_refresh = self._refresh; SD.default_paths = self._dp
+
+    def run_main(self):
+        argv = sys.argv; sys.argv = ["season_deck.py", "--date", "2026-10-21", "--out", self.out, "--phase", "pm"]
+        buf = io.StringIO()
+        try:
+            with contextlib.redirect_stdout(buf):
+                SD.main()
+        finally:
+            sys.argv = argv
+        return buf.getvalue()
+
+    def test_a_refreshed_record_is_read_pinned_and_announced(self):
+        wm = week_matchup_record(); wm["phase"] = "pm"
+        wm["lineup_today"] = dict(date="2026-10-21", games_today=True, moves=[], replacements={}, slots={"Alpha Man": "PG", "Bench Guy": "BN"})
+        pm = os.path.join(self.d, "week_matchup_2026-10-21_pm.json"); json.dump(wm, open(pm, "w"))
+        SD.default_paths = lambda date, phase="am": self.fx
+        SD.afternoon_lineup_refresh = lambda date, briefs_dir=None: (pm, None)
+        out = self.run_main()
+        self.assertIn("lineup side refreshed (week_matchup_2026-10-21_pm.json)", out)
+        rec = json.load(open(os.path.join(self.out, "deck_record_2026-10-21_pm.json")))
+        self.assertTrue(rec["inputs"]["week_matchup"]["path"].endswith("week_matchup_2026-10-21_pm.json"))
+        dom = visible_dom(os.path.join(self.out, "deck_2026-10-21_pm.html"), "Today", "pane-today")
+        self.assertEqual(dom["errors"], [])
+        self.assertIn("today's lineup, the start/sit pairs and this week's adds are from the 3 PM run", dom["text"])
+        self.assertIn("LINEUP\nPG\tAlpha Man", dom["text"])   # the Lineup card from the afternoon slots (Bench Guy on BN is not listed)
+
+    def test_a_failed_refresh_keeps_the_morning_record_and_says_so(self):
+        SD.default_paths = lambda date, phase="am": self.fx
+        SD.afternoon_lineup_refresh = lambda date, briefs_dir=None: (None, "FileNotFoundError: no pull")
+        out = self.run_main()
+        self.assertIn("lineup refresh did not run (FileNotFoundError: no pull), the 5 AM record stands", out)
+        dom = visible_dom(os.path.join(self.out, "deck_2026-10-21_pm.html"), "Today", "pane-today")
+        self.assertIn("the lineup, waiver pairs and title odds are from the 5 AM run", dom["text"])
