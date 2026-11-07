@@ -4,14 +4,14 @@
   "flaim": {
    "transcript": "f7b74300-8501-5e41-b8c5-d2c75dd06ce4.jsonl",
    "method": "mechanical json extraction of Flaim (Yahoo) tool results from the session transcript",
-   "since": "2026-11-07T13:03:05Z",
-   "pull_file": "data/source/flaim/pull_2026-11-07.json",
-   "pull_sha256": "629caf12d9a868b18824176691547867dfc0cb4c00243cc4590e9489883f9bd7",
+   "since": "2026-11-07T23:04:14Z",
+   "pull_file": "data/source/flaim/pull_2026-11-07_pm.json",
+   "pull_sha256": "4b4661ace20d47d346acfd083b8c6c3865c6f07b490fa8a5539d69ec068f4827",
    "view": "Flaim connector (Yahoo, read-only): get_roster per team (current), get_matchups, get_free_agents"
   },
   "transcription": {
-   "file": "data/source/flaim/rosters_2026-11-07.transcribed.csv",
-   "sha256": "aeeb996aaa70974e1e40e62004737e9403039ea4de0cb4fbaf0300236c32be16",
+   "file": "data/source/flaim/rosters_2026-11-07_pm.transcribed.csv",
+   "sha256": "1b5b8f3b14a7163eae033bdcebf758b29ef5a06f5a8ba06e419f34523607f7dd",
    "method": "flaim_live.to_rows (mechanical; Yahoo slots and status letters for every team)"
   },
   "draft_board": "report/after-reports/draft-league-2026-10-14/recap.json",
@@ -63,7 +63,7 @@
    "player": "Kenrich Williams",
    "fantasy_team": "John's Cool Team",
    "seat": 7,
-   "slot": "BN",
+   "slot": "UTIL",
    "nba_team": "OKC",
    "status": null
   }
@@ -85,7 +85,7 @@
       "PG",
       "SG"
      ],
-     "status": null
+     "status": "Q"
     },
     {
      "player": "Dylan Harper",
@@ -184,9 +184,21 @@
      "status": null
     },
     {
+     "player": "Luguentz Dort",
+     "yahoo_name": "Luguentz Dort",
+     "slot": "UTIL",
+     "yahoo_nba_team": "ATL",
+     "pool_team": "ATL",
+     "positions": [
+      "SG",
+      "SF"
+     ],
+     "status": null
+    },
+    {
      "player": "Jeremiah Fears",
      "yahoo_name": "Jeremiah Fears",
-     "slot": "UTIL",
+     "slot": "BN",
      "yahoo_nba_team": "NOP",
      "pool_team": "NOP",
      "positions": [
@@ -215,18 +227,6 @@
      "pool_team": "LAL",
      "positions": [
       "C"
-     ],
-     "status": null
-    },
-    {
-     "player": "Klay Thompson",
-     "yahoo_name": "Klay Thompson",
-     "slot": "BN",
-     "yahoo_nba_team": "MIA",
-     "pool_team": "MIA",
-     "positions": [
-      "SG",
-      "SF"
      ],
      "status": null
     },
@@ -263,7 +263,7 @@
    "added_since_draft": [
     "Jeremiah Fears",
     "Jrue Holiday",
-    "Klay Thompson",
+    "Luguentz Dort",
     "Maxime Raynaud"
    ],
    "dropped_since_draft": [
@@ -490,13 +490,12 @@
      "status": null
     },
     {
-     "player": "Naji Marshall",
-     "yahoo_name": "Naji Marshall",
+     "player": "Rui Hachimura",
+     "yahoo_name": "Rui Hachimura",
      "slot": "SF",
-     "yahoo_nba_team": "DAL",
-     "pool_team": "DAL",
+     "yahoo_nba_team": "LAC",
+     "pool_team": "LAC",
      "positions": [
-      "SG",
       "SF",
       "PF"
      ],
@@ -650,8 +649,8 @@
    "draft_overlap": 10,
    "added_since_draft": [
     "Aaron Nesmith",
-    "Naji Marshall",
     "Pelle Larsson",
+    "Rui Hachimura",
     "Scoot Henderson"
    ],
    "dropped_since_draft": [
@@ -708,7 +707,7 @@
       "SF",
       "PF"
      ],
-     "status": "P"
+     "status": null
     },
     {
      "player": "Anthony Davis",
@@ -720,7 +719,7 @@
       "PF",
       "C"
      ],
-     "status": "O"
+     "status": "Q"
     },
     {
      "player": "Zion Williamson",
@@ -825,7 +824,7 @@
       "PF",
       "C"
      ],
-     "status": "O"
+     "status": "Q"
     },
     {
      "player": "Anthony Edwards",
@@ -1117,7 +1116,7 @@
      "positions": [
       "C"
      ],
-     "status": "O"
+     "status": "Q"
     },
     {
      "player": "Naz Reid",
@@ -1609,14 +1608,14 @@
      "status": null
     },
     {
-     "player": "Desmond Bane",
-     "yahoo_name": "Desmond Bane",
+     "player": "Jared McCain",
+     "yahoo_name": "Jared McCain",
      "slot": "SG",
-     "yahoo_nba_team": "ORL",
-     "pool_team": "ORL",
+     "yahoo_nba_team": "OKC",
+     "pool_team": "OKC",
      "positions": [
-      "SG",
-      "SF"
+      "PG",
+      "SG"
      ],
      "status": null
     },
@@ -1748,6 +1747,18 @@
      "status": null
     },
     {
+     "player": "Desmond Bane",
+     "yahoo_name": "Desmond Bane",
+     "slot": "IL",
+     "yahoo_nba_team": "ORL",
+     "pool_team": "ORL",
+     "positions": [
+      "SG",
+      "SF"
+     ],
+     "status": "O"
+    },
+    {
      "player": "Jusuf Nurkic",
      "yahoo_name": "Jusuf Nurkić",
      "slot": "IL",
@@ -1767,7 +1778,8 @@
    "draft_overlap": 12,
    "added_since_draft": [
     "Anthony Black",
-    "Draymond Green"
+    "Draymond Green",
+    "Jared McCain"
    ],
    "dropped_since_draft": [
     "Bilal Coulibaly"
@@ -1913,7 +1925,7 @@
       "PG",
       "SG"
      ],
-     "status": "O"
+     "status": "Q"
     },
     {
      "player": "Kon Knueppel",
@@ -2218,14 +2230,25 @@
      "status": null
     },
     {
-     "player": "Jayson Tatum",
-     "yahoo_name": "Jayson Tatum",
-     "slot": "F",
-     "yahoo_nba_team": "BOS",
-     "pool_team": "BOS",
+     "player": "Julius Randle",
+     "yahoo_name": "Julius Randle",
+     "slot": "PF",
+     "yahoo_nba_team": "BKN",
+     "pool_team": "BKN",
      "positions": [
-      "SF",
       "PF"
+     ],
+     "status": null
+    },
+    {
+     "player": "Aaron Gordon",
+     "yahoo_name": "Aaron Gordon",
+     "slot": "F",
+     "yahoo_nba_team": "DEN",
+     "pool_team": "DEN",
+     "positions": [
+      "PF",
+      "C"
      ],
      "status": null
     },
@@ -2241,25 +2264,13 @@
      "status": null
     },
     {
-     "player": "Brook Lopez",
-     "yahoo_name": "Brook Lopez",
+     "player": "Ivica Zubac",
+     "yahoo_name": "Ivica Zubac",
      "slot": "C",
-     "yahoo_nba_team": "LAC",
-     "pool_team": "LAC",
+     "yahoo_nba_team": "IND",
+     "pool_team": "IND",
      "positions": [
       "C"
-     ],
-     "status": null
-    },
-    {
-     "player": "Saddiq Bey",
-     "yahoo_name": "Saddiq Bey",
-     "slot": "UTIL",
-     "yahoo_nba_team": "NOP",
-     "pool_team": "NOP",
-     "positions": [
-      "SF",
-      "PF"
      ],
      "status": null
     },
@@ -2273,53 +2284,42 @@
       "SF",
       "PF"
      ],
-     "status": "O"
-    },
-    {
-     "player": "Julius Randle",
-     "yahoo_name": "Julius Randle",
-     "slot": "BN",
-     "yahoo_nba_team": "BKN",
-     "pool_team": "BKN",
-     "positions": [
-      "PF"
-     ],
      "status": null
     },
     {
-     "player": "Aaron Gordon",
-     "yahoo_name": "Aaron Gordon",
+     "player": "Jayson Tatum",
+     "yahoo_name": "Jayson Tatum",
      "slot": "BN",
-     "yahoo_nba_team": "DEN",
-     "pool_team": "DEN",
-     "positions": [
-      "PF",
-      "C"
-     ],
-     "status": null
-    },
-    {
-     "player": "Ivica Zubac",
-     "yahoo_name": "Ivica Zubac",
-     "slot": "BN",
-     "yahoo_nba_team": "IND",
-     "pool_team": "IND",
-     "positions": [
-      "C"
-     ],
-     "status": null
-    },
-    {
-     "player": "De'Andre Hunter",
-     "yahoo_name": "De'Andre Hunter",
-     "slot": "IL",
-     "yahoo_nba_team": "SAC",
-     "pool_team": "SAC",
+     "yahoo_nba_team": "BOS",
+     "pool_team": "BOS",
      "positions": [
       "SF",
       "PF"
      ],
-     "status": "O"
+     "status": null
+    },
+    {
+     "player": "Brook Lopez",
+     "yahoo_name": "Brook Lopez",
+     "slot": "BN",
+     "yahoo_nba_team": "LAC",
+     "pool_team": "LAC",
+     "positions": [
+      "C"
+     ],
+     "status": null
+    },
+    {
+     "player": "Saddiq Bey",
+     "yahoo_name": "Saddiq Bey",
+     "slot": "BN",
+     "yahoo_nba_team": "NOP",
+     "pool_team": "NOP",
+     "positions": [
+      "SF",
+      "PF"
+     ],
+     "status": null
     },
     {
      "player": "Brandon Ingram",
@@ -2340,7 +2340,7 @@
    "unpooled": [
     {
      "player": "Kenrich Williams",
-     "slot": "BN",
+     "slot": "UTIL",
      "nba_team": "OKC",
      "positions": [
       "PF",
@@ -2355,7 +2355,6 @@
    "added_since_draft": [
     "Brook Lopez",
     "Christian Braun",
-    "De'Andre Hunter",
     "Kyle Kuzma"
    ],
    "dropped_since_draft": [
