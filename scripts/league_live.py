@@ -298,7 +298,9 @@ def _main():
         print(f"LEAGUE MOVES: PASS — {len(rec['moves'])} team(s) changed, {n} move(s), "
               f"{old['as_of']} to {new['as_of']} ({a.phase}); wrote {os.path.relpath(outp, KIT) if outp.startswith(KIT) else outp}")
     un = new.get("unpooled") or []   # owner 2026-10-26, option (a): never silent
-    flag = (f"; {len(un)} not in the pool, not simulated: " + ", ".join(f"{u['player']} ({u['fantasy_team']}, {u['slot']})" for u in un)) if un else ""
+    # owner 2026-11-09 ("Simulate them"): the season-lines step runs after this one and gives each a blended auto row
+    # at 3+ games, and the simulator then counts him; so this line says "not in the deck pool", not "not simulated"
+    flag = (f"; {len(un)} not in the deck pool (simulated once the season lines give an auto row, 3+ games): " + ", ".join(f"{u['player']} ({u['fantasy_team']}, {u['slot']})" for u in un)) if un else ""
     print(f"LEAGUE LIVE: PASS — rosters from {'Flaim (Yahoo)' if used == 'flaim' else 'FantasyBot'}, pinned {rel(pin)}{flag}")
     return 0
 

@@ -813,8 +813,13 @@ function matchupBoard(){ const W=D.week_matchup, B=W&&W.board; if(!B) return nul
   if(swapCard.has) p.append(swapCard.card);
   // owner 2026-10-26, option (a): rostered names the intake carried without a pool row — never silent; owner 2026-11-05:
   // a one-line footer under the swap card, no longer its own card (the auto pool row in season_lines.py drains it)
-  const UN=(D.league&&D.league.unpooled)||[];
-  if(UN.length) p.append(h("div",{class:"card"},h("p",{class:"note",id:"unpooled-note"},"Not in the pool, not simulated: "+UN.map(u=>u.player+" ("+u.fantasy_team+", "+u.slot+")").join(", ")+". Each needs a pool row before the simulator counts him.")));
+  // owner 2026-11-09 ("Simulate them"): a name with an auto season line is simulated and listed as an auto row
+  const AUTO=new Set(((D.season_lines&&D.season_lines.auto_rows)||[]).map(x=>x.player));
+  const UNall=(D.league&&D.league.unpooled)||[], UN=UNall.filter(u=>!AUTO.has(u.player)), UA=UNall.filter(u=>AUTO.has(u.player));
+  const unl=(xs)=>xs.map(u=>u.player+" ("+u.fantasy_team+", "+u.slot+")").join(", ");
+  if(UN.length||UA.length) p.append(h("div",{class:"card"},h("p",{class:"note",id:"unpooled-note"},
+    (UN.length? "Not in the pool, not simulated: "+unl(UN)+". Each needs a pool row before the simulator counts him." : "")
+    +(UN.length&&UA.length? " " : "")+(UA.length? "Auto row (blended), simulated: "+unl(UA)+"." : ""))));
   if(D.refresh&&D.refresh.phase==="pm") p.append(h("div",{class:"card"},h("p",{class:"note",id:"pm-note"},
     (D.refresh.lineup_refreshed? "Afternoon refresh: rosters, injury status, today's lineup, the start/sit pairs and this week's adds are from the 3 PM run; the waiver pairs and title odds are the 5 AM run's."
       : "Afternoon refresh: rosters, ownership and injury status are from the 3 PM run; the lineup, waiver pairs and title odds are from the 5 AM run (they can be out of date after a roster move or a new injury).")

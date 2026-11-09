@@ -43,6 +43,25 @@ Readers of the exact wording (EVIDENCE: grep): `test_season_deck.UnpooledAndNotS
 2. **Keep them out, fix the words.** The label becomes "auto row on the board (blended), not in the simulation", which is true today. Display-only, three places.
 3. **Leave it.** The label stays half stale.
 
+## 3a. Owner's picks (2026-11-09): "Simulate them", then "Push it" after seeing the shift — built
+
+- `co_gm.rosters` also takes a team's `unpooled` player whose name the pool in use has: the season pool's auto season line. An IL slot still counts 0, and a name with no row anywhere stays out. All callers share it: the brief's title odds and waiver pairs, `il_return`, and `weekly_preview`.
+- Labels: the brief and the deck's Today tab split the list into "Not in the pool, not simulated" (no row anywhere) and "Auto row (blended), simulated". The intake and league-live lines now say "not in the deck pool (simulated once the season lines give an auto row, 3+ games)", because they run before the season lines. No prompt or production reader parses the old wording (EVIDENCE: grep across the kit and season/daily). The two tests that pinned it were updated with it.
+- Tests: `test_daily_brief.AutoRowsSimulated` (+2) and `test_season_deck.AutoRowLabel` (+1). Red first: 2 failures (`Lists differ: ['A'] != ['A', 'Auto Guy']` and the deck still saying "not simulated" for the auto-row player) and 1 error (`TypeError: unpooled_line() takes 1 positional argument but 2 were given`). Suite 831 OK (2 skips).
+
+**What it does to the title odds** (EVIDENCE: `run_league_sim` on the 11-09 state and season pool, 10,000 seasons, seeds 2026/2027, before = `teams[].players` only, after = `rosters()` as built; scratch worktree at 85556cc, removed after):
+
+| seat (player added) | before (mean of seeds) | after | change |
+|---|---|---|---|
+| 1 (Meleek Thomas) | 0.74% | 4.22% | +3.48 |
+| 5 (Nolan Traore) | 0.75% | 4.12% | +3.38 |
+| 7 (Danny Wolf) | 0.83% | 4.80% | +3.97 |
+| 9 (Morez Johnson Jr.) | 0.00% | 0.00% | 0.00 |
+| 11 (Mario Hezonja) | 3.12% | 10.76% | +7.64 |
+| 10 (owner) | 18.06% | 15.19% | **−2.87** |
+
+The owner's shift is outside the season band below. The plan's branch rule (shift larger than the band → stop and report) fired; it was reported, and the owner chose to push. INFERENCE: the four teams that gain had been simulated a man short, so the new figures are closer to the rosters as they stand. How large the shift is rests on the auto line's replacement prior (deck rows 146–166 by z, `AUTO_PRIOR_LO`/`AUTO_PRIOR_HI`, uncalibrated, D-AP-1). That decision stays open.
+
 ## 4. Part 3: what `absent_from_sim` counts (EVIDENCE: `co_gm.py:315-333`)
 
 It counts rostered active players who reached `ros` (state `teams[].players`) but whose names the simulator's pool (SEASON_POOL, else frozen v69) lacks. A state "unpooled" player never reaches `ros`, so it can never be counted there. That is why the field read `[]` on 11-03 … 11-05 while 2–4 players were unpooled (runner finding 3). There are comments to that effect at `co_gm.py` (above `rec["absent_from_sim"]`) and `daily_brief.py:258`. Behaviour is unchanged.
@@ -51,7 +70,7 @@ It counts rostered active players who reached `ros` (state `teams[].players`) bu
 
 This report quotes no new title share. The standing structural band for any title figure is the season sweep of 2026-11-02 (deck e14cc42): **weekly_availability is FRAGILE:** -2.6 (no in-sim injury discount (risk 0.88 like healthy)) / +2.2 (harsher risk tier (0.65)) / -0.2 (healthy players play 0.95 of games) / +0.0 (healthy players play 0.80 of games), mean of the two seeds.
 
-Runner impact: code-only. The deck step's PASS line may now end `; absent: …`, and the runner's pass pattern (`^SEASON DECK: PASS`) still matches. No step or prompt change.
+Runner impact: code-only. The deck step's PASS line may now end `; absent: …`, and the runner's pass pattern (`^SEASON DECK: PASS`) still matches. The intake and league-live lines changed wording; their pass patterns are unchanged. From the first morning after merge, the brief's title odds count the auto-row players. No step or prompt change.
 
 ## 6. Bounds
 

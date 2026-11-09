@@ -1607,6 +1607,25 @@ class AbsentInputs(unittest.TestCase):
             self.assertIn(f"{f} was absent this morning", txt)
 
 
+
+class AutoRowLabel(unittest.TestCase):
+    """Owner 2026-11-09 (pick "Simulate them"): a player the season lines gave an auto row is shown as "auto row
+    (blended)", never "not simulated"; a player with no row keeps the old line."""
+    def test_auto_row_player_is_not_called_not_simulated(self):
+        d = tempfile.mkdtemp(); fx = fixtures(d)
+        st = json.load(open(fx["league_state"]))
+        st["unpooled"] = [dict(player="Auto Guy", fantasy_team="THEM", seat=11, slot="BN", nba_team="CLE", status=None),
+                          dict(player="Trevon Brazile", fantasy_team="THEM", seat=11, slot="BN", nba_team="DEN", status=None)]
+        json.dump(st, open(fx["league_state"], "w"))
+        ln = json.load(open(fx["season_lines"])); ln["auto_rows"] = [dict(player="Auto Guy", team="CLE", pos="SG", games=7, band=[146, 166])]
+        json.dump(ln, open(fx["season_lines"], "w"))
+        html, data, rec = SD.build(fx, date="2026-10-21")
+        p = os.path.join(d, "deck.html"); open(p, "w", encoding="utf-8").write(html)
+        txt = visible_dom(p, "Today", "pane-today")["text"]
+        self.assertIn("Not in the pool, not simulated: Trevon Brazile (THEM, BN)", txt)
+        self.assertNotIn("Auto Guy (THEM, BN). Each", txt)
+        self.assertIn("Auto row (blended), simulated: Auto Guy (THEM, BN)", txt)
+
 if __name__ == "__main__":
     unittest.main()
 

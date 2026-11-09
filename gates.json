@@ -1,7 +1,7 @@
 {
- "ran_at_utc": "2026-11-09T16:31:14Z",
+ "ran_at_utc": "2026-11-09T18:08:55Z",
  "inputs": {
-  "report/after-reports/after-report-2026-11-09-deck-absent-inputs.md": "69bb86668aee3bbd396e52f558c61d26da45e7a80e5c318cf9bd49ce13204af1",
+  "report/after-reports/after-report-2026-11-09-deck-absent-inputs.md": "912275b9b11c07b99c2bf50c39d2078a1ae29060e71d0102b9cd5cc14ad0e6da",
   "../wtsd/report/after-reports/redteam-2026-11-02-season/sweep.json": "1b8566531da1d0b666610a9383c063baa951d7879f045cb823faf3e0a384a87c"
  },
  "gates": [
@@ -59,7 +59,7 @@
   },
   {
    "name": "touched tests",
-   "cmd": "bash -c 'cd scripts && python3 -m unittest test_season_deck test_daily_brief 2>&1 | tail -1'",
+   "cmd": "bash -c 'cd scripts && python3 -m unittest test_season_deck test_daily_brief test_league_intake test_league_live 2>&1 | tail -1'",
    "cwd": ".",
    "pass_re": "^OK",
    "exit": 0,
@@ -125,5 +125,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "8f252a2b39ed3260dc075035100eb839a656ff8d"
+ "base_commit": "c06bcf7d42e922bcecf19acbe209af236fa7bc71"
 }

@@ -52,9 +52,15 @@ def load_pool():
 
 def rosters(state, by, include_il=False):
     # owner 2026-10-20 (D-IS-8): an IL player counts as zero (absent from the simulation) until he is on the active roster
+    # owner 2026-11-09 (pick "Simulate them"): a rostered player the intake carried as unpooled (no deck pool row) is
+    # simulated when the pool in use has his row: the season pool's auto season line (season_lines.auto_rows)
     out = {}
     for t in state["teams"]:
-        out[t["seat"]] = [by[p["player"]] for p in t["players"] if include_il or p["slot"] != "IL"]
+        r = [by[p["player"]] for p in t["players"] if include_il or p["slot"] != "IL"]
+        have = {p["player"] for p in r}
+        r += [by[u["player"]] for u in t.get("unpooled") or []
+              if u.get("player") in by and u["player"] not in have and (include_il or u.get("slot") != "IL")]
+        out[t["seat"]] = r
     return out
 
 
@@ -332,6 +338,7 @@ def run_league_sim(ros, seed, seasons, workdir, tag="cur", windows=None):
     os.remove(op)
     # absent_from_sim counts rostered active players that reached `ros` (state teams[].players, which the intake fills
     # from the deck pool + pool_additions.csv) but whose names the simulator's pool lacks; a state "unpooled" player
-    # never reaches `ros` (rosters() reads teams[].players), so he is never counted here, auto row or not (2026-11-09)
+    # reaches `ros` only when the pool has his row (an auto season line, rosters() since 2026-11-09), and then he is in
+    # the simulator's pool too, so he is never counted here
     rec["absent_from_sim"] = absent
     return rec
