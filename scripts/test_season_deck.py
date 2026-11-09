@@ -1235,7 +1235,7 @@ class Scorecard(unittest.TestCase):
         self.assertEqual(DRC.check(p)["status"], "PASS")
         dom = week_dom(p)
         self.assertEqual(dom["errors"], [])
-        self.assertIn("Scorecard", dom["text"]); self.assertIn("first finals", dom["text"])
+        self.assertIn("How good were our daily win chances?", dom["text"]); self.assertIn("first finals", dom["text"])
 
     def test_a_scored_week_shows_brier_baseline_skill_and_missing_mornings(self):
         p = self.page(score_record())
@@ -1352,7 +1352,7 @@ class WordingPassTwo(unittest.TestCase):
     def test_week(self):
         v = self.check("Week", "pane-week", ["Brier = (p − outcome)²", "a calibrated card has hit rate", "not FantasyBot's"],
                        ["Brier = (p − outcome)²", "a calibrated card has hit rate", "not FantasyBot's"],
-                       ["lower Brier is better", "Reliability", "never rewritten", "Monday's scoreboard intake"])
+                       ["lower is better", "When we said X%", "never rewritten", "Monday's scoreboard intake"])
         self.assertNotIn("paste the scoreboard", v["text"] + " ".join(v["titles"]))
 
     def test_league(self):
@@ -1626,6 +1626,39 @@ class AutoRowLabel(unittest.TestCase):
         self.assertNotIn("Auto Guy (THEM, BN). Each", txt)
         self.assertIn("Auto row (blended), simulated: Auto Guy (THEM, BN)", txt)
 
+
+class PlainLanguageWeek(WordingPassTwo):
+    """Owner 2026-11-09 ("make language more clear, ELI5 / plain language"; pick "Build it as shown"): the Week tab's
+    Scorecard and Forecast accuracy cards in plain words; the technical terms and the switch-rule codes move to the
+    hovers; no number changes."""
+    def setUp(self):
+        super().setUp()
+        self.fx["accuracy"] = os.path.join(self.d, "accuracy.json"); json.dump(accuracy_record(), open(self.fx["accuracy"], "w"))
+        html, data, rec = SD.build(self.fx, date="2026-10-21")
+        with open(self.page, "w", encoding="utf-8") as f:
+            f.write(html)
+
+    def test_week_cards_read_in_plain_words(self):
+        v = visible_dom(self.page, "Week", "pane-week")
+        self.assertEqual(v["errors"], [])
+        text, hov = v["text"].lower(), " ".join(v["titles"])   # headings render uppercase: compare without case
+        for g in ("brier card", "brier lead", "lead-only", "mae", "mean p", "hit rate", "stated p", "d-ml-1", "d-rg-1",
+                  "minutes candidate", "league matchups scored", "skill"):
+            self.assertNotIn(g, text, f"still visible: {g}")
+        for k in ("Brier = (p − outcome)²", "MAE", "rank correlation", "D-ML-1", "D-RG-1", "0.88 healthy"):
+            self.assertIn(k, hov, f"lost from the hovers: {k}")
+        for sh in ("How good were our daily win chances?", "Our miss score", "Scoreboard miss score", "Beat the scoreboard by",
+                   "When we said X%, did it happen X% of the time?", "It happened",
+                   "How close were our player projections?", "Draft-day line", "Current line", "Test line (minutes trend)",
+                   "Too high / too low by", "Typical miss", "Got the order right?",
+                   "Do players actually play as often as we assume?", "Healthy", "Injury risk", "We assume they play",
+                   "Actually played", "Did our weekly win chance hold up?", "Our pre-week win chance", "Categories you won",
+                   "Other matchups checked", "only on your OK"):
+            self.assertIn(sh.lower(), text, f"missing: {sh}")
+        # the numbers are untouched (the accuracy fixture's weeks and the scorecard's week)
+        for n in ("13.0%", "3.50", "0.77", "727 / 918", "0.606", "0.090", "−0.090"):
+            self.assertIn(n, v["text"])
+
 if __name__ == "__main__":
     unittest.main()
 
@@ -1677,8 +1710,8 @@ class AccuracyCard(unittest.TestCase):
         self.assertEqual(DRC.check(p)["status"], "PASS")
         dom = week_dom(p)
         self.assertEqual(dom["errors"], [])
-        self.assertIn("Forecast accuracy", dom["text"]); self.assertIn("No week graded yet", dom["text"])
-        self.assertNotIn("MAE", dom["text"])
+        self.assertIn("How close were our player projections?", dom["text"]); self.assertIn("No week graded yet", dom["text"])
+        self.assertNotIn("Typical miss", dom["text"])
 
     def test_two_graded_weeks_render_lines_availability_and_forecasts(self):
         p, rec = self.page(accuracy_record())
@@ -1687,15 +1720,15 @@ class AccuracyCard(unittest.TestCase):
         self.assertEqual(dom["errors"], [])
         t = dom["text"]
         # lines: the three columns, week 1's missing snapshot named, bias and MAE as the markdown card prints them
-        for s in ("Forecast accuracy", "MAE", "preseason", "in-season", "minutes candidate", "no snapshot",
+        for s in ("How close were our player projections?", "Typical miss", "Draft-day line", "Current line", "Test line (minutes trend)", "no snapshot",
                   "13.0%", "3.50", "0.77", "7.6%", "3.34", "0.81"):
             self.assertIn(s, t)
         # availability by tier: assumed vs played share
-        self.assertIn("0.88", t); self.assertIn("0.79", t); self.assertIn("727 / 918", t)
+        self.assertIn("Healthy", t); self.assertIn("0.88", t); self.assertIn("0.79", t); self.assertIn("727 / 918", t)
         # forecasts: P(win), result, daily Brier vs the lead-only baseline
         self.assertIn("0.606", t); self.assertIn("3 cats", t); self.assertIn("0.145", t); self.assertIn("0.294", t)
-        # the switch rules are named, not decided, on the page
-        self.assertIn("D-ML-1", t); self.assertIn("D-RG-1", t)
+        # the switch rules are stated in plain words on the page (their codes are in the hovers), not decided
+        self.assertEqual(t.count("only on your OK"), 2)
         self.assertEqual(dom["page_overflow"], 0)
 
     def test_record_pins_the_accuracy_input(self):
