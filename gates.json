@@ -1,5 +1,5 @@
 {
- "ran_at_utc": "2026-11-09T17:24:04Z",
+ "ran_at_utc": "2026-11-09T20:33:26Z",
  "inputs": {
   "report/after-reports/after-report-2026-11-09-decision-log-alt-pairs.md": "1e965d67682cf292b1f4f5c0dde884e6b6a20b2d48f25fac08f2283dd64499b9",
   "../wtsd/report/after-reports/redteam-2026-11-02-season/sweep.json": "1b8566531da1d0b666610a9383c063baa951d7879f045cb823faf3e0a384a87c"
@@ -76,11 +76,11 @@
    "cwd": ".",
    "pass_re": "^CONSTANTS CHECK: PASS",
    "exit": 0,
-   "pass_line": "CONSTANTS CHECK: PASS \u2014 49 registered = 49 live on deck e14cc42; declared_band 5, measured 7, settings 8, structural 6, uncalibrated 23",
+   "pass_line": "CONSTANTS CHECK: PASS \u2014 49 registered = 49 live on deck 01483de; declared_band 5, measured 7, settings 8, structural 6, uncalibrated 23",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "CONSTANTS CHECK: PASS \u2014 49 registered = 49 live on deck e14cc42; declared_band 5, measured 7, settings 8, structural 6, uncalibrated 23"
+    "CONSTANTS CHECK: PASS \u2014 49 registered = 49 live on deck 01483de; declared_band 5, measured 7, settings 8, structural 6, uncalibrated 23"
    ]
   },
   {
@@ -102,11 +102,11 @@
    "cwd": ".",
    "pass_re": "^ATTACKS CHECK: PASS",
    "exit": 0,
-   "pass_line": "ATTACKS CHECK: PASS \u2014 10 attacks on engine e14cc42 (engine files last changed 95ebade), simulator aa470f8; CURRENT 9, UNFINGERPRINTED 1",
+   "pass_line": "ATTACKS CHECK: PASS \u2014 10 attacks on engine 01483de (engine files last changed 95ebade), simulator aa470f8; CURRENT 9, UNFINGERPRINTED 1",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "ATTACKS CHECK: PASS \u2014 10 attacks on engine e14cc42 (engine files last changed 95ebade), simulator aa470f8; CURRENT 9, UNFINGERPRINTED 1"
+    "ATTACKS CHECK: PASS \u2014 10 attacks on engine 01483de (engine files last changed 95ebade), simulator aa470f8; CURRENT 9, UNFINGERPRINTED 1"
    ]
   },
   {
@@ -125,5 +125,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "34b4b9ce80cebb275e6d3f1eaaa9b1a18c1688c2"
+ "base_commit": "7eb8bb4c7459eb049ac7ad43323618265522e389"
 }
