@@ -126,8 +126,26 @@ def _not_started(side):
     return True
 
 
-def week_from_yahoo(block, state):
-    """{team: {seat, totals, opponent, score, games_remaining}} from one Yahoo matchup block (all six matchups)."""
+def key_names(pulls):
+    """Yahoo team key -> today's team name, from the newest pull that carries rosters ({} with none). Owner 2026-11-09
+    (runner pick A1, after the 10-29 pick "Key on Yahoo team key"): a block pinned before a team renamed itself still
+    carries the old name; the key never changes, and the newest rosters carry the name the league state was built with."""
+    for _, (_fn, p) in sorted(pulls.items(), reverse=True):
+        rosters = (p or {}).get("rosters") or {}
+        names = {k: r["teamName"] for k, r in rosters.items() if (r or {}).get("teamName")}
+        if names:
+            return names
+    return {}
+
+
+def _side_name(side, keys):
+    return (keys or {}).get(side.get("teamKey")) or side.get("teamName")
+
+
+def week_from_yahoo(block, state, keys=None):
+    """{team: {seat, totals, opponent, score, games_remaining}} from one Yahoo matchup block (all six matchups). With
+    `keys` (team key -> today's name, key_names) a side is matched by its Yahoo team key, else by the name it carries;
+    either way it is shown under the league state's name."""
     seats = _seats(state)
     out = {}
     for m in block.get("matchups") or []:
@@ -136,7 +154,7 @@ def week_from_yahoo(block, state):
             raise TableError(f"matchup {m.get('matchupId')} lacks a side")
         names = []
         for s in sides:
-            hit = seats.get(_fold(s.get("teamName")))
+            hit = seats.get(_fold(_side_name(s, keys)))
             if hit is None:
                 raise TableError(f"Yahoo team {s.get('teamName')!r} is not in the league state")
             names.append(hit[0])
@@ -193,11 +211,13 @@ def rebuild_week(week, ws, we, state, actuals_dir, pulls, date):
             missing.append(day)
     # pinned daily lineups by Yahoo team name, latest pin of a day wins
     lineups = {}
+    keys = key_names(pulls)
     for pd, (fn, pull) in sorted(pulls.items()):
-        for by_day in ((pull or {}).get("daily") or {}).values():
+        for tk, by_day in ((pull or {}).get("daily") or {}).items():
             for day, r in (by_day or {}).items():
                 if ws <= day <= we and r.get("teamName"):
-                    lineups.setdefault(r["teamName"], {})[day] = r
+                    # by team key where the newest rosters know it, so a pin made before a rename still finds its team
+                    lineups.setdefault(keys.get(tk) or r["teamName"], {})[day] = r
     teams = {}
     for t in state["teams"]:
         roster = [dict(player=p["player"], positions=p.get("positions") or [], value=0.0) for p in t["players"]
@@ -233,13 +253,15 @@ def standings_of(pulls, date, state, weeks):
         return None
     pd, fn, resp = cands[-1]
     by = {t["name"]: t for t in state["teams"]}
+    keys = key_names(pulls)
     po = CG.arena.PLAYOFF_TEAMS
     rows = []
     for x in sorted(resp["standings"], key=lambda x: int(x["rank"])):
-        if x["name"] not in by:
+        name = keys.get(x.get("teamKey")) or x["name"]   # by team key first (owner 2026-11-09, A1)
+        if name not in by:
             raise TableError(f"standings name {x['name']!r} is not a team in the league state")
-        t = by[x["name"]]
-        rows.append(dict(rank=int(x["rank"]), team=x["name"], seat=t["seat"], manager=t.get("manager"), mine=t["seat"] == OWNER_SEAT,
+        t = by[name]
+        rows.append(dict(rank=int(x["rank"]), team=name, seat=t["seat"], manager=t.get("manager"), mine=t["seat"] == OWNER_SEAT,
                          w=int(x["wins"]), l=int(x["losses"]), t=int(x["ties"] or 0), pct=float(x["percentage"]),
                          seed=x.get("playoffSeed"), waiver=x.get("waiverPriority"), faab=x.get("faabBalance")))
     gap = lambda a, b: ((a["w"] - b["w"]) + (b["l"] - a["l"])) / 2
@@ -268,6 +290,7 @@ def standings_note(st):
 def build(date, paths):
     state = json.load(open(paths["state"], encoding="utf-8"))
     pulls = load_pulls(paths["pull_dir"])
+    keys = key_names(pulls)
     wk, ws, we = CG.week_of(date)
     cal = {n: (s0.isoformat(), e0.isoformat()) for n, s0, e0 in _calendar()}
     weeks, inputs = [], {}
@@ -278,7 +301,7 @@ def build(date, paths):
             cands = [(pd, fn, _block(p, n)) for pd, (fn, p) in pulls.items() if pd > e and pd <= date and _block(p, n)]
             if cands:
                 pd, fn, blk = cands[-1]
-                teams = week_from_yahoo(blk, state)
+                teams = week_from_yahoo(blk, state, keys)
                 weeks.append(dict(week=n, window=[s, e], status="finished", source="yahoo", pull=fn, teams=teams))
                 inputs[fn] = _fingerprint(os.path.join(paths["pull_dir"], fn))
             else:
@@ -307,7 +330,7 @@ def build(date, paths):
                 weeks.append(dict(week=n, window=[s, e], status="in_progress", source="none", pull=None, teams={}))
                 continue
             pd, fn, blk = cands[-1]
-            teams = week_from_yahoo(blk, state)
+            teams = week_from_yahoo(blk, state, keys)
             started = any(x["totals"] is not None for x in teams.values())
             weeks.append(dict(week=n, window=[s, e], status="in_progress" if started else "not_started", source="yahoo",
                               pull=fn, teams=teams))
