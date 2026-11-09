@@ -252,7 +252,7 @@ class DecisionLog(unittest.TestCase):
             self.assertEqual(names.index("decision log"), names.index("daily brief") + 1, day)
             self.assertEqual("decision grades" in names, monday, day)
             log = next(s for s in st if s["name"] == "decision log")
-            self.assertEqual(log["cmd"][-3:], ["--brief", day, "--moves"]); self.assertFalse(log["fatal"])
+            self.assertEqual(log["cmd"][-4:], ["--brief", day, "--moves", "--rejoin"]); self.assertFalse(log["fatal"])
             if monday:
                 g = next(s for s in st if s["name"] == "decision grades")
                 self.assertEqual(g["cmd"][-2:], ["--as-of", day]); self.assertFalse(g["fatal"])

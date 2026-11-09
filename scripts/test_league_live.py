@@ -247,7 +247,7 @@ class FlaimFirst(unittest.TestCase):
         p, out, tdir = self.run_live("--source", "flaim", "--pull", pin)
         self.assertIn("LEAGUE INTAKE: WARN", p.stdout)
         self.assertIn("LEAGUE LIVE: PASS", p.stdout)
-        self.assertIn("1 not in the pool, not simulated: Not A Pool Player", p.stdout)
+        self.assertIn("1 not in the deck pool (simulated once the season lines give an auto row, 3+ games): Not A Pool Player", p.stdout)
         st = json.load(open(out, encoding="utf-8"))
         self.assertEqual([u["player"] for u in st["unpooled"]], ["Not A Pool Player"])
         self.assertNotIn("Not A Pool Player", [q["player"] for t in st["teams"] for q in t["players"]])

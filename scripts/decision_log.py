@@ -34,6 +34,9 @@ DIR = os.path.join(KIT, "data", "decisions")
 RECS = os.path.join(DIR, "recommendations.jsonl")
 SESSION = os.path.join(DIR, "session.jsonl")
 MOVES = os.path.join(DIR, "moves.jsonl")
+# owner 2026-11-09 (pick "Re-join file"): a move re-matched under a later join rule, append-only; moves.jsonl unchanged
+REJOIN = os.path.join(DIR, "moves_rejoin.jsonl")
+REJOIN_RULE = "2026-11-09 C1: alternative pairs, newest row then exact over partial"
 BRIEFS = os.path.join(KIT, "report", "briefs")
 NEWS = os.path.join(KIT, "data", "news")
 OWNER_SEAT = 10
@@ -123,21 +126,74 @@ def _date_of_record(path):
     return (m.group(1), "pm" if m.group(2) else "am") if m else (None, None)
 
 
-def join(move, recs):
-    """(match id, match kind): the newest recommendation inside its horizon before the move that shares the add;
-    failing that the drop; "unrelated" when rows are in horizon but none share either; "none" when no row is."""
+def _pairs(r):
+    """[(label, add, drop)]: the top pair, then each alternative as alt1, alt2, ... (an alternative without its own add
+    shares the top pair's add)."""
+    out = [("top", r.get("add"), r.get("drop"))]
+    for i, a in enumerate(r.get("alternatives") or [], 1):
+        out.append((f"alt{i}", a.get("add") or r.get("add"), a.get("drop")))
+    return out
+
+
+def join_pair(move, recs):
+    """(match id, match kind, matched pair). Owner 2026-11-09 (runner pick C1): each recommendation's alternative
+    pairs are read as well as its top pair. The newest row in horizon before the move that shares the add wins; within
+    it an exact pair beats a partial one (top first, then alt1, alt2, ...); failing every add, the drop the same way;
+    "unrelated" when rows are in horizon but none share either; "none" when no row is."""
     d = dt.date.fromisoformat(move["date"])
     cands = [r for r in recs if r.get("kind") != "hold" and
              0 <= (d - dt.date.fromisoformat(r["date"])).days <= int(r.get("horizon_days") or HORIZON_DAYS)]
     cands.sort(key=lambda r: (r["date"], r["id"]), reverse=True)
     adds, drops = set(move.get("added") or []), set(move.get("dropped") or [])
     for r in cands:
-        if r.get("add") in adds:
-            return r["id"], "exact" if (r.get("drop") in drops or (not r.get("drop") and not drops)) else "add_match_drop_differs"
+        hits = [(lab, a, dr) for lab, a, dr in _pairs(r) if a and a in adds]
+        exact = [lab for lab, a, dr in hits if dr in drops or (not dr and not drops)]
+        if exact:
+            return r["id"], "exact", exact[0]
+        if hits:
+            return r["id"], "add_match_drop_differs", hits[0][0]
     for r in cands:
-        if r.get("drop") in drops:
-            return r["id"], "drop_match_add_differs"
-    return None, "unrelated" if cands else "none"
+        hits = [lab for lab, a, dr in _pairs(r) if dr and dr in drops]
+        if hits:
+            return r["id"], "drop_match_add_differs", hits[0]
+    return None, "unrelated" if cands else "none", None
+
+
+def join(move, recs):
+    """(match id, match kind): join_pair without the pair label."""
+    return join_pair(move, recs)[:2]
+
+
+def _match_of(m):
+    return {"matches": m.get("matches"), "match_kind": m.get("match_kind"),
+            "matched_pair": m.get("matched_pair") or ("top" if m.get("matches") else None)}
+
+
+def effective_moves(moves, rejoins):
+    """The moves as the grader reads them: each move's newest re-join row (moves_rejoin.jsonl) over its logged match.
+    Returns copies; a move with no re-join is returned as logged."""
+    last = {}
+    for r in rejoins:
+        last[r["move"]] = r
+    out = []
+    for m in moves:
+        r = last.get(m.get("id"))
+        out.append(dict(m, **r["to"], rejoined=r["date"]) if r else m)
+    return out
+
+
+def rejoin_rows(moves, existing, recs, made_at=None, date=None):
+    """One row per move whose match under the current join (join_pair) differs from its effective match (its newest
+    re-join, else as logged). Re-running adds nothing new."""
+    out, date = [], date or dt.date.today().isoformat()
+    for m in effective_moves(moves, existing):
+        mid, kind, pair = join_pair(m, recs)
+        new = {"matches": mid, "match_kind": kind, "matched_pair": pair}
+        old = _match_of(m)
+        if new != old:
+            out.append({"id": next_id(list(existing) + out, "J", date), "move": m["id"], "date": date,
+                        "made_at": made_at or now(), "from": old, "to": new, "rule": REJOIN_RULE})
+    return out
 
 
 def move_key(m):
@@ -174,7 +230,7 @@ def moves_rows(news_dir, existing, recs, seat=OWNER_SEAT, seen_at=None, backfill
                    "source": os.path.relpath(p, KIT) if p.startswith(KIT) else p}
             if _repeat(row, rows):
                 continue
-            row["matches"], row["match_kind"] = join(row, recs)
+            row["matches"], row["match_kind"], row["matched_pair"] = join_pair(row, recs)
             if backfilled:
                 row["backfilled"] = True
             out.append(row); rows.append(row)
@@ -185,6 +241,8 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--brief", metavar="DATE", help="append the day's brief row from report/briefs/brief_DATE.json")
     ap.add_argument("--moves", action="store_true", help="append every unlogged seat-10 move from data/news")
+    ap.add_argument("--rejoin", action="store_true", help="append a moves_rejoin row for each logged move whose match "
+                                                         "changes under the current join rule (moves.jsonl unchanged)")
     ap.add_argument("--session", action="store_true", help="append a session row (needs --date, --add/--drop, --d-title)")
     ap.add_argument("--date"); ap.add_argument("--add"); ap.add_argument("--drop"); ap.add_argument("--d-title", type=float)
     ap.add_argument("--alternatives", default="[]", help="JSON list of {add?, drop, d_title}")
@@ -193,7 +251,7 @@ def main(argv=None):
     ap.add_argument("--backfilled", action="store_true")
     ap.add_argument("--dir", default=DIR); ap.add_argument("--briefs", default=BRIEFS); ap.add_argument("--news-dir", default=NEWS)
     a = ap.parse_args(argv)
-    recs, sess, moves = (os.path.join(a.dir, os.path.basename(p)) for p in (RECS, SESSION, MOVES))
+    recs, sess, moves, rejoin = (os.path.join(a.dir, os.path.basename(p)) for p in (RECS, SESSION, MOVES, REJOIN))
     out = []
     try:
         if a.brief:
@@ -214,6 +272,11 @@ def main(argv=None):
             out += [f"{r['id']} {r['phase']} +{','.join(r['added']) or '-'} -{','.join(r['dropped']) or '-'} -> {r['match_kind']} {r['matches'] or ''}".rstrip() for r in rows]
             if not rows:
                 out.append("moves: nothing new")
+        if a.rejoin:
+            rows = rejoin_rows(read(moves), read(rejoin), recommendations(recs, sess))
+            append(rejoin, rows)
+            out += [f"re-join {r['move']}: {r['from']['matches'] or '-'} {r['from']['match_kind']} -> {r['to']['matches'] or '-'} "
+                    f"{r['to']['match_kind']} {r['to']['matched_pair'] or ''}".rstrip() for r in rows] or ["re-join: nothing changed"]
     except LogError as e:
         print(f"DECISION LOG: HALT {e}")
         return 2
