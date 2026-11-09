@@ -123,21 +123,42 @@ def _date_of_record(path):
     return (m.group(1), "pm" if m.group(2) else "am") if m else (None, None)
 
 
-def join(move, recs):
-    """(match id, match kind): the newest recommendation inside its horizon before the move that shares the add;
-    failing that the drop; "unrelated" when rows are in horizon but none share either; "none" when no row is."""
+def _pairs(r):
+    """[(label, add, drop)]: the top pair, then each alternative as alt1, alt2, ... (an alternative without its own add
+    shares the top pair's add)."""
+    out = [("top", r.get("add"), r.get("drop"))]
+    for i, a in enumerate(r.get("alternatives") or [], 1):
+        out.append((f"alt{i}", a.get("add") or r.get("add"), a.get("drop")))
+    return out
+
+
+def join_pair(move, recs):
+    """(match id, match kind, matched pair). Owner 2026-11-09 (runner pick C1): each recommendation's alternative
+    pairs are read as well as its top pair. The newest row in horizon before the move that shares the add wins; within
+    it an exact pair beats a partial one (top first, then alt1, alt2, ...); failing every add, the drop the same way;
+    "unrelated" when rows are in horizon but none share either; "none" when no row is."""
     d = dt.date.fromisoformat(move["date"])
     cands = [r for r in recs if r.get("kind") != "hold" and
              0 <= (d - dt.date.fromisoformat(r["date"])).days <= int(r.get("horizon_days") or HORIZON_DAYS)]
     cands.sort(key=lambda r: (r["date"], r["id"]), reverse=True)
     adds, drops = set(move.get("added") or []), set(move.get("dropped") or [])
     for r in cands:
-        if r.get("add") in adds:
-            return r["id"], "exact" if (r.get("drop") in drops or (not r.get("drop") and not drops)) else "add_match_drop_differs"
+        hits = [(lab, a, dr) for lab, a, dr in _pairs(r) if a and a in adds]
+        exact = [lab for lab, a, dr in hits if dr in drops or (not dr and not drops)]
+        if exact:
+            return r["id"], "exact", exact[0]
+        if hits:
+            return r["id"], "add_match_drop_differs", hits[0][0]
     for r in cands:
-        if r.get("drop") in drops:
-            return r["id"], "drop_match_add_differs"
-    return None, "unrelated" if cands else "none"
+        hits = [lab for lab, a, dr in _pairs(r) if dr and dr in drops]
+        if hits:
+            return r["id"], "drop_match_add_differs", hits[0]
+    return None, "unrelated" if cands else "none", None
+
+
+def join(move, recs):
+    """(match id, match kind): join_pair without the pair label."""
+    return join_pair(move, recs)[:2]
 
 
 def move_key(m):
@@ -174,7 +195,7 @@ def moves_rows(news_dir, existing, recs, seat=OWNER_SEAT, seen_at=None, backfill
                    "source": os.path.relpath(p, KIT) if p.startswith(KIT) else p}
             if _repeat(row, rows):
                 continue
-            row["matches"], row["match_kind"] = join(row, recs)
+            row["matches"], row["match_kind"], row["matched_pair"] = join_pair(row, recs)
             if backfilled:
                 row["backfilled"] = True
             out.append(row); rows.append(row)

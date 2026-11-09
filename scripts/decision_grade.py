@@ -112,13 +112,19 @@ def owner_word(diff, line=LINE):
 def grade(rec, moves, as_of, boards=BOARDS, actuals=ACTUALS, window=WINDOW_DAYS, line=LINE, min_games=MIN_GAMES, aliases=None):
     """One grade row for a recommendation as of `as_of` (ISO date). Never raises on a missing input: the row says
     what is missing and stays PENDING."""
+    mv = next((m for m in moves if m.get("matches") == rec["id"] and m.get("match_kind") in ("exact", "add_match_drop_differs")), None)
+    # owner 2026-11-09 (runner pick C1): graded against the pair the move matched (a row logged before carries none: top)
+    pair = (mv or {}).get("matched_pair") or "top"
+    kit_add, kit_drop, d_title = rec.get("add"), rec.get("drop"), (rec.get("basis") or {}).get("d_title")
+    if pair != "top":
+        alt = (rec.get("alternatives") or [])[int(pair[3:]) - 1]
+        kit_add, kit_drop, d_title = alt.get("add") or kit_add, alt.get("drop"), alt.get("d_title")
     row = {"rec": rec["id"], "source": rec.get("source"), "kind": rec.get("kind"), "rec_date": rec["date"],
-           "kit_add": rec.get("add"), "kit_drop": rec.get("drop"), "d_title_at_rec": (rec.get("basis") or {}).get("d_title"),
+           "kit_add": kit_add, "kit_drop": kit_drop, "d_title_at_rec": d_title, "matched_pair": pair,
            "as_of": as_of, "window_days": window, "line": line, "min_games": min_games, "inputs": {}}
     if rec.get("kind") == "hold":
         row.update(verdict="HOLD", note="hold rows are not graded in slice 1")
         return row
-    mv = next((m for m in moves if m.get("matches") == rec["id"] and m.get("match_kind") in ("exact", "add_match_drop_differs")), None)
     start = mv["date"] if mv else rec["date"]
     end = (dt.date.fromisoformat(start) + dt.timedelta(days=window)).isoformat()
     row.update(window=[start, end], move=mv and {"id": mv["id"], "added": mv["added"], "dropped": mv["dropped"], "match_kind": mv["match_kind"]})
@@ -135,7 +141,7 @@ def grade(rec, moves, as_of, boards=BOARDS, actuals=ACTUALS, window=WINDOW_DAYS,
     vals, index = board_values(bpath, aliases)
     svals, sindex = board_values(spath, aliases) if spath else ({}, ({}, {}))
     owner_drop = (mv["dropped"][0] if mv and mv.get("dropped") else None) if mv and mv["match_kind"] == "add_match_drop_differs" else None
-    players = {"kit_add": rec.get("add"), "kit_drop": rec.get("drop"), "owner_drop": owner_drop}
+    players = {"kit_add": kit_add, "kit_drop": kit_drop, "owner_drop": owner_drop}
     pv, missing, games = {}, [], {}
     for role, name in players.items():
         if not name:
@@ -194,7 +200,8 @@ def scorecard(rows, ledger_rows, as_of):
         gs = f"{g.get('kit_add', {}).get('games', '-')} / {g.get('kit_drop', {}).get('games', '-')}" if g else "-"
         kg = "-" if r.get("kit_gap_end") is None else f"{r['kit_gap_end']:+.2f}"
         ok = "-" if r.get("owner_minus_kit") is None else f"{r['owner_minus_kit']:+.2f}"
-        said = f"+{r.get('kit_add')} −{r.get('kit_drop')}" if r.get("kind") != "hold" and r.get("kit_add") else "hold"
+        said = (f"+{r.get('kit_add')} −{r.get('kit_drop')}" + (f" ({r['matched_pair']})" if r.get("matched_pair") not in (None, "top") else "")
+                if r.get("kind") != "hold" and r.get("kit_add") else "hold")
         v = r.get("verdict", "") + (f" / {r['owner_verdict']}" if r.get("owner_verdict") else "")
         w = " to ".join(r.get("window") or []) or "-"
         L.append(f"| {r['rec']} | {r['source']} | {said} | {did} | {w} | {kg} | {ok} | {gs} | {v}{(' (' + r['note'] + ')') if r.get('note') else ''} |")
