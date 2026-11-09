@@ -285,6 +285,33 @@ class Unpooled(unittest.TestCase):
                                                 "Each needs a data/pool_additions.csv row before the simulator counts him.")
         self.assertIsNone(DB.unpooled_line({"unpooled": []})); self.assertIsNone(DB.unpooled_line({}))
 
+
+class AutoRowsSimulated(unittest.TestCase):
+    """Owner 2026-11-09 (pick "Simulate them"): a rostered player the intake carried as unpooled is simulated when the
+    season pool has his row (the auto season line); a name with no row anywhere stays out and keeps the old label."""
+    BY = {n: {"player": n} for n in ("A", "Auto Guy")}
+
+    def state(self):
+        return {"unpooled": [dict(player="Auto Guy", fantasy_team="T", seat=10, slot="BN", nba_team="CLE", status=None),
+                             dict(player="Nobody", fantasy_team="T", seat=10, slot="BN", nba_team="DEN", status=None)],
+                "teams": [{"seat": 10, "players": [{"player": "A", "slot": "PG"}],
+                           "unpooled": [dict(player="Auto Guy", slot="BN", nba_team="CLE", positions=["SG"], status=None),
+                                        dict(player="Nobody", slot="BN", nba_team="DEN", positions=["PF"], status=None),
+                                        dict(player="Hurt Auto", slot="IL", nba_team="CLE", positions=["SG"], status="O")]}]}
+
+    def test_an_auto_row_player_is_in_the_simulation_roster(self):
+        by = dict(self.BY, **{"Hurt Auto": {"player": "Hurt Auto"}})
+        self.assertEqual([p["player"] for p in CG.rosters(self.state(), by)[10]], ["A", "Auto Guy"])   # IL still counts 0
+        self.assertEqual([p["player"] for p in CG.rosters(self.state(), by, include_il=True)[10]], ["A", "Auto Guy", "Hurt Auto"])
+
+    def test_an_auto_row_player_is_not_labelled_not_simulated(self):
+        line = DB.unpooled_line(self.state(), self.BY)
+        self.assertIn("**Not in the pool, not simulated (1):** Nobody (T, BN, DEN).", line)
+        self.assertNotIn("Auto Guy (T, BN, CLE). Each", line)
+        self.assertIn("Auto row (blended), simulated (1): Auto Guy (T, BN, CLE).", line)
+        only_auto = dict(self.state(), unpooled=self.state()["unpooled"][:1])
+        self.assertEqual(DB.unpooled_line(only_auto, self.BY), "Auto row (blended), simulated (1): Auto Guy (T, BN, CLE).")
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
 

@@ -1563,6 +1563,69 @@ class PhasePaths(unittest.TestCase):
         self.assertEqual(p["yahoo_pull"], os.path.join(self.kit, "data", "source", "flaim", "pull_2026-10-29_pm.json"))
 
 
+
+class AbsentInputs(unittest.TestCase):
+    """Owner 2026-11-09 (runner pick B1): an input the build names but cannot find is recorded absent (GAUNTLET
+    decision 4) and is no longer silent: the PASS line lists it, and an empty card whose input was absent says so."""
+    def setUp(self):
+        self.d = tempfile.mkdtemp(); self.fx = fixtures(self.d); self.out = os.path.join(self.d, "out")
+        self._dp = SD.default_paths
+
+    def tearDown(self):
+        SD.default_paths = self._dp
+
+    def run_main(self):
+        SD.default_paths = lambda date, phase="am": self.fx
+        argv = sys.argv; sys.argv = ["season_deck.py", "--date", "2026-10-21", "--out", self.out]
+        buf = io.StringIO()
+        try:
+            with contextlib.redirect_stdout(buf):
+                SD.main()
+        finally:
+            sys.argv = argv
+        return buf.getvalue()
+
+    def test_the_pass_line_names_each_absent_input(self):
+        self.fx["league"] = os.path.join(self.d, "league_2026-10-21.json")        # named, not written
+        self.fx["scores"] = os.path.join(self.d, "calibration_daily.json")
+        out = self.run_main()
+        self.assertRegex(out, r"^SEASON DECK: PASS")
+        self.assertIn("; absent: league, scores", out)
+
+    def test_no_absent_input_adds_nothing(self):
+        self.assertNotIn("absent:", self.run_main())
+
+    def test_an_empty_card_whose_input_was_absent_says_why(self):
+        self.fx["scores"] = os.path.join(self.d, "calibration_daily.json")
+        self.fx["accuracy"] = os.path.join(self.d, "accuracy.json")
+        self.fx["lineup"] = os.path.join(self.d, "lineup_scorecard.json")
+        html, data, rec = SD.build(self.fx, date="2026-10-21")
+        self.assertEqual(data["absent_inputs"], ["accuracy", "lineup", "scores"])
+        p = os.path.join(self.d, "deck.html"); open(p, "w", encoding="utf-8").write(html)
+        txt = week_dom(p)["text"]
+        for f in ("calibration_daily.json", "accuracy.json", "lineup_scorecard.json"):
+            self.assertIn(f"{f} was absent this morning", txt)
+
+
+
+class AutoRowLabel(unittest.TestCase):
+    """Owner 2026-11-09 (pick "Simulate them"): a player the season lines gave an auto row is shown as "auto row
+    (blended)", never "not simulated"; a player with no row keeps the old line."""
+    def test_auto_row_player_is_not_called_not_simulated(self):
+        d = tempfile.mkdtemp(); fx = fixtures(d)
+        st = json.load(open(fx["league_state"]))
+        st["unpooled"] = [dict(player="Auto Guy", fantasy_team="THEM", seat=11, slot="BN", nba_team="CLE", status=None),
+                          dict(player="Trevon Brazile", fantasy_team="THEM", seat=11, slot="BN", nba_team="DEN", status=None)]
+        json.dump(st, open(fx["league_state"], "w"))
+        ln = json.load(open(fx["season_lines"])); ln["auto_rows"] = [dict(player="Auto Guy", team="CLE", pos="SG", games=7, band=[146, 166])]
+        json.dump(ln, open(fx["season_lines"], "w"))
+        html, data, rec = SD.build(fx, date="2026-10-21")
+        p = os.path.join(d, "deck.html"); open(p, "w", encoding="utf-8").write(html)
+        txt = visible_dom(p, "Today", "pane-today")["text"]
+        self.assertIn("Not in the pool, not simulated: Trevon Brazile (THEM, BN)", txt)
+        self.assertNotIn("Auto Guy (THEM, BN). Each", txt)
+        self.assertIn("Auto row (blended), simulated: Auto Guy (THEM, BN)", txt)
+
 if __name__ == "__main__":
     unittest.main()
 

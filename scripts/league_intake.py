@@ -15,9 +15,10 @@ carried as `unpooled_il` with no line.
 Owner 2026-10-26, option (a) (the 10/26 Brazile halt froze every roster for a rival's bench pickup): any
 OTHER name the pool lacks no longer halts the intake. It is carried as `unpooled` (per team, and listed in
 the state's top-level `unpooled`) with no projection line, a named LEAGUE INTAKE: WARN line is printed,
-and the brief and the deck's Today tab show it as "not in the pool, not simulated". The simulator reads
-only `players`, so it never sees an unpooled name; the gap stays visible every day until a
-data/pool_additions.csv row lands. This widens the Council rule from "a listed IL stash" to "any slot,
+and the brief and the deck's Today tab show it as "not in the pool, not simulated" until the season lines give it an
+auto row (owner 2026-11-09: then it is simulated and shown as "auto row (blended)"). co_gm.rosters reads
+`players`, and since 2026-11-09 also an unpooled name the pool in use has (the season pool's auto row); a name with no
+row anywhere stays out of the simulation and visible every day until a data/pool_additions.csv row lands. This widens the Council rule from "a listed IL stash" to "any slot,
 flagged"; the IL path itself is untouched.
 
 The pool is the deck's data/players.csv (frozen at the draft lock) followed by the kit's data/pool_additions.csv:
@@ -154,7 +155,7 @@ def run(src, out, pool, abbr, draft, as_of, managers=None, sources=None, unpoole
     missed = set(miss)
     if miss:
         # owner 2026-10-26, option (a): carried, flagged, never simulated, never guessed
-        print(f"LEAGUE INTAKE: WARN — {len(miss)} name(s) not in the pool, carried as unpooled (no line, not simulated): "
+        print(f"LEAGUE INTAKE: WARN — {len(miss)} name(s) not in the pool, carried as unpooled (no deck line; simulated once the season lines give an auto row): "
               + "; ".join(f"{n} ({r['fantasy_team']}, {r['slot']}, {r['nba_team']})"
                           for n in miss for r in [next(x for x in rows if x["player"] == n)]))
     team_of = {p["player"]: p["team"] for p in pool}
