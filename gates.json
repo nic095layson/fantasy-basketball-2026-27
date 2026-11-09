@@ -1,7 +1,7 @@
 {
- "ran_at_utc": "2026-11-09T16:23:26Z",
+ "ran_at_utc": "2026-11-09T17:24:04Z",
  "inputs": {
-  "report/after-reports/after-report-2026-11-09-decision-log-alt-pairs.md": "8049065cce78beed7d11e3cfb1d964894468acabe359d9815e0683b0265ea6db",
+  "report/after-reports/after-report-2026-11-09-decision-log-alt-pairs.md": "1e965d67682cf292b1f4f5c0dde884e6b6a20b2d48f25fac08f2283dd64499b9",
   "../wtsd/report/after-reports/redteam-2026-11-02-season/sweep.json": "1b8566531da1d0b666610a9383c063baa951d7879f045cb823faf3e0a384a87c"
  },
  "gates": [
@@ -59,7 +59,7 @@
   },
   {
    "name": "touched tests",
-   "cmd": "bash -c 'cd scripts && python3 -m unittest test_decision_log 2>&1 | tail -1'",
+   "cmd": "bash -c 'cd scripts && python3 -m unittest test_decision_log test_morning 2>&1 | tail -1'",
    "cwd": ".",
    "pass_re": "^OK",
    "exit": 0,
@@ -125,5 +125,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "8f252a2b39ed3260dc075035100eb839a656ff8d"
+ "base_commit": "34b4b9ce80cebb275e6d3f1eaaa9b1a18c1688c2"
 }

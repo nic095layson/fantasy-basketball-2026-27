@@ -51,6 +51,15 @@ Windows the re-join would move (EVIDENCE: `decision_grade.grade` over the real l
 2. **Leave them.** Moves logged before 11-09 are graded under the top-only rule, and the scorecard says so in one line. Nothing to build.
 3. **Rewrite the four rows in place.** This is simplest for the grader, but it breaks the append-only rule the ledger was built on. Not recommended.
 
+## 4a. Owner's pick (2026-11-09): "Re-join file" — built
+
+- `decision_log.py --rejoin` appends one row per logged move whose effective match (its newest re-join, else as logged) differs under the current rule. The rows go to `data/decisions/moves_rejoin.jsonl`, with id `J-<date>-NN`, the move, `from` / `to` {matches, match_kind, matched_pair}, and the rule. `moves.jsonl` is never touched. A second pass adds nothing.
+- `decision_grade.py` reads `effective_moves(moves, rejoins)`: each move's newest re-join over its logged match.
+- `morning.py`: the daily "decision log" step now runs `--brief <date> --moves --rejoin`. It is the same step, still non-fatal, with the same pass line, so the first morning run after merge writes the four rows.
+- Dry run on the real ledgers (EVIDENCE, read only): J-01 M-2026-10-26-01 → R-2026-10-25-01 exact alt1; J-02 M-2026-10-28-01 → R-2026-10-28-01 partial alt2; J-03 M-2026-10-31-01 → S-2026-10-30-01 exact alt5; J-04 M-2026-11-08-01 → R-2026-11-07-01 exact alt2. 4 rows; the second pass gives 0.
+- Tests: `Rejoin` (+3; red first, 3 errors: `AttributeError: … no attribute 'rejoin_rows'`); `test_morning` expects the `--rejoin` flag.
+- Runner impact: code-only. The step's command lives in `morning.py`; the runner prompt is unchanged.
+
 ## 5. Bands quoted
 
 This report quotes no new title share. The standing structural band for any title figure is the season sweep of 2026-11-02 (deck e14cc42): **weekly_availability is FRAGILE:** -2.6 (no in-sim injury discount (risk 0.88 like healthy)) / +2.2 (harsher risk tier (0.65)) / -0.2 (healthy players play 0.95 of games) / +0.0 (healthy players play 0.80 of games), mean of the two seeds.

@@ -216,7 +216,8 @@ def main(argv=None):
     ap.add_argument("--out", default=OUTDIR)
     a = ap.parse_args(argv)
     recs = DL.recommendations(os.path.join(a.dir, "recommendations.jsonl"), os.path.join(a.dir, "session.jsonl"))
-    moves = DL.read(os.path.join(a.dir, "moves.jsonl"))
+    # owner 2026-11-09 ("Re-join file"): a move's newest re-join row over its logged match
+    moves = DL.effective_moves(DL.read(os.path.join(a.dir, "moves.jsonl")), DL.read(os.path.join(a.dir, "moves_rejoin.jsonl")))
     rows = [grade(r, moves, a.as_of, a.boards, a.actuals) for r in recs]
     grades_path, card_path = os.path.join(a.out, "grades.jsonl"), os.path.join(a.out, "scorecard.md")
     ledger = DL.read(grades_path)

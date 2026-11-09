@@ -247,5 +247,48 @@ class AlternativePairs(unittest.TestCase):
         self.assertEqual((top["kit_add"], top["matched_pair"]), ("Tobias Harris", "top"))
 
 
+
+class Rejoin(unittest.TestCase):
+    """Owner 2026-11-09 (pick "Re-join file"): moves logged before the alternative-pair rule are re-joined in an
+    append-only data/decisions/moves_rejoin.jsonl (moves.jsonl is never rewritten); the grader reads a move's newest
+    re-join over its logged match."""
+    OLD = dict(id="M-2026-11-08-01", date="2026-11-08", added=["Cameron Johnson"], dropped=["Ziaire Williams"],
+               matches="S-2026-10-30-01", match_kind="add_match_drop_differs")
+    SAME = dict(id="M-2026-11-05-01", date="2026-11-05", added=["Ziaire Williams"], dropped=["Karlo Matkovic"],
+                matches=None, match_kind="unrelated", matched_pair=None)
+
+    def test_a_changed_match_gets_one_row_and_a_second_pass_adds_none(self):
+        rows = DL.rejoin_rows([self.OLD, self.SAME], [], [S_1030, R_1107], made_at="t", date="2026-11-10")
+        self.assertEqual(len(rows), 1)
+        r = rows[0]
+        self.assertEqual((r["move"], r["from"]["matches"], r["from"]["match_kind"], r["from"]["matched_pair"]),
+                         ("M-2026-11-08-01", "S-2026-10-30-01", "add_match_drop_differs", "top"))
+        self.assertEqual((r["to"]["matches"], r["to"]["match_kind"], r["to"]["matched_pair"]), ("R-2026-11-07-01", "exact", "alt2"))
+        self.assertEqual(r["rule"], "2026-11-09 C1: alternative pairs, newest row then exact over partial")
+        self.assertEqual(DL.rejoin_rows([self.OLD, self.SAME], rows, [S_1030, R_1107], made_at="t", date="2026-11-10"), [])
+
+    def test_effective_moves_take_the_newest_rejoin_and_leave_the_rest(self):
+        rows = DL.rejoin_rows([self.OLD], [], [S_1030, R_1107], made_at="t", date="2026-11-10")
+        eff = DL.effective_moves([self.OLD, self.SAME], rows)
+        self.assertEqual((eff[0]["matches"], eff[0]["match_kind"], eff[0]["matched_pair"], eff[0]["rejoined"]),
+                         ("R-2026-11-07-01", "exact", "alt2", "2026-11-10"))
+        self.assertEqual(eff[1], self.SAME)
+        self.assertEqual(self.OLD["matches"], "S-2026-10-30-01")    # the logged row itself is never changed
+
+    def test_cli_rejoin_appends_once_and_the_grader_reads_it(self):
+        d = tempfile.mkdtemp()
+        for f, rows in (("recommendations.jsonl", [R_1107]), ("session.jsonl", [S_1030]), ("moves.jsonl", [self.OLD])):
+            DL.append(os.path.join(d, f), rows)
+        self.assertEqual(DL.main(["--rejoin", "--dir", d]), 0)
+        self.assertEqual(DL.main(["--rejoin", "--dir", d]), 0)
+        self.assertEqual(len(DL.read(os.path.join(d, "moves_rejoin.jsonl"))), 1)
+        self.assertEqual(DL.read(os.path.join(d, "moves.jsonl")), [self.OLD])
+        out = os.path.join(d, "out")
+        self.assertEqual(DG.main(["--as-of", "2026-11-09", "--dir", d, "--boards", os.path.join(d, "none"),
+                                  "--actuals", os.path.join(d, "none"), "--out", out, "--dry-run"]), 0)
+        g = DG.grade(R_1107, DL.effective_moves(DL.read(os.path.join(d, "moves.jsonl")), DL.read(os.path.join(d, "moves_rejoin.jsonl"))),
+                     "2026-11-09", boards=os.path.join(d, "none"), actuals=os.path.join(d, "none"), aliases={})
+        self.assertEqual((g["move"]["id"], g["matched_pair"], g["kit_add"]), ("M-2026-11-08-01", "alt2", "Cameron Johnson"))
+
 if __name__ == "__main__":
     unittest.main()

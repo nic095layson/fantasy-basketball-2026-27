@@ -130,9 +130,10 @@ def steps(date, fetch=True, seasons=10000, since=None):
            dict(name="daily brief", cmd=[PY, os.path.join(HERE, "daily_brief.py"), "--date", date, "--seasons", str(seasons)], cwd=KIT,
                 pass_re=r"^wrote report/briefs/brief_", env={"SEASON_POOL": season_pool}),
            # owner 2026-10-31 (the decision log): the brief's top pair to the recommendations ledger and every unlogged
-           # seat-10 move from the league-moves records to the moves ledger, both append-only; non-fatal (a day the
+           # seat-10 move from the league-moves records to the moves ledger, both append-only (owner 2026-11-09: and a
+           # moves_rejoin row for a logged move the current join rule re-matches); non-fatal (a day the
            # brief failed is a day with no row, named by the grader, never guessed)
-           dict(name="decision log", cmd=[PY, os.path.join(HERE, "decision_log.py"), "--brief", date, "--moves"], cwd=KIT,
+           dict(name="decision log", cmd=[PY, os.path.join(HERE, "decision_log.py"), "--brief", date, "--moves", "--rejoin"], cwd=KIT,
                 pass_re=r"^DECISION LOG: PASS", env={}, fatal=False)] + ([
            # Mondays: grade every recommendation whose window has elapsed on the season board; non-fatal
            dict(name="decision grades", cmd=[PY, os.path.join(HERE, "decision_grade.py"), "--as-of", date], cwd=KIT,
