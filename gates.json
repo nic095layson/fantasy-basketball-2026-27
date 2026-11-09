@@ -1,52 +1,52 @@
 {
- "ran_at_utc": "2026-11-09T20:39:52Z",
+ "ran_at_utc": "2026-11-09T20:45:14Z",
  "inputs": {
-  "report/after-reports/after-report-2026-11-09-deck-absent-inputs.md": "912275b9b11c07b99c2bf50c39d2078a1ae29060e71d0102b9cd5cc14ad0e6da",
+  "report/after-reports/after-report-2026-11-09-preview-band-staleness.md": "f7af98ceed178a9d7a0167bd290c112ff9acfedc08d2a4b097f08eb721c3af68",
   "../wtsd/report/after-reports/redteam-2026-11-02-season/sweep.json": "1b8566531da1d0b666610a9383c063baa951d7879f045cb823faf3e0a384a87c"
  },
  "gates": [
   {
    "name": "kit check_report",
-   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/kit-b/report/after-reports/after-report-2026-11-09-deck-absent-inputs.md",
+   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/kit-d/report/after-reports/after-report-2026-11-09-preview-band-staleness.md",
    "cwd": ".",
    "pass_re": "^REPORT GATE: PASS",
    "exit": 0,
-   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-11-09-deck-absent-inputs.md (structure, publication rule, pull-log row)",
+   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-11-09-preview-band-staleness.md (structure, publication rule, pull-log row)",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "REPORT GATE: PASS \u2014 after-report-2026-11-09-deck-absent-inputs.md (structure, publication rule, pull-log row)"
+    "REPORT GATE: PASS \u2014 after-report-2026-11-09-preview-band-staleness.md (structure, publication rule, pull-log row)"
    ]
   },
   {
    "name": "deck judgment_open_items --check-report",
-   "cmd": "/usr/local/bin/python3 scripts/judgment_open_items.py --check-report /home/user/kit-b/report/after-reports/after-report-2026-11-09-deck-absent-inputs.md",
+   "cmd": "/usr/local/bin/python3 scripts/judgment_open_items.py --check-report /home/user/kit-d/report/after-reports/after-report-2026-11-09-preview-band-staleness.md",
    "cwd": "../yahoo-fantasy-basketball",
    "pass_re": "^receipts check PASS",
    "exit": 0,
-   "pass_line": "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-11-09-deck-absent-inputs.md",
+   "pass_line": "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-11-09-preview-band-staleness.md",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-11-09-deck-absent-inputs.md"
+    "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-11-09-preview-band-staleness.md"
    ]
   },
   {
    "name": "deck repeat_market_check --check-report",
-   "cmd": "/usr/local/bin/python3 scripts/repeat_market_check.py --check-report /home/user/kit-b/report/after-reports/after-report-2026-11-09-deck-absent-inputs.md",
+   "cmd": "/usr/local/bin/python3 scripts/repeat_market_check.py --check-report /home/user/kit-d/report/after-reports/after-report-2026-11-09-preview-band-staleness.md",
    "cwd": "../yahoo-fantasy-basketball",
    "pass_re": "^REPEAT-NAME CHECK: PASS",
    "exit": 0,
-   "pass_line": "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-11-09-deck-absent-inputs.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)",
+   "pass_line": "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-11-09-preview-band-staleness.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-11-09-deck-absent-inputs.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)"
+    "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-11-09-preview-band-staleness.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)"
    ]
   },
   {
    "name": "claim receipts",
-   "cmd": "/usr/local/bin/python3 /home/user/kit-b/scripts/independent_audit/claim_receipts.py /home/user/kit-b/report/after-reports/after-report-2026-11-09-deck-absent-inputs.md",
+   "cmd": "/usr/local/bin/python3 /home/user/kit-d/scripts/independent_audit/claim_receipts.py /home/user/kit-d/report/after-reports/after-report-2026-11-09-preview-band-staleness.md",
    "cwd": ".",
    "pass_re": "^CLAIM RECEIPTS: (PASS|ADVISORY)",
    "exit": 0,
@@ -59,7 +59,7 @@
   },
   {
    "name": "touched tests",
-   "cmd": "bash -c 'cd scripts && python3 -m unittest test_season_deck test_daily_brief test_league_intake test_league_live 2>&1 | tail -1'",
+   "cmd": "bash -c 'cd scripts && python3 -m unittest test_weekly_preview test_morning 2>&1 | tail -1'",
    "cwd": ".",
    "pass_re": "^OK",
    "exit": 0,
@@ -72,7 +72,7 @@
   },
   {
    "name": "redteam constants",
-   "cmd": "/usr/local/bin/python3 /home/user/kit-b/scripts/redteam/check_constants.py --deck /home/user/yahoo-fantasy-basketball",
+   "cmd": "/usr/local/bin/python3 /home/user/kit-d/scripts/redteam/check_constants.py --deck /home/user/yahoo-fantasy-basketball",
    "cwd": ".",
    "pass_re": "^CONSTANTS CHECK: PASS",
    "exit": 0,
@@ -85,7 +85,7 @@
   },
   {
    "name": "redteam bands",
-   "cmd": "/usr/local/bin/python3 /home/user/kit-b/scripts/redteam/check_bands.py --report /home/user/kit-b/report/after-reports/after-report-2026-11-09-deck-absent-inputs.md --sweep /home/user/wtsd/report/after-reports/redteam-2026-11-02-season/sweep.json",
+   "cmd": "/usr/local/bin/python3 /home/user/kit-d/scripts/redteam/check_bands.py --report /home/user/kit-d/report/after-reports/after-report-2026-11-09-preview-band-staleness.md --sweep /home/user/wtsd/report/after-reports/redteam-2026-11-02-season/sweep.json",
    "cwd": ".",
    "pass_re": "^BANDS CHECK: PASS",
    "exit": 0,
@@ -98,7 +98,7 @@
   },
   {
    "name": "redteam attacks",
-   "cmd": "/usr/local/bin/python3 /home/user/kit-b/scripts/redteam/run_attacks.py --check --deck /home/user/yahoo-fantasy-basketball",
+   "cmd": "/usr/local/bin/python3 /home/user/kit-d/scripts/redteam/run_attacks.py --check --deck /home/user/yahoo-fantasy-basketball",
    "cwd": ".",
    "pass_re": "^ATTACKS CHECK: PASS",
    "exit": 0,
@@ -111,7 +111,7 @@
   },
   {
    "name": "kit check_claims --gate",
-   "cmd": "/usr/local/bin/python3 /home/user/kit-b/scripts/check_claims.py --gate",
+   "cmd": "/usr/local/bin/python3 /home/user/kit-d/scripts/check_claims.py --gate",
    "cwd": ".",
    "pass_re": "^CLAIM GATE: PASS",
    "exit": 0,
@@ -125,5 +125,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "0f4657258fd8c03e4d5906f72b84e9e403e416b5"
+ "base_commit": "6228823732a74b7fe2fb794b4ed028d9dd1abaa6"
 }

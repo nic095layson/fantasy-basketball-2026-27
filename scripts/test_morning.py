@@ -273,6 +273,16 @@ class IlReturn(unittest.TestCase):
         self.assertEqual(step["env"], next(s for s in st if s["name"] == "daily brief")["env"])
 
 
+
+class PreviewStaleness(unittest.TestCase):
+    """Owner 2026-11-09 ("Band + staleness"): Mondays only, the week's preview names the moves since its rosters."""
+    def test_monday_runs_the_note_for_the_current_week_and_other_days_do_not(self):
+        mon = [x for x in M.steps("2026-11-09") if x["name"] == "preview staleness"]
+        self.assertEqual(len(mon), 1)
+        self.assertEqual(mon[0]["cmd"][-4:], ["--week", str(M._week_of("2026-11-09")), "--stale-note", "2026-11-09"])
+        self.assertFalse(mon[0]["fatal"])
+        self.assertEqual([x for x in M.steps("2026-11-10") if x["name"] == "preview staleness"], [])
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
 
