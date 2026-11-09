@@ -131,3 +131,9 @@
   - `sed -n 126,140p scripts/decision_log.py; grep -n "M-2026-11-08-01" data/decisions/moves.jsonl`
   - `sed -n 3p report/previews/week_04.md`
 - Earlier runner report: `after-report-2026-11-05-runner-window.md`.
+
+**Owner's picks, 2026-11-09 (clickable cards in the runner session):**
+- **A: option 1.** Extend the "Key on Yahoo team key" rule to `week_from_yahoo`, with a rename test. Main builds it.
+- **B: option 1.** One PR: SEASON DECK names absent inputs and the tab says why it is empty; the "not simulated" label drops auto-row players; a note on what `absent_from_sim` reports. Main builds it.
+- **C: option 1.** Match moves against alternatives too, recording which pair matched; known answer M-2026-11-08-01 → R-2026-11-07-01 alternative 2, exact. Main builds it.
+- **D: option 1.** Main diagnoses the week-4 preview/projection gap in an after-report first; no build.
