@@ -117,5 +117,72 @@ class LinesLabel(unittest.TestCase):
         self.assertEqual(self._preview(None)["lines"], WP.CG.LINES_TAG)
 
 
+
+class StructuralBand(unittest.TestCase):
+    """Owner 2026-11-09 (pick "Band + staleness"): the preview re-runs under each declared-band variant of
+    weekly_availability and TEAM_WEEK_SHOCK, one at a time, and prints the P(win) range beside the seed spread; every
+    patch is undone after its run."""
+    def fake(self, week, n):
+        # p_win reads the patched engine: the shock and the healthy tier each move it
+        a = WP.CG.arena
+        return {"p_win": 0.40 + a.TEAM_WEEK_SHOCK + (a.weekly_availability({"note": ""}) - 0.88)}
+
+    def test_each_variant_runs_once_and_the_engine_is_restored(self):
+        a = WP.CG.arena
+        shock, avail = a.TEAM_WEEK_SHOCK, a.weekly_availability
+        b = WP.structural_band(4, 10, preview_fn=self.fake)
+        self.assertEqual(a.TEAM_WEEK_SHOCK, shock); self.assertIs(a.weekly_availability, avail)
+        labels = [v["label"] for v in b["variants"]]
+        self.assertEqual(len(labels), 6)
+        self.assertIn("no shared games shock (0.0)", labels); self.assertIn("healthy players play 0.95 of games", labels)
+        v = {x["label"]: x for x in b["variants"]}
+        self.assertAlmostEqual(b["baseline"], 0.46)
+        self.assertAlmostEqual(v["no shared games shock (0.0)"]["p_win"], 0.40)
+        self.assertAlmostEqual(v["healthy players play 0.95 of games"]["p_win"], 0.53)
+        self.assertAlmostEqual(b["lo"], 0.38); self.assertAlmostEqual(b["hi"], 0.53)   # healthy 0.80 -> 0.38; 0.95 -> 0.53
+
+    def test_the_preview_prints_the_band_and_says_what_it_is(self):
+        p = {"week": 4, "opponent_team": "THEM", "opponent_manager": "M", "p_win": 0.41, "exp_cats": 4.22, "n_per_seed": 10000,
+             "by_seed": {"2026": {"p_win": 0.41}, "2027": {"p_win": 0.41}}, "cat_p": {c: 0.5 for c in WP.CG.CATS},
+             "means": {"owner": {c: 1.0 for c in WP.CG.CATS}, "opponent": {c: 1.0 for c in WP.CG.CATS}},
+             "rosters_as_of": "2026-11-08", "lines": "season pool",
+             "band": {"baseline": 0.41, "lo": 0.37, "hi": 0.46, "variants": [
+                 {"constant": "arena.TEAM_WEEK_SHOCK", "label": "no shared games shock (0.0)", "p_win": 0.386, "shift": -0.024}]}}
+        md = WP.render_preview(p, "2026-11-09", "2026-11-15")
+        self.assertIn("Structural band: P(win) 37.0% to 46.0%", md)
+        self.assertIn("no shared games shock (0.0) 38.6%", md)
+        self.assertIn("±", md)                                    # the seed spread stays, named as such
+        self.assertIn("seed spread only", md)
+
+
+class Staleness(unittest.TestCase):
+    """Owner 2026-11-09: on the Monday the week starts, the preview names the roster moves made since its rosters
+    were taken; its forecast numbers (the pre-registered ledger entry) are never changed."""
+    def setUp(self):
+        self.d = tempfile.mkdtemp()
+        self.news = os.path.join(self.d, "news"); os.makedirs(self.news)
+        json.dump({"moves": [{"team": "SNOWTIME WHITE WALKERS", "seat": 3, "added": ["Jake LaRavia"], "dropped": ["Luguentz Dort"],
+                              "to_il": ["Lauri Markkanen", "Luka Doncic"], "from_il": ["Josh Hart"]},
+                             {"team": "Elsewhere", "seat": 6, "added": ["X"], "dropped": [], "to_il": [], "from_il": []}]},
+                  open(os.path.join(self.news, "league_moves_2026-11-09.json"), "w"))
+        json.dump({"moves": [{"team": "SNOWTIME WHITE WALKERS", "seat": 3, "added": ["Old"], "dropped": [], "to_il": [], "from_il": []}]},
+                  open(os.path.join(self.news, "league_moves_2026-11-08.json"), "w"))   # on the rosters' own day: already in
+
+    def test_moves_after_the_rosters_date_for_the_two_seats(self):
+        lines = WP.moves_since("2026-11-08", "2026-11-09", (10, 3), self.news)
+        self.assertEqual(lines, ["2026-11-09 SNOWTIME WHITE WALKERS: added Jake LaRavia; dropped Luguentz Dort; "
+                                 "to IL Lauri Markkanen, Luka Doncic; off IL Josh Hart"])
+
+    def test_the_note_is_added_once_and_the_numbers_are_untouched(self):
+        md = os.path.join(self.d, "week_04.md")
+        body = "# Week 4 preview\n\nP(win the week): **41.0%**\n\n_Rosters as of 2026-11-08; lines season pool._\n"
+        open(md, "w").write(body)
+        WP.stale_note(md, "2026-11-08", "2026-11-09", (10, 3), self.news)
+        WP.stale_note(md, "2026-11-08", "2026-11-09", (10, 3), self.news)
+        out = open(md).read()
+        self.assertTrue(out.startswith(body))
+        self.assertEqual(out.count("Moves since these rosters"), 1)
+        self.assertIn("this forecast does not include them; the week card does", out)
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
