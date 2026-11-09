@@ -1,7 +1,7 @@
 {
- "ran_at_utc": "2026-11-09T17:32:28Z",
+ "ran_at_utc": "2026-11-09T20:26:02Z",
  "inputs": {
-  "report/after-reports/after-report-2026-11-09-preview-band-staleness.md": "891f9dacbdaa063525bcac69ffd6f87be71e5ae398213f47920aa5900d055d8e",
+  "report/after-reports/after-report-2026-11-09-preview-band-staleness.md": "f7af98ceed178a9d7a0167bd290c112ff9acfedc08d2a4b097f08eb721c3af68",
   "../wtsd/report/after-reports/redteam-2026-11-02-season/sweep.json": "1b8566531da1d0b666610a9383c063baa951d7879f045cb823faf3e0a384a87c"
  },
  "gates": [
@@ -76,11 +76,11 @@
    "cwd": ".",
    "pass_re": "^CONSTANTS CHECK: PASS",
    "exit": 0,
-   "pass_line": "CONSTANTS CHECK: PASS \u2014 49 registered = 49 live on deck e14cc42; declared_band 5, measured 7, settings 8, structural 6, uncalibrated 23",
+   "pass_line": "CONSTANTS CHECK: PASS \u2014 49 registered = 49 live on deck 01483de; declared_band 5, measured 7, settings 8, structural 6, uncalibrated 23",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "CONSTANTS CHECK: PASS \u2014 49 registered = 49 live on deck e14cc42; declared_band 5, measured 7, settings 8, structural 6, uncalibrated 23"
+    "CONSTANTS CHECK: PASS \u2014 49 registered = 49 live on deck 01483de; declared_band 5, measured 7, settings 8, structural 6, uncalibrated 23"
    ]
   },
   {
@@ -102,11 +102,11 @@
    "cwd": ".",
    "pass_re": "^ATTACKS CHECK: PASS",
    "exit": 0,
-   "pass_line": "ATTACKS CHECK: PASS \u2014 10 attacks on engine e14cc42 (engine files last changed 95ebade), simulator aa470f8; CURRENT 9, UNFINGERPRINTED 1",
+   "pass_line": "ATTACKS CHECK: PASS \u2014 10 attacks on engine 01483de (engine files last changed 95ebade), simulator aa470f8; CURRENT 9, UNFINGERPRINTED 1",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "ATTACKS CHECK: PASS \u2014 10 attacks on engine e14cc42 (engine files last changed 95ebade), simulator aa470f8; CURRENT 9, UNFINGERPRINTED 1"
+    "ATTACKS CHECK: PASS \u2014 10 attacks on engine 01483de (engine files last changed 95ebade), simulator aa470f8; CURRENT 9, UNFINGERPRINTED 1"
    ]
   },
   {
@@ -125,5 +125,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "8f252a2b39ed3260dc075035100eb839a656ff8d"
+ "base_commit": "9e926ccce61a53c591368fe207ed9bddffe522e1"
 }

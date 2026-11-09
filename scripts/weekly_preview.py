@@ -244,9 +244,15 @@ def moves_since(as_of, until, seats, news_dir):
     """The two seats' roster moves recorded after the rosters' date (its afternoon record included) through `until`,
     one line per team and record, oldest first."""
     out = []
-    for f in sorted(glob.glob(os.path.join(news_dir, "league_moves_????-??-??*.json"))):
+    files = sorted(glob.glob(os.path.join(news_dir, "league_moves_????-??-??*.json")))
+    # a morning record diffs against the previous morning, so it already holds an earlier afternoon record's moves
+    # (red team 2026-11-09): an afternoon record counts only when no later morning record in the window covers it
+    mornings = [os.path.basename(f)[13:23] for f in files if not f.endswith("_pm.json")]
+    for f in files:
         d = os.path.basename(f)[13:23]
         if not (d > as_of or (d == as_of and f.endswith("_pm.json"))) or d > until:
+            continue
+        if f.endswith("_pm.json") and any(d < m <= until for m in mornings):
             continue
         for m in json.load(open(f, encoding="utf-8")).get("moves") or []:
             if m.get("seat") not in seats:

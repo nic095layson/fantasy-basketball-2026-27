@@ -36,6 +36,12 @@ Cross-check: the no-shock variant (38.6%) equals the D1 decomposition's independ
 
 INFERENCE: the band (6.7 points wide) is about 10 times the seed spread (±0.7). The two "risk" variants do not move this matchup, because neither roster carried a risk-tier player on 11-08.
 
+## 2a. Red-team finding before merge (2026-11-09), fixed
+
+On the live 11-09 records the staleness line listed seat 3's moves **twice**. The 11-08 afternoon record ("Lauri's Prime Rib": +LaRavia, −Dort, Dončić to IL, Hart off IL) and the 11-09 morning record both carried them. A morning record diffs against the previous morning, so it already holds an afternoon record's moves (EVIDENCE: both files on season/daily 85556cc). The fixture in §1 had no afternoon record, so the tests missed it.
+
+Fix: `moves_since` counts an afternoon record only when no later morning record in the window covers it. Test: `Staleness.test_an_afternoon_record_the_next_morning_already_covers_is_not_counted_twice` (red first: `AssertionError: 2 != 1`). Re-run on the live records: 1 line, "2026-11-09 SNOWTIME WHITE WALKERS: added Jake LaRavia, Jaxson Hayes; dropped Luguentz Dort, Maxime Raynaud; to IL Lauri Markkanen, Luka Doncic; off IL Josh Hart".
+
 ## 3. Bands quoted
 
 The standing structural band for any title figure is the season sweep of 2026-11-02 (deck e14cc42): **weekly_availability is FRAGILE:** -2.6 (no in-sim injury discount (risk 0.88 like healthy)) / +2.2 (harsher risk tier (0.65)) / -0.2 (healthy players play 0.95 of games) / +0.0 (healthy players play 0.80 of games), mean of the two seeds. The weekly band above is the preview's own and is measured on P(win), not title share.

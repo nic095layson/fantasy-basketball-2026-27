@@ -173,6 +173,17 @@ class Staleness(unittest.TestCase):
         self.assertEqual(lines, ["2026-11-09 SNOWTIME WHITE WALKERS: added Jake LaRavia; dropped Luguentz Dort; "
                                  "to IL Lauri Markkanen, Luka Doncic; off IL Josh Hart"])
 
+    def test_an_afternoon_record_the_next_morning_already_covers_is_not_counted_twice(self):
+        # red team 2026-11-09: the 11-08 afternoon record and the 11-09 morning record both carried seat 3's moves (a
+        # morning record diffs against the previous morning, so it already holds the afternoon's moves)
+        json.dump({"moves": [{"team": "Lauri's Prime Rib", "seat": 3, "added": ["Jake LaRavia"], "dropped": [], "to_il": ["Luka Doncic"], "from_il": []}]},
+                  open(os.path.join(self.news, "league_moves_2026-11-08_pm.json"), "w"))
+        lines = WP.moves_since("2026-11-08", "2026-11-09", (10, 3), self.news)
+        self.assertEqual(len(lines), 1); self.assertTrue(lines[0].startswith("2026-11-09 SNOWTIME"))
+        # with no later morning record, the afternoon record is the only word on those moves and is kept
+        os.remove(os.path.join(self.news, "league_moves_2026-11-09.json"))
+        self.assertEqual(len(WP.moves_since("2026-11-08", "2026-11-09", (10, 3), self.news)), 1)
+
     def test_the_note_is_added_once_and_the_numbers_are_untouched(self):
         md = os.path.join(self.d, "week_04.md")
         body = "# Week 4 preview\n\nP(win the week): **41.0%**\n\n_Rosters as of 2026-11-08; lines season pool._\n"
