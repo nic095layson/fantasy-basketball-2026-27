@@ -15,3 +15,5 @@ P(win the week): **41.0%** (seeds 2026 / 2027: 0.410 / 0.410; ±0.7 points). Exp
 | TO | 67.0 | 73.1 | 67% |
 
 _Rosters as of 2026-11-08; lines season pool; Q/O statuses not applied to the weekly model; a two-week matchup (weeks 7, 17) is modelled as one week._
+
+**Moves since these rosters (2026-11-08), through 2026-11-09:** 2026-11-09 SNOWTIME WHITE WALKERS: added Jake LaRavia, Jaxson Hayes; dropped Luguentz Dort, Maxime Raynaud; to IL Lauri Markkanen, Luka Doncic; off IL Josh Hart — this forecast does not include them; the week card does.

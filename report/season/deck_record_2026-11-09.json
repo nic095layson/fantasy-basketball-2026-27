@@ -35,7 +35,7 @@
   "calibration": {
    "path": "report/calibration.json",
    "present": true,
-   "sha256": "10fa09208708ee160af1cc67bce18a922ac46c3bad0534443b526ad7691e8908"
+   "sha256": "34f7c100d31268453ecb3cd85c79302c943c7a7ad667134c1fdc282be01947a2"
   },
   "matchup_live": {
    "path": "data/news/matchup_live_2026-11-09.json",
@@ -49,8 +49,8 @@
   },
   "league": {
    "path": "report/league/league_2026-11-09.json",
-   "present": false,
-   "sha256": null
+   "present": true,
+   "sha256": "10cac2d8774f59ff3a497f65d7622b257477d02197380dd0f0bac5d9eb7e14f7"
   },
   "form": {
    "path": "report/form/form_2026-11-09.json",
@@ -60,12 +60,12 @@
   "scores": {
    "path": "report/calibration_daily.json",
    "present": true,
-   "sha256": "37929a80094ebae722a2d9508468cb7f73bad1615d53c2fad76edb87a5d45d41"
+   "sha256": "2541e190acf9ebe67bb1c17b707744cfaa64c55522f3728f32a25401eedc4ec7"
   },
   "accuracy": {
    "path": "report/accuracy.json",
    "present": true,
-   "sha256": "a2bf635abc40779f9c151f2dbbade1d61e22bc335965f22cfd45ef49081ec429"
+   "sha256": "826a82cd845a8cf9c49a87303ca2ee98d602101cd048cab5535f67187520125a"
   },
   "lineup": {
    "path": "report/decisions/lineup_scorecard.json",
@@ -135,6 +135,6 @@
    "League"
   ],
   "page_errors": 0,
-  "browser": "141.0.7390.37 (playwright default)"
+  "browser": "153.0.8010.12 (/opt/pw-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell)"
  }
 }
