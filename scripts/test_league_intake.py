@@ -94,7 +94,7 @@ class Intake(unittest.TestCase):
             self.assertEqual(b["unpooled"], [dict(player="Trevon Brazile", slot="BN", nba_team="DEN", positions=["PF"], status=None)])
             self.assertEqual(st["unpooled"], [dict(player="Trevon Brazile", fantasy_team="B", seat=1, slot="BN", nba_team="DEN", status=None)])
             o = buf.getvalue()
-            self.assertIn("LEAGUE INTAKE: WARN — 1 name(s) not in the pool, carried as unpooled (no line, not simulated): Trevon Brazile (B, BN, DEN)", o)
+            self.assertIn("LEAGUE INTAKE: WARN — 1 name(s) not in the pool, carried as unpooled (no deck line; simulated once the season lines give an auto row): Trevon Brazile (B, BN, DEN)", o)
             self.assertIn("1 unpooled", o.splitlines()[-1]); self.assertTrue(o.splitlines()[-1].startswith("LEAGUE INTAKE: PASS"))
 
     def test_an_unpooled_player_never_reaches_the_simulator_rosters(self):

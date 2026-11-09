@@ -159,14 +159,23 @@ def transactions_for(date):
     return json.load(open(path, encoding="utf-8")) if os.path.exists(path) else None
 
 
-def unpooled_line(state):
-    """Owner 2026-10-26, option (a): the names the intake carried without a pool row, or None. Never silent."""
+def unpooled_line(state, by=None):
+    """Owner 2026-10-26, option (a): the names the intake carried without a pool row, or None. Never silent. Owner
+    2026-11-09 ("Simulate them"): a name the pool in use has (`by`: the season pool's auto season line) is simulated
+    and is listed as an auto row, never as "not simulated"."""
     un = (state or {}).get("unpooled") or []
     if not un:
         return None
-    return (f"**Not in the pool, not simulated ({len(un)}):** "
-            + ", ".join(f"{u['player']} ({u['fantasy_team']}, {u['slot']}, {u['nba_team']})" for u in un)
-            + ". Each needs a data/pool_additions.csv row before the simulator counts him.")
+    auto = [u for u in un if by and u["player"] in by]
+    out = [u for u in un if u not in auto]
+    fmt = lambda xs: ", ".join(f"{u['player']} ({u['fantasy_team']}, {u['slot']}, {u['nba_team']})" for u in xs)
+    parts = []
+    if out:
+        parts.append(f"**Not in the pool, not simulated ({len(out)}):** {fmt(out)}. "
+                     "Each needs a data/pool_additions.csv row before the simulator counts him.")
+    if auto:
+        parts.append(f"Auto row (blended), simulated ({len(auto)}): {fmt(auto)}.")
+    return " ".join(parts)
 
 
 def transactions_lines(rec, my_team, opp_team):
@@ -255,7 +264,7 @@ def main():
     work = tempfile.mkdtemp()
     sims = {s: CG.run_league_sim(ros, s, a.seasons, work) for s in SEEDS}
     base = {s: sims[s]["teams"][str(CG.OWNER_SEAT)] for s in SEEDS}
-    absent = sims[SEEDS[0]]["absent_from_sim"]
+    absent = sims[SEEDS[0]]["absent_from_sim"]   # sim-roster names the sim pool lacks; never state "unpooled" (co_gm)
     for x in top:
         r2 = {s: list(r) for s, r in ros.items()}
         r2[CG.OWNER_SEAT] = [p for p in r2[CG.OWNER_SEAT] if p["player"] != x["drop"]] + [by[x["add"]]]
@@ -309,8 +318,8 @@ def main():
     L.append(f"Opponent this week: **{rec['opponent']}**. Rosters as of {state['as_of']} "
              f"({'FantasyBot live pull' if 'fantasybot' in (state.get('sources') or {}) else chr(39).join(['owner', 's Yahoo page'])}); "
              f"statuses from `{status_file}`; lines: {lines_label()}.")
-    if unpooled_line(state):
-        L += ["", unpooled_line(state)]
+    if unpooled_line(state, by):
+        L += ["", unpooled_line(state, by)]
     L += ["", "## Your players today", "", "| player | NBA | game | status | availability | games left this week |", "|---|---|---|---|---|---|"]
     for n, t, g, s, av, gl in rows_today:
         L.append(f"| {n} | {t} | {g or '—'} | {s or '—'} | {av:.2f} | {gl} |")

@@ -187,5 +187,108 @@ class Grader(unittest.TestCase):
         self.assertIn("KIT RIGHT / KIT BETTER", card)
 
 
+
+# the two recommendation rows of the 11-08 known answer, copied from data/decisions on season/daily (85556cc)
+R_1107 = {"id": "R-2026-11-07-01", "date": "2026-11-07", "source": "brief", "horizon_days": 28, "kind": "add_drop",
+          "add": "Tobias Harris", "drop": "Ziaire Williams", "basis": {"d_title": 2.98},
+          "alternatives": [{"add": "Julian Champagnie", "drop": "Ziaire Williams", "d_title": 2.49},
+                           {"add": "Cameron Johnson", "drop": "Ziaire Williams", "d_title": 2.37}]}
+S_1030 = {"id": "S-2026-10-30-01", "date": "2026-10-30", "source": "session", "horizon_days": 28, "kind": "add_drop",
+          "add": "Cameron Johnson", "drop": "Collin Gillespie", "basis": {"d_title": 1.15},
+          "alternatives": [{"add": "Cameron Johnson", "drop": "Neemias Queta", "d_title": 0.35},
+                           {"add": "Cameron Johnson", "drop": "TyTy Washington", "d_title": -0.01},
+                           {"add": "Cameron Johnson", "drop": "Bobby Portis", "d_title": -0.25},
+                           {"add": "Cameron Johnson", "drop": "Mikal Bridges", "d_title": -0.36},
+                           {"add": "Cameron Johnson", "drop": "Julian Champagnie", "d_title": -0.45}]}
+
+
+class AlternativePairs(unittest.TestCase):
+    """Owner 2026-11-09 (runner pick C1): the join reads each recommendation's alternative pairs as well as its top
+    pair and records which one matched; the newest row in horizon is preferred, then exact over partial."""
+    mk = staticmethod(lambda added, dropped, date: dict(date=date, added=added, dropped=dropped))
+
+    def test_known_answer_m_2026_11_08_01_is_r_2026_11_07_01_alt2_exact(self):
+        mv = self.mk(["Cameron Johnson"], ["Ziaire Williams"], "2026-11-08")
+        self.assertEqual(DL.join_pair(mv, [S_1030, R_1107]), ("R-2026-11-07-01", "exact", "alt2"))
+        self.assertEqual(DL.join(mv, [S_1030, R_1107]), ("R-2026-11-07-01", "exact"))   # the two-field form is kept
+
+    def test_an_alternative_exact_beats_the_same_rows_partial_top(self):
+        mv = self.mk(["Cameron Johnson"], ["Julian Champagnie"], "2026-10-31")
+        self.assertEqual(DL.join_pair(mv, [S_1030]), ("S-2026-10-30-01", "exact", "alt5"))
+
+    def test_the_newest_row_wins_before_exact_over_partial(self):
+        older = dict(S_1030, id="S-2026-11-01-01", date="2026-11-01", add="Tobias Harris", drop="Ziaire Williams", alternatives=[])
+        newer = dict(S_1030, id="S-2026-11-03-01", date="2026-11-03", add="Tobias Harris", drop="Bobby Portis", alternatives=[])
+        mv = self.mk(["Tobias Harris"], ["Ziaire Williams"], "2026-11-04")
+        self.assertEqual(DL.join_pair(mv, [older, newer]), ("S-2026-11-03-01", "add_match_drop_differs", "top"))
+
+    def test_top_only_rows_match_as_before_and_say_top(self):
+        rec = DL.session_row([], "2026-10-30", "Cameron Johnson", "Collin Gillespie", 1.15, made_at="t")
+        self.assertEqual(DL.join_pair(self.mk(["Cameron Johnson"], ["Collin Gillespie"], "2026-10-31"), [rec]), ("S-2026-10-30-01", "exact", "top"))
+        self.assertEqual(DL.join_pair(self.mk(["Jalen Smith"], ["Collin Gillespie"], "2026-10-31"), [rec]), ("S-2026-10-30-01", "drop_match_add_differs", "top"))
+        self.assertEqual(DL.join_pair(self.mk(["Jalen Smith"], ["Neemias Queta"], "2026-10-31"), [rec]), (None, "unrelated", None))
+
+    def test_moves_rows_record_the_matched_pair(self):
+        d = tempfile.mkdtemp(); news = os.path.join(d, "news"); os.makedirs(news)
+        moves_record(os.path.join(news, "league_moves_2026-11-08.json"), "2026-11-08",
+                     [dict(team="Me", seat=10, added=["Cameron Johnson"], dropped=["Ziaire Williams"], to_il=[], from_il=[])])
+        row = DL.moves_rows(news, [], [S_1030, R_1107], seen_at="t")[0]
+        self.assertEqual((row["matches"], row["match_kind"], row["matched_pair"]), ("R-2026-11-07-01", "exact", "alt2"))
+
+    def test_the_grader_grades_the_matched_pair(self):
+        mv = dict(id="M-2026-11-08-01", date="2026-11-08", added=["Cameron Johnson"], dropped=["Ziaire Williams"],
+                  matches="R-2026-11-07-01", match_kind="exact", matched_pair="alt2")
+        d = tempfile.mkdtemp()
+        row = DG.grade(R_1107, [mv], "2026-11-09", boards=os.path.join(d, "none"), actuals=os.path.join(d, "none"), aliases={})
+        self.assertEqual((row["kit_add"], row["kit_drop"], row["d_title_at_rec"], row["matched_pair"]),
+                         ("Cameron Johnson", "Ziaire Williams", 2.37, "alt2"))
+        self.assertEqual(row["move"]["id"], "M-2026-11-08-01")
+        top = DG.grade(R_1107, [], "2026-11-09", boards=os.path.join(d, "none"), actuals=os.path.join(d, "none"), aliases={})
+        self.assertEqual((top["kit_add"], top["matched_pair"]), ("Tobias Harris", "top"))
+
+
+
+class Rejoin(unittest.TestCase):
+    """Owner 2026-11-09 (pick "Re-join file"): moves logged before the alternative-pair rule are re-joined in an
+    append-only data/decisions/moves_rejoin.jsonl (moves.jsonl is never rewritten); the grader reads a move's newest
+    re-join over its logged match."""
+    OLD = dict(id="M-2026-11-08-01", date="2026-11-08", added=["Cameron Johnson"], dropped=["Ziaire Williams"],
+               matches="S-2026-10-30-01", match_kind="add_match_drop_differs")
+    SAME = dict(id="M-2026-11-05-01", date="2026-11-05", added=["Ziaire Williams"], dropped=["Karlo Matkovic"],
+                matches=None, match_kind="unrelated", matched_pair=None)
+
+    def test_a_changed_match_gets_one_row_and_a_second_pass_adds_none(self):
+        rows = DL.rejoin_rows([self.OLD, self.SAME], [], [S_1030, R_1107], made_at="t", date="2026-11-10")
+        self.assertEqual(len(rows), 1)
+        r = rows[0]
+        self.assertEqual((r["move"], r["from"]["matches"], r["from"]["match_kind"], r["from"]["matched_pair"]),
+                         ("M-2026-11-08-01", "S-2026-10-30-01", "add_match_drop_differs", "top"))
+        self.assertEqual((r["to"]["matches"], r["to"]["match_kind"], r["to"]["matched_pair"]), ("R-2026-11-07-01", "exact", "alt2"))
+        self.assertEqual(r["rule"], "2026-11-09 C1: alternative pairs, newest row then exact over partial")
+        self.assertEqual(DL.rejoin_rows([self.OLD, self.SAME], rows, [S_1030, R_1107], made_at="t", date="2026-11-10"), [])
+
+    def test_effective_moves_take_the_newest_rejoin_and_leave_the_rest(self):
+        rows = DL.rejoin_rows([self.OLD], [], [S_1030, R_1107], made_at="t", date="2026-11-10")
+        eff = DL.effective_moves([self.OLD, self.SAME], rows)
+        self.assertEqual((eff[0]["matches"], eff[0]["match_kind"], eff[0]["matched_pair"], eff[0]["rejoined"]),
+                         ("R-2026-11-07-01", "exact", "alt2", "2026-11-10"))
+        self.assertEqual(eff[1], self.SAME)
+        self.assertEqual(self.OLD["matches"], "S-2026-10-30-01")    # the logged row itself is never changed
+
+    def test_cli_rejoin_appends_once_and_the_grader_reads_it(self):
+        d = tempfile.mkdtemp()
+        for f, rows in (("recommendations.jsonl", [R_1107]), ("session.jsonl", [S_1030]), ("moves.jsonl", [self.OLD])):
+            DL.append(os.path.join(d, f), rows)
+        self.assertEqual(DL.main(["--rejoin", "--dir", d]), 0)
+        self.assertEqual(DL.main(["--rejoin", "--dir", d]), 0)
+        self.assertEqual(len(DL.read(os.path.join(d, "moves_rejoin.jsonl"))), 1)
+        self.assertEqual(DL.read(os.path.join(d, "moves.jsonl")), [self.OLD])
+        out = os.path.join(d, "out")
+        self.assertEqual(DG.main(["--as-of", "2026-11-09", "--dir", d, "--boards", os.path.join(d, "none"),
+                                  "--actuals", os.path.join(d, "none"), "--out", out, "--dry-run"]), 0)
+        g = DG.grade(R_1107, DL.effective_moves(DL.read(os.path.join(d, "moves.jsonl")), DL.read(os.path.join(d, "moves_rejoin.jsonl"))),
+                     "2026-11-09", boards=os.path.join(d, "none"), actuals=os.path.join(d, "none"), aliases={})
+        self.assertEqual((g["move"]["id"], g["matched_pair"], g["kit_add"]), ("M-2026-11-08-01", "alt2", "Cameron Johnson"))
+
 if __name__ == "__main__":
     unittest.main()

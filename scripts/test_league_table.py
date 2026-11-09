@@ -277,6 +277,52 @@ def blank_side(seat, name):
                 categoryScore=dict(wins=0, losses=0, ties=9), gamesRemaining=40)
 
 
+class Renamed(unittest.TestCase):
+    """Owner 2026-11-09 (runner pick A1): seat 3 renamed itself after the week's finals were pinned (Lauri's Prime Rib ->
+    SNOWTIME WHITE WALKERS) and the step failed. A side is matched by its Yahoo team key against the newest pull's
+    rosters, and shown under the league state's (current) name."""
+    def setUp(self):
+        self.d = tempfile.mkdtemp()
+        self.pulls = os.path.join(self.d, "flaim"); os.makedirs(self.pulls)
+        st = json.loads(json.dumps(STATE)); st["teams"][2]["name"] = "Team 3 Renamed"
+        self.state = os.path.join(self.d, "state.json"); json.dump(st, open(self.state, "w"))
+        # 10/26: week 1's finals, pinned under the old name
+        json.dump(pull("2026-10-26", {1: block(1, "finished", scale=2), 2: block(2)}), open(os.path.join(self.pulls, "pull_2026-10-26.json"), "w"))
+        # 10/28: the newest pull; its rosters (and its week-2 block) carry the new name under the same key
+        b2 = block(2, scale=3); b2["matchups"][1]["home"]["teamName"] = "Team 3 Renamed"
+        pl = pull("2026-10-28", {2: b2})
+        pl["rosters"] = {f"{TFL.KEY}.t.{k}": {"teamKey": f"{TFL.KEY}.t.{k}", "teamName": TEAMS[k - 1] if k != 3 else "Team 3 Renamed"}
+                         for k in range(1, 13)}
+        json.dump(pl, open(os.path.join(self.pulls, "pull_2026-10-28.json"), "w"))
+        self.paths = dict(state=self.state, pull_dir=self.pulls, actuals=os.path.join(self.d, "actuals"))
+
+    def test_a_block_under_the_old_name_finds_its_seat_by_team_key_and_shows_the_current_name(self):
+        rec = LT.build("2026-10-28", self.paths)
+        w1 = rec["weeks"][0]["teams"]
+        self.assertNotIn("Team 3", w1)
+        self.assertEqual(w1["Team 3 Renamed"]["seat"], 3)
+        self.assertEqual(w1["Team 3 Renamed"]["totals"]["pts"], 2 * 130)
+        self.assertEqual(w1["Team 4"]["opponent"], "Team 3 Renamed")
+        self.assertEqual([n for n, x in rec["cumulative"].items() if x["seat"] == 3], ["Team 3 Renamed"])   # seat 3 once
+        self.assertEqual(rec["cumulative"]["Team 3 Renamed"]["weeks"], 2)
+
+    def test_standings_under_the_old_name_find_their_seat_by_team_key(self):
+        pl = json.load(open(os.path.join(self.pulls, "pull_2026-10-28.json")))
+        pl["standings"] = standings([(t, 1, 0, 0) for t in TEAMS])   # still the old name, as a lagging pin would carry
+        for i, x in enumerate(pl["standings"]["standings"]):
+            x["teamKey"] = f"{TFL.KEY}.t.{i + 1}"
+        json.dump(pl, open(os.path.join(self.pulls, "pull_2026-10-28.json"), "w"))
+        st = LT.build("2026-10-28", self.paths)["standings"]
+        self.assertEqual([r["team"] for r in st["rows"] if r["seat"] == 3], ["Team 3 Renamed"])
+
+    def test_without_a_key_map_a_name_the_state_lacks_still_halts(self):
+        st = json.load(open(self.state))
+        with self.assertRaises(LT.TableError):
+            LT.week_from_yahoo(block(1), st)
+        keys = {f"{TFL.KEY}.t.3": "Team 3 Renamed"}
+        self.assertEqual(LT.week_from_yahoo(block(1), st, keys)["Team 3 Renamed"]["seat"], 3)
+
+
 class NotStarted(unittest.TestCase):
     """Owner 2026-10-26: on day one of a week Yahoo shows '/' and '' — record the week as not started, not an error."""
     def block(self, bad=None):

@@ -17,6 +17,7 @@ report/calibration.md is regenerated from the JSON.
 """
 import argparse
 import datetime
+import glob
 import json
 import math
 import os
@@ -208,13 +209,88 @@ def render_ledger(led):
     return "\n".join(L) + "\n"
 
 
+# owner 2026-11-09 (pick "Band + staleness"): the declared-band constants the weekly model rests on, from the registry
+BAND_CONSTANTS = ("weekly_availability", "TEAM_WEEK_SHOCK")
+REGISTRY = os.path.join(os.path.dirname(os.path.abspath(__file__)), "redteam", "constants_registry.json")
+
+
+def structural_band(week, n=10000, preview_fn=None, registry=REGISTRY, base=None):
+    """The preview's P(win) under each declared-band variant of BAND_CONSTANTS, one at a time, through the deck's own
+    patch kinds (arena/patches.py, as the sweep applies them); each patch is undone after its run. Returns
+    {baseline, lo, hi, variants: [{constant, label, p_win, shift}]}."""
+    import patches
+    preview_fn = preview_fn or preview
+    a = CG.arena
+    base = preview_fn(week, n)["p_win"] if base is None else base
+    out = []
+    for e in json.load(open(registry, encoding="utf-8"))["constants"]:
+        if e.get("name") not in BAND_CONSTANTS or e.get("status") != "declared_band":
+            continue
+        for b in e.get("band") or []:
+            patch = {k: v for k, v in b.items() if k != "label"}
+            saved = {k: getattr(a, k) for k in list(patch.get("const") or {}) + ["weekly_availability", "SEASON_CV"]}
+            try:
+                patches.apply(a, patch)
+                pw = preview_fn(week, n)["p_win"]
+            finally:
+                for k, v in saved.items():
+                    setattr(a, k, v)
+            out.append(dict(constant=f"{e.get('module', 'arena')}.{e['name']}", label=b["label"], p_win=pw, shift=pw - base))
+    ps = [base] + [v["p_win"] for v in out]
+    return dict(baseline=base, lo=min(ps), hi=max(ps), variants=out)
+
+
+def moves_since(as_of, until, seats, news_dir):
+    """The two seats' roster moves recorded after the rosters' date (its afternoon record included) through `until`,
+    one line per team and record, oldest first."""
+    out = []
+    files = sorted(glob.glob(os.path.join(news_dir, "league_moves_????-??-??*.json")))
+    # a morning record diffs against the previous morning, so it already holds an earlier afternoon record's moves
+    # (red team 2026-11-09): an afternoon record counts only when no later morning record in the window covers it
+    mornings = [os.path.basename(f)[13:23] for f in files if not f.endswith("_pm.json")]
+    for f in files:
+        d = os.path.basename(f)[13:23]
+        if not (d > as_of or (d == as_of and f.endswith("_pm.json"))) or d > until:
+            continue
+        if f.endswith("_pm.json") and any(d < m <= until for m in mornings):
+            continue
+        for m in json.load(open(f, encoding="utf-8")).get("moves") or []:
+            if m.get("seat") not in seats:
+                continue
+            bits = [f"{lab} {', '.join(m[k])}" for k, lab in (("added", "added"), ("dropped", "dropped"), ("to_il", "to IL"),
+                                                              ("from_il", "off IL")) if m.get(k)]
+            if bits:
+                out.append(f"{d} {m.get('team')}: " + "; ".join(bits))
+    return out
+
+
+STALE_HEAD = "**Moves since these rosters"
+
+
+def stale_note(md_path, as_of, until, seats, news_dir):
+    """Append (or refresh) one line naming the moves since the preview's rosters; the forecast above is untouched."""
+    text = open(md_path, encoding="utf-8").read()
+    if STALE_HEAD in text:
+        text = text[:text.index("\n" + STALE_HEAD)] + "\n" if ("\n" + STALE_HEAD) in text else text
+    mv = moves_since(as_of, until, seats, news_dir)
+    line = (f"{STALE_HEAD} ({as_of}), through {until}:** " + ("; ".join(mv) + " — this forecast does not include them; "
+            "the week card does." if mv else "none for either team."))
+    open(md_path, "w", encoding="utf-8").write(text.rstrip("\n") + "\n\n" + line + "\n")
+    return mv
+
+
 def render_preview(p, week_start, week_end):
     L = [f"# Week {p['week']} preview — vs {p['opponent_team']} ({p['opponent_manager']}), {week_start} to {week_end}", "",
          f"P(win the week): **{p['p_win']:.1%}** (seeds {SEEDS[0]} / {SEEDS[1]}: "
          f"{p['by_seed'][str(SEEDS[0])]['p_win']:.3f} / {p['by_seed'][str(SEEDS[1])]['p_win']:.3f}; "
          f"±{196 * math.sqrt(p['p_win'] * (1 - p['p_win']) / (2 * p['n_per_seed'])):.1f} points). "
-         f"Expected categories: {p['exp_cats']:.2f} of 9.", "",
-         "| category | you (weekly mean) | them | P(you win) |", "|---|---|---|---|"]
+         f"Expected categories: {p['exp_cats']:.2f} of 9.", ""]
+    bd = p.get("band")
+    if bd:
+        L += [f"Structural band: P(win) {bd['lo']:.1%} to {bd['hi']:.1%} across the declared-band constants, one at a time ("
+              + "; ".join(f"{v['label']} {v['p_win']:.1%}" for v in bd["variants"])
+              + "). The ± above is the seed spread only.", ""]
+    L += ["| category | you (weekly mean) | them | P(you win) |", "|---|---|---|---|"]
     for c in CG.CATS:
         f = (lambda v: f"{v:.3f}") if "%" in c else (lambda v: f"{v:.1f}")
         L.append(f"| {c} | {f(p['means']['owner'][c])} | {f(p['means']['opponent'][c])} | {p['cat_p'][c]:.0%} |")
@@ -234,7 +310,26 @@ def main():
     ap.add_argument("--won", default="")
     ap.add_argument("--n", type=int, default=10000)
     ap.add_argument("--ledger", default=LEDGER, help="calibration ledger path (tests pass a scratch file; owner 2026-10-24)")
+    ap.add_argument("--stale-note", metavar="DATE", help="with --week: add to the week's preview the two teams' roster moves "
+                                                         "since its rosters, through DATE; the forecast is untouched (owner 2026-11-09)")
+    ap.add_argument("--news-dir", default=os.path.join(CG.KIT, "data", "news"))
+    ap.add_argument("--previews", default=None)
+    ap.add_argument("--no-band", action="store_true", help="skip the structural band (tests)")
     a = ap.parse_args()
+    if a.stale_note:
+        import re
+        md = os.path.join(a.previews or PREVIEWS, f"week_{a.week:02d}.md")
+        if not os.path.exists(md):
+            print(f"WEEKLY PREVIEW: PASS — week {a.week}: no preview file to note ({os.path.basename(md)})")
+            return
+        m = re.search(r"_Rosters as of (\d{4}-\d{2}-\d{2})", open(md, encoding="utf-8").read())
+        if not m:
+            raise LedgerError(f"{md}: no 'Rosters as of' line")
+        sched = json.load(open(CG.SCHEDULE, encoding="utf-8"))
+        o = next(x for x in sched["owner_opponents"] if x["week"] == a.week)
+        mv = stale_note(md, m.group(1), a.stale_note, (CG.OWNER_SEAT, o["seat"]), a.news_dir)
+        print(f"WEEKLY PREVIEW: PASS — week {a.week}: {len(mv)} move line(s) since the preview's rosters ({m.group(1)})")
+        return
     if a.score:
         led = json.load(open(a.ledger, encoding="utf-8"))
         w = led["weeks"][str(a.score)]
@@ -254,13 +349,15 @@ def main():
         if n == a.week:
             ws, we = s.isoformat(), e.isoformat()
     p = preview(a.week, a.n)
+    if not a.no_band:   # owner 2026-11-09: the structural band beside the seed spread
+        p["band"] = structural_band(a.week, a.n, base=p["p_win"])
     os.makedirs(PREVIEWS, exist_ok=True)
     md = os.path.join(PREVIEWS, f"week_{a.week:02d}.md")
     open(md, "w", encoding="utf-8").write(render_preview(p, ws, we))
     print(f"wrote {os.path.relpath(md, CG.KIT)}")
     if a.record:
         now = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-        led = record(LEDGER, {k: v for k, v in p.items() if k != "means"}, now, ws, if_absent=a.league)
+        led = record(LEDGER, {k: v for k, v in p.items() if k not in ("means", "band")}, now, ws, if_absent=a.league)
         if led is None:
             print(f"week {a.week} already recorded in {os.path.relpath(LEDGER, CG.KIT)}; not rewritten")
         else:

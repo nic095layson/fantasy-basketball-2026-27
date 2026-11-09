@@ -1,52 +1,52 @@
 {
- "ran_at_utc": "2026-11-06T01:22:07Z",
+ "ran_at_utc": "2026-11-09T20:45:14Z",
  "inputs": {
-  "report/after-reports/after-report-2026-11-06-afternoon-lineup-refresh.md": "2471d6679d52541f6f8db96ed0147ece8dbaf8fb89931747dc0d48fc7b01eca7",
+  "report/after-reports/after-report-2026-11-09-preview-band-staleness.md": "f7af98ceed178a9d7a0167bd290c112ff9acfedc08d2a4b097f08eb721c3af68",
   "../wtsd/report/after-reports/redteam-2026-11-02-season/sweep.json": "1b8566531da1d0b666610a9383c063baa951d7879f045cb823faf3e0a384a87c"
  },
  "gates": [
   {
    "name": "kit check_report",
-   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-06-afternoon-lineup-refresh.md",
+   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/kit-d/report/after-reports/after-report-2026-11-09-preview-band-staleness.md",
    "cwd": ".",
    "pass_re": "^REPORT GATE: PASS",
    "exit": 0,
-   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-11-06-afternoon-lineup-refresh.md (structure, publication rule, pull-log row)",
+   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-11-09-preview-band-staleness.md (structure, publication rule, pull-log row)",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "REPORT GATE: PASS \u2014 after-report-2026-11-06-afternoon-lineup-refresh.md (structure, publication rule, pull-log row)"
+    "REPORT GATE: PASS \u2014 after-report-2026-11-09-preview-band-staleness.md (structure, publication rule, pull-log row)"
    ]
   },
   {
    "name": "deck judgment_open_items --check-report",
-   "cmd": "/usr/local/bin/python3 scripts/judgment_open_items.py --check-report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-06-afternoon-lineup-refresh.md",
+   "cmd": "/usr/local/bin/python3 scripts/judgment_open_items.py --check-report /home/user/kit-d/report/after-reports/after-report-2026-11-09-preview-band-staleness.md",
    "cwd": "../yahoo-fantasy-basketball",
    "pass_re": "^receipts check PASS",
    "exit": 0,
-   "pass_line": "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-11-06-afternoon-lineup-refresh.md",
+   "pass_line": "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-11-09-preview-band-staleness.md",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-11-06-afternoon-lineup-refresh.md"
+    "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-11-09-preview-band-staleness.md"
    ]
   },
   {
    "name": "deck repeat_market_check --check-report",
-   "cmd": "/usr/local/bin/python3 scripts/repeat_market_check.py --check-report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-06-afternoon-lineup-refresh.md",
+   "cmd": "/usr/local/bin/python3 scripts/repeat_market_check.py --check-report /home/user/kit-d/report/after-reports/after-report-2026-11-09-preview-band-staleness.md",
    "cwd": "../yahoo-fantasy-basketball",
    "pass_re": "^REPEAT-NAME CHECK: PASS",
    "exit": 0,
-   "pass_line": "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-11-06-afternoon-lineup-refresh.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)",
+   "pass_line": "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-11-09-preview-band-staleness.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-11-06-afternoon-lineup-refresh.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)"
+    "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-11-09-preview-band-staleness.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)"
    ]
   },
   {
    "name": "claim receipts",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/independent_audit/claim_receipts.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-06-afternoon-lineup-refresh.md",
+   "cmd": "/usr/local/bin/python3 /home/user/kit-d/scripts/independent_audit/claim_receipts.py /home/user/kit-d/report/after-reports/after-report-2026-11-09-preview-band-staleness.md",
    "cwd": ".",
    "pass_re": "^CLAIM RECEIPTS: (PASS|ADVISORY)",
    "exit": 0,
@@ -59,7 +59,7 @@
   },
   {
    "name": "touched tests",
-   "cmd": "bash -c 'cd scripts && DECK_REPO=/home/user/yahoo-fantasy-basketball python3 -m unittest test_week_matchup.StatusFileOverride test_season_deck.AfternoonLineupRefresh test_season_deck.AfternoonRefresh 2>&1 | tail -1'",
+   "cmd": "bash -c 'cd scripts && python3 -m unittest test_weekly_preview test_morning 2>&1 | tail -1'",
    "cwd": ".",
    "pass_re": "^OK",
    "exit": 0,
@@ -72,20 +72,20 @@
   },
   {
    "name": "redteam constants",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/redteam/check_constants.py --deck /home/user/yahoo-fantasy-basketball",
+   "cmd": "/usr/local/bin/python3 /home/user/kit-d/scripts/redteam/check_constants.py --deck /home/user/yahoo-fantasy-basketball",
    "cwd": ".",
    "pass_re": "^CONSTANTS CHECK: PASS",
    "exit": 0,
-   "pass_line": "CONSTANTS CHECK: PASS \u2014 49 registered = 49 live on deck e14cc42; declared_band 5, measured 7, settings 8, structural 6, uncalibrated 23",
+   "pass_line": "CONSTANTS CHECK: PASS \u2014 49 registered = 49 live on deck 01483de; declared_band 5, measured 7, settings 8, structural 6, uncalibrated 23",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "CONSTANTS CHECK: PASS \u2014 49 registered = 49 live on deck e14cc42; declared_band 5, measured 7, settings 8, structural 6, uncalibrated 23"
+    "CONSTANTS CHECK: PASS \u2014 49 registered = 49 live on deck 01483de; declared_band 5, measured 7, settings 8, structural 6, uncalibrated 23"
    ]
   },
   {
    "name": "redteam bands",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/redteam/check_bands.py --report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-06-afternoon-lineup-refresh.md --sweep /home/user/wtsd/report/after-reports/redteam-2026-11-02-season/sweep.json",
+   "cmd": "/usr/local/bin/python3 /home/user/kit-d/scripts/redteam/check_bands.py --report /home/user/kit-d/report/after-reports/after-report-2026-11-09-preview-band-staleness.md --sweep /home/user/wtsd/report/after-reports/redteam-2026-11-02-season/sweep.json",
    "cwd": ".",
    "pass_re": "^BANDS CHECK: PASS",
    "exit": 0,
@@ -98,20 +98,20 @@
   },
   {
    "name": "redteam attacks",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/redteam/run_attacks.py --check --deck /home/user/yahoo-fantasy-basketball",
+   "cmd": "/usr/local/bin/python3 /home/user/kit-d/scripts/redteam/run_attacks.py --check --deck /home/user/yahoo-fantasy-basketball",
    "cwd": ".",
    "pass_re": "^ATTACKS CHECK: PASS",
    "exit": 0,
-   "pass_line": "ATTACKS CHECK: PASS \u2014 10 attacks on engine e14cc42 (engine files last changed 95ebade), simulator aa470f8; CURRENT 9, UNFINGERPRINTED 1",
+   "pass_line": "ATTACKS CHECK: PASS \u2014 10 attacks on engine 01483de (engine files last changed 95ebade), simulator aa470f8; CURRENT 9, UNFINGERPRINTED 1",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "ATTACKS CHECK: PASS \u2014 10 attacks on engine e14cc42 (engine files last changed 95ebade), simulator aa470f8; CURRENT 9, UNFINGERPRINTED 1"
+    "ATTACKS CHECK: PASS \u2014 10 attacks on engine 01483de (engine files last changed 95ebade), simulator aa470f8; CURRENT 9, UNFINGERPRINTED 1"
    ]
   },
   {
    "name": "kit check_claims --gate",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/check_claims.py --gate",
+   "cmd": "/usr/local/bin/python3 /home/user/kit-d/scripts/check_claims.py --gate",
    "cwd": ".",
    "pass_re": "^CLAIM GATE: PASS",
    "exit": 0,
@@ -125,5 +125,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "d65d32a24dc408984d437b297486ed17a217b30e"
+ "base_commit": "6228823732a74b7fe2fb794b4ed028d9dd1abaa6"
 }

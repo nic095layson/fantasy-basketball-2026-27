@@ -130,13 +130,19 @@ def steps(date, fetch=True, seasons=10000, since=None):
            dict(name="daily brief", cmd=[PY, os.path.join(HERE, "daily_brief.py"), "--date", date, "--seasons", str(seasons)], cwd=KIT,
                 pass_re=r"^wrote report/briefs/brief_", env={"SEASON_POOL": season_pool}),
            # owner 2026-10-31 (the decision log): the brief's top pair to the recommendations ledger and every unlogged
-           # seat-10 move from the league-moves records to the moves ledger, both append-only; non-fatal (a day the
+           # seat-10 move from the league-moves records to the moves ledger, both append-only (owner 2026-11-09: and a
+           # moves_rejoin row for a logged move the current join rule re-matches); non-fatal (a day the
            # brief failed is a day with no row, named by the grader, never guessed)
-           dict(name="decision log", cmd=[PY, os.path.join(HERE, "decision_log.py"), "--brief", date, "--moves"], cwd=KIT,
+           dict(name="decision log", cmd=[PY, os.path.join(HERE, "decision_log.py"), "--brief", date, "--moves", "--rejoin"], cwd=KIT,
                 pass_re=r"^DECISION LOG: PASS", env={}, fatal=False)] + ([
            # Mondays: grade every recommendation whose window has elapsed on the season board; non-fatal
            dict(name="decision grades", cmd=[PY, os.path.join(HERE, "decision_grade.py"), "--as-of", date], cwd=KIT,
-                pass_re=r"^DECISION GRADE: PASS", env={}, fatal=False)] if datetime.date.fromisoformat(date).weekday() == 0 else []) + [
+                pass_re=r"^DECISION GRADE: PASS", env={}, fatal=False),
+           # owner 2026-11-09 ("Band + staleness"): the week's preview names the two teams' roster moves since its
+           # Sunday rosters (this morning's league-moves record included); its forecast is untouched; non-fatal
+           dict(name="preview staleness", cmd=[PY, os.path.join(HERE, "weekly_preview.py"), "--week", str(_week_of(date)),
+                                               "--stale-note", date], cwd=KIT,
+                pass_re=r"^WEEKLY PREVIEW: PASS", env={}, fatal=False)] if datetime.date.fromisoformat(date).weekday() == 0 else []) + [
            # owner 2026-10-21: the week's categories to date + projected, for the deck's Today tab; non-fatal (the
            # deck then draws a "no record" line instead of the card)
            dict(name="week matchup", cmd=[PY, os.path.join(HERE, "week_matchup.py"), "--date", date], cwd=KIT,
