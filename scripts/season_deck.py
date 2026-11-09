@@ -1152,51 +1152,56 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
   // owner 2026-10-24 (the scoring loop): how the morning card's stated chances scored once the week was final
   (function(){ const S=D.scores, wks=S? Object.values(S.weeks||{}).sort((a,z)=>a.week-z.week) : [];
     const sg=(x)=>x==null?"–":(x<0?"−":"+")+Math.abs(x).toFixed(3), f3=(x)=>x==null?"–":x.toFixed(3);
-    const card=h("div",{class:"card"},h("h2",{},"Scorecard — the morning card's P(win) against the finals"),
-      noteMore("How the Today card's category chances scored: lower Brier is better; skill > 0 = beat the lead-only guess",
-        "Each morning the Today card states, per category, the chance of winning it. At the week's intake every stated chance is scored: Brier = (p − outcome)², 0 perfect, 0.25 a coin flip (won 1, tied ½, lost 0). Baseline = that morning's lead as a forecast; skill = baseline − card, positive when the card beats the scoreboard."));
+    const card=h("div",{class:"card"},h("h2",{},"How good were our daily win chances?"),
+      // owner 2026-11-09 ("plain language"): plain labels on the page; the technical terms stay in the hover
+      noteMore("Each morning the tool gives a win chance for every category; when the week ends, we score them. Miss score: 0 is perfect, 0.25 is coin-flip guessing, lower is better. \"Beat the scoreboard by\" above zero means our chances did better than simply guessing that whoever was leading would win.",
+        "Technical terms: miss score = Brier = (p − outcome)², 0 perfect, 0.25 a coin flip (won 1, tied ½, lost 0). Scoreboard miss score = Brier lead: that morning's lead used as the forecast. Beat the scoreboard by = skill = Brier lead − Brier card."));
     if(!wks.length){ card.append(h("div",{class:"zero"},absentWhy("scores","calibration_daily.json")||"No week scored yet — the first finals land at Monday's intake.")); p.append(card); return; }
     const total=(w)=>{ if(!w.window) return null; const a=new Date(w.window[0]), b=new Date(w.window[1]); return Math.round((b-a)/864e5)+1; };
     card.append(h("div",{class:"tablebox"},h("table",{id:"sc-table",class:"lg"},
-      h("tr",{},h("th",{class:"num"},"wk"),h("th",{},"opponent"),h("th",{},"result"),h("th",{},"mornings"),h("th",{class:"num"},"forecasts"),h("th",{class:"num"},"Brier card"),h("th",{class:"num"},"Brier lead"),h("th",{class:"num"},"skill")),
+      h("tr",{},h("th",{class:"num"},"wk"),h("th",{},"opponent"),h("th",{},"result"),h("th",{},"mornings"),h("th",{class:"num"},"forecasts"),h("th",{class:"num"},"Our miss score"),h("th",{class:"num"},"Scoreboard miss score"),h("th",{class:"num"},"Beat the scoreboard by")),
       wks.map(w=>{ const r=w.result||{won:[],lost:[],tied:[]}, n=total(w);
         return h("tr",{},h("td",{class:"num wk"},String(w.week)),h("td",{},w.opponent||"?"),h("td",{},r.won.length+"-"+r.lost.length+"-"+r.tied.length),
           h("td",{},w.days_scored.length+(n?" of "+n:"")+" mornings"+(w.days_missing&&w.days_missing.length?" (missing "+w.days_missing.join(", ")+")":"")),
           h("td",{class:"num"},String(w.n_forecasts)),h("td",{class:"num"},f3(w.brier)),h("td",{class:"num"},f3(w.baseline_brier)),h("td",{class:"num"+(w.skill<0?" zneg":"")},sg(w.skill))); }))));
     // reliability over every scored week
     const agg={}; wks.forEach(w=>(w.reliability||[]).forEach(x=>{ const a=agg[x.bin]||(agg[x.bin]={n:0,p:0,h:0}); if(x.n){ a.n+=x.n; a.p+=x.mean_p*x.n; a.h+=x.hit_rate*x.n; } }));
-    card.append(noteMore("Reliability: hit rate vs stated chance, all scored weeks", "Reliability, all scored weeks — a calibrated card has hit rate ≈ stated P in every bin."),
-      h("div",{class:"tablebox"},h("table",{class:"lg"},h("tr",{},h("th",{},"stated P"),h("th",{class:"num"},"forecasts"),h("th",{class:"num"},"mean P"),h("th",{class:"num"},"hit rate")),
+    card.append(noteMore("When we said X%, did it happen X% of the time? (all scored weeks; a trustworthy 70% call comes true about 70% of the time)", "Technical terms: reliability, all scored weeks — a calibrated card has hit rate ≈ stated P in every bin (stated P, mean P, hit rate)."),
+      h("div",{class:"tablebox"},h("table",{class:"lg"},h("tr",{},h("th",{},"We said"),h("th",{class:"num"},"Times"),h("th",{class:"num"},"Average we said"),h("th",{class:"num"},"It happened")),
         ["0.0-0.2","0.2-0.4","0.4-0.6","0.6-0.8","0.8-1.0"].map(b=>{ const a=agg[b]||{n:0}; return h("tr",{},h("td",{},b),h("td",{class:"num"},String(a.n)),h("td",{class:"num"},a.n?(a.p/a.n).toFixed(2):"–"),h("td",{class:"num"},a.n?(a.h/a.n).toFixed(2):"–")); }))));
     p.append(card); })();
   // owner 2026-10-27 ("after week 2 grades"), built 2026-11-02: the weekly accuracy card, read from accuracy.json
   // (accuracy_week.py's record: one row per graded week, never rewritten). Nothing here computes; it renders.
   (function(){ const A=D.accuracy, wks=A? Object.values(A.weeks||{}).sort((a,z)=>a.week-z.week) : [];
     const f2=(x)=>x==null?"–":x.toFixed(2), f3=(x)=>x==null?"–":x.toFixed(3), pc=(x)=>x==null?"–":x.toFixed(1)+"%";
-    const card=h("div",{class:"card"},h("h2",{},"Forecast accuracy — week by week"),
-      noteMore("Each finished week graded against the box scores and the finals (accuracy_week.py); players with 2+ games.",
-        "Lines: projected vs actual points per game over the week's players with 2+ games — bias (projected over actual, %), MAE (mean absolute error per game) and rank correlation, for the preseason line, the in-season blend and the minutes-trend candidate. Availability: the share of team games each status tier's players actually played, beside what the simulator assumes. Forecasts: the pre-week P(win) and result, and the morning card's Brier against the lead-only guess."));
+    const card=h("div",{class:"card"},h("h2",{},"How close were our player projections?"),
+      noteMore("Each finished week, every player with 2+ games is checked against what he actually did.",
+        "Technical terms: too high / too low by = bias (projected over actual, %); typical miss = MAE (mean absolute error, points per game); got the order right? = rank correlation (1 = exact order, 0 = random). Draft-day line = preseason; current line = the in-season blend; test line = the minutes-trend candidate. Tiers: 0.88 healthy, 0.79 minor knock (mild), 0.75 injury risk, 0.00 out. Forecasts: daily miss score = the morning card's Brier, scoreboard = the lead-only guess (accuracy_week.py)."));
     if(!wks.length){ card.append(h("div",{class:"zero"},absentWhy("accuracy","accuracy.json")||"No week graded yet — the card fills at Monday's intake.")); p.append(card); return; }
-    const cols=[["preseason","preseason"],["in_season","in-season"],["candidate_minutes","minutes candidate"]];
+    const cols=[["preseason","Draft-day line"],["in_season","Current line"],["candidate_minutes","Test line (minutes trend)"]];
     const L=(w,k)=>{ const l=(w.lines||{})[k]; return l&&l.cats&&l.cats.pts? l.cats.pts : null; };
     const lt=h("table",{class:"lg"},h("tr",{},h("th",{class:"num"},"wk"),h("th",{class:"num"},"players"),
-      ...cols.map(c=>[h("th",{},c[1]),h("th",{class:"num"},"bias"),h("th",{class:"num"},"MAE"),h("th",{class:"num"},"rank")]).flat()));
+      ...cols.map(c=>[h("th",{},c[1]),h("th",{class:"num"},"Too high / too low by"),h("th",{class:"num"},"Typical miss"),h("th",{class:"num"},"Got the order right?")]).flat()));
     wks.forEach(w=>{ const n=((w.lines||{}).preseason||{}).players;
       lt.append(h("tr",{},h("td",{class:"num wk"},String(w.week)),h("td",{class:"num"},n==null?"–":String(n)),
         ...cols.map(c=>{ const x=L(w,c[0]); return x? [h("td",{},f2(x.proj)+" / "+f2(x.actual)),h("td",{class:"num"},pc(x.bias_pct)),h("td",{class:"num"},f2(x.mae)),h("td",{class:"num"},f2(x.rank_corr))]
           : [h("td",{class:"muted"},"no snapshot"),h("td",{},""),h("td",{},""),h("td",{},"")]; }).flat())); });
-    card.append(h("h3",{},"Player lines: points per game (projected / actual)"),h("div",{class:"tablebox"},lt),
-      h("p",{class:"note"},"Switch rule D-ML-1 (pre-committed 2026-10-27): the minutes candidate replaces nothing until its MAE beats the in-season line's on PTS, REB and AST in 3 of 4 consecutive graded weeks, on the owner's word."));
-    const at=h("table",{class:"lg"},h("tr",{},h("th",{class:"num"},"wk"),h("th",{class:"num"},"tier"),h("th",{class:"num"},"assumed"),h("th",{},"played / team games"),h("th",{class:"num"},"share")));
+    card.append(h("h3",{},"Points per game: projected / actual"),h("div",{class:"tablebox"},lt),
+      noteMore("The test line takes over only if it's more accurate on PTS, REB and AST in 3 of 4 weeks in a row, and only on your OK.",
+        "Switch rule D-ML-1 (pre-committed 2026-10-27): the minutes candidate replaces nothing until its MAE beats the in-season line's on PTS, REB and AST in 3 of 4 consecutive graded weeks, on the owner's word."));
+    const TIER={"0.88":"Healthy","0.79":"Minor knock","0.75":"Injury risk","0.0":"Out","0.00":"Out","0":"Out"}, tierName=(t)=>TIER[t]||TIER[String(Number(t).toFixed(2))]||t;
+    const at=h("table",{class:"lg"},h("tr",{},h("th",{class:"num"},"wk"),h("th",{},"Health group"),h("th",{class:"num"},"We assume they play"),h("th",{},"Games played / team's games"),h("th",{class:"num"},"Actually played")));
     wks.forEach(w=>Object.keys(w.availability||{}).sort((a,z)=>Number(z)-Number(a)).forEach(t=>{ const v=w.availability[t];
-      at.append(h("tr",{},h("td",{class:"num"},String(w.week)),h("td",{class:"num"},t),h("td",{class:"num"},f2(v.assumed)),h("td",{},v.played+" / "+v.team_games),h("td",{class:"num"+(v.share<v.assumed-0.05?" zneg":"")},f2(v.share)))); }));
-    card.append(h("h3",{},"Availability: share of team games played, by the tier the simulator assumes"),h("div",{class:"tablebox"},at));
-    const ft=h("table",{class:"lg"},h("tr",{},h("th",{class:"num"},"wk"),h("th",{class:"num"},"your P(win)"),h("th",{},"result"),h("th",{class:"num"},"daily card Brier"),h("th",{class:"num"},"lead-only Brier"),h("th",{class:"num"},"league matchups scored")));
+      at.append(h("tr",{},h("td",{class:"num"},String(w.week)),h("td",{},tierName(t)),h("td",{class:"num"},f2(v.assumed)),h("td",{},v.played+" / "+v.team_games),h("td",{class:"num"+(v.share<v.assumed-0.05?" zneg":"")},f2(v.share)))); }));
+    card.append(h("h3",{},"Do players actually play as often as we assume?"),h("div",{class:"tablebox"},at),
+      h("p",{class:"note"},"Red = that group played noticeably less than we assume."));
+    const ft=h("table",{class:"lg"},h("tr",{},h("th",{class:"num"},"wk"),h("th",{class:"num"},"Our pre-week win chance"),h("th",{},"Categories you won"),h("th",{class:"num"},"Daily miss score: ours"),h("th",{class:"num"},"Daily miss score: scoreboard"),h("th",{class:"num"},"Other matchups checked")));
     wks.forEach(w=>{ const o=w.owner||{}, s=o.score||{}, d=o.daily||{}, m=w.matchups||{};
       ft.append(h("tr",{},h("td",{class:"num"},String(w.week)),h("td",{class:"num"},f3(o.p_win)),h("td",{},s.cats_won==null?"–":s.cats_won+" cats"),
         h("td",{class:"num"},f3(d.brier)),h("td",{class:"num"},f3(d.baseline_brier)),h("td",{class:"num"},String(m.n==null?"–":m.n)))); });
-    card.append(h("h3",{},"Forecasts"),h("div",{class:"tablebox"},ft),
-      h("p",{class:"note"},"Switch rule D-RG-1 (pre-committed 2026-10-27): the real-games forecast replaces the flat one only after a lower Brier over at least 4 consecutive graded weeks, on the owner's word."));
+    card.append(h("h3",{},"Did our weekly win chance hold up?"),h("div",{class:"tablebox"},ft),
+      noteMore("The real-schedule forecast replaces the current one only if it's more accurate 4 weeks in a row, and only on your OK.",
+        "Switch rule D-RG-1 (pre-committed 2026-10-27): the real-games forecast replaces the flat one only after a lower Brier over at least 4 consecutive graded weeks, on the owner's word."));
     p.append(card); })();
   // owner 2026-11-05 ("track these on a ledger ... hit/miss rate"): the start/sit scorecard, read from
   // report/decisions/lineup_scorecard.json (lineup_log.py's roll-up of the append-only ledger). Nothing here computes.
