@@ -1,0 +1,94 @@
+{
+ "week": 3,
+ "weeks_used": [
+  1,
+  2,
+  3
+ ],
+ "status": "too few weeks to propose (3 of 4)",
+ "notes": [
+  "week 1: 12 team-weeks",
+  "week 2: 12 team-weeks",
+  "week 3: 12 team-weeks"
+ ],
+ "team_week_shock": {
+  "live": 0.06,
+  "n": 36,
+  "var_factor": 0.015536994141633032,
+  "model_term": 0.003069138945398249,
+  "excess": 0.012467855196234782,
+  "se_excess": 0.003407703702786453,
+  "bootstrap": 500,
+  "shock": 0.11165955040315531,
+  "se": 0.015259347232201272
+ },
+ "weekly_availability": {
+  "0.88": {
+   "live": 0.88,
+   "measured": 0.7934941520467836,
+   "se": 0.007738913564307707,
+   "n": 2736,
+   "played": 2171,
+   "live_within_2se": false
+  },
+  "0.75": {
+   "live": 0.75,
+   "measured": 0.5613496932515337,
+   "se": 0.02748319146872453,
+   "n": 326,
+   "played": 183,
+   "live_within_2se": false
+  },
+  "0.00": {
+   "live": 0.0,
+   "measured": 0.03896103896103896,
+   "se": 0.0220516148962829,
+   "n": 77,
+   "played": 3,
+   "live_within_2se": true
+  },
+  "0.79": {
+   "live": 0.79,
+   "measured": 0.8947368421052632,
+   "se": 0.07040590042736196,
+   "n": 19,
+   "played": 17,
+   "live_within_2se": true
+  }
+ },
+ "board_comparison": {
+  "risk": {
+   "measured": 0.7074402398600628,
+   "se": 0.03531619593299177,
+   "n": 326,
+   "deck": 0.78,
+   "simulator": 0.8523,
+   "kit": 0.9036,
+   "within_2se": {
+    "deck": false,
+    "simulator": false,
+    "kit": false
+   }
+  },
+  "mild": {
+   "measured": 1.1275909719023491,
+   "se": 0.08940787217073203,
+   "n": 19,
+   "deck": 0.85,
+   "simulator": 0.8977,
+   "kit": 0.8249,
+   "within_2se": {
+    "deck": false,
+    "simulator": false,
+    "kit": false
+   }
+  }
+ },
+ "method": {
+  "shock": "f = mean over 7 counting cats of actual/mu per team-week; Var(f) = shock^2 + mean(mean_c var/mu^2)/7 (cats independent under no shock, A2); shock = sqrt(excess); bootstrap SE over team-weeks",
+  "availability": "pooled share of team games played per assumed tier, binomial SE; from report/accuracy.json",
+  "board_comparison": "realized tier/healthy ratio, delta-method SE, beside deck, simulator and kit-board ratios; frozen preseason tags",
+  "inputs": "data/weeks/week_N.json actuals; report/accuracy/lines_weekN.csv + state_weekN.json for the model"
+ },
+ "proposes_only": true
+}
