@@ -255,7 +255,7 @@ def main():
     work = tempfile.mkdtemp()
     sims = {s: CG.run_league_sim(ros, s, a.seasons, work) for s in SEEDS}
     base = {s: sims[s]["teams"][str(CG.OWNER_SEAT)] for s in SEEDS}
-    absent = sims[SEEDS[0]]["absent_from_sim"]
+    absent = sims[SEEDS[0]]["absent_from_sim"]   # sim-roster names the sim pool lacks; never state "unpooled" (co_gm)
     for x in top:
         r2 = {s: list(r) for s, r in ros.items()}
         r2[CG.OWNER_SEAT] = [p for p in r2[CG.OWNER_SEAT] if p["player"] != x["drop"]] + [by[x["add"]]]

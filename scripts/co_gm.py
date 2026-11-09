@@ -330,5 +330,8 @@ def run_league_sim(ros, seed, seasons, workdir, tag="cur", windows=None):
     rec = json.load(open(op, encoding="utf-8"))
     os.remove(sp)
     os.remove(op)
+    # absent_from_sim counts rostered active players that reached `ros` (state teams[].players, which the intake fills
+    # from the deck pool + pool_additions.csv) but whose names the simulator's pool lacks; a state "unpooled" player
+    # never reaches `ros` (rosters() reads teams[].players), so he is never counted here, auto row or not (2026-11-09)
     rec["absent_from_sim"] = absent
     return rec

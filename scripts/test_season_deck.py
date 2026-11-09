@@ -1563,6 +1563,50 @@ class PhasePaths(unittest.TestCase):
         self.assertEqual(p["yahoo_pull"], os.path.join(self.kit, "data", "source", "flaim", "pull_2026-10-29_pm.json"))
 
 
+
+class AbsentInputs(unittest.TestCase):
+    """Owner 2026-11-09 (runner pick B1): an input the build names but cannot find is recorded absent (GAUNTLET
+    decision 4) and is no longer silent: the PASS line lists it, and an empty card whose input was absent says so."""
+    def setUp(self):
+        self.d = tempfile.mkdtemp(); self.fx = fixtures(self.d); self.out = os.path.join(self.d, "out")
+        self._dp = SD.default_paths
+
+    def tearDown(self):
+        SD.default_paths = self._dp
+
+    def run_main(self):
+        SD.default_paths = lambda date, phase="am": self.fx
+        argv = sys.argv; sys.argv = ["season_deck.py", "--date", "2026-10-21", "--out", self.out]
+        buf = io.StringIO()
+        try:
+            with contextlib.redirect_stdout(buf):
+                SD.main()
+        finally:
+            sys.argv = argv
+        return buf.getvalue()
+
+    def test_the_pass_line_names_each_absent_input(self):
+        self.fx["league"] = os.path.join(self.d, "league_2026-10-21.json")        # named, not written
+        self.fx["scores"] = os.path.join(self.d, "calibration_daily.json")
+        out = self.run_main()
+        self.assertRegex(out, r"^SEASON DECK: PASS")
+        self.assertIn("; absent: league, scores", out)
+
+    def test_no_absent_input_adds_nothing(self):
+        self.assertNotIn("absent:", self.run_main())
+
+    def test_an_empty_card_whose_input_was_absent_says_why(self):
+        self.fx["scores"] = os.path.join(self.d, "calibration_daily.json")
+        self.fx["accuracy"] = os.path.join(self.d, "accuracy.json")
+        self.fx["lineup"] = os.path.join(self.d, "lineup_scorecard.json")
+        html, data, rec = SD.build(self.fx, date="2026-10-21")
+        self.assertEqual(data["absent_inputs"], ["accuracy", "lineup", "scores"])
+        p = os.path.join(self.d, "deck.html"); open(p, "w", encoding="utf-8").write(html)
+        txt = week_dom(p)["text"]
+        for f in ("calibration_daily.json", "accuracy.json", "lineup_scorecard.json"):
+            self.assertIn(f"{f} was absent this morning", txt)
+
+
 if __name__ == "__main__":
     unittest.main()
 

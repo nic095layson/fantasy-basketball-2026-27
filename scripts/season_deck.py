@@ -372,7 +372,10 @@ def build(paths, date, phase=None):
                 league=dict(as_of=league["as_of"], rosters=rosters, managers={t["name"]: t.get("manager") for t in league["teams"]},
                             unpooled=league.get("unpooled") or [], my_positions=my_positions), season_lines=lines, matchup=wk,
                 ledger={k: dict(v, result_text=ledger_result(v)) for k, v in calib.get("weeks", {}).items()}, bands=bands, band_engine=band_engine, band_config=band_config, matchup_live=matchup_live,
-                week_matchup=week_matchup, league_table=league_rec, form=form_rec, scores=scores, accuracy=accuracy, lineup_scorecard=lineup_sc, fa_status=fa_status, out_today=out_now, swap_grid=grid_now, waiver_notes=waiver_notes,
+                week_matchup=week_matchup, league_table=league_rec,
+                # owner 2026-11-09 (runner pick B1): inputs named but absent, so an empty card can say why
+                absent_inputs=sorted(k for k, p in paths.items() if not (p and os.path.exists(p))),
+                form=form_rec, scores=scores, accuracy=accuracy, lineup_scorecard=lineup_sc, fa_status=fa_status, out_today=out_now, swap_grid=grid_now, waiver_notes=waiver_notes,
                 # owner 2026-10-28 ("Rebuild, flag morning parts"): the 3 PM run's rebuild says which parts are the 5 AM run's
                 **({"refresh": {"phase": phase, "not_on_board": not_on_board,
                                 # owner 2026-11-06 ("why does Today still show Matkovic?", "please build it"): the morning brief's
@@ -628,6 +631,8 @@ function thisWeek(W){ const K=W.pickups, TW=K&&K.this_week; if(!TW) return null;
 }
 
 // ---- Week categories card (owner 2026-10-21): to date from box scores in full ink, projected final faded ----
+// owner 2026-11-09 (runner pick B1): an empty card whose input was absent says so, not "nothing yet"
+function absentWhy(k,file){ return (D.absent_inputs||[]).indexOf(k)>=0 ? "Empty: "+file+" was absent this morning (the step that writes it did not run, or failed)." : null; }
 function weekCard(){ const W=D.week_matchup, wk=D.brief.week;
   if(!W) return h("div",{class:"card wk"},h("h2",{},"Week "+wk+" categories"),
     h("div",{class:"zero"},"No week-to-date record for "+D.date+" (week_matchup.py did not run, or failed, this morning)."));
@@ -1145,7 +1150,7 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
     const card=h("div",{class:"card"},h("h2",{},"Scorecard — the morning card's P(win) against the finals"),
       noteMore("How the Today card's category chances scored: lower Brier is better; skill > 0 = beat the lead-only guess",
         "Each morning the Today card states, per category, the chance of winning it. At the week's intake every stated chance is scored: Brier = (p − outcome)², 0 perfect, 0.25 a coin flip (won 1, tied ½, lost 0). Baseline = that morning's lead as a forecast; skill = baseline − card, positive when the card beats the scoreboard."));
-    if(!wks.length){ card.append(h("div",{class:"zero"},"No week scored yet — the first finals land at Monday's intake.")); p.append(card); return; }
+    if(!wks.length){ card.append(h("div",{class:"zero"},absentWhy("scores","calibration_daily.json")||"No week scored yet — the first finals land at Monday's intake.")); p.append(card); return; }
     const total=(w)=>{ if(!w.window) return null; const a=new Date(w.window[0]), b=new Date(w.window[1]); return Math.round((b-a)/864e5)+1; };
     card.append(h("div",{class:"tablebox"},h("table",{id:"sc-table",class:"lg"},
       h("tr",{},h("th",{class:"num"},"wk"),h("th",{},"opponent"),h("th",{},"result"),h("th",{},"mornings"),h("th",{class:"num"},"forecasts"),h("th",{class:"num"},"Brier card"),h("th",{class:"num"},"Brier lead"),h("th",{class:"num"},"skill")),
@@ -1166,7 +1171,7 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
     const card=h("div",{class:"card"},h("h2",{},"Forecast accuracy — week by week"),
       noteMore("Each finished week graded against the box scores and the finals (accuracy_week.py); players with 2+ games.",
         "Lines: projected vs actual points per game over the week's players with 2+ games — bias (projected over actual, %), MAE (mean absolute error per game) and rank correlation, for the preseason line, the in-season blend and the minutes-trend candidate. Availability: the share of team games each status tier's players actually played, beside what the simulator assumes. Forecasts: the pre-week P(win) and result, and the morning card's Brier against the lead-only guess."));
-    if(!wks.length){ card.append(h("div",{class:"zero"},"No week graded yet — the card fills at Monday's intake.")); p.append(card); return; }
+    if(!wks.length){ card.append(h("div",{class:"zero"},absentWhy("accuracy","accuracy.json")||"No week graded yet — the card fills at Monday's intake.")); p.append(card); return; }
     const cols=[["preseason","preseason"],["in_season","in-season"],["candidate_minutes","minutes candidate"]];
     const L=(w,k)=>{ const l=(w.lines||{})[k]; return l&&l.cats&&l.cats.pts? l.cats.pts : null; };
     const lt=h("table",{class:"lg"},h("tr",{},h("th",{class:"num"},"wk"),h("th",{class:"num"},"players"),
@@ -1194,7 +1199,7 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
     const card=h("div",{class:"card"},h("h2",{},"Start/sit calls — followed, and how the night went"),
       noteMore("Each morning's start/sit suggestion against the lineup you locked that day and the night's box lines (lineup_log.py).",
         "Suggested: the morning card's start/sit pairs (the best daily fill over who plays, when it differs from your lineup). Followed: the named bench player was in an active slot at lock (start), the named starter was not (sit). Night: the start's box-line z minus the sit's, scored with the engine's own z over that day's box lines. The night is the outcome, not a verdict — per-game z noise is sd 3.65 against a 0.5 line (red team), so one box score cannot judge a pair; the rates that carry meaning are the followed rates and the season-z gap, over weeks."));
-    if(!S||!S.days){ card.append(h("div",{class:"zero"},"No start/sit day on the ledger yet — the card fills each morning after the box scores land.")); p.append(card); return; }
+    if(!S||!S.days){ card.append(h("div",{class:"zero"},absentWhy("lineup","lineup_scorecard.json")||"No start/sit day on the ledger yet — the card fills each morning after the box scores land.")); p.append(card); return; }
     const y=(v)=>v==null?"–":(v?"yes":"no"), r1=(x)=>x==null?"–":(x*100).toFixed(0)+"%";
     card.append(h("div",{class:"note"},
       h("div",{},h("b",{},String(S.days))," days · ",h("b",{},String(S.days_agreed))," agreed (no move suggested) · ",h("b",{},String(S.days_graded))," with a suggestion"),
@@ -1335,7 +1340,9 @@ def main():
     rp = os.path.join(outdir, f"deck_record_{a.date}{sfx}.json"); json.dump(record, open(rp, "w", encoding="utf-8"), indent=1)
     print(f"SEASON DECK: PASS — {a.date}{' (afternoon refresh)' if sfx else ''}: report/season/deck_{a.date}{sfx}.html ({record['panes']} panes, {record['board_rows']} board rows, "
           f"{record['status_rows']} status rows; record deck_record_{a.date}{sfx}.json pins {len(record['inputs'])} inputs; "
-          f"render: {len(res['tabs'])} tabs, 0 page errors{refresh_note})")
+          f"render: {len(res['tabs'])} tabs, 0 page errors{refresh_note})"
+          # owner 2026-11-09 (runner pick B1): an absent input is recorded (GAUNTLET decision 4) and named here, never silent
+          + "".join(f"; absent: {', '.join(ab)}" for ab in [sorted(k for k, v in record["inputs"].items() if not v["present"])] if ab))
 
 
 if __name__ == "__main__":
