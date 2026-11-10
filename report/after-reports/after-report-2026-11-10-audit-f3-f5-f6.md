@@ -40,7 +40,7 @@ EVIDENCE (trial on season/daily be859ea, files removed afterwards): "title 12.3%
 
 - Red first: `PackageRows`, `PackageGrade` (8 errors before the change), `test_title_watch` (the module did not exist), `TeamKeys`, `LockedLineupByKey` (5 failing before the change).
 - An existing test pins the decision log directly after the brief; the title check was placed after the decision log to keep it.
-- Whole suite on this branch: 1021 tests OK (2 skipped).
+- Whole suite on this branch: 1026 tests OK (2 skipped), after bringing in main with #255.
 
 **weekly_availability is FRAGILE:** -4.8 (no in-sim injury discount (risk 0.88 like healthy)) / +2.9 (harsher risk tier (0.65)) / -0.9 (healthy players play 0.95 of games) / -0.4 (healthy players play 0.80 of games), mean of the two seeds (season sweep 2026-11-09, engine 01483de). Nothing here changes a title figure.
 

@@ -1,7 +1,7 @@
 {
- "ran_at_utc": "2026-11-10T23:19:56Z",
+ "ran_at_utc": "2026-11-10T23:30:14Z",
  "inputs": {
-  "report/after-reports/after-report-2026-11-10-audit-f3-f5-f6.md": "f9001c9c55f9a7e6371102e405732d7ade02a387d6f109ec181a2b90cd28ff68",
+  "report/after-reports/after-report-2026-11-10-audit-f3-f5-f6.md": "b742ce3c6592880f2244516e838f07789209326f13df0e060f4f5542880ab391",
   "../wtsd/report/after-reports/redteam-2026-11-09-season/sweep.json": "7cebe2a3101d6d88b154c99b3082d5819197193ddb2be591d0c3b6d479d2a305"
  },
  "gates": [
@@ -59,7 +59,7 @@
   },
   {
    "name": "touched tests",
-   "cmd": "bash -c 'cd scripts && python3 -m unittest test_decision_log test_title_watch test_week_matchup test_lineup_log test_morning 2>&1 | tail -1'",
+   "cmd": "bash -c 'cd scripts && python3 -m unittest test_decision_log test_title_watch test_week_matchup test_lineup_log test_morning test_season_deck 2>&1 | tail -1'",
    "cwd": ".",
    "pass_re": "^OK",
    "exit": 0,
@@ -125,5 +125,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "04b8a322f5ed099c030507cc9f54f25ac4a93657"
+ "base_commit": "18f386284e8c9cb9217b8d2d0e4dc98bffad3dbe"
 }
