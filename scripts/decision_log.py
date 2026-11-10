@@ -102,11 +102,19 @@ def brief_row(brief, rows, made_at=None, backfilled=False):
 
 
 def session_row(rows, date, add, drop, d_title, alternatives=None, note="", record=None, kind=None, made_at=None,
-                supersedes=None, basis=None, backfilled=False):
+                supersedes=None, basis=None, backfilled=False, moves=None):
+    """moves (F6, owner 2026-11-10): the legs [{add, drop}, ...] of a package of two or more moves advised together.
+    The row is one recommendation of kind "package": add/drop carry the first leg, basis.d_title the package's value."""
+    if moves is not None:
+        if len(moves) < 2 or not all(m.get("add") and m.get("drop") for m in moves):
+            raise LogError("a package needs two or more moves, each with an add and a drop")
+        add, drop, kind = moves[0]["add"], moves[0]["drop"], "package"
     kind = kind or ("add_drop" if add and drop else "add_only" if add else "drop_only" if drop else "hold")
     row = {"id": next_id(rows, "S", date), "date": date, "made_at": made_at or now(), "source": "session", "kind": kind,
            "add": add, "drop": drop, "alternatives": alternatives or [], "horizon_days": HORIZON_DAYS,
            "basis": dict(basis or {}, d_title=d_title), "note": note, "record": record}
+    if moves is not None:
+        row["moves"] = [dict(add=m["add"], drop=m["drop"]) for m in moves]
     if supersedes:
         row["supersedes"] = supersedes
     if backfilled:
@@ -127,9 +135,10 @@ def _date_of_record(path):
 
 
 def _pairs(r):
-    """[(label, add, drop)]: the top pair, then each alternative as alt1, alt2, ... (an alternative without its own add
-    shares the top pair's add)."""
+    """[(label, add, drop)]: the top pair, then a package's other legs as pkg2, pkg3, ..., then each alternative as
+    alt1, alt2, ... (an alternative without its own add shares the top pair's add)."""
     out = [("top", r.get("add"), r.get("drop"))]
+    out += [(f"pkg{i}", m.get("add"), m.get("drop")) for i, m in enumerate((r.get("moves") or [])[1:], 2)]
     for i, a in enumerate(r.get("alternatives") or [], 1):
         out.append((f"alt{i}", a.get("add") or r.get("add"), a.get("drop")))
     return out
@@ -246,6 +255,8 @@ def main(argv=None):
     ap.add_argument("--session", action="store_true", help="append a session row (needs --date, --add/--drop, --d-title)")
     ap.add_argument("--date"); ap.add_argument("--add"); ap.add_argument("--drop"); ap.add_argument("--d-title", type=float)
     ap.add_argument("--alternatives", default="[]", help="JSON list of {add?, drop, d_title}")
+    ap.add_argument("--package", help="JSON list of {add, drop}: two or more moves advised together, logged as one row "
+                                      "(--d-title is the package's value; replaces --add/--drop)")
     ap.add_argument("--note", default=""); ap.add_argument("--record"); ap.add_argument("--supersedes")
     ap.add_argument("--made-at", help="ISO time; a back-filled row carries the time the advice was given")
     ap.add_argument("--backfilled", action="store_true")
@@ -261,11 +272,15 @@ def main(argv=None):
             row = brief_row(json.load(open(p, encoding="utf-8")), read(recs), made_at=a.made_at, backfilled=a.backfilled)
             append(recs, [row]); out.append(f"{row['id']} {row['kind']} {row.get('add')} for {row.get('drop')}")
         if a.session:
-            if not a.date or a.d_title is None or not (a.add or a.drop):
-                raise LogError("--session needs --date, --d-title and --add and/or --drop")
+            pkg = json.loads(a.package) if a.package else None
+            if not a.date or a.d_title is None or not (a.add or a.drop or pkg):
+                raise LogError("--session needs --date, --d-title and --add and/or --drop (or --package)")
+            if pkg and (a.add or a.drop):
+                raise LogError("--package replaces --add/--drop: give one or the other")
             row = session_row(read(sess), a.date, a.add, a.drop, a.d_title, json.loads(a.alternatives), a.note, a.record,
-                              made_at=a.made_at, supersedes=a.supersedes, backfilled=a.backfilled)
-            append(sess, [row]); out.append(f"{row['id']} {row['kind']} {a.add} for {a.drop} ({a.d_title:+.2f})")
+                              made_at=a.made_at, supersedes=a.supersedes, backfilled=a.backfilled, moves=pkg)
+            what = " + ".join(f"{m['add']} for {m['drop']}" for m in pkg) if pkg else f"{a.add} for {a.drop}"
+            append(sess, [row]); out.append(f"{row['id']} {row['kind']} {what} ({a.d_title:+.2f})")
         if a.moves:
             rows = moves_rows(a.news_dir, read(moves), recommendations(recs, sess), backfilled=a.backfilled)
             append(moves, rows)

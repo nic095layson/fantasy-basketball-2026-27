@@ -143,6 +143,11 @@ def steps(date, fetch=True, seasons=10000, since=None):
            dict(name="preview staleness", cmd=[PY, os.path.join(HERE, "weekly_preview.py"), "--week", str(_week_of(date)),
                                                "--stale-note", date], cwd=KIT,
                 pass_re=r"^WEEKLY PREVIEW: PASS", env={}, fatal=False)] if datetime.date.fromisoformat(date).weekday() == 0 else []) + [
+           # owner 2026-11-10 (audit item F5): the day's title share beside the brief before it; when it moved by
+           # more than the sampling error of the difference, the kit merges and roster moves between the two runs
+           # are named; display only, non-fatal
+           dict(name="title watch", cmd=[PY, os.path.join(HERE, "title_watch.py"), "--date", date], cwd=KIT,
+                pass_re=r"^TITLE WATCH: PASS", env={}, fatal=False),
            # owner 2026-10-21: the week's categories to date + projected, for the deck's Today tab; non-fatal (the
            # deck then draws a "no record" line instead of the card)
            dict(name="week matchup", cmd=[PY, os.path.join(HERE, "week_matchup.py"), "--date", date], cwd=KIT,
