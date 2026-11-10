@@ -474,7 +474,7 @@ def this_week_block(state, by, me_now, opp_now, opp_rem, by_value, fas, sched, d
     rows = [r for r in scored if r["games"] > 0]
     no_games = sorted(r["add"] for r in scored if r["games"] == 0)
     cv = CG.arena.SEASON_CV
-    ros = {t["seat"]: [by[p["player"]] for p in t["players"] if p["slot"] != "IL" and p["player"] in by] for t in state["teams"]}
+    ros = {t["seat"]: CG.team_roster(t, by, strict=False) for t in state["teams"]}  # the simulator's build (2026-11-10)
     opp = [CG.arena.team_week_model(r, cv) for s, r in ros.items() if s != CG.OWNER_SEAT]
     mine = ros[CG.OWNER_SEAT]
     base = CG.pwins(CG.arena.team_week_model(mine, cv), opp)

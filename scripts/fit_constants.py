@@ -200,7 +200,7 @@ def team_week_rows(week, weeks_dir=WEEKS, snapshots=SNAPSHOTS):
         team = next((x for x in state["teams"] if x["seat"] == seat), None)
         if team is None:
             skipped.append(f"seat {seat} not in the state snapshot"); continue
-        ros = [by[p["player"]] for p in team["players"] if p.get("slot") != "IL" and p["player"] in by]
+        ros = CG.team_roster(team, by, strict=False)  # the simulator's build: auto-row players count (2026-11-10)
         missing = [p["player"] for p in team["players"] if p.get("slot") != "IL" and p["player"] not in by]
         if not ros:
             skipped.append(f"{name}: no lined players"); continue
@@ -232,7 +232,9 @@ def run(week, weeks_dir=WEEKS, snapshots=SNAPSHOTS, accuracy=ACCURACY, out_dir=O
                                  "(cats independent under no shock, A2); shock = sqrt(excess); bootstrap SE over team-weeks",
                            availability="pooled share of team games played per assumed tier, binomial SE; from report/accuracy.json",
                            board_comparison="realized tier/healthy ratio, delta-method SE, beside deck, simulator and kit-board ratios; frozen preseason tags",
-                           inputs="data/weeks/week_N.json actuals; report/accuracy/lines_weekN.csv + state_weekN.json for the model"),
+                           inputs="data/weeks/week_N.json actuals; report/accuracy/lines_weekN.csv + state_weekN.json for the model",
+                           rosters="co_gm.team_roster since 2026-11-10: active players plus the team's unpooled players the week's "
+                                   "lines carry (auto season lines). Weeks 1-3 have no such player, so their rows are as first fitted"),
                proposes_only=True)
     write_fit(os.path.join(out_dir, f"fit_week{week}.json"), rec)
     with open(os.path.join(os.path.dirname(out_dir.rstrip("/")), "fits.md"), "w", encoding="utf-8") as f:
