@@ -1,52 +1,52 @@
 {
- "ran_at_utc": "2026-11-10T22:48:50Z",
+ "ran_at_utc": "2026-11-10T23:03:21Z",
  "inputs": {
-  "report/after-reports/after-report-2026-11-10-category-grades-adds.md": "a51c9871ec90661624ed6df1c6acdeeae423f9170161bfb421e43ff56ac2394b",
+  "report/after-reports/after-report-2026-11-10-playoff-games-faab.md": "5a93acea5b12da627b9145f398ca51daa7498e95609d6c57053a1ce9678f0e3a",
   "../wtsd/report/after-reports/redteam-2026-11-09-season/sweep.json": "7cebe2a3101d6d88b154c99b3082d5819197193ddb2be591d0c3b6d479d2a305"
  },
  "gates": [
   {
    "name": "kit check_report",
-   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/kit-c/report/after-reports/after-report-2026-11-10-category-grades-adds.md",
+   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/kit-b/report/after-reports/after-report-2026-11-10-playoff-games-faab.md",
    "cwd": ".",
    "pass_re": "^REPORT GATE: PASS",
    "exit": 0,
-   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-11-10-category-grades-adds.md (structure, publication rule, pull-log row)",
+   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-11-10-playoff-games-faab.md (structure, publication rule, pull-log row)",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "REPORT GATE: PASS \u2014 after-report-2026-11-10-category-grades-adds.md (structure, publication rule, pull-log row)"
+    "REPORT GATE: PASS \u2014 after-report-2026-11-10-playoff-games-faab.md (structure, publication rule, pull-log row)"
    ]
   },
   {
    "name": "deck judgment_open_items --check-report",
-   "cmd": "/usr/local/bin/python3 scripts/judgment_open_items.py --check-report /home/user/kit-c/report/after-reports/after-report-2026-11-10-category-grades-adds.md",
+   "cmd": "/usr/local/bin/python3 scripts/judgment_open_items.py --check-report /home/user/kit-b/report/after-reports/after-report-2026-11-10-playoff-games-faab.md",
    "cwd": "../yahoo-fantasy-basketball",
    "pass_re": "^receipts check PASS",
    "exit": 0,
-   "pass_line": "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-11-10-category-grades-adds.md",
+   "pass_line": "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-11-10-playoff-games-faab.md",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-11-10-category-grades-adds.md"
+    "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-11-10-playoff-games-faab.md"
    ]
   },
   {
    "name": "deck repeat_market_check --check-report",
-   "cmd": "/usr/local/bin/python3 scripts/repeat_market_check.py --check-report /home/user/kit-c/report/after-reports/after-report-2026-11-10-category-grades-adds.md",
+   "cmd": "/usr/local/bin/python3 scripts/repeat_market_check.py --check-report /home/user/kit-b/report/after-reports/after-report-2026-11-10-playoff-games-faab.md",
    "cwd": "../yahoo-fantasy-basketball",
    "pass_re": "^REPEAT-NAME CHECK: PASS",
    "exit": 0,
-   "pass_line": "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-11-10-category-grades-adds.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)",
+   "pass_line": "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-11-10-playoff-games-faab.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-11-10-category-grades-adds.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)"
+    "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-11-10-playoff-games-faab.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)"
    ]
   },
   {
    "name": "claim receipts",
-   "cmd": "/usr/local/bin/python3 /home/user/kit-c/scripts/independent_audit/claim_receipts.py /home/user/kit-c/report/after-reports/after-report-2026-11-10-category-grades-adds.md",
+   "cmd": "/usr/local/bin/python3 /home/user/kit-b/scripts/independent_audit/claim_receipts.py /home/user/kit-b/report/after-reports/after-report-2026-11-10-playoff-games-faab.md",
    "cwd": ".",
    "pass_re": "^CLAIM RECEIPTS: (PASS|ADVISORY)",
    "exit": 0,
@@ -59,7 +59,7 @@
   },
   {
    "name": "touched tests",
-   "cmd": "bash -c 'cd scripts && python3 -m unittest test_category_grade test_scoreboard_intake test_flaim_live test_week_matchup test_season_deck test_decision_card test_morning 2>&1 | tail -1'",
+   "cmd": "bash -c 'cd scripts && python3 -m unittest test_season_deck 2>&1 | tail -1'",
    "cwd": ".",
    "pass_re": "^OK",
    "exit": 0,
@@ -72,7 +72,7 @@
   },
   {
    "name": "redteam constants",
-   "cmd": "/usr/local/bin/python3 /home/user/kit-c/scripts/redteam/check_constants.py --deck /home/user/yahoo-fantasy-basketball",
+   "cmd": "/usr/local/bin/python3 /home/user/kit-b/scripts/redteam/check_constants.py --deck /home/user/yahoo-fantasy-basketball",
    "cwd": ".",
    "pass_re": "^CONSTANTS CHECK: PASS",
    "exit": 0,
@@ -85,7 +85,7 @@
   },
   {
    "name": "redteam bands",
-   "cmd": "/usr/local/bin/python3 /home/user/kit-c/scripts/redteam/check_bands.py --report /home/user/kit-c/report/after-reports/after-report-2026-11-10-category-grades-adds.md --sweep /home/user/wtsd/report/after-reports/redteam-2026-11-09-season/sweep.json",
+   "cmd": "/usr/local/bin/python3 /home/user/kit-b/scripts/redteam/check_bands.py --report /home/user/kit-b/report/after-reports/after-report-2026-11-10-playoff-games-faab.md --sweep /home/user/wtsd/report/after-reports/redteam-2026-11-09-season/sweep.json",
    "cwd": ".",
    "pass_re": "^BANDS CHECK: PASS",
    "exit": 0,
@@ -98,7 +98,7 @@
   },
   {
    "name": "redteam attacks",
-   "cmd": "/usr/local/bin/python3 /home/user/kit-c/scripts/redteam/run_attacks.py --check --deck /home/user/yahoo-fantasy-basketball",
+   "cmd": "/usr/local/bin/python3 /home/user/kit-b/scripts/redteam/run_attacks.py --check --deck /home/user/yahoo-fantasy-basketball",
    "cwd": ".",
    "pass_re": "^ATTACKS CHECK: PASS",
    "exit": 0,
@@ -111,7 +111,7 @@
   },
   {
    "name": "kit check_claims --gate",
-   "cmd": "/usr/local/bin/python3 /home/user/kit-c/scripts/check_claims.py --gate",
+   "cmd": "/usr/local/bin/python3 /home/user/kit-b/scripts/check_claims.py --gate",
    "cwd": ".",
    "pass_re": "^CLAIM GATE: PASS",
    "exit": 0,
@@ -125,5 +125,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "9bf9383b15e605f5269c4bc0f6b7deeee3d4ae0e"
+ "base_commit": "04b8a322f5ed099c030507cc9f54f25ac4a93657"
 }
