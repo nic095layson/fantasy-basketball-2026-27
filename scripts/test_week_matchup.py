@@ -771,6 +771,59 @@ class YahooFreeAgents(unittest.TestCase):
         self.assertEqual([x["name"] for x in notp], ["Hugo González"])
 
 
+class TeamKeys(unittest.TestCase):
+    """F3 (owner 2026-11-10): a team is followed by its Yahoo team key, so a rename cannot lose its records."""
+    K = "478.l.36464.t.11"
+
+    def pulls(self):
+        d = tempfile.mkdtemp()
+        def pin(day, name, lineup_day, extra=None):
+            rec = dict(source="flaim", rosters={self.K: dict(teamKey=self.K, teamName=name, players=[dict(name="A One"), dict(name="B Two")])},
+                       daily={self.K: {lineup_day: dict(teamKey=self.K, teamName=name, players=[dict(name="A One", selectedPosition="PG")])}},
+                       matchups={}, free_agents=None)
+            rec.update(extra or {})
+            p = os.path.join(d, f"pull_{day}.json")
+            json.dump(rec, open(p, "w"))
+            return p
+        pin("2026-11-10", "Old Name", "2026-11-09")
+        return pin("2026-11-11", "New Name", "2026-11-10")
+
+    def test_dated_lineups_follow_the_key_across_a_rename(self):
+        run = self.pulls()
+        by_name = WM.week_lineups(run, "2026-11-09", "2026-11-11")
+        self.assertEqual(sorted(by_name), ["New Name", "Old Name"])                 # the name splits the week in two
+        by_key = WM.week_lineups(run, "2026-11-09", "2026-11-11", by="key")
+        self.assertEqual(sorted(by_key[self.K]), ["2026-11-09", "2026-11-10"])
+
+    def test_team_key_reads_the_pulled_roster_and_survives_a_stale_state_name(self):
+        pull = json.load(open(self.pulls()))
+        self.assertEqual(WM.team_key(dict(name="New Name", players=[]), pull), self.K)
+        stale = dict(name="Old Name", players=[dict(player="A One"), dict(player="B Two")])
+        self.assertEqual(WM.team_key(stale, pull), self.K)                          # by roster overlap (yahoo_name)
+        self.assertIsNone(WM.team_key(dict(name="Nobody", players=[dict(player="Z")]), pull))
+        self.assertIsNone(WM.team_key(dict(name="New Name", players=[]), dict(rosters={})))
+        self.assertIsNone(WM.team_key(dict(name="New Name", players=[]), None))
+
+    def test_team_lineups_use_the_key_and_fall_back_to_the_name(self):
+        run = self.pulls()
+        pull = json.load(open(run))
+        team = dict(name="New Name", players=[])
+        got = WM.team_lineups(team, pull, run, "2026-11-09", "2026-11-11", "New Name")
+        self.assertEqual(sorted(got), ["2026-11-09", "2026-11-10"])
+        # a pull with no rosters gives no key: the name is used, as before
+        got = WM.team_lineups(team, dict(rosters={}), run, "2026-11-09", "2026-11-11", "New Name")
+        self.assertEqual(sorted(got), ["2026-11-10"])
+
+    def test_the_adds_counter_finds_my_key_under_a_stale_state_name(self):
+        pull = json.load(open(self.pulls()))
+        pull["league_info"] = dict(maxWeeklyAdds=4)
+        d = tempfile.mkdtemp(); tx = os.path.join(d, "tx.json")
+        json.dump(dict(rows=[dict(type="add", date="2026-11-10", team_ids=[self.K], players_added=[dict(name="A One")], players_dropped=[])]), open(tx, "w"))
+        stale = dict(name="Old Name", players=[dict(player="A One"), dict(player="B Two")])
+        r = WM._adds_block("2026-11-11", "2026-11-09", pull, dict(league_tx=tx), stale)
+        self.assertEqual((r["used"], r["left"]), (1, 3))
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
 

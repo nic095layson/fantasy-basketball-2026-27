@@ -112,6 +112,8 @@ def owner_word(diff, line=LINE):
 def grade(rec, moves, as_of, boards=BOARDS, actuals=ACTUALS, window=WINDOW_DAYS, line=LINE, min_games=MIN_GAMES, aliases=None):
     """One grade row for a recommendation as of `as_of` (ISO date). Never raises on a missing input: the row says
     what is missing and stays PENDING."""
+    if rec.get("kind") == "package" and rec.get("moves"):
+        return grade_package(rec, moves, as_of, boards, actuals, window, line, min_games, aliases)
     mv = next((m for m in moves if m.get("matches") == rec["id"] and m.get("match_kind") in ("exact", "add_match_drop_differs")), None)
     # owner 2026-11-09 (runner pick C1): graded against the pair the move matched (a row logged before carries none: top)
     pair = (mv or {}).get("matched_pair") or "top"
@@ -172,6 +174,45 @@ def grade(rec, moves, as_of, boards=BOARDS, actuals=ACTUALS, window=WINDOW_DAYS,
     else:
         row["verdict"] = verdict_word(gap_end, line)
         if owner_drop:
+            row["owner_verdict"] = owner_word(row["owner_minus_kit"], line)
+    return row
+
+
+def grade_package(rec, moves, as_of, boards=BOARDS, actuals=ACTUALS, window=WINDOW_DAYS, line=LINE, min_games=MIN_GAMES, aliases=None):
+    """F6 (owner 2026-11-10): a package is graded as one recommendation. Each leg is graded as a pair on its own
+    window (it opens on the owner's move for that leg); the package's gap is the sum of the legs' gaps, read against
+    the same line; any leg still PENDING keeps the whole package PENDING."""
+    legs = []
+    for i, m in enumerate(rec["moves"], 1):
+        label = "top" if i == 1 else f"pkg{i}"
+        mine = [dict(x, matched_pair="top") for x in moves
+                if x.get("matches") == rec["id"] and (x.get("matched_pair") or "top") == label]
+        leg = grade(dict(rec, kind="add_drop", add=m["add"], drop=m["drop"], alternatives=[], moves=None), mine,
+                    as_of, boards, actuals, window, line, min_games, aliases)
+        legs.append(dict(leg, leg=label))
+    mvs = [g["move"] for g in legs if g.get("move")]
+    row = {"rec": rec["id"], "source": rec.get("source"), "kind": "package", "rec_date": rec["date"],
+           "kit_add": " + ".join(m["add"] for m in rec["moves"]), "kit_drop": " + ".join(m["drop"] for m in rec["moves"]),
+           "d_title_at_rec": (rec.get("basis") or {}).get("d_title"), "matched_pair": "top", "as_of": as_of,
+           "window_days": window, "line": line, "min_games": min_games, "inputs": legs[0].get("inputs") or {}, "legs": legs,
+           "window": [min(g["window"][0] for g in legs), max(g["window"][1] for g in legs)],
+           "move": mvs and {"id": "+".join(m["id"] for m in mvs), "added": [a for m in mvs for a in m["added"]],
+                            "dropped": [d for m in mvs for d in m["dropped"]], "match_kind": "package"} or None}
+    gaps = [g.get("kit_gap_end") for g in legs]
+    if all(x is not None for x in gaps):
+        row["kit_gap_end"] = round(sum(gaps), 3)
+        own = [g["owner_minus_kit"] for g in legs if g.get("owner_minus_kit") is not None]
+        if own:
+            row["owner_minus_kit"] = round(sum(own), 3)
+        gm = [g["games"] for g in legs if g.get("games")]
+        if len(gm) == len(legs):
+            row["games"] = {k: {"name": row[k], "games": min(g[k]["games"] for g in gm)} for k in ("kit_add", "kit_drop")}
+    open_ = [g for g in legs if g.get("verdict") == "PENDING"]
+    if open_:
+        row.update(verdict="PENDING", note="; ".join(f"{g['kit_add']} for {g['kit_drop']}: {g.get('note', 'pending')}" for g in open_))
+    else:
+        row["verdict"] = verdict_word(row["kit_gap_end"], line)
+        if "owner_minus_kit" in row:
             row["owner_verdict"] = owner_word(row["owner_minus_kit"], line)
     return row
 

@@ -168,10 +168,11 @@ def to_date(roster, days, lineups=None, recs=None):
     return dict(totals=t, days=out, players=per)
 
 
-def week_lineups(pull_path, ws, date):
+def week_lineups(pull_path, ws, date, by="name"):
     """{Yahoo team name: {date: dated roster}} for the week's days before `date`, from the dated rosters pinned in
     this week's pulls (data/source/flaim/pull_<date>.json) and the run's own pull, read last: a lineup one morning
-    pinned is read by every later run of the week, and the latest pin of a day wins."""
+    pinned is read by every later run of the week, and the latest pin of a day wins. by="key" (audit item F3, owner
+    2026-11-10): keyed by Yahoo team key instead, so a team renamed mid-week keeps the days pinned under its old name."""
     if not pull_path:
         return {}
     run = os.path.abspath(pull_path)
@@ -180,11 +181,30 @@ def week_lineups(pull_path, ws, date):
     out = {}
     for f in earlier + [run]:
         pull, _ = load_pull(f)
-        for by_day in ((pull or {}).get("daily") or {}).values():
+        for key, by_day in ((pull or {}).get("daily") or {}).items():
             for day, r in by_day.items():
                 if ws <= day < date:
-                    out.setdefault(r.get("teamName"), {})[day] = r
+                    out.setdefault((r.get("teamKey") or key) if by == "key" else r.get("teamName"), {})[day] = r
     return out
+
+
+def team_key(team, pull):
+    """The team's Yahoo team key: the key of the pulled roster carrying its Yahoo name (yahoo_name: the league-state
+    name, or the roster holding most of its players when the state's name is stale). None with no such roster."""
+    rosters = (pull or {}).get("rosters") or {}
+    if not rosters:
+        return None
+    name = yahoo_name(team, pull)
+    return next((r.get("teamKey") or k for k, r in rosters.items() if r.get("teamName") == name), None)
+
+
+def team_lineups(team, pull, pull_path, ws, date, name):
+    """{date: dated roster} for one team this week: by its team key when the pull gives one (F3), by its Yahoo name
+    otherwise (a pull without rosters, as before)."""
+    key = team_key(team, pull)
+    if key:
+        return week_lineups(pull_path, ws, date, by="key").get(key)
+    return week_lineups(pull_path, ws, date).get(name)
 
 
 def per_game(ln):
@@ -226,8 +246,13 @@ def adds_this_week(ws, date, my_key, tx_rows, moves, limit):
                 players=players, week_start=ws, note="; ".join(notes) or None)
 
 
-def _adds_block(date, ws, pull, paths, me_name):
-    my_key = next((k for k, r in ((pull or {}).get("rosters") or {}).items() if r.get("teamName") == me_name), None)
+def _adds_block(date, ws, pull, paths, me):
+    """me: the owner's league-state team (F3: its key is read through team_key, so a stale state name still finds it);
+    a bare name is still accepted and matched as before."""
+    if isinstance(me, dict):
+        my_key = team_key(me, pull)
+    else:
+        my_key = next((k for k, r in ((pull or {}).get("rosters") or {}).items() if r.get("teamName") == me), None)
     tx = []
     if paths.get("league_tx") and os.path.exists(paths["league_tx"]):
         with open(paths["league_tx"], encoding="utf-8") as f:
@@ -760,10 +785,10 @@ def build(date, paths):
     if pull is not None:
         y_me, y_opp, y_left, y_names, why = yahoo_to_date(pull, wk, me_t, opp_t)
     # the rebuild reads each day's Yahoo lineup where one is pinned this week, today's roster otherwise
-    lineups = week_lineups(paths.get("yahoo_pull"), ws, date)
     on_yahoo = y_names or {s: (yahoo_name(t, pull) if pull is not None else t["name"]) for s, t in (("me", me_t), ("opp", opp_t))}
-    me_td = to_date(mine, boxes, lineups.get(on_yahoo["me"]), recs)
-    opp_td = to_date(theirs, boxes, lineups.get(on_yahoo["opp"]), recs)
+    # audit item F3 (owner 2026-11-10): followed by team key, so a mid-week rename keeps the earlier days
+    me_td = to_date(mine, boxes, team_lineups(me_t, pull, paths.get("yahoo_pull"), ws, date, on_yahoo["me"]), recs)
+    opp_td = to_date(theirs, boxes, team_lineups(opp_t, pull, paths.get("yahoo_pull"), ws, date, on_yahoo["opp"]), recs)
     if y_me is not None:
         diffs = [dict(side=side, stat=k, yahoo=y[k], rebuild=r["totals"][k])
                  for side, y, r in (("me", y_me, me_td), ("opp", y_opp, opp_td)) for k in STATS if y[k] != r["totals"][k]]
@@ -874,7 +899,7 @@ def build(date, paths):
     board = dict(score=dict(me=lt.count("me"), opp=lt.count("opp"), tie=lt.count("tie")),
                  me=board_side(me_t, me_td, me_now, today_g), opp=board_side(opp_t, opp_td, opp_now, today_g))
     W = sum(1 for x in lead.values() if x == "me"); L = sum(1 for x in lead.values() if x == "opp")
-    adds = _adds_block(date, ws, pull, paths, me_t["name"])
+    adds = _adds_block(date, ws, pull, paths, me_t)
     paths_used = dict(paths, status_file=status_file, pool=os.environ.get("SEASON_POOL") or "v69 preseason pool")
     paths_used.pop("pairs", None)
     checks = (pair_checks(paths["pairs"], mine, fas, sched, date, dict(avail, **fa_avail), lines, me_now, opp_now, opp_rem,

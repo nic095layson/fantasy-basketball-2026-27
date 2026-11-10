@@ -23,7 +23,7 @@ class Steps(unittest.TestCase):
         # 2026-10-21: "preflight" became step 0 (independent-audit adoption); the indices below moved by one.
         # 2026-10-23 (owner, Build 1): "league table" after the week matchup, before the deck that draws it
         # 2026-10-26 (owner, "results so far"): "league pairings" before the brief that runs the simulator
-        self.assertEqual([s["name"] for s in st], ["preflight", "league live", "matchup live", "box scores 2026-10-20", "tag outcomes", "lineup log", "accuracy render", "season lines", "minutes line", "season board", "status feed", "transactions", "league pairings", "il return", "daily brief", "decision log", "week matchup", "decision card", "league table", "form board", "season deck"])
+        self.assertEqual([s["name"] for s in st], ["preflight", "league live", "matchup live", "box scores 2026-10-20", "tag outcomes", "lineup log", "accuracy render", "season lines", "minutes line", "season board", "status feed", "transactions", "league pairings", "il return", "daily brief", "decision log", "title watch", "week matchup", "decision card", "league table", "form board", "season deck"])
         self.assertIn("2026-10-20", st[3]["cmd"])
         self.assertIn("2026-10-20", st[4]["cmd"])   # 2026-10-27: "tag outcomes" grades yesterday; indices below moved by one
         self.assertIn("2026-10-21", st[5]["cmd"])    # 2026-11-05: "lineup log" takes the morning date and grades the day before
