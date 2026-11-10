@@ -1,5 +1,5 @@
 {
- "ran_at_utc": "2026-11-10T21:56:45Z",
+ "ran_at_utc": "2026-11-10T22:34:25Z",
  "inputs": {
   "report/after-reports/after-report-2026-11-10-decision-card.md": "366280b4d22a63f8b1f4c0628af47661e10b8f3465feb0b9a65d4c5d1009aba2",
   "../wtsd/report/after-reports/redteam-2026-11-09-season/sweep.json": "7cebe2a3101d6d88b154c99b3082d5819197193ddb2be591d0c3b6d479d2a305"
@@ -59,7 +59,7 @@
   },
   {
    "name": "touched tests",
-   "cmd": "bash -c 'cd scripts && python3 -m unittest test_decision_card test_daily_brief test_week_matchup test_morning test_season_deck 2>&1 | tail -1'",
+   "cmd": "bash -c 'cd scripts && python3 -m unittest test_decision_card test_daily_brief test_week_matchup test_morning test_season_deck test_run_watch 2>&1 | tail -1'",
    "cwd": ".",
    "pass_re": "^OK",
    "exit": 0,
@@ -125,5 +125,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "a1c91caa99bc712f6c7ffc5d3fbd1bfc3ec7b172"
+ "base_commit": "531d89a1f77e2b1a3c2842306ed75e8028a4bfef"
 }
