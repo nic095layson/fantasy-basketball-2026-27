@@ -192,6 +192,27 @@ def per_game(ln):
                 tpm=ln["tpm"], pts=ln["pts"], reb=ln["reb"], ast=ln["ast"], stl=ln["stl"], blk=ln["blk"], tov=ln["tov"])
 
 
+def pair_checks(pairs, mine, fas, sched, today, avail, lines, me_now, opp_now, opp_rem, base_p5):
+    """Owner 2026-11-10 (decision card, P3): the brief's own pairs on this week's matchup. As the pickup scan counts
+    every add: today's games on the roster as it stands, the swap from tomorrow. [{add, drop, d_exp, p_5plus,
+    d_p_5plus, games}] or {add, drop, skipped: why}. Display only."""
+    now_s, rest = _split(sched, today)
+    r_today = remaining(mine, now_s, avail, lines)
+    base = cat_chances(me_now, _both(r_today, remaining(mine, rest, avail, lines)), opp_now, opp_rem)
+    fa, names, out = {f["player"]: f for f in fas}, {r["player"] for r in mine}, []
+    for p in pairs:
+        why = ("add not in today's free-agent pool" if p["add"] not in fa else
+               "drop not on my active roster" if p["drop"] not in names else None)
+        if why:
+            out.append(dict(add=p["add"], drop=p["drop"], skipped=why)); continue
+        rr = remaining([r for r in mine if r["player"] != p["drop"]] + [fa[p["add"]]], rest, avail, lines)
+        ch = cat_chances(me_now, _both(r_today, rr), opp_now, opp_rem)
+        p5 = win_week_chance([ch[c] for c in CATS])
+        out.append(dict(add=p["add"], drop=p["drop"], d_exp=sum(ch[c] - base[c] for c in CATS), p_5plus=p5,
+                        d_p_5plus=p5 - base_p5, games=rr["games"].get(p["add"], 0)))
+    return out
+
+
 def _status_range(mine, sched, avail, lines, me_now, opp_now, opp_rem, me_rem):
     """Owner 2026-11-10 (audit F2, council ruling): the card's figure beside its two ends when one of my players with
     a projected game left is tagged between out and healthy (0 < availability < 1, a Questionable). plays: every such
@@ -802,13 +823,16 @@ def build(date, paths):
                  me=board_side(me_t, me_td, me_now, today_g), opp=board_side(opp_t, opp_td, opp_now, today_g))
     W = sum(1 for x in lead.values() if x == "me"); L = sum(1 for x in lead.values() if x == "opp")
     paths_used = dict(paths, status_file=status_file, pool=os.environ.get("SEASON_POOL") or "v69 preseason pool")
+    paths_used.pop("pairs", None)
+    checks = (pair_checks(paths["pairs"], mine, fas, sched, date, dict(avail, **fa_avail), lines, me_now, opp_now, opp_rem,
+                          win_week_chance([chance[c] for c in CATS])) if paths.get("pairs") else None)
     return dict(
         date=date, week=wk, window=[ws, we], me=dict(name=me_t["name"], seat=me_t["seat"]),
         opponent=dict(name=opp_t["name"], seat=opp_t["seat"]), league_state_as_of=state.get("as_of"),
         to_date_days=read, missing_days=missing, to_date_source=src, remaining_days=[d for d in rem_days if sched[d]],
         status_file=os.path.basename(status_file) if status_file else None, cats=cats,
         projected=dict(wins=W, losses=L, ties=len(CATS) - W - L), exp_cats=sum(chance[c] for c in CATS),
-        p_5plus=win_week_chance([chance[c] for c in CATS]), status_range=status_range,
+        p_5plus=win_week_chance([chance[c] for c in CATS]), status_range=status_range, pair_checks=checks,
         totals=dict(me=dict(to_date=me_now, rebuild_to_date=me_td["totals"],
                             remaining={k: round(x, 2) for k, x in me_rem["totals"].items()}),
                     opp=dict(to_date=opp_now, rebuild_to_date=opp_td["totals"],
@@ -871,6 +895,15 @@ def _last_team_game(name, pool_team, recent):
     return team, None
 
 
+def brief_pairs(date, briefs_dir=None):
+    """The day's brief's top pairs [{add, drop}], or [] (no brief, a hold day): the pairs the decision card checks."""
+    p = os.path.join(briefs_dir or OUTDIR, f"brief_{date}.json")
+    if not os.path.exists(p):
+        return []
+    with open(p, encoding="utf-8") as f:
+        return [dict(add=x["add"], drop=x["drop"]) for x in (json.load(f).get("waiver_top") or [])]
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--date", required=True)
@@ -883,7 +916,7 @@ def main():
     pull = a.yahoo_pull or os.path.join(PULLS, f"pull_{a.date}.json")
     try:
         rec = build(a.date, dict(state=a.state, schedule=a.schedule, games=a.games, actuals=a.actuals, status=a.status_dir,
-                                 yahoo_pull=pull))
+                                 yahoo_pull=pull, pairs=brief_pairs(a.date, a.out_dir)))
     except Exception as e:  # noqa: BLE001 — any failure is one FAIL line; the deck then draws no card
         print(f"WEEK MATCHUP: FAIL — {a.date}: {type(e).__name__}: {e}")
         return 1

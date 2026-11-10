@@ -862,3 +862,25 @@ class StatusRange(Record):
         f = os.path.join(self.d, "status", "status_2026-10-21_pm.json")
         dump(dict(date="2026-10-21", rows=[dict(player="Tyrese Maxey", availability=0.5, tier="questionable")]), f)
         self.assertIsNone(WM.build("2026-10-21", dict(self.paths, status_file=f))["status_range"])
+
+
+class PairChecks(Record):
+    """Owner 2026-11-10 (decision card, P3): the week card scores the brief's own pairs (the add counted from
+    tomorrow, as its pickup scan counts every add), so the card can show this week beside the season."""
+    def test_a_named_pair_is_scored_and_the_card_is_otherwise_unchanged(self):
+        plain = WM.build("2026-10-21", self.paths)
+        rec = WM.build("2026-10-21", dict(self.paths, pairs=[dict(add="Austin Reaves", drop="Derrick White")]))
+        self.assertIsNone(plain["pair_checks"])
+        c = rec["pair_checks"][0]
+        self.assertEqual((c["add"], c["drop"]), ("Austin Reaves", "Derrick White"))
+        self.assertAlmostEqual(c["d_p_5plus"], c["p_5plus"] - rec["p_5plus"], places=9)
+        self.assertGreater(c["d_exp"], 0)        # White has no game left this week; Reaves (LAL) plays 10-23
+        self.assertEqual(c["games"], 1)
+        self.assertEqual(rec["p_5plus"], plain["p_5plus"]); self.assertEqual(rec["cats"], plain["cats"])
+
+    def test_a_pair_the_card_cannot_score_says_why(self):
+        rec = WM.build("2026-10-21", dict(self.paths, pairs=[dict(add="No Such Player", drop="Derrick White"),
+                                                             dict(add="Austin Reaves", drop="Not Mine")]))
+        self.assertEqual([c.get("skipped") for c in rec["pair_checks"]],
+                         ["add not in today's free-agent pool", "drop not on my active roster"])
+        self.assertTrue(all(c.get("d_exp") is None for c in rec["pair_checks"]))

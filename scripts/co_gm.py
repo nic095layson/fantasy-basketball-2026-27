@@ -341,7 +341,7 @@ def sim_pool_names(path=None):
         return {r["player"] for r in csv.DictReader(f)}
 
 
-def run_league_sim(ros, seed, seasons, workdir, tag="cur", windows=None):
+def run_league_sim(ros, seed, seasons, workdir, tag="cur", windows=None, patch=None):
     # 2026-10-21 (owner option (b), data/pool_additions.csv): a rostered pickup the simulator's frozen pool lacks is left
     # out of the simulation, as an IL player is (D-IS-8), and named in the record's absent_from_sim
     # 2026-10-26 (owner, "use the season pool"): with SEASON_POOL set the simulator plays that pool (league_sim --pool),
@@ -354,12 +354,19 @@ def run_league_sim(ros, seed, seasons, workdir, tag="cur", windows=None):
     sp = os.path.join(workdir, f"_state_{tag}_{seed}.json")
     op = os.path.join(workdir, f"_sim_{tag}_{seed}.json")
     json.dump(sim_state(ros, windows), open(sp, "w", encoding="utf-8"), ensure_ascii=False)
+    # owner 2026-11-10 (decision card): an optional constants patch, handed over as the Monday sweep hands its own
+    # (league_sim --patch); the live constants are untouched and no patch means the command as before
+    pp = os.path.join(workdir, f"_patch_{tag}_{seed}.json") if patch else None
+    if pp:
+        json.dump(patch, open(pp, "w", encoding="utf-8"))
     subprocess.run([sys.executable, os.path.join(DECK, "arena", "mocks", "league_sim.py"), sp, LINES_TAG,
-                    str(seasons), str(seed), op, "--schedule", SCHEDULE, "--season-cv"] + (["--pool", pool] if pool else []),
+                    str(seasons), str(seed), op, "--schedule", SCHEDULE, "--season-cv"] + (["--pool", pool] if pool else [])
+                   + (["--patch", pp] if pp else []),
                    check=True, capture_output=True)
     rec = json.load(open(op, encoding="utf-8"))
-    os.remove(sp)
-    os.remove(op)
+    for f in (sp, op, pp):
+        if f:
+            os.remove(f)
     # absent_from_sim counts rostered active players that reached `ros` (state teams[].players, which the intake fills
     # from the deck pool + pool_additions.csv) but whose names the simulator's pool lacks; a state "unpooled" player
     # reaches `ros` only when the pool has his row (an auto season line, rosters() since 2026-11-09), and then he is in
