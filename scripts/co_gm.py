@@ -45,9 +45,26 @@ def load_pool():
     """The preseason v69 pool, or the season pool when SEASON_POOL names a deck-schema CSV (in-season tool,
     2026-10-19: data/season/pool_season.csv from season_lines.py; the brief, preview and waiver scan then run on the
     blended lines and say so)."""
+    global _POOL_LOADED
     hoops.DATA_PATH = os.environ.get("SEASON_POOL") or os.path.join(DECK, "arena", "results", f"players_{LINES_TAG}.csv")
+    _POOL_LOADED = os.path.abspath(hoops.DATA_PATH)
     P = hoops.zscores(hoops.load_players())
     return P, {p["player"]: p for p in P}
+
+
+_POOL_LOADED = None  # the pool file load_pool last read (absolute path); None before any load
+
+
+def pool_guard():
+    """Owner 2026-11-10 (audit F4): the simulator plays the pool SEASON_POOL names when it RUNS (league_sim --pool),
+    while the rosters handed to it carry the lines load_pool read earlier. If the variable changed in between, the
+    simulation would silently play another pool than the one loaded (the 11-10 title-drop trace ran two rows that
+    way). Refuse instead. No load yet: nothing to compare, nothing refused."""
+    now = os.path.abspath(os.environ.get("SEASON_POOL") or os.path.join(DECK, "arena", "results", f"players_{LINES_TAG}.csv"))
+    if _POOL_LOADED is not None and now != _POOL_LOADED:
+        raise RuntimeError(f"pool changed between load_pool and the simulator: loaded {_POOL_LOADED}, "
+                           f"the simulator would play {now}; call load_pool again after changing SEASON_POOL")
+    return None
 
 
 def rosters(state, by, include_il=False):
@@ -323,6 +340,7 @@ def run_league_sim(ros, seed, seasons, workdir, tag="cur", windows=None):
     # out of the simulation, as an IL player is (D-IS-8), and named in the record's absent_from_sim
     # 2026-10-26 (owner, "use the season pool"): with SEASON_POOL set the simulator plays that pool (league_sim --pool),
     # the lines the board plays with the pickups in them; unset, the frozen v69 pool as before
+    pool_guard()
     pool = os.path.abspath(os.environ["SEASON_POOL"]) if os.environ.get("SEASON_POOL") else None
     known = sim_pool_names(pool)
     absent = sorted(p["player"] for r in ros.values() for p in r if p["player"] not in known)
