@@ -2239,3 +2239,88 @@ class AddsLine(unittest.TestCase):
 
     def test_an_older_record_draws_no_line(self):
         self.assertNotIn("Adds this week", self.text("absent"))
+
+
+class PlayoffGamesColumn(unittest.TestCase):
+    """Owner 2026-11-10 (pick "Playoff games column"): each board row carries its NBA team's games in the fantasy
+    playoff weeks (the league schedule's playoff_weeks, counted from the season's game file); display only. The
+    simulator still plays every week at the same games per player."""
+    def setUp(self):
+        self.d = tempfile.mkdtemp(); self.fx = fixtures(self.d)
+        self.fx["games"] = os.path.join(self.d, "games.csv"); self.fx["league_schedule"] = os.path.join(self.d, "sched.json")
+        html, data, rec = SD.build(self.fx, date="2026-10-21")
+        self.team = data["board"]["board"][0]["team"]            # a pool code the fixture board really carries
+        import co_gm
+        code = {v: k for k, v in co_gm.TEAM_CODE.items()}.get(self.team, self.team)   # the schedule file's spelling
+        with open(self.fx["games"], "w") as f:
+            f.write("date,yahoo_week,visitor,home,note\n"
+                    f"2027-03-01,18,{code},XXX,\n2027-03-03,18,YYY,{code},\n2027-03-09,19,{code},YYY,\n"
+                    f"2027-03-16,20,XXX,{code},\n2027-02-20,17,{code},XXX,\n2027-03-25,21,{code},XXX,\n")
+        json.dump(dict(regular_season_weeks=17, playoff_weeks=[18, 19, 20]), open(self.fx["league_schedule"], "w"))
+
+    def test_the_rows_and_the_page_carry_the_count(self):
+        html, data, rec = SD.build(self.fx, date="2026-10-21")
+        row = data["board"]["board"][0]
+        self.assertEqual(row["po_games"], 4)                      # 2 + 1 + 1; weeks 17 and 21 are not playoff weeks
+        self.assertEqual(data["playoff"]["weeks"], [18, 19, 20]); self.assertEqual(data["playoff"]["by_team"][self.team], [2, 1, 1])
+        p = os.path.join(self.d, "deck.html"); open(p, "w", encoding="utf-8").write(html)
+        v = visible_dom(p, "Board", "pane-board")
+        self.assertEqual(v["errors"], [])
+        self.assertIn("PO G", v["text"].upper())
+        self.assertTrue(any("weeks 18" in t and "2 + 1 + 1" in t for t in v["titles"]), v["titles"][:8])
+
+    def test_a_team_with_no_game_listed_shows_a_dash_not_zero(self):
+        html, data, rec = SD.build(self.fx, date="2026-10-21")
+        other = [r for r in data["board"]["board"] if r["team"] != self.team]
+        self.assertTrue(other); self.assertTrue(all(r["po_games"] is None for r in other))
+
+    def test_without_the_files_there_is_no_column(self):
+        del self.fx["games"]
+        html, data, rec = SD.build(self.fx, date="2026-10-21")
+        self.assertIsNone(data["playoff"]); self.assertNotIn("po_games", data["board"]["board"][0])
+        p = os.path.join(self.d, "deck.html"); open(p, "w", encoding="utf-8").write(html)
+        v = visible_dom(p, "Board", "pane-board")
+        self.assertEqual(v["errors"], []); self.assertNotIn("PO G", v["text"].upper())
+
+
+class FaabBids(unittest.TestCase):
+    """Owner 2026-11-10 (pick "FAAB bid history table"): the league's winning bids from the transaction record
+    (manager_log.py pins Yahoo's faab_bid), newest first, on the League tab; display only, no bid advice."""
+    K = "478.l.36464.t."
+
+    def setUp(self):
+        self.d = tempfile.mkdtemp(); self.fx = fixtures(self.d)
+        self.fx["league_tx"] = os.path.join(self.d, "transactions.json")
+        self.fx["yahoo_pull"] = os.path.join(self.d, "pull.json")
+        self.fx["league"] = os.path.join(self.d, "league_table.json")       # the League tab draws its cards from a league record
+        json.dump(league_record(), open(self.fx["league"], "w"))
+        json.dump(dict(rows=[
+            dict(type="add", date="2026-11-10", team_ids=[self.K + "11"], players_added=[dict(name="Alex Caruso")], faab_bid=15),
+            dict(type="add", date="2026-10-26", team_ids=[self.K + "9"], players_added=[dict(name="Anthony Black")], faab_bid=100),
+            dict(type="add", date="2026-11-08", team_ids=[self.K + "11"], players_added=[dict(name="Cameron Johnson")], faab_bid=None),
+            dict(type="drop", date="2026-11-09", team_ids=[self.K + "9"], players_added=[], faab_bid=None)]), open(self.fx["league_tx"], "w"))
+        json.dump(dict(source="flaim", rosters={self.K + "11": dict(teamName="MINE", players=[]), self.K + "9": dict(teamName="ROOKS", players=[])},
+                       free_agents=dict(freeAgents=[])), open(self.fx["yahoo_pull"], "w"))
+
+    def test_the_bids_are_listed_newest_first_with_team_names(self):
+        html, data, rec = SD.build(self.fx, date="2026-10-21")
+        self.assertEqual(data["faab"]["bids"], [dict(date="2026-11-10", team="MINE", player="Alex Caruso", bid=15),
+                                                dict(date="2026-10-26", team="ROOKS", player="Anthony Black", bid=100)])
+        self.assertEqual((data["faab"]["n"], data["faab"]["low"], data["faab"]["median"], data["faab"]["high"]), (2, 15, 57.5, 100))
+        p = os.path.join(self.d, "deck.html"); open(p, "w", encoding="utf-8").write(html)
+        v = visible_dom(p, "League", "pane-league")
+        self.assertEqual(v["errors"], [])
+        for s in ("Alex Caruso", "$15", "Anthony Black", "$100", "ROOKS", "2 winning bids"):
+            self.assertIn(s, v["text"])
+        self.assertIn("WINNING BIDS", v["text"].upper())
+
+    def test_a_team_key_with_no_name_keeps_its_key_and_no_record_draws_no_card(self):
+        os.remove(self.fx["yahoo_pull"])
+        html, data, rec = SD.build(self.fx, date="2026-10-21")
+        self.assertEqual(data["faab"]["bids"][0]["team"], "team 11")
+        os.remove(self.fx["league_tx"])
+        html, data, rec = SD.build(self.fx, date="2026-10-21")
+        self.assertIsNone(data["faab"])
+        p = os.path.join(self.d, "deck.html"); open(p, "w", encoding="utf-8").write(html)
+        v = visible_dom(p, "League", "pane-league")
+        self.assertEqual(v["errors"], []); self.assertNotIn("WINNING BIDS", v["text"].upper())
