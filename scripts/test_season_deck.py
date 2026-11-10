@@ -2144,3 +2144,58 @@ class StatusRangeLine(unittest.TestCase):
             dom = today_dom(self.page(r))
             self.assertEqual(dom["errors"], [])
             self.assertNotIn("Questionable", dom["text"]); self.assertNotIn("every game", dom["text"])
+
+
+class DecisionCardDeck(unittest.TestCase):
+    """Owner 2026-11-10 (pick "Decision card + watchdog"): the Today tab draws the day's decision card when its
+    record exists: each pair in both worlds and this week, the flip line, the band line. No record, no card."""
+    CARD = dict(date="2026-10-21", seasons=10000, base=dict(never=12.3, on_time=21.9),
+                pairs=[dict(add="John Collins", drop="Kris Dunn", never=dict(title=15.7, d_title=3.44), on_time=dict(title=23.4, d_title=1.52),
+                            week=dict(d_exp=-0.05, p_5plus=0.817, d_p_5plus=-0.007)),
+                       dict(add="John Collins", drop="Cameron Johnson", never=dict(title=13.9, d_title=1.57), on_time=dict(title=24.4, d_title=2.52),
+                            week=None)],
+                order=dict(never=[], on_time=[]), rank_flip=True,
+                robust=dict(add="John Collins", drop="Kris Dunn", constant="weekly_availability", held=4, holds=True, low=2.61, high=3.94,
+                            variants=[dict(label="a", d_title=2.8)] * 4),
+                notes=[], label="Display only: the brief's ranking and the headline title share are unchanged.")
+
+    def setUp(self):
+        self.d = tempfile.mkdtemp(); self.fx = fixtures(self.d)
+
+    def page(self, card):
+        if card is not None:
+            self.fx["decision_card"] = os.path.join(self.d, "dc.json")
+            with open(self.fx["decision_card"], "w") as f:
+                json.dump(card, f)
+        html, data, rec = SD.build(self.fx, date="2026-10-21")
+        p = os.path.join(self.d, "deck.html")
+        with open(p, "w", encoding="utf-8") as f:
+            f.write(html)
+        return p, rec
+
+    def test_the_card_shows_both_worlds_the_flip_and_the_band(self):
+        p, rec = self.page(self.CARD)
+        dom = today_dom(p)
+        self.assertEqual(dom["errors"], [])
+        for s in ("Pickup check", "John Collins", "Kris Dunn", "never return", "return on time", "+3.4", "+1.5", "+2.5",
+                  "−0.7 points", "not shown", "The order changes between the two worlds", "holds in 4 of 4 settings",
+                  "12.3%", "21.9%", "Display only"):
+            self.assertIn(s, dom["text"])
+        self.assertIs(rec["inputs"]["decision_card"]["present"], True)
+
+    def test_the_same_order_says_so_and_an_unscored_world_says_so(self):
+        c = dict(self.CARD, rank_flip=False)
+        self.assertIn("The order is the same in both worlds", today_dom(self.page(c)[0])["text"])
+        c = dict(self.CARD, rank_flip=None, base=dict(never=12.3, on_time=None), robust=None,
+                 pairs=[dict(self.CARD["pairs"][0], on_time=None)], notes=["no il_return record for the day: the return world is not scored"])
+        dom = today_dom(self.page(c)[0])
+        self.assertEqual(dom["errors"], [])
+        self.assertIn("not scored", dom["text"]); self.assertNotIn("holds in", dom["text"])
+
+    def test_no_record_or_no_pair_draws_no_card(self):
+        self.assertNotIn("Pickup check", today_dom(self.page(None)[0])["text"])
+        dom = today_dom(self.page(dict(self.CARD, pairs=[], robust=None, rank_flip=None))[0])
+        self.assertEqual(dom["errors"], []); self.assertNotIn("Pickup check", dom["text"])
+
+    def test_the_default_paths_name_the_days_card(self):
+        self.assertTrue(SD.default_paths("2026-11-10")["decision_card"].endswith(os.path.join("report", "briefs", "decision_card_2026-11-10.json")))
