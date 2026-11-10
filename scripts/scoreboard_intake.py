@@ -150,6 +150,9 @@ def main():
     # owner 2026-10-27 (build 3): the hand-set constants fitted on the finished weeks after the card; proposes only
     ap.add_argument("--fits-dir", default=None, help="where fit_week<N>.json goes (default: report/fits)")
     ap.add_argument("--snapshots-dir", default=None, help="the Sunday snapshots the fit models on (default: report/accuracy)")
+    # owner 2026-11-10 (pick "P5 + P7"): every matchup's pre-week category forecast graded by category (category_grade.py)
+    ap.add_argument("--league-real-calibration", default=None, help="the real-games forecasts (default: report/calibration_league_real.json)")
+    ap.add_argument("--category-out", default=None, help="the category grades record (default: report/category_grades.json)")
     a = ap.parse_args()
     WEEKS_DIR = a.weeks_dir
     path = a.from_pull or a.csv or os.path.join(WEEKS_DIR, f"week_{a.week}.csv")
@@ -200,8 +203,20 @@ def main():
             fit = FC.summary(r)
         except (FC.FitError, OSError, ValueError, KeyError) as e:
             fit = f"FAIL — {str(e)[:160]}"
+    cats = "skipped"
+    if not a.no_ledger:
+        import category_grade as CGR
+        try:
+            # a run pointed at its own records (a test, a re-run elsewhere) keeps its outputs and inputs beside them
+            beside = lambda given, name, default: os.path.join(os.path.dirname(given), name) if given else default
+            cats = CGR.summary(CGR.run(WEEKS_DIR, {"flat": a.league_calibration or CGR.SOURCES["flat"],
+                                                   "real_games": a.league_real_calibration
+                                                   or beside(a.league_calibration, "calibration_league_real.json", CGR.SOURCES["real_games"])},
+                                       a.category_out or beside(a.accuracy_out, "category_grades.json", CGR.OUT)))
+        except (OSError, ValueError, KeyError) as e:
+            cats = f"FAIL — {str(e)[:160]}"
     print(f"SCOREBOARD INTAKE: PASS — week {a.week}: 6 matchups, 12 team lines; you {res['cats_won']}-{len(res['lost'])}-{res['cats_tied']} "
-          f"vs {res['opponent']} (won {', '.join(res['won']) or 'none'}); team_weeks.csv updated; ledger {ledger}; week score {daily}; accuracy {accuracy}; fit {fit}")
+          f"vs {res['opponent']} (won {', '.join(res['won']) or 'none'}); team_weeks.csv updated; ledger {ledger}; week score {daily}; accuracy {accuracy}; fit {fit}; categories {cats}")
     return 0
 
 

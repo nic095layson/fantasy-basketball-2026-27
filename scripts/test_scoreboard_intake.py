@@ -156,6 +156,23 @@ class FromPull(unittest.TestCase):
         rec = json.load(open(acc))["weeks"]["1"]
         self.assertEqual(rec["matchups"]["n"], 1)
 
+    def test_cli_grades_the_category_forecasts_after_the_fit(self):
+        # owner 2026-11-10 (pick "P5 + P7"): every matchup's pre-week category forecast graded by category, rebuilt on
+        # each intake; non-fatal, named on the PASS line
+        out = os.path.join(self.d, "weeks"); acts = os.path.join(self.d, "actuals"); os.makedirs(acts)
+        league = os.path.join(self.d, "calibration_league.json"); cats = os.path.join(self.d, "category_grades.json")
+        json.dump({"weeks": {"1": {"pairs": [dict(a=1, b=2, p_win=0.6, exp_cats=5.0, cat_p={c: 0.6 for c in SI.CATS})]}}}, open(league, "w"))
+        p = subprocess.run([sys.executable, os.path.join(HERE, "scoreboard_intake.py"), "--week", "1", "--from-pull", self.pull,
+                            "--state", self.state, "--weeks-dir", out, "--calibration", os.path.join(self.d, "cal.json"),
+                            "--briefs-dir", self.d, "--daily-out", os.path.join(self.d, "daily.json"),
+                            "--accuracy-out", os.path.join(self.d, "accuracy.json"), "--actuals-dir", acts, "--league-calibration", league,
+                            "--league-real-calibration", os.path.join(self.d, "none.json"),
+                            "--fits-dir", os.path.join(self.d, "fits"), "--snapshots-dir", self.d, "--category-out", cats],
+                           capture_output=True, text=True)
+        self.assertIn("SCOREBOARD INTAKE: PASS", p.stdout, p.stdout + p.stderr)
+        self.assertIn("; categories flat 9 forecasts over 1 week(s)", p.stdout)
+        self.assertEqual(json.load(open(cats))["methods"]["flat"]["all"]["n"], 9)
+
     def test_cli_runs_the_constants_fit_after_the_accuracy_card(self):
         # owner 2026-10-27 (build 3): the Monday intake fits the hand-set constants on the finished weeks; non-fatal,
         # named on the PASS line; with no snapshots it reports what is missing rather than failing the intake

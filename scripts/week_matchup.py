@@ -192,6 +192,58 @@ def per_game(ln):
                 tpm=ln["tpm"], pts=ln["pts"], reb=ln["reb"], ast=ln["ast"], stl=ln["stl"], blk=ln["blk"], tov=ln["tov"])
 
 
+def _plain(name):
+    import unicodedata
+    return "".join(c for c in unicodedata.normalize("NFKD", name) if not unicodedata.combining(c)).lower().replace(".", "").strip()
+
+
+def adds_this_week(ws, date, my_key, tx_rows, moves, limit):
+    """Owner 2026-11-10 (pick "P5 + P7"): my adds from the week's first day through `date` against the league's
+    weekly limit. tx_rows: the league transaction record's rows (manager_log.py, complete through the last morning);
+    moves: the kit's league-moves records (they hold today's moves the transaction record does not have yet); a name
+    counts once. limit: Yahoo's maxWeeklyAdds as pinned with the pull, or None (said, never guessed). Dates are the
+    records' UTC dates, so a move in the hours around the week's boundary can land a day off Yahoo's own count."""
+    seen, players, notes = set(), [], []
+    def take(name):
+        if _plain(name) not in seen:
+            seen.add(_plain(name)); players.append(name)
+    if my_key:
+        for r in sorted(tx_rows or [], key=lambda r: r.get("date") or ""):
+            if r.get("type") == "add" and my_key in (r.get("team_ids") or []) and ws <= (r.get("date") or "") <= date:
+                for p in r.get("players_added") or []:
+                    take(p["name"])
+    else:
+        notes.append("no team key in the pull: counted from the move records only")
+    for m in sorted(moves or [], key=lambda m: m.get("date") or ""):
+        if ws <= (m.get("date") or "") <= date:
+            for t in m.get("moves") or []:
+                if t.get("seat") == CG.OWNER_SEAT:
+                    for n in t.get("added") or []:
+                        take(n)
+    if limit is None:
+        notes.append("the weekly limit is not on record (no league settings pinned with the pull)")
+    return dict(used=len(players), limit=limit, left=(max(limit - len(players), 0) if limit is not None else None),
+                players=players, week_start=ws, note="; ".join(notes) or None)
+
+
+def _adds_block(date, ws, pull, paths, me_name):
+    my_key = next((k for k, r in ((pull or {}).get("rosters") or {}).items() if r.get("teamName") == me_name), None)
+    tx = []
+    if paths.get("league_tx") and os.path.exists(paths["league_tx"]):
+        with open(paths["league_tx"], encoding="utf-8") as f:
+            tx = json.load(f).get("rows") or []
+    moves = []
+    for p in sorted(glob.glob(os.path.join(paths["news_dir"], "league_moves_*.json"))) if paths.get("news_dir") else []:
+        with open(p, encoding="utf-8") as f:
+            moves.append(json.load(f))
+    limit = ((pull or {}).get("league_info") or {}).get("maxWeeklyAdds")
+    yp = paths.get("yahoo_pull") or ""
+    if limit is None and yp.endswith("_pm.json") and os.path.exists(yp[:-8] + ".json"):   # the 3 PM pull asks no settings
+        with open(yp[:-8] + ".json", encoding="utf-8") as f:
+            limit = (json.load(f).get("league_info") or {}).get("maxWeeklyAdds")
+    return adds_this_week(ws, date, my_key, tx, moves, limit)
+
+
 def pair_checks(pairs, mine, fas, sched, today, avail, lines, me_now, opp_now, opp_rem, base_p5):
     """Owner 2026-11-10 (decision card, P3): the brief's own pairs on this week's matchup. As the pickup scan counts
     every add: today's games on the roster as it stands, the swap from tomorrow. [{add, drop, d_exp, p_5plus,
@@ -822,6 +874,7 @@ def build(date, paths):
     board = dict(score=dict(me=lt.count("me"), opp=lt.count("opp"), tie=lt.count("tie")),
                  me=board_side(me_t, me_td, me_now, today_g), opp=board_side(opp_t, opp_td, opp_now, today_g))
     W = sum(1 for x in lead.values() if x == "me"); L = sum(1 for x in lead.values() if x == "opp")
+    adds = _adds_block(date, ws, pull, paths, me_t["name"])
     paths_used = dict(paths, status_file=status_file, pool=os.environ.get("SEASON_POOL") or "v69 preseason pool")
     paths_used.pop("pairs", None)
     checks = (pair_checks(paths["pairs"], mine, fas, sched, date, dict(avail, **fa_avail), lines, me_now, opp_now, opp_rem,
@@ -832,7 +885,7 @@ def build(date, paths):
         to_date_days=read, missing_days=missing, to_date_source=src, remaining_days=[d for d in rem_days if sched[d]],
         status_file=os.path.basename(status_file) if status_file else None, cats=cats,
         projected=dict(wins=W, losses=L, ties=len(CATS) - W - L), exp_cats=sum(chance[c] for c in CATS),
-        p_5plus=win_week_chance([chance[c] for c in CATS]), status_range=status_range, pair_checks=checks,
+        p_5plus=win_week_chance([chance[c] for c in CATS]), status_range=status_range, adds_this_week=adds, pair_checks=checks,
         totals=dict(me=dict(to_date=me_now, rebuild_to_date=me_td["totals"],
                             remaining={k: round(x, 2) for k, x in me_rem["totals"].items()}),
                     opp=dict(to_date=opp_now, rebuild_to_date=opp_td["totals"],
@@ -895,6 +948,10 @@ def _last_team_game(name, pool_team, recent):
     return team, None
 
 
+LEAGUE_TX = os.path.join(CG.KIT, "data", "managers", "transactions.json")
+NEWS = os.path.join(CG.KIT, "data", "news")
+
+
 def brief_pairs(date, briefs_dir=None):
     """The day's brief's top pairs [{add, drop}], or [] (no brief, a hold day): the pairs the decision card checks."""
     p = os.path.join(briefs_dir or OUTDIR, f"brief_{date}.json")
@@ -916,7 +973,7 @@ def main():
     pull = a.yahoo_pull or os.path.join(PULLS, f"pull_{a.date}.json")
     try:
         rec = build(a.date, dict(state=a.state, schedule=a.schedule, games=a.games, actuals=a.actuals, status=a.status_dir,
-                                 yahoo_pull=pull, pairs=brief_pairs(a.date, a.out_dir)))
+                                 yahoo_pull=pull, league_tx=LEAGUE_TX, news_dir=NEWS, pairs=brief_pairs(a.date, a.out_dir)))
     except Exception as e:  # noqa: BLE001 — any failure is one FAIL line; the deck then draws no card
         print(f"WEEK MATCHUP: FAIL — {a.date}: {type(e).__name__}: {e}")
         return 1
