@@ -122,3 +122,43 @@ class BoardComparison(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
+
+
+class SharedRosterBuild(unittest.TestCase):
+    """Owner 2026-11-10 (audit F1, council ruling): the fit's model roster is the simulator's roster. A rostered
+    player the intake carried as unpooled counts when the week's lines carry his row (an auto season line); the
+    week's actual totals already hold his box lines, so leaving him out of the model biased actual/mu upward."""
+    def setUp(self):
+        import shutil
+        import co_gm as CG
+        self.CG = CG
+        self.d = tempfile.mkdtemp(); self.weeks = os.path.join(self.d, "weeks"); self.snaps = os.path.join(self.d, "snaps")
+        os.makedirs(self.weeks); os.makedirs(self.snaps)
+        shutil.copyfile(os.path.join(CG.DECK, "arena", "results", f"players_{CG.LINES_TAG}.csv"), os.path.join(self.snaps, "lines_week1.csv"))
+        line = {"FG%": 0.48, "FT%": 0.78, "3PTM": 30, "PTS": 300, "REB": 110, "AST": 70, "ST": 20, "BLK": 12, "TO": 35}
+        json.dump(dict(week=1, teams={"T": dict(seat=10, line=line)}), open(os.path.join(self.weeks, "week_1.json"), "w"))
+        self._old = CG.hoops.DATA_PATH
+
+    def tearDown(self):
+        self.CG.hoops.DATA_PATH = self._old
+
+    def _mu(self, unpooled):
+        team = dict(seat=10, players=[dict(player="Nikola Jokic", slot="C"), dict(player="Derrick White", slot="PG")], unpooled=unpooled)
+        json.dump(dict(teams=[team]), open(os.path.join(self.snaps, "state_week1.json"), "w"))
+        rows, note = FC.team_week_rows(1, self.weeks, self.snaps)
+        self.assertEqual(len(rows), 1, note)
+        return rows[0]["PTS"]["mu"]
+
+    def test_an_unpooled_player_with_a_line_counts_in_the_model(self):
+        base = self._mu([])
+        self.assertGreater(self._mu([dict(player="Kevin Durant", slot="BN")]), base + 10)   # about 3 games of his points
+
+    def test_il_and_no_line_stay_out(self):
+        base = self._mu([])
+        self.assertAlmostEqual(self._mu([dict(player="Kevin Durant", slot="IL")]), base, places=9)
+        self.assertAlmostEqual(self._mu([dict(player="No Such Player", slot="BN")]), base, places=9)
+
+    def test_the_record_names_its_roster_build(self):
+        import inspect
+        self.assertIn("rosters=", inspect.getsource(FC.run))
+        self.assertIn("team_roster", inspect.getsource(FC.run))

@@ -339,6 +339,25 @@ class WaiverNotes(unittest.TestCase):
             self.assertEqual({k: v for k, v in r.items() if not k.startswith("add_waiver") and k != "add_own_drop_date"}, b)
 
 
+class TeamRoster(unittest.TestCase):
+    """Owner 2026-11-10 (audit F1): one roster build, co_gm.team_roster, for the simulator, the Monday fit and the
+    week card's season cost. strict=False skips a name with no line (the fit and the week card read frozen or older
+    lines); strict=True is rosters() as it was."""
+    BY = {n: {"player": n} for n in ("A", "Auto Guy", "Hurt Auto")}
+    T = {"seat": 10, "players": [{"player": "A", "slot": "PG"}, {"player": "Gone", "slot": "SG"}, {"player": "Hurt", "slot": "IL"}],
+         "unpooled": [dict(player="Auto Guy", slot="BN"), dict(player="Nobody", slot="BN"), dict(player="Hurt Auto", slot="IL")]}
+
+    def test_lenient_build_skips_names_without_a_line_and_adds_auto_rows(self):
+        self.assertEqual([p["player"] for p in CG.team_roster(self.T, self.BY, strict=False)], ["A", "Auto Guy"])
+        self.assertEqual([p["player"] for p in CG.team_roster(self.T, self.BY, include_il=True, strict=False)], ["A", "Auto Guy", "Hurt Auto"])
+
+    def test_strict_build_is_the_simulators_and_refuses_a_missing_line(self):
+        ok = dict(self.T, players=[{"player": "A", "slot": "PG"}])
+        self.assertEqual(CG.team_roster(ok, self.BY), CG.rosters({"teams": [ok]}, self.BY)[10])
+        with self.assertRaises(KeyError):
+            CG.team_roster(self.T, self.BY)
+
+
 class PoolGuard(unittest.TestCase):
     """Owner 2026-11-10 (audit F4, council ruling): the simulator reads SEASON_POOL when it runs, not when the pool
     was loaded; a pool changed in between is refused, never played silently (the 11-10 title-drop trace ran two rows

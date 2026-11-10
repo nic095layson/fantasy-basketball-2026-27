@@ -808,6 +808,24 @@ class StatusFileOverride(Record):
         self.assertNotEqual(rec_am["status_file"], "status_2026-10-21_pm.json")   # the newest dated <= day: the morning's
 
 
+class SeasonCostRoster(Record):
+    """Owner 2026-11-10 (audit F1): the week card's season cost of a drop is measured against rosters built the
+    simulator's way: a rival's unpooled player with a pool row counts."""
+    def test_a_rivals_auto_row_player_is_in_the_season_cost_rosters(self):
+        st = json.load(open(self.state))
+        other = next(t for t in st["teams"] if t["seat"] == 3)
+        other["unpooled"] = [dict(player="Kevin Durant", slot="BN", nba_team="HOU", positions=["SF"], status=None)]
+        dump(st, self.state)
+        seen, real = [], WM.CG.arena.team_week_model
+        WM.CG.arena.team_week_model = lambda r, cv: (seen.append([p["player"] for p in r]), real(r, cv))[1]
+        try:
+            WM.build("2026-10-21", self.paths)
+        finally:
+            WM.CG.arena.team_week_model = real
+        self.assertTrue(seen, "the season-cost block did not run on this fixture")
+        self.assertTrue(any("Kevin Durant" in r for r in seen))
+
+
 class StatusRange(Record):
     """Owner 2026-11-10 (audit F2, council ruling): when one of my players with a game left is tagged between out and
     healthy (a Questionable, counted at part of his games), the card records both ends beside its figure: he plays
