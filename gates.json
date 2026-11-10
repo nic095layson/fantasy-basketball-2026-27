@@ -1,52 +1,52 @@
 {
- "ran_at_utc": "2026-11-10T21:24:05Z",
+ "ran_at_utc": "2026-11-10T22:09:05Z",
  "inputs": {
-  "report/after-reports/after-report-2026-11-10-shared-roster-build.md": "a83092450d949182a432594d094aa3b8e2e38bdb0eccb3bea9336b43cf4da479",
+  "report/after-reports/after-report-2026-11-10-run-watch.md": "5d8d72b4f5a537af19874ecc917381b37a0815af04423a88ca78a55fc606d621",
   "../wtsd/report/after-reports/redteam-2026-11-09-season/sweep.json": "7cebe2a3101d6d88b154c99b3082d5819197193ddb2be591d0c3b6d479d2a305"
  },
  "gates": [
   {
    "name": "kit check_report",
-   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/kit-b/report/after-reports/after-report-2026-11-10-shared-roster-build.md",
+   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/kit-b/report/after-reports/after-report-2026-11-10-run-watch.md",
    "cwd": ".",
    "pass_re": "^REPORT GATE: PASS",
    "exit": 0,
-   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-11-10-shared-roster-build.md (structure, publication rule, pull-log row)",
+   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-11-10-run-watch.md (structure, publication rule, pull-log row)",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "REPORT GATE: PASS \u2014 after-report-2026-11-10-shared-roster-build.md (structure, publication rule, pull-log row)"
+    "REPORT GATE: PASS \u2014 after-report-2026-11-10-run-watch.md (structure, publication rule, pull-log row)"
    ]
   },
   {
    "name": "deck judgment_open_items --check-report",
-   "cmd": "/usr/local/bin/python3 scripts/judgment_open_items.py --check-report /home/user/kit-b/report/after-reports/after-report-2026-11-10-shared-roster-build.md",
+   "cmd": "/usr/local/bin/python3 scripts/judgment_open_items.py --check-report /home/user/kit-b/report/after-reports/after-report-2026-11-10-run-watch.md",
    "cwd": "../yahoo-fantasy-basketball",
    "pass_re": "^receipts check PASS",
    "exit": 0,
-   "pass_line": "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-11-10-shared-roster-build.md",
+   "pass_line": "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-11-10-run-watch.md",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-11-10-shared-roster-build.md"
+    "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-11-10-run-watch.md"
    ]
   },
   {
    "name": "deck repeat_market_check --check-report",
-   "cmd": "/usr/local/bin/python3 scripts/repeat_market_check.py --check-report /home/user/kit-b/report/after-reports/after-report-2026-11-10-shared-roster-build.md",
+   "cmd": "/usr/local/bin/python3 scripts/repeat_market_check.py --check-report /home/user/kit-b/report/after-reports/after-report-2026-11-10-run-watch.md",
    "cwd": "../yahoo-fantasy-basketball",
    "pass_re": "^REPEAT-NAME CHECK: PASS",
    "exit": 0,
-   "pass_line": "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-11-10-shared-roster-build.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)",
+   "pass_line": "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-11-10-run-watch.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-11-10-shared-roster-build.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)"
+    "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-11-10-run-watch.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)"
    ]
   },
   {
    "name": "claim receipts",
-   "cmd": "/usr/local/bin/python3 /home/user/kit-b/scripts/independent_audit/claim_receipts.py /home/user/kit-b/report/after-reports/after-report-2026-11-10-shared-roster-build.md",
+   "cmd": "/usr/local/bin/python3 /home/user/kit-b/scripts/independent_audit/claim_receipts.py /home/user/kit-b/report/after-reports/after-report-2026-11-10-run-watch.md",
    "cwd": ".",
    "pass_re": "^CLAIM RECEIPTS: (PASS|ADVISORY)",
    "exit": 0,
@@ -59,7 +59,7 @@
   },
   {
    "name": "touched tests",
-   "cmd": "bash -c 'cd scripts && python3 -m unittest test_daily_brief test_week_matchup test_fit_constants test_season_deck 2>&1 | tail -1'",
+   "cmd": "bash -c 'cd scripts && python3 -m unittest test_run_watch 2>&1 | tail -1'",
    "cwd": ".",
    "pass_re": "^OK",
    "exit": 0,
@@ -85,7 +85,7 @@
   },
   {
    "name": "redteam bands",
-   "cmd": "/usr/local/bin/python3 /home/user/kit-b/scripts/redteam/check_bands.py --report /home/user/kit-b/report/after-reports/after-report-2026-11-10-shared-roster-build.md --sweep /home/user/wtsd/report/after-reports/redteam-2026-11-09-season/sweep.json",
+   "cmd": "/usr/local/bin/python3 /home/user/kit-b/scripts/redteam/check_bands.py --report /home/user/kit-b/report/after-reports/after-report-2026-11-10-run-watch.md --sweep /home/user/wtsd/report/after-reports/redteam-2026-11-09-season/sweep.json",
    "cwd": ".",
    "pass_re": "^BANDS CHECK: PASS",
    "exit": 0,
@@ -125,5 +125,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "28931f59a2f6b522c1442aa3b9c5d0e9be460433"
+ "base_commit": "a1c91caa99bc712f6c7ffc5d3fbd1bfc3ec7b172"
 }
