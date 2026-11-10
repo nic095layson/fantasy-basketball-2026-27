@@ -192,6 +192,20 @@ def per_game(ln):
                 tpm=ln["tpm"], pts=ln["pts"], reb=ln["reb"], ast=ln["ast"], stl=ln["stl"], blk=ln["blk"], tov=ln["tov"])
 
 
+def _status_range(mine, sched, avail, lines, me_now, opp_now, opp_rem, me_rem):
+    """Owner 2026-11-10 (audit F2, council ruling): the card's figure beside its two ends when one of my players with
+    a projected game left is tagged between out and healthy (0 < availability < 1, a Questionable). plays: every such
+    player at 1.0; sits: every such player at 0.0; the opponent's side and every other tag as the card has them.
+    Display only: the card's own figure (the tag's availability) is unchanged. None when no such player."""
+    part = sorted(n for n, g in me_rem["games"].items() if g > 0 and 0 < avail.get(n, 1.0) < 1)
+    if not part:
+        return None
+    def end(a):
+        p = cat_chances(me_now, remaining(mine, sched, dict(avail, **{n: a for n in part}), lines), opp_now, opp_rem)
+        return dict(p_5plus=win_week_chance([p[c] for c in CATS]), exp_cats=sum(p[c] for c in CATS))
+    return dict(players=[dict(player=n, availability=avail[n]) for n in part], plays=end(1.0), sits=end(0.0))
+
+
 def remaining(roster, sched, avail, lines):
     """roster: [{player, team, positions, value}]; sched: {date: set of teams playing}; avail: {player: probability}
     (missing = 1.0); lines: {player: per-game line}. Expected totals under M3, each player's projected starts, and
@@ -706,6 +720,7 @@ def build(date, paths):
     lead_td, lead = compare(v["me_td"], v["opp_td"]), compare(v["me_fin"], v["opp_fin"])
     nd = lambda c, fin: 3 if c in ("FG%", "FT%") else (1 if fin else 0)
     chance = cat_chances(me_now, me_rem, opp_now, opp_rem)  # M8
+    status_range = _status_range(mine, sched, avail, lines, me_now, opp_now, opp_rem, me_rem)
     cats = [dict(cat=c, me_to_date=_r(v["me_td"][c], nd(c, False)), opp_to_date=_r(v["opp_td"][c], nd(c, False)),
                  me_final=_r(v["me_fin"][c], nd(c, True)), opp_final=_r(v["opp_fin"][c], nd(c, True)),
                  leader_to_date=lead_td[c], leader=lead[c], p_win=round(chance[c], 4),
@@ -793,7 +808,7 @@ def build(date, paths):
         to_date_days=read, missing_days=missing, to_date_source=src, remaining_days=[d for d in rem_days if sched[d]],
         status_file=os.path.basename(status_file) if status_file else None, cats=cats,
         projected=dict(wins=W, losses=L, ties=len(CATS) - W - L), exp_cats=sum(chance[c] for c in CATS),
-        p_5plus=win_week_chance([chance[c] for c in CATS]),
+        p_5plus=win_week_chance([chance[c] for c in CATS]), status_range=status_range,
         totals=dict(me=dict(to_date=me_now, rebuild_to_date=me_td["totals"],
                             remaining={k: round(x, 2) for k, x in me_rem["totals"].items()}),
                     opp=dict(to_date=opp_now, rebuild_to_date=opp_td["totals"],
