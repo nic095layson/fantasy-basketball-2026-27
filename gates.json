@@ -1,5 +1,5 @@
 {
- "ran_at_utc": "2026-11-10T22:22:47Z",
+ "ran_at_utc": "2026-11-10T22:48:50Z",
  "inputs": {
   "report/after-reports/after-report-2026-11-10-category-grades-adds.md": "a51c9871ec90661624ed6df1c6acdeeae423f9170161bfb421e43ff56ac2394b",
   "../wtsd/report/after-reports/redteam-2026-11-09-season/sweep.json": "7cebe2a3101d6d88b154c99b3082d5819197193ddb2be591d0c3b6d479d2a305"
@@ -59,7 +59,7 @@
   },
   {
    "name": "touched tests",
-   "cmd": "bash -c 'cd scripts && python3 -m unittest test_category_grade test_scoreboard_intake test_flaim_live test_week_matchup test_season_deck 2>&1 | tail -1'",
+   "cmd": "bash -c 'cd scripts && python3 -m unittest test_category_grade test_scoreboard_intake test_flaim_live test_week_matchup test_season_deck test_decision_card test_morning 2>&1 | tail -1'",
    "cwd": ".",
    "pass_re": "^OK",
    "exit": 0,
@@ -125,5 +125,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "a1c91caa99bc712f6c7ffc5d3fbd1bfc3ec7b172"
+ "base_commit": "9bf9383b15e605f5269c4bc0f6b7deeee3d4ae0e"
 }

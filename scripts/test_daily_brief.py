@@ -400,3 +400,34 @@ class PoolGuard(unittest.TestCase):
         os.environ.pop("SEASON_POOL", None)
         CG.load_pool()
         self.assertIsNone(CG.pool_guard())
+
+
+class SimPatch(unittest.TestCase):
+    """Owner 2026-11-10 (decision card, P2): run_league_sim can hand the simulator a constants patch (league_sim
+    --patch, as the Monday sweep does), so a pair can be re-scored under the declared band. No patch: the command
+    is as before."""
+    def _cmd(self, **kw):
+        import json as J, tempfile
+        CG.load_pool()          # the pool guard compares against the last load: load under this test's own environment
+        d = tempfile.mkdtemp(); seen = []
+        real = CG.subprocess.run
+        def fake(cmd, **k):
+            seen.append(list(cmd))
+            J.dump({"teams": {"10": {"champ": 1.0}}}, open(cmd[6], "w"))
+            if "--patch" in cmd:
+                seen.append(J.load(open(cmd[cmd.index("--patch") + 1])))
+        CG.subprocess.run = fake
+        try:
+            CG.run_league_sim({10: []}, 2026, 10, d, **kw)
+        finally:
+            CG.subprocess.run = real
+        return seen, d
+
+    def test_a_patch_reaches_the_simulator_and_its_file_is_removed(self):
+        seen, d = self._cmd(patch={"weekly_availability": {"risk": 0.65}}, tag="t")
+        self.assertIn("--patch", seen[0]); self.assertEqual(seen[1], {"weekly_availability": {"risk": 0.65}})
+        self.assertEqual(os.listdir(d), [])
+
+    def test_no_patch_no_flag(self):
+        seen, _ = self._cmd()
+        self.assertNotIn("--patch", seen[0])

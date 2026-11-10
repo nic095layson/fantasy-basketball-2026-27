@@ -23,7 +23,7 @@ class Steps(unittest.TestCase):
         # 2026-10-21: "preflight" became step 0 (independent-audit adoption); the indices below moved by one.
         # 2026-10-23 (owner, Build 1): "league table" after the week matchup, before the deck that draws it
         # 2026-10-26 (owner, "results so far"): "league pairings" before the brief that runs the simulator
-        self.assertEqual([s["name"] for s in st], ["preflight", "league live", "matchup live", "box scores 2026-10-20", "tag outcomes", "lineup log", "accuracy render", "season lines", "minutes line", "season board", "status feed", "transactions", "league pairings", "il return", "daily brief", "decision log", "week matchup", "league table", "form board", "season deck"])
+        self.assertEqual([s["name"] for s in st], ["preflight", "league live", "matchup live", "box scores 2026-10-20", "tag outcomes", "lineup log", "accuracy render", "season lines", "minutes line", "season board", "status feed", "transactions", "league pairings", "il return", "daily brief", "decision log", "week matchup", "decision card", "league table", "form board", "season deck"])
         self.assertIn("2026-10-20", st[3]["cmd"])
         self.assertIn("2026-10-20", st[4]["cmd"])   # 2026-10-27: "tag outcomes" grades yesterday; indices below moved by one
         self.assertIn("2026-10-21", st[5]["cmd"])    # 2026-11-05: "lineup log" takes the morning date and grades the day before
@@ -296,3 +296,17 @@ class LedgerParent(unittest.TestCase):
                 "cwd": ".", "pass_re": r"^PARENT morning$", "env": {}}
         rec = M.run_steps([step], os.path.join(d, "m.json"))
         self.assertEqual(rec["steps"][0]["verdict"], "PASS", rec["steps"][0])
+
+
+class DecisionCardStep(unittest.TestCase):
+    """Owner 2026-11-10 (pick "Decision card + watchdog"): the card runs every day after the week card, which scores
+    the brief's pairs for it, and before the deck; non-fatal."""
+    def test_the_card_follows_the_week_card_and_precedes_the_deck(self):
+        names = [x["name"] for x in M.steps("2026-11-10")]
+        self.assertLess(names.index("daily brief"), names.index("week matchup"))
+        self.assertLess(names.index("week matchup"), names.index("decision card"))
+        self.assertLess(names.index("decision card"), names.index("season deck"))
+        s = next(x for x in M.steps("2026-11-10", seasons=2000) if x["name"] == "decision card")
+        self.assertFalse(s["fatal"]); self.assertIn("SEASON_POOL", s["env"])
+        self.assertEqual(s["cmd"][-4:], ["--date", "2026-11-10", "--seasons", "2000"])
+        self.assertTrue(s["pass_re"].startswith("^DECISION CARD: PASS"))
