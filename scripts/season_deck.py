@@ -67,6 +67,9 @@ def default_paths(date, phase="am"):
                 accuracy=os.path.join(KIT, "report", "accuracy.json"),
                 # optional (owner 2026-11-05 "track these on a ledger"): the start/sit scorecard (lineup_log.py), read-only
                 lineup=os.path.join(KIT, "report", "decisions", "lineup_scorecard.json"),
+                # optional (owner 2026-11-10, "Decision card + watchdog"): the day's decision card (decision_card.py, the
+                # morning's in both phases: its title figures are the 5 AM run's), read-only here
+                decision_card=os.path.join(KIT, "report", "briefs", f"decision_card_{date}.json"),
                 # optional (owner 2026-10-28, item 4): the day's two status pins the brief's waiver gate reads
                 yahoo_pull=os.path.join(KIT, "data", "source", "flaim", f"pull_{date}{sfx}.json"),
                 espn_injuries=os.path.join(KIT, "data", "status", f"espn_injuries_{date}{sfx}.json"))
@@ -88,7 +91,9 @@ def afternoon_lineup_refresh(date, briefs_dir=None):
     am_pull = os.path.join(KIT, "data", "source", "flaim", f"pull_{date}.json")
     paths = dict(state=CG.STATE, schedule=CG.SCHEDULE, games=CG.GAMES, actuals=WM.ACTUALS, status=WM.STATUS,
                  yahoo_pull=pm_pull if os.path.exists(pm_pull) else am_pull,
-                 **({"status_file": pm_status} if os.path.exists(pm_status) else {}))
+                 **({"status_file": pm_status} if os.path.exists(pm_status) else {}),
+                 league_tx=WM.LEAGUE_TX, news_dir=WM.NEWS,           # owner 2026-11-10: the adds counter on the afternoon card
+                 pairs=WM.brief_pairs(date, briefs_dir))   # owner 2026-11-10: the brief's pairs on the afternoon card too
     try:
         rec = WM.build(date, paths)
     except Exception as e:  # noqa: BLE001 — named, never a halt: the morning record stands
@@ -285,7 +290,7 @@ def build(paths, date, phase=None):
     opt = lambda k: (json.load(open(paths[k], encoding="utf-8"))
                      if paths.get(k) and os.path.exists(paths[k]) else None)
     matchup_live = opt("matchup_live"); week_matchup = opt("week_matchup"); league_rec = opt("league"); form_rec = opt("form"); scores = opt("scores")
-    accuracy = opt("accuracy"); lineup_sc = opt("lineup")
+    accuracy = opt("accuracy"); lineup_sc = opt("lineup"); dcard = opt("decision_card")
     for k in ("date", "opponent", "title", "lineup"):
         if k not in brief: raise DeckError(f"brief lacks {k}")
     if brief["date"] != date: raise DeckError(f"brief is for {brief['date']}, not {date}")
@@ -375,7 +380,7 @@ def build(paths, date, phase=None):
                 week_matchup=week_matchup, league_table=league_rec,
                 # owner 2026-11-09 (runner pick B1): inputs named but absent, so an empty card can say why
                 absent_inputs=sorted(k for k, p in paths.items() if not (p and os.path.exists(p))),
-                form=form_rec, scores=scores, accuracy=accuracy, lineup_scorecard=lineup_sc, fa_status=fa_status, out_today=out_now, swap_grid=grid_now, waiver_notes=waiver_notes,
+                form=form_rec, scores=scores, accuracy=accuracy, lineup_scorecard=lineup_sc, decision_card=dcard, fa_status=fa_status, out_today=out_now, swap_grid=grid_now, waiver_notes=waiver_notes,
                 # owner 2026-10-28 ("Rebuild, flag morning parts"): the 3 PM run's rebuild says which parts are the 5 AM run's
                 **({"refresh": {"phase": phase, "not_on_board": not_on_board,
                                 # owner 2026-11-06 ("why does Today still show Matkovic?", "please build it"): the morning brief's
@@ -722,7 +727,55 @@ function liveTile(W, wk){
   if(!W || W.week!==wk || W.exp_cats==null) return h("div",{class:"tile"},h("div",{class:"v"},"—"),h("div",{class:"l"},"week "+wk+" now"),
     h("div",{class:"e"},"no live record this morning"));
   return h("div",{class:"tile"},h("div",{class:"v"},W.exp_cats.toFixed(2)),h("div",{class:"l"},"week "+W.week+" now: expected categories of 9"),
-    h("div",{class:"e"},(W.p_5plus!=null?"5+ of 9: "+pct(W.p_5plus)+" (categories taken as independent) · ":"")+"from this morning's week card"));
+    h("div",{class:"e"},(W.p_5plus!=null?"5+ of 9: "+pct(W.p_5plus)+" (categories taken as independent) · ":"")+"from this morning's week card"),
+    statusRangeLine(W), addsLine(W));
+}
+
+// owner 2026-11-10 (pick "P5 + P7"): my adds this week against the league's weekly limit, as the week card counted them
+function addsLine(W){
+  const A=W.adds_this_week;
+  if(!A || A.used==null) return null;
+  const who=A.players&&A.players.length? " ("+A.players.join(", ")+")" : "";
+  const tip="Counted from the league's transaction record and the day's move records, by UTC date; Yahoo's own count can differ by a move made around the week's boundary.";
+  return h("div",{class:"e",title:tip}, A.limit==null
+    ? "Adds this week: "+A.used+" used"+who+"; the weekly limit is not on record."
+    : "Adds this week: "+A.used+" of "+A.limit+" used"+who+"; "+(A.left>0?A.left+" left":"none left")+".");
+}
+
+// owner 2026-11-10 ("Decision card + watchdog"): the brief's top pairs in both worlds and on this week, the flip line
+// and the band line, as decision_card.py recorded them. Nothing here computes; no record or no pair, no card.
+function decisionCard(){
+  const C=D.decision_card;
+  if(!C || !C.pairs || !C.pairs.length) return null;
+  const on=C.base && C.base.on_time!=null, R=C.robust;
+  const wk=(w)=> w&&w.d_p_5plus!=null ? swk(100*w.d_p_5plus,1)+" points ("+swk(w.d_exp,2)+" categories)" : "not shown";
+  return h("div",{class:"card"},h("h2",{},"Pickup check"),
+    h("div",{class:"tablebox"},h("table",{},
+      h("tr",{},h("th",{},"add"),h("th",{},"drop"),
+        h("th",{class:"num",title:"Title share change with every injured-list player counted out for the season, as the brief scores it."},"season, IL players never return"),
+        h("th",{class:"num",title:"Title share change with every team's injured-list players back on ESPN's dates; the lowest-value active player leaves to make room."},"season, IL players return on time"),
+        h("th",{class:"num",title:"Change in this week's chance of winning 5 or more of 9 categories, the add counted from tomorrow."},"this week (5+ of 9)")),
+      C.pairs.map(p=>h("tr",{},h("td",{},p.add),h("td",{},p.drop),
+        h("td",{class:"num"},p.never&&p.never.d_title!=null?swk(p.never.d_title,1):"—"),
+        h("td",{class:"num"},p.on_time&&p.on_time.d_title!=null?swk(p.on_time.d_title,1):"not scored"),
+        h("td",{class:"num"},wk(p.week)))))),
+    on? h("p",{class:"note"},"Title share with no move: "+f1(C.base.never)+"% (never return), "+f1(C.base.on_time)+"% (return on time).") : null,
+    C.rank_flip===true? h("p",{},h("b",{},"The order changes between the two worlds.")," Check the return-on-time column before acting.")
+      : C.rank_flip===false? h("p",{class:"note"},"The order is the same in both worlds.") : null,
+    R&&R.variants&&R.variants.length? h("p",{class:"note"},"Top pair ("+R.add+" for "+R.drop+") under the availability band: holds in "+R.held+" of "+R.variants.length+" settings ("+swk(R.low,1)+" to "+swk(R.high,1)+").") : null,
+    (C.notes||[]).map(n=>h("p",{class:"note"},n.charAt(0).toUpperCase()+n.slice(1)+".")),
+    h("p",{class:"note"},C.label||""));
+}
+
+// owner 2026-11-10 (audit F2): one of my players is Questionable with a game left: both ends beside the figure
+function statusRangeLine(W){
+  const R=W.status_range;
+  if(!R || !R.players || !R.players.length || !R.plays || !R.sits || R.plays.p_5plus==null || R.sits.p_5plus==null) return null;
+  const n=R.players.map(p=>p.player), many=n.length>1;
+  const who=many? n.slice(0,-1).join(", ")+" and "+n[n.length-1] : n[0];
+  return h("div",{class:"e",title:"The figure above counts a Questionable player at part of his games. These are the two ends: every game played, every game missed. The opponent's tags are as the card has them."},
+    who+(many?" are":" is")+" Questionable. If "+(many?(n.length===2?"both":"all")+" play":"he plays")+" every game: "+pct(R.plays.p_5plus)+
+    " · if "+(many?(n.length===2?"both":"all")+" sit":"he sits")+" all week: "+pct(R.sits.p_5plus)+".");
 }
 
 // ---- the matchup board (owner 2026-10-23: "take this inspiration [Yahoo's matchup page] ... make this the today page";
@@ -850,6 +903,7 @@ function matchupBoard(){ const W=D.week_matchup, B=W&&W.board; if(!B) return nul
   const mb=matchupBoard(); if(mb) p.append(mb);
   const fn=faNotice(); if(fn) p.append(fn);
   p.append(weekCard());
+  const dc=decisionCard(); if(dc) p.append(dc);
   if(!swapCard.has) p.append(swapCard.card);
   p.append(
     h("div",{class:"cols"},

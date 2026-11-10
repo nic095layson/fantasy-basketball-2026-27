@@ -45,23 +45,46 @@ def load_pool():
     """The preseason v69 pool, or the season pool when SEASON_POOL names a deck-schema CSV (in-season tool,
     2026-10-19: data/season/pool_season.csv from season_lines.py; the brief, preview and waiver scan then run on the
     blended lines and say so)."""
+    global _POOL_LOADED
     hoops.DATA_PATH = os.environ.get("SEASON_POOL") or os.path.join(DECK, "arena", "results", f"players_{LINES_TAG}.csv")
+    _POOL_LOADED = os.path.abspath(hoops.DATA_PATH)
     P = hoops.zscores(hoops.load_players())
     return P, {p["player"]: p for p in P}
+
+
+_POOL_LOADED = None  # the pool file load_pool last read (absolute path); None before any load
+
+
+def pool_guard():
+    """Owner 2026-11-10 (audit F4): the simulator plays the pool SEASON_POOL names when it RUNS (league_sim --pool),
+    while the rosters handed to it carry the lines load_pool read earlier. If the variable changed in between, the
+    simulation would silently play another pool than the one loaded (the 11-10 title-drop trace ran two rows that
+    way). Refuse instead. No load yet: nothing to compare, nothing refused."""
+    now = os.path.abspath(os.environ.get("SEASON_POOL") or os.path.join(DECK, "arena", "results", f"players_{LINES_TAG}.csv"))
+    if _POOL_LOADED is not None and now != _POOL_LOADED:
+        raise RuntimeError(f"pool changed between load_pool and the simulator: loaded {_POOL_LOADED}, "
+                           f"the simulator would play {now}; call load_pool again after changing SEASON_POOL")
+    return None
 
 
 def rosters(state, by, include_il=False):
     # owner 2026-10-20 (D-IS-8): an IL player counts as zero (absent from the simulation) until he is on the active roster
     # owner 2026-11-09 (pick "Simulate them"): a rostered player the intake carried as unpooled (no deck pool row) is
     # simulated when the pool in use has his row: the season pool's auto season line (season_lines.auto_rows)
-    out = {}
-    for t in state["teams"]:
-        r = [by[p["player"]] for p in t["players"] if include_il or p["slot"] != "IL"]
-        have = {p["player"] for p in r}
-        r += [by[u["player"]] for u in t.get("unpooled") or []
-              if u.get("player") in by and u["player"] not in have and (include_il or u.get("slot") != "IL")]
-        out[t["seat"]] = r
-    return out
+    return {t["seat"]: team_roster(t, by, include_il) for t in state["teams"]}
+
+
+def team_roster(t, by, include_il=False, strict=True):
+    """One team's simulation roster (owner 2026-11-10, audit F1: the one build for the simulator, the Monday fit and
+    the week card's season cost). Active players, then the team's unpooled players the pool in use has a row for.
+    strict: a listed player with no row is a KeyError, as rosters() always was; strict=False skips him (the fit and
+    the week card read a week's frozen lines, which may lack a name)."""
+    r = [by[p["player"]] for p in t["players"]
+         if (include_il or p.get("slot") != "IL") and (strict or p["player"] in by)]
+    have = {p["player"] for p in r}
+    r += [by[u["player"]] for u in t.get("unpooled") or []
+          if u.get("player") in by and u["player"] not in have and (include_il or u.get("slot") != "IL")]
+    return r
 
 
 # ---------------------------------------------------------------- daily lineup
@@ -318,11 +341,12 @@ def sim_pool_names(path=None):
         return {r["player"] for r in csv.DictReader(f)}
 
 
-def run_league_sim(ros, seed, seasons, workdir, tag="cur", windows=None):
+def run_league_sim(ros, seed, seasons, workdir, tag="cur", windows=None, patch=None):
     # 2026-10-21 (owner option (b), data/pool_additions.csv): a rostered pickup the simulator's frozen pool lacks is left
     # out of the simulation, as an IL player is (D-IS-8), and named in the record's absent_from_sim
     # 2026-10-26 (owner, "use the season pool"): with SEASON_POOL set the simulator plays that pool (league_sim --pool),
     # the lines the board plays with the pickups in them; unset, the frozen v69 pool as before
+    pool_guard()
     pool = os.path.abspath(os.environ["SEASON_POOL"]) if os.environ.get("SEASON_POOL") else None
     known = sim_pool_names(pool)
     absent = sorted(p["player"] for r in ros.values() for p in r if p["player"] not in known)
@@ -330,12 +354,19 @@ def run_league_sim(ros, seed, seasons, workdir, tag="cur", windows=None):
     sp = os.path.join(workdir, f"_state_{tag}_{seed}.json")
     op = os.path.join(workdir, f"_sim_{tag}_{seed}.json")
     json.dump(sim_state(ros, windows), open(sp, "w", encoding="utf-8"), ensure_ascii=False)
+    # owner 2026-11-10 (decision card): an optional constants patch, handed over as the Monday sweep hands its own
+    # (league_sim --patch); the live constants are untouched and no patch means the command as before
+    pp = os.path.join(workdir, f"_patch_{tag}_{seed}.json") if patch else None
+    if pp:
+        json.dump(patch, open(pp, "w", encoding="utf-8"))
     subprocess.run([sys.executable, os.path.join(DECK, "arena", "mocks", "league_sim.py"), sp, LINES_TAG,
-                    str(seasons), str(seed), op, "--schedule", SCHEDULE, "--season-cv"] + (["--pool", pool] if pool else []),
+                    str(seasons), str(seed), op, "--schedule", SCHEDULE, "--season-cv"] + (["--pool", pool] if pool else [])
+                   + (["--patch", pp] if pp else []),
                    check=True, capture_output=True)
     rec = json.load(open(op, encoding="utf-8"))
-    os.remove(sp)
-    os.remove(op)
+    for f in (sp, op, pp):
+        if f:
+            os.remove(f)
     # absent_from_sim counts rostered active players that reached `ros` (state teams[].players, which the intake fills
     # from the deck pool + pool_additions.csv) but whose names the simulator's pool lacks; a state "unpooled" player
     # reaches `ros` only when the pool has his row (an auto season line, rosters() since 2026-11-09), and then he is in

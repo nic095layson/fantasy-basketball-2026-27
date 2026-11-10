@@ -59,10 +59,10 @@ def extract_pull(transcript, since=None):
     """Walk the transcript for this league's Flaim responses: the latest current roster per team, the latest dated
     roster per team and day, the latest matchup response per week, the latest available-player list."""
     since = LL.since_instant(since)
-    rosters, daily, weeks, fa, standings = {}, {}, {}, None, None
+    rosters, daily, weeks, fa, standings, info = {}, {}, {}, None, None, None
 
     def take(d):
-        nonlocal fa, standings
+        nonlocal fa, standings, info
         snap = d.get("snapshot") or {}
         if "players" in d and _ours(d.get("teamKey")) and snap.get("type") == "current":
             rosters[d["teamKey"]] = d
@@ -74,6 +74,9 @@ def extract_pull(transcript, since=None):
             fa = d
         elif "standings" in d and d.get("leagueKey") == LEAGUE_KEY:
             standings = d
+        elif "scoringType" in d and "teams" in d and d.get("leagueKey") == LEAGUE_KEY:
+            # owner 2026-11-10 (pick "P5 + P7"): the league-settings response, pinned so no setting is read from memory
+            info = {k: d[k] for k in LEAGUE_INFO_KEYS if k in d}
 
     def walk(x):
         if isinstance(x, str):
@@ -96,7 +99,10 @@ def extract_pull(transcript, since=None):
             if o is not None and LL.recent(o, since):
                 walk(o.get("message") if isinstance(o, dict) and "message" in o else o)
     return {"source": "flaim", "league_key": LEAGUE_KEY, "rosters": rosters, "daily": daily, "matchups": weeks,
-            "free_agents": fa, "standings": standings}
+            "free_agents": fa, "standings": standings, "league_info": info}
+
+
+LEAGUE_INFO_KEYS = ("maxWeeklyAdds", "usesFaab", "waiverType", "waiverTime", "startWeek", "endWeek", "currentWeek")
 
 
 def keep_daily(pull, path):
@@ -116,7 +122,7 @@ def keep_daily(pull, path):
         daily.setdefault(team, {}).update(days)
     out = dict(pull, daily=daily)
     carried = set(pin.get("carried_forward") or ())
-    for key in ("matchups", "free_agents", "standings"):
+    for key in ("matchups", "free_agents", "standings", "league_info"):
         if not pull.get(key) and pin.get(key):
             out[key] = pin[key]
             carried.add(key)

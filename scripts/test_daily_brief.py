@@ -337,3 +337,97 @@ class WaiverNotes(unittest.TestCase):
         self.assertIsNone(rows[1]["add_waiver_date"]); self.assertIsNone(rows[1]["add_own_drop_date"])
         for r, b in zip(rows, before):
             self.assertEqual({k: v for k, v in r.items() if not k.startswith("add_waiver") and k != "add_own_drop_date"}, b)
+
+
+class TeamRoster(unittest.TestCase):
+    """Owner 2026-11-10 (audit F1): one roster build, co_gm.team_roster, for the simulator, the Monday fit and the
+    week card's season cost. strict=False skips a name with no line (the fit and the week card read frozen or older
+    lines); strict=True is rosters() as it was."""
+    BY = {n: {"player": n} for n in ("A", "Auto Guy", "Hurt Auto")}
+    T = {"seat": 10, "players": [{"player": "A", "slot": "PG"}, {"player": "Gone", "slot": "SG"}, {"player": "Hurt", "slot": "IL"}],
+         "unpooled": [dict(player="Auto Guy", slot="BN"), dict(player="Nobody", slot="BN"), dict(player="Hurt Auto", slot="IL")]}
+
+    def test_lenient_build_skips_names_without_a_line_and_adds_auto_rows(self):
+        self.assertEqual([p["player"] for p in CG.team_roster(self.T, self.BY, strict=False)], ["A", "Auto Guy"])
+        self.assertEqual([p["player"] for p in CG.team_roster(self.T, self.BY, include_il=True, strict=False)], ["A", "Auto Guy", "Hurt Auto"])
+
+    def test_strict_build_is_the_simulators_and_refuses_a_missing_line(self):
+        ok = dict(self.T, players=[{"player": "A", "slot": "PG"}])
+        self.assertEqual(CG.team_roster(ok, self.BY), CG.rosters({"teams": [ok]}, self.BY)[10])
+        with self.assertRaises(KeyError):
+            CG.team_roster(self.T, self.BY)
+
+
+class PoolGuard(unittest.TestCase):
+    """Owner 2026-11-10 (audit F4, council ruling): the simulator reads SEASON_POOL when it runs, not when the pool
+    was loaded; a pool changed in between is refused, never played silently (the 11-10 title-drop trace ran two rows
+    on the wrong pool that way)."""
+    def setUp(self):
+        self.old = os.environ.get("SEASON_POOL")
+        self.season = os.path.join(CG.KIT, "data", "season", "pool_season.csv")
+        if not os.path.exists(self.season):
+            self.skipTest("no season pool written")
+
+    def tearDown(self):
+        os.environ.pop("SEASON_POOL", None)
+        if self.old is not None:
+            os.environ["SEASON_POOL"] = self.old
+        CG.load_pool()
+
+    def test_a_pool_changed_after_the_load_is_refused_before_the_simulator_starts(self):
+        import shutil, tempfile
+        d = tempfile.mkdtemp(); other = os.path.join(d, "pool_other.csv"); shutil.copyfile(self.season, other)
+        os.environ["SEASON_POOL"] = self.season
+        CG.load_pool()
+        os.environ["SEASON_POOL"] = other
+        calls = []
+        real = CG.subprocess.run
+        CG.subprocess.run = lambda *a, **k: calls.append(a) or (_ for _ in ()).throw(AssertionError("simulator started"))
+        try:
+            with self.assertRaises(RuntimeError) as e:
+                CG.run_league_sim({10: []}, 2026, 10, d)
+        finally:
+            CG.subprocess.run = real
+        self.assertEqual(calls, [])
+        self.assertIn("pool_season.csv", str(e.exception)); self.assertIn("pool_other.csv", str(e.exception))
+
+    def test_the_same_pool_passes_the_guard(self):
+        os.environ["SEASON_POOL"] = self.season
+        CG.load_pool()
+        self.assertIsNone(CG.pool_guard())
+
+    def test_the_preseason_pool_passes_when_none_is_named(self):
+        os.environ.pop("SEASON_POOL", None)
+        CG.load_pool()
+        self.assertIsNone(CG.pool_guard())
+
+
+class SimPatch(unittest.TestCase):
+    """Owner 2026-11-10 (decision card, P2): run_league_sim can hand the simulator a constants patch (league_sim
+    --patch, as the Monday sweep does), so a pair can be re-scored under the declared band. No patch: the command
+    is as before."""
+    def _cmd(self, **kw):
+        import json as J, tempfile
+        CG.load_pool()          # the pool guard compares against the last load: load under this test's own environment
+        d = tempfile.mkdtemp(); seen = []
+        real = CG.subprocess.run
+        def fake(cmd, **k):
+            seen.append(list(cmd))
+            J.dump({"teams": {"10": {"champ": 1.0}}}, open(cmd[6], "w"))
+            if "--patch" in cmd:
+                seen.append(J.load(open(cmd[cmd.index("--patch") + 1])))
+        CG.subprocess.run = fake
+        try:
+            CG.run_league_sim({10: []}, 2026, 10, d, **kw)
+        finally:
+            CG.subprocess.run = real
+        return seen, d
+
+    def test_a_patch_reaches_the_simulator_and_its_file_is_removed(self):
+        seen, d = self._cmd(patch={"weekly_availability": {"risk": 0.65}}, tag="t")
+        self.assertIn("--patch", seen[0]); self.assertEqual(seen[1], {"weekly_availability": {"risk": 0.65}})
+        self.assertEqual(os.listdir(d), [])
+
+    def test_no_patch_no_flag(self):
+        seen, _ = self._cmd()
+        self.assertNotIn("--patch", seen[0])

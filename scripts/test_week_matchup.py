@@ -806,3 +806,134 @@ class StatusFileOverride(Record):
         self.assertEqual(rec["status_file"], "status_2026-10-21_pm.json")
         rec_am = WM.build("2026-10-21", self.paths)
         self.assertNotEqual(rec_am["status_file"], "status_2026-10-21_pm.json")   # the newest dated <= day: the morning's
+
+
+class SeasonCostRoster(Record):
+    """Owner 2026-11-10 (audit F1): the week card's season cost of a drop is measured against rosters built the
+    simulator's way: a rival's unpooled player with a pool row counts."""
+    def test_a_rivals_auto_row_player_is_in_the_season_cost_rosters(self):
+        st = json.load(open(self.state))
+        other = next(t for t in st["teams"] if t["seat"] == 3)
+        other["unpooled"] = [dict(player="Kevin Durant", slot="BN", nba_team="HOU", positions=["SF"], status=None)]
+        dump(st, self.state)
+        seen, real = [], WM.CG.arena.team_week_model
+        WM.CG.arena.team_week_model = lambda r, cv: (seen.append([p["player"] for p in r]), real(r, cv))[1]
+        try:
+            WM.build("2026-10-21", self.paths)
+        finally:
+            WM.CG.arena.team_week_model = real
+        self.assertTrue(seen, "the season-cost block did not run on this fixture")
+        self.assertTrue(any("Kevin Durant" in r for r in seen))
+
+
+class StatusRange(Record):
+    """Owner 2026-11-10 (audit F2, council ruling): when one of my players with a game left is tagged between out and
+    healthy (a Questionable, counted at part of his games), the card records both ends beside its figure: he plays
+    every game, he sits every game. On 11-10 one Q tag moved the card from 82.4% to 69.3% with no word why."""
+    def _q(self, a):
+        f = os.path.join(self.d, "status", "status_2026-10-21_pm.json")
+        dump(dict(date="2026-10-21", rows=[dict(player="Nikola Jokic", availability=a, tier="questionable")]), f)
+        return WM.build("2026-10-21", dict(self.paths, status_file=f))
+
+    def test_a_questionable_player_of_mine_gives_both_ends(self):
+        rec, healthy, out = self._q(0.5), self._q(1.0), self._q(0.0)
+        r = rec["status_range"]
+        self.assertEqual([p["player"] for p in r["players"]], ["Nikola Jokic"])
+        self.assertEqual(r["players"][0]["availability"], 0.5)
+        self.assertAlmostEqual(r["plays"]["p_5plus"], healthy["p_5plus"], places=9)
+        self.assertAlmostEqual(r["plays"]["exp_cats"], healthy["exp_cats"], places=9)
+        self.assertAlmostEqual(r["sits"]["p_5plus"], out["p_5plus"], places=9)
+        self.assertAlmostEqual(r["sits"]["exp_cats"], out["exp_cats"], places=9)
+        self.assertGreater(r["plays"]["exp_cats"], r["sits"]["exp_cats"])
+
+    def test_the_card_figure_itself_does_not_move(self):
+        f = os.path.join(self.d, "status", "status_2026-10-21_pm.json")
+        dump(dict(date="2026-10-21", rows=[dict(player="Nikola Jokic", availability=0.5, tier="questionable")]), f)
+        rec = WM.build("2026-10-21", dict(self.paths, status_file=f))
+        self.assertTrue(rec["status_range"]["sits"]["p_5plus"] <= rec["p_5plus"] <= rec["status_range"]["plays"]["p_5plus"])
+
+    def test_no_range_without_a_part_tag_on_my_roster(self):
+        self.assertIsNone(self._q(1.0)["status_range"])
+        self.assertIsNone(self._q(0.0)["status_range"])                 # out is not a range: he sits
+        # the fixture's own morning status file tags Jokic Q (0.5): the morning card carries the range too
+        self.assertEqual(WM.build("2026-10-21", self.paths)["status_range"]["players"][0]["player"], "Nikola Jokic")
+
+    def test_an_opponent_tag_gives_no_range(self):
+        f = os.path.join(self.d, "status", "status_2026-10-21_pm.json")
+        dump(dict(date="2026-10-21", rows=[dict(player="Tyrese Maxey", availability=0.5, tier="questionable")]), f)
+        self.assertIsNone(WM.build("2026-10-21", dict(self.paths, status_file=f))["status_range"])
+
+
+class PairChecks(Record):
+    """Owner 2026-11-10 (decision card, P3): the week card scores the brief's own pairs (the add counted from
+    tomorrow, as its pickup scan counts every add), so the card can show this week beside the season."""
+    def test_a_named_pair_is_scored_and_the_card_is_otherwise_unchanged(self):
+        plain = WM.build("2026-10-21", self.paths)
+        rec = WM.build("2026-10-21", dict(self.paths, pairs=[dict(add="Austin Reaves", drop="Derrick White")]))
+        self.assertIsNone(plain["pair_checks"])
+        c = rec["pair_checks"][0]
+        self.assertEqual((c["add"], c["drop"]), ("Austin Reaves", "Derrick White"))
+        self.assertAlmostEqual(c["d_p_5plus"], c["p_5plus"] - rec["p_5plus"], places=9)
+        self.assertGreater(c["d_exp"], 0)        # White has no game left this week; Reaves (LAL) plays 10-23
+        self.assertEqual(c["games"], 1)
+        self.assertEqual(rec["p_5plus"], plain["p_5plus"]); self.assertEqual(rec["cats"], plain["cats"])
+
+    def test_a_pair_the_card_cannot_score_says_why(self):
+        rec = WM.build("2026-10-21", dict(self.paths, pairs=[dict(add="No Such Player", drop="Derrick White"),
+                                                             dict(add="Austin Reaves", drop="Not Mine")]))
+        self.assertEqual([c.get("skipped") for c in rec["pair_checks"]],
+                         ["add not in today's free-agent pool", "drop not on my active roster"])
+        self.assertTrue(all(c.get("d_exp") is None for c in rec["pair_checks"]))
+
+
+
+class AddsThisWeek(unittest.TestCase):
+    """Owner 2026-11-10 (pick "P5 + P7"): the adds used against the league's weekly limit (Yahoo maxWeeklyAdds, pinned
+    with the pull), counted from the league's transaction record and the day's own move records."""
+    KEY = "478.l.36464.t.11"
+    TX = [dict(type="add", date="2026-11-10", team_ids=[KEY], players_added=[dict(name="Alex Caruso")], players_dropped=[]),
+          dict(type="add", date="2026-11-08", team_ids=[KEY], players_added=[dict(name="Cameron Johnson")], players_dropped=[]),
+          dict(type="add", date="2026-11-10", team_ids=["478.l.36464.t.8"], players_added=[dict(name="Klay Thompson")], players_dropped=[]),
+          dict(type="drop", date="2026-11-10", team_ids=[KEY], players_added=[], players_dropped=[dict(name="X")])]
+
+    def test_only_my_adds_inside_the_week_count(self):
+        r = WM.adds_this_week("2026-11-09", "2026-11-11", self.KEY, self.TX, [], 4)
+        self.assertEqual((r["used"], r["limit"], r["left"]), (1, 4, 3)); self.assertEqual(r["players"], ["Alex Caruso"])
+
+    def test_todays_move_record_adds_what_the_transaction_record_lacks_once(self):
+        moves = [dict(date="2026-11-11", moves=[dict(seat=10, added=["John Collins"], dropped=["Cameron Johnson"]),
+                                                dict(seat=3, added=["Someone Else"], dropped=[])]),
+                 dict(date="2026-11-10", moves=[dict(seat=10, added=["Alex Caruso"], dropped=[])]),       # already counted
+                 dict(date="2026-11-08", moves=[dict(seat=10, added=["Old Add"], dropped=[])])]            # before the week
+        r = WM.adds_this_week("2026-11-09", "2026-11-11", self.KEY, self.TX, moves, 4)
+        self.assertEqual(r["used"], 2); self.assertEqual(r["players"], ["Alex Caruso", "John Collins"]); self.assertEqual(r["left"], 2)
+
+    def test_names_match_across_accents(self):
+        tx = [dict(type="add", date="2026-11-10", team_ids=[self.KEY], players_added=[dict(name="Karlo Matković")], players_dropped=[])]
+        moves = [dict(date="2026-11-10", moves=[dict(seat=10, added=["Karlo Matkovic"], dropped=[])])]
+        self.assertEqual(WM.adds_this_week("2026-11-09", "2026-11-11", self.KEY, tx, moves, 4)["used"], 1)
+
+    def test_no_limit_on_record_is_said_not_guessed(self):
+        r = WM.adds_this_week("2026-11-09", "2026-11-11", self.KEY, self.TX, [], None)
+        self.assertEqual(r["used"], 1); self.assertIsNone(r["limit"]); self.assertIsNone(r["left"])
+        self.assertIn("limit is not on record", r["note"])
+
+    def test_no_team_key_counts_the_move_records_only_and_says_so(self):
+        moves = [dict(date="2026-11-10", moves=[dict(seat=10, added=["Alex Caruso"], dropped=[])])]
+        r = WM.adds_this_week("2026-11-09", "2026-11-11", None, self.TX, moves, 4)
+        self.assertEqual(r["used"], 1); self.assertIn("move records only", r["note"])
+
+
+class AddsOnTheCard(Record):
+    def test_the_card_carries_the_block_and_reads_the_limit_from_the_pull(self):
+        rec = WM.build("2026-10-21", self.paths)
+        self.assertEqual(rec["adds_this_week"]["used"], 0); self.assertIsNone(rec["adds_this_week"]["limit"])
+        news = os.path.join(self.d, "news"); os.makedirs(news)
+        dump(dict(date="2026-10-21", moves=[dict(team="MINE", seat=10, added=["Austin Reaves"], dropped=[])]),
+             os.path.join(news, "league_moves_2026-10-21.json"))
+        pull = os.path.join(self.d, "pull_2026-10-21.json")
+        dump(dict(source="flaim", league_key="478.l.36464", rosters={}, daily={}, matchups={}, free_agents=None, standings=None,
+                  league_info=dict(maxWeeklyAdds=4)), pull)
+        rec = WM.build("2026-10-21", dict(self.paths, news_dir=news, yahoo_pull=pull))
+        a = rec["adds_this_week"]
+        self.assertEqual((a["used"], a["limit"], a["left"], a["players"]), (1, 4, 3, ["Austin Reaves"]))

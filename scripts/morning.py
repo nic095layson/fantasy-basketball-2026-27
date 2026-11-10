@@ -147,6 +147,11 @@ def steps(date, fetch=True, seasons=10000, since=None):
            # deck then draws a "no record" line instead of the card)
            dict(name="week matchup", cmd=[PY, os.path.join(HERE, "week_matchup.py"), "--date", date], cwd=KIT,
                 pass_re=r"^WEEK MATCHUP: PASS", env={"SEASON_POOL": season_pool}, fatal=False),
+           # owner 2026-11-10 (pick "Decision card + watchdog"): the brief's top pairs in the return-on-time world,
+           # the top pair under the availability band, and this week beside the season (the week card above scored
+           # the pairs); display only, the brief is untouched; non-fatal (no record, no card on the deck)
+           dict(name="decision card", cmd=[PY, os.path.join(HERE, "decision_card.py"), "--date", date, "--seasons", str(seasons)],
+                cwd=KIT, pass_re=r"^DECISION CARD: PASS", env={"SEASON_POOL": season_pool}, fatal=False),
            # owner 2026-10-23 (Build 1): every team's totals, ranks and the all-play power ranking for the deck's League
            # tab, from the pulls already on disk; non-fatal (the deck then draws a "no record" line)
            dict(name="league table", cmd=[PY, os.path.join(HERE, "league_table.py"), "--date", date], cwd=KIT,

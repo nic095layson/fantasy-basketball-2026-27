@@ -2097,3 +2097,145 @@ class AfternoonLineupRefresh(unittest.TestCase):
         self.assertIn("lineup refresh did not run (FileNotFoundError: no pull), the 5 AM record stands", out)
         dom = visible_dom(os.path.join(self.out, "deck_2026-10-21_pm.html"), "Today", "pane-today")
         self.assertIn("the lineup, waiver pairs and title odds are from the 5 AM run", dom["text"])
+
+
+class StatusRangeLine(unittest.TestCase):
+    """Owner 2026-11-10 (audit F2, council ruling): the live week tile says both ends when the week card carries a
+    status range (one of my players tagged Questionable with a game left): plays every game, sits every game."""
+    def setUp(self):
+        self.d = tempfile.mkdtemp(); self.fx = fixtures(self.d)
+
+    def page(self, record):
+        self.fx["week_matchup"] = os.path.join(self.d, "wm.json")
+        with open(self.fx["week_matchup"], "w") as f:
+            json.dump(record, f)
+        html, data, rec = SD.build(self.fx, date="2026-10-21")
+        p = os.path.join(self.d, "deck.html")
+        with open(p, "w", encoding="utf-8") as f:
+            f.write(html)
+        return p
+
+    def _rec(self, rng):
+        r = week_matchup_record()
+        for x in r["cats"]:
+            x["p_win"] = 0.5
+        r["exp_cats"], r["p_5plus"], r["status_range"] = 5.1, 0.693, rng
+        return r
+
+    def test_the_tile_names_the_player_and_both_ends(self):
+        dom = today_dom(self.page(self._rec(dict(players=[dict(player="Kel'el Ware", availability=0.5)],
+                                                 plays=dict(p_5plus=0.824, exp_cats=5.64), sits=dict(p_5plus=0.551, exp_cats=4.6)))))
+        self.assertEqual(dom["errors"], [])
+        for s in ("5+ of 9: 69.3%", "Kel'el Ware is Questionable", "plays every game: 82.4%", "sits all week: 55.1%"):
+            self.assertIn(s, dom["text"])
+
+    def test_two_players_are_both_named(self):
+        dom = today_dom(self.page(self._rec(dict(players=[dict(player="A One", availability=0.5), dict(player="B Two", availability=0.75)],
+                                                 plays=dict(p_5plus=0.8, exp_cats=5.5), sits=dict(p_5plus=0.4, exp_cats=4.2)))))
+        self.assertEqual(dom["errors"], [])
+        for s in ("A One and B Two are Questionable", "both play every game: 80.0%", "both sit all week: 40.0%"):
+            self.assertIn(s, dom["text"])
+
+    def test_no_line_without_a_range_or_on_an_older_record(self):
+        for rng in (None, "absent"):
+            r = self._rec(None)
+            if rng == "absent":
+                del r["status_range"]
+            dom = today_dom(self.page(r))
+            self.assertEqual(dom["errors"], [])
+            self.assertNotIn("Questionable", dom["text"]); self.assertNotIn("every game", dom["text"])
+
+
+class DecisionCardDeck(unittest.TestCase):
+    """Owner 2026-11-10 (pick "Decision card + watchdog"): the Today tab draws the day's decision card when its
+    record exists: each pair in both worlds and this week, the flip line, the band line. No record, no card."""
+    CARD = dict(date="2026-10-21", seasons=10000, base=dict(never=12.3, on_time=21.9),
+                pairs=[dict(add="John Collins", drop="Kris Dunn", never=dict(title=15.7, d_title=3.44), on_time=dict(title=23.4, d_title=1.52),
+                            week=dict(d_exp=-0.05, p_5plus=0.817, d_p_5plus=-0.007)),
+                       dict(add="John Collins", drop="Cameron Johnson", never=dict(title=13.9, d_title=1.57), on_time=dict(title=24.4, d_title=2.52),
+                            week=None)],
+                order=dict(never=[], on_time=[]), rank_flip=True,
+                robust=dict(add="John Collins", drop="Kris Dunn", constant="weekly_availability", held=4, holds=True, low=2.61, high=3.94,
+                            variants=[dict(label="a", d_title=2.8)] * 4),
+                notes=[], label="Display only: the brief's ranking and the headline title share are unchanged.")
+
+    def setUp(self):
+        self.d = tempfile.mkdtemp(); self.fx = fixtures(self.d)
+
+    def page(self, card):
+        if card is not None:
+            self.fx["decision_card"] = os.path.join(self.d, "dc.json")
+            with open(self.fx["decision_card"], "w") as f:
+                json.dump(card, f)
+        html, data, rec = SD.build(self.fx, date="2026-10-21")
+        p = os.path.join(self.d, "deck.html")
+        with open(p, "w", encoding="utf-8") as f:
+            f.write(html)
+        return p, rec
+
+    def test_the_card_shows_both_worlds_the_flip_and_the_band(self):
+        p, rec = self.page(self.CARD)
+        dom = today_dom(p)
+        self.assertEqual(dom["errors"], [])
+        for s in ("Pickup check", "John Collins", "Kris Dunn", "never return", "return on time", "+3.4", "+1.5", "+2.5",
+                  "−0.7 points", "not shown", "The order changes between the two worlds", "holds in 4 of 4 settings",
+                  "12.3%", "21.9%", "Display only"):
+            self.assertIn(s, dom["text"])
+        self.assertIs(rec["inputs"]["decision_card"]["present"], True)
+
+    def test_the_same_order_says_so_and_an_unscored_world_says_so(self):
+        c = dict(self.CARD, rank_flip=False)
+        self.assertIn("The order is the same in both worlds", today_dom(self.page(c)[0])["text"])
+        c = dict(self.CARD, rank_flip=None, base=dict(never=12.3, on_time=None), robust=None,
+                 pairs=[dict(self.CARD["pairs"][0], on_time=None)], notes=["no il_return record for the day: the return world is not scored"])
+        dom = today_dom(self.page(c)[0])
+        self.assertEqual(dom["errors"], [])
+        self.assertIn("not scored", dom["text"]); self.assertNotIn("holds in", dom["text"])
+
+    def test_no_record_or_no_pair_draws_no_card(self):
+        self.assertNotIn("Pickup check", today_dom(self.page(None)[0])["text"])
+        dom = today_dom(self.page(dict(self.CARD, pairs=[], robust=None, rank_flip=None))[0])
+        self.assertEqual(dom["errors"], []); self.assertNotIn("Pickup check", dom["text"])
+
+    def test_the_default_paths_name_the_days_card(self):
+        self.assertTrue(SD.default_paths("2026-11-10")["decision_card"].endswith(os.path.join("report", "briefs", "decision_card_2026-11-10.json")))
+
+
+
+class AddsLine(unittest.TestCase):
+    """Owner 2026-11-10 (pick "P5 + P7"): the live week tile says the adds used against the league's weekly limit."""
+    def setUp(self):
+        self.d = tempfile.mkdtemp(); self.fx = fixtures(self.d)
+
+    def text(self, adds):
+        r = week_matchup_record()
+        for x in r["cats"]:
+            x["p_win"] = 0.5
+        r["exp_cats"], r["p_5plus"] = 4.5, 0.5
+        if adds != "absent":
+            r["adds_this_week"] = adds
+        self.fx["week_matchup"] = os.path.join(self.d, "wm.json")
+        with open(self.fx["week_matchup"], "w") as f:
+            json.dump(r, f)
+        html, data, rec = SD.build(self.fx, date="2026-10-21")
+        p = os.path.join(self.d, "deck.html")
+        with open(p, "w", encoding="utf-8") as f:
+            f.write(html)
+        dom = today_dom(p)
+        self.assertEqual(dom["errors"], [])
+        return dom["text"]
+
+    def test_used_of_limit_with_the_names(self):
+        t = self.text(dict(used=1, limit=4, left=3, players=["Alex Caruso"], note=None))
+        self.assertIn("Adds this week: 1 of 4 used (Alex Caruso); 3 left.", t)
+
+    def test_none_used_and_the_limit_reached(self):
+        self.assertIn("Adds this week: 0 of 4 used; 4 left.", self.text(dict(used=0, limit=4, left=4, players=[], note=None)))
+        self.assertIn("Adds this week: 4 of 4 used (A, B, C, D); none left.", self.text(dict(used=4, limit=4, left=0, players=["A", "B", "C", "D"], note=None)))
+
+    def test_no_limit_on_record_shows_the_count_only(self):
+        t = self.text(dict(used=2, limit=None, left=None, players=["A", "B"], note="the weekly limit is not on record"))
+        self.assertIn("Adds this week: 2 used (A, B); the weekly limit is not on record.", t)
+
+    def test_an_older_record_draws_no_line(self):
+        self.assertNotIn("Adds this week", self.text("absent"))
