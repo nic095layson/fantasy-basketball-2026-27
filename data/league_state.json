@@ -2,16 +2,16 @@
  "as_of": "2026-11-10",
  "sources": {
   "flaim": {
-   "transcript": "3cdbbd9b-02dd-585e-8d00-b8a370128fae.jsonl",
+   "transcript": "f7b74300-8501-5e41-b8c5-d2c75dd06ce4.jsonl",
    "method": "mechanical json extraction of Flaim (Yahoo) tool results from the session transcript",
-   "since": "2026-11-10T19:16:18Z",
+   "since": "2026-11-10T23:04:26Z",
    "pull_file": "data/source/flaim/pull_2026-11-10_pm.json",
-   "pull_sha256": "e96c735f7517f4acb6bcda293fadfc07d39e71b706d9089b9abfa059085e4f12",
+   "pull_sha256": "2f3ab162a94877d16ba83b7c58602901097059c2b69609f76819b4eb69d674cc",
    "view": "Flaim connector (Yahoo, read-only): get_roster per team (current), get_matchups, get_free_agents"
   },
   "transcription": {
    "file": "data/source/flaim/rosters_2026-11-10_pm.transcribed.csv",
-   "sha256": "345568314936122d943bd2ed71fa8bc3452eee5b32d4a05a0cfb5a506ccca34e",
+   "sha256": "ef437ab6ea565cb497e246f1e975cc38427c1bc8db06a4fadefbc3118143d9cc",
    "method": "flaim_live.to_rows (mechanical; Yahoo slots and status letters for every team)"
   },
   "draft_board": "report/after-reports/draft-league-2026-10-14/recap.json",
@@ -28,20 +28,12 @@
  },
  "unpooled": [
   {
-   "player": "Meleek Thomas",
-   "fantasy_team": "Looking Cool Joker!",
-   "seat": 1,
-   "slot": "G",
-   "nba_team": "CLE",
-   "status": null
-  },
-  {
    "player": "Nolan Traore",
    "fantasy_team": "ANONG NANGIANNIS?!",
    "seat": 5,
    "slot": "BN",
    "nba_team": "BKN",
-   "status": null
+   "status": "Q"
   },
   {
    "player": "Morez Johnson Jr.",
@@ -191,7 +183,7 @@
       "SG",
       "SF"
      ],
-     "status": "Q"
+     "status": "D"
     },
     {
      "player": "Luka Doncic",
@@ -435,7 +427,7 @@
       "SF",
       "PF"
      ],
-     "status": "Q"
+     "status": null
     }
    ],
    "empty_slots": [],
@@ -470,6 +462,18 @@
      "slot": "SG",
      "yahoo_nba_team": "MIA",
      "pool_team": "MIA",
+     "positions": [
+      "SG",
+      "SF"
+     ],
+     "status": null
+    },
+    {
+     "player": "Nique Clifford",
+     "yahoo_name": "Nique Clifford",
+     "slot": "G",
+     "yahoo_nba_team": "OKC",
+     "pool_team": "SAC",
      "positions": [
       "SG",
       "SF"
@@ -620,23 +624,14 @@
    ],
    "empty_slots": [],
    "unpooled_il": [],
-   "unpooled": [
-    {
-     "player": "Meleek Thomas",
-     "slot": "G",
-     "nba_team": "CLE",
-     "positions": [
-      "SG"
-     ],
-     "status": null
-    }
-   ],
+   "unpooled": [],
    "seat": 1,
    "manager": "Oblena",
    "draft_overlap": 10,
    "added_since_draft": [
     "Aaron Nesmith",
     "Jakob Poeltl",
+    "Nique Clifford",
     "Pelle Larsson",
     "Rui Hachimura"
    ],
@@ -800,7 +795,7 @@
       "PF",
       "C"
      ],
-     "status": "Q"
+     "status": "O"
     },
     {
      "player": "Zion Williamson",
@@ -812,7 +807,7 @@
       "PF",
       "C"
      ],
-     "status": "P"
+     "status": null
     },
     {
      "player": "Anthony Edwards",
@@ -994,7 +989,7 @@
       "SG",
       "SF"
      ],
-     "status": "Q"
+     "status": "P"
     },
     {
      "player": "Jalen Suggs",
@@ -1019,7 +1014,7 @@
      "positions": [
       "PG"
      ],
-     "status": null
+     "status": "Q"
     }
    ],
    "seat": 5,
@@ -1281,7 +1276,7 @@
       "PF",
       "C"
      ],
-     "status": "Q"
+     "status": null
     },
     {
      "player": "Devin Vassell",
@@ -2367,5 +2362,11 @@
    ]
   }
  ],
- "nba_team_disagreements": []
+ "nba_team_disagreements": [
+  {
+   "player": "Nique Clifford",
+   "yahoo": "OKC",
+   "pool": "SAC"
+  }
+ ]
 }

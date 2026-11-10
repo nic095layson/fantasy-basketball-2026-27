@@ -15,12 +15,12 @@
   "status": {
    "path": "data/status/status_2026-11-10_pm.json",
    "present": true,
-   "sha256": "671ff6b6a0d127f2e2bf5d3d82f9d4707ee88efb97e65bc525c5d69f12273042"
+   "sha256": "c86d67485ae6c6ed01c45b44cc2249ffede41ee49eba92c931293ec5e0dd4623"
   },
   "league_state": {
    "path": "data/league_state.json",
    "present": true,
-   "sha256": "47410e9bfd669693dcb022093302d79b3c1c1c7b3349989a4de26e5f0953e1e5"
+   "sha256": "c26ee76c3a1bbaebba27e2ac827eae2c986eb21d080e51800647c08fc6a9bbb1"
   },
   "season_lines": {
    "path": "data/season/season_lines_2026-11-10.json",
@@ -45,7 +45,7 @@
   "week_matchup": {
    "path": "report/briefs/week_matchup_2026-11-10_pm.json",
    "present": true,
-   "sha256": "b94c0eeeac1763f579a570dfd285636dfa21c1cf5276b74f1b5c47c8cb9582ed"
+   "sha256": "73943905624a2cc577fd2df4d1279b03fc53ca8fd2e15654aa2fb0a41a6172f3"
   },
   "league": {
    "path": "report/league/league_2026-11-10.json",
@@ -72,24 +72,29 @@
    "present": true,
    "sha256": "becc066a4362976a908d6f45bf63e0c54f5f2f399c3705baa7b254d6b3285cbf"
   },
+  "decision_card": {
+   "path": "report/briefs/decision_card_2026-11-10.json",
+   "present": false,
+   "sha256": null
+  },
   "yahoo_pull": {
    "path": "data/source/flaim/pull_2026-11-10_pm.json",
    "present": true,
-   "sha256": "e96c735f7517f4acb6bcda293fadfc07d39e71b706d9089b9abfa059085e4f12"
+   "sha256": "2f3ab162a94877d16ba83b7c58602901097059c2b69609f76819b4eb69d674cc"
   },
   "espn_injuries": {
    "path": "data/status/espn_injuries_2026-11-10_pm.json",
    "present": true,
-   "sha256": "69c90a5af4b15b3c8069f70ef1ac4a9c43eda22262c031aeb814b6a82ef160a3"
+   "sha256": "66504190ee62b92ed3bbe44d5d931f38a6a0015c7ed4fd80ee36b641afb718a6"
   }
  },
  "board_rows": 315,
- "status_rows": 33,
+ "status_rows": 30,
  "panes": 7,
  "join": {
-  "rostered": 170,
+  "rostered": 171,
   "unresolved": 0,
-  "on_board": 168,
+  "on_board": 169,
   "off_board": 2,
   "respelled": [
    [
@@ -122,7 +127,7 @@
    ]
   ],
   "not_on_board": [],
-  "free_agents_on_board": 147
+  "free_agents_on_board": 146
  },
  "render": {
   "status": "PASS",
@@ -136,6 +141,6 @@
    "League"
   ],
   "page_errors": 0,
-  "browser": "153.0.8010.12 (/opt/pw-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell)"
+  "browser": "141.0.7390.37 (playwright default)"
  }
 }

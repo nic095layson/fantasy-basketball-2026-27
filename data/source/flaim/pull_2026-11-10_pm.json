@@ -3941,6 +3941,7 @@
   "position": "ALL",
   "seasonYear": 2026
  },
+ "league_info": null,
  "league_key": "478.l.36464",
  "matchups": {
   "4": {
@@ -5426,7 +5427,7 @@
      "playerKey": "478.p.5843",
      "position": "SG,SF",
      "selectedPosition": "Util",
-     "status": "Q",
+     "status": "D",
      "team": "NYK"
     },
     {
@@ -6747,7 +6748,6 @@
      "playerKey": "478.p.6694",
      "position": "SF,PF",
      "selectedPosition": "IL",
-     "status": "Q",
      "team": "SAC"
     }
    ],
@@ -6804,6 +6804,8 @@
      "eligiblePositions": [
       "SG",
       "G",
+      "SF",
+      "F",
       "Util"
      ],
      "isKeeper": {
@@ -6812,12 +6814,12 @@
       "status": false
      },
      "isUndroppable": false,
-     "name": "Meleek Thomas",
-     "playerId": "10617",
-     "playerKey": "478.p.10617",
-     "position": "SG",
+     "name": "Nique Clifford",
+     "playerId": "10469",
+     "playerKey": "478.p.10469",
+     "position": "SG,SF",
      "selectedPosition": "G",
-     "team": "CLE"
+     "team": "OKC"
     },
     {
      "eligiblePositions": [
@@ -7314,7 +7316,8 @@
       "PF",
       "F",
       "C",
-      "Util"
+      "Util",
+      "IL"
      ],
      "isKeeper": {
       "cost": false,
@@ -7327,7 +7330,7 @@
      "playerKey": "478.p.6515",
      "position": "SF,PF,C",
      "selectedPosition": "BN",
-     "status": "Q",
+     "status": "O",
      "team": "TOR"
     },
     {
@@ -7348,7 +7351,6 @@
      "playerKey": "478.p.6163",
      "position": "PF,C",
      "selectedPosition": "IL",
-     "status": "P",
      "team": "NOP"
     },
     {
@@ -7616,6 +7618,7 @@
      "playerKey": "478.p.10455",
      "position": "PG",
      "selectedPosition": "BN",
+     "status": "Q",
      "team": "BKN"
     },
     {
@@ -7657,7 +7660,7 @@
      "playerKey": "478.p.6559",
      "position": "SG,SF",
      "selectedPosition": "IL",
-     "status": "Q",
+     "status": "P",
      "team": "NOP"
     },
     {
@@ -8104,7 +8107,6 @@
      "playerKey": "478.p.5642",
      "position": "PF,C",
      "selectedPosition": "PF",
-     "status": "Q",
      "team": "SAC"
     },
     {
