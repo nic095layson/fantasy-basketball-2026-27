@@ -356,3 +356,47 @@ class TeamRoster(unittest.TestCase):
         self.assertEqual(CG.team_roster(ok, self.BY), CG.rosters({"teams": [ok]}, self.BY)[10])
         with self.assertRaises(KeyError):
             CG.team_roster(self.T, self.BY)
+
+
+class PoolGuard(unittest.TestCase):
+    """Owner 2026-11-10 (audit F4, council ruling): the simulator reads SEASON_POOL when it runs, not when the pool
+    was loaded; a pool changed in between is refused, never played silently (the 11-10 title-drop trace ran two rows
+    on the wrong pool that way)."""
+    def setUp(self):
+        self.old = os.environ.get("SEASON_POOL")
+        self.season = os.path.join(CG.KIT, "data", "season", "pool_season.csv")
+        if not os.path.exists(self.season):
+            self.skipTest("no season pool written")
+
+    def tearDown(self):
+        os.environ.pop("SEASON_POOL", None)
+        if self.old is not None:
+            os.environ["SEASON_POOL"] = self.old
+        CG.load_pool()
+
+    def test_a_pool_changed_after_the_load_is_refused_before_the_simulator_starts(self):
+        import shutil, tempfile
+        d = tempfile.mkdtemp(); other = os.path.join(d, "pool_other.csv"); shutil.copyfile(self.season, other)
+        os.environ["SEASON_POOL"] = self.season
+        CG.load_pool()
+        os.environ["SEASON_POOL"] = other
+        calls = []
+        real = CG.subprocess.run
+        CG.subprocess.run = lambda *a, **k: calls.append(a) or (_ for _ in ()).throw(AssertionError("simulator started"))
+        try:
+            with self.assertRaises(RuntimeError) as e:
+                CG.run_league_sim({10: []}, 2026, 10, d)
+        finally:
+            CG.subprocess.run = real
+        self.assertEqual(calls, [])
+        self.assertIn("pool_season.csv", str(e.exception)); self.assertIn("pool_other.csv", str(e.exception))
+
+    def test_the_same_pool_passes_the_guard(self):
+        os.environ["SEASON_POOL"] = self.season
+        CG.load_pool()
+        self.assertIsNone(CG.pool_guard())
+
+    def test_the_preseason_pool_passes_when_none_is_named(self):
+        os.environ.pop("SEASON_POOL", None)
+        CG.load_pool()
+        self.assertIsNone(CG.pool_guard())

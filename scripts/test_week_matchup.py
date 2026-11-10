@@ -824,3 +824,41 @@ class SeasonCostRoster(Record):
             WM.CG.arena.team_week_model = real
         self.assertTrue(seen, "the season-cost block did not run on this fixture")
         self.assertTrue(any("Kevin Durant" in r for r in seen))
+
+
+class StatusRange(Record):
+    """Owner 2026-11-10 (audit F2, council ruling): when one of my players with a game left is tagged between out and
+    healthy (a Questionable, counted at part of his games), the card records both ends beside its figure: he plays
+    every game, he sits every game. On 11-10 one Q tag moved the card from 82.4% to 69.3% with no word why."""
+    def _q(self, a):
+        f = os.path.join(self.d, "status", "status_2026-10-21_pm.json")
+        dump(dict(date="2026-10-21", rows=[dict(player="Nikola Jokic", availability=a, tier="questionable")]), f)
+        return WM.build("2026-10-21", dict(self.paths, status_file=f))
+
+    def test_a_questionable_player_of_mine_gives_both_ends(self):
+        rec, healthy, out = self._q(0.5), self._q(1.0), self._q(0.0)
+        r = rec["status_range"]
+        self.assertEqual([p["player"] for p in r["players"]], ["Nikola Jokic"])
+        self.assertEqual(r["players"][0]["availability"], 0.5)
+        self.assertAlmostEqual(r["plays"]["p_5plus"], healthy["p_5plus"], places=9)
+        self.assertAlmostEqual(r["plays"]["exp_cats"], healthy["exp_cats"], places=9)
+        self.assertAlmostEqual(r["sits"]["p_5plus"], out["p_5plus"], places=9)
+        self.assertAlmostEqual(r["sits"]["exp_cats"], out["exp_cats"], places=9)
+        self.assertGreater(r["plays"]["exp_cats"], r["sits"]["exp_cats"])
+
+    def test_the_card_figure_itself_does_not_move(self):
+        f = os.path.join(self.d, "status", "status_2026-10-21_pm.json")
+        dump(dict(date="2026-10-21", rows=[dict(player="Nikola Jokic", availability=0.5, tier="questionable")]), f)
+        rec = WM.build("2026-10-21", dict(self.paths, status_file=f))
+        self.assertTrue(rec["status_range"]["sits"]["p_5plus"] <= rec["p_5plus"] <= rec["status_range"]["plays"]["p_5plus"])
+
+    def test_no_range_without_a_part_tag_on_my_roster(self):
+        self.assertIsNone(self._q(1.0)["status_range"])
+        self.assertIsNone(self._q(0.0)["status_range"])                 # out is not a range: he sits
+        # the fixture's own morning status file tags Jokic Q (0.5): the morning card carries the range too
+        self.assertEqual(WM.build("2026-10-21", self.paths)["status_range"]["players"][0]["player"], "Nikola Jokic")
+
+    def test_an_opponent_tag_gives_no_range(self):
+        f = os.path.join(self.d, "status", "status_2026-10-21_pm.json")
+        dump(dict(date="2026-10-21", rows=[dict(player="Tyrese Maxey", availability=0.5, tier="questionable")]), f)
+        self.assertIsNone(WM.build("2026-10-21", dict(self.paths, status_file=f))["status_range"])

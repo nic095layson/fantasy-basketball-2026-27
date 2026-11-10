@@ -1,5 +1,5 @@
 {
- "ran_at_utc": "2026-11-10T21:13:41Z",
+ "ran_at_utc": "2026-11-10T21:24:05Z",
  "inputs": {
   "report/after-reports/after-report-2026-11-10-shared-roster-build.md": "a83092450d949182a432594d094aa3b8e2e38bdb0eccb3bea9336b43cf4da479",
   "../wtsd/report/after-reports/redteam-2026-11-09-season/sweep.json": "7cebe2a3101d6d88b154c99b3082d5819197193ddb2be591d0c3b6d479d2a305"
@@ -59,7 +59,7 @@
   },
   {
    "name": "touched tests",
-   "cmd": "bash -c 'cd scripts && python3 -m unittest test_daily_brief test_week_matchup test_fit_constants 2>&1 | tail -1'",
+   "cmd": "bash -c 'cd scripts && python3 -m unittest test_daily_brief test_week_matchup test_fit_constants test_season_deck 2>&1 | tail -1'",
    "cwd": ".",
    "pass_re": "^OK",
    "exit": 0,
@@ -125,5 +125,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "58417239fb5010a99bb859332fb84951662ffae7"
+ "base_commit": "28931f59a2f6b522c1442aa3b9c5d0e9be460433"
 }

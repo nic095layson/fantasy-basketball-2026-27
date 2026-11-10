@@ -722,7 +722,19 @@ function liveTile(W, wk){
   if(!W || W.week!==wk || W.exp_cats==null) return h("div",{class:"tile"},h("div",{class:"v"},"—"),h("div",{class:"l"},"week "+wk+" now"),
     h("div",{class:"e"},"no live record this morning"));
   return h("div",{class:"tile"},h("div",{class:"v"},W.exp_cats.toFixed(2)),h("div",{class:"l"},"week "+W.week+" now: expected categories of 9"),
-    h("div",{class:"e"},(W.p_5plus!=null?"5+ of 9: "+pct(W.p_5plus)+" (categories taken as independent) · ":"")+"from this morning's week card"));
+    h("div",{class:"e"},(W.p_5plus!=null?"5+ of 9: "+pct(W.p_5plus)+" (categories taken as independent) · ":"")+"from this morning's week card"),
+    statusRangeLine(W));
+}
+
+// owner 2026-11-10 (audit F2): one of my players is Questionable with a game left: both ends beside the figure
+function statusRangeLine(W){
+  const R=W.status_range;
+  if(!R || !R.players || !R.players.length || !R.plays || !R.sits || R.plays.p_5plus==null || R.sits.p_5plus==null) return null;
+  const n=R.players.map(p=>p.player), many=n.length>1;
+  const who=many? n.slice(0,-1).join(", ")+" and "+n[n.length-1] : n[0];
+  return h("div",{class:"e",title:"The figure above counts a Questionable player at part of his games. These are the two ends: every game played, every game missed. The opponent's tags are as the card has them."},
+    who+(many?" are":" is")+" Questionable. If "+(many?(n.length===2?"both":"all")+" play":"he plays")+" every game: "+pct(R.plays.p_5plus)+
+    " · if "+(many?(n.length===2?"both":"all")+" sit":"he sits")+" all week: "+pct(R.sits.p_5plus)+".");
 }
 
 // ---- the matchup board (owner 2026-10-23: "take this inspiration [Yahoo's matchup page] ... make this the today page";
