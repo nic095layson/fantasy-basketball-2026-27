@@ -88,7 +88,8 @@ def afternoon_lineup_refresh(date, briefs_dir=None):
     am_pull = os.path.join(KIT, "data", "source", "flaim", f"pull_{date}.json")
     paths = dict(state=CG.STATE, schedule=CG.SCHEDULE, games=CG.GAMES, actuals=WM.ACTUALS, status=WM.STATUS,
                  yahoo_pull=pm_pull if os.path.exists(pm_pull) else am_pull,
-                 **({"status_file": pm_status} if os.path.exists(pm_status) else {}))
+                 **({"status_file": pm_status} if os.path.exists(pm_status) else {}),
+                 league_tx=WM.LEAGUE_TX, news_dir=WM.NEWS)   # owner 2026-11-10: the adds counter on the afternoon card
     try:
         rec = WM.build(date, paths)
     except Exception as e:  # noqa: BLE001 — named, never a halt: the morning record stands
@@ -723,7 +724,18 @@ function liveTile(W, wk){
     h("div",{class:"e"},"no live record this morning"));
   return h("div",{class:"tile"},h("div",{class:"v"},W.exp_cats.toFixed(2)),h("div",{class:"l"},"week "+W.week+" now: expected categories of 9"),
     h("div",{class:"e"},(W.p_5plus!=null?"5+ of 9: "+pct(W.p_5plus)+" (categories taken as independent) · ":"")+"from this morning's week card"),
-    statusRangeLine(W));
+    statusRangeLine(W), addsLine(W));
+}
+
+// owner 2026-11-10 (pick "P5 + P7"): my adds this week against the league's weekly limit, as the week card counted them
+function addsLine(W){
+  const A=W.adds_this_week;
+  if(!A || A.used==null) return null;
+  const who=A.players&&A.players.length? " ("+A.players.join(", ")+")" : "";
+  const tip="Counted from the league's transaction record and the day's move records, by UTC date; Yahoo's own count can differ by a move made around the week's boundary.";
+  return h("div",{class:"e",title:tip}, A.limit==null
+    ? "Adds this week: "+A.used+" used"+who+"; the weekly limit is not on record."
+    : "Adds this week: "+A.used+" of "+A.limit+" used"+who+"; "+(A.left>0?A.left+" left":"none left")+".");
 }
 
 // owner 2026-11-10 (audit F2): one of my players is Questionable with a game left: both ends beside the figure

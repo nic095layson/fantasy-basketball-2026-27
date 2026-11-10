@@ -2144,3 +2144,42 @@ class StatusRangeLine(unittest.TestCase):
             dom = today_dom(self.page(r))
             self.assertEqual(dom["errors"], [])
             self.assertNotIn("Questionable", dom["text"]); self.assertNotIn("every game", dom["text"])
+
+
+class AddsLine(unittest.TestCase):
+    """Owner 2026-11-10 (pick "P5 + P7"): the live week tile says the adds used against the league's weekly limit."""
+    def setUp(self):
+        self.d = tempfile.mkdtemp(); self.fx = fixtures(self.d)
+
+    def text(self, adds):
+        r = week_matchup_record()
+        for x in r["cats"]:
+            x["p_win"] = 0.5
+        r["exp_cats"], r["p_5plus"] = 4.5, 0.5
+        if adds != "absent":
+            r["adds_this_week"] = adds
+        self.fx["week_matchup"] = os.path.join(self.d, "wm.json")
+        with open(self.fx["week_matchup"], "w") as f:
+            json.dump(r, f)
+        html, data, rec = SD.build(self.fx, date="2026-10-21")
+        p = os.path.join(self.d, "deck.html")
+        with open(p, "w", encoding="utf-8") as f:
+            f.write(html)
+        dom = today_dom(p)
+        self.assertEqual(dom["errors"], [])
+        return dom["text"]
+
+    def test_used_of_limit_with_the_names(self):
+        t = self.text(dict(used=1, limit=4, left=3, players=["Alex Caruso"], note=None))
+        self.assertIn("Adds this week: 1 of 4 used (Alex Caruso); 3 left.", t)
+
+    def test_none_used_and_the_limit_reached(self):
+        self.assertIn("Adds this week: 0 of 4 used; 4 left.", self.text(dict(used=0, limit=4, left=4, players=[], note=None)))
+        self.assertIn("Adds this week: 4 of 4 used (A, B, C, D); none left.", self.text(dict(used=4, limit=4, left=0, players=["A", "B", "C", "D"], note=None)))
+
+    def test_no_limit_on_record_shows_the_count_only(self):
+        t = self.text(dict(used=2, limit=None, left=None, players=["A", "B"], note="the weekly limit is not on record"))
+        self.assertIn("Adds this week: 2 used (A, B); the weekly limit is not on record.", t)
+
+    def test_an_older_record_draws_no_line(self):
+        self.assertNotIn("Adds this week", self.text("absent"))

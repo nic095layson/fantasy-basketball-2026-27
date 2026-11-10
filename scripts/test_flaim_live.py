@@ -265,3 +265,34 @@ class NotStarted(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
+
+
+class LeagueInfo(unittest.TestCase):
+    """Owner 2026-11-10 (pick "P5 + P7"): the league-settings response the morning run already makes is pinned with
+    the pull (the weekly add limit, the waiver settings, the season's weeks), so nothing reads a setting from memory."""
+    def write(self, text):
+        fd, p = tempfile.mkstemp(suffix=".jsonl")
+        with os.fdopen(fd, "w", encoding="utf-8") as f:
+            f.write(text)
+        self.addCleanup(os.remove, p)
+        return p
+
+    def info(self, key=None, **kw):
+        d = dict(leagueKey=key or FL.LEAGUE_KEY, scoringType="head", teams=[], maxWeeklyAdds=4, usesFaab=True, waiverType="FR",
+                 waiverTime=1, startWeek="1", endWeek="20", currentWeek=4, name="X", url="u")
+        d.update(kw)
+        return {"success": True, "data": d}
+
+    def test_the_settings_are_pinned_and_another_leagues_are_not(self):
+        pull = FL.extract_pull(self.write(twelve("2026-11-10T13:05:00Z") + line("2026-11-10T13:04:40Z", self.info())))
+        self.assertEqual(pull["league_info"], dict(maxWeeklyAdds=4, usesFaab=True, waiverType="FR", waiverTime=1, startWeek="1",
+                                                   endWeek="20", currentWeek=4))
+        other = FL.extract_pull(self.write(line("2026-11-10T13:04:40Z", self.info(key="478.l.1"))))
+        self.assertIsNone(other["league_info"])
+
+    def test_a_later_pin_without_the_settings_keeps_the_earlier(self):
+        d = tempfile.mkdtemp(); path = os.path.join(d, "pull.json")
+        json.dump({"source": "flaim", "daily": {}, "matchups": {}, "free_agents": None, "standings": None,
+                   "league_info": {"maxWeeklyAdds": 4}}, open(path, "w"))
+        pull = FL.keep_daily({"source": "flaim", "daily": {}, "matchups": {}, "free_agents": None, "standings": None, "league_info": None}, path)
+        self.assertEqual(pull["league_info"], {"maxWeeklyAdds": 4}); self.assertIn("league_info", pull["carried_forward"])

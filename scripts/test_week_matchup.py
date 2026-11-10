@@ -862,3 +862,55 @@ class StatusRange(Record):
         f = os.path.join(self.d, "status", "status_2026-10-21_pm.json")
         dump(dict(date="2026-10-21", rows=[dict(player="Tyrese Maxey", availability=0.5, tier="questionable")]), f)
         self.assertIsNone(WM.build("2026-10-21", dict(self.paths, status_file=f))["status_range"])
+
+
+class AddsThisWeek(unittest.TestCase):
+    """Owner 2026-11-10 (pick "P5 + P7"): the adds used against the league's weekly limit (Yahoo maxWeeklyAdds, pinned
+    with the pull), counted from the league's transaction record and the day's own move records."""
+    KEY = "478.l.36464.t.11"
+    TX = [dict(type="add", date="2026-11-10", team_ids=[KEY], players_added=[dict(name="Alex Caruso")], players_dropped=[]),
+          dict(type="add", date="2026-11-08", team_ids=[KEY], players_added=[dict(name="Cameron Johnson")], players_dropped=[]),
+          dict(type="add", date="2026-11-10", team_ids=["478.l.36464.t.8"], players_added=[dict(name="Klay Thompson")], players_dropped=[]),
+          dict(type="drop", date="2026-11-10", team_ids=[KEY], players_added=[], players_dropped=[dict(name="X")])]
+
+    def test_only_my_adds_inside_the_week_count(self):
+        r = WM.adds_this_week("2026-11-09", "2026-11-11", self.KEY, self.TX, [], 4)
+        self.assertEqual((r["used"], r["limit"], r["left"]), (1, 4, 3)); self.assertEqual(r["players"], ["Alex Caruso"])
+
+    def test_todays_move_record_adds_what_the_transaction_record_lacks_once(self):
+        moves = [dict(date="2026-11-11", moves=[dict(seat=10, added=["John Collins"], dropped=["Cameron Johnson"]),
+                                                dict(seat=3, added=["Someone Else"], dropped=[])]),
+                 dict(date="2026-11-10", moves=[dict(seat=10, added=["Alex Caruso"], dropped=[])]),       # already counted
+                 dict(date="2026-11-08", moves=[dict(seat=10, added=["Old Add"], dropped=[])])]            # before the week
+        r = WM.adds_this_week("2026-11-09", "2026-11-11", self.KEY, self.TX, moves, 4)
+        self.assertEqual(r["used"], 2); self.assertEqual(r["players"], ["Alex Caruso", "John Collins"]); self.assertEqual(r["left"], 2)
+
+    def test_names_match_across_accents(self):
+        tx = [dict(type="add", date="2026-11-10", team_ids=[self.KEY], players_added=[dict(name="Karlo Matković")], players_dropped=[])]
+        moves = [dict(date="2026-11-10", moves=[dict(seat=10, added=["Karlo Matkovic"], dropped=[])])]
+        self.assertEqual(WM.adds_this_week("2026-11-09", "2026-11-11", self.KEY, tx, moves, 4)["used"], 1)
+
+    def test_no_limit_on_record_is_said_not_guessed(self):
+        r = WM.adds_this_week("2026-11-09", "2026-11-11", self.KEY, self.TX, [], None)
+        self.assertEqual(r["used"], 1); self.assertIsNone(r["limit"]); self.assertIsNone(r["left"])
+        self.assertIn("limit is not on record", r["note"])
+
+    def test_no_team_key_counts_the_move_records_only_and_says_so(self):
+        moves = [dict(date="2026-11-10", moves=[dict(seat=10, added=["Alex Caruso"], dropped=[])])]
+        r = WM.adds_this_week("2026-11-09", "2026-11-11", None, self.TX, moves, 4)
+        self.assertEqual(r["used"], 1); self.assertIn("move records only", r["note"])
+
+
+class AddsOnTheCard(Record):
+    def test_the_card_carries_the_block_and_reads_the_limit_from_the_pull(self):
+        rec = WM.build("2026-10-21", self.paths)
+        self.assertEqual(rec["adds_this_week"]["used"], 0); self.assertIsNone(rec["adds_this_week"]["limit"])
+        news = os.path.join(self.d, "news"); os.makedirs(news)
+        dump(dict(date="2026-10-21", moves=[dict(team="MINE", seat=10, added=["Austin Reaves"], dropped=[])]),
+             os.path.join(news, "league_moves_2026-10-21.json"))
+        pull = os.path.join(self.d, "pull_2026-10-21.json")
+        dump(dict(source="flaim", league_key="478.l.36464", rosters={}, daily={}, matchups={}, free_agents=None, standings=None,
+                  league_info=dict(maxWeeklyAdds=4)), pull)
+        rec = WM.build("2026-10-21", dict(self.paths, news_dir=news, yahoo_pull=pull))
+        a = rec["adds_this_week"]
+        self.assertEqual((a["used"], a["limit"], a["left"], a["players"]), (1, 4, 3, ["Austin Reaves"]))
