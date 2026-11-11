@@ -1403,7 +1403,7 @@ class FaStatus(unittest.TestCase):
         p = os.path.join(self.d, "deck.html"); open(p, "w", encoding="utf-8").write(html)
         res = DRC.check(p)
         self.assertEqual(res["status"], "PASS", res["reasons"])
-        self.assertIn("Out (ESPN), back 2026-10-23", res["panes"]["fa"])
+        self.assertIn("Out (ESPN), earliest return 2026-10-23", res["panes"]["fa"])   # owner 2026-11-11: a floor, not a forecast
         self.assertNotIn("Day-To-Day (ESPN), back", res["panes"]["fa"])   # a day-to-day return date is today: not shown
         # owner 2026-11-06 ("sink out to the bottom"): the Out free agent (z 2.00) sits below the available one with the lower z
         b = json.load(open(self.fx["board"]))

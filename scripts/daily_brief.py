@@ -70,11 +70,27 @@ def newest_status(date):
 
 
 def add_flag(s):
-    """The waiver pair's status flag: the day's code and its source, and for a short Out ESPN's expected return
-    (owner 2026-10-28, item 5)."""
+    """The waiver pair's status flag: the day's code and its source, and for a short Out ESPN's date (owner 2026-10-28,
+    item 5). Owner 2026-11-11: the date is worded as the earliest return; graded 10-28 to 11-11, a first quote was on
+    time for 44% of pool players, late or still out for 53%, early for 3%."""
     if s.get("short_out"):
-        return f"{s['code']} today ({s['source']}), ESPN expects back {s['return_date'][:10]}"
+        return f"{s['code']} today ({s['source']}), {EARLIEST} {s['return_date'][:10]}"
     return f"{s['code']} today ({s['source']})"
+
+
+EARLIEST = "ESPN's earliest return"
+
+
+def aside_flag(x):
+    """A player the waiver scan set aside as Out, with ESPN's date when it gives one."""
+    return f"{x['player']} ({x['code']}, {x['source']}" + (f", {EARLIEST} {x['return_date'][:10]}" if x.get("return_date") else "") + ")"
+
+
+def stream_flag(r):
+    """A streamer's status note: games counted from ESPN's earliest return, or the tier's expected games."""
+    if r.get("return_date"):
+        return f" ({r['status']} today, {EARLIEST} {r['return_date']}: {r['exp_games']:g} from then)"
+    return f" ({r['status']} today: {r['exp_games']:g} expected)" if r.get("status") else ""
 
 
 def status_inputs(date, pull_dir=None, status_dir=None):
@@ -349,9 +365,7 @@ def main():
         srcs = " and ".join(k.upper() if k == "espn" else "Yahoo" for k, v in gate["sources"].items() if v)
         miss = [("Yahoo's available list" if k == "yahoo" else "ESPN's injury feed") for k, v in gate["sources"].items() if not v]
         L.append(f"Status from {srcs}" + (f" ({', '.join(miss)} not read today)" if miss else "") + "."
-                 + (" Set aside as Out: " + ", ".join(f"{x['player']} ({x['code']}, {x['source']}"
-                                                     + (f", ESPN expects back {x['return_date'][:10]}" if x.get("return_date") else "")
-                                                     + ")" for x in aside) + "."
+                 + (" Set aside as Out: " + ", ".join(aside_flag(x) for x in aside) + "."
                     if aside else ""))
         if not winfo["read"]:
             L.append("Waiver dates not read today (no Yahoo available-player list pinned): a pick may be on waivers.")
@@ -362,8 +376,7 @@ def main():
           f"({rec['streaming_vs']['value_per_game']:+.2f} per game, {weak_games} games left). "
           f"Free agents with more games left, best per game first:"]
     L += [f"- {r['player']} ({r['team']}): {r['games_left']} games"
-          + (f" ({r['status']} today, back {r['return_date']}: {r['exp_games']:g} from then)" if r.get("return_date")
-             else f" ({r['status']} today: {r['exp_games']:g} expected)" if r.get("status") else "")
+          + stream_flag(r)
           + f", {r['value_per_game']:+.2f} per game"
           + (f" — {waiver_note(r['player'], winfo)}" if waiver_note(r["player"], winfo) else "") for r in stream] or ["- none"]
     L += ["", "## Title odds (real schedule)", "", f"- Title: {odds_line(base[SEEDS[0]]['champ'], base[SEEDS[1]]['champ'], a.seasons)}",

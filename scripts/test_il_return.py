@@ -108,7 +108,8 @@ class Headline(unittest.TestCase):
         self.assertEqual(IR.room_band(dict(on_time=dict(title=25.0), on_time_rule_flipped=dict(title=25.6)))["tier"], "ROBUST")
         del rec["scenarios"]["on_time_rule_flipped"]
         self.assertIn("band not measured this run", IR.lines(rec)[0])
-        self.assertTrue(L[1].startswith("- Me: Hali (2026-11-13, wk 4)")); self.assertIn("Naji (no ESPN date, never)", L[2])
+        self.assertIn("ESPN's earliest-return dates of", IR.lines(rec)[0])    # owner 2026-11-11: the date is a floor
+        self.assertTrue(L[1].startswith("- Me: Hali (earliest 2026-11-13, wk 4)")); self.assertIn("Naji (no ESPN date, never)", L[2])
 
 
 if __name__ == "__main__":
