@@ -283,6 +283,82 @@ class PreviewStaleness(unittest.TestCase):
         self.assertFalse(mon[0]["fatal"])
         self.assertEqual([x for x in M.steps("2026-11-10") if x["name"] == "preview staleness"], [])
 
+
+class Resume(unittest.TestCase):
+    """Owner 2026-11-11 (audit pick A, "Self-healing morning"): a failed morning is finished by running only the steps
+    that did not pass; the record keeps both attempts. On 2026-11-11 this was done by hand."""
+    def steps(self, d, bad_ok):
+        mark = os.path.join(d, "ran.txt")
+        def step(name, code, fatal=True):
+            return {"name": name, "cmd": [PY, "-c", f"open({mark!r},'a').write({name!r}+'\\n'); {code}"], "cwd": ".",
+                    "pass_re": "STEP: PASS", "env": {}, "fatal": fatal}
+        ok = "print('STEP: PASS')"; bad = ok if bad_ok else "print('no'); raise SystemExit(1)"
+        return [step("a", ok), step("b", bad), step("c", ok)], mark
+
+    def test_only_the_steps_that_did_not_pass_run_again(self):
+        with tempfile.TemporaryDirectory() as d:
+            out = os.path.join(d, "m.json")
+            st, mark = self.steps(d, bad_ok=False)
+            first = M.run_steps(st, out)
+            self.assertEqual([s["verdict"] for s in first["steps"]], ["PASS", "FAIL", "SKIPPED"])
+            os.remove(mark)
+            st, mark = self.steps(d, bad_ok=True)
+            rec = M.resume_steps(st, out)
+            self.assertEqual(open(mark).read().split(), ["b", "c"])            # a passed the first time: not run again
+            self.assertEqual(rec["verdict"], "PASS")
+            self.assertEqual([(s["name"], s["verdict"]) for s in rec["steps"]], [("a", "PASS"), ("b", "PASS"), ("c", "PASS")])
+            self.assertEqual(rec["ran_at_utc"], first["ran_at_utc"])
+            self.assertEqual(len(rec["attempts"]), 1)
+            self.assertEqual(rec["attempts"][0]["verdict"], "FAIL")
+            self.assertEqual([s["name"] for s in rec["attempts"][0]["not_passed"]], ["b", "c"])
+            self.assertIn("resumed_at_utc", rec)
+            self.assertEqual(json.load(open(out)), rec)                         # the merged record is the one on disk
+
+    def test_a_resume_that_fails_again_stays_fail_and_can_be_resumed_again(self):
+        with tempfile.TemporaryDirectory() as d:
+            out = os.path.join(d, "m.json")
+            st, _ = self.steps(d, bad_ok=False)
+            M.run_steps(st, out)
+            rec = M.resume_steps(st, out)
+            self.assertEqual(rec["verdict"], "FAIL")
+            self.assertEqual([s["verdict"] for s in rec["steps"]], ["PASS", "FAIL", "SKIPPED"])
+            st, _ = self.steps(d, bad_ok=True)
+            rec = M.resume_steps(st, out)
+            self.assertEqual(rec["verdict"], "PASS"); self.assertEqual(len(rec["attempts"]), 2)
+
+    def test_nothing_to_resume_runs_nothing(self):
+        with tempfile.TemporaryDirectory() as d:
+            out = os.path.join(d, "m.json")
+            st, mark = self.steps(d, bad_ok=True)
+            first = M.run_steps(st, out); os.remove(mark)
+            rec = M.resume_steps(st, out)
+            self.assertFalse(os.path.exists(mark))
+            self.assertEqual(rec, first)
+
+    def test_no_record_yet_is_a_full_run(self):
+        with tempfile.TemporaryDirectory() as d:
+            st, mark = self.steps(d, bad_ok=True)
+            rec = M.resume_steps(st, os.path.join(d, "m.json"))
+            self.assertEqual(open(mark).read().split(), ["a", "b", "c"]); self.assertNotIn("attempts", rec)
+
+    def test_a_non_fatal_failure_is_retried_too(self):
+        with tempfile.TemporaryDirectory() as d:
+            out = os.path.join(d, "m.json")
+            st, mark = self.steps(d, bad_ok=False); st[1]["fatal"] = False
+            first = M.run_steps(st, out)
+            self.assertEqual([s["verdict"] for s in first["steps"]], ["PASS", "FAIL (non-fatal)", "PASS"])
+            os.remove(mark)
+            st, mark = self.steps(d, bad_ok=True); st[1]["fatal"] = False
+            rec = M.resume_steps(st, out)
+            self.assertEqual(open(mark).read().split(), ["b"])
+            self.assertEqual([s["verdict"] for s in rec["steps"]], ["PASS", "PASS", "PASS"])
+
+    def test_the_command_line_lists_resume(self):
+        import subprocess
+        out = subprocess.run([PY, os.path.join(HERE, "morning.py"), "--help"], capture_output=True, text=True).stdout
+        self.assertIn("--resume", out)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
 

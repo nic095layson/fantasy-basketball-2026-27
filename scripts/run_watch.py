@@ -7,17 +7,22 @@ means the wake was delivered to the Runner, not that the run passed; nothing els
     python3 scripts/run_watch.py --date 2026-11-10 --phase pm --root /path/to/checkout
 
 am: report/briefs/morning_<date>.json must exist, read, say verdict PASS and hold no failed step (a non-fatal failure
-    is named too: the run went on without that record); the morning report and the deck must exist.
+    is named too: the run went on without that record); the morning report and the deck must exist. A failed morning's
+    line names the command that finishes it (morning.py --resume). Owner 2026-11-11 (audit pick D): when the schedule
+    on record shows NBA games the day before, that day's box scores (data/actuals) and manager-log day (data/managers)
+    must exist too; with no schedule on record this is not checked.
 pm: the afternoon report, the afternoon status file and the afternoon deck must exist.
 Dates are the runs' own (UTC). Prints 'RUN WATCH: PASS — ...' (exit 0) or 'RUN WATCH: ALERT — ...' (exit 1). Reads only.
 """
 import argparse
+import datetime
 import json
 import os
 import subprocess
 import sys
 
 KIT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SCHEDULE = "report/schedule/games-2026-27.csv"
 
 
 def check(date, phase, read):
@@ -34,7 +39,8 @@ def check(date, phase, read):
                 steps = rec.get("steps") or []
                 bad = [s.get("name", "?") for s in steps if not str(s.get("verdict", "")).startswith("PASS")]
                 if rec.get("verdict") != "PASS":
-                    probs.append(f"morning verdict {rec.get('verdict')}" + (f" (failed: {', '.join(bad)})" if bad else ""))
+                    probs.append(f"morning verdict {rec.get('verdict')}" + (f" (failed: {', '.join(bad)})" if bad else "")
+                                 + f"; finish it with: python3 scripts/morning.py --date {date} --resume")
                 elif bad:
                     probs.append(f"morning PASS but {len(bad)} step{'s' if len(bad) > 1 else ''} failed: {', '.join(bad)}")
                 else:
@@ -45,6 +51,13 @@ def check(date, phase, read):
             probs.append("no morning report")
         if read(f"report/season/deck_{date}.html") is None:
             probs.append("no deck")
+        sched = read(SCHEDULE)
+        prev = (datetime.date.fromisoformat(date) - datetime.timedelta(days=1)).isoformat()
+        if sched is not None and any(ln.startswith(prev + ",") for ln in sched.splitlines()):
+            if read(f"data/actuals/{prev}.json") is None:
+                probs.append(f"no box scores for {prev}")
+            if read(f"data/managers/day_{prev}.json") is None:
+                probs.append(f"no manager-log day for {prev}")
     else:
         for path, word in ((f"report/briefs/afternoon_report_{date}.md", "no afternoon report"),
                            (f"data/status/status_{date}_pm.json", "no afternoon status"),

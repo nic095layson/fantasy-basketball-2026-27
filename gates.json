@@ -1,52 +1,52 @@
 {
- "ran_at_utc": "2026-11-10T23:30:14Z",
+ "ran_at_utc": "2026-11-11T17:00:08Z",
  "inputs": {
-  "report/after-reports/after-report-2026-11-10-audit-f3-f5-f6.md": "b742ce3c6592880f2244516e838f07789209326f13df0e060f4f5542880ab391",
+  "report/after-reports/after-report-2026-11-11-resilience-a-c-d.md": "7b09491968fd86afa0e67d39586fbfd2b54b35f838edff7594c95beb0c46f4aa",
   "../wtsd/report/after-reports/redteam-2026-11-09-season/sweep.json": "7cebe2a3101d6d88b154c99b3082d5819197193ddb2be591d0c3b6d479d2a305"
  },
  "gates": [
   {
    "name": "kit check_report",
-   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/kit-c/report/after-reports/after-report-2026-11-10-audit-f3-f5-f6.md",
+   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/kit-c/report/after-reports/after-report-2026-11-11-resilience-a-c-d.md",
    "cwd": ".",
    "pass_re": "^REPORT GATE: PASS",
    "exit": 0,
-   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-11-10-audit-f3-f5-f6.md (structure, publication rule, pull-log row)",
+   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-11-11-resilience-a-c-d.md (structure, publication rule, pull-log row)",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "REPORT GATE: PASS \u2014 after-report-2026-11-10-audit-f3-f5-f6.md (structure, publication rule, pull-log row)"
+    "REPORT GATE: PASS \u2014 after-report-2026-11-11-resilience-a-c-d.md (structure, publication rule, pull-log row)"
    ]
   },
   {
    "name": "deck judgment_open_items --check-report",
-   "cmd": "/usr/local/bin/python3 scripts/judgment_open_items.py --check-report /home/user/kit-c/report/after-reports/after-report-2026-11-10-audit-f3-f5-f6.md",
+   "cmd": "/usr/local/bin/python3 scripts/judgment_open_items.py --check-report /home/user/kit-c/report/after-reports/after-report-2026-11-11-resilience-a-c-d.md",
    "cwd": "../yahoo-fantasy-basketball",
    "pass_re": "^receipts check PASS",
    "exit": 0,
-   "pass_line": "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-11-10-audit-f3-f5-f6.md",
+   "pass_line": "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-11-11-resilience-a-c-d.md",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-11-10-audit-f3-f5-f6.md"
+    "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-11-11-resilience-a-c-d.md"
    ]
   },
   {
    "name": "deck repeat_market_check --check-report",
-   "cmd": "/usr/local/bin/python3 scripts/repeat_market_check.py --check-report /home/user/kit-c/report/after-reports/after-report-2026-11-10-audit-f3-f5-f6.md",
+   "cmd": "/usr/local/bin/python3 scripts/repeat_market_check.py --check-report /home/user/kit-c/report/after-reports/after-report-2026-11-11-resilience-a-c-d.md",
    "cwd": "../yahoo-fantasy-basketball",
    "pass_re": "^REPEAT-NAME CHECK: PASS",
    "exit": 0,
-   "pass_line": "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-11-10-audit-f3-f5-f6.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)",
+   "pass_line": "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-11-11-resilience-a-c-d.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-11-10-audit-f3-f5-f6.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)"
+    "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-11-11-resilience-a-c-d.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)"
    ]
   },
   {
    "name": "claim receipts",
-   "cmd": "/usr/local/bin/python3 /home/user/kit-c/scripts/independent_audit/claim_receipts.py /home/user/kit-c/report/after-reports/after-report-2026-11-10-audit-f3-f5-f6.md",
+   "cmd": "/usr/local/bin/python3 /home/user/kit-c/scripts/independent_audit/claim_receipts.py /home/user/kit-c/report/after-reports/after-report-2026-11-11-resilience-a-c-d.md",
    "cwd": ".",
    "pass_re": "^CLAIM RECEIPTS: (PASS|ADVISORY)",
    "exit": 0,
@@ -59,7 +59,7 @@
   },
   {
    "name": "touched tests",
-   "cmd": "bash -c 'cd scripts && python3 -m unittest test_decision_log test_title_watch test_week_matchup test_lineup_log test_morning test_season_deck 2>&1 | tail -1'",
+   "cmd": "bash -c 'cd scripts && python3 -m unittest test_morning test_run_watch test_package_scan test_decision_card test_week_matchup 2>&1 | tail -1'",
    "cwd": ".",
    "pass_re": "^OK",
    "exit": 0,
@@ -85,7 +85,7 @@
   },
   {
    "name": "redteam bands",
-   "cmd": "/usr/local/bin/python3 /home/user/kit-c/scripts/redteam/check_bands.py --report /home/user/kit-c/report/after-reports/after-report-2026-11-10-audit-f3-f5-f6.md --sweep /home/user/wtsd/report/after-reports/redteam-2026-11-09-season/sweep.json",
+   "cmd": "/usr/local/bin/python3 /home/user/kit-c/scripts/redteam/check_bands.py --report /home/user/kit-c/report/after-reports/after-report-2026-11-11-resilience-a-c-d.md --sweep /home/user/wtsd/report/after-reports/redteam-2026-11-09-season/sweep.json",
    "cwd": ".",
    "pass_re": "^BANDS CHECK: PASS",
    "exit": 0,
@@ -125,5 +125,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "18f386284e8c9cb9217b8d2d0e4dc98bffad3dbe"
+ "base_commit": "9b0a37f48900757df21f90861082978c62881f60"
 }

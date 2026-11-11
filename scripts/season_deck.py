@@ -782,7 +782,16 @@ function liveTile(W, wk){
     h("div",{class:"e"},"no live record this morning"));
   return h("div",{class:"tile"},h("div",{class:"v"},W.exp_cats.toFixed(2)),h("div",{class:"l"},"week "+W.week+" now: expected categories of 9"),
     h("div",{class:"e"},(W.p_5plus!=null?"5+ of 9: "+pct(W.p_5plus)+" (categories taken as independent) · ":"")+"from this morning's week card"),
-    statusRangeLine(W), addsLine(W));
+    statusRangeLine(W), addsLine(W), lineupGapLine(W));
+}
+
+// owner 2026-11-11 (audit pick D): Yahoo's games-left counts active slots on the coming days; a wide gap to the best
+// lineup means lineups are not set. As the week card recorded it; nothing here computes.
+function lineupGapLine(W){
+  const G=W.lineup_gap;
+  if(!G || G.yahoo==null || G.kit==null) return null;
+  return h("div",{class:"e",title:"Yahoo counts only players in an active slot on each coming day. The card counts the best ten a day from your roster. A new add starts on the bench until you move him."},
+    "Yahoo counts "+G.yahoo+" games left for you; your best lineup would play "+G.kit+". Check that your lineup is set for the rest of the week.");
 }
 
 // owner 2026-11-10 (pick "P5 + P7"): my adds this week against the league's weekly limit, as the week card counted them
@@ -811,7 +820,7 @@ function decisionCard(){
         h("th",{class:"num",title:"Change in this week's chance of winning 5 or more of 9 categories, the add counted from tomorrow."},"this week (5+ of 9)")),
       C.pairs.map(p=>h("tr",{},h("td",{},p.add),h("td",{},p.drop),
         h("td",{class:"num"},p.never&&p.never.d_title!=null?swk(p.never.d_title,1):"—"),
-        h("td",{class:"num"},p.on_time&&p.on_time.d_title!=null?swk(p.on_time.d_title,1):"not scored"),
+        h("td",{class:"num"},p.on_time&&p.on_time.d_title!=null?swk(p.on_time.d_title,1)+(p.on_time.first_cut? " ("+p.add+" leaves when "+p.on_time.first_cut.when+" returns)":""):"not scored"),
         h("td",{class:"num"},wk(p.week)))))),
     on? h("p",{class:"note"},"Title share with no move: "+f1(C.base.never)+"% (never return), "+f1(C.base.on_time)+"% (return on time).") : null,
     C.rank_flip===true? h("p",{},h("b",{},"The order changes between the two worlds.")," Check the return-on-time column before acting.")
