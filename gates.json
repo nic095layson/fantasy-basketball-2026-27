@@ -1,7 +1,7 @@
 {
- "ran_at_utc": "2026-11-11T17:29:41Z",
+ "ran_at_utc": "2026-11-11T17:43:00Z",
  "inputs": {
-  "report/after-reports/after-report-2026-11-11-espn-return-dates.md": "60bfc56623d395247b1cb166188eff3736a3012210366be11187f223f756f632",
+  "report/after-reports/after-report-2026-11-11-espn-return-dates.md": "a89141901ff5c947126b6daec77475b3394e985334ee519907e5026d25180e33",
   "../wtsd/report/after-reports/redteam-2026-11-09-season/sweep.json": "7cebe2a3101d6d88b154c99b3082d5819197193ddb2be591d0c3b6d479d2a305"
  },
  "gates": [
@@ -60,7 +60,7 @@
   },
   {
    "name": "touched tests",
-   "cmd": "bash -c 'cd scripts && python3 -m unittest test_daily_brief test_il_return 2>&1 | tail -1'",
+   "cmd": "bash -c 'cd scripts && python3 -m unittest test_daily_brief test_il_return test_manager_log 2>&1 | tail -1'",
    "cwd": ".",
    "pass_re": "^OK",
    "exit": 0,
@@ -126,5 +126,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "6ad1f091c683367c15f0bde104a4749bd358bc57"
+ "base_commit": "747b28715bbaeb8663c384f661b1ee9a03ea200c"
 }
