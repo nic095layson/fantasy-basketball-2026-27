@@ -1,65 +1,67 @@
 {
- "ran_at_utc": "2026-11-10T23:30:14Z",
+ "ran_at_utc": "2026-11-11T18:05:55Z",
  "inputs": {
-  "report/after-reports/after-report-2026-11-10-audit-f3-f5-f6.md": "b742ce3c6592880f2244516e838f07789209326f13df0e060f4f5542880ab391",
+  "report/after-reports/after-report-2026-11-11-team-updates.md": "4e8cb6f99ffac74465f18fbf7356eb0e478f2cc82aee02bf0ec3b1c5185086d1",
   "../wtsd/report/after-reports/redteam-2026-11-09-season/sweep.json": "7cebe2a3101d6d88b154c99b3082d5819197193ddb2be591d0c3b6d479d2a305"
  },
  "gates": [
   {
    "name": "kit check_report",
-   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/kit-c/report/after-reports/after-report-2026-11-10-audit-f3-f5-f6.md",
+   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/kit-b/report/after-reports/after-report-2026-11-11-team-updates.md",
    "cwd": ".",
    "pass_re": "^REPORT GATE: PASS",
    "exit": 0,
-   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-11-10-audit-f3-f5-f6.md (structure, publication rule, pull-log row)",
+   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-11-11-team-updates.md (structure, publication rule, pull-log row)",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "REPORT GATE: PASS \u2014 after-report-2026-11-10-audit-f3-f5-f6.md (structure, publication rule, pull-log row)"
+    "REPORT GATE: PASS \u2014 after-report-2026-11-11-team-updates.md (structure, publication rule, pull-log row)"
    ]
   },
   {
    "name": "deck judgment_open_items --check-report",
-   "cmd": "/usr/local/bin/python3 scripts/judgment_open_items.py --check-report /home/user/kit-c/report/after-reports/after-report-2026-11-10-audit-f3-f5-f6.md",
+   "cmd": "/usr/local/bin/python3 scripts/judgment_open_items.py --check-report /home/user/kit-b/report/after-reports/after-report-2026-11-11-team-updates.md",
    "cwd": "../yahoo-fantasy-basketball",
    "pass_re": "^receipts check PASS",
    "exit": 0,
-   "pass_line": "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-11-10-audit-f3-f5-f6.md",
+   "pass_line": "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-11-11-team-updates.md",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-11-10-audit-f3-f5-f6.md"
+    "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-11-11-team-updates.md"
    ]
   },
   {
    "name": "deck repeat_market_check --check-report",
-   "cmd": "/usr/local/bin/python3 scripts/repeat_market_check.py --check-report /home/user/kit-c/report/after-reports/after-report-2026-11-10-audit-f3-f5-f6.md",
+   "cmd": "/usr/local/bin/python3 scripts/repeat_market_check.py --check-report /home/user/kit-b/report/after-reports/after-report-2026-11-11-team-updates.md",
    "cwd": "../yahoo-fantasy-basketball",
    "pass_re": "^REPEAT-NAME CHECK: PASS",
    "exit": 0,
-   "pass_line": "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-11-10-audit-f3-f5-f6.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)",
+   "pass_line": "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-11-11-team-updates.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-11-10-audit-f3-f5-f6.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)"
+    "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-11-11-team-updates.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)"
    ]
   },
   {
    "name": "claim receipts",
-   "cmd": "/usr/local/bin/python3 /home/user/kit-c/scripts/independent_audit/claim_receipts.py /home/user/kit-c/report/after-reports/after-report-2026-11-10-audit-f3-f5-f6.md",
+   "cmd": "/usr/local/bin/python3 /home/user/kit-b/scripts/independent_audit/claim_receipts.py /home/user/kit-b/report/after-reports/after-report-2026-11-11-team-updates.md",
    "cwd": ".",
    "pass_re": "^CLAIM RECEIPTS: (PASS|ADVISORY)",
    "exit": 0,
-   "pass_line": "CLAIM RECEIPTS: PASS \u2014 1 file(s), every mechanism claim carries a receipt",
+   "pass_line": "CLAIM RECEIPTS: ADVISORY \u2014 3 unreceipted claim(s) in 1 file(s); show a receipt or mark the status",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "CLAIM RECEIPTS: PASS \u2014 1 file(s), every mechanism claim carries a receipt"
+    "  /home/user/kit-b/report/after-reports/after-report-2026-11-11-team-updates.md:16: 'changes nothing' \u2014 Wording that names no arrival (waived, recalled, a club ESPN's list does not carry) changes nothing.",
+    "  /home/user/kit-b/report/after-reports/after-report-2026-11-11-team-updates.md:58: 'are covered' \u2014 The rule starts from a roster disagreement, so only rostered players are covered; a traded free agent keeps his pool club until someone rosters him.",
+    "CLAIM RECEIPTS: ADVISORY \u2014 3 unreceipted claim(s) in 1 file(s); show a receipt or mark the status"
    ]
   },
   {
    "name": "touched tests",
-   "cmd": "bash -c 'cd scripts && python3 -m unittest test_decision_log test_title_watch test_week_matchup test_lineup_log test_morning test_season_deck 2>&1 | tail -1'",
+   "cmd": "bash -c 'cd scripts && python3 -m unittest test_team_updates test_league_intake test_season_lines test_league_live 2>&1 | tail -1'",
    "cwd": ".",
    "pass_re": "^OK",
    "exit": 0,
@@ -72,7 +74,7 @@
   },
   {
    "name": "redteam constants",
-   "cmd": "/usr/local/bin/python3 /home/user/kit-c/scripts/redteam/check_constants.py --deck /home/user/yahoo-fantasy-basketball",
+   "cmd": "/usr/local/bin/python3 /home/user/kit-b/scripts/redteam/check_constants.py --deck /home/user/yahoo-fantasy-basketball",
    "cwd": ".",
    "pass_re": "^CONSTANTS CHECK: PASS",
    "exit": 0,
@@ -85,7 +87,7 @@
   },
   {
    "name": "redteam bands",
-   "cmd": "/usr/local/bin/python3 /home/user/kit-c/scripts/redteam/check_bands.py --report /home/user/kit-c/report/after-reports/after-report-2026-11-10-audit-f3-f5-f6.md --sweep /home/user/wtsd/report/after-reports/redteam-2026-11-09-season/sweep.json",
+   "cmd": "/usr/local/bin/python3 /home/user/kit-b/scripts/redteam/check_bands.py --report /home/user/kit-b/report/after-reports/after-report-2026-11-11-team-updates.md --sweep /home/user/wtsd/report/after-reports/redteam-2026-11-09-season/sweep.json",
    "cwd": ".",
    "pass_re": "^BANDS CHECK: PASS",
    "exit": 0,
@@ -98,7 +100,7 @@
   },
   {
    "name": "redteam attacks",
-   "cmd": "/usr/local/bin/python3 /home/user/kit-c/scripts/redteam/run_attacks.py --check --deck /home/user/yahoo-fantasy-basketball",
+   "cmd": "/usr/local/bin/python3 /home/user/kit-b/scripts/redteam/run_attacks.py --check --deck /home/user/yahoo-fantasy-basketball",
    "cwd": ".",
    "pass_re": "^ATTACKS CHECK: PASS",
    "exit": 0,
@@ -111,7 +113,7 @@
   },
   {
    "name": "kit check_claims --gate",
-   "cmd": "/usr/local/bin/python3 /home/user/kit-c/scripts/check_claims.py --gate",
+   "cmd": "/usr/local/bin/python3 /home/user/kit-b/scripts/check_claims.py --gate",
    "cwd": ".",
    "pass_re": "^CLAIM GATE: PASS",
    "exit": 0,
@@ -125,5 +127,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "18f386284e8c9cb9217b8d2d0e4dc98bffad3dbe"
+ "base_commit": "3604772f0bb2688dac09310ac613a9820f9f5d78"
 }

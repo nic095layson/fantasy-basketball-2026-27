@@ -653,7 +653,7 @@ function ilReturn(r){ if(!r||!r.scenarios) return null; const S=r.scenarios; con
   // owner 2026-11-02 (runner finding 3; council): one "if they return" row with its range, since the slip rows sit within one error bar, and the room rule's band
   const lo=Math.min(...vals), hi=Math.max(...vals), mid=(lo+hi)/2, pl=slips.length?slips.map(k=>S[k].playoffs).reduce((a,b)=>a+b,0)/slips.length:null;
   const band=r.room_band? "ROOM_RULE_ON is "+r.room_band.tier+": "+(r.room_band.shift>=0?"+":"")+f1(r.room_band.shift)+" ("+r.room_band.label+")" : "room-rule band not measured";
-  return h("div",{class:"tablebox"},h("table",{class:"wk"},h("tr",{},h("th",{class:"projh"},"if IL players return (ESPN dates of "+r.espn_date+", all teams, "+r.n_il+" players)"),h("th",{class:"num projh"},"title"),h("th",{class:"num projh"},"playoffs")),
+  return h("div",{class:"tablebox"},h("table",{class:"wk"},h("tr",{},h("th",{class:"projh"},"if IL players return (ESPN's earliest-return dates of "+r.espn_date+", all teams, "+r.n_il+" players)"),h("th",{class:"num projh"},"title"),h("th",{class:"num projh"},"playoffs")),
     slips.length?h("tr",{class:"proj"},h("td",{},"if they return ("+f1(lo)+" to "+f1(hi)+" across on time / +2 wk / +4 wk)"),h("td",{class:"num"},f1(mid)+"%"),h("td",{class:"num"},f1(pl)+"%")):null,
     S.never?h("tr",{class:"proj"},h("td",{},"never (the headline)"),h("td",{class:"num"},f1(S.never.title)+"%"),h("td",{class:"num"},f1(S.never.playoffs)+"%")):null),
     h("p",{class:"note"},"Scenario range, not a forecast: ± "+r.error+" each; "+band+". Returns are uncertain and the headline counts the current roster. Room rule: "+r.room_rule+".")); }
@@ -782,7 +782,16 @@ function liveTile(W, wk){
     h("div",{class:"e"},"no live record this morning"));
   return h("div",{class:"tile"},h("div",{class:"v"},W.exp_cats.toFixed(2)),h("div",{class:"l"},"week "+W.week+" now: expected categories of 9"),
     h("div",{class:"e"},(W.p_5plus!=null?"5+ of 9: "+pct(W.p_5plus)+" (categories taken as independent) · ":"")+"from this morning's week card"),
-    statusRangeLine(W), addsLine(W));
+    statusRangeLine(W), addsLine(W), lineupGapLine(W));
+}
+
+// owner 2026-11-11 (audit pick D): Yahoo's games-left counts active slots on the coming days; a wide gap to the best
+// lineup means lineups are not set. As the week card recorded it; nothing here computes.
+function lineupGapLine(W){
+  const G=W.lineup_gap;
+  if(!G || G.yahoo==null || G.kit==null) return null;
+  return h("div",{class:"e",title:"Yahoo counts only players in an active slot on each coming day. The card counts the best ten a day from your roster. A new add starts on the bench until you move him."},
+    "Yahoo counts "+G.yahoo+" games left for you; your best lineup would play "+G.kit+". Check that your lineup is set for the rest of the week.");
 }
 
 // owner 2026-11-10 (pick "P5 + P7"): my adds this week against the league's weekly limit, as the week card counted them
@@ -811,7 +820,7 @@ function decisionCard(){
         h("th",{class:"num",title:"Change in this week's chance of winning 5 or more of 9 categories, the add counted from tomorrow."},"this week (5+ of 9)")),
       C.pairs.map(p=>h("tr",{},h("td",{},p.add),h("td",{},p.drop),
         h("td",{class:"num"},p.never&&p.never.d_title!=null?swk(p.never.d_title,1):"—"),
-        h("td",{class:"num"},p.on_time&&p.on_time.d_title!=null?swk(p.on_time.d_title,1):"not scored"),
+        h("td",{class:"num"},p.on_time&&p.on_time.d_title!=null?swk(p.on_time.d_title,1)+(p.on_time.first_cut? " ("+p.add+" leaves when "+p.on_time.first_cut.when+" returns)":""):"not scored"),
         h("td",{class:"num"},wk(p.week)))))),
     on? h("p",{class:"note"},"Title share with no move: "+f1(C.base.never)+"% (never return), "+f1(C.base.on_time)+"% (return on time).") : null,
     C.rank_flip===true? h("p",{},h("b",{},"The order changes between the two worlds.")," Check the return-on-time column before acting.")
@@ -1105,7 +1114,7 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
   const stat=(r)=>{ const s=FS&&FS.by[r.name]; if(!s) return null;
     const out=["O","NA","Out"].includes(s.code), cls=out?(s.short_out?"warn":"crit"):(s.code==="P"?"ok":"warn");
     // the return date only on an Out: ESPN dates a day-to-day player's return as today
-    return h("span",{}," · ",h("span",{class:"chip "+cls},s.code+" ("+SRC[s.source]+")"+(out&&s.return_date?", back "+s.return_date.slice(0,10):""))); };
+    return h("span",{}," · ",h("span",{class:"chip "+cls},s.code+" ("+SRC[s.source]+")"+(out&&s.return_date?", earliest return "+s.return_date.slice(0,10):""))); };
   const wk=(r)=>h("span",{},stat(r),waiverChip(r.name));
   // owner 2026-11-06 ("sink out to the bottom"): a player the day's status file calls Out (O / NA / Out) sits below
   // every available one; z order holds within each group; with no status pinned nothing sinks

@@ -824,6 +824,33 @@ class TeamKeys(unittest.TestCase):
         self.assertEqual((r["used"], r["left"]), (1, 3))
 
 
+class LineupGap(unittest.TestCase):
+    """Owner 2026-11-11 (audit pick D): Yahoo's games-left counts players in active slots on the coming days; the
+    card's own count is the best daily fill. A wide gap means lineups are not set (a new add starts on the bench)."""
+    def test_a_wide_gap_is_recorded_with_both_counts(self):
+        self.assertEqual(WM.lineup_gap(22, 31), dict(yahoo=22, kit=31, short=9))
+
+    def test_a_small_gap_or_no_yahoo_count_is_no_warning(self):
+        self.assertIsNone(WM.lineup_gap(29, 31))     # under LINEUP_GAP_GAMES
+        self.assertIsNone(WM.lineup_gap(None, 31))
+        self.assertIsNone(WM.lineup_gap(33, 31))     # Yahoo above the card: nothing to set
+        self.assertEqual(WM.LINEUP_GAP_GAMES, 3)
+
+
+class CaptureInputs(unittest.TestCase):
+    """Owner 2026-11-11 (audit pick C): the package scan reads the week card's own inputs, handed out by build."""
+    def test_default_paths_are_the_command_lines(self):
+        p = WM.default_paths("2026-11-11")
+        self.assertEqual(os.path.basename(p["yahoo_pull"]), "pull_2026-11-11.json")
+        self.assertEqual(set(p), {"state", "schedule", "games", "actuals", "status", "yahoo_pull", "league_tx", "news_dir", "pairs"})
+        self.assertEqual(WM.default_paths("2026-11-11", yahoo_pull="/x/p.json")["yahoo_pull"], "/x/p.json")
+
+    def test_build_takes_a_capture_argument(self):
+        import inspect
+        self.assertIn("capture", inspect.signature(WM.build).parameters)
+        self.assertIsNone(inspect.signature(WM.build).parameters["capture"].default)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
 

@@ -91,5 +91,32 @@ class Cli(unittest.TestCase):
         self.assertEqual(r.returncode, 0); self.assertIn("RUN WATCH: PASS", r.stdout)
 
 
+class MissingDays(unittest.TestCase):
+    """Owner 2026-11-11 (audit pick D): a morning that passed can still leave a hole: yesterday's box scores or its
+    manager-log day. Checked only when the schedule on record shows games that day."""
+    SCHED = "date,yahoo_week,visitor,home,note\n2026-11-09,4,BOS,DET,\n2026-11-07,3,OKC,SAS,\n"
+    AM = dict(Morning.AM, **{"report/schedule/games-2026-27.csv": SCHED})
+
+    def test_yesterdays_box_scores_and_manager_day_are_required_when_games_were_played(self):
+        v, line = RW.check(D, "am", reader(self.AM))
+        self.assertEqual(v, "ALERT")
+        self.assertIn("no box scores for 2026-11-09", line); self.assertIn("no manager-log day for 2026-11-09", line)
+        f = dict(self.AM, **{"data/actuals/2026-11-09.json": "{}", "data/managers/day_2026-11-09.json": "{}"})
+        self.assertEqual(RW.check(D, "am", reader(f))[0], "PASS")
+
+    def test_a_day_without_games_needs_neither(self):
+        v, line = RW.check("2026-11-09", "am", reader({k.replace(D, "2026-11-09"): x for k, x in self.AM.items()}))
+        self.assertEqual(v, "PASS", line)        # 2026-11-08 has no game on this schedule
+
+    def test_no_schedule_on_record_checks_nothing_more(self):
+        self.assertEqual(RW.check(D, "am", reader(Morning.AM))[0], "PASS")
+
+    def test_a_failed_morning_names_the_resume_command(self):
+        f = dict(Morning.AM); f[f"report/briefs/morning_{D}.json"] = morning("FAIL", [("box scores", "FAIL"), ("daily brief", "SKIPPED")])
+        v, line = RW.check(D, "am", reader(f))
+        self.assertIn("morning.py --date " + D + " --resume", line)
+        self.assertNotIn("--resume", RW.check(D, "am", reader(Morning.AM))[1])
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
