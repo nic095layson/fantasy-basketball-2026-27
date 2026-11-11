@@ -2457,3 +2457,33 @@ class DraftCheckTab(unittest.TestCase):
             self.assertEqual(got("2026-10-30"), "draft_check_2026-10-30.json")   # none yet: the day's own (absent) path
         finally:
             DC.OUT_DIR = old
+
+
+@unittest.skipUnless(RENDER_OK, RENDER_WHY)
+class IlReturnOneWorld(unittest.TestCase):
+    """Owner 2026-11-11 (card: "Cancel the two late worlds"): from then on the brief carries never and on time only, and
+    the Today pane states one figure; a brief from before still carries three worlds and reads as a range."""
+    def page(self, scenarios):
+        d = tempfile.mkdtemp(); fx = fixtures(d)
+        b = json.load(open(fx["brief"]))
+        b["il_return"] = dict(espn_date="2026-10-21", n_il=3, room_rule="r", error=0.7, seasons=10000, label="l",
+                              room_band=dict(constant="il_return.ROOM_RULE_ON", shift=11.5, label="rule off", tier="FRAGILE"),
+                              scenarios={k: dict(title=t, playoffs=99.0) for k, t in scenarios})
+        json.dump(b, open(fx["brief"], "w"))
+        html, data, rec = SD.build(fx, date="2026-10-21")
+        p = os.path.join(d, "deck.html")
+        with open(p, "w", encoding="utf-8") as f:
+            f.write(html)
+        v = visible_dom(p, "Today", "pane-today")
+        self.assertEqual(v["errors"], [])
+        return v["text"]
+
+    def test_two_worlds_read_as_one_figure(self):
+        t = self.page([("never", 16.1), ("on_time", 25.9)])
+        self.assertIn("if they return on ESPN's dates", t); self.assertIn("25.9%", t); self.assertIn("16.1%", t)
+        self.assertNotIn("+2 wk", t); self.assertIn("A scenario, not a forecast", t)
+
+    def test_an_older_brief_with_three_worlds_still_reads_as_a_range(self):
+        t = self.page([("never", 15.0), ("on_time", 25.0), ("late_2", 22.0), ("late_4", 20.0)])
+        self.assertIn("if they return (20.0 to 25.0 across on time / +2 wk / +4 wk)", t)
+        self.assertIn("Scenario range, not a forecast", t)

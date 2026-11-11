@@ -112,5 +112,38 @@ class Headline(unittest.TestCase):
         self.assertTrue(L[1].startswith("- Me: Hali (earliest 2026-11-13, wk 4)")); self.assertIn("Naji (no ESPN date, never)", L[2])
 
 
+class TwoWorlds(unittest.TestCase):
+    """Owner 2026-11-11 (card: "Cancel the two late worlds"): the +2 week and +4 week worlds read the same as on time
+    within sampling error (25.81 and 25.86 beside 25.95 on 11-11), so the step runs never and on time only."""
+    def test_the_grid_is_on_time_only(self):
+        self.assertEqual(IR.SLIPS, {"on_time": 0})
+
+    def test_the_scenarios_run_carry_no_late_world(self):
+        calls = []
+        real = IR.CG.run_league_sim, IR.CG.rosters, IR.odds
+        try:
+            IR.CG.rosters = lambda state, by, include_il=False: {}
+            IR.CG.run_league_sim = lambda ros, seed, seasons, work, tag=None, windows=None: calls.append(tag) or {}
+            IR.odds = lambda runs: dict(title=20.0, playoffs=90.0)
+            sc = IR.run_scenarios({}, {}, [], 17, 100, "/tmp")
+        finally:
+            IR.CG.run_league_sim, IR.CG.rosters, IR.odds = real
+        self.assertEqual(sorted(sc), ["never", "on_time", "on_time_rule_flipped", "seat10_only_on_time"])
+        self.assertEqual(len(calls), 8)   # four worlds on two seeds; six worlds before
+
+    def test_the_section_line_states_one_figure_not_a_range(self):
+        rec = dict(espn_date="2026-11-11", n_il=1, room_rule="r", error=0.7, seasons=10000,
+                   scenarios=dict(never=dict(title=16.1), on_time=dict(title=25.9), on_time_rule_flipped=dict(title=37.4)),
+                   il_players=[dict(seat=10, team="Me", player="Hali", return_date="2026-11-13", week=4)])
+        line = IR.lines(rec)[0]
+        self.assertIn("if they return on ESPN's dates ≈25.9% · never = headline 16.1%", line)
+        self.assertNotIn("+2 wk", line); self.assertNotIn(" to ", line.split("never")[0])
+
+    def test_the_blend_is_not_computed_without_its_worlds_and_an_old_record_still_blends(self):
+        self.assertIsNone(IR.blend(dict(never=dict(title=16.0), on_time=dict(title=26.0))))
+        old = {k: dict(title=t) for k, t in (("never", 10.0), ("on_time", 20.0), ("late_2", 20.0), ("late_4", 20.0))}
+        self.assertEqual(IR.blend(old), 19.0)
+
+
 if __name__ == "__main__":
     unittest.main()

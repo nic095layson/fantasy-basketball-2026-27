@@ -388,5 +388,38 @@ class PackageGrade(unittest.TestCase):
         self.assertAlmostEqual(g["kit_gap_end"], 1.3)
 
 
+class BriefRerun(unittest.TestCase):
+    """Owner 2026-11-11 (card: "Read as 'already recorded'"): a brief already on the ledger is not logged twice and no
+    longer halts the step, so the moves and re-joins of a re-run morning are still recorded."""
+    def setUp(self):
+        import tempfile
+        self.d = tempfile.mkdtemp(); self.briefs = tempfile.mkdtemp(); self.news = tempfile.mkdtemp()
+        json.dump(dict(date="2026-11-10", waiver_top=[], seasons=10000, lines="season pool", league_state_as_of="2026-11-10",
+                       title={"2026": 16.0, "2027": 16.2}), open(os.path.join(self.briefs, "brief_2026-11-10.json"), "w"))
+
+    def run_main(self):
+        import contextlib, io
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            code = DL.main(["--brief", "2026-11-10", "--moves", "--rejoin", "--dir", self.d, "--briefs", self.briefs, "--news-dir", self.news])
+        return code, buf.getvalue().strip()
+
+    def test_a_second_run_passes_says_so_and_writes_no_second_row(self):
+        code, first = self.run_main()
+        self.assertEqual(code, 0); self.assertIn("R-2026-11-10-01", first)
+        recs = os.path.join(self.d, os.path.basename(DL.RECS)); before = open(recs).read()
+        code, second = self.run_main()
+        self.assertEqual(code, 0)
+        self.assertTrue(second.startswith("DECISION LOG: PASS brief 2026-11-10 already recorded"), second)
+        self.assertIn("moves: nothing new", second)          # the rest of the step still ran
+        self.assertEqual(open(recs).read(), before)
+
+    def test_brief_row_itself_still_refuses_a_logged_day(self):
+        rows = [dict(source="brief", date="2026-11-10", id="R-2026-11-10-01")]
+        with self.assertRaises(DL.AlreadyLogged) as e:
+            DL.brief_row(dict(date="2026-11-10", waiver_top=[]), rows)
+        self.assertIsInstance(e.exception, DL.LogError)
+
+
 if __name__ == "__main__":
     unittest.main()

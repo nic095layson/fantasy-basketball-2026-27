@@ -47,6 +47,10 @@ class LogError(Exception):
     pass
 
 
+class AlreadyLogged(LogError):
+    """The day's brief row is on the ledger already (append-only: it is never written twice)."""
+
+
 def read(path):
     if not os.path.exists(path):
         return []
@@ -82,7 +86,7 @@ def brief_row(brief, rows, made_at=None, backfilled=False):
     """The brief's top waiver pair as a recommendation row, or a hold row when the brief scored no positive pair."""
     date = brief["date"]
     if any(r.get("source") == "brief" and r.get("date") == date for r in rows):
-        raise LogError(f"brief {date} is already logged; the ledger is append-only")
+        raise AlreadyLogged(f"brief {date} is already logged; the ledger is append-only")
     top = (brief.get("waiver_top") or [None])[0]
     row = {"id": next_id(rows, "R", date), "date": date, "made_at": made_at or now(), "source": "brief",
            "horizon_days": HORIZON_DAYS, "basis": {"seasons": brief.get("seasons"), "lines": brief.get("lines"),
@@ -269,8 +273,13 @@ def main(argv=None):
             p = os.path.join(a.briefs, f"brief_{a.brief}.json")
             if not os.path.exists(p):
                 raise LogError(f"no brief on disk for {a.brief} ({os.path.relpath(p, KIT)})")
-            row = brief_row(json.load(open(p, encoding="utf-8")), read(recs), made_at=a.made_at, backfilled=a.backfilled)
-            append(recs, [row]); out.append(f"{row['id']} {row['kind']} {row.get('add')} for {row.get('drop')}")
+            try:
+                row = brief_row(json.load(open(p, encoding="utf-8")), read(recs), made_at=a.made_at, backfilled=a.backfilled)
+                append(recs, [row]); out.append(f"{row['id']} {row['kind']} {row.get('add')} for {row.get('drop')}")
+            except AlreadyLogged:
+                # owner 2026-11-11 (card: "Read as 'already recorded'"): a re-run morning finds the day's brief on the
+                # ledger; no second row, and the moves and re-joins below still run
+                out.append(f"brief {a.brief} already recorded")
         if a.session:
             pkg = json.loads(a.package) if a.package else None
             if not a.date or a.d_title is None or not (a.add or a.drop or pkg):
