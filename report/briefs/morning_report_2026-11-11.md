@@ -43,3 +43,15 @@ No brief, no season lines, no deck today. The deck was not published, so the liv
 1. **Re-run the same morning command later today, once Basketball-Reference posts the two pages (Recommended).** No method change; the afternoon runner or a session you start can do it. Until then the deck shows yesterday's numbers.
 2. **Approve a single-outlet day for 11-10.** That means `box_pull.py --date 2026-11-10 --no-bref` (ESPN only, labelled single_source), then morning.py. ESPN has all 6 finals. It is a method choice for one day, so it waits for your word.
 3. **Leave 11-10 unrecorded.** Tomorrow's run pulls 11-11. The 11-10 box scores, its tag outcomes and that day of the manager log stay missing.
+
+## Addendum, 2026-11-11 16:3xZ: re-run by a session (owner pick "Re-run now, same method")
+
+**MORNING: PASS after the re-run. Both Basketball-Reference pages returned 200 at 16:16Z; box scores 11-10 and the 18 skipped steps were run with the same commands on the rosters pinned above. Deck published as Version 73 (1794414332-9f56).**
+
+- Box scores 11-10: 6 games, two outlets, 151 lines matched, 3 cells differ.
+- Title 16.1% (was 12.3% on 11-10; title watch: MOVED, +3.8 against ±0.7), playoffs 98.6%.
+- Week 4: 57.6% to win 5+, projected 5-4-0; adds used 2 of 4.
+- Brief's top pair: Julian Champagnie for Kris Dunn, +1.5 title.
+- Ledger: session row S-2026-11-10-01 (owner pick "Log it"); the owner's move M-2026-11-11-01 (Collins for Caruso) re-joined to it as alt1.
+- `morning_2026-11-11.json` carries both attempts; run watch reads PASS.
+- Not redone: the Flaim roster pull (the 13:0xZ pin was reused) and the manager log's 11-10 day (HALT stands until its next run).

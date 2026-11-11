@@ -1,17 +1,17 @@
 {
- "as_of": "2026-11-09",
- "days": 5,
+ "as_of": "2026-11-10",
+ "days": 6,
  "days_agreed": 5,
- "days_graded": 0,
+ "days_graded": 1,
  "days_no_brief": 0,
- "pairs": 0,
- "pairs_with_lineup": 0,
- "start_followed": 0,
+ "pairs": 1,
+ "pairs_with_lineup": 1,
+ "start_followed": 1,
  "sit_followed": 0,
  "both_followed": 0,
  "night_kit": 0,
  "night_against": 0,
- "night_no_grade": 0,
+ "night_no_grade": 1,
  "night_no_box": 0,
  "gap_sum_followed": 0,
  "gap_sum_ignored": 0,
@@ -45,6 +45,23 @@
    "status": "agreed",
    "lineup_record": true,
    "pairs": []
+  },
+  {
+   "date": "2026-11-10",
+   "status": "graded",
+   "lineup_record": true,
+   "pairs": [
+    {
+     "start": "Alex Caruso",
+     "sit": "PJ Washington",
+     "kind": "empty",
+     "gap": null,
+     "start_followed": true,
+     "sit_followed": false,
+     "night": "no grade",
+     "z_gap": null
+    }
+   ]
   }
  ],
  "method": {
@@ -53,6 +70,6 @@
   "night": "start's box-line z minus the sit's, hoops.zscores over the day's box lines (engine rule)",
   "caveat": "the night is the outcome, not a verdict: per-game z noise sd 3.65 vs a 0.5 line (red team, decision_grade.py)"
  },
- "start_followed_rate": null,
- "sit_followed_rate": null
+ "start_followed_rate": 1.0,
+ "sit_followed_rate": 0.0
 }
