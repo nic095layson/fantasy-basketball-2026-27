@@ -5365,9 +5365,10 @@
     },
     {
      "eligiblePositions": [
-      "PF",
+      "SG",
+      "G",
+      "SF",
       "F",
-      "C",
       "Util"
      ],
      "isKeeper": {
@@ -5376,30 +5377,12 @@
       "status": false
      },
      "isUndroppable": false,
-     "name": "Jabari Smith Jr.",
-     "playerId": "6693",
-     "playerKey": "478.p.6693",
-     "position": "PF,C",
+     "name": "Josh Hart",
+     "playerId": "5843",
+     "playerKey": "478.p.5843",
+     "position": "SG,SF",
      "selectedPosition": "F",
-     "team": "HOU"
-    },
-    {
-     "eligiblePositions": [
-      "C",
-      "Util"
-     ],
-     "isKeeper": {
-      "cost": false,
-      "kept": false,
-      "status": false
-     },
-     "isUndroppable": false,
-     "name": "Jaxson Hayes",
-     "playerId": "6170",
-     "playerKey": "478.p.6170",
-     "position": "C",
-     "selectedPosition": "C",
-     "team": "UTA"
+     "team": "NYK"
     },
     {
      "eligiblePositions": [
@@ -5418,6 +5401,26 @@
      "position": "C",
      "selectedPosition": "C",
      "team": "LAL"
+    },
+    {
+     "eligiblePositions": [
+      "PF",
+      "F",
+      "C",
+      "Util"
+     ],
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "isUndroppable": false,
+     "name": "Jabari Smith Jr.",
+     "playerId": "6693",
+     "playerKey": "478.p.6693",
+     "position": "PF,C",
+     "selectedPosition": "C",
+     "team": "HOU"
     },
     {
      "eligiblePositions": [
@@ -5461,10 +5464,7 @@
     },
     {
      "eligiblePositions": [
-      "SG",
-      "G",
-      "SF",
-      "F",
+      "C",
       "Util"
      ],
      "isKeeper": {
@@ -5473,12 +5473,12 @@
       "status": false
      },
      "isUndroppable": false,
-     "name": "Jamal Cain",
-     "playerId": "6801",
-     "playerKey": "478.p.6801",
-     "position": "SG,SF",
+     "name": "Jaxson Hayes",
+     "playerId": "6170",
+     "playerKey": "478.p.6170",
+     "position": "C",
      "selectedPosition": "BN",
-     "team": "ORL"
+     "team": "UTA"
     },
     {
      "eligiblePositions": [
@@ -5520,29 +5520,6 @@
     },
     {
      "eligiblePositions": [
-      "SG",
-      "G",
-      "SF",
-      "F",
-      "Util",
-      "IL"
-     ],
-     "isKeeper": {
-      "cost": false,
-      "kept": false,
-      "status": false
-     },
-     "isUndroppable": false,
-     "name": "Josh Hart",
-     "playerId": "5843",
-     "playerKey": "478.p.5843",
-     "position": "SG,SF",
-     "selectedPosition": "IL",
-     "status": "O",
-     "team": "NYK"
-    },
-    {
-     "eligiblePositions": [
       "SF",
       "PF",
       "F",
@@ -5560,7 +5537,7 @@
      "playerKey": "478.p.5769",
      "position": "SF,PF",
      "selectedPosition": "IL",
-     "status": "Q",
+     "status": "O",
      "team": "UTA"
     }
    ],
@@ -5578,8 +5555,7 @@
       "PG",
       "SG",
       "G",
-      "Util",
-      "IL"
+      "Util"
      ],
      "isKeeper": {
       "cost": false,
@@ -5592,7 +5568,6 @@
      "playerKey": "478.p.6417",
      "position": "PG,SG",
      "selectedPosition": "PG",
-     "status": "Q",
      "team": "TOR"
     },
     {
@@ -5659,8 +5634,7 @@
       "PF",
       "F",
       "C",
-      "Util",
-      "IL"
+      "Util"
      ],
      "isKeeper": {
       "cost": false,
@@ -5673,7 +5647,6 @@
      "playerKey": "478.p.5432",
      "position": "PF,C",
      "selectedPosition": "PF",
-     "status": "Q",
      "team": "NYK"
     },
     {
@@ -5699,7 +5672,8 @@
     {
      "eligiblePositions": [
       "C",
-      "Util"
+      "Util",
+      "IL"
      ],
      "isKeeper": {
       "cost": false,
@@ -5712,12 +5686,14 @@
      "playerKey": "478.p.5294",
      "position": "C",
      "selectedPosition": "C",
+     "status": "Q",
      "team": "PHI"
     },
     {
      "eligiblePositions": [
       "C",
-      "Util"
+      "Util",
+      "IL"
      ],
      "isKeeper": {
       "cost": false,
@@ -5730,6 +5706,7 @@
      "playerKey": "478.p.5471",
      "position": "C",
      "selectedPosition": "C",
+     "status": "O",
      "team": "MIL"
     },
     {
@@ -5849,7 +5826,7 @@
      "playerKey": "478.p.10100",
      "position": "PG,SG",
      "selectedPosition": "IL",
-     "status": "D",
+     "status": "Q",
      "team": "UTA"
     },
     {
@@ -7524,8 +7501,7 @@
       "PF",
       "F",
       "C",
-      "Util",
-      "IL"
+      "Util"
      ],
      "isKeeper": {
       "cost": false,
@@ -7533,13 +7509,12 @@
       "status": false
      },
      "isUndroppable": false,
-     "name": "Collin Murray-Boyles",
-     "playerId": "10443",
-     "playerKey": "478.p.10443",
+     "name": "Giannis Antetokounmpo",
+     "playerId": "5185",
+     "playerKey": "478.p.5185",
      "position": "PF,C",
      "selectedPosition": "PF",
-     "status": "Q",
-     "team": "TOR"
+     "team": "MIA"
     },
     {
      "eligiblePositions": [
@@ -7563,6 +7538,8 @@
     },
     {
      "eligiblePositions": [
+      "PF",
+      "F",
       "C",
       "Util"
      ],
@@ -7572,12 +7549,12 @@
       "status": false
      },
      "isUndroppable": false,
-     "name": "Rudy Gobert",
-     "playerId": "5197",
-     "playerKey": "478.p.5197",
-     "position": "C",
+     "name": "Collin Murray-Boyles",
+     "playerId": "10443",
+     "playerKey": "478.p.10443",
+     "position": "PF,C",
      "selectedPosition": "C",
-     "team": "MIN"
+     "team": "TOR"
     },
     {
      "eligiblePositions": [
@@ -7618,8 +7595,10 @@
     },
     {
      "eligiblePositions": [
-      "PG",
+      "SG",
       "G",
+      "SF",
+      "F",
       "Util",
       "IL"
      ],
@@ -7629,13 +7608,31 @@
       "status": false
      },
      "isUndroppable": false,
-     "name": "Nolan Traore",
-     "playerId": "10455",
-     "playerKey": "478.p.10455",
-     "position": "PG",
+     "name": "Trey Murphy III",
+     "playerId": "6559",
+     "playerKey": "478.p.6559",
+     "position": "SG,SF",
      "selectedPosition": "Util",
-     "status": "Q",
-     "team": "BKN"
+     "status": "D",
+     "team": "NOP"
+    },
+    {
+     "eligiblePositions": [
+      "C",
+      "Util"
+     ],
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "isUndroppable": false,
+     "name": "Rudy Gobert",
+     "playerId": "5197",
+     "playerKey": "478.p.5197",
+     "position": "C",
+     "selectedPosition": "BN",
+     "team": "MIN"
     },
     {
      "eligiblePositions": [
@@ -7680,30 +7677,8 @@
     },
     {
      "eligiblePositions": [
-      "PF",
-      "F",
-      "C",
-      "Util"
-     ],
-     "isKeeper": {
-      "cost": false,
-      "kept": false,
-      "status": false
-     },
-     "isUndroppable": false,
-     "name": "Giannis Antetokounmpo",
-     "playerId": "5185",
-     "playerKey": "478.p.5185",
-     "position": "PF,C",
-     "selectedPosition": "BN",
-     "team": "MIA"
-    },
-    {
-     "eligiblePositions": [
-      "SG",
+      "PG",
       "G",
-      "SF",
-      "F",
       "Util",
       "IL"
      ],
@@ -7713,13 +7688,13 @@
       "status": false
      },
      "isUndroppable": false,
-     "name": "Trey Murphy III",
-     "playerId": "6559",
-     "playerKey": "478.p.6559",
-     "position": "SG,SF",
+     "name": "Nolan Traore",
+     "playerId": "10455",
+     "playerKey": "478.p.10455",
+     "position": "PG",
      "selectedPosition": "IL",
-     "status": "D",
-     "team": "NOP"
+     "status": "O",
+     "team": "BKN"
     },
     {
      "eligiblePositions": [
@@ -7777,7 +7752,8 @@
       "PG",
       "SG",
       "G",
-      "Util"
+      "Util",
+      "IL"
      ],
      "isKeeper": {
       "cost": false,
@@ -7790,6 +7766,7 @@
      "playerKey": "478.p.10304",
      "position": "PG,SG",
      "selectedPosition": "SG",
+     "status": "O",
      "team": "OKC"
     },
     {
@@ -7838,7 +7815,8 @@
      "eligiblePositions": [
       "PF",
       "F",
-      "Util"
+      "Util",
+      "IL"
      ],
      "isKeeper": {
       "cost": false,
@@ -7851,6 +7829,7 @@
      "playerKey": "478.p.10595",
      "position": "PF",
      "selectedPosition": "PF",
+     "status": "Q",
      "team": "CHI"
     },
     {
@@ -8171,10 +8150,12 @@
     },
     {
      "eligiblePositions": [
+      "SG",
+      "G",
       "SF",
-      "PF",
       "F",
-      "Util"
+      "Util",
+      "IL"
      ],
      "isKeeper": {
       "cost": false,
@@ -8182,12 +8163,13 @@
       "status": false
      },
      "isUndroppable": false,
-     "name": "LeBron James",
-     "playerId": "3704",
-     "playerKey": "478.p.3704",
-     "position": "SF,PF",
+     "name": "Devin Vassell",
+     "playerId": "6403",
+     "playerKey": "478.p.6403",
+     "position": "SG,SF",
      "selectedPosition": "F",
-     "team": "PHI"
+     "status": "Q",
+     "team": "SAS"
     },
     {
      "eligiblePositions": [
@@ -8325,9 +8307,8 @@
     },
     {
      "eligiblePositions": [
-      "SG",
-      "G",
       "SF",
+      "PF",
       "F",
       "Util",
       "IL"
@@ -8338,13 +8319,13 @@
       "status": false
      },
      "isUndroppable": false,
-     "name": "Devin Vassell",
-     "playerId": "6403",
-     "playerKey": "478.p.6403",
-     "position": "SG,SF",
+     "name": "LeBron James",
+     "playerId": "3704",
+     "playerKey": "478.p.3704",
+     "position": "SF,PF",
      "selectedPosition": "IL",
      "status": "Q",
-     "team": "SAS"
+     "team": "PHI"
     },
     {
      "eligiblePositions": [
@@ -8636,7 +8617,7 @@
      "playerKey": "478.p.10572",
      "position": "PF",
      "selectedPosition": "IL",
-     "status": "Q",
+     "status": "P",
      "team": "DAL"
     },
     {
@@ -8753,11 +8734,9 @@
     },
     {
      "eligiblePositions": [
-      "SF",
       "PF",
       "F",
-      "Util",
-      "IL"
+      "Util"
      ],
      "isKeeper": {
       "cost": false,
@@ -8765,13 +8744,12 @@
       "status": false
      },
      "isUndroppable": false,
-     "name": "Paul George",
-     "playerId": "4725",
-     "playerKey": "478.p.4725",
-     "position": "SF,PF",
+     "name": "Cameron Boozer",
+     "playerId": "10592",
+     "playerKey": "478.p.10592",
+     "position": "PF",
      "selectedPosition": "PF",
-     "status": "O",
-     "team": "BOS"
+     "team": "MEM"
     },
     {
      "eligiblePositions": [
@@ -8833,25 +8811,6 @@
     },
     {
      "eligiblePositions": [
-      "PF",
-      "F",
-      "Util"
-     ],
-     "isKeeper": {
-      "cost": false,
-      "kept": false,
-      "status": false
-     },
-     "isUndroppable": false,
-     "name": "Cameron Boozer",
-     "playerId": "10592",
-     "playerKey": "478.p.10592",
-     "position": "PF",
-     "selectedPosition": "Util",
-     "team": "MEM"
-    },
-    {
-     "eligiblePositions": [
       "SG",
       "G",
       "SF",
@@ -8870,6 +8829,24 @@
      "position": "SG,SF",
      "selectedPosition": "Util",
      "team": "ORL"
+    },
+    {
+     "eligiblePositions": [
+      "C",
+      "Util"
+     ],
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "isUndroppable": false,
+     "name": "Andre Drummond",
+     "playerId": "5015",
+     "playerKey": "478.p.5015",
+     "position": "C",
+     "selectedPosition": "Util",
+     "team": "NYK"
     },
     {
      "eligiblePositions": [
@@ -8929,6 +8906,28 @@
      "position": "PG",
      "selectedPosition": "BN",
      "team": "MIN"
+    },
+    {
+     "eligiblePositions": [
+      "SF",
+      "PF",
+      "F",
+      "Util",
+      "IL"
+     ],
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "isUndroppable": false,
+     "name": "Paul George",
+     "playerId": "4725",
+     "playerKey": "478.p.4725",
+     "position": "SF,PF",
+     "selectedPosition": "IL",
+     "status": "O",
+     "team": "BOS"
     },
     {
      "eligiblePositions": [

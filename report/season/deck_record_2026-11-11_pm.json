@@ -15,12 +15,12 @@
   "status": {
    "path": "data/status/status_2026-11-11_pm.json",
    "present": true,
-   "sha256": "4a0ca7ec0ac5b055cda90b55573aa4b4402d0a874e4070be2195c89de0f66fc0"
+   "sha256": "c3dde62f990d2276a35fc8ccde068b64ebe7ea46e8eb57ff484601a2fad8f755"
   },
   "league_state": {
    "path": "data/league_state.json",
    "present": true,
-   "sha256": "bb6df10815b89d8dca9269caad713b48eb6b81cbe44d4acddc7791330def14a4"
+   "sha256": "50e2b4c60c384aaf6eb55734e7d2aec08b71cef26aeaf097f57c80a5164db6eb"
   },
   "season_lines": {
    "path": "data/season/season_lines_2026-11-11.json",
@@ -45,7 +45,7 @@
   "week_matchup": {
    "path": "report/briefs/week_matchup_2026-11-11_pm.json",
    "present": true,
-   "sha256": "f40a06b6b6281d65daaf5e80a877c38ca2b614c66d668aae47d3f44b1de4ab7f"
+   "sha256": "6c763d7127df36601a65f0648b6314804fc7198fd16b2e17ed8750b229a08c27"
   },
   "league": {
    "path": "report/league/league_2026-11-11.json",
@@ -100,21 +100,21 @@
   "yahoo_pull": {
    "path": "data/source/flaim/pull_2026-11-11_pm.json",
    "present": true,
-   "sha256": "94fd3070fa909778b0dff1f700a60fa6ae6121a2b427f8dc86858aa5c36eb496"
+   "sha256": "c49a3bda609ae89c9f19b0104cef0a95678b4512c6da97d1c6246238d21d991e"
   },
   "espn_injuries": {
    "path": "data/status/espn_injuries_2026-11-11_pm.json",
    "present": true,
-   "sha256": "e6e74687f726e6ac9eed782e06ddc5150dd7e9fab973566ffd916a7048f128b2"
+   "sha256": "4db286d6a2158442ddaf495b50cc46ce24a6bdb7b1c01de35df4dfc01c4253ba"
   }
  },
  "board_rows": 315,
- "status_rows": 29,
+ "status_rows": 30,
  "panes": 7,
  "join": {
-  "rostered": 171,
+  "rostered": 172,
   "unresolved": 0,
-  "on_board": 169,
+  "on_board": 170,
   "off_board": 2,
   "respelled": [
    [
@@ -147,7 +147,7 @@
    ]
   ],
   "not_on_board": [],
-  "free_agents_on_board": 146
+  "free_agents_on_board": 145
  },
  "render": {
   "status": "PASS",
@@ -161,6 +161,6 @@
    "League"
   ],
   "page_errors": 0,
-  "browser": "153.0.8010.12 (/opt/pw-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell)"
+  "browser": "141.0.7390.37 (playwright default)"
  }
 }
