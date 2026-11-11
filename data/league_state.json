@@ -2,16 +2,16 @@
  "as_of": "2026-11-11",
  "sources": {
   "flaim": {
-   "transcript": "f7b74300-8501-5e41-b8c5-d2c75dd06ce4.jsonl",
+   "transcript": "3cdbbd9b-02dd-585e-8d00-b8a370128fae.jsonl",
    "method": "mechanical json extraction of Flaim (Yahoo) tool results from the session transcript",
-   "since": "2026-11-11T13:03:53Z",
-   "pull_file": "data/source/flaim/pull_2026-11-11.json",
-   "pull_sha256": "8027ed5d1a0b28d9fe05b072e122340fda39fecb24e1a58531c567b5b3a62354",
+   "since": "2026-11-11T18:16:00Z",
+   "pull_file": "data/source/flaim/pull_2026-11-11_pm.json",
+   "pull_sha256": "94fd3070fa909778b0dff1f700a60fa6ae6121a2b427f8dc86858aa5c36eb496",
    "view": "Flaim connector (Yahoo, read-only): get_roster per team (current), get_matchups, get_free_agents"
   },
   "transcription": {
-   "file": "data/source/flaim/rosters_2026-11-11.transcribed.csv",
-   "sha256": "60d271a710cd08c27a9e1be99ad8e4d66463be77017536e6020fe79b4d8669ca",
+   "file": "data/source/flaim/rosters_2026-11-11_pm.transcribed.csv",
+   "sha256": "084ace522096d480f5d7a23821f24e67268a8d3cef05ea7f04f1e5e4ce75a2f7",
    "method": "flaim_live.to_rows (mechanical; Yahoo slots and status letters for every team)"
   },
   "draft_board": "report/after-reports/draft-league-2026-10-14/recap.json",
@@ -239,7 +239,7 @@
       "SF",
       "PF"
      ],
-     "status": "O"
+     "status": "Q"
     }
    ],
    "empty_slots": [],
@@ -446,7 +446,7 @@
       "SF",
       "PF"
      ],
-     "status": "O"
+     "status": "Q"
     }
    ],
    "empty_slots": [],
@@ -493,7 +493,7 @@
      "yahoo_name": "Nique Clifford",
      "slot": "G",
      "yahoo_nba_team": "OKC",
-     "pool_team": "SAC",
+     "pool_team": "OKC",
      "positions": [
       "SG",
       "SF"
@@ -826,7 +826,7 @@
       "PF",
       "C"
      ],
-     "status": "O"
+     "status": "Q"
     },
     {
      "player": "Anthony Edwards",
@@ -1008,7 +1008,7 @@
       "SG",
       "SF"
      ],
-     "status": "P"
+     "status": "D"
     },
     {
      "player": "Jalen Suggs",
@@ -1246,7 +1246,7 @@
       "PG",
       "SG"
      ],
-     "status": "O"
+     "status": "Q"
     },
     {
      "player": "Coby White",
@@ -1352,7 +1352,7 @@
       "PG",
       "SG"
      ],
-     "status": "O"
+     "status": null
     },
     {
      "player": "Ausar Thompson",
@@ -1676,7 +1676,7 @@
       "SF",
       "PF"
      ],
-     "status": null
+     "status": "O"
     },
     {
      "player": "Draymond Green",
@@ -1859,7 +1859,7 @@
       "PF",
       "C"
      ],
-     "status": null
+     "status": "Q"
     },
     {
      "player": "Joel Embiid",
@@ -1950,7 +1950,7 @@
       "PG",
       "SG"
      ],
-     "status": "O"
+     "status": "D"
     },
     {
      "player": "Kon Knueppel",
@@ -2032,6 +2032,17 @@
      "positions": [
       "PG",
       "SG"
+     ],
+     "status": null
+    },
+    {
+     "player": "Jaden McDaniels",
+     "yahoo_name": "Jaden McDaniels",
+     "slot": "SF",
+     "yahoo_nba_team": "MIN",
+     "pool_team": "MIN",
+     "positions": [
+      "SF"
      ],
      "status": null
     },
@@ -2126,17 +2137,6 @@
      "positions": [
       "PG",
       "SG"
-     ],
-     "status": null
-    },
-    {
-     "player": "Jaden McDaniels",
-     "yahoo_name": "Jaden McDaniels",
-     "slot": "BN",
-     "yahoo_nba_team": "MIN",
-     "pool_team": "MIN",
-     "positions": [
-      "SF"
      ],
      "status": null
     },
@@ -2380,11 +2380,19 @@
    ]
   }
  ],
- "nba_team_disagreements": [
+ "nba_team_disagreements": [],
+ "team_updates": [
   {
+   "id": "T-2026-11-11-01",
    "player": "Nique Clifford",
-   "yahoo": "OKC",
-   "pool": "SAC"
+   "from": "SAC",
+   "to": "OKC",
+   "espn": {
+    "date": "2026-11-08",
+    "description": "Traded G Nique Clifford to the Oklahoma City Thunder.",
+    "nba_team": "SAC",
+    "file": "transactions_2026-11-10.json"
+   }
   }
  ]
 }
