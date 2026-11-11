@@ -65,9 +65,9 @@ class KnownAnswers(unittest.TestCase):
         self.assertIn("pane-week empty", r["reasons"])
 
     def test_a_tab_that_shows_the_wrong_pane_fails(self):
-        r = self.check(page(wrong=("movers", "board")))
+        r = self.check(page(wrong=("draft", "board")))
         self.assertEqual(r["status"], "FAIL")
-        self.assertTrue(any(x.startswith("tab Movers shows") for x in r["reasons"]), r["reasons"])
+        self.assertTrue(any(x.startswith("tab Draft Check shows") for x in r["reasons"]), r["reasons"])
 
     def test_a_page_that_cannot_be_opened_fails_cleanly(self):
         r = DRC.check(os.path.join(tempfile.gettempdir(), "no-such-dir-deck", "deck.html"))

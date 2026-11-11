@@ -36,6 +36,11 @@ def _load(path, what):
         raise DeckError(f"{what} record unreadable: {path}: {e}")
 
 
+def _draft_check_path(date):
+    import draft_check
+    return draft_check.latest(date) or os.path.join(draft_check.OUT_DIR, f"draft_check_{date}.json")
+
+
 def default_paths(date, phase="am"):
     # owner 2026-10-29 (audit F3): the 3 PM run no longer overwrites what the morning record hashes. The morning reads
     # its own pinned state copy (league_live's league_state_am_<date>.json, byte-identical to the state it produced)
@@ -70,6 +75,9 @@ def default_paths(date, phase="am"):
                 # optional (owner 2026-11-10, "Decision card + watchdog"): the day's decision card (decision_card.py, the
                 # morning's in both phases: its title figures are the 5 AM run's), read-only here
                 decision_card=os.path.join(KIT, "report", "briefs", f"decision_card_{date}.json"),
+                # optional (owner 2026-11-11, "replacing the Movers tab"): the newest Monday draft check on or before
+                # the date (draft_check.py: the draft-day system beside the season so far), read-only here
+                draft_check=_draft_check_path(date),
                 # optional (owner 2026-10-28, item 4): the day's two status pins the brief's waiver gate reads
                 # optional (owner 2026-11-10, "Playoff games column"): the season's game file and the league schedule's
                 # playoff weeks, for each board row's games in the fantasy playoffs (display only)
@@ -337,7 +345,7 @@ def build(paths, date, phase=None):
     opt = lambda k: (json.load(open(paths[k], encoding="utf-8"))
                      if paths.get(k) and os.path.exists(paths[k]) else None)
     matchup_live = opt("matchup_live"); week_matchup = opt("week_matchup"); league_rec = opt("league"); form_rec = opt("form"); scores = opt("scores")
-    accuracy = opt("accuracy"); lineup_sc = opt("lineup"); dcard = opt("decision_card")
+    accuracy = opt("accuracy"); lineup_sc = opt("lineup"); dcard = opt("decision_card"); draft_chk = opt("draft_check")
     for k in ("date", "opponent", "title", "lineup"):
         if k not in brief: raise DeckError(f"brief lacks {k}")
     if brief["date"] != date: raise DeckError(f"brief is for {brief['date']}, not {date}")
@@ -434,7 +442,7 @@ def build(paths, date, phase=None):
                 week_matchup=week_matchup, league_table=league_rec, playoff=playoff, faab=faab,
                 # owner 2026-11-09 (runner pick B1): inputs named but absent, so an empty card can say why
                 absent_inputs=sorted(k for k, p in paths.items() if not (p and os.path.exists(p))),
-                form=form_rec, scores=scores, accuracy=accuracy, lineup_scorecard=lineup_sc, decision_card=dcard, fa_status=fa_status, out_today=out_now, swap_grid=grid_now, waiver_notes=waiver_notes,
+                form=form_rec, scores=scores, accuracy=accuracy, lineup_scorecard=lineup_sc, decision_card=dcard, draft_check=draft_chk, fa_status=fa_status, out_today=out_now, swap_grid=grid_now, waiver_notes=waiver_notes,
                 # owner 2026-10-28 ("Rebuild, flag morning parts"): the 3 PM run's rebuild says which parts are the 5 AM run's
                 **({"refresh": {"phase": phase, "not_on_board": not_on_board,
                                 # owner 2026-11-06 ("why does Today still show Matkovic?", "please build it"): the morning brief's
@@ -615,7 +623,7 @@ footer{color:var(--ink2); font-size:12px; margin-top:28px; border-top:1px solid 
   <section class="pane" id="pane-trade" role="tabpanel" hidden></section>
   <section class="pane" id="pane-fa" role="tabpanel" hidden></section>
   <section class="pane" id="pane-board" role="tabpanel" hidden></section>
-  <section class="pane" id="pane-movers" role="tabpanel" hidden></section>
+  <section class="pane" id="pane-draft" role="tabpanel" hidden></section>
   <section class="pane" id="pane-week" role="tabpanel" hidden></section>
   <section class="pane" id="pane-league" role="tabpanel" hidden></section>
   <footer id="foot"></footer>
@@ -1187,10 +1195,96 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
   render();
 })();
 
-// ---- Movers ----
+// ---- Draft Check (owner 2026-11-11: "include this on the season deck replacing the Movers tab") ----
+// The newest Monday record of draft_check.py: the draft-day system beside the season so far. Nothing here computes
+// a figure; it draws the record. No record, one card saying so. The minutes board follows, collapsed (owner pick
+// 2026-11-11, "Keep minutes, drop movers").
+(function(){ const p=$("#pane-draft"), R=D.draft_check;
+  if(!R){ p.append(h("div",{class:"card",id:"draft-none"},h("h2",{},"Draft check"),h("div",{class:"zero"},"No draft check on record yet. The Monday morning run writes it (draft_check.py)."))); return; }
+  const NS="http://www.w3.org/2000/svg";
+  const sv=(tag,attrs,text,tip)=>{ const e=document.createElementNS(NS,tag); for(const k in attrs) e.setAttribute(k,attrs[k]); if(text!=null) e.textContent=text;
+    if(tip){ const t=document.createElementNS(NS,"title"); t.textContent=tip; e.append(t); } return e; };
+  const v1=(x)=>x==null?"–":sgn(x,1), gm=(r)=>r.games+(r.team_games!=null?" of "+r.team_games:"")+" games";
+  const dot=(c)=>h("i",{style:"display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;background:var("+c+")"});
+  const legend=(...items)=>h("p",{class:"note",style:"display:flex;gap:14px;flex-wrap:wrap;margin:4px 0"},items.map(([c,t])=>h("span",{},c?dot(c):null,t)));
+  p.append(h("div",{class:"card",id:"draft-head"},h("h2",{},"Draft check: the draft-day system against the season so far"),
+    h("p",{class:"note"},"Record of "+R.date+" · box scores "+R.window[0]+" → "+R.window[1]+" ("+R.days+" days) · updates every Monday · value = the nine category scores summed, on the draft-day scale; 0 is an average rostered player · display only")));
+
+  // 1. the owner's picks: draft-day value beside the per-game value so far
+  (function(){ const W=760, rh=28, L=186, RR=112, T=22, H=T+R.picks.length*rh+6;
+    const vals=R.picks.flatMap(q=>[q.pre,q.act]).filter(x=>x!=null), m=Math.max(4,Math.ceil(Math.max(...vals.map(Math.abs)))), x=(v)=>L+(v+m)/(2*m)*(W-L-RR);
+    const s=sv("svg",{viewBox:"0 0 "+W+" "+H,width:W,style:"display:block;max-width:none",role:"img","aria-label":"Draft-day and actual value of each pick"});
+    for(const g of [-m,-m/2,0,m/2,m]){ s.append(sv("line",{x1:x(g),x2:x(g),y1:T-4,y2:H-4,stroke:"var(--line)","stroke-width":g?1:1.5}));
+      s.append(sv("text",{x:x(g),y:11,"text-anchor":"middle","font-size":11,fill:"var(--ink2)"},sgn(g,1))); }
+    R.picks.forEach((q,i)=>{ const y=T+i*rh+rh/2, tip=q.name+": draft day "+v1(q.pre)+", so far "+v1(q.act)+" ("+gm(q)+")";
+      s.append(sv("text",{x:0,y:y+4,"font-size":12,fill:"var(--ink2)"},"#"+q.pick), sv("text",{x:38,y:y+4,"font-size":13,fill:"var(--ink)"},q.name));
+      if(q.pre!=null&&q.act!=null) s.append(sv("line",{x1:x(q.pre),x2:x(q.act),y1:y,y2:y,stroke:"var(--line)","stroke-width":3}));
+      if(q.pre!=null) s.append(sv("circle",{cx:x(q.pre),cy:y,r:6,fill:"var(--fade)",stroke:"var(--surface)","stroke-width":2},null,tip));
+      if(q.act!=null) s.append(sv("circle",{cx:x(q.act),cy:y,r:6,fill:"var(--accent)",stroke:"var(--surface)","stroke-width":2},null,tip));
+      s.append(sv("text",{x:W-RR+10,y:y+4,"font-size":12,fill:"var(--ink2)"},gm(q))); });
+    p.append(h("div",{class:"card",id:"draft-picks"},h("h2",{},"Your "+R.picks.length+" picks: draft day vs so far"),
+      legend(["--fade","Draft-day value"],["--accent","Per-game value so far"]),h("div",{class:"tablebox"},s),
+      h("div",{class:"tablebox"},h("table",{id:"draft-picks-table"},
+        h("tr",{},h("th",{class:"num"},"pick"),h("th",{},"player"),h("th",{class:"num"},"draft day"),h("th",{class:"num"},"so far"),h("th",{class:"num"},"change"),h("th",{class:"num"},"games")),
+        R.picks.map(q=>{ const d=(q.pre!=null&&q.act!=null)? q.act-q.pre : null;
+          return h("tr",{},h("td",{class:"num"},"#"+q.pick),h("td",{},q.name),h("td",{class:"num"},v1(q.pre)),h("td",{class:"num"},v1(q.act)),
+            h("td",{class:"num"+(d!=null&&d<0?" zneg":"")},d==null?"–":sgn(d,1)),h("td",{class:"num"},q.games+(q.team_games!=null?" / "+q.team_games:""))); }))),
+      h("p",{class:"note"},"A player with fewer than "+R.min_games+" games is too few to judge on quality; the gap there is availability."))); })();
+
+  // 2. the turns where the draft card's first choice was another player
+  if(R.preferred.length){ const better=(q)=>{ const a=q.mine.act, b=q.card.act;
+      if(q.card.games<R.min_games&&q.mine.games<R.min_games) return "too few games"; if(q.card.games<R.min_games) return "you (card's pick: "+q.card.games+" games)";
+      if(q.mine.games<R.min_games) return "card (your pick: "+q.mine.games+" games)"; return Math.abs(a-b)<0.5? "even" : (a>b? "you":"card"); };
+    p.append(h("div",{class:"card",id:"draft-preferred"},h("h2",{},"Where you and the draft card disagreed"),
+      h("div",{class:"tablebox"},h("table",{},
+        h("tr",{},h("th",{class:"num"},"pick"),h("th",{},"you took"),h("th",{class:"num"},"so far"),h("th",{},"card's first choice"),h("th",{class:"num"},"so far"),h("th",{},"better so far")),
+        R.preferred.map(q=>h("tr",{},h("td",{class:"num"},"#"+q.pick),h("td",{},q.mine.name+" ("+q.mine.games+" g)"),h("td",{class:"num"},v1(q.mine.act)),
+          h("td",{},q.card.name+" ("+q.card.games+" g)"),h("td",{class:"num"},v1(q.card.act)),h("td",{},better(q)))))),
+      h("p",{class:"note"},"\"Better so far\" compares per-game value; within 0.5 reads as even, and a side with fewer than "+R.min_games+" games is named instead of graded."))); }
+
+  // 3. the draft-day simulation beside the standings
+  p.append(h("div",{class:"card",id:"draft-teams"},h("h2",{},"League: draft-day forecast vs standings"),
+    h("p",{class:"note"},"Rank agreement between the draft-day order and the standings: "+(R.team_rank_agreement==null?"–":R.team_rank_agreement.toFixed(2))+" (1 = same order, 0 = unrelated)."),
+    h("div",{class:"tablebox"},h("table",{class:"lg",id:"draft-teams-table"},
+      h("tr",{},h("th",{class:"num"},"now"),h("th",{},"team"),h("th",{class:"num"},"record"),h("th",{class:"num"},"draft-day title %"),h("th",{class:"num"},"draft-day rank"),h("th",{class:"num"},"moved")),
+      R.teams.map(t=>{ const mv=t.pre_rank-t.rank;
+        return h("tr",{class:t.mine?"mine":""},h("td",{class:"num"},String(t.rank)),h("td",{class:"team"},t.name),h("td",{class:"num"},t.wins+"-"+t.losses+"-"+t.ties),
+          h("td",{class:"num"},t.pre_title.toFixed(1)+"%"),h("td",{class:"num"},String(t.pre_rank)),
+          h("td",{class:"num"+(mv<0?" zneg":"")},mv===0?"–":(mv>0?"▲ "+mv:"▼ "+(-mv)))); })))));
+
+  // 4. the owner's category plan beside the weeks won
+  (function(){ const W=760, H=240, L=40, B=42, T=12, n=R.cats.length, bw=(W-L)/n, y=(v)=>T+(1-v/100)*(H-T-B);
+    const s=sv("svg",{viewBox:"0 0 "+W+" "+H,width:W,style:"display:block;max-width:none",role:"img","aria-label":"Planned and realized category wins"});
+    for(const g of [0,50,100]){ s.append(sv("line",{x1:L,x2:W,y1:y(g),y2:y(g),stroke:"var(--line)"})); s.append(sv("text",{x:L-6,y:y(g)+4,"text-anchor":"end","font-size":11,fill:"var(--ink2)"},g+"%")); }
+    R.cats.forEach((c,i)=>{ const x0=L+i*bw+bw*.18, w=bw*.3, wk=c.won+c.lost+c.tied, act=wk? (c.won+c.tied/2)/wk*100 : null, tip=c.cat+": planned "+c.plan.toFixed(0)+"% a week; won "+c.won+", lost "+c.lost+(c.tied?", tied "+c.tied:"")+" of "+wk+" weeks";
+      const bar=(x,v,col)=>sv("rect",{x:x,y:y(v),width:w,height:Math.max(y(0)-y(v),2),rx:3,fill:col},null,tip);
+      s.append(bar(x0,c.plan,"var(--fade)")); if(act!=null) s.append(bar(x0+w+2,act,"var(--accent)"));
+      s.append(sv("text",{x:x0+w+1,y:H-B+16,"text-anchor":"middle","font-size":12.5,fill:"var(--ink)"},c.cat), sv("text",{x:x0+w+1,y:H-B+31,"text-anchor":"middle","font-size":11.5,fill:"var(--ink2)"},c.won+"-"+c.lost+(c.tied?"-"+c.tied:""))); });
+    p.append(h("div",{class:"card",id:"draft-cats"},h("h2",{},"Your categories: planned vs won"),
+      legend(["--fade","Draft-day chance to win the category in a week"],["--accent","Share of weeks won ("+R.weeks_graded.length+" finished)"]),h("div",{class:"tablebox"},s))); })();
+
+  // 5. every player with enough games: draft-day value against value so far
+  (function(){ const W=760, H=440, L=44, B=38, T=10, RR=10, pts=R.scatter; if(!pts.length) return;
+    const all=pts.flatMap(d=>[d.pre,d.act]), lo=Math.floor(Math.min(...all))-1, hi=Math.ceil(Math.max(...all))+1, x=(v)=>L+(v-lo)/(hi-lo)*(W-L-RR), y=(v)=>T+(1-(v-lo)/(hi-lo))*(H-T-B);
+    const s=sv("svg",{viewBox:"0 0 "+W+" "+H,width:W,style:"display:block;max-width:none",role:"img","aria-label":"Draft-day value against value so far, every player"});
+    for(let g=Math.ceil(lo/4)*4; g<=hi; g+=4){ s.append(sv("line",{x1:x(g),x2:x(g),y1:T,y2:H-B,stroke:"var(--line)"}), sv("line",{x1:L,x2:W-RR,y1:y(g),y2:y(g),stroke:"var(--line)"}));
+      s.append(sv("text",{x:x(g),y:H-B+14,"text-anchor":"middle","font-size":11,fill:"var(--ink2)"},sgn(g,0)), sv("text",{x:L-6,y:y(g)+4,"text-anchor":"end","font-size":11,fill:"var(--ink2)"},sgn(g,0))); }
+    s.append(sv("line",{x1:x(lo),y1:y(lo),x2:x(hi),y2:y(hi),stroke:"var(--ink2)","stroke-dasharray":"4 4"}));
+    s.append(sv("text",{x:(L+W-RR)/2,y:H-4,"text-anchor":"middle","font-size":12,fill:"var(--ink2)"},"Draft-day value"));
+    s.append(sv("text",{x:12,y:(T+H-B)/2,"text-anchor":"middle","font-size":12,fill:"var(--ink2)",transform:"rotate(-90 12 "+((T+H-B)/2)+")"},"Value so far"));
+    pts.slice().sort((a,b)=>(a.mine?1:0)-(b.mine?1:0)).forEach(d=>{ const tip=d.name+": draft day "+sgn(d.pre,1)+", so far "+sgn(d.act,1)+" ("+d.games+" games)";
+      s.append(sv("circle",{cx:x(d.pre),cy:y(d.act),r:d.mine?6:4,fill:d.mine?"var(--mine)":"var(--fade)","fill-opacity":d.mine?1:.5,stroke:"var(--surface)","stroke-width":d.mine?2:1},null,tip));
+      if(d.mine) s.append(sv("text",{x:x(d.pre)+9,y:y(d.act)+4,"font-size":11.5,fill:"var(--ink)"},d.name.split(" ").slice(-1)[0])); });
+    p.append(h("div",{class:"card",id:"draft-scatter"},h("h2",{},"All players: draft-day value vs so far"),
+      h("p",{class:"note"},pts.length+" pool players with "+R.min_games+"+ games · rank agreement "+(R.rank_agreement==null?"–":R.rank_agreement.toFixed(2))+" · on the dashed line = exactly as projected"),
+      legend(["--fade","Other players"],["--mine","Your picks"]),h("div",{class:"tablebox"},s))); })();
+})();
+
+// ---- Minutes & role ----
 // ---- Minutes & role (owner 2026-10-23): the box scores' minutes, starts, role and per-36 rates per player, the signal
 // that stabilizes first; the games count sits on every row, so a one-game row reads as one game (form_board.py) ----
-(function(){ const p=$("#pane-movers"), F=D.form;
+(function(){ const p=h("details",{class:"card how",id:"minutes-role"},h("summary",{},"Minutes & role (box scores)")), F=D.form;
+  $("#pane-draft").append(p);
   if(!F){ p.append(h("div",{class:"card"},h("h2",{},"Minutes & role"),h("div",{class:"zero"},"No minutes record for "+D.date+" (form_board.py did not run, or failed, this morning)."))); return; }
   const P36=[["PTS","pts"],["REB","reb"],["AST","ast"],["STL","stl"],["BLK","blk"],["3PM","tpm"],["TOV","tov"]];
   let view="all", key="mpg", asc=false;
@@ -1228,22 +1322,6 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
       (F.fa_unresolved&&F.fa_unresolved.length)? h("p",{class:"note"},"On Yahoo's list, no game yet and not in the pool: "+F.fa_unresolved.join(", ")+".") : null,
       (F.unpooled_with_games&&F.unpooled_with_games.length)? h("p",{class:"note"},"Played, not in the pool ("+F.unpooled_with_games.length+"): "+F.unpooled_with_games.join(", ")+".") : null)));
   render();
-})();
-
-(function(){ const p=$("#pane-movers"); const L=D.season_lines;
-  // season_lines.py records each moved stat as [preseason, season] per-game strings under its kit column (owner
-  // 2026-10-21, decision A: shown as "PTS 25.6 → 24.5"; formatting the pair as a number threw and took the tab bar down)
-  const ML={fgp:"FG%",ftp:"FT%",fga:"FGA",fta:"FTA",tpm:"3PM",pts:"PTS",reb:"REB",ast:"AST",stl:"STL",blk:"BLK",tov:"TOV"};
-  const mv=(c,v)=>(ML[c]||c)+" "+(Array.isArray(v)?v[0]+" → "+v[1]:String(v));
-  p.append(h("div",{class:"card"},h("h2",{},"Season-line movers (per-game line moved "+L.threshold+"+; FG%/FT% 0.01+)"),
-    noteMore("Season line = preseason line blended with games played ("+L.players_with_games+" players)",
-      L.players_with_games+" pool players with regular-season games; each category's season line = the preseason line carried as a per-category prior (games: "+CATS.map(c=>{const k=(c==="TOV"?"TO":(c==="STL"?"STL":c)); return k+" "+(L.prior_games[k]!=null?L.prior_games[k]:"—");}).join(", ")+") blended with what the games show."),
-    L.movers.length? h("div",{class:"tablebox"},h("table",{},
-      h("tr",{},h("th",{},"player"),h("th",{class:"num"},"games"),h("th",{},"moved")),
-      L.movers.map(m=>h("tr",{},h("td",{},m.name),h("td",{class:"num"},String(m.games)),
-        h("td",{},Object.entries(m.moved).map(([c,v])=>h("span",{class:"chip",style:"margin-right:4px"},mv(c,v))))))))
-      : h("div",{class:"zero"},"No movers yet — the first regular-season games land 2026-10-21."),
-    L.unpooled_with_games.length? noteMore(L.unpooled_with_games.length+" player"+(L.unpooled_with_games.length===1?"":"s")+" with games aren't in the pool", "Unpooled with games: "+L.unpooled_with_games.join(", ")):null));
 })();
 
 // ---- Week / ledger ----
@@ -1424,7 +1502,7 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
 })();
 
 // ---- tabs, footer ----
-(function(){ const defs=[["today","Today"],["trade","Trade Analyzer"],["fa","Free Agents"],["board","Board"],["movers","Movers"],["week","Week"],["league","League"]];
+(function(){ const defs=[["today","Today"],["trade","Trade Analyzer"],["fa","Free Agents"],["board","Board"],["draft","Draft Check"],["week","Week"],["league","League"]];
   const tabs=$("#tabs"); let cur="today";
   try{ const s=localStorage.getItem("deck-tab"); if(s&&defs.some(d=>d[0]===s)) cur=s; }catch(e){}
   const hash=(location.hash||"").replace("#",""); if(defs.some(d=>d[0]===hash)) cur=hash;
