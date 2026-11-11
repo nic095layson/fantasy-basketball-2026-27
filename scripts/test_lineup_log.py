@@ -139,5 +139,20 @@ class Ledger(Fixture):
         self.assertEqual(LL.main([]), 2)
 
 
+class LockedLineupByKey(unittest.TestCase):
+    """F3 (owner 2026-11-10): the locked lineup is read by team key, so a pin made before a rename is still found."""
+    def test_a_pin_made_under_the_old_name_is_read_after_a_rename(self):
+        d = tempfile.mkdtemp(); K = "478.l.36464.t.11"
+        def pin(fn, day, name, player):
+            json.dump(dict(daily={K: {day: dict(teamKey=K, teamName=name, players=[dict(name=player, selectedPosition="PG")])},
+                                  "478.l.36464.t.1": {day: dict(teamName="Other", players=[dict(name="Not Mine", selectedPosition="C")])}}),
+                      open(os.path.join(d, fn), "w"))
+        pin("pull_2026-11-10.json", "2026-11-09", "Old Name", "A One")
+        pin("pull_2026-11-11.json", "2026-11-10", "New Name", "B Two")
+        self.assertEqual(LL.locked_lineup("2026-11-09", "New Name", d), {"A One": "PG"})
+        self.assertEqual(LL.locked_lineup("2026-11-10", "New Name", d), {"B Two": "PG"})
+        self.assertIsNone(LL.locked_lineup("2026-11-09", "Nobody", d))
+
+
 if __name__ == "__main__":
     unittest.main()

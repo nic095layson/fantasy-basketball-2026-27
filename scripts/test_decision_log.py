@@ -290,5 +290,103 @@ class Rejoin(unittest.TestCase):
                      "2026-11-09", boards=os.path.join(d, "none"), actuals=os.path.join(d, "none"), aliases={})
         self.assertEqual((g["move"]["id"], g["matched_pair"], g["kit_add"]), ("M-2026-11-08-01", "alt2", "Cameron Johnson"))
 
+
+class PackageRows(unittest.TestCase):
+    """F6 (owner 2026-11-10): a two-move package is one row, joined by either of its moves and graded as one."""
+    MOVES = [dict(add="Alex Caruso", drop="Collin Gillespie"), dict(add="John Collins", drop="Kris Dunn")]
+
+    def test_a_package_is_one_row_that_keeps_every_leg(self):
+        r = DL.session_row([], "2026-11-09", None, None, 1.38, moves=self.MOVES, made_at="t")
+        self.assertEqual(r["kind"], "package")
+        self.assertEqual(r["moves"], self.MOVES)
+        self.assertEqual((r["add"], r["drop"]), ("Alex Caruso", "Collin Gillespie"))
+        self.assertEqual(r["basis"]["d_title"], 1.38)
+
+    def test_a_single_move_is_not_a_package(self):
+        r = DL.session_row([], "2026-11-09", "Alex Caruso", "Collin Gillespie", 0.5, made_at="t")
+        self.assertEqual(r["kind"], "add_drop")
+        self.assertNotIn("moves", r)
+        with self.assertRaises(DL.LogError):
+            DL.session_row([], "2026-11-09", None, None, 0.5, moves=self.MOVES[:1], made_at="t")
+
+    def test_each_owner_move_joins_the_package_by_its_own_leg(self):
+        r = DL.session_row([], "2026-11-09", None, None, 1.38, moves=self.MOVES, made_at="t",
+                           alternatives=[dict(add="John Collins", drop="Cameron Johnson", d_title=1.57)])
+        m1 = dict(date="2026-11-10", added=["Alex Caruso"], dropped=["Collin Gillespie"])
+        m2 = dict(date="2026-11-11", added=["John Collins"], dropped=["Kris Dunn"])
+        m3 = dict(date="2026-11-11", added=["John Collins"], dropped=["Cameron Johnson"])
+        self.assertEqual(DL.join_pair(m1, [r]), (r["id"], "exact", "top"))
+        self.assertEqual(DL.join_pair(m2, [r]), (r["id"], "exact", "pkg2"))
+        self.assertEqual(DL.join_pair(m3, [r]), (r["id"], "exact", "alt1"))
+
+    def test_the_cli_writes_a_package_row(self):
+        d = tempfile.mkdtemp()
+        import io, contextlib
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            rc = DL.main(["--session", "--date", "2026-11-09", "--d-title", "1.38", "--package", json.dumps(self.MOVES), "--dir", d])
+        self.assertEqual(rc, 0, buf.getvalue())
+        rows = DL.read(os.path.join(d, "session.jsonl"))
+        self.assertEqual((len(rows), rows[0]["kind"], len(rows[0]["moves"])), (1, "package", 2))
+        self.assertIn("package", buf.getvalue())
+
+
+class PackageGrade(unittest.TestCase):
+    def setUp(self):
+        self.d = tempfile.mkdtemp()
+        self.boards = os.path.join(self.d, "season"); self.acts = os.path.join(self.d, "actuals")
+        os.makedirs(self.boards); os.makedirs(self.acts)
+        self.rec = DL.session_row([], "2026-10-30", None, None, 1.38, made_at="t",
+                                  moves=[dict(add="A One", drop="B One"), dict(add="C Two", drop="D Two")])
+        self.m1 = dict(id="M-1", date="2026-10-31", added=["A One"], dropped=["B One"], matches=self.rec["id"],
+                       match_kind="exact", matched_pair="top")
+        self.m2 = dict(id="M-2", date="2026-11-01", added=["C Two"], dropped=["E Other"], matches=self.rec["id"],
+                       match_kind="add_match_drop_differs", matched_pair="pkg2")
+        z0 = [("A One", 1.0), ("B One", 0.0), ("C Two", 0.5), ("D Two", 0.4), ("E Other", 0.0)]
+        z1 = [("A One", 1.5), ("B One", 0.2), ("C Two", 0.1), ("D Two", 0.6), ("E Other", -0.5)]
+        board(os.path.join(self.boards, "board_2026-10-30.json"), "2026-10-30", z0)
+        for day in ("2026-11-28", "2026-11-29"):
+            board(os.path.join(self.boards, f"board_{day}.json"), day, z1)
+        import datetime as dt
+        for i in range(31):
+            day = (dt.date(2026, 10, 31) + dt.timedelta(days=i)).isoformat()
+            actuals(os.path.join(self.acts, f"{day}.json"), day, [(n, "T" + n[0], 25, 10) for n, _ in z0])
+
+    def test_the_package_is_graded_as_the_sum_of_its_legs(self):
+        g = DG.grade(self.rec, [self.m1, self.m2], "2026-12-05", self.boards, self.acts, aliases={})
+        self.assertEqual(g["kind"], "package")
+        self.assertEqual((g["kit_add"], g["kit_drop"]), ("A One + C Two", "B One + D Two"))
+        self.assertEqual(len(g["legs"]), 2)
+        self.assertAlmostEqual(g["legs"][0]["kit_gap_end"], 1.3)
+        self.assertAlmostEqual(g["legs"][1]["kit_gap_end"], -0.5)
+        self.assertAlmostEqual(g["kit_gap_end"], 0.8)
+        self.assertEqual(g["verdict"], DG.verdict_word(0.8))
+        self.assertEqual(g["d_title_at_rec"], 1.38)
+        self.assertEqual(g["window"], ["2026-10-31", "2026-11-29"])
+        # the owner's own drop on leg 2 (E Other, -0.5) against the kit's (D Two, 0.6): +1.1 for the owner
+        self.assertAlmostEqual(g["owner_minus_kit"], 1.1)
+        self.assertEqual(g["owner_verdict"], DG.owner_word(1.1))
+        self.assertEqual(g["move"]["added"], ["A One", "C Two"])
+
+    def test_one_open_leg_keeps_the_whole_package_pending(self):
+        g = DG.grade(self.rec, [self.m1, self.m2], "2026-11-28", self.boards, self.acts, aliases={})
+        self.assertEqual(g["verdict"], "PENDING")      # leg 1 closed on 11-28; leg 2's window runs to 11-29
+        self.assertIn("C Two for D Two", g["note"])
+        self.assertNotIn("owner_verdict", g)
+        self.assertFalse(DG.final(g))
+
+    def test_a_package_row_prints_on_the_scorecard(self):
+        g = DG.grade(self.rec, [self.m1, self.m2], "2026-12-05", self.boards, self.acts, aliases={})
+        card = DG.scorecard([g], [g], "2026-12-05")
+        self.assertIn("+A One + C Two −B One + D Two", card)
+        self.assertIn("+A One, C Two −B One, E Other", card)
+
+    def test_a_single_pair_row_is_graded_as_before(self):
+        rec = DL.session_row([], "2026-10-30", "A One", "B One", 1.0, made_at="t")
+        g = DG.grade(rec, [dict(self.m1, matches=rec["id"])], "2026-12-05", self.boards, self.acts, aliases={})
+        self.assertNotIn("legs", g)
+        self.assertAlmostEqual(g["kit_gap_end"], 1.3)
+
+
 if __name__ == "__main__":
     unittest.main()

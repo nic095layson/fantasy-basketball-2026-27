@@ -71,6 +71,12 @@ def default_paths(date, phase="am"):
                 # morning's in both phases: its title figures are the 5 AM run's), read-only here
                 decision_card=os.path.join(KIT, "report", "briefs", f"decision_card_{date}.json"),
                 # optional (owner 2026-10-28, item 4): the day's two status pins the brief's waiver gate reads
+                # optional (owner 2026-11-10, "Playoff games column"): the season's game file and the league schedule's
+                # playoff weeks, for each board row's games in the fantasy playoffs (display only)
+                games=os.path.join(KIT, "report", "schedule", "games-2026-27.csv"),
+                league_schedule=os.path.join(KIT, "data", "league_schedule.json"),
+                # optional (owner 2026-11-10, "FAAB bid history table"): the league transaction record (manager_log.py)
+                league_tx=os.path.join(KIT, "data", "managers", "transactions.json"),
                 yahoo_pull=os.path.join(KIT, "data", "source", "flaim", f"pull_{date}{sfx}.json"),
                 espn_injuries=os.path.join(KIT, "data", "status", f"espn_injuries_{date}{sfx}.json"))
 
@@ -279,6 +285,47 @@ def ledger_result(w):
     return f"{'Won' if n >= 5 else 'Lost'} — {n} of 9 cats ({', '.join(sc.get('won') or []) or 'none'})"
 
 
+def playoff_games(games_path, schedule_path, team_code):
+    """Owner 2026-11-10 ("Playoff games column"): {weeks: [..], by_team: {pool code: [games per playoff week]}} from the
+    season's game file (date, yahoo_week, visitor, home) and the league schedule's playoff_weeks; None when either
+    file is absent or names no playoff week. Display only: the simulator plays every week at the same games."""
+    import csv
+    if not (games_path and schedule_path and os.path.exists(games_path) and os.path.exists(schedule_path)):
+        return None
+    with open(schedule_path, encoding="utf-8") as f:
+        weeks = [int(w) for w in (json.load(f).get("playoff_weeks") or [])]
+    if not weeks:
+        return None
+    by = {}
+    with open(games_path, encoding="utf-8") as f:
+        for r in csv.DictReader(f):
+            if str(r.get("yahoo_week") or "").isdigit() and int(r["yahoo_week"]) in weeks:
+                for t in (r["visitor"], r["home"]):
+                    t = team_code.get(t, t)
+                    by.setdefault(t, [0] * len(weeks))[weeks.index(int(r["yahoo_week"]))] += 1
+    return dict(weeks=weeks, by_team=by)
+
+
+def faab_bids(tx, pull):
+    """Owner 2026-11-10 ("FAAB bid history table"): the league's winning bids from the transaction record's rows
+    (Yahoo's faab_bid, pinned by manager_log.py), newest first, the team named from the day's pull (its key's number
+    when the pull does not name it). None with no record. Yahoo shows winning bids only. Display only."""
+    import statistics
+    if not tx:
+        return None
+    names = {k: r.get("teamName") for k, r in ((pull or {}).get("rosters") or {}).items()}
+    bids = []
+    for r in tx.get("rows") or []:
+        if r.get("type") == "add" and r.get("faab_bid") not in (None, "") and r.get("players_added"):
+            key = (r.get("team_ids") or [""])[0]
+            bids.append(dict(date=r.get("date"), team=names.get(key) or f"team {key.rsplit('.', 1)[-1]}",
+                             player=r["players_added"][0]["name"], bid=r["faab_bid"]))
+    bids.sort(key=lambda b: b["date"] or "", reverse=True)
+    v = [float(b["bid"]) for b in bids]
+    return dict(bids=bids, n=len(bids), low=min(v) if v else None, high=max(v) if v else None,
+                median=statistics.median(v) if v else None)
+
+
 def build(paths, date, phase=None):
     import co_gm
     import box_pull as BP
@@ -371,13 +418,20 @@ def build(paths, date, phase=None):
     band_engine = sweep.get("engine_commit") or sweep.get("engine")
     # owner 2026-10-26: which configuration and day the bands were measured on (sweep_record.describe, the brief's wording)
     band_config = SR.describe(sweep, paths["sweep"])
+    # owner 2026-11-10: each board row's games in the fantasy playoff weeks, and the league's winning FAAB bids
+    playoff = playoff_games(paths.get("games"), paths.get("league_schedule"), co_gm.TEAM_CODE)
+    if playoff:
+        for r in board["board"]:
+            g = playoff["by_team"].get(r["team"])
+            r["po_games"] = sum(g) if g else None
+    faab = faab_bids(opt("league_tx"), yp)
     wk = calib.get("weeks", {}).get(str(brief.get("week"))) or {}
     data = dict(date=date, generated_utc=datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
                 my_team=my_team, my_seat=my_seat, brief=brief, board=board, status=status,
                 league=dict(as_of=league["as_of"], rosters=rosters, managers={t["name"]: t.get("manager") for t in league["teams"]},
                             unpooled=league.get("unpooled") or [], my_positions=my_positions), season_lines=lines, matchup=wk,
                 ledger={k: dict(v, result_text=ledger_result(v)) for k, v in calib.get("weeks", {}).items()}, bands=bands, band_engine=band_engine, band_config=band_config, matchup_live=matchup_live,
-                week_matchup=week_matchup, league_table=league_rec,
+                week_matchup=week_matchup, league_table=league_rec, playoff=playoff, faab=faab,
                 # owner 2026-11-09 (runner pick B1): inputs named but absent, so an empty card can say why
                 absent_inputs=sorted(k for k, p in paths.items() if not (p and os.path.exists(p))),
                 form=form_rec, scores=scores, accuracy=accuracy, lineup_scorecard=lineup_sc, decision_card=dcard, fa_status=fa_status, out_today=out_now, swap_grid=grid_now, waiver_notes=waiver_notes,
@@ -1104,15 +1158,20 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
           h("div",{class:"cr"},h("b",{style:"font-size:11px;margin-right:4px"},zv(b.z[c])),h("i",{style:"width:"+Math.min(110,Math.round(Math.max(0,b.z[c]+2)*22))+"px"}))]).flat())
       ) : h("p",{class:"zero"},"Pick two players."));
   }
+  // owner 2026-11-10 ("Playoff games column"): the NBA team's games in the fantasy playoff weeks; display only
+  const PO=D.playoff;
+  const poCell=(r)=>{ const g=PO.by_team[r.team];
+    return h("td",{class:"num",title: g? r.team+" in fantasy playoff weeks "+PO.weeks.join(", ")+": "+g.join(" + ")+" games. The simulator does not use this: it plays every week at the same games per player."
+      : "No game listed for "+r.team+" in the playoff weeks."}, g? String(r.po_games) : "–"); };
   function render(){ let rs=rows.filter(r=>(!q||r.name.toLowerCase().includes(q.toLowerCase())||(r.owner||"FA").toLowerCase().includes(q.toLowerCase()))&&(!fa||r.fa));
     rs.sort((x,y)=>{ const a=key==="name"?x.name:(key==="owner"?(x.owner||"zzFA"):(key in x? x[key] : x.z[key])); const b=key==="name"?y.name:(key==="owner"?(y.owner||"zzFA"):(key in y? y[key] : y.z[key]));
       return (a<b?-1:a>b?1:0)*(asc?1:-1); });
     const hd=(label,k,num)=>h("th",{class:"sort"+(num?" num":""),onclick:()=>{asc=(key===k)?!asc:(k==="rank"||k==="name"||k==="owner"); key=k; render();}},label+(key===k?(asc?" ↑":" ↓"):""));
     tbl.replaceChildren(h("div",{},  // h() skips the null note; replaceChildren alone would print "null"
       h("div",{class:"tablebox"},h("table",{},
-        h("tr",{},hd("#","rank",true),hd("player","name"),h("th",{},"pos"),hd("owner","owner"),hd("z adj","z_adj",true),CATS.map(c=>hd(c,c,true))),
+        h("tr",{},hd("#","rank",true),hd("player","name"),h("th",{},"pos"),hd("owner","owner"),hd("z adj","z_adj",true),PO?hd("PO g","po_games",true):null,CATS.map(c=>hd(c,c,true))),
         rs.slice(0,200).map(r=>h("tr",{},h("td",{class:"num"},String(r.rank)),h("td",{},r.name+" · "+r.team),h("td",{},r.pos),
-          h("td",{},ownChip(r)),h("td",{class:"num"},zv(r.z_adj)),CATS.map(c=>h("td",{class:"num"},zv(r.z[c]))))))),
+          h("td",{},ownChip(r)),h("td",{class:"num"},zv(r.z_adj)),PO?poCell(r):null,CATS.map(c=>h("td",{class:"num"},zv(r.z[c]))))))),
       rs.length>200?h("p",{class:"note"},"Showing the first 200 of "+rs.length+" rows; narrow with search."):null));
     cmpRender();
   }
@@ -1343,7 +1402,15 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
         S.check.mismatches.length
           ? h("p",{class:"note zneg"},"Yahoo's W–L–T differs from the kit's week records for "+S.check.mismatches.map(m=>m.team+" (kit "+rec3(m.kit)+", Yahoo "+rec3(m.yahoo)+")").join("; ")+".")
           : h("p",{class:"note"},"Yahoo's W–L–T matches the kit's week records for all "+S.check.teams_checked+" teams (finished week"+(S.check.finished_weeks.length===1?" ":"s ")+S.check.finished_weeks.join(", ")+").")));
+  // owner 2026-11-10 ("FAAB bid history table"): the league's winning bids as the transaction record holds them
+  const F=D.faab, money=(x)=>"$"+(Number(x)%1===0?Number(x).toFixed(0):Number(x).toFixed(1));
+  const faabCard = F&&F.bids&&F.bids.length? h("div",{class:"card",id:"lg-faab-card"},h("h2",{},"FAAB: winning bids"),
+    h("p",{class:"note"},F.n+" winning bid"+(F.n===1?"":"s")+" on record · low "+money(F.low)+" · median "+money(F.median)+" · high "+money(F.high)+". Yahoo shows winning bids only; this is a record, not bid advice."),
+    h("div",{class:"tablebox"},h("table",{class:"lg"},
+      h("tr",{},h("th",{},"date"),h("th",{},"team"),h("th",{},"player"),h("th",{class:"num"},"bid")),
+      F.bids.map(b=>h("tr",{class:b.team===D.my_team?"mine":""},h("td",{},b.date),h("td",{},b.team),h("td",{},b.player),h("td",{class:"num"},money(b.bid))))))) : null;
   p.append(stCard, powerCard, h("div",{class:"card"},h("h2",{},"League categories"),h("div",{class:"pick"},h("label",{},"view ",sel)),box));
+  if(faabCard) p.append(faabCard);
   render();
 })();
 

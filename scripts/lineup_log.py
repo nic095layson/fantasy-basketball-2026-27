@@ -65,17 +65,27 @@ def _alias_map():
 
 
 def locked_lineup(day, team_name, pin_dir=PIN_DIR):
-    """{player name: slot} the owner locked on `day`, from the pinned pulls' daily block; None when no pin holds it."""
-    found = None
+    """{player name: slot} the owner locked on `day`, from the pinned pulls' daily block; None when no pin holds it.
+    Audit item F3 (owner 2026-11-10): the team is followed by its Yahoo team key, read from the newest pin that
+    carries `team_name`, so a day pinned before a rename is still found; with no key, by name as before."""
+    blocks = []
     for path in sorted(glob.glob(os.path.join(pin_dir, "pull_*.json"))):
         try:
             with open(path, encoding="utf-8") as f:
                 daily = json.load(f).get("daily") or {}
         except (OSError, ValueError):
             continue
+        blocks.append({k: v for k, v in daily.items() if isinstance(v, dict)})
+    my_key = None
+    for daily in blocks:
         for key, days in daily.items():
-            rec = days.get(day) if isinstance(days, dict) else None
-            if rec and rec.get("teamName") == team_name:
+            if any(isinstance(r, dict) and r.get("teamName") == team_name for r in days.values()):
+                my_key = key
+    found = None
+    for daily in blocks:
+        for key, days in daily.items():
+            rec = days.get(day)
+            if rec and (key == my_key if my_key else rec.get("teamName") == team_name):
                 found = rec
     if not found:
         return None
