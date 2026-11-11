@@ -181,7 +181,7 @@ def lines(rec):
     band = rec.get("room_band") or room_band(sc)
     # owner 2026-11-02 (runner finding 3; council): one range line, since the three slip rows sit within one error bar
     # of each other, and the room rule's band beside it, the two error bars the red-team rule asks for
-    L = [f"**If IL players return** (scenario range, not a forecast; ESPN dates of {rec['espn_date']}, all 12 teams, {rec['n_il']} IL players): "
+    L = [f"**If IL players return** (scenario range, not a forecast; ESPN's earliest-return dates of {rec['espn_date']}, all 12 teams, {rec['n_il']} IL players): "
          f"if they return ≈{(lo + hi) / 2:.0f}% ({lo:.1f} to {hi:.1f} across on time / +2 wk / +4 wk) · never = headline {sc['never']['title']:.1f}%. "
          f"Error ± {e} each (2 runs × {rec['seasons']:,} seasons). Returns are uncertain; the headline counts the current roster. "
          f"Room rule ({rec['room_rule']}): "
@@ -192,7 +192,7 @@ def lines(rec):
     order = sorted(by_seat, key=lambda s: (s != CG.OWNER_SEAT, s))
     for s in order:
         xs = by_seat[s]
-        L.append(f"- {xs[0]['team']}: " + "; ".join(f"{x['player']} ({x['return_date'] or 'no ESPN date'}"
+        L.append(f"- {xs[0]['team']}: " + "; ".join(f"{x['player']} ({('earliest ' + x['return_date']) if x['return_date'] else 'no ESPN date'}"
                                                     + (f", wk {x['week']}" if x['week'] else ", never") + ")" for x in xs))
     return L
 

@@ -653,7 +653,7 @@ function ilReturn(r){ if(!r||!r.scenarios) return null; const S=r.scenarios; con
   // owner 2026-11-02 (runner finding 3; council): one "if they return" row with its range, since the slip rows sit within one error bar, and the room rule's band
   const lo=Math.min(...vals), hi=Math.max(...vals), mid=(lo+hi)/2, pl=slips.length?slips.map(k=>S[k].playoffs).reduce((a,b)=>a+b,0)/slips.length:null;
   const band=r.room_band? "ROOM_RULE_ON is "+r.room_band.tier+": "+(r.room_band.shift>=0?"+":"")+f1(r.room_band.shift)+" ("+r.room_band.label+")" : "room-rule band not measured";
-  return h("div",{class:"tablebox"},h("table",{class:"wk"},h("tr",{},h("th",{class:"projh"},"if IL players return (ESPN dates of "+r.espn_date+", all teams, "+r.n_il+" players)"),h("th",{class:"num projh"},"title"),h("th",{class:"num projh"},"playoffs")),
+  return h("div",{class:"tablebox"},h("table",{class:"wk"},h("tr",{},h("th",{class:"projh"},"if IL players return (ESPN's earliest-return dates of "+r.espn_date+", all teams, "+r.n_il+" players)"),h("th",{class:"num projh"},"title"),h("th",{class:"num projh"},"playoffs")),
     slips.length?h("tr",{class:"proj"},h("td",{},"if they return ("+f1(lo)+" to "+f1(hi)+" across on time / +2 wk / +4 wk)"),h("td",{class:"num"},f1(mid)+"%"),h("td",{class:"num"},f1(pl)+"%")):null,
     S.never?h("tr",{class:"proj"},h("td",{},"never (the headline)"),h("td",{class:"num"},f1(S.never.title)+"%"),h("td",{class:"num"},f1(S.never.playoffs)+"%")):null),
     h("p",{class:"note"},"Scenario range, not a forecast: ± "+r.error+" each; "+band+". Returns are uncertain and the headline counts the current roster. Room rule: "+r.room_rule+".")); }
@@ -1114,7 +1114,7 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
   const stat=(r)=>{ const s=FS&&FS.by[r.name]; if(!s) return null;
     const out=["O","NA","Out"].includes(s.code), cls=out?(s.short_out?"warn":"crit"):(s.code==="P"?"ok":"warn");
     // the return date only on an Out: ESPN dates a day-to-day player's return as today
-    return h("span",{}," · ",h("span",{class:"chip "+cls},s.code+" ("+SRC[s.source]+")"+(out&&s.return_date?", back "+s.return_date.slice(0,10):""))); };
+    return h("span",{}," · ",h("span",{class:"chip "+cls},s.code+" ("+SRC[s.source]+")"+(out&&s.return_date?", earliest return "+s.return_date.slice(0,10):""))); };
   const wk=(r)=>h("span",{},stat(r),waiverChip(r.name));
   // owner 2026-11-06 ("sink out to the bottom"): a player the day's status file calls Out (O / NA / Out) sits below
   // every available one; z order holds within each group; with no status pinned nothing sinks

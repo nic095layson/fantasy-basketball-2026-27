@@ -312,6 +312,32 @@ class AutoRowsSimulated(unittest.TestCase):
         only_auto = dict(self.state(), unpooled=self.state()["unpooled"][:1])
         self.assertEqual(DB.unpooled_line(only_auto, self.BY), "Auto row (blended), simulated (1): Auto Guy (T, BN, CLE).")
 
+
+class EarliestReturnWording(unittest.TestCase):
+    """Owner 2026-11-11 (card "Keep 7 days, relabel, re-grade"): ESPN's date is the earliest a player could be back.
+    Graded 10-28 to 11-11, a first quote was on time for 44% of pool players and early for 3%."""
+    def test_the_waiver_flag_calls_it_the_earliest_return(self):
+        s = dict(code="Out", source="espn", return_date="2026-11-13", short_out=True)
+        self.assertEqual(DB.add_flag(s), "Out today (espn), ESPN's earliest return 2026-11-13")
+        self.assertEqual(DB.add_flag(dict(code="Q", source="yahoo", short_out=False)), "Q today (yahoo)")
+
+    def test_a_set_aside_player_and_a_streamer_use_the_same_words(self):
+        self.assertEqual(DB.aside_flag(dict(player="A", code="Out", source="espn", return_date="2026-12-01T00:00Z")),
+                         "A (Out, espn, ESPN's earliest return 2026-12-01)")
+        self.assertEqual(DB.aside_flag(dict(player="A", code="Out", source="yahoo")), "A (Out, yahoo)")
+        self.assertEqual(DB.stream_flag(dict(status="Out", return_date="2026-11-13", exp_games=2.0)),
+                         " (Out today, ESPN's earliest return 2026-11-13: 2 from then)")
+        self.assertEqual(DB.stream_flag(dict(status="Q", exp_games=1.5)), " (Q today: 1.5 expected)")
+        self.assertEqual(DB.stream_flag(dict()), "")
+
+    def test_no_line_says_expects_back(self):
+        src = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "daily_brief.py")).read()
+        self.assertNotIn("expects back", src)
+
+    def test_the_seven_day_line_is_unchanged(self):
+        self.assertEqual(CG.SHORT_OUT_DAYS, 7)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
 
