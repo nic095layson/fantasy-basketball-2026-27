@@ -1,0 +1,132 @@
+{
+ "date": "2026-11-11",
+ "seasons": 10000,
+ "seeds": [
+  2026,
+  2027
+ ],
+ "base": {
+  "never": 16.06,
+  "on_time": 25.945
+ },
+ "pairs": [
+  {
+   "add": "Julian Champagnie",
+   "drop": "Kris Dunn",
+   "never": {
+    "title": 17.56,
+    "d_title": 1.5
+   },
+   "on_time": {
+    "title": 25.585,
+    "d_title": -0.35999999999999943
+   },
+   "week": {
+    "d_exp": 0.056975047312250726,
+    "p_5plus": 0.6001467633669603,
+    "d_p_5plus": 0.02423154790809079
+   }
+  },
+  {
+   "add": "Ryan Rollins",
+   "drop": "Kris Dunn",
+   "never": {
+    "title": 16.84,
+    "d_title": 0.78
+   },
+   "on_time": {
+    "title": 25.905,
+    "d_title": -0.03999999999999915
+   },
+   "week": {
+    "d_exp": 0.0037599556358885455,
+    "p_5plus": 0.5790766329701557,
+    "d_p_5plus": 0.0031614175112861798
+   }
+  },
+  {
+   "add": "Sandro Mamukelashvili",
+   "drop": "Kris Dunn",
+   "never": {
+    "title": 17.04,
+    "d_title": 0.98
+   },
+   "on_time": {
+    "title": 28.115000000000002,
+    "d_title": 2.1700000000000017
+   },
+   "week": {
+    "d_exp": -0.12711701860725422,
+    "p_5plus": 0.5380741318710077,
+    "d_p_5plus": -0.03784108358786176
+   }
+  }
+ ],
+ "order": {
+  "never": [
+   [
+    "Julian Champagnie",
+    "Kris Dunn"
+   ],
+   [
+    "Sandro Mamukelashvili",
+    "Kris Dunn"
+   ],
+   [
+    "Ryan Rollins",
+    "Kris Dunn"
+   ]
+  ],
+  "on_time": [
+   [
+    "Sandro Mamukelashvili",
+    "Kris Dunn"
+   ],
+   [
+    "Ryan Rollins",
+    "Kris Dunn"
+   ],
+   [
+    "Julian Champagnie",
+    "Kris Dunn"
+   ]
+  ]
+ },
+ "rank_flip": true,
+ "robust": {
+  "add": "Julian Champagnie",
+  "drop": "Kris Dunn",
+  "constant": "weekly_availability",
+  "variants": [
+   {
+    "label": "no in-sim injury discount (risk 0.88 like healthy)",
+    "d_title": 1.5600000000000005
+   },
+   {
+    "label": "harsher risk tier (0.65)",
+    "d_title": 1.9450000000000003
+   },
+   {
+    "label": "healthy players play 0.95 of games",
+    "d_title": 2.5199999999999996
+   },
+   {
+    "label": "healthy players play 0.80 of games",
+    "d_title": 0.8949999999999996
+   }
+  ],
+  "held": 4,
+  "holds": true,
+  "low": 0.8949999999999996,
+  "high": 2.5199999999999996
+ },
+ "notes": [],
+ "label": "Display only: the brief's ranking and the headline title share are unchanged. The return world rests on ESPN's dates and the room rule (the lowest-value active player leaves), which is itself FRAGILE.",
+ "inputs": {
+  "brief": "brief_2026-11-11.json",
+  "il_return": true,
+  "week_card": true,
+  "pool": "/home/user/wtsd/data/season/pool_season.csv",
+  "state_as_of": "2026-11-11"
+ }
+}
