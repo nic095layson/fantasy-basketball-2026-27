@@ -69,6 +69,7 @@ def build(brief, ilr, week, state, by, variants, seasons, sim, work, value=None,
 
     ros_head = CG.rosters(state, by)
     jobs = {}   # key -> (roster, windows, patch)
+    cuts = {}   # pair index -> who the room rule removes when it is the pair's own add
     il = (ilr or {}).get("il_players")
     if il and ilr.get("weeks"):
         weeks = int(ilr["weeks"])
@@ -77,7 +78,14 @@ def build(brief, ilr, week, state, by, variants, seasons, sim, work, value=None,
         jobs[("on", None)] = (ros_all, IR.windows_for(il, 0, ros_all, weeks, room=True, **kw), None)
         for i, x in enumerate(top):
             r = _swap(ros_all, x["add"], x["drop"], by)
-            jobs[("on", i)] = (r, IR.windows_for(il, 0, r, weeks, room=True, **kw), None)
+            win = IR.windows_for(il, 0, r, weeks, room=True, **kw)
+            jobs[("on", i)] = (r, win, None)
+            # owner 2026-11-11 (audit pick C): the room rule removed the add itself (its window ends before the season does)
+            w = (win.get(CG.OWNER_SEAT) or {}).get(x["add"])
+            if w and w[0] == 1 and w[1] < weeks:
+                back = next((p for p in il if p.get("seat") == CG.OWNER_SEAT and p.get("week") == w[1] + 1), None)
+                if back:
+                    cuts[i] = dict(when=back["player"], return_date=back.get("return_date"), week=back.get("week"))
     else:
         notes.append("no il_return record for the day: the return world is not scored")
     for label, patch in variants or []:
@@ -105,7 +113,8 @@ def build(brief, ilr, week, state, by, variants, seasons, sim, work, value=None,
             notes.append(f"{x['add']} for {x['drop']}: this week is not shown ({wk['skipped']})")
         card["pairs"].append(dict(
             add=x["add"], drop=x["drop"], never=dict(title=x["title"], d_title=x["d_title"]),
-            on_time=dict(title=_mean(res[("on", i)]), d_title=_mean(res[("on", i)]) - base_on) if base_on is not None else None,
+            on_time=dict(title=_mean(res[("on", i)]), d_title=_mean(res[("on", i)]) - base_on,
+                         **({"first_cut": cuts[i]} if i in cuts else {})) if base_on is not None else None,
             week=({k: wk[k] for k in ("d_exp", "p_5plus", "d_p_5plus")} if wk and wk.get("d_exp") is not None else None)))
     if base_on is not None:
         key = lambda world: [[p["add"], p["drop"]] for p in sorted(card["pairs"], key=lambda p: -p[world]["d_title"])]
@@ -130,7 +139,9 @@ def render(card):
     for p in card["pairs"]:
         wk = p["week"]
         L.append(f"| {p['add']} | {p['drop']} | {p['never']['d_title']:+.1f} | "
-                 + (f"{p['on_time']['d_title']:+.1f}" if p["on_time"] else "not scored") + " | "
+                 + (f"{p['on_time']['d_title']:+.1f}" + (f" ({p['add']} leaves when {p['on_time']['first_cut']['when']} returns)"
+                                                           if p["on_time"].get("first_cut") else "")
+                    if p["on_time"] else "not scored") + " | "
                  + (f"{100 * wk['d_p_5plus']:+.1f} points ({wk['d_exp']:+.2f} categories)" if wk else "not shown") + " |")
     L.append("")
     if on:

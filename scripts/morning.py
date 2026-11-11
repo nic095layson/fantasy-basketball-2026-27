@@ -243,19 +243,53 @@ def run_steps(st, out, ledger=None, root=None):
     return rec
 
 
+def resume_steps(st, out, ledger=None, root=None):
+    """Owner 2026-11-11 (audit pick A): finish a morning that did not pass. The steps the day's record shows as PASS
+    are kept as recorded and not run again; every other step (failed, failed non-fatally, skipped) runs in order.
+    The record on disk becomes the merged one: the first run's time, each earlier attempt under `attempts` (its
+    verdict and the steps that had not passed), and the step list in the run's own order. No record yet: a full run.
+    Nothing left to do: the record is returned unchanged and nothing runs."""
+    if not os.path.exists(out):
+        return run_steps(st, out, ledger=ledger, root=root)
+    with open(out, encoding="utf-8") as f:
+        prior = json.load(f)
+    kept = {s["name"]: s for s in prior.get("steps") or [] if s.get("verdict") == "PASS"}
+    todo = [s for s in st if s["name"] not in kept]
+    if not todo:
+        return prior
+    new = run_steps(todo, out + ".resume", ledger=ledger, root=root)
+    os.remove(out + ".resume")
+    ran = {s["name"]: s for s in new["steps"]}
+    steps_ = [kept.get(s["name"]) or ran[s["name"]] for s in st]
+    wrote = [prior.get("wrote"), new.get("wrote")]
+    rec = dict(ran_at_utc=prior.get("ran_at_utc"), resumed_at_utc=new["ran_at_utc"], steps=steps_,
+               verdict="FAIL" if any(s["verdict"] == "FAIL" for s in steps_) else "PASS",
+               wrote=(sorted(set(wrote[0]) | set(wrote[1])) if all(isinstance(w, list) for w in wrote) else new.get("wrote")),
+               attempts=(prior.get("attempts") or []) + [dict(
+                   ran_at_utc=prior.get("resumed_at_utc") or prior.get("ran_at_utc"), verdict=prior.get("verdict"),
+                   not_passed=[s for s in prior.get("steps") or [] if s.get("verdict") != "PASS"])])
+    with open(out, "w", encoding="utf-8") as f:
+        json.dump(rec, f, indent=1, ensure_ascii=False); f.write("\n")
+    return rec
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--date", default=datetime.date.today().isoformat())
     ap.add_argument("--no-fetch", action="store_true"); ap.add_argument("--seasons", type=int, default=10000)
     ap.add_argument("--since", help="the run's start (ISO time): league live and matchup live read only later transcript entries")
+    ap.add_argument("--resume", action="store_true",
+                    help="finish a morning that did not pass: run only the steps the day's record does not show as PASS "
+                         "and merge the record (owner 2026-11-11). With no record for the day it is a full run")
     a = ap.parse_args()
-    rec = run_steps(steps(a.date, not a.no_fetch, a.seasons, a.since), os.path.join(BRIEFS, f"morning_{a.date}.json"),
-                    ledger=run_ledger.LEDGER)
+    rec = (resume_steps if a.resume else run_steps)(steps(a.date, not a.no_fetch, a.seasons, a.since),
+                                                    os.path.join(BRIEFS, f"morning_{a.date}.json"), ledger=run_ledger.LEDGER)
     for s in rec["steps"]:
         print(f"- {s['verdict']} · {s['name']}" + (f" · {s['pass_line']}" if s.get("pass_line") else "") +
               ("" if s["verdict"] != "FAIL" else " · " + " | ".join(s["tail"][-2:])))
     if rec["verdict"] == "PASS":
-        print(f"MORNING: PASS — {a.date}: {len(rec['steps'])} steps; brief report/briefs/brief_{a.date}.md; record report/briefs/morning_{a.date}.json")
+        again = f" (after {len(rec['attempts'])} earlier attempt(s))" if rec.get("attempts") else ""
+        print(f"MORNING: PASS — {a.date}: {len(rec['steps'])} steps{again}; brief report/briefs/brief_{a.date}.md; record report/briefs/morning_{a.date}.json")
     else:
         first = next(s for s in rec["steps"] if s["verdict"] == "FAIL")
         print(f"MORNING: FAIL — {a.date}: step '{first['name']}' failed (exit {first['exit']}); later steps skipped; record report/briefs/morning_{a.date}.json")

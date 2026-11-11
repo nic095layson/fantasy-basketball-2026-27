@@ -141,5 +141,24 @@ class Render(unittest.TestCase):
         self.assertIn("order changes between the worlds", line); self.assertIn("top pair holds in 2 of 2", line)
 
 
+class FirstCut(unittest.TestCase):
+    """Owner 2026-11-11 (audit pick C): in the return world the room rule removes the lowest-value active player when
+    an IL player comes back. When that player is the pair's own add, the card says so instead of leaving a bare figure."""
+    def card(self, brief):
+        calls = []
+        return DC.build(brief=brief, ilr=ILR, week=WEEK, state=STATE, by=BY, variants=[], seasons=100, sim=fake_sim(calls),
+                        work=tempfile.mkdtemp(), value=lambda p: p["adj"])
+
+    def test_an_add_that_the_room_rule_removes_is_named(self):
+        b = dict(BRIEF, waiver_top=[{"add": "Other", "drop": "Dunn", "title": 12.5, "d_title": 0.5, "d_ecw": 0.01}])
+        c = self.card(b)        # roster after the swap: Star 9, Other 1.5, Cam 1.0 -> Cam leaves, not the add
+        self.assertIsNone(c["pairs"][0]["on_time"].get("first_cut"))
+        b = dict(BRIEF, waiver_top=[{"add": "Other", "drop": "Cam", "title": 12.5, "d_title": 0.5, "d_ecw": 0.01}])
+        c = self.card(b)        # Star 9, Dunn 2, Other 1.5 -> the add itself leaves when Hurt returns
+        self.assertEqual(c["pairs"][0]["on_time"]["first_cut"], dict(when="Hurt", return_date="2026-11-13", week=4))
+        md = "\n".join(DC.render(c))
+        self.assertIn("Other leaves when Hurt returns", md)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

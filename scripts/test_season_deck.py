@@ -1659,6 +1659,39 @@ class PlainLanguageWeek(WordingPassTwo):
         for n in ("13.0%", "3.50", "0.77", "727 / 918", "0.606", "0.090", "−0.090"):
             self.assertIn(n, v["text"])
 
+
+class LineupGapLine(unittest.TestCase):
+    """Owner 2026-11-11 (audit pick D): the live week tile warns when Yahoo counts far fewer games than the best lineup."""
+    def setUp(self):
+        self.d = tempfile.mkdtemp(); self.fx = fixtures(self.d)
+
+    def gap_text(self, gap):
+        r = week_matchup_record()
+        for x in r["cats"]:
+            x["p_win"] = 0.5
+        r["exp_cats"], r["p_5plus"] = 4.5, 0.5
+        if gap is not None:
+            r["lineup_gap"] = gap
+        self.fx["week_matchup"] = os.path.join(self.d, "wm.json")
+        with open(self.fx["week_matchup"], "w") as f:
+            json.dump(r, f)
+        html, data, rec = SD.build(self.fx, date="2026-10-21")
+        p = os.path.join(self.d, "deck.html")
+        with open(p, "w", encoding="utf-8") as f:
+            f.write(html)
+        dom = today_dom(p)
+        self.assertEqual(dom["errors"], [])
+        return dom["text"]
+
+    def test_the_warning_names_both_counts(self):
+        t = self.gap_text(dict(yahoo=22, kit=31, short=9))
+        self.assertIn("Yahoo counts 22 games left for you; your best lineup would play 31", t)
+        self.assertIn("Check that your lineup is set", t)
+
+    def test_no_gap_no_line(self):
+        self.assertNotIn("Check that your lineup is set", self.gap_text(None))
+
+
 if __name__ == "__main__":
     unittest.main()
 
@@ -2324,3 +2357,15 @@ class FaabBids(unittest.TestCase):
         p = os.path.join(self.d, "deck.html"); open(p, "w", encoding="utf-8").write(html)
         v = visible_dom(p, "League", "pane-league")
         self.assertEqual(v["errors"], []); self.assertNotIn("WINNING BIDS", v["text"].upper())
+
+
+class DecisionCardFirstCut(DecisionCardDeck):
+    """Owner 2026-11-11 (audit pick C): an add the room rule removes on an IL return is named in the return column."""
+    def test_the_return_column_names_the_add_that_leaves(self):
+        import copy
+        card = copy.deepcopy(self.CARD)
+        card["pairs"][0]["on_time"]["first_cut"] = dict(when="Tyrese Haliburton", return_date="2026-11-13", week=4)
+        p, rec = self.page(card)
+        dom = today_dom(p)
+        self.assertEqual(dom["errors"], [])
+        self.assertIn("John Collins leaves when Tyrese Haliburton returns", dom["text"])

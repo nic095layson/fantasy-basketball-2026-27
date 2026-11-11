@@ -246,6 +246,18 @@ def adds_this_week(ws, date, my_key, tx_rows, moves, limit):
                 players=players, week_start=ws, note="; ".join(notes) or None)
 
 
+LINEUP_GAP_GAMES = 3   # hand-set display threshold (owner 2026-11-11): a gap of one or two games is an ordinary bench call
+
+
+def lineup_gap(yahoo_left, kit_left):
+    """Owner 2026-11-11 (audit pick D): Yahoo's games remaining counts the players in active slots on the coming days;
+    the card's count is the best daily fill of the roster. {yahoo, kit, short} when Yahoo is LINEUP_GAP_GAMES or more
+    below the card (lineups not set: a new add starts on the bench), else None. Display only."""
+    if yahoo_left is None or kit_left - yahoo_left < LINEUP_GAP_GAMES:
+        return None
+    return dict(yahoo=yahoo_left, kit=kit_left, short=kit_left - yahoo_left)
+
+
 def _adds_block(date, ws, pull, paths, me):
     """me: the owner's league-state team (F3: its key is read through team_key, so a stale state name still finds it);
     a bare name is still accepted and matched as before."""
@@ -736,7 +748,14 @@ def board_side(team, td, totals, today):
                 totals=totals, rows_match_totals=summed == {k: totals[k] for k in STATS})
 
 
-def build(date, paths):
+def default_paths(date, yahoo_pull=None, out_dir=None):
+    """The command line's own inputs for a date (owner 2026-11-11: shared with package_scan.py)."""
+    return dict(state=CG.STATE, schedule=CG.SCHEDULE, games=CG.GAMES, actuals=ACTUALS, status=STATUS,
+                yahoo_pull=yahoo_pull or os.path.join(PULLS, f"pull_{date}.json"), league_tx=LEAGUE_TX, news_dir=NEWS,
+                pairs=brief_pairs(date, out_dir or OUTDIR))
+
+
+def build(date, paths, capture=None):
     state = json.load(open(paths["state"], encoding="utf-8"))
     sched_rec = json.load(open(paths["schedule"], encoding="utf-8"))
     games = CG.load_games(paths["games"])
@@ -871,6 +890,9 @@ def build(date, paths):
         drop = cands[0]["player"]
         top = rank_pickups(me_now, opp_fin, mine, drop, fas, sched, dict(avail, **fa_avail), lines)
         pick.update(status="ran", drop=cands[0], top=top, pool_size=len(fas))
+    if capture is not None:   # owner 2026-11-11 (audit pick C): the model's own inputs, for package_scan.py; read only
+        capture.update(mine=by_value, fas=fas, sched=sched, avail=dict(avail, **fa_avail), lines=lines, me_now=me_now,
+                       opp_now=opp_now, opp_rem=opp_rem)
     pick["this_week"] = this_week_block(state, by, me_now, opp_now, opp_rem, by_value, fas, sched, date,
                                         dict(avail, **fa_avail), lines)
 
@@ -911,6 +933,7 @@ def build(date, paths):
         status_file=os.path.basename(status_file) if status_file else None, cats=cats,
         projected=dict(wins=W, losses=L, ties=len(CATS) - W - L), exp_cats=sum(chance[c] for c in CATS),
         p_5plus=win_week_chance([chance[c] for c in CATS]), status_range=status_range, adds_this_week=adds, pair_checks=checks,
+        lineup_gap=lineup_gap((y_left or {}).get("me"), sum(me_rem["games"].values())),
         totals=dict(me=dict(to_date=me_now, rebuild_to_date=me_td["totals"],
                             remaining={k: round(x, 2) for k, x in me_rem["totals"].items()}),
                     opp=dict(to_date=opp_now, rebuild_to_date=opp_td["totals"],
