@@ -19,7 +19,7 @@
 
 **Headline:** the window's one real failure was 11-11's morning.
 - The box-score step is all-or-nothing. Two Basketball-Reference pages for 11-10 were missing, even though ESPN had all six finals. That skipped 18 steps and left the day without a brief or deck.
-- The pages appeared by 17:47Z, and the runner's 17:00Z re-check (due right after this turn) should re-run the day.
+- **Since resolved:** another session re-ran the day at 16:25Z (8473ce7, "box scores 11-10 and the 18 skipped steps PASS", deck v73), and `report/briefs/morning_2026-11-11.json` now reads PASS. The manager log for 11-10 was filled in separately (53ec31a, owner pick "Cancel it, I fill the gap"). The runner's 17:00Z re-check task no longer exists (`get_trigger` returned not found at about 17:50Z); INFERENCE: that session cancelled it.
 - David added a standing retry rule. It relies on `--resume`, which is on main. Whether the box-score step should accept a single outlet when one is late is a design question for main (decision D1).
 - Everything else either worked or main has already handled it:
   - The A1 league-table fix holds.
@@ -43,7 +43,8 @@
 
 - EVIDENCE: `update_trigger` at 17:46:02Z. The prompt now carries David's bullet word for word after "If a fatal step FAILS…". The schedule is unchanged, with the next run at 2026-11-12T13:01:54Z.
 - EVIDENCE: `git show origin/main:scripts/morning.py` has `--resume` at line 281. The runner's checkout at 15:08Z (d70be1e) did not, because main merged it later.
-- INFERENCE: tomorrow's run merges main at step 2, so `--resume` will be present. Today's 17:00Z re-check was written before the rule existed. The runner must merge main first if it wants `--resume`; a plain `--since` re-run also works, because league_live's `am_baseline` diffs against the previous day's morning state (`league_live.py:320-335`, lookback starts at 1).
+- INFERENCE: tomorrow's run merges main at step 2, so `--resume` will be present. A plain `--since` re-run would also keep the day's moves record, because league_live's `am_baseline` diffs against the previous day's morning state (`league_live.py:320-328`, lookback starts at 1).
+- One overlap to note: the runner's 11-11 morning report (c051fac) and the session's re-run both touch `morning_report_2026-11-11.md` (the re-run added an addendum, 6f40cf6). With the retry rule, the runner and a human-started session could both re-run the same day. The rule's "already PASS on origin, do nothing" guard is what prevents a double run; it has not been exercised live.
 - Not yet exercised live: the rule's "fetch origin/season/daily and stop if the day's record already says PASS" guard.
 
 ### F3. The 11-10 title drop (18.1% to 12.3%) was traced by main
