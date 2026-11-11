@@ -29,6 +29,7 @@ import argparse
 import glob
 import json
 import os
+import re
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -167,6 +168,49 @@ def extract_moves(transcript, since=None):
     return rows
 
 
+_UNREAD = re.compile(r"returned (\d+) entr(?:y|ies) Flaim could not interpret")
+
+
+def feed_shortfall(transcript, since=None):
+    """What the newest Flaim get_transactions response for this league says it could not hand over: the entries on
+    Yahoo's page it could not interpret (counted in its warning text) and the rows it dropped for a bad timestamp.
+    None when the transcript carries no response. Owner 2026-11-11: the count rides the MANAGER LOG line and the
+    moves file, so a short adds counter is named, never silent. It changes no row and no count of moves."""
+    since = LL.since_instant(since)
+    found = []
+
+    def walk(x):
+        if isinstance(x, str):
+            if '"transactions"' in x and LEAGUE_KEY in x:
+                j = LL._loads(x)
+                d = j.get("data") if isinstance(j, dict) and j.get("success") is True else None
+                if isinstance(d, dict) and d.get("league_id") == LEAGUE_KEY and isinstance(d.get("transactions"), list):
+                    w = d.get("warning") if isinstance(d.get("warning"), str) else None
+                    m = _UNREAD.search(w or "")
+                    found.append(dict(uninterpreted=int(m.group(1)) if m else 0,
+                                      dropped_invalid_timestamp=int(d.get("dropped_invalid_timestamp_count") or 0), warning=w))
+        elif isinstance(x, dict):
+            for v in x.values():
+                walk(v)
+        elif isinstance(x, list):
+            for v in x:
+                walk(v)
+
+    with open(transcript, encoding="utf-8") as f:
+        for line in f:
+            if LEAGUE_KEY not in line or '\\"transactions\\"' not in line and '"transactions"' not in line:
+                continue
+            o = LL._loads(line)
+            if o is not None and LL.recent(o, since):
+                walk(o)
+    return found[-1] if found else None
+
+
+def shortfall_note(sf):
+    n = (sf or {}).get("uninterpreted", 0) + (sf or {}).get("dropped_invalid_timestamp", 0)
+    return f"Flaim could not read {n} row(s) on Yahoo's page (the moves on record may be short)" if n else None
+
+
 def union_moves(old, new):
     """Rows of both, one per transaction id (the newer copy wins), newest first; and how many ids are new."""
     by_id = {r["transaction_id"]: r for r in old}
@@ -263,9 +307,12 @@ def main():
             notes.append(f"transactions not read ({e})")
         if got:
             moves, fresh = union_moves(moves, got)
+            sf = feed_shortfall(a.transcript or LL.newest_transcript(), a.since)
             _dump(tx_path, {"league_key": LEAGUE_KEY, "source": "Flaim get_transactions (Yahoo, rolling 30 days), unioned by id",
-                            "rows": moves})
+                            "feed": dict(sf or {}, read_for=a.date), "rows": moves})
             notes.append(f"{fresh} new move(s), {len(moves)} on record")
+            if shortfall_note(sf):
+                notes.append(shortfall_note(sf))
         elif got is not None:
             notes.append(f"no get_transactions response in the transcript; {len(moves)} move(s) on record")
 

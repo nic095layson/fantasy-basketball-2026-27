@@ -59,5 +59,45 @@ class Outcomes(unittest.TestCase):
         self.assertFalse(os.path.exists(p))
 
 
+class Rerun(unittest.TestCase):
+    """Owner 2026-11-11 (card: "Read as 'already recorded'"): a second run for a day already on the ledger appends
+    nothing and reads as a pass, so a re-run morning raises no false alert. The ledger stays append-only."""
+    def run_main(self, date, ledger):
+        import contextlib, io, sys, tempfile, json, os
+        d = tempfile.mkdtemp()
+        os.makedirs(os.path.join(d, "status")); os.makedirs(os.path.join(d, "actuals"))
+        json.dump(dict(date=date, rows=[]), open(os.path.join(d, "status", f"status_{date}.json"), "w"))
+        json.dump(dict(date=date, players=[], games=[]), open(os.path.join(d, "actuals", f"{date}.json"), "w"))
+        argv, sys.argv = sys.argv, ["tag_outcomes.py", "--date", date, "--out", ledger, "--status-dir", os.path.join(d, "status"),
+                                    "--actuals", os.path.join(d, "actuals")]
+        buf = io.StringIO()
+        try:
+            with contextlib.redirect_stdout(buf):
+                code = TO.main()
+        finally:
+            sys.argv = argv
+        return code, buf.getvalue().strip()
+
+    def test_a_day_already_on_the_ledger_passes_and_appends_nothing(self):
+        import json, os, tempfile
+        ledger = os.path.join(tempfile.mkdtemp(), "tag_outcomes.jsonl")
+        with open(ledger, "w") as f:
+            f.write(json.dumps(dict(date="2026-11-10", player="A", outcome="played")) + "\n")
+            f.write(json.dumps(dict(date="2026-11-10", player="B", outcome="sat")) + "\n")
+        before = open(ledger).read()
+        code, line = self.run_main("2026-11-10", ledger)
+        self.assertEqual(code, 0)
+        self.assertEqual(line, "TAG OUTCOMES: PASS — 2026-11-10: already recorded (2 row(s) on the ledger); nothing appended")
+        self.assertEqual(open(ledger).read(), before)
+
+    def test_append_itself_still_refuses_a_second_day(self):
+        import json, os, tempfile
+        ledger = os.path.join(tempfile.mkdtemp(), "t.jsonl")
+        open(ledger, "w").write(json.dumps(dict(date="2026-11-10")) + "\n")
+        with self.assertRaises(TO.AlreadyRecorded) as e:
+            TO.append(ledger, "2026-11-10", [dict(date="2026-11-10")])
+        self.assertIsInstance(e.exception, TO.OutcomeError); self.assertEqual(e.exception.rows, 1)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

@@ -131,5 +131,48 @@ class Pins(unittest.TestCase):
         self.assertEqual(got["x.t.1"]["players"][0]["selectedPosition"], "C")
 
 
+class FeedShortfall(unittest.TestCase):
+    """Owner 2026-11-11 (council pick: "the manager log prints how many rows Flaim could not read"): Flaim's
+    get_transactions response says when Yahoo's page carried entries it could not interpret, or rows it dropped for a
+    bad timestamp. The log keeps that count beside the moves, so the adds counter says when it may be short."""
+    WARN = ("Yahoo returned 6 entries Flaim could not interpret (an unrecognized transaction type or a malformed entry). "
+            "This count covers the whole page Flaim fetched.")
+
+    def transcript(self, *datas):
+        import json, tempfile
+        f = tempfile.NamedTemporaryFile("w", suffix=".jsonl", delete=False)
+        for i, d in enumerate(datas):
+            body = json.dumps(dict(success=True, data=dict(d, league_id=ML.LEAGUE_KEY)))
+            f.write(json.dumps(dict(timestamp=f"2026-11-11T13:0{i}:00Z", message=dict(content=[dict(type="tool_result", content=body)]))) + "\n")
+        f.close()
+        return f.name
+
+    def test_the_count_is_read_from_the_warning_and_the_dropped_field(self):
+        t = self.transcript(dict(transactions=[], warning=self.WARN, dropped_invalid_timestamp_count=2))
+        self.assertEqual(ML.feed_shortfall(t), dict(uninterpreted=6, dropped_invalid_timestamp=2, warning=self.WARN))
+
+    def test_a_clean_response_reads_zero_and_no_response_reads_none(self):
+        t = self.transcript(dict(transactions=[], dropped_invalid_timestamp_count=0))
+        self.assertEqual(ML.feed_shortfall(t), dict(uninterpreted=0, dropped_invalid_timestamp=0, warning=None))
+        self.assertIsNone(ML.feed_shortfall(self.transcript()))
+
+    def test_the_newest_response_wins(self):
+        t = self.transcript(dict(transactions=[], warning=self.WARN, dropped_invalid_timestamp_count=0),
+                            dict(transactions=[], warning=self.WARN.replace("6 entries", "1 entry"), dropped_invalid_timestamp_count=0))
+        self.assertEqual(ML.feed_shortfall(t)["uninterpreted"], 1)
+
+    def test_a_warning_of_another_kind_is_kept_but_counts_nothing(self):
+        t = self.transcript(dict(transactions=[], warning="Yahoo was slow today.", dropped_invalid_timestamp_count=0))
+        self.assertEqual(ML.feed_shortfall(t), dict(uninterpreted=0, dropped_invalid_timestamp=0, warning="Yahoo was slow today."))
+
+    def test_the_note_names_the_shortfall_and_is_silent_when_there_is_none(self):
+        self.assertEqual(ML.shortfall_note(dict(uninterpreted=6, dropped_invalid_timestamp=0, warning=self.WARN)),
+                         "Flaim could not read 6 row(s) on Yahoo's page (the moves on record may be short)")
+        self.assertEqual(ML.shortfall_note(dict(uninterpreted=1, dropped_invalid_timestamp=2, warning=self.WARN)),
+                         "Flaim could not read 3 row(s) on Yahoo's page (the moves on record may be short)")
+        self.assertIsNone(ML.shortfall_note(dict(uninterpreted=0, dropped_invalid_timestamp=0, warning=None)))
+        self.assertIsNone(ML.shortfall_note(None))
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -29,6 +29,12 @@ class OutcomeError(Exception):
     pass
 
 
+class AlreadyRecorded(OutcomeError):
+    """The day is on the ledger already; .rows is how many rows it holds for that day."""
+    def __init__(self, msg, rows):
+        super().__init__(msg); self.rows = rows
+
+
 def outcomes(status, actuals, team_of, norm_mpg):
     """One row per flagged player: outcome in {played, sat, no game, unresolved}."""
     played = {r["pool_name"]: r for r in actuals.get("players", []) if r.get("pool_name")}
@@ -57,7 +63,9 @@ def append(path, date, rows):
         with open(path, encoding="utf-8") as f:
             for ln in f:
                 if ln.strip() and json.loads(ln).get("date") == date:
-                    raise OutcomeError(f"{date} is already in {path}; the ledger is append-only")
+                    f.seek(0)
+                    raise AlreadyRecorded(f"{date} is already in {path}; the ledger is append-only",
+                                          sum(1 for x in f if x.strip() and json.loads(x).get("date") == date))
     if not rows:
         return 0
     os.makedirs(os.path.dirname(path), exist_ok=True)
@@ -93,6 +101,10 @@ def main():
         team, mpg = load_norms(a.proj)
         rows = outcomes(st, ac, team, mpg)
         n = append(a.out, a.date, rows)
+    except AlreadyRecorded as e:
+        # owner 2026-11-11 (card: "Read as 'already recorded'"): a re-run morning finds the day on the ledger; nothing is
+        # appended and the step passes, so a re-run raises no false alert
+        print(f"TAG OUTCOMES: PASS — {a.date}: already recorded ({e.rows} row(s) on the ledger); nothing appended"); return 0
     except (OutcomeError, OSError, ValueError, KeyError) as e:
         print(f"TAG OUTCOMES: FAIL — {e}"); return 1
     c = {}

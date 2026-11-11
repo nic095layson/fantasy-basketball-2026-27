@@ -662,9 +662,11 @@ function ilReturn(r){ if(!r||!r.scenarios) return null; const S=r.scenarios; con
   const lo=Math.min(...vals), hi=Math.max(...vals), mid=(lo+hi)/2, pl=slips.length?slips.map(k=>S[k].playoffs).reduce((a,b)=>a+b,0)/slips.length:null;
   const band=r.room_band? "ROOM_RULE_ON is "+r.room_band.tier+": "+(r.room_band.shift>=0?"+":"")+f1(r.room_band.shift)+" ("+r.room_band.label+")" : "room-rule band not measured";
   return h("div",{class:"tablebox"},h("table",{class:"wk"},h("tr",{},h("th",{class:"projh"},"if IL players return (ESPN's earliest-return dates of "+r.espn_date+", all teams, "+r.n_il+" players)"),h("th",{class:"num projh"},"title"),h("th",{class:"num projh"},"playoffs")),
-    slips.length?h("tr",{class:"proj"},h("td",{},"if they return ("+f1(lo)+" to "+f1(hi)+" across on time / +2 wk / +4 wk)"),h("td",{class:"num"},f1(mid)+"%"),h("td",{class:"num"},f1(pl)+"%")):null,
+    // owner 2026-11-11 (card: "Cancel the two late worlds"): one world from then on, so one figure and no range; a record
+    // from before still carries the three and reads as a range
+    slips.length?h("tr",{class:"proj"},h("td",{},slips.length>1? "if they return ("+f1(lo)+" to "+f1(hi)+" across on time / +2 wk / +4 wk)" : "if they return on ESPN's dates"),h("td",{class:"num"},f1(mid)+"%"),h("td",{class:"num"},f1(pl)+"%")):null,
     S.never?h("tr",{class:"proj"},h("td",{},"never (the headline)"),h("td",{class:"num"},f1(S.never.title)+"%"),h("td",{class:"num"},f1(S.never.playoffs)+"%")):null),
-    h("p",{class:"note"},"Scenario range, not a forecast: ± "+r.error+" each; "+band+". Returns are uncertain and the headline counts the current roster. Room rule: "+r.room_rule+".")); }
+    h("p",{class:"note"},(slips.length>1? "Scenario range" : "A scenario")+", not a forecast: ± "+r.error+" each; "+band+". Returns are uncertain and the headline counts the current roster. Room rule: "+r.room_rule+".")); }
 function noteMore(text, full, cls){ return h("p",{class:"note"+(cls?" "+cls:"")},text,more(full)); }
 function day(d){ try{ return new Date(d+"T00:00:00Z").toLocaleDateString("en-US",{month:"short",day:"numeric",timeZone:"UTC"}); }catch(e){ return d; } }
 function T(t){ if(t===D.my_team) return t+" (you)"; const m=(D.league.managers||{})[t]; return m? t+" ("+m+")" : t; }
