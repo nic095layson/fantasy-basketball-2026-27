@@ -81,7 +81,7 @@ class Deck(unittest.TestCase):
 
     def test_zero_states_and_band(self):
         html, data, rec = self.build()
-        self.assertIn("No movers", html)
+        self.assertIn("No draft check on record yet", html); self.assertNotIn("Season-line movers", html)
         self.assertIn("TEAM_WEEK_SHOCK", html); self.assertIn("+3.4", html); self.assertIn("-2.3", html.replace("−", "-"))
 
     def test_every_fragile_band_is_on_the_page(self):
@@ -112,7 +112,7 @@ class Deck(unittest.TestCase):
 
     def test_panes_present(self):
         html, data, rec = self.build()
-        for pane in ["pane-today", "pane-trade", "pane-fa", "pane-board", "pane-movers", "pane-week"]:
+        for pane in ["pane-today", "pane-trade", "pane-fa", "pane-board", "pane-draft", "pane-week"]:
             self.assertIn(f'id="{pane}"', html)
         for gone in ["pane-status", "pane-waivers", "pane-moves"]:  # removed on the owner's calls 2026-10-19
             self.assertNotIn(f'id="{gone}"', html)
@@ -157,7 +157,7 @@ class Deck(unittest.TestCase):
         # owner 2026-10-20: typing in the Board search lost focus on every character, because render() rebuilt the
         # input; it is now built once, outside render(), and only the table holder is replaced. Plus a Reset button.
         html, data, rec = self.build()
-        board = html.split('$("#pane-board")')[1].split("// ---- Movers")[0]
+        board = html.split('$("#pane-board")')[1].split("// ---- Draft Check")[0]
         before_render = board.split("function render(){")[0]
         self.assertIn('id:"bd-q"', before_render)
         self.assertIn('id:"bd-fa"', before_render)
@@ -366,29 +366,24 @@ RENDER_OK, RENDER_WHY = DRC.available()
 
 @unittest.skipUnless(RENDER_OK, RENDER_WHY)
 class RealMoversRender(unittest.TestCase):
-    """Decision A (owner 2026-10-21): with real movers the page draws all six tabs and each moved stat reads
-    preseason → season under its category name."""
+    """Decision A (owner 2026-10-21) drew real movers on the Movers tab. Owner 2026-11-11 ("Keep minutes, drop
+    movers"): the Draft Check tab replaces it and the movers list leaves the page; a morning whose lines record does
+    carry movers still draws all seven tabs, with none of them on the page."""
     def setUp(self):
         self.d = tempfile.mkdtemp(); self.fx = fixtures(self.d)
         self.fx["season_lines"], self.lines = real_movers_lines(self.d)
         self.assertTrue(self.lines["movers"])  # the producer really wrote movers
 
-    def test_the_page_draws_itself_with_real_movers(self):
+    def test_the_page_draws_itself_and_lists_no_movers(self):
         html, data, rec = SD.build(self.fx, date="2026-10-21")
         p = os.path.join(self.d, "deck.html")
         with open(p, "w", encoding="utf-8") as f:
             f.write(html)
         res = DRC.check(p)
         self.assertEqual(res["status"], "PASS", res["reasons"])
-        movers = res["panes"]["movers"]
-        self.assertIn("Alpha Man", movers)
-        moved = self.lines["movers"][0]["moved"]
-        labels = {"pts": "PTS", "fgp": "FG%", "reb": "REB", "ast": "AST", "tov": "TOV"}
-        for col, label in labels.items():
-            self.assertIn(col, moved)
-            x, y = moved[col]
-            self.assertIn(f"{label} {x} → {y}", movers)
-        self.assertNotIn(" z and over", movers)
+        self.assertNotIn("movers", res["panes"]); self.assertIn("draft", res["panes"])
+        x, y = self.lines["movers"][0]["moved"]["pts"]
+        self.assertNotIn(f"PTS {x} → {y}", res["panes"]["draft"])
 
 
 @unittest.skipUnless(RENDER_OK, RENDER_WHY)
@@ -1109,14 +1104,14 @@ def form_dom(html_path, clicks=(), view=None, width=1280):
             pg.on("pageerror", lambda e: errs.append(str(e)))
             pg.route(re.compile(r"^https?://"), lambda r: r.abort())
             pg.goto("file://" + os.path.abspath(html_path), wait_until="load")
-            pg.evaluate("() => document.querySelector('nav.tabs button[data-tab=movers]').click()")
+            pg.evaluate("() => document.querySelector('nav.tabs button[data-tab=draft]').click()")
             if view:
                 pg.evaluate("(v) => { const s=document.getElementById('fm-view'); s.value=v; s.dispatchEvent(new Event('change')); }", view)
             for c in clicks:
                 pg.evaluate("(c) => { const th=[...document.querySelectorAll('#fm-table th')].find(x=>x.textContent.replace(/[ ↑↓]/g,'')===c); th.click(); }", c)
             q = lambda js: pg.evaluate(js)
             return dict(errors=errs,
-                text=q("() => { const m=document.getElementById('pane-movers'); return m? m.textContent : null }"),
+                text=q("() => { const m=document.getElementById('pane-draft'); return m? m.textContent : null }"),
                 names=q("() => [...document.querySelectorAll('#fm-table tr td.name')].map(x=>x.dataset.name)"),
                 mine=q("() => [...document.querySelectorAll('#fm-table tr.mine td.name')].map(x=>x.dataset.name)"),
                 fa_text=q("() => { const m=document.getElementById('pane-fa'); return m? m.textContent : null }"),
@@ -1346,8 +1341,12 @@ class WordingPassTwo(unittest.TestCase):
                    ["2 held off the board", "287 players"])
 
     def test_movers(self):
-        self.check("Movers", "pane-movers", ["Unpooled with games", "carried as a per-category prior"],
-                   ["Alex Karaban, Baba Miller", "per-category prior"], ["2 players with games aren't in the pool", "287 players", "not a projection"])
+        # owner 2026-11-11: the Draft Check tab stands where Movers stood; the movers card and its notes are gone and
+        # the minutes board sits below, collapsed, its "not a projection" note still inside
+        v = self.check("Draft Check", "pane-draft", ["Unpooled with games", "carried as a per-category prior", "Season-line movers", "not a projection"],
+                       [], ["No draft check on record yet", "MINUTES & ROLE"])
+        self.assertEqual([o for o, _ in v["details"]][0], False)
+        self.assertTrue(any("not a projection" in t for _, t in v["details"]))
 
     def test_week(self):
         v = self.check("Week", "pane-week", ["Brier = (p − outcome)²", "a calibrated card has hit rate", "not FantasyBot's"],
@@ -2369,3 +2368,92 @@ class DecisionCardFirstCut(DecisionCardDeck):
         dom = today_dom(p)
         self.assertEqual(dom["errors"], [])
         self.assertIn("John Collins leaves when Tyrese Haliburton returns", dom["text"])
+
+
+def draft_check_record():
+    """A draft check as draft_check.py writes it (two picks, one disagreement, three teams)."""
+    row = lambda name, pre, act, g, tg=10, **k: dict(name=name, pre=pre, pre_rank=1, act=act, act_rank=2, games=g, team_games=tg, **k)
+    return dict(date="2026-10-19", window=["2026-10-20", "2026-10-20"], days=1, min_games=5, top_n=156, weeks_graded=[1],
+                picks=[row("Alpha Man", 2.5, 4.25, 9, pick=10), row("Bench Guy", -1.5, -3.75, 2, pick=15)],
+                preferred=[dict(pick=15, mine=row("Bench Guy", -1.5, -3.75, 2), card=row("Free Agent", 0.5, 1.25, 8))],
+                teams=[dict(name="RIVAL ONE", seat=3, mine=False, rank=1, wins=6, losses=3, ties=0, pre_title=12.5, pre_rank=2),
+                       dict(name="MY TEAM", seat=10, mine=True, rank=2, wins=5, losses=4, ties=0, pre_title=21.5, pre_rank=1),
+                       dict(name="RIVAL TWO", seat=5, mine=False, rank=3, wins=2, losses=7, ties=0, pre_title=3.5, pre_rank=3)],
+                team_rank_agreement=0.5,
+                cats=[dict(cat=c, plan=55.0, won=1, lost=0, tied=0) for c in ["FG%", "FT%", "3PTM", "PTS", "REB", "ST", "BLK", "TO"]]
+                     + [dict(cat="AST", plan=33.0, won=0, lost=1, tied=0)],
+                scatter=[dict(name="Alpha Man", pre=2.5, act=4.25, games=9, mine=True), dict(name="Free Agent", pre=0.5, act=1.25, games=8, mine=False)],
+                rank_agreement=0.71, sources={}, method="test")
+
+
+@unittest.skipUnless(RENDER_OK, RENDER_WHY)
+class DraftCheckTab(unittest.TestCase):
+    """Owner 2026-11-11 ("implement this with updating tables every Monday, and include this on the season deck
+    replacing the Movers tab"; picks "Keep minutes, drop movers", "Draft Check"): the tab draws the newest draft-check
+    record (picks, disagreements, league, categories, all players), then the minutes board, collapsed."""
+    def setUp(self):
+        self.d = tempfile.mkdtemp(); self.fx = fixtures(self.d)
+        self.fx["form"] = os.path.join(self.d, "form.json")
+        with open(self.fx["form"], "w") as f:
+            json.dump(form_record(), f)
+
+    def page(self, record):
+        if record is not None:
+            self.fx["draft_check"] = os.path.join(self.d, "draft_check.json")
+            with open(self.fx["draft_check"], "w") as f:
+                json.dump(record, f)
+        html, data, rec = SD.build(self.fx, date="2026-10-21")
+        p = os.path.join(self.d, "deck.html")
+        with open(p, "w", encoding="utf-8") as f:
+            f.write(html)
+        return p, data, rec
+
+    def test_the_tab_bar_reads_draft_check_where_movers_stood(self):
+        p, data, rec = self.page(draft_check_record())
+        res = DRC.check(p)
+        self.assertEqual(res["status"], "PASS", res["reasons"])
+        self.assertEqual(DRC.TABS, ["Today", "Trade Analyzer", "Free Agents", "Board", "Draft Check", "Week", "League"])
+        self.assertEqual(data["draft_check"]["date"], "2026-10-19")
+        self.assertTrue(rec["inputs"]["draft_check"]["present"])
+
+    def test_the_five_tables_draw_from_the_record(self):
+        p, data, rec = self.page(draft_check_record())
+        v = visible_dom(p, "Draft Check", "pane-draft")
+        self.assertEqual(v["errors"], [])
+        t = v["text"]
+        for s in ["Record of 2026-10-19", "updates every Monday", "#10", "Alpha Man", "+2.5", "+4.3", "9 / 10",   # picks: pre, act, games
+                  "WHERE YOU AND THE DRAFT CARD DISAGREED", "Free Agent (8 g)", "card (your pick: 2 games)",
+                  "RIVAL ONE", "6-3-0", "21.5%", "▼ 1", "▲ 1", "Rank agreement between the draft-day order and the standings: 0.50",
+                  "YOUR CATEGORIES: PLANNED VS WON", "2 pool players with 5+ games", "rank agreement 0.71"]:
+            self.assertIn(s, t, s)
+        self.assertNotIn("Season-line movers", t)
+        self.assertNotIn("No draft check on record yet", t)
+
+    def test_the_minutes_board_follows_collapsed(self):
+        p, data, rec = self.page(draft_check_record())
+        v = visible_dom(p, "Draft Check", "pane-draft")
+        self.assertIn("MINUTES & ROLE", v["text"])
+        closed = [t for o, t in v["details"] if not o and "not a projection" in t]
+        self.assertTrue(closed, "the minutes board is not inside a closed details")
+        self.assertLess(v["text"].index("ALL PLAYERS"), v["text"].index("MINUTES & ROLE"))
+
+    def test_no_record_says_so_and_the_page_still_draws(self):
+        p, data, rec = self.page(None)
+        self.assertIsNone(data["draft_check"])
+        self.assertEqual(DRC.check(p)["status"], "PASS")
+        v = visible_dom(p, "Draft Check", "pane-draft")
+        self.assertIn("No draft check on record yet", v["text"])
+
+    def test_default_paths_take_the_newest_record_on_or_before_the_day(self):
+        import draft_check as DC
+        old = DC.OUT_DIR
+        try:
+            DC.OUT_DIR = self.d
+            for day in ("2026-11-02", "2026-11-09", "2026-11-16"):
+                open(os.path.join(self.d, f"draft_check_{day}.json"), "w").write("{}")
+            got = lambda day: os.path.basename(SD._draft_check_path(day))
+            self.assertEqual(got("2026-11-11"), "draft_check_2026-11-09.json")
+            self.assertEqual(got("2026-11-16"), "draft_check_2026-11-16.json")
+            self.assertEqual(got("2026-10-30"), "draft_check_2026-10-30.json")   # none yet: the day's own (absent) path
+        finally:
+            DC.OUT_DIR = old

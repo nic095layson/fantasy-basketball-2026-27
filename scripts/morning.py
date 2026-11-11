@@ -142,7 +142,13 @@ def steps(date, fetch=True, seasons=10000, since=None):
            # Sunday rosters (this morning's league-moves record included); its forecast is untouched; non-fatal
            dict(name="preview staleness", cmd=[PY, os.path.join(HERE, "weekly_preview.py"), "--week", str(_week_of(date)),
                                                "--stale-note", date], cwd=KIT,
-                pass_re=r"^WEEKLY PREVIEW: PASS", env={}, fatal=False)] if datetime.date.fromisoformat(date).weekday() == 0 else []) + [
+                pass_re=r"^WEEKLY PREVIEW: PASS", env={}, fatal=False),
+           # owner 2026-11-11 ("updating tables every Monday ... replacing the Movers tab"): the draft-day system
+           # beside the season so far (picks, the card's first choices, league forecast vs standings, categories,
+           # every player), one dated record the deck's Draft Check tab draws; display only, non-fatal (no record,
+           # the tab shows the last one or says there is none)
+           dict(name="draft check", cmd=[PY, os.path.join(HERE, "draft_check.py"), "--date", date], cwd=KIT,
+                pass_re=r"^DRAFT CHECK: PASS", env={}, fatal=False)] if datetime.date.fromisoformat(date).weekday() == 0 else []) + [
            # owner 2026-11-10 (audit item F5): the day's title share beside the brief before it; when it moved by
            # more than the sampling error of the difference, the kit merges and roster moves between the two runs
            # are named; display only, non-fatal
