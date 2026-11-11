@@ -122,3 +122,9 @@ I cannot see main's own session history; what main did is read only from commits
   - `curl -s -o /dev/null -w "%{http_code}" https://www.basketball-reference.com/boxscores/202611100NYK.html`
   - `python3 scripts/morning.py --help | grep resume`
   - `python3 -c "import json;print(json.load(open('data/league_state.json'))['nba_team_disagreements'])"`
+
+## Owner picks (2026-11-11, decision cards)
+
+- **D1:** "Keep strict + retry (Recommended)". No build: the two-outlet rule stands, and the new retry rule covers a late outlet.
+- **D2:** "Leave it (Recommended)". No build.
+- **D3:** "Team-update path (Recommended)". Main adds a way to update a pooled player's NBA team when Yahoo and ESPN's transactions feed agree on a trade, with a test on Nique Clifford (SAC to OKC, 2026-11-08).
