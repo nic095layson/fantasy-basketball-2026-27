@@ -35,7 +35,9 @@ sys.path.insert(0, HERE)
 import box_pull  # noqa: E402
 import co_gm as CG  # noqa: E402
 
-SLIPS = {"on_time": 0, "late_2": 2, "late_4": 4}
+# owner 2026-11-11 (card: "Cancel the two late worlds"): the +2 week and +4 week worlds read the same as on time
+# within sampling error (25.81 and 25.86 beside 25.95 on 11-11), so the grid is on time only; never = the headline
+SLIPS = {"on_time": 0}
 ROOM_RULE = "lowest adj_value active player leaves from the return week"
 ROOM_RULE_ON = True   # the rule's default; --no-room switches it off for a run (sweep 2026-10-31: off adds +13.4 title points)
 BLEND_WEIGHTS = {"on_time": 0.4, "late_2": 0.3, "late_4": 0.2, "never": 0.1}
@@ -165,11 +167,14 @@ def room_band(sc, room=True):
 
 
 def slip_range(sc):
-    vals = [sc[k]["title"] for k in SLIPS if k in sc]
+    vals = [sc[k]["title"] for k in ("on_time", "late_2", "late_4") if k in sc]   # a record from before 2026-11-11 carries all three
     return (round(min(vals), 1), round(max(vals), 1)) if vals else None
 
 
 def blend(sc, weights=BLEND_WEIGHTS):
+    """The hand-weighted figure, or None when a weighted world was not run (the late worlds, since 2026-11-11)."""
+    if any(k not in sc for k in weights):
+        return None
     return round(sum(weights[k] * sc[k]["title"] for k in weights), 2)
 
 
@@ -182,7 +187,8 @@ def lines(rec):
     # owner 2026-11-02 (runner finding 3; council): one range line, since the three slip rows sit within one error bar
     # of each other, and the room rule's band beside it, the two error bars the red-team rule asks for
     L = [f"**If IL players return** (scenario range, not a forecast; ESPN's earliest-return dates of {rec['espn_date']}, all 12 teams, {rec['n_il']} IL players): "
-         f"if they return ≈{(lo + hi) / 2:.0f}% ({lo:.1f} to {hi:.1f} across on time / +2 wk / +4 wk) · never = headline {sc['never']['title']:.1f}%. "
+         + (f"if they return ≈{(lo + hi) / 2:.0f}% ({lo:.1f} to {hi:.1f} across on time / +2 wk / +4 wk)" if any(k in sc for k in ("late_2", "late_4"))
+            else f"if they return on ESPN's dates ≈{sc['on_time']['title']:.1f}%") + f" · never = headline {sc['never']['title']:.1f}%. "
          f"Error ± {e} each (2 runs × {rec['seasons']:,} seasons). Returns are uncertain; the headline counts the current roster. "
          f"Room rule ({rec['room_rule']}): "
          + (f"**ROOM_RULE_ON is {band['tier']}: {band['shift']:+.1f} ({band['label']})**." if band else "band not measured this run.")]
@@ -221,7 +227,8 @@ def main(argv=None):
                espn_date=os.path.basename(espn_path)[14:24], pool=os.environ.get("SEASON_POOL"),
                room_rule=ROOM_RULE if not a.no_room else "off (returning players join a larger active roster)",
                slips=SLIPS, n_il=len(il), il_players=il, scenarios=sc, error=err(sc["never"]["title"], a.seasons),
-               blend=dict(weights=BLEND_WEIGHTS, title=blend(sc), status="UNCALIBRATED; not shown in the brief"),
+               blend=dict(weights=BLEND_WEIGHTS, title=blend(sc), status="UNCALIBRATED; not shown in the brief; not computed "
+                          "since 2026-11-11 (its late worlds are no longer run)"),
                room_band=room_band(sc, room=not a.no_room), slip_range=slip_range(sc),
                label="scenario range, not a forecast; never replaces or averages into the headline")
     rec["lines"] = lines(rec)

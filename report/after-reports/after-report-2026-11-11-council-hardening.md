@@ -4,9 +4,9 @@ Pull window: 2026-10-17 → 2026-11-11 (one fetch in scratch: ESPN and Basketbal
 
 **Method up front.** Owner's card answer, verbatim: "Have council deliberate, and proceed with recommendations. Any that prove 'theatrical' and non-fruitful, flag to me for final cancel of run." It followed a diagnostic the same day that rated each function and proposed four fixes. The council (five roles, one vote) was run on those four; its verdict was shown to the owner before the first edit, with the plan. Parameters: step times are the gaps between consecutive run-ledger rows over the mornings of 11-06 to 11-10 (the ledger stamps a step when it ends, so each gap is charged to the later step); the drill used the 11-11 morning's committed records with the box-score step marked failed and its file removed. EVIDENCE marks what a run or read showed; INFERENCE what is derived.
 
-**Verdict: the manager log now reports how many rows Flaim could not read (6 on the newest response on file). The resume path was drilled on a real morning and works. The team-rename fix the diagnostic proposed already existed, so nothing was built for it and the diagnostic's "it will recur" was wrong. The IL-return step's two "late" worlds are flagged for the owner's cancel; nothing was cut.**
+**Verdict: the manager log now reports how many rows Flaim could not read (6 on the newest response on file). The resume path was drilled on a real morning and works. The team-rename fix the diagnostic proposed already existed, so nothing was built for it and the diagnostic's "it will recur" was wrong. The IL-return step's two "late" worlds were flagged, the owner cancelled them on a card, and they are removed (section 9). A duplicate ledger entry on a re-run now reads as already recorded (section 9).**
 
-Runner impact: code-only — `manager_log.py` adds one clause to its MANAGER LOG line and one key to `data/managers/transactions.json`. No prompt edit.
+Runner impact: code-only — `manager_log.py` adds one clause to its MANAGER LOG line and one key to `data/managers/transactions.json`; `il_return.py` runs two fewer worlds, and the brief and deck state one "if they return" figure instead of a range; `tag_outcomes.py` and `decision_log.py` print PASS on a duplicate. No prompt edit.
 
 ## 1. Council verdict (4–1)
 
@@ -39,7 +39,7 @@ EVIDENCE: a scratch worktree of season/daily at 61b05c1. The 11-11 morning recor
 
 Two steps printed FAIL (non-fatal) in the drill: tag outcomes and decision log. Both ledgers already held the day's rows, because the drill started from the finished morning's files, and both refuse a second append. INFERENCE: on a real failed fetch those steps have not run yet and will not refuse. The same refusal is what the two recorded 11-02 failures were.
 
-## 5. Flagged for the owner's cancel (nothing cut)
+## 5. Flagged for the owner's cancel (as flagged; the picks are in section 9)
 
 | step | cost | what it yields | reading |
 |---|---|---|---|
@@ -51,12 +51,12 @@ Two steps printed FAIL (non-fatal) in the drill: tag outcomes and decision log. 
 
 ## 6. Checks
 
-- Full suite: 1137 tests OK, 2 skipped.
+- Full suite: 1137 tests OK, 2 skipped, on the first commit; 1145 OK, 2 skipped, after section 9's changes, with two more deck tests added and passing afterwards.
 - The three league-table replays and the drill, above.
 
 ## 7. Bounds
 
-Out of scope by design: no projection line, injury tag, roster or engine constant changed; season/daily was not written; the IL-return step was not changed.
+Out of scope by design: no projection line, injury tag or roster changed; season/daily was not written. One registered constant changed on the owner's card: `il_return.SLIPS` (a reporting grid, status structural), section 9.
 
 In scope and not verified:
 - The resume path inside the Runner's own session. NOT-ATTEMPTED: it needs a real failed morning there.
@@ -66,8 +66,25 @@ In scope and not verified:
 ## 8. Next steps (owner decisions)
 
 1. Merge this PR, or hold.
-2. IL return: cancel the two "late" worlds (recommended), cancel the whole step, or keep all four.
-3. Append-only refusals: leave as FAIL (non-fatal), or have a duplicate append read as "already recorded" so a re-run does not raise a watchdog alert.
+2. IL return: decided on a card, "Cancel the two late worlds" (section 9).
+3. Append-only refusals: decided on a card, "Read as 'already recorded'" (section 9).
+
+## 9. The owner's two picks, built (cards, 2026-11-11)
+
+**"Cancel the two late worlds."** `il_return.SLIPS` is now on time only; never is still the headline. The registry row for `SLIPS` carries the new value and the reason. `BLEND_WEIGHTS` is untouched; the optional blended figure (never shown) is recorded as not computed, because two of its worlds no longer run. The brief's line and the deck's row state one figure, "if they return on ESPN's dates"; a record or brief from before 2026-11-11 still reads as a range. The step ran six worlds on two seeds before, not four as the diagnostic said (it also runs the owner-only world the decision card reads and the room rule's flipped world for its band); it runs four now.
+
+| check | result |
+|---|---|
+| 4 tests in `TwoWorlds`, seen failing first | the grid, the run (8 simulator calls, 12 before), the one-figure line, the blend |
+| 2 deck tests in `IlReturnOneWorld` | written after the page change, so not seen failing first |
+| Today's records in a scratch worktree, 10,000 seasons, two seeds | never 16.06 and on time 25.95, the same as this morning's record; room-rule band +11.5, the same; 82 s of wall time with the test suite running beside it, against about 132 s in the morning ledger |
+
+**"Read as 'already recorded'."** `tag_outcomes.py` prints `PASS — <date>: already recorded (N row(s) on the ledger); nothing appended` when the day is on its ledger. `decision_log.py` records `brief <date> already recorded` and goes on to the moves and re-joins; before, a logged brief halted the step and the day's moves were not looked at on a re-run. Both ledgers stay append-only: `append` and `brief_row` still refuse, and nothing is written twice.
+
+| check | result |
+|---|---|
+| 4 tests in `Rerun` and `BriefRerun`, seen failing first | PASS line, ledger bytes unchanged, the refusal still raised underneath |
+| On a scratch copy of the records | `TAG OUTCOMES: PASS — 2026-11-10: already recorded (31 row(s) on the ledger); nothing appended`; `DECISION LOG: PASS brief 2026-11-11 already recorded; moves: nothing new; re-join: nothing changed` |
 
 ## Fired
 

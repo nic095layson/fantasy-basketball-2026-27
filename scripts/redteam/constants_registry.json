@@ -688,13 +688,11 @@
    "module": "il_return",
    "name": "SLIPS",
    "value": {
-    "on_time": 0,
-    "late_2": 2,
-    "late_4": 4
+    "on_time": 0
    },
    "role": "the IL-return scenario grid: weeks after ESPN's expected return date each IL player comes back (never = the headline); a stated range, not a distribution",
    "status": "structural",
-   "record": "a reporting grid, not a point value: the IL-return section shows every row; re-registered 2026-11-02 after the 11-02 Monday sweep raised 'declared_band with no band' (runner finding 1)"
+   "record": "a reporting grid, not a point value: the IL-return section shows every row; re-registered 2026-11-02 after the 11-02 Monday sweep raised 'declared_band with no band' (runner finding 1); 2026-11-11 (owner card \"Cancel the two late worlds\"): late_2 and late_4 retired, since they read the same as on time within sampling error (25.81 and 25.86 beside 25.95 on 11-11)"
   },
   {
    "module": "il_return",

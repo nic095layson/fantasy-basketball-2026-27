@@ -1,7 +1,7 @@
 {
- "ran_at_utc": "2026-11-11T21:46:10Z",
+ "ran_at_utc": "2026-11-11T21:57:01Z",
  "inputs": {
-  "report/after-reports/after-report-2026-11-11-council-hardening.md": "3304ccbd7b39e980434a3a1e4e6f4b4835304304c1600a4a2e244bc76c4c56af",
+  "report/after-reports/after-report-2026-11-11-council-hardening.md": "4b50ac1e89b5a84938615fd0fa8025f6259d286d34e555ba52c721137be03d3e",
   "../wtsd/report/after-reports/redteam-2026-11-09-season/sweep.json": "7cebe2a3101d6d88b154c99b3082d5819197193ddb2be591d0c3b6d479d2a305"
  },
  "gates": [
@@ -59,7 +59,7 @@
   },
   {
    "name": "touched tests",
-   "cmd": "bash -c 'cd scripts && python3 -W ignore -m unittest test_manager_log 2>&1 | tail -1'",
+   "cmd": "bash -c 'cd scripts && python3 -W ignore -m unittest test_manager_log test_il_return test_tag_outcomes test_decision_log test_season_deck.IlReturnOneWorld 2>&1 | tail -1'",
    "cwd": ".",
    "pass_re": "^OK",
    "exit": 0,
@@ -125,5 +125,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "c1cb15020d984dc83ee3b2e97678bcbef7f5a371"
+ "base_commit": "4853f90b8d4331d1689279bfd77af3026decf5f1"
 }
