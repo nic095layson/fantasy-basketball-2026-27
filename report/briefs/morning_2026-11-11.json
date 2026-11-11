@@ -1,0 +1,165 @@
+{
+ "ran_at_utc": "2026-11-11T13:05:49Z",
+ "steps": [
+  {
+   "name": "preflight",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/independent_audit/preflight.py --spec /home/user/fantasy-basketball-2026-27/scripts/independent_audit/morning_preflight.json",
+   "exit": 0,
+   "pass_line": "PREFLIGHT: PASS — kit morning run: 4 checks",
+   "verdict": "PASS",
+   "wrote": [],
+   "tail": [
+    "PREFLIGHT: PASS — kit morning run: 4 checks"
+   ]
+  },
+  {
+   "name": "league live",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/league_live.py --as-of 2026-11-11 --since 2026-11-11T13:03:53Z",
+   "exit": 0,
+   "pass_line": "LEAGUE LIVE: PASS — rosters from Flaim (Yahoo), pinned data/source/flaim/pull_2026-11-11.json; 5 not in the deck pool (simulated once the season lines give an auto row, 3+ games): Jamal Cain (SNOWTIME WHITE WALKERS, BN), Nolan Traore (ANONG NANGIANNIS?!, UTIL), Morez Johnson Jr. (Podz save the league, IL), Mario Hezonja (MAXEY-MUM OVERDRIVE, F), Danny Wolf (John's Cool Team, BN)",
+   "verdict": "PASS",
+   "wrote": [
+    "data/league_state.json",
+    "data/news/league_moves_2026-11-11.json",
+    "data/news/league_state_am_2026-11-11.json",
+    "data/source/flaim/pull_2026-11-11.json",
+    "data/source/flaim/rosters_2026-11-11.transcribed.csv",
+    "report/run-ledger.jsonl"
+   ],
+   "tail": [
+    "LEAGUE INTAKE: WARN — 5 name(s) not in the pool, carried as unpooled (no deck line; simulated once the season lines give an auto row): Jamal Cain (SNOWTIME WHITE WALKERS, BN, ORL); Nolan Traore (ANONG NANGIANNIS?!, UTIL, BKN); Morez Johnson Jr. (Podz save the league, IL, DAL); Mario Hezonja (MAXEY-MUM OVERDRIVE, F, CLE); Danny Wolf (John's Cool Team, BN, BKN)",
+    "LEAGUE INTAKE: PASS — 12 teams, 171 players, 171 of 171 resolved; 5 unpooled; 1 NBA-team disagreement(s) with the pool; wrote data/league_state.json",
+    "LEAGUE MOVES: PASS — 8 team(s) changed, 18 move(s), 2026-11-10 to 2026-11-11 (am); wrote data/news/league_moves_2026-11-11.json",
+    "LEAGUE LIVE: PASS — rosters from Flaim (Yahoo), pinned data/source/flaim/pull_2026-11-11.json; 5 not in the deck pool (simulated once the season lines give an auto row, 3+ games): Jamal Cain (SNOWTIME WHITE WALKERS, BN), Nolan Traore (ANONG NANGIANNIS?!, UTIL), Morez Johnson Jr. (Podz save the league, IL), Mario Hezonja (MAXEY-MUM OVERDRIVE, F), Danny Wolf (John's Cool Team, BN)"
+   ]
+  },
+  {
+   "name": "matchup live",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/matchup_live.py --date 2026-11-11 --since 2026-11-11T13:03:53Z",
+   "exit": 0,
+   "pass_line": "MATCHUP LIVE: PASS — week 4, games left 29 mine / 30 SNOWTIME WHITE WALKERS; wrote data/news/matchup_live_2026-11-11.json",
+   "verdict": "PASS",
+   "wrote": [
+    "data/news/matchup_live_2026-11-11.json",
+    "data/source/fantasybot/outlook_2026-11-11.json"
+   ],
+   "tail": [
+    "MATCHUP LIVE: PASS — week 4, games left 29 mine / 30 SNOWTIME WHITE WALKERS; wrote data/news/matchup_live_2026-11-11.json"
+   ]
+  },
+  {
+   "name": "box scores 2026-11-10",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/box_pull.py --date 2026-11-10",
+   "exit": 1,
+   "pass_line": "",
+   "verdict": "FAIL",
+   "wrote": [],
+   "tail": [
+    "BOX PULL: FAIL",
+    "  Basketball-Reference /boxscores/202611100NYK.html HTTP 404: HTTP Error 404: Not Found",
+    "  Basketball-Reference /boxscores/202611100PHI.html HTTP 404: HTTP Error 404: Not Found"
+   ]
+  },
+  {
+   "name": "tag outcomes",
+   "verdict": "SKIPPED",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/tag_outcomes.py --date 2026-11-10"
+  },
+  {
+   "name": "lineup log",
+   "verdict": "SKIPPED",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/lineup_log.py --date 2026-11-11"
+  },
+  {
+   "name": "accuracy render",
+   "verdict": "SKIPPED",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/accuracy_week.py --render"
+  },
+  {
+   "name": "season lines",
+   "verdict": "SKIPPED",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/season_lines.py --date 2026-11-11"
+  },
+  {
+   "name": "minutes line",
+   "verdict": "SKIPPED",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/minutes_line.py --date 2026-11-11"
+  },
+  {
+   "name": "season board",
+   "verdict": "SKIPPED",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/season_board.py --date 2026-11-11"
+  },
+  {
+   "name": "status feed",
+   "verdict": "SKIPPED",
+   "cmd": "bash -c '/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/status_feed.py --date 2026-11-11 && /usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/status_feed.py --check /home/user/fantasy-basketball-2026-27/data/status/status_2026-11-11.json'"
+  },
+  {
+   "name": "transactions",
+   "verdict": "SKIPPED",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/transactions.py --date 2026-11-11"
+  },
+  {
+   "name": "league pairings",
+   "verdict": "SKIPPED",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/league_pairings.py"
+  },
+  {
+   "name": "il return",
+   "verdict": "SKIPPED",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/il_return.py --date 2026-11-11 --seasons 10000"
+  },
+  {
+   "name": "daily brief",
+   "verdict": "SKIPPED",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/daily_brief.py --date 2026-11-11 --seasons 10000"
+  },
+  {
+   "name": "decision log",
+   "verdict": "SKIPPED",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/decision_log.py --brief 2026-11-11 --moves --rejoin"
+  },
+  {
+   "name": "title watch",
+   "verdict": "SKIPPED",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/title_watch.py --date 2026-11-11"
+  },
+  {
+   "name": "week matchup",
+   "verdict": "SKIPPED",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/week_matchup.py --date 2026-11-11"
+  },
+  {
+   "name": "decision card",
+   "verdict": "SKIPPED",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/decision_card.py --date 2026-11-11 --seasons 10000"
+  },
+  {
+   "name": "league table",
+   "verdict": "SKIPPED",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/league_table.py --date 2026-11-11"
+  },
+  {
+   "name": "form board",
+   "verdict": "SKIPPED",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/form_board.py --date 2026-11-11"
+  },
+  {
+   "name": "season deck",
+   "verdict": "SKIPPED",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/season_deck.py --date 2026-11-11"
+  }
+ ],
+ "verdict": "FAIL",
+ "wrote": [
+  "data/league_state.json",
+  "data/news/league_moves_2026-11-11.json",
+  "data/news/league_state_am_2026-11-11.json",
+  "data/news/matchup_live_2026-11-11.json",
+  "data/source/fantasybot/outlook_2026-11-11.json",
+  "data/source/flaim/pull_2026-11-11.json",
+  "data/source/flaim/rosters_2026-11-11.transcribed.csv",
+  "report/run-ledger.jsonl"
+ ]
+}
