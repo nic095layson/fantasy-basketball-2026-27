@@ -42,6 +42,8 @@ KIT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DECK = os.environ.get("DECK_REPO") or os.path.join(KIT, "..", "yahoo-fantasy-basketball")
 sys.path.insert(0, os.path.join(DECK, "scripts"))
 from verify_rosters import norm  # noqa: E402
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import team_updates  # noqa: E402
 
 SRC = os.path.join(KIT, "data", "source", "yahoo-starting-rosters-2026-10-20-view.transcribed.csv")
 PDF = os.path.join(KIT, "data", "source", "yahoo-starting-rosters-2026-10-20-view.pdf")
@@ -146,7 +148,10 @@ def sha(path):
     return hashlib.sha256(open(path, "rb").read()).hexdigest()
 
 
-def run(src, out, pool, abbr, draft, as_of, managers=None, sources=None, unpooled=None):
+def run(src, out, pool, abbr, draft, as_of, managers=None, sources=None, unpooled=None, team_ledger=None, news_dir=None):
+    """team_ledger (owner 2026-11-11, D3): the team-changes ledger (team_updates.LEDGER). With it, a player's pool team
+    is the ledger's where it names him, and a disagreement that an ESPN transactions item in news_dir confirms becomes
+    a ledger row and stops being a disagreement. Without it the intake is as before."""
     unpooled = unpooled or {}
     rows = list(csv.DictReader(open(src, encoding="utf-8")))
     il_exempt = {r["player"] for r in rows if r["player"] in unpooled and r["slot"] == "IL"}
@@ -159,6 +164,8 @@ def run(src, out, pool, abbr, draft, as_of, managers=None, sources=None, unpoole
               + "; ".join(f"{n} ({r['fantasy_team']}, {r['slot']}, {r['nba_team']})"
                           for n in miss for r in [next(x for x in rows if x["player"] == n)]))
     team_of = {p["player"]: p["team"] for p in pool}
+    ledger_rows = team_updates.read(team_ledger) if team_ledger else []
+    team_of = team_updates.overlay(team_of, team_updates.current(ledger_rows))
     teams, order = {}, []
     for r in rows:
         t = r["fantasy_team"]
@@ -205,18 +212,40 @@ def run(src, out, pool, abbr, draft, as_of, managers=None, sources=None, unpoole
         for p in problems:
             print("  -", p)
         return 1
+    updates = []
+    if team_ledger:
+        # owner 2026-11-11 (D3): both sources must agree; Yahoo alone stays flagged below
+        changes = team_updates.decide(disagreements, team_updates.espn_items(news_dir or team_updates.NEWS, as_of),
+                                      team_updates.team_names(), held=team_updates.held(ledger_rows))
+        fl = (sources or {}).get("flaim") or {}
+        receipt = ({"file": fl["pull_file"], "sha256": fl.get("pull_sha256")} if fl.get("pull_file")
+                   else {"file": os.path.relpath(src, KIT) if src.startswith(KIT) else src, "sha256": sha(src)})
+        for c in changes:
+            r = team_updates.row(c, as_of, receipt, ledger_rows + updates)
+            updates.append(r)
+            for t in order:
+                for p in teams[t]["players"]:
+                    if p["player"] == c["player"]:
+                        p["pool_team"] = c["to"]
+        team_updates.append(team_ledger, updates)
+        done = {u["player"] for u in updates}
+        disagreements = [d for d in disagreements if d["player"] not in done]
     flagged = [dict(player=u["player"], fantasy_team=teams[t]["name"], seat=teams[t].get("seat"), slot=u["slot"],
                     nba_team=u["nba_team"], status=u["status"]) for t in order for u in teams[t]["unpooled"]]
     state = {"as_of": as_of, "sources": sources or {}, "unpooled_il": {n: unpooled[n] for n in sorted(il_exempt)},
              "unpooled": flagged, "standings": None, "scoreboard": None,
              "standings_note": "pre-season: no standings or scoreboard exist before week 1 (2026-10-20)",
              "teams": [teams[t] for t in order], "nba_team_disagreements": disagreements}
+    if team_ledger:
+        state["team_updates"] = [{k: u[k] for k in ("id", "player", "from", "to", "espn")} for u in updates]
     with open(out, "w", encoding="utf-8") as f:
         json.dump(state, f, indent=1, ensure_ascii=False)
         f.write("\n")
     n = sum(len(teams[t]["players"]) for t in order)
     print(f"LEAGUE INTAKE: PASS — {len(order)} teams, {n} players, {n} of {n} resolved; {len(flagged)} unpooled; "
-          f"{len(disagreements)} NBA-team disagreement(s) with the pool; wrote {os.path.relpath(out, KIT) if out.startswith(KIT) else out}")
+          f"{len(disagreements)} NBA-team disagreement(s) with the pool; "
+          + (f"{len(updates)} team update ({', '.join(u['player'] + ' ' + u['from'] + ' to ' + u['to'] for u in updates)}); " if team_ledger and updates else "")
+          + f"wrote {os.path.relpath(out, KIT) if out.startswith(KIT) else out}")
     return 0
 
 
@@ -253,7 +282,7 @@ def main():
                                      "method": "agent transcription of the page images (no text layer)"},
                    "draft_board": os.path.relpath(RECAP, KIT), "pool": POOL_LABEL}
     unpooled = json.load(open(UNPOOLED, encoding="utf-8"))["players"] if os.path.exists(UNPOOLED) else {}
-    sys.exit(run(src, OUT, pool, abbr, draft, a.as_of, managers, sources, unpooled))
+    sys.exit(run(src, OUT, pool, abbr, draft, a.as_of, managers, sources, unpooled, team_ledger=team_updates.LEDGER))
 
 
 if __name__ == "__main__":

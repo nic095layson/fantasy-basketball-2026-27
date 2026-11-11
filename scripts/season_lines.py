@@ -36,6 +36,7 @@ import unicodedata
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
+import team_updates  # noqa: E402
 import box_pull as BP  # noqa: E402
 
 KIT = os.path.dirname(HERE)
@@ -274,7 +275,9 @@ def finder(tot):
 
 
 def run(date, actuals, kit_csv=KIT_CSV, deck_csv=DECK_CSV, out_dir=OUT, threshold=0.25, additions_csv=None,
-        overrides_csv=None, state_json=None):
+        overrides_csv=None, state_json=None, team_ledger=None):
+    """team_ledger (owner 2026-11-11, D3): the team-changes ledger. A player it names carries the ledger's club in the
+    team column of both season files; no other cell is touched and the preseason files are not edited."""
     tot = totals(actuals)
     find = finder(tot)
     kit_rows, kit_fields = _read(kit_csv); deck_rows, deck_fields = _read(deck_csv)
@@ -299,6 +302,12 @@ def run(date, actuals, kit_csv=KIT_CSV, deck_csv=DECK_CSV, out_dir=OUT, threshol
             if big:
                 movers.append(dict(name=r["name"], games=t["games"], moved={c: moved[c] for c in big}))
     out_deck = [blend_deck(r, find(r["player"])) for r in deck_rows]
+    moved_team = team_updates.current(team_updates.read(team_ledger)) if team_ledger else {}
+    applied = {}
+    for rows_, key in ((out_kit, "name"), (out_deck, "player")):
+        for r in rows_:
+            if r[key] in moved_team and r["team"] != moved_team[r[key]]:
+                r["team"] = moved_team[r[key]]; applied[r[key]] = moved_team[r[key]]
     os.makedirs(out_dir, exist_ok=True)
     _write(os.path.join(out_dir, "projections_season.csv"), out_kit, kit_fields)
     _write(os.path.join(out_dir, "pool_season.csv"), out_deck, deck_fields)
@@ -306,7 +315,7 @@ def run(date, actuals, kit_csv=KIT_CSV, deck_csv=DECK_CSV, out_dir=OUT, threshol
                threshold=threshold, movers=sorted(movers, key=lambda m: -m["games"]),
                unpooled_with_games=sorted(k for k, v in tot.items() if v["unpooled"] and fold(k) not in auto_names),
                auto_rows=auto_rec, auto_rule=dict(min_games=AUTO_MIN_GAMES, prior_band=[AUTO_PRIOR_LO, AUTO_PRIOR_HI]),
-               tag_overrides=overridden,
+               tag_overrides=overridden, team_updates=[dict(player=n, team=t) for n, t in sorted(applied.items())],
                inputs=dict(kit=os.path.relpath(kit_csv, KIT), deck=deck_csv,
                            state=os.path.relpath(state_json, KIT) if state and state_json else None,
                            additions=os.path.relpath(additions_csv, KIT) if additions_csv and os.path.exists(additions_csv) else None,
@@ -329,7 +338,7 @@ def main():
         print(f"SEASON LINES: FAIL — unreadable actuals record: {e}"); return 1
     try:
         rec = run(a.date, recs, out_dir=a.out, threshold=a.threshold, additions_csv=ADDITIONS, overrides_csv=OVERRIDES,
-                  state_json=STATE)
+                  state_json=STATE, team_ledger=team_updates.LEDGER)
     except ValueError as e:
         print(f"SEASON LINES: FAIL — pool additions, tag overrides or auto rows: {e}"); return 1
     print(f"SEASON LINES: PASS — {a.date}: {rec['records']} box-score records, {rec['players_with_games']} pool players with "

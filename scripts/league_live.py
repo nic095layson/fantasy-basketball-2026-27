@@ -39,6 +39,7 @@ sys.path.insert(0, HERE)
 import run_ledger  # noqa: E402
 import league_intake  # noqa: E402
 import league_moves  # noqa: E402
+import team_updates  # noqa: E402
 
 LEAGUE = "ANTI MARTIN MARTIN CLUB"
 MY_TEAM = "KEL'EL YAXEL HALQUETA"
@@ -287,7 +288,9 @@ def _main():
     old = json.load(open(a.out, encoding="utf-8")) if os.path.exists(a.out) else None
     if old is not None and a.phase == "am":
         old = am_baseline(a.as_of, a.news_dir, old)
-    code = league_intake.run(src, a.out, pool, abbr, draft, a.as_of, managers, sources, unpooled)
+    # owner 2026-11-11 (D3): a team change both Yahoo and an ESPN transactions item agree on is recorded and applied
+    code = league_intake.run(src, a.out, pool, abbr, draft, a.as_of, managers, sources, unpooled,
+                             team_ledger=team_updates.LEDGER, news_dir=a.news_dir)
     if code != 0:
         print("LEAGUE LIVE: HALT — intake refused the pull; league_state.json not touched (last paste stands)")
         return code

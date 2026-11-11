@@ -1,0 +1,160 @@
+{
+ "source": "ESPN public NBA teams list",
+ "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams?limit=50",
+ "fetched": "2026-11-11",
+ "http": 200,
+ "raw_sha256": "9133e21f5de866c269df1d9e6e49bf20cf84b9e856313cabfbdb4e1845895e99",
+ "note": "Pinned 2026-11-11 for team_updates.py: ESPN's own club names, so a transactions item's wording can be read against its source. pool_code is ESPN's abbreviation through box_pull.ESPN_CODE.",
+ "teams": [
+  {
+   "abbreviation": "ATL",
+   "name": "Atlanta Hawks",
+   "pool_code": "ATL"
+  },
+  {
+   "abbreviation": "BOS",
+   "name": "Boston Celtics",
+   "pool_code": "BOS"
+  },
+  {
+   "abbreviation": "BKN",
+   "name": "Brooklyn Nets",
+   "pool_code": "BKN"
+  },
+  {
+   "abbreviation": "CHA",
+   "name": "Charlotte Hornets",
+   "pool_code": "CHA"
+  },
+  {
+   "abbreviation": "CHI",
+   "name": "Chicago Bulls",
+   "pool_code": "CHI"
+  },
+  {
+   "abbreviation": "CLE",
+   "name": "Cleveland Cavaliers",
+   "pool_code": "CLE"
+  },
+  {
+   "abbreviation": "DAL",
+   "name": "Dallas Mavericks",
+   "pool_code": "DAL"
+  },
+  {
+   "abbreviation": "DEN",
+   "name": "Denver Nuggets",
+   "pool_code": "DEN"
+  },
+  {
+   "abbreviation": "DET",
+   "name": "Detroit Pistons",
+   "pool_code": "DET"
+  },
+  {
+   "abbreviation": "GS",
+   "name": "Golden State Warriors",
+   "pool_code": "GSW"
+  },
+  {
+   "abbreviation": "HOU",
+   "name": "Houston Rockets",
+   "pool_code": "HOU"
+  },
+  {
+   "abbreviation": "IND",
+   "name": "Indiana Pacers",
+   "pool_code": "IND"
+  },
+  {
+   "abbreviation": "LAC",
+   "name": "LA Clippers",
+   "pool_code": "LAC"
+  },
+  {
+   "abbreviation": "LAL",
+   "name": "Los Angeles Lakers",
+   "pool_code": "LAL"
+  },
+  {
+   "abbreviation": "MEM",
+   "name": "Memphis Grizzlies",
+   "pool_code": "MEM"
+  },
+  {
+   "abbreviation": "MIA",
+   "name": "Miami Heat",
+   "pool_code": "MIA"
+  },
+  {
+   "abbreviation": "MIL",
+   "name": "Milwaukee Bucks",
+   "pool_code": "MIL"
+  },
+  {
+   "abbreviation": "MIN",
+   "name": "Minnesota Timberwolves",
+   "pool_code": "MIN"
+  },
+  {
+   "abbreviation": "NO",
+   "name": "New Orleans Pelicans",
+   "pool_code": "NOP"
+  },
+  {
+   "abbreviation": "NY",
+   "name": "New York Knicks",
+   "pool_code": "NYK"
+  },
+  {
+   "abbreviation": "OKC",
+   "name": "Oklahoma City Thunder",
+   "pool_code": "OKC"
+  },
+  {
+   "abbreviation": "ORL",
+   "name": "Orlando Magic",
+   "pool_code": "ORL"
+  },
+  {
+   "abbreviation": "PHI",
+   "name": "Philadelphia 76ers",
+   "pool_code": "PHI"
+  },
+  {
+   "abbreviation": "PHX",
+   "name": "Phoenix Suns",
+   "pool_code": "PHX"
+  },
+  {
+   "abbreviation": "POR",
+   "name": "Portland Trail Blazers",
+   "pool_code": "POR"
+  },
+  {
+   "abbreviation": "SAC",
+   "name": "Sacramento Kings",
+   "pool_code": "SAC"
+  },
+  {
+   "abbreviation": "SA",
+   "name": "San Antonio Spurs",
+   "pool_code": "SAS"
+  },
+  {
+   "abbreviation": "TOR",
+   "name": "Toronto Raptors",
+   "pool_code": "TOR"
+  },
+  {
+   "abbreviation": "UTAH",
+   "name": "Utah Jazz",
+   "pool_code": "UTA"
+  },
+  {
+   "abbreviation": "WSH",
+   "name": "Washington Wizards",
+   "pool_code": "WAS"
+  }
+ ]
+}
