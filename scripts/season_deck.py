@@ -1012,18 +1012,22 @@ function keepTyping(inp, rerender){ const had=document.activeElement===inp, a=in
   if(had){ inp.focus(); try{ inp.setSelectionRange(a,b); }catch(e){} } }
 /* Build strip (owner 2026-10-20): each team's per-category z totals over its ACTIVE on-board roster (IL counts 0,
    owner rule D-IS-8); your rank = 1 + teams strictly higher. A picked move re-totals the rosters it touches. */
-function activeNames(team, delta){ const R=D.league.rosters[team]||{players:[],il:[]}; const il=new Set(R.il||[]);
-  let ns=R.players.filter(n=>!il.has(n));
+function activeNames(team, delta, withIL){ const R=D.league.rosters[team]||{players:[],il:[]}; const il=new Set(R.il||[]);
+  let ns=withIL? R.players.slice() : R.players.filter(n=>!il.has(n));
   if(delta){ ns=ns.filter(n=>!delta.out.has(n)); delta.inc.forEach(n=>{ if(ns.indexOf(n)<0) ns.push(n); }); }
   return ns; }
 function catTotals(names){ const t={}; CATS.forEach(c=>t[c]=0);
   names.forEach(n=>{ const r=BYNAME[n]; if(r) CATS.forEach(c=>{ t[c]+=r.z[c]; }); }); return t; }
-function leagueRanks(deltas){ const teams=Object.keys(D.league.rosters); const tot={};
-  teams.forEach(t=>{ tot[t]=catTotals(activeNames(t, deltas&&deltas[t])); });
+function leagueRanks(deltas, withIL){ const teams=Object.keys(D.league.rosters); const tot={};
+  teams.forEach(t=>{ tot[t]=catTotals(activeNames(t, deltas&&deltas[t], withIL)); });
   const mine=tot[D.my_team], ranks={};
   CATS.forEach(c=>{ ranks[c]=1; teams.forEach(t=>{ if(t!==D.my_team && tot[t][c]>mine[c]) ranks[c]++; }); });
   return ranks; }
 const RANKS0=leagueRanks(null), NTEAMS=Object.keys(D.league.rosters).length;
+/* owner 2026-11-12 (council verdict, "My build" at full health): the same ranks with every team's IL players counted as
+   active (those on the board; a held player counts nothing either way), before any cuts to make room, so a category that is weak only because someone is hurt can be told from a
+   lasting one. Display only; the build strip keeps the owner's IL-counts-0 rule (D-IS-8). */
+const RANKS_FH=leagueRanks(null,true), ANY_IL=Object.values(D.league.rosters).some(R=>(R.il||[]).length>0);
 /* owner 2026-11-12 ("Punt-aware build view", then "have punt chips drive the trade analyzer as well"): one set of
    switched-off categories shared by the Board's fit column and the Trade Analyzer / Free Agents verdicts. Display only. */
 const PUNT_OFF=new Set(), puntSubs=[], PUNT_WEAK=Math.max(NTEAMS-((D.punt||{}).weak_rank_from||3)+1, Math.ceil(NTEAMS/2)+1);
@@ -1033,6 +1037,8 @@ function puntChips(pfx){ return h("div",{id:pfx+"-punt",class:"mode",style:"flex
     onclick:()=>puntSet(o=>{ o.has(c)? o.delete(c) : o.add(c); })},c==="TOV"?"TO":c)),
   h("button",{id:pfx+"-mybuild",class:"resetbtn",title:"Leave out the categories where your team ranks "+PUNT_WEAK+"th or worse of "+NTEAMS,
     onclick:()=>puntSet(o=>{ o.clear(); CATS.forEach(c=>{ if(RANKS0[c]>=PUNT_WEAK) o.add(c); }); })},"My build"),
+  ANY_IL? h("button",{id:pfx+"-fullhealth",class:"resetbtn",title:"Leave out the categories where your team would rank "+PUNT_WEAK+"th or worse of "+NTEAMS+" with every team's IL players counted as active",
+    onclick:()=>puntSet(o=>{ o.clear(); CATS.forEach(c=>{ if(RANKS_FH[c]>=PUNT_WEAK) o.add(c); }); })},"Full health") : null,
   h("button",{id:pfx+"-allcats",class:"resetbtn",onclick:()=>puntSet(o=>o.clear())},"All nine")); }
 function buildStrip(id, deltas, active){ const after=active? leagueRanks(deltas) : null;
   return h("div",{id:id},h("h2",{},"Your build — rank 1–"+NTEAMS+" vs the league"),
@@ -1136,14 +1142,19 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
   puntSubs.push(render); render();
 })();
 // owner 2026-11-12 (card: "Trending-up screen"): free agents whose last 3 games run above the games before them in
-// minutes or in usage, from the morning's form record (form_board.py). Display only; nothing ranks or simulates on it.
+// minutes, from the morning's form record (form_board.py), with usage beside it. Display only; nothing ranks or
+// simulates on it. Council verdict the same evening: a usage rise alone no longer lists a player. Backtest on box scores
+// 10-20 to 11-11, missed team games counted as zero: 160 usage-only flags gained +0.2 minutes (95% -1.0 to +1.3) and
+// -0.1 points (-0.9 to +0.6) per team game over the next three against unflagged players, and appeared in fewer of
+// them; the 71 minutes flags with five later games ran 16 minutes before, 25 in the flagged three, 24 and 23 after.
+// Script and output: report/after-reports/followups-2026-11-12/trend_backtest.py, .txt.
 function trendingCard(){ const F=D.form; if(!F||!F.rows) return null;
-  const M=F.method||{}, up=F.rows.filter(r=>r.fa&&(r.trend==="up"||(r.usg_trend==="up"&&r.trend!=="down")));   // usage up on falling minutes is not a rise
+  const M=F.method||{}, up=F.rows.filter(r=>r.fa&&r.trend==="up");
   const dm=(r)=>(r.last3_mpg==null||r.prior_mpg==null)?-99:r.last3_mpg-r.prior_mpg;
   up.sort((x,y)=>dm(y)-dm(x));
   const card=h("div",{class:"card",id:"fa-trending"},h("h2",{},"Trending up — free agents"),
     noteMore("Last 3 games against the games before them · box scores through "+((F.window||[])[1]||"—"),
-      "A free agent is listed when his minutes are up "+M.trend_min+" or more, or his usage is up "+(M.usg_trend_min==null?"—":M.usg_trend_min)+" points or more, over his last 3 games against his earlier games (from "+M.trend_min_games+" games played). A player whose usage is up while his minutes are down by that much is left off. Usage is the share of his team's possessions he uses while on the floor: shots, free-throw trips and turnovers. A rise in minutes or usage often comes before the box-score numbers follow. This is a list to look at, not a recommendation: nothing here is ranked by value or simulated."));
+      "A free agent is listed when his minutes are up "+M.trend_min+" or more over his last 3 games against his earlier games (from "+M.trend_min_games+" games played). Usage is shown beside it: the share of his team's possessions he uses while on the floor (shots, free-throw trips and turnovers)"+(M.usg_trend_min==null?"":", marked ▲ when it is up "+M.usg_trend_min+" points or more")+". A usage rise alone does not list a player: through 11 November, players flagged on usage only gained no minutes or points over their team's next three games. A minutes rise has tended to last. This is a list to look at, not a recommendation: nothing here is ranked by value or simulated."));
   if(!up.length){ card.append(h("p",{class:"zero"},"No free agent is trending up on these thresholds today.")); return card; }
   const ar=(t)=>t==="up"?"▲ ":"";
   card.append(h("div",{class:"tablebox"},h("table",{},
@@ -1213,7 +1224,7 @@ function trendingCard(){ const F=D.form; if(!F||!F.rows) return null;
       D.board.held.length? "Held off the board: "+D.board.held.join(", ")+"." : null),
     h("div",{class:"pick"},inp,h("label",{style:"display:flex;align-items:center;gap:6px"},faBox,"free agents only")),
     noteMore("Fit for your build: switch a category off to leave it out of every player's value",
-      "A category you are conceding should not count for or against a player. With one or more switched off, the table adds a fit column (the sum of the categories still on, with the board's own availability discount) and sorts by it. My build switches off the categories where your team ranks "+WEAK+"th or worse of "+NTEAMS+" today. The # and z adj columns never change, and the simulator does not read this."),
+      "A category you are conceding should not count for or against a player. With one or more switched off, the table adds a fit column (the sum of the categories still on, with the board's own availability discount) and sorts by it. My build switches off the categories where your team ranks "+WEAK+"th or worse of "+NTEAMS+" today, with IL players counting nothing."+(ANY_IL?" Full health does the same with every team's IL players counted as active (those the board ranks), before any cuts to make room: use it to tell a category that is weak for good from one that is weak only while someone is hurt.":"")+" The # and z adj columns never change, and the simulator does not read this."),
     chips, tbl);
   function cmpRender(){ const a=ca&&rows.find(r=>r.name===ca), b=cb&&rows.find(r=>r.name===cb);
     const sel=(id,val,on)=>h("select",{id:id,onchange:(e)=>on(e.target.value)},h("option",{value:""},"pick a player"),
