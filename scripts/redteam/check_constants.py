@@ -40,6 +40,8 @@ IGNORE = {"arena": {"ARENA_DIR", "REPO", "DATA", "CATS", "BASE_POS", "STRATEGIES
                            "OVERRIDES", "OVERRIDE_FIELDS", "STATE"},
           # the minutes-trend candidate line (2026-10-27, build 2): paths and column lists are not judgment constants
           "minutes_line": {"HERE", "KIT", "SEASON", "ACTUALS", "POOL", "KIT_CSV", "PRE_KIT", "SCALED", "DEC"},
+          # the threes-split candidate line (2026-11-12): paths are not judgment constants
+          "threes_line": {"HERE", "KIT", "SEASON", "ACTUALS", "POOL", "KIT_CSV", "PRE_KIT", "PRIOR"},
           # the waiver gate's status tiers (2026-10-28, D-WS-1): paths, the owner's seat, the lines tag, the team-code
           # map and the category alias are identifiers, not judgment constants
           "co_gm": {"KIT", "DECK", "STATE", "SCHEDULE", "GAMES", "OWNER_SEAT", "LINES_TAG", "TEAM_CODE", "CATS"},
@@ -81,12 +83,13 @@ def read_live(deck=DECK):
         sys.path.insert(0, kit_scripts)
     season_lines = importlib.import_module("season_lines")
     minutes_line = importlib.import_module("minutes_line")
+    threes_line = importlib.import_module("threes_line")
     co_gm = importlib.import_module("co_gm")
     status_feed = importlib.import_module("status_feed")
     decision_grade = importlib.import_module("decision_grade")
     il_return = importlib.import_module("il_return")
     live = {}
-    for modname, mod in (("arena", arena), ("hoops", hoops), ("season_lines", season_lines), ("minutes_line", minutes_line),
+    for modname, mod in (("arena", arena), ("hoops", hoops), ("season_lines", season_lines), ("minutes_line", minutes_line), ("threes_line", threes_line),
                          ("co_gm", co_gm), ("status_feed", status_feed), ("decision_grade", decision_grade),
                          ("il_return", il_return)):
         for name, val in vars(mod).items():

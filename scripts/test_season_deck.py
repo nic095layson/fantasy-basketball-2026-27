@@ -2498,3 +2498,121 @@ class IlReturnOneWorld(unittest.TestCase):
         t = self.page([("never", 15.0), ("on_time", 25.0), ("late_2", 22.0), ("late_4", 20.0)])
         self.assertIn("if they return (20.0 to 25.0 across on time / +2 wk / +4 wk)", t)
         self.assertIn("Scenario range, not a forecast", t)
+
+
+def season_board_dom(html_path, clicks):
+    """Open the Board tab, click the named selectors in order, and read the table's header and rows."""
+    from playwright.sync_api import sync_playwright
+    with sync_playwright() as p:
+        b, exe, tried = DRC._launch(p)
+        try:
+            pg = b.new_page(); errs = []
+            pg.on("pageerror", lambda e: errs.append(str(e)))
+            pg.route(re.compile(r"^https?://"), lambda r: r.abort())
+            pg.goto("file://" + os.path.abspath(html_path), wait_until="load")
+            pg.click("nav.tabs button:has-text('Board')")
+            for sel in clicks:
+                pg.click(sel)
+            return dict(errors=errs,
+                        head=pg.evaluate("() => [...document.querySelectorAll('#pane-board table tr:first-child th')].map(x=>x.textContent.replace(/[ ↑↓]/g,''))"),
+                        rows=pg.evaluate("() => [...document.querySelectorAll('#pane-board table tr')].slice(1).map(r=>[...r.cells].map(c=>c.textContent))"),
+                        off=pg.evaluate("() => [...document.querySelectorAll('#bd-punt button[aria-pressed=false]')].map(x=>x.dataset.cat)"),
+                        text=pg.evaluate("() => document.querySelector('#pane-board').textContent"))
+        finally:
+            b.close()
+
+
+class PuntView(unittest.TestCase):
+    """Owner 2026-11-12 (card: "Punt-aware build view"): category chips on the Board; a category switched off leaves
+    every player's sum, the table adds a fit column and sorts by it. Display only: # and z adj never change."""
+    CATS = ["FG%", "FT%", "3PM", "PTS", "REB", "AST", "STL", "BLK", "TOV"]
+
+    def setUp(self):
+        self.d = tempfile.mkdtemp(); self.fx = fixtures(self.d)
+        b = json.load(open(self.fx["board"]))
+        z = lambda **kw: {c: kw.get(c.replace("%", "p").replace("3PM", "tpm"), 0.0) for c in self.CATS}
+        # Alpha Man: 3.0 of his 4.0 is assists. Free Agent: 3.0 spread over rebounds and blocks. gp 82 -> availability 1.0.
+        b["board"] = [dict(rank=1, name="Alpha Man", team="DEN", pos="PG", gp=82.0, z_adj=4.0, z_total=4.0, z=z(AST=3.0, PTS=1.0)),
+                      dict(rank=2, name="Free Agent", team="GSW", pos="C", gp=82.0, z_adj=3.0, z_total=3.0, z=z(REB=1.5, BLK=1.5)),
+                      dict(rank=3, name="Bench Guy", team="DAL", pos="SF", gp=41.0, z_adj=1.5, z_total=2.0, z=z(PTS=2.0))]
+        b["n_rows"] = 3
+        json.dump(b, open(self.fx["board"], "w"))
+        html, self.data, _ = SD.build(self.fx, date="2026-10-21")
+        self.p = os.path.join(self.d, "deck.html")
+        with open(self.p, "w", encoding="utf-8") as f:
+            f.write(html)
+
+    def test_with_every_category_on_the_table_is_as_before(self):
+        d = season_board_dom(self.p, [])
+        self.assertEqual(d["errors"], []); self.assertNotIn("fit", d["head"]); self.assertEqual(d["off"], [])
+        self.assertEqual([r[1].split(" · ")[0] for r in d["rows"]], ["Alpha Man", "Free Agent", "Bench Guy"])
+
+    def test_assists_off_reorders_by_fit_and_leaves_rank_and_z_adj_alone(self):
+        d = season_board_dom(self.p, ["#bd-punt button[data-cat='AST']"])
+        self.assertEqual(d["errors"], []); self.assertEqual(d["off"], ["AST"]); self.assertIn("fit", d["head"])
+        i = d["head"].index("fit"); by = {r[1].split(" · ")[0]: r for r in d["rows"]}
+        self.assertEqual([r[1].split(" · ")[0] for r in d["rows"]], ["Free Agent", "Bench Guy", "Alpha Man"])
+        self.assertEqual(float(by["Free Agent"][i]), 3.0)                 # nothing of his is assists
+        self.assertEqual(float(by["Alpha Man"][i]), 1.0)              # 4.0 - 3.0 assists
+        r = self.data["punt"]["stream_r"]                          # Bench Guy: 2.0 x (0.5 + 0.5 x r)
+        self.assertAlmostEqual(float(by["Bench Guy"][i]), round(2.0 * (0.5 + 0.5 * r), 2), places=2)
+        self.assertEqual(by["Alpha Man"][0], "1"); self.assertEqual(float(by["Alpha Man"][d["head"].index("zadj")]), 4.0)
+
+    def test_all_nine_puts_it_back(self):
+        d = season_board_dom(self.p, ["#bd-punt button[data-cat='AST']", "#bd-allcats"])
+        self.assertEqual(d["off"], []); self.assertNotIn("fit", d["head"])
+        self.assertEqual([r[1].split(" · ")[0] for r in d["rows"]], ["Alpha Man", "Free Agent", "Bench Guy"])
+
+
+def trending_dom(html_path):
+    from playwright.sync_api import sync_playwright
+    with sync_playwright() as p:
+        b, exe, tried = DRC._launch(p)
+        try:
+            pg = b.new_page(); errs = []
+            pg.on("pageerror", lambda e: errs.append(str(e)))
+            pg.route(re.compile(r"^https?://"), lambda r: r.abort())
+            pg.goto("file://" + os.path.abspath(html_path), wait_until="load")
+            pg.click("nav.tabs button:has-text('Free Agents')")
+            return dict(errors=errs,
+                        text=pg.evaluate("() => { const c=document.querySelector('#pane-fa #fa-trending'); return c? c.textContent : null }"),
+                        rows=pg.evaluate("() => [...document.querySelectorAll('#fa-trending table tr')].slice(1).map(r=>[...r.cells].map(c=>c.textContent))"))
+        finally:
+            b.close()
+
+
+class TrendingUp(unittest.TestCase):
+    """Owner 2026-11-12 (card: "Trending-up screen"): the Free Agents tab lists free agents whose last 3 games run above
+    the games before them in minutes or usage, from the form record. Rostered players never appear. Display only."""
+    def build(self, edit):
+        d = tempfile.mkdtemp(); fx = fixtures(d); fr = form_record(); fr["method"]["usg_trend_min"] = 4.0
+        edit({r["name"]: r for r in fr["rows"]}, fr)
+        fx["form"] = os.path.join(d, "form.json")
+        with open(fx["form"], "w") as f:
+            json.dump(fr, f)
+        html, _, _ = SD.build(fx, date="2026-10-21")
+        p = os.path.join(d, "deck.html")
+        with open(p, "w", encoding="utf-8") as f:
+            f.write(html)
+        return trending_dom(p)
+
+    def test_a_free_agent_up_in_minutes_or_usage_is_listed_and_a_rostered_player_is_not(self):
+        def edit(by, fr):
+            by["Free Agent"].update(games=6, trend="up", last3_mpg=28.0, prior_mpg=19.0, usg_trend="flat", last3_usg=18.0, prior_usg=17.0)
+            by["Hurt FA"].update(games=5, trend="flat", last3_mpg=20.0, prior_mpg=19.0, usg_trend="up", last3_usg=24.5, prior_usg=18.0, status="Q")
+            by["Bench Guy"].update(games=6, trend="up", last3_mpg=30.0, prior_mpg=12.0, usg_trend="up", last3_usg=30.0, prior_usg=10.0)   # rostered
+            fr["rows"].append(dict(by["Free Agent"], name="Fading FA", trend="down", last3_mpg=12.0, prior_mpg=24.0, usg_trend="up", last3_usg=25.0, prior_usg=17.0))
+        d = self.build(edit)
+        self.assertEqual(d["errors"], [])
+        self.assertEqual([r[0] for r in d["rows"]], ["Free Agent · GSW", "Hurt FA · MIA"])        # by minutes gained: +9, then +1
+        self.assertEqual(d["rows"][0][2:6], ["▲ 28.0", "19.0", "18.0%", "17.0%"])
+        self.assertEqual(d["rows"][1][2:7], ["20.0", "19.0", "▲ 24.5%", "18.0%", "Q"])
+        self.assertNotIn("Bench Guy", d["text"]); self.assertNotIn("Fading FA", d["text"])   # usage up on minutes down is not a rise
+
+    def test_nobody_trending_says_so_and_an_older_record_without_usage_still_draws(self):
+        d = self.build(lambda by, fr: None)                              # the fixture's rows carry no trend
+        self.assertEqual(d["errors"], []); self.assertIn("No free agent is trending up", d["text"])
+        def old(by, fr):
+            fr["method"].pop("usg_trend_min"); by["Free Agent"].update(games=6, trend="up", last3_mpg=28.0, prior_mpg=19.0)
+        d = self.build(old)
+        self.assertEqual(d["errors"], []); self.assertEqual(d["rows"][0][0], "Free Agent · GSW"); self.assertEqual(d["rows"][0][4], "—")

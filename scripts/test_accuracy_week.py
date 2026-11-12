@@ -130,6 +130,36 @@ class Snapshots(unittest.TestCase):
         g = AW.grade_snapshots(3, self.games, self.d)
         self.assertIn("note", g["candidate_minutes"]); self.assertEqual(g["in_season"]["players"], 1)
 
+class ThreesCandidate(unittest.TestCase):
+    """Owner 2026-11-12 (card: "Split threes into attempts and %"): the threes-split snapshot is graded beside the
+    in-season line on threes made; a week without it names the gap; the card prints the comparison."""
+    def setUp(self):
+        import csv, tempfile
+        self.d = tempfile.mkdtemp()
+        for name, tpm in (("lines_week3.csv", "1.0"), ("lines_week3_3s.csv", "2.0")):
+            with open(os.path.join(self.d, name), "w", newline="") as f:
+                w = csv.DictWriter(f, fieldnames=["player", "pts", "reb", "ast", "stl", "blk", "tpm", "tov", "fg_pct", "fga", "ft_pct", "fta"])
+                w.writeheader(); w.writerow(dict(player="A", pts="12", reb="0", ast="0", stl="0", blk="0", tpm=tpm, tov="0", fg_pct="0.5", fga="10", ft_pct="0.8", fta="2"))
+        self.games = {"A": [dict(box(12), tpm=2), dict(box(12), tpm=2)]}
+
+    def test_the_candidate_is_graded_on_threes_and_a_missing_file_is_named(self):
+        g = AW.grade_snapshots(3, self.games, self.d)
+        self.assertAlmostEqual(g["in_season"]["cats"]["tpm"]["mae"], 1.0); self.assertAlmostEqual(g["candidate_threes"]["cats"]["tpm"]["mae"], 0.0)
+        os.remove(os.path.join(self.d, "lines_week3_3s.csv"))
+        self.assertIn("note", AW.grade_snapshots(3, self.games, self.d)["candidate_threes"])
+
+    def test_the_card_prints_the_threes_table_and_an_older_week_reads_no_snapshot(self):
+        g = AW.grade_snapshots(3, self.games, self.d)
+        pre = dict(players=1, cats=g["in_season"]["cats"])
+        rest = dict(availability={}, owner={}, matchups={})
+        rec = dict(weeks={"2": dict(rest, lines=dict(preseason=pre, in_season=g["in_season"])), "3": dict(rest, lines=dict(preseason=pre, **g))})
+        md = AW.render(rec)
+        self.assertIn("## Player lines: threes made per game", md)
+        t = md.split("## Player lines: threes made per game")[1].split("##")[0]
+        self.assertIn("no snapshot", [l for l in t.splitlines() if l.startswith("| 2 |")][0])
+        self.assertIn("1.00 / 2.00", [l for l in t.splitlines() if l.startswith("| 3 |")][0]); self.assertIn("2.00 / 2.00", t)
+        self.assertIn("D-TS-1", md)
+
 class RealWeekOne(unittest.TestCase):
     """The back-fill reproduces the 2026-10-27 audit (preseason lines, players with 2+ games, Oct 20-25)."""
     def test_week_one_matches_the_audit(self):

@@ -179,6 +179,10 @@ def snapshot(week, src=None, dst_dir=SNAPSHOTS, state=None, status=None):
     mt = os.path.join(os.path.dirname(src), "pool_season_mt.csv")
     if os.path.exists(mt):
         pairs.append((mt, os.path.join(dst_dir, f"lines_week{week}_mt.csv")))
+    # owner 2026-11-12 (card: "Split threes into attempts and %"): the threes-split candidate pool, when it exists
+    th = os.path.join(os.path.dirname(src), "pool_season_3s.csv")
+    if os.path.exists(th):
+        pairs.append((th, os.path.join(dst_dir, f"lines_week{week}_3s.csv")))
     # owner 2026-10-27 (build 3): the rosters and the day's status file the week's forecasts rest on, for the Monday fit
     for extra, name in ((state, f"state_week{week}.json"), (status, f"status_week{week}.json")):
         if extra and os.path.exists(extra):
