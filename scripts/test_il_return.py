@@ -50,6 +50,18 @@ class Dates(unittest.TestCase):
         self.assertEqual(got, {"Tyrese Haliburton": ("Tyrese Haliburton", 4), "Naji Marshall": (None, None), "Cameron Johnson": ("Cam Johnson", 2)})
         self.assertNotIn("A", got)
 
+    def test_an_unpooled_il_slot_player_the_pool_has_a_row_for_is_an_il_player(self):
+        # owner pick 2026-11-12 (the A-10 re-run): off this list he played every week in every return world
+        state = {"teams": [{"seat": 5, "name": "T5", "players": [{"player": "Jalen Suggs", "slot": "IL"}, {"player": "A", "slot": "PG"}],
+                            "unpooled": [{"player": "Nolan Traore", "slot": "IL"}, {"player": "Bench Rookie", "slot": "BN"},
+                                         {"player": "No Row", "slot": "IL"}]}]}
+        rows = [{"player": "Nolan Traore", "status": "Out", "return_date": "2026-11-13"}]
+        with __import__("unittest.mock").mock.patch.object(IR.CG, "week_of", week_of):
+            il = IR.il_players(state, rows, "2026-10-31", WEEKS, aliases={}, by={"Nolan Traore": {}, "Bench Rookie": {}, "Jalen Suggs": {}})
+            old = IR.il_players(state, rows, "2026-10-31", WEEKS, aliases={})
+        self.assertEqual({x["player"]: x["week"] for x in il}, {"Jalen Suggs": None, "Nolan Traore": 4})
+        self.assertEqual([x["player"] for x in old], ["Jalen Suggs"])     # without the pool, the list as before
+
 
 class Windows(unittest.TestCase):
     def setUp(self):

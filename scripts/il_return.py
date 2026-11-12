@@ -72,15 +72,20 @@ def return_week(ret_date, run_date, weeks, week_of=CG.week_of):
     return w if w <= weeks else None
 
 
-def il_players(state, espn_rows, run_date, weeks, aliases=None):
+def il_players(state, espn_rows, run_date, weeks, aliases=None, by=None):
     """Every IL-slot player league-wide with his ESPN row and base return week: [{seat, team, player, espn, status,
-    return_date, week}] (week None = never)."""
+    return_date, week}] (week None = never). With `by` (the pool in use, {name: row}), a team's unpooled IL-slot
+    players that the pool has a row for are IL players too (owner pick 2026-11-12, the A-10 re-run's finding: since
+    2026-11-09 co_gm.team_roster(include_il=True) simulates them, and off this list they played every week in every
+    return world, with no return week and no roster-room drop)."""
     index = box_pull.name_index([r["player"] for r in espn_rows], aliases if aliases is not None else box_pull.load_aliases())
     espn = {r["player"]: r for r in espn_rows}
     out = []
     for t in state["teams"]:
-        for p in t["players"]:
-            if p["slot"] != "IL":
+        listed = {p["player"] for p in t["players"]}
+        extra = [u for u in t.get("unpooled") or [] if by is not None and u.get("player") in by and u["player"] not in listed]
+        for p in list(t["players"]) + extra:
+            if p.get("slot") != "IL":
                 continue
             hit = box_pull.match_name(p["player"], index)
             r = espn.get(hit) if hit else None
@@ -255,7 +260,7 @@ def main(argv=None):
         print(f"IL RETURN: HALT no ESPN injury pin on or before {a.date} in {os.path.relpath(a.status_dir, KIT)}")
         return 2
     P, by = CG.load_pool()
-    il = il_players(state, rows, a.date, weeks)
+    il = il_players(state, rows, a.date, weeks, by=by)
     work = tempfile.mkdtemp()
     sc = run_scenarios(state, by, il, weeks, a.seasons, work, room=not a.no_room, checks=a.checks)
     rec = dict(date=a.date, week=CG.week_of(a.date)[0], weeks=weeks, seasons=a.seasons, seeds=list(SEEDS),

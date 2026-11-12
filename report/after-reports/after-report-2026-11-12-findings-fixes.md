@@ -8,7 +8,7 @@ Pull window: 2026-10-17 → 2026-11-12 (no pull: kit main 94117d8 plus this bran
 
 **Method up front.** Each fix's parameters were shown to the owner in one plan table before any file was written. Tests first for F1, F2 and F3. F1 and F2 were then replayed on a scratch copy of this morning's records (commit c14c1ec with this branch's scripts). F3's exemplar, attack A-10, was re-run with its known-answer checks at the script's default (10,000 seasons, seeds 2026 and 2027). F4 ran four drop pairs under the baseline and the ten sweep variants whose shift on 2026-11-12 was not zero, at the sweep's own setting (6,000 seasons, seeds 2026 and 2027), on the afternoon state and season pool, real schedule, returns Tyrese Haliburton 2026-11-21 and Kawhi Leonard 2026-11-23 (reported dates, not confirmed; the same as the 2026-11-11 run).
 
-**Verdict: F1, F2 and F4 are fixed and verified. F3's mechanism is built and tested and is live on the new drop-order attack, but its exemplar could not be switched over: re-running A-10 failed one known-answer check, which exposed a real defect in the "if IL players return" figure (two rivals' IL players are counted as playing every week). That defect is reported here and left for the owner's pick, not fixed.**
+**Verdict: all four findings are fixed and verified. F3's re-run of attack A-10 first failed one known-answer check, which exposed a real defect in the "if IL players return" figure (two rivals' IL players were counted as playing every week). The owner picked "Fix it now" on a card; with the fix every check passes, A-10 carries the new fingerprint, and that figure moves from 25.1% to 26.8% on this morning's records. The headline title odds (20.2%) are unchanged.**
 
 Runner impact: code-only — the morning sequence gains one step ("manager log", 24 steps on a fetch morning, was 23). The Runner's prompt already calls get_transactions and the dated rosters before `morning.py`, so nothing in the prompt has to change; its later standalone manager-log call finds the same rows and writes the same bytes. One visible change: a manager-log HALT now appears in the morning record as a failed non-fatal step, so the run watch will alert on it, as it does for every other step.
 
@@ -18,12 +18,12 @@ Runner impact: code-only — the morning sequence gains one step ("manager log",
 |---|---|---|---|
 | F1 moves file rewritten after the deck pinned it | `manager_log.py` ran after `morning.py`; no ledger row. This morning's deck pinned yesterday's file (146 moves) while the commit carried 156 | A non-fatal step "manager log <yesterday>" right after the box scores, on fetch mornings, with the run's `--since`; it precedes the brief, the week card and the deck | Replay on c14c1ec with yesterday's moves file restored: step PASS; a second run left all 22 files under `data/managers/` byte-identical; the rebuilt deck's `league_tx` pin equals the file (3883cedc839c79dc both) |
 | F2 sweep labelled "current rosters" at three days old | "season sweep of 2026-11-09 (current rosters, season pool, real schedule)" | "season sweep of 2026-11-09 (3 days old; rosters of that date, season pool, real schedule)" on the brief and the deck; "made today" on a Monday | The rebuilt deck of 2026-11-12 prints the new label; four label tests |
-| F3 attack fingerprint ignored kit scripts | A record read CURRENT whenever the deck engine was unchanged | An attack may list `kit_files`; its record carries their sha256 (`fingerprint.kit_sha256`); a changed file, or a record with no hash, reads STALE and fails the gate | Four tests (one changed byte flips CURRENT to STALE); live on A-11. A-10 not switched: see section 2 |
+| F3 attack fingerprint ignored kit scripts | A record read CURRENT whenever the deck engine was unchanged | An attack may list `kit_files`; its record carries their sha256 (`fingerprint.kit_sha256`); a changed file, or a record with no hash, reads STALE and fails the gate | Four tests (one changed byte flips CURRENT to STALE); live on A-10 (after the section 2 fix) and A-11 |
 | F4 drop order had sampling error only | Four figures from 2026-11-11, each ± 0.5 | The four pairs under 11 configurations; record and script on the attack list as A-11 | Section 3 |
 
 `il_return.py` also gains `--checks --attack-record PATH`, which writes A-10's known-answer record with the script's own hash, so the record no longer depends on a hand-assembled file.
 
-## 2. What the A-10 re-run found (new, not fixed)
+## 2. What the A-10 re-run found, and its fix
 
 | Check | Result |
 |---|---|
@@ -37,7 +37,21 @@ EVIDENCE for the cause, read from the code and today's state: since PR #246 (202
 
 INFERENCE: the brief's "if IL players return" figure, and every figure this session quoted from that scenario on 2026-11-11 and 11-12, is too low for the owner by about the size of the failed check's gap, 1.7 points at 10,000 seasons × 2 seeds (± 0.56). The size on the on-time world itself was not measured.
 
-The standing A-10 row still names the 2026-10-31 record and reads CURRENT by the deck fingerprint; the row carries a `kit_files_pending` note, and the failed record is at `findings-fix-2026-11-12/rt_il_return_2026-11-12_FAILED.json`.
+The failed record is kept at `findings-fix-2026-11-12/rt_il_return_2026-11-12_FAILED.json`.
+
+**The fix (owner's card pick, 2026-11-12: "Fix it now").** `il_return.il_players` takes the pool in use and lists a team's unpooled IL-slot players that the pool has a row for; `main` passes the pool. One test. Re-run on this morning's records (c14c1ec), 10,000 seasons, seeds 2026 and 2027:
+
+| Figure | Morning record | With the fix |
+|---|---|---|
+| IL players counted | 20 | 22 |
+| every return after the last week, by seed | 18.68 / 18.45 (in the failed re-run) | 20.56 / 19.92, equal to the headline |
+| never (the headline) | 20.24 | 20.24 |
+| if IL players return on ESPN's dates | 25.09 | 26.80 |
+| only the owner's IL players return | 36.11 | 38.53 |
+| room rule off | 34.25 | 34.25 |
+| ROOM_RULE_ON band | +9.2 (rule off), FRAGILE | +7.4 (rule off), FRAGILE |
+
+Each ± 0.56. All four live checks pass (`findings-fix-2026-11-12/rt_il_return.json`); A-10's registry row names that record and `kit_files: scripts/il_return.py`. The brief shows the corrected figure from the first morning run after this merges.
 
 ## 3. F4: the drop order under the sweep's variants
 
@@ -66,7 +80,7 @@ Title odds, mean of two seeds, 6,000 seasons each. Sampling error about ± 0.8 o
 
 **What holds:** do not cut Washington. **What does not separate:** the three pairs without him sit within one sampling error of each other in most configurations; the model does not choose among Queta, Champagnie and Cam Johnson, so that choice is the owner's read (his 2026-11-12 instinct: Queta first).
 
-Caveat that applies to every cell: the defect in section 2 is in these runs too. It gives seats 5 and 9 one extra player each in all four columns alike, so the levels are low and the differences between columns should be little affected; that last clause is inference, not measured.
+Caveat that applies to every cell: these runs were made before the section 2 fix. The defect gave seats 5 and 9 one extra player each in all four columns alike, so the levels are low by something like the 1.7 points measured in section 2 and the differences between columns should be little affected; that last clause is inference. The table was not re-run after the fix.
 
 **weekly_availability is FRAGILE:** -4.8 (no in-sim injury discount (risk 0.88 like healthy)) / +2.9 (harsher risk tier (0.65)) / -0.9 (healthy players play 0.95 of games) / -0.4 (healthy players play 0.80 of games), mean of the two seeds. That is the 2026-11-09 sweep the brief quotes, for the headline title odds; the table above is the same variants applied to the drop pairs.
 
@@ -74,9 +88,9 @@ Caveat that applies to every cell: the defect in section 2 is in these runs too.
 
 | Check | Result |
 |---|---|
-| Full suite | 1,185 tests OK, 2 skipped (was 1,174), 159 s |
-| New tests | morning sequence 2, sweep label 1, attack fingerprint 4, A-10 known answers 4; two existing morning tests updated for the new step |
-| Attack list | 11 attacks: CURRENT 10, UNFINGERPRINTED 1; 1 carries a kit fingerprint (A-11) |
+| Full suite | 1,186 tests OK, 2 skipped (was 1,174) |
+| New tests | morning sequence 2, sweep label 1, attack fingerprint 4, A-10 known answers 4, IL list 1; two existing morning tests updated for the new step |
+| Attack list | 11 attacks: CURRENT 10, UNFINGERPRINTED 1; 2 carry a kit fingerprint (A-10, A-11) |
 | Gates | PASS and verified (see the commit) |
 
 ## 5. Bounds
@@ -85,18 +99,18 @@ Out of scope by design: the sweep's Monday cadence (owner's 2026-10-26 pick) is 
 
 In scope and unverified:
 - F1 with the Runner's own transcript: NOT-ATTEMPTED here, because that transcript is not on this machine. The replay used this session's transcript, whose transactions response is older and added no new moves. The first live proof is the 2026-11-13 morning run: its record should show "manager log 2026-11-12" PASS and the deck's `league_tx` pin should equal the committed file.
-- The size of the section 2 defect on the on-time figure: NOT-ATTEMPTED, by choice; it is measured by the fix's own before-and-after.
-- F4 differences under that defect: inference, as stated.
+- F4 after the IL fix: NOT-ATTEMPTED, by choice (about ten minutes of simulation). What rests on it is the level of each column, not the reading "not Washington", which held by 1.3 to 3.2 points in 11 of 11 configurations with the defect common to all four columns.
+- The IL-return figures this session quoted on 2026-11-11 and 11-12 (the return-news run and the drop pairs at 10,000 seasons) carried the same defect; they were not re-run. `report/corrections-log.md` has the row.
 
 ## 6. Next steps (owner decisions)
 
-1. The IL-return defect: count unpooled IL-slot players as IL players in `il_return.il_players` (recommended; small, with a test, then A-10 is re-run and switched to the kit fingerprint), or leave the scenario as is and note the bias on the brief.
+1. The IL-return defect: decided and done (owner's card pick "Fix it now"; section 2).
 2. Sweep cadence: keep Mondays (recommended; the label now tells the age) or re-run on a mid-week day as well.
 3. The cuts for Haliburton and Kawhi: the owner's call among Queta, Champagnie and Cam Johnson; the model only says not Washington.
 
 ## 7. Provenance
 
-Session of 2026-11-12 (session model A) on branch `claude/market-data-workorder-mnfi2b`. Records: `findings-fix-2026-11-12/drop_band.json` (deck 01483de, records db51bfb, state, pool and schedule hashes inside), `drop_band.py`, `rt_il_return_2026-11-12_FAILED.json`. Re-verify: `python3 scripts/redteam/run_attacks.py --check`; `python3 -m unittest test_morning test_sweep_record test_redteam_attacks test_il_return` in `scripts/`.
+Session of 2026-11-12 (session model A) on branch `claude/market-data-workorder-mnfi2b`. Records: `findings-fix-2026-11-12/drop_band.json` (deck 01483de, records db51bfb, state, pool and schedule hashes inside), `drop_band.py`, `rt_il_return_2026-11-12_FAILED.json`, `rt_il_return.json`. Re-verify: `python3 scripts/redteam/run_attacks.py --check`; `python3 -m unittest test_morning test_sweep_record test_redteam_attacks test_il_return` in `scripts/`.
 
 ## Watchlist
 
