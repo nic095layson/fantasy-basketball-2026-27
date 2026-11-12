@@ -1,7 +1,285 @@
 {
  "league_key": "478.l.36464",
  "source": "Flaim get_transactions (Yahoo, rolling 30 days), unioned by id",
+ "feed": {
+  "uninterpreted": 1,
+  "dropped_invalid_timestamp": 0,
+  "warning": "Yahoo returned 1 entry Flaim could not interpret (an unrecognized transaction type or a malformed entry). This count covers the whole page Flaim fetched, before the date, team, and transaction-type filters, so it does not show that 1 matching move is missing.",
+  "read_for": "2026-11-11"
+ },
  "rows": [
+  {
+   "transaction_id": "478.l.36464.tr.178",
+   "type": "add",
+   "status": "complete",
+   "timestamp": 1794482506000,
+   "date": "2026-11-12",
+   "week": null,
+   "team_ids": [
+    "478.l.36464.t.9"
+   ],
+   "players_added": [
+    {
+     "id": "10476",
+     "name": "Ryan Kalkbrenner",
+     "position": "C",
+     "team": "CHA"
+    }
+   ],
+   "players_dropped": [
+    {
+     "id": "5015",
+     "name": "Andre Drummond",
+     "position": "C",
+     "team": "NYK"
+    }
+   ],
+   "faab_bid": null,
+   "waiver_priority": null,
+   "draft_picks": null
+  },
+  {
+   "transaction_id": "478.l.36464.tr.176",
+   "type": "add",
+   "status": "complete",
+   "timestamp": 1794475005000,
+   "date": "2026-11-12",
+   "week": null,
+   "team_ids": [
+    "478.l.36464.t.1"
+   ],
+   "players_added": [
+    {
+     "id": "6751",
+     "name": "Collin Gillespie",
+     "position": "PG,SG",
+     "team": "PHX"
+    }
+   ],
+   "players_dropped": [],
+   "faab_bid": 0,
+   "waiver_priority": null,
+   "draft_picks": null
+  },
+  {
+   "transaction_id": "478.l.36464.tr.175",
+   "type": "add",
+   "status": "complete",
+   "timestamp": 1794475005000,
+   "date": "2026-11-12",
+   "week": null,
+   "team_ids": [
+    "478.l.36464.t.10"
+   ],
+   "players_added": [
+    {
+     "id": "10617",
+     "name": "Meleek Thomas",
+     "position": "SG",
+     "team": "CLE"
+    }
+   ],
+   "players_dropped": [
+    {
+     "id": "5465",
+     "name": "Mario Hezonja",
+     "position": "SF,PF",
+     "team": "CLE"
+    }
+   ],
+   "faab_bid": 10,
+   "waiver_priority": null,
+   "draft_picks": null
+  },
+  {
+   "transaction_id": "478.l.36464.tr.174",
+   "type": "add",
+   "status": "complete",
+   "timestamp": 1794475005000,
+   "date": "2026-11-12",
+   "week": null,
+   "team_ids": [
+    "478.l.36464.t.4"
+   ],
+   "players_added": [
+    {
+     "id": "6734",
+     "name": "Ryan Rollins",
+     "position": "PG,SG",
+     "team": "MIL"
+    }
+   ],
+   "players_dropped": [
+    {
+     "id": "4614",
+     "name": "DeMar DeRozan",
+     "position": "SF,PF",
+     "team": "DEN"
+    }
+   ],
+   "faab_bid": 27,
+   "waiver_priority": null,
+   "draft_picks": null
+  },
+  {
+   "transaction_id": "478.l.36464.tr.173",
+   "type": "add",
+   "status": "complete",
+   "timestamp": 1794471385000,
+   "date": "2026-11-12",
+   "week": null,
+   "team_ids": [
+    "478.l.36464.t.1"
+   ],
+   "players_added": [
+    {
+     "id": "6499",
+     "name": "Naji Marshall",
+     "position": "SG,SF,PF",
+     "team": "DAL"
+    }
+   ],
+   "players_dropped": [
+    {
+     "id": "6170",
+     "name": "Jaxson Hayes",
+     "position": "C",
+     "team": "UTA"
+    }
+   ],
+   "faab_bid": null,
+   "waiver_priority": null,
+   "draft_picks": null
+  },
+  {
+   "transaction_id": "478.l.36464.tr.172",
+   "type": "drop",
+   "status": "complete",
+   "timestamp": 1794446490000,
+   "date": "2026-11-12",
+   "week": null,
+   "team_ids": [
+    "478.l.36464.t.10"
+   ],
+   "players_added": [],
+   "players_dropped": [
+    {
+     "id": "6572",
+     "name": "Santi Aldama",
+     "position": "PF",
+     "team": "DAL"
+    }
+   ],
+   "faab_bid": null,
+   "waiver_priority": null,
+   "draft_picks": null
+  },
+  {
+   "transaction_id": "478.l.36464.tr.171",
+   "type": "add",
+   "status": "complete",
+   "timestamp": 1794444130000,
+   "date": "2026-11-12",
+   "week": null,
+   "team_ids": [
+    "478.l.36464.t.6"
+   ],
+   "players_added": [
+    {
+     "id": "6596",
+     "name": "Sandro Mamukelashvili",
+     "position": "PF,C",
+     "team": "LAL"
+    }
+   ],
+   "players_dropped": [
+    {
+     "id": "10441",
+     "name": "Yanic Konan Niederhäuser",
+     "position": "C",
+     "team": "LAC"
+    }
+   ],
+   "faab_bid": null,
+   "waiver_priority": null,
+   "draft_picks": null
+  },
+  {
+   "transaction_id": "478.l.36464.tr.170",
+   "type": "add",
+   "status": "complete",
+   "timestamp": 1794440823000,
+   "date": "2026-11-11",
+   "week": null,
+   "team_ids": [
+    "478.l.36464.t.11"
+   ],
+   "players_added": [
+    {
+     "id": "6754",
+     "name": "Julian Champagnie",
+     "position": "SF,PF",
+     "team": "SAS"
+    }
+   ],
+   "players_dropped": [
+    {
+     "id": "5636",
+     "name": "Kris Dunn",
+     "position": "PG,SG",
+     "team": "LAC"
+    }
+   ],
+   "faab_bid": null,
+   "waiver_priority": null,
+   "draft_picks": null
+  },
+  {
+   "transaction_id": "478.l.36464.tr.169",
+   "type": "add",
+   "status": "complete",
+   "timestamp": 1794431580000,
+   "date": "2026-11-11",
+   "week": null,
+   "team_ids": [
+    "478.l.36464.t.9"
+   ],
+   "players_added": [
+    {
+     "id": "5015",
+     "name": "Andre Drummond",
+     "position": "C",
+     "team": "NYK"
+    }
+   ],
+   "players_dropped": [],
+   "faab_bid": null,
+   "waiver_priority": null,
+   "draft_picks": null
+  },
+  {
+   "transaction_id": "478.l.36464.tr.168",
+   "type": "drop",
+   "status": "complete",
+   "timestamp": 1794426931000,
+   "date": "2026-11-11",
+   "week": null,
+   "team_ids": [
+    "478.l.36464.t.1"
+   ],
+   "players_added": [],
+   "players_dropped": [
+    {
+     "id": "6801",
+     "name": "Jamal Cain",
+     "position": "SG,SF",
+     "team": "ORL"
+    }
+   ],
+   "faab_bid": null,
+   "waiver_priority": null,
+   "draft_picks": null
+  },
   {
    "transaction_id": "478.l.36464.tr.166",
    "type": "add",

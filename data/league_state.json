@@ -1,31 +1,23 @@
 {
- "as_of": "2026-11-11",
+ "as_of": "2026-11-12",
  "sources": {
   "flaim": {
    "transcript": "f7b74300-8501-5e41-b8c5-d2c75dd06ce4.jsonl",
    "method": "mechanical json extraction of Flaim (Yahoo) tool results from the session transcript",
-   "since": "2026-11-11T23:04:21Z",
-   "pull_file": "data/source/flaim/pull_2026-11-11_pm.json",
-   "pull_sha256": "c49a3bda609ae89c9f19b0104cef0a95678b4512c6da97d1c6246238d21d991e",
+   "since": "2026-11-12T13:04:13Z",
+   "pull_file": "data/source/flaim/pull_2026-11-12.json",
+   "pull_sha256": "4b76521d70bea897efb10c9445117f1933911eb8e6c17eb026181089854415fb",
    "view": "Flaim connector (Yahoo, read-only): get_roster per team (current), get_matchups, get_free_agents"
   },
   "transcription": {
-   "file": "data/source/flaim/rosters_2026-11-11_pm.transcribed.csv",
-   "sha256": "1688cb7be5e95a71871f11d978842fa56bbeb6d3de7664c20e6fc3894f5cbc32",
+   "file": "data/source/flaim/rosters_2026-11-12.transcribed.csv",
+   "sha256": "132858f9946c99728159bc7f1f2eba608c5e6638068ac2d7c85297f4c1a23b25",
    "method": "flaim_live.to_rows (mechanical; Yahoo slots and status letters for every team)"
   },
   "draft_board": "report/after-reports/draft-league-2026-10-14/recap.json",
   "pool": "deck data/players.csv + kit data/pool_additions.csv"
  },
- "unpooled_il": {
-  "Y. Konan Niederhäuser": {
-   "team": "LAC",
-   "pos": "C",
-   "fantasy_team": "Cade n em (seat 6, Martin)",
-   "status": "O",
-   "receipt": "owner upload data/source/yahoo-starting-rosters-2026-10-20-view.pdf page 2 (Cade n em, IL), received 2026-10-15"
-  }
- },
+ "unpooled_il": {},
  "unpooled": [
   {
    "player": "Nolan Traore",
@@ -44,10 +36,10 @@
    "status": "P"
   },
   {
-   "player": "Mario Hezonja",
+   "player": "Meleek Thomas",
    "fantasy_team": "MAXEY-MUM OVERDRIVE",
    "seat": 11,
-   "slot": "F",
+   "slot": "BN",
    "nba_team": "CLE",
    "status": null
   },
@@ -68,11 +60,11 @@
    "name": "SNOWTIME WHITE WALKERS",
    "players": [
     {
-     "player": "Luka Doncic",
-     "yahoo_name": "Luka Dončić",
+     "player": "Jrue Holiday",
+     "yahoo_name": "Jrue Holiday",
      "slot": "PG",
-     "yahoo_nba_team": "LAL",
-     "pool_team": "LAL",
+     "yahoo_nba_team": "POR",
+     "pool_team": "POR",
      "positions": [
       "PG",
       "SG"
@@ -117,11 +109,11 @@
      "status": null
     },
     {
-     "player": "Mikal Bridges",
-     "yahoo_name": "Mikal Bridges",
+     "player": "Jonathan Kuminga",
+     "yahoo_name": "Jonathan Kuminga",
      "slot": "PF",
-     "yahoo_nba_team": "NYK",
-     "pool_team": "NYK",
+     "yahoo_nba_team": "MIN",
+     "pool_team": "MIN",
      "positions": [
       "SF",
       "PF"
@@ -164,18 +156,6 @@
      "status": null
     },
     {
-     "player": "Jrue Holiday",
-     "yahoo_name": "Jrue Holiday",
-     "slot": "UTIL",
-     "yahoo_nba_team": "POR",
-     "pool_team": "POR",
-     "positions": [
-      "PG",
-      "SG"
-     ],
-     "status": null
-    },
-    {
      "player": "Jeremiah Fears",
      "yahoo_name": "Jeremiah Fears",
      "slot": "UTIL",
@@ -188,22 +168,24 @@
      "status": null
     },
     {
-     "player": "Jaxson Hayes",
-     "yahoo_name": "Jaxson Hayes",
-     "slot": "BN",
-     "yahoo_nba_team": "UTA",
-     "pool_team": "UTA",
+     "player": "Naji Marshall",
+     "yahoo_name": "Naji Marshall",
+     "slot": "UTIL",
+     "yahoo_nba_team": "DAL",
+     "pool_team": "DAL",
      "positions": [
-      "C"
+      "SG",
+      "SF",
+      "PF"
      ],
      "status": null
     },
     {
-     "player": "Jonathan Kuminga",
-     "yahoo_name": "Jonathan Kuminga",
+     "player": "Mikal Bridges",
+     "yahoo_name": "Mikal Bridges",
      "slot": "BN",
-     "yahoo_nba_team": "MIN",
-     "pool_team": "MIN",
+     "yahoo_nba_team": "NYK",
+     "pool_team": "NYK",
      "positions": [
       "SF",
       "PF"
@@ -220,6 +202,30 @@
       "C"
      ],
      "status": null
+    },
+    {
+     "player": "Collin Gillespie",
+     "yahoo_name": "Collin Gillespie",
+     "slot": "BN",
+     "yahoo_nba_team": "PHX",
+     "pool_team": "PHX",
+     "positions": [
+      "PG",
+      "SG"
+     ],
+     "status": null
+    },
+    {
+     "player": "Luka Doncic",
+     "yahoo_name": "Luka Dončić",
+     "slot": "IL",
+     "yahoo_nba_team": "LAL",
+     "pool_team": "LAL",
+     "positions": [
+      "PG",
+      "SG"
+     ],
+     "status": "Q"
     },
     {
      "player": "Lauri Markkanen",
@@ -241,9 +247,10 @@
    "manager": "Will",
    "draft_overlap": 11,
    "added_since_draft": [
-    "Jaxson Hayes",
+    "Collin Gillespie",
     "Jeremiah Fears",
-    "Jrue Holiday"
+    "Jrue Holiday",
+    "Naji Marshall"
    ],
    "dropped_since_draft": [
     "Anthony Black",
@@ -254,13 +261,14 @@
    "name": "Booker T Floppers",
    "players": [
     {
-     "player": "Fred VanVleet",
-     "yahoo_name": "Fred VanVleet",
+     "player": "Devin Booker",
+     "yahoo_name": "Devin Booker",
      "slot": "PG",
-     "yahoo_nba_team": "HOU",
-     "pool_team": "HOU",
+     "yahoo_nba_team": "PHX",
+     "pool_team": "PHX",
      "positions": [
-      "PG"
+      "PG",
+      "SG"
      ],
      "status": null
     },
@@ -302,18 +310,6 @@
      "status": null
     },
     {
-     "player": "Derrick Jones Jr",
-     "yahoo_name": "Derrick Jones Jr.",
-     "slot": "PF",
-     "yahoo_nba_team": "LAC",
-     "pool_team": "LAC",
-     "positions": [
-      "SF",
-      "PF"
-     ],
-     "status": null
-    },
-    {
      "player": "Grayson Allen",
      "yahoo_name": "Grayson Allen",
      "slot": "F",
@@ -326,17 +322,6 @@
      "status": null
     },
     {
-     "player": "Zach Edey",
-     "yahoo_name": "Zach Edey",
-     "slot": "C",
-     "yahoo_nba_team": "MEM",
-     "pool_team": "MEM",
-     "positions": [
-      "C"
-     ],
-     "status": null
-    },
-    {
      "player": "Bam Adebayo",
      "yahoo_name": "Bam Adebayo",
      "slot": "C",
@@ -344,6 +329,17 @@
      "pool_team": "MIA",
      "positions": [
       "PF",
+      "C"
+     ],
+     "status": null
+    },
+    {
+     "player": "Daniel Gafford",
+     "yahoo_name": "Daniel Gafford",
+     "slot": "C",
+     "yahoo_nba_team": "DAL",
+     "pool_team": "DAL",
+     "positions": [
       "C"
      ],
      "status": null
@@ -372,25 +368,36 @@
      "status": null
     },
     {
-     "player": "Devin Booker",
-     "yahoo_name": "Devin Booker",
+     "player": "Fred VanVleet",
+     "yahoo_name": "Fred VanVleet",
      "slot": "BN",
-     "yahoo_nba_team": "PHX",
-     "pool_team": "PHX",
+     "yahoo_nba_team": "HOU",
+     "pool_team": "HOU",
      "positions": [
-      "PG",
-      "SG"
+      "PG"
      ],
      "status": null
     },
     {
-     "player": "Daniel Gafford",
-     "yahoo_name": "Daniel Gafford",
+     "player": "Zach Edey",
+     "yahoo_name": "Zach Edey",
      "slot": "BN",
-     "yahoo_nba_team": "DAL",
-     "pool_team": "DAL",
+     "yahoo_nba_team": "MEM",
+     "pool_team": "MEM",
      "positions": [
       "C"
+     ],
+     "status": null
+    },
+    {
+     "player": "Derrick Jones Jr",
+     "yahoo_name": "Derrick Jones Jr.",
+     "slot": "BN",
+     "yahoo_nba_team": "LAC",
+     "pool_team": "LAC",
+     "positions": [
+      "SF",
+      "PF"
      ],
      "status": null
     },
@@ -427,7 +434,7 @@
       "SF",
       "PF"
      ],
-     "status": "Q"
+     "status": "O"
     }
    ],
    "empty_slots": [],
@@ -467,7 +474,7 @@
       "SG",
       "SF"
      ],
-     "status": null
+     "status": "Q"
     },
     {
      "player": "Nique Clifford",
@@ -653,7 +660,7 @@
      "positions": [
       "PG"
      ],
-     "status": null
+     "status": "Q"
     },
     {
      "player": "Andrew Nembhard",
@@ -677,19 +684,20 @@
       "SG",
       "SF"
      ],
-     "status": "Q"
+     "status": "O"
     },
     {
-     "player": "Ace Bailey",
-     "yahoo_name": "Ace Bailey",
+     "player": "Scottie Barnes",
+     "yahoo_name": "Scottie Barnes",
      "slot": "SF",
-     "yahoo_nba_team": "UTA",
-     "pool_team": "UTA",
+     "yahoo_nba_team": "TOR",
+     "pool_team": "TOR",
      "positions": [
       "SF",
-      "PF"
+      "PF",
+      "C"
      ],
-     "status": null
+     "status": "O"
     },
     {
      "player": "Anthony Davis",
@@ -750,11 +758,11 @@
      "status": null
     },
     {
-     "player": "DeMar DeRozan",
-     "yahoo_name": "DeMar DeRozan",
-     "slot": "UTIL",
-     "yahoo_nba_team": "DEN",
-     "pool_team": "DEN",
+     "player": "Ace Bailey",
+     "yahoo_name": "Ace Bailey",
+     "slot": "BN",
+     "yahoo_nba_team": "UTA",
+     "pool_team": "UTA",
      "positions": [
       "SF",
       "PF"
@@ -785,17 +793,16 @@
      "status": null
     },
     {
-     "player": "Scottie Barnes",
-     "yahoo_name": "Scottie Barnes",
+     "player": "Ryan Rollins",
+     "yahoo_name": "Ryan Rollins",
      "slot": "BN",
-     "yahoo_nba_team": "TOR",
-     "pool_team": "TOR",
+     "yahoo_nba_team": "MIL",
+     "pool_team": "MIL",
      "positions": [
-      "SF",
-      "PF",
-      "C"
+      "PG",
+      "SG"
      ],
-     "status": "O"
+     "status": "Q"
     },
     {
      "player": "Precious Achiuwa",
@@ -827,27 +834,30 @@
    "unpooled": [],
    "seat": 8,
    "manager": "JCo",
-   "draft_overlap": 12,
+   "draft_overlap": 11,
    "added_since_draft": [
     "Ace Bailey",
     "Jalen Smith",
-    "Precious Achiuwa"
+    "Precious Achiuwa",
+    "Ryan Rollins"
    ],
    "dropped_since_draft": [
-    "Collin Sexton"
+    "Collin Sexton",
+    "DeMar DeRozan"
    ]
   },
   {
    "name": "ANONG NANGIANNIS?!",
    "players": [
     {
-     "player": "Jamal Murray",
-     "yahoo_name": "Jamal Murray",
+     "player": "Ayo Dosunmu",
+     "yahoo_name": "Ayo Dosunmu",
      "slot": "PG",
-     "yahoo_nba_team": "DEN",
-     "pool_team": "DEN",
+     "yahoo_nba_team": "MIN",
+     "pool_team": "MIN",
      "positions": [
-      "PG"
+      "PG",
+      "SG"
      ],
      "status": null
     },
@@ -875,23 +885,23 @@
      "status": null
     },
     {
-     "player": "Toumani Camara",
-     "yahoo_name": "Toumani Camara",
+     "player": "Jalen Green",
+     "yahoo_name": "Jalen Green",
      "slot": "SF",
-     "yahoo_nba_team": "POR",
-     "pool_team": "POR",
+     "yahoo_nba_team": "PHX",
+     "pool_team": "PHX",
      "positions": [
-      "SF",
-      "PF"
+      "SG",
+      "SF"
      ],
      "status": null
     },
     {
-     "player": "Giannis Antetokounmpo",
-     "yahoo_name": "Giannis Antetokounmpo",
+     "player": "Collin Murray-Boyles",
+     "yahoo_name": "Collin Murray-Boyles",
      "slot": "PF",
-     "yahoo_nba_team": "MIA",
-     "pool_team": "MIA",
+     "yahoo_nba_team": "TOR",
+     "pool_team": "TOR",
      "positions": [
       "PF",
       "C"
@@ -911,13 +921,12 @@
      "status": null
     },
     {
-     "player": "Collin Murray-Boyles",
-     "yahoo_name": "Collin Murray-Boyles",
+     "player": "Rudy Gobert",
+     "yahoo_name": "Rudy Gobert",
      "slot": "C",
-     "yahoo_nba_team": "TOR",
-     "pool_team": "TOR",
+     "yahoo_nba_team": "MIN",
+     "pool_team": "MIN",
      "positions": [
-      "PF",
       "C"
      ],
      "status": null
@@ -945,51 +954,51 @@
      "status": null
     },
     {
+     "player": "Jamal Murray",
+     "yahoo_name": "Jamal Murray",
+     "slot": "UTIL",
+     "yahoo_nba_team": "DEN",
+     "pool_team": "DEN",
+     "positions": [
+      "PG"
+     ],
+     "status": null
+    },
+    {
+     "player": "Toumani Camara",
+     "yahoo_name": "Toumani Camara",
+     "slot": "BN",
+     "yahoo_nba_team": "POR",
+     "pool_team": "POR",
+     "positions": [
+      "SF",
+      "PF"
+     ],
+     "status": null
+    },
+    {
+     "player": "Giannis Antetokounmpo",
+     "yahoo_name": "Giannis Antetokounmpo",
+     "slot": "BN",
+     "yahoo_nba_team": "MIA",
+     "pool_team": "MIA",
+     "positions": [
+      "PF",
+      "C"
+     ],
+     "status": null
+    },
+    {
      "player": "Trey Murphy III",
      "yahoo_name": "Trey Murphy III",
-     "slot": "UTIL",
+     "slot": "BN",
      "yahoo_nba_team": "NOP",
      "pool_team": "NOP",
      "positions": [
       "SG",
       "SF"
      ],
-     "status": "D"
-    },
-    {
-     "player": "Rudy Gobert",
-     "yahoo_name": "Rudy Gobert",
-     "slot": "BN",
-     "yahoo_nba_team": "MIN",
-     "pool_team": "MIN",
-     "positions": [
-      "C"
-     ],
-     "status": null
-    },
-    {
-     "player": "Jalen Green",
-     "yahoo_name": "Jalen Green",
-     "slot": "BN",
-     "yahoo_nba_team": "PHX",
-     "pool_team": "PHX",
-     "positions": [
-      "SG",
-      "SF"
-     ],
-     "status": null
-    },
-    {
-     "player": "Ayo Dosunmu",
-     "yahoo_name": "Ayo Dosunmu",
-     "slot": "BN",
-     "yahoo_nba_team": "MIN",
-     "pool_team": "MIN",
-     "positions": [
-      "PG",
-      "SG"
-     ],
-     "status": null
+     "status": "O"
     },
     {
      "player": "Jalen Suggs",
@@ -1043,16 +1052,16 @@
      "status": null
     },
     {
-     "player": "Ajay Mitchell",
-     "yahoo_name": "Ajay Mitchell",
+     "player": "Cade Cunningham",
+     "yahoo_name": "Cade Cunningham",
      "slot": "SG",
-     "yahoo_nba_team": "OKC",
-     "pool_team": "OKC",
+     "yahoo_nba_team": "DET",
+     "pool_team": "DET",
      "positions": [
       "PG",
       "SG"
      ],
-     "status": "O"
+     "status": null
     },
     {
      "player": "Donovan Mitchell",
@@ -1080,15 +1089,16 @@
      "status": null
     },
     {
-     "player": "Caleb Wilson",
-     "yahoo_name": "Caleb Wilson",
+     "player": "Naz Reid",
+     "yahoo_name": "Naz Reid",
      "slot": "PF",
-     "yahoo_nba_team": "CHI",
-     "pool_team": "CHI",
+     "yahoo_nba_team": "CHA",
+     "pool_team": "CHA",
      "positions": [
-      "PF"
+      "PF",
+      "C"
      ],
-     "status": "Q"
+     "status": null
     },
     {
      "player": "Cedric Coward",
@@ -1111,7 +1121,7 @@
      "positions": [
       "C"
      ],
-     "status": "Q"
+     "status": "P"
     },
     {
      "player": "Pascal Siakam",
@@ -1138,22 +1148,11 @@
      "status": null
     },
     {
-     "player": "Kingston Flemings",
-     "yahoo_name": "Kingston Flemings",
+     "player": "Sandro Mamukelashvili",
+     "yahoo_name": "Sandro Mamukelashvili",
      "slot": "UTIL",
-     "yahoo_nba_team": "ATL",
-     "pool_team": "ATL",
-     "positions": [
-      "PG"
-     ],
-     "status": null
-    },
-    {
-     "player": "Naz Reid",
-     "yahoo_name": "Naz Reid",
-     "slot": "BN",
-     "yahoo_nba_team": "CHA",
-     "pool_team": "CHA",
+     "yahoo_nba_team": "LAL",
+     "pool_team": "LAL",
      "positions": [
       "PF",
       "C"
@@ -1161,14 +1160,24 @@
      "status": null
     },
     {
-     "player": "Cade Cunningham",
-     "yahoo_name": "Cade Cunningham",
+     "player": "Caleb Wilson",
+     "yahoo_name": "Caleb Wilson",
      "slot": "BN",
-     "yahoo_nba_team": "DET",
-     "pool_team": "DET",
+     "yahoo_nba_team": "CHI",
+     "pool_team": "CHI",
      "positions": [
-      "PG",
-      "SG"
+      "PF"
+     ],
+     "status": "Q"
+    },
+    {
+     "player": "Kingston Flemings",
+     "yahoo_name": "Kingston Flemings",
+     "slot": "BN",
+     "yahoo_nba_team": "ATL",
+     "pool_team": "ATL",
+     "positions": [
+      "PG"
      ],
      "status": null
     },
@@ -1185,6 +1194,18 @@
      "status": null
     },
     {
+     "player": "Ajay Mitchell",
+     "yahoo_name": "Ajay Mitchell",
+     "slot": "IL",
+     "yahoo_nba_team": "OKC",
+     "pool_team": "OKC",
+     "positions": [
+      "PG",
+      "SG"
+     ],
+     "status": "O"
+    },
+    {
      "player": "Jalen Duren",
      "yahoo_name": "Jalen Duren",
      "slot": "IL",
@@ -1197,9 +1218,7 @@
     }
    ],
    "empty_slots": [],
-   "unpooled_il": [
-    "Y. Konan Niederhäuser"
-   ],
+   "unpooled_il": [],
    "unpooled": [],
    "seat": 6,
    "manager": "Martin",
@@ -1207,7 +1226,8 @@
    "added_since_draft": [
     "Aaron Wiggins",
     "Kingston Flemings",
-    "Moussa Diabate"
+    "Moussa Diabate",
+    "Sandro Mamukelashvili"
    ],
    "dropped_since_draft": [
     "Andrew Wiggins",
@@ -1227,7 +1247,7 @@
       "PG",
       "SG"
      ],
-     "status": "Q"
+     "status": null
     },
     {
      "player": "Coby White",
@@ -1242,14 +1262,15 @@
      "status": null
     },
     {
-     "player": "Amen Thompson",
-     "yahoo_name": "Amen Thompson",
+     "player": "Ausar Thompson",
+     "yahoo_name": "Ausar Thompson",
      "slot": "G",
-     "yahoo_nba_team": "HOU",
-     "pool_team": "HOU",
+     "yahoo_nba_team": "DET",
+     "pool_team": "DET",
      "positions": [
-      "PG",
-      "SG"
+      "SG",
+      "SF",
+      "PF"
      ],
      "status": null
     },
@@ -1264,7 +1285,7 @@
       "SG",
       "SF"
      ],
-     "status": null
+     "status": "Q"
     },
     {
      "player": "Peyton Watson",
@@ -1279,27 +1300,16 @@
      "status": null
     },
     {
-     "player": "Devin Vassell",
-     "yahoo_name": "Devin Vassell",
+     "player": "LeBron James",
+     "yahoo_name": "LeBron James",
      "slot": "F",
-     "yahoo_nba_team": "SAS",
-     "pool_team": "SAS",
+     "yahoo_nba_team": "PHI",
+     "pool_team": "PHI",
      "positions": [
-      "SG",
-      "SF"
+      "SF",
+      "PF"
      ],
      "status": "Q"
-    },
-    {
-     "player": "Wendell Carter Jr.",
-     "yahoo_name": "Wendell Carter Jr.",
-     "slot": "C",
-     "yahoo_nba_team": "ORL",
-     "pool_team": "ORL",
-     "positions": [
-      "C"
-     ],
-     "status": null
     },
     {
      "player": "Day'Ron Sharpe",
@@ -1307,6 +1317,17 @@
      "slot": "C",
      "yahoo_nba_team": "BKN",
      "pool_team": "BKN",
+     "positions": [
+      "C"
+     ],
+     "status": null
+    },
+    {
+     "player": "Khaman Maluach",
+     "yahoo_name": "Khaman Maluach",
+     "slot": "C",
+     "yahoo_nba_team": "PHX",
+     "pool_team": "PHX",
      "positions": [
       "C"
      ],
@@ -1324,34 +1345,9 @@
      "status": null
     },
     {
-     "player": "Egor Demin",
-     "yahoo_name": "Egor Dëmin",
-     "slot": "UTIL",
-     "yahoo_nba_team": "BKN",
-     "pool_team": "BKN",
-     "positions": [
-      "PG",
-      "SG"
-     ],
-     "status": null
-    },
-    {
-     "player": "Ausar Thompson",
-     "yahoo_name": "Ausar Thompson",
-     "slot": "BN",
-     "yahoo_nba_team": "DET",
-     "pool_team": "DET",
-     "positions": [
-      "SG",
-      "SF",
-      "PF"
-     ],
-     "status": null
-    },
-    {
      "player": "Domantas Sabonis",
      "yahoo_name": "Domantas Sabonis",
-     "slot": "BN",
+     "slot": "UTIL",
      "yahoo_nba_team": "SAC",
      "pool_team": "SAC",
      "positions": [
@@ -1361,27 +1357,51 @@
      "status": null
     },
     {
-     "player": "Khaman Maluach",
-     "yahoo_name": "Khaman Maluach",
+     "player": "Amen Thompson",
+     "yahoo_name": "Amen Thompson",
      "slot": "BN",
-     "yahoo_nba_team": "PHX",
-     "pool_team": "PHX",
+     "yahoo_nba_team": "HOU",
+     "pool_team": "HOU",
+     "positions": [
+      "PG",
+      "SG"
+     ],
+     "status": null
+    },
+    {
+     "player": "Wendell Carter Jr.",
+     "yahoo_name": "Wendell Carter Jr.",
+     "slot": "BN",
+     "yahoo_nba_team": "ORL",
+     "pool_team": "ORL",
      "positions": [
       "C"
      ],
      "status": null
     },
     {
-     "player": "LeBron James",
-     "yahoo_name": "LeBron James",
-     "slot": "IL",
-     "yahoo_nba_team": "PHI",
-     "pool_team": "PHI",
+     "player": "Egor Demin",
+     "yahoo_name": "Egor Dëmin",
+     "slot": "BN",
+     "yahoo_nba_team": "BKN",
+     "pool_team": "BKN",
      "positions": [
-      "SF",
-      "PF"
+      "PG",
+      "SG"
      ],
-     "status": "Q"
+     "status": null
+    },
+    {
+     "player": "Devin Vassell",
+     "yahoo_name": "Devin Vassell",
+     "slot": "IL",
+     "yahoo_nba_team": "SAS",
+     "pool_team": "SAS",
+     "positions": [
+      "SG",
+      "SF"
+     ],
+     "status": "O"
     },
     {
      "player": "Jimmy Butler",
@@ -1415,11 +1435,11 @@
    "name": "Podz save the league",
    "players": [
     {
-     "player": "Stephon Castle",
-     "yahoo_name": "Stephon Castle",
+     "player": "VJ Edgecombe",
+     "yahoo_name": "VJ Edgecombe",
      "slot": "PG",
-     "yahoo_nba_team": "SAS",
-     "pool_team": "SAS",
+     "yahoo_nba_team": "PHI",
+     "pool_team": "PHI",
      "positions": [
       "PG",
       "SG"
@@ -1427,11 +1447,11 @@
      "status": null
     },
     {
-     "player": "Brandin Podziemski",
-     "yahoo_name": "Brandin Podziemski",
+     "player": "Daniss Jenkins",
+     "yahoo_name": "Daniss Jenkins",
      "slot": "SG",
-     "yahoo_nba_team": "GSW",
-     "pool_team": "GSW",
+     "yahoo_nba_team": "DET",
+     "pool_team": "DET",
      "positions": [
       "PG",
       "SG"
@@ -1534,11 +1554,11 @@
      "status": null
     },
     {
-     "player": "VJ Edgecombe",
-     "yahoo_name": "VJ Edgecombe",
+     "player": "Stephon Castle",
+     "yahoo_name": "Stephon Castle",
      "slot": "BN",
-     "yahoo_nba_team": "PHI",
-     "pool_team": "PHI",
+     "yahoo_nba_team": "SAS",
+     "pool_team": "SAS",
      "positions": [
       "PG",
       "SG"
@@ -1546,11 +1566,11 @@
      "status": null
     },
     {
-     "player": "Daniss Jenkins",
-     "yahoo_name": "Daniss Jenkins",
+     "player": "Brandin Podziemski",
+     "yahoo_name": "Brandin Podziemski",
      "slot": "BN",
-     "yahoo_nba_team": "DET",
-     "pool_team": "DET",
+     "yahoo_nba_team": "GSW",
+     "pool_team": "GSW",
      "positions": [
       "PG",
       "SG"
@@ -1567,7 +1587,7 @@
       "SF",
       "PF"
      ],
-     "status": "Q"
+     "status": "O"
     }
    ],
    "empty_slots": [],
@@ -1601,14 +1621,13 @@
    "name": "ROOKS FTW",
    "players": [
     {
-     "player": "Jared McCain",
-     "yahoo_name": "Jared McCain",
+     "player": "LaMelo Ball",
+     "yahoo_name": "LaMelo Ball",
      "slot": "PG",
-     "yahoo_nba_team": "OKC",
-     "pool_team": "OKC",
+     "yahoo_nba_team": "MIN",
+     "pool_team": "MIN",
      "positions": [
-      "PG",
-      "SG"
+      "PG"
      ],
      "status": null
     },
@@ -1648,12 +1667,13 @@
      "status": null
     },
     {
-     "player": "Cameron Boozer",
-     "yahoo_name": "Cameron Boozer",
+     "player": "Dillon Brooks",
+     "yahoo_name": "Dillon Brooks",
      "slot": "PF",
-     "yahoo_nba_team": "MEM",
-     "pool_team": "MEM",
+     "yahoo_nba_team": "PHX",
+     "pool_team": "PHX",
      "positions": [
+      "SF",
       "PF"
      ],
      "status": null
@@ -1706,13 +1726,36 @@
      "status": null
     },
     {
-     "player": "Andre Drummond",
-     "yahoo_name": "Andre Drummond",
+     "player": "Ryan Kalkbrenner",
+     "yahoo_name": "Ryan Kalkbrenner",
      "slot": "UTIL",
-     "yahoo_nba_team": "NYK",
-     "pool_team": "NYK",
+     "yahoo_nba_team": "CHA",
+     "pool_team": "CHA",
      "positions": [
       "C"
+     ],
+     "status": null
+    },
+    {
+     "player": "Jared McCain",
+     "yahoo_name": "Jared McCain",
+     "slot": "BN",
+     "yahoo_nba_team": "OKC",
+     "pool_team": "OKC",
+     "positions": [
+      "PG",
+      "SG"
+     ],
+     "status": null
+    },
+    {
+     "player": "Cameron Boozer",
+     "yahoo_name": "Cameron Boozer",
+     "slot": "BN",
+     "yahoo_nba_team": "MEM",
+     "pool_team": "MEM",
+     "positions": [
+      "PF"
      ],
      "status": null
     },
@@ -1729,29 +1772,6 @@
      "status": null
     },
     {
-     "player": "Dillon Brooks",
-     "yahoo_name": "Dillon Brooks",
-     "slot": "BN",
-     "yahoo_nba_team": "PHX",
-     "pool_team": "PHX",
-     "positions": [
-      "SF",
-      "PF"
-     ],
-     "status": null
-    },
-    {
-     "player": "LaMelo Ball",
-     "yahoo_name": "LaMelo Ball",
-     "slot": "BN",
-     "yahoo_nba_team": "MIN",
-     "pool_team": "MIN",
-     "positions": [
-      "PG"
-     ],
-     "status": null
-    },
-    {
      "player": "Paul George",
      "yahoo_name": "Paul George",
      "slot": "IL",
@@ -1761,7 +1781,7 @@
       "SF",
       "PF"
      ],
-     "status": "O"
+     "status": "Q"
     },
     {
      "player": "Jusuf Nurkic",
@@ -1782,10 +1802,10 @@
    "manager": "Noah",
    "draft_overlap": 11,
    "added_since_draft": [
-    "Andre Drummond",
     "Anthony Black",
     "Draymond Green",
-    "Jared McCain"
+    "Jared McCain",
+    "Ryan Kalkbrenner"
    ],
    "dropped_since_draft": [
     "Bilal Coulibaly",
@@ -1831,23 +1851,23 @@
      "status": null
     },
     {
-     "player": "Franz Wagner",
-     "yahoo_name": "Franz Wagner",
+     "player": "Duncan Robinson",
+     "yahoo_name": "Duncan Robinson",
      "slot": "SF",
-     "yahoo_nba_team": "ORL",
-     "pool_team": "ORL",
+     "yahoo_nba_team": "DET",
+     "pool_team": "DET",
      "positions": [
-      "SF",
-      "PF"
+      "SG",
+      "SF"
      ],
      "status": null
     },
     {
-     "player": "Karl-Anthony Towns",
-     "yahoo_name": "Karl-Anthony Towns",
+     "player": "Paul Reed",
+     "yahoo_name": "Paul Reed",
      "slot": "PF",
-     "yahoo_nba_team": "NYK",
-     "pool_team": "NYK",
+     "yahoo_nba_team": "DET",
+     "pool_team": "DET",
      "positions": [
       "PF",
       "C"
@@ -1877,17 +1897,6 @@
      "status": "O"
     },
     {
-     "player": "Darius Acuff Jr.",
-     "yahoo_name": "Darius Acuff Jr.",
-     "slot": "UTIL",
-     "yahoo_nba_team": "SAC",
-     "pool_team": "SAC",
-     "positions": [
-      "PG"
-     ],
-     "status": null
-    },
-    {
      "player": "Brayden Burries",
      "yahoo_name": "Brayden Burries",
      "slot": "UTIL",
@@ -1899,34 +1908,35 @@
      "status": null
     },
     {
-     "player": "Santi Aldama",
-     "yahoo_name": "Santi Aldama",
-     "slot": "BN",
-     "yahoo_nba_team": "DAL",
-     "pool_team": "DAL",
+     "player": "Keyonte George",
+     "yahoo_name": "Keyonte George",
+     "slot": "UTIL",
+     "yahoo_nba_team": "UTA",
+     "pool_team": "UTA",
      "positions": [
+      "PG",
+      "SG"
+     ],
+     "status": null
+    },
+    {
+     "player": "Franz Wagner",
+     "yahoo_name": "Franz Wagner",
+     "slot": "BN",
+     "yahoo_nba_team": "ORL",
+     "pool_team": "ORL",
+     "positions": [
+      "SF",
       "PF"
      ],
      "status": null
     },
     {
-     "player": "Duncan Robinson",
-     "yahoo_name": "Duncan Robinson",
+     "player": "Karl-Anthony Towns",
+     "yahoo_name": "Karl-Anthony Towns",
      "slot": "BN",
-     "yahoo_nba_team": "DET",
-     "pool_team": "DET",
-     "positions": [
-      "SG",
-      "SF"
-     ],
-     "status": null
-    },
-    {
-     "player": "Paul Reed",
-     "yahoo_name": "Paul Reed",
-     "slot": "BN",
-     "yahoo_nba_team": "DET",
-     "pool_team": "DET",
+     "yahoo_nba_team": "NYK",
+     "pool_team": "NYK",
      "positions": [
       "PF",
       "C"
@@ -1934,16 +1944,15 @@
      "status": null
     },
     {
-     "player": "Keyonte George",
-     "yahoo_name": "Keyonte George",
-     "slot": "IL",
-     "yahoo_nba_team": "UTA",
-     "pool_team": "UTA",
+     "player": "Darius Acuff Jr.",
+     "yahoo_name": "Darius Acuff Jr.",
+     "slot": "BN",
+     "yahoo_nba_team": "SAC",
+     "pool_team": "SAC",
      "positions": [
-      "PG",
-      "SG"
+      "PG"
      ],
-     "status": "Q"
+     "status": null
     },
     {
      "player": "Kon Knueppel",
@@ -1962,12 +1971,11 @@
    "unpooled_il": [],
    "unpooled": [
     {
-     "player": "Mario Hezonja",
-     "slot": "F",
+     "player": "Meleek Thomas",
+     "slot": "BN",
      "nba_team": "CLE",
      "positions": [
-      "SF",
-      "PF"
+      "SG"
      ],
      "status": null
     }
@@ -1979,8 +1987,7 @@
     "Brayden Burries",
     "Duncan Robinson",
     "Isaiah Collier",
-    "Paul Reed",
-    "Santi Aldama"
+    "Paul Reed"
    ],
    "dropped_since_draft": [
     "Devin Vassell",
@@ -2017,11 +2024,11 @@
      "status": null
     },
     {
-     "player": "Kris Dunn",
-     "yahoo_name": "Kris Dunn",
+     "player": "Kyrie Irving",
+     "yahoo_name": "Kyrie Irving",
      "slot": "G",
-     "yahoo_nba_team": "LAC",
-     "pool_team": "LAC",
+     "yahoo_nba_team": "DAL",
+     "pool_team": "DAL",
      "positions": [
       "PG",
       "SG"
@@ -2040,13 +2047,12 @@
      "status": null
     },
     {
-     "player": "Yaxel Lendeborg",
-     "yahoo_name": "Yaxel Lendeborg",
+     "player": "Miles Bridges",
+     "yahoo_name": "Miles Bridges",
      "slot": "PF",
-     "yahoo_nba_team": "GSW",
-     "pool_team": "GSW",
+     "yahoo_nba_team": "PHX",
+     "pool_team": "PHX",
      "positions": [
-      "SF",
       "PF"
      ],
      "status": null
@@ -2064,23 +2070,24 @@
      "status": null
     },
     {
-     "player": "Neemias Queta",
-     "yahoo_name": "Neemias Queta",
-     "slot": "C",
-     "yahoo_nba_team": "BOS",
-     "pool_team": "BOS",
-     "positions": [
-      "C"
-     ],
-     "status": null
-    },
-    {
      "player": "Kel'el Ware",
      "yahoo_name": "Kel'el Ware",
      "slot": "C",
      "yahoo_nba_team": "MIL",
      "pool_team": "MIL",
      "positions": [
+      "C"
+     ],
+     "status": null
+    },
+    {
+     "player": "John Collins",
+     "yahoo_name": "John Collins",
+     "slot": "C",
+     "yahoo_nba_team": "DET",
+     "pool_team": "DET",
+     "positions": [
+      "PF",
       "C"
      ],
      "status": null
@@ -2111,36 +2118,36 @@
      "status": null
     },
     {
-     "player": "Miles Bridges",
-     "yahoo_name": "Miles Bridges",
+     "player": "Julian Champagnie",
+     "yahoo_name": "Julian Champagnie",
      "slot": "BN",
-     "yahoo_nba_team": "PHX",
-     "pool_team": "PHX",
+     "yahoo_nba_team": "SAS",
+     "pool_team": "SAS",
      "positions": [
+      "SF",
       "PF"
      ],
      "status": null
     },
     {
-     "player": "Kyrie Irving",
-     "yahoo_name": "Kyrie Irving",
+     "player": "Yaxel Lendeborg",
+     "yahoo_name": "Yaxel Lendeborg",
      "slot": "BN",
-     "yahoo_nba_team": "DAL",
-     "pool_team": "DAL",
+     "yahoo_nba_team": "GSW",
+     "pool_team": "GSW",
      "positions": [
-      "PG",
-      "SG"
+      "SF",
+      "PF"
      ],
      "status": null
     },
     {
-     "player": "John Collins",
-     "yahoo_name": "John Collins",
+     "player": "Neemias Queta",
+     "yahoo_name": "Neemias Queta",
      "slot": "BN",
-     "yahoo_nba_team": "DET",
-     "pool_team": "DET",
+     "yahoo_nba_team": "BOS",
+     "pool_team": "BOS",
      "positions": [
-      "PF",
       "C"
      ],
      "status": null
@@ -2180,7 +2187,7 @@
    "added_since_draft": [
     "Cameron Johnson",
     "John Collins",
-    "Kris Dunn"
+    "Julian Champagnie"
    ],
    "dropped_since_draft": [
     "Christian Braun"
