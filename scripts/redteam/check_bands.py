@@ -20,12 +20,25 @@ def _signed(x):
     return f"{x:+.1f}"
 
 
+# a title share: "title" or "championship" within 120 characters of a percentage on one line (council verdict
+# 2026-11-12: the rule is for reports that quote one; 89 reports carried the sentence, some quoting none)
+_PCT = r"\d+(\.\d+)?\s?(%|percent\b)"
+TITLE_SHARE = re.compile(rf"(title|championship)[^\n]{{0,120}}?{_PCT}|{_PCT}[^\n]{{0,120}}?(title|championship)", re.I)
+
+
+def quotes_title_share(text):
+    return bool(TITLE_SHARE.search(text))
+
+
 def check(report_path, sweep_path):
     with open(report_path, encoding="utf-8") as f:
         text = f.read().replace("−", "-").replace("–", "-")
     with open(sweep_path, encoding="utf-8") as f:
         sw = json.load(f)
     problems = []
+    # owed when the report quotes a title share, or names a FRAGILE constant (a half-quoted band is still a fault)
+    if not quotes_title_share(text) and not any(k.split(".", 1)[-1] in text for k in sw.get("fragile", [])):
+        return True, problems
     for key in sw.get("fragile", []):
         c = sw["constants"][key]
         name = key.split(".", 1)[-1]
@@ -49,7 +62,12 @@ def main():
     ok, problems = check(a.report, a.sweep)
     with open(a.sweep, encoding="utf-8") as f:
         sw = json.load(f)
-    if ok:
+    with open(a.report, encoding="utf-8") as f:
+        t = f.read()
+    quoted = quotes_title_share(t) or any(k.split(".", 1)[-1] in t for k in sw.get("fragile", []))
+    if ok and not quoted:
+        print(f"BANDS CHECK: PASS — the report quotes no title share and names no FRAGILE constant; bands not owed; engine {sw.get('engine_commit', '?')}")
+    elif ok:
         print(f"BANDS CHECK: PASS — {len(sw.get('fragile', []))} FRAGILE band(s) quoted "
               f"({', '.join(sw.get('fragile', [])) or 'none'}); engine {sw.get('engine_commit', '?')}")
     else:
