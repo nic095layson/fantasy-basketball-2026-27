@@ -2,16 +2,16 @@
  "as_of": "2026-11-12",
  "sources": {
   "flaim": {
-   "transcript": "f7b74300-8501-5e41-b8c5-d2c75dd06ce4.jsonl",
+   "transcript": "3cdbbd9b-02dd-585e-8d00-b8a370128fae.jsonl",
    "method": "mechanical json extraction of Flaim (Yahoo) tool results from the session transcript",
-   "since": "2026-11-12T13:04:13Z",
-   "pull_file": "data/source/flaim/pull_2026-11-12.json",
-   "pull_sha256": "4b76521d70bea897efb10c9445117f1933911eb8e6c17eb026181089854415fb",
+   "since": "2026-11-12T17:33:00Z",
+   "pull_file": "data/source/flaim/pull_2026-11-12_pm.json",
+   "pull_sha256": "b9a82a3bac394f4c067c47c0bffc37a8d0441e18e69129add88285a9e2bbc762",
    "view": "Flaim connector (Yahoo, read-only): get_roster per team (current), get_matchups, get_free_agents"
   },
   "transcription": {
-   "file": "data/source/flaim/rosters_2026-11-12.transcribed.csv",
-   "sha256": "132858f9946c99728159bc7f1f2eba608c5e6638068ac2d7c85297f4c1a23b25",
+   "file": "data/source/flaim/rosters_2026-11-12_pm.transcribed.csv",
+   "sha256": "e3b925abeab290495ada0f1ba904df9cb92328f70017e53b5239266d3a3d718c",
    "method": "flaim_live.to_rows (mechanical; Yahoo slots and status letters for every team)"
   },
   "draft_board": "report/after-reports/draft-league-2026-10-14/recap.json",
@@ -25,7 +25,7 @@
    "seat": 5,
    "slot": "IL",
    "nba_team": "BKN",
-   "status": "O"
+   "status": "Q"
   },
   {
    "player": "Morez Johnson Jr.",
@@ -156,18 +156,6 @@
      "status": null
     },
     {
-     "player": "Jeremiah Fears",
-     "yahoo_name": "Jeremiah Fears",
-     "slot": "UTIL",
-     "yahoo_nba_team": "NOP",
-     "pool_team": "NOP",
-     "positions": [
-      "PG",
-      "SG"
-     ],
-     "status": null
-    },
-    {
      "player": "Naji Marshall",
      "yahoo_name": "Naji Marshall",
      "slot": "UTIL",
@@ -177,6 +165,30 @@
       "SG",
       "SF",
       "PF"
+     ],
+     "status": null
+    },
+    {
+     "player": "Collin Gillespie",
+     "yahoo_name": "Collin Gillespie",
+     "slot": "UTIL",
+     "yahoo_nba_team": "PHX",
+     "pool_team": "PHX",
+     "positions": [
+      "PG",
+      "SG"
+     ],
+     "status": null
+    },
+    {
+     "player": "Jeremiah Fears",
+     "yahoo_name": "Jeremiah Fears",
+     "slot": "BN",
+     "yahoo_nba_team": "NOP",
+     "pool_team": "NOP",
+     "positions": [
+      "PG",
+      "SG"
      ],
      "status": null
     },
@@ -200,18 +212,6 @@
      "pool_team": "ATL",
      "positions": [
       "C"
-     ],
-     "status": null
-    },
-    {
-     "player": "Collin Gillespie",
-     "yahoo_name": "Collin Gillespie",
-     "slot": "BN",
-     "yahoo_nba_team": "PHX",
-     "pool_team": "PHX",
-     "positions": [
-      "PG",
-      "SG"
      ],
      "status": null
     },
@@ -310,6 +310,18 @@
      "status": null
     },
     {
+     "player": "Derrick Jones Jr",
+     "yahoo_name": "Derrick Jones Jr.",
+     "slot": "PF",
+     "yahoo_nba_team": "LAC",
+     "pool_team": "LAC",
+     "positions": [
+      "SF",
+      "PF"
+     ],
+     "status": null
+    },
+    {
      "player": "Grayson Allen",
      "yahoo_name": "Grayson Allen",
      "slot": "F",
@@ -390,18 +402,6 @@
      "status": null
     },
     {
-     "player": "Derrick Jones Jr",
-     "yahoo_name": "Derrick Jones Jr.",
-     "slot": "BN",
-     "yahoo_nba_team": "LAC",
-     "pool_team": "LAC",
-     "positions": [
-      "SF",
-      "PF"
-     ],
-     "status": null
-    },
-    {
      "player": "Keegan Murray",
      "yahoo_name": "Keegan Murray",
      "slot": "BN",
@@ -434,7 +434,7 @@
       "SF",
       "PF"
      ],
-     "status": "O"
+     "status": "Q"
     }
    ],
    "empty_slots": [],
@@ -660,7 +660,7 @@
      "positions": [
       "PG"
      ],
-     "status": "Q"
+     "status": "O"
     },
     {
      "player": "Andrew Nembhard",
@@ -684,7 +684,7 @@
       "SG",
       "SF"
      ],
-     "status": "O"
+     "status": "Q"
     },
     {
      "player": "Scottie Barnes",
@@ -758,6 +758,17 @@
      "status": null
     },
     {
+     "player": "Davion Mitchell",
+     "yahoo_name": "Davion Mitchell",
+     "slot": "UTIL",
+     "yahoo_nba_team": "MIA",
+     "pool_team": "MIA",
+     "positions": [
+      "PG"
+     ],
+     "status": null
+    },
+    {
      "player": "Ace Bailey",
      "yahoo_name": "Ace Bailey",
      "slot": "BN",
@@ -766,17 +777,6 @@
      "positions": [
       "SF",
       "PF"
-     ],
-     "status": null
-    },
-    {
-     "player": "Davion Mitchell",
-     "yahoo_name": "Davion Mitchell",
-     "slot": "BN",
-     "yahoo_nba_team": "MIA",
-     "pool_team": "MIA",
-     "positions": [
-      "PG"
      ],
      "status": null
     },
@@ -998,7 +998,7 @@
       "SG",
       "SF"
      ],
-     "status": "O"
+     "status": "Q"
     },
     {
      "player": "Jalen Suggs",
@@ -1023,7 +1023,7 @@
      "positions": [
       "PG"
      ],
-     "status": "O"
+     "status": "Q"
     }
    ],
    "seat": 5,
@@ -1203,7 +1203,7 @@
       "PG",
       "SG"
      ],
-     "status": "O"
+     "status": "Q"
     },
     {
      "player": "Jalen Duren",
@@ -1401,7 +1401,7 @@
       "SG",
       "SF"
      ],
-     "status": "O"
+     "status": "Q"
     },
     {
      "player": "Jimmy Butler",
@@ -1828,11 +1828,11 @@
      "status": null
     },
     {
-     "player": "Isaiah Collier",
-     "yahoo_name": "Isaiah Collier",
+     "player": "Ja'Kobe Walter",
+     "yahoo_name": "Ja'Kobe Walter",
      "slot": "SG",
-     "yahoo_nba_team": "UTA",
-     "pool_team": "UTA",
+     "yahoo_nba_team": "TOR",
+     "pool_team": "TOR",
      "positions": [
       "PG",
       "SG"
@@ -1875,6 +1875,18 @@
      "status": null
     },
     {
+     "player": "Franz Wagner",
+     "yahoo_name": "Franz Wagner",
+     "slot": "F",
+     "yahoo_nba_team": "ORL",
+     "pool_team": "ORL",
+     "positions": [
+      "SF",
+      "PF"
+     ],
+     "status": null
+    },
+    {
      "player": "Joel Embiid",
      "yahoo_name": "Joel Embiid",
      "slot": "C",
@@ -1894,7 +1906,7 @@
      "positions": [
       "C"
      ],
-     "status": "O"
+     "status": "P"
     },
     {
      "player": "Brayden Burries",
@@ -1916,18 +1928,6 @@
      "positions": [
       "PG",
       "SG"
-     ],
-     "status": null
-    },
-    {
-     "player": "Franz Wagner",
-     "yahoo_name": "Franz Wagner",
-     "slot": "BN",
-     "yahoo_nba_team": "ORL",
-     "pool_team": "ORL",
-     "positions": [
-      "SF",
-      "PF"
      ],
      "status": null
     },
@@ -1986,7 +1986,7 @@
    "added_since_draft": [
     "Brayden Burries",
     "Duncan Robinson",
-    "Isaiah Collier",
+    "Ja'Kobe Walter",
     "Paul Reed"
    ],
    "dropped_since_draft": [
