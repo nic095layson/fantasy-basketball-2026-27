@@ -2,16 +2,16 @@
  "as_of": "2026-11-12",
  "sources": {
   "flaim": {
-   "transcript": "3cdbbd9b-02dd-585e-8d00-b8a370128fae.jsonl",
+   "transcript": "f7b74300-8501-5e41-b8c5-d2c75dd06ce4.jsonl",
    "method": "mechanical json extraction of Flaim (Yahoo) tool results from the session transcript",
-   "since": "2026-11-12T21:03:10Z",
+   "since": "2026-11-12T23:04:25Z",
    "pull_file": "data/source/flaim/pull_2026-11-12_pm.json",
-   "pull_sha256": "0808ee371635faf5c5c1d6663b9d31061d90b1c9171b4ee2ab3c67828327cad8",
+   "pull_sha256": "1e432f6f225e33cd330c097badd0391349e56ba21b8e51babc8a9215a59e9001",
    "view": "Flaim connector (Yahoo, read-only): get_roster per team (current), get_matchups, get_free_agents"
   },
   "transcription": {
    "file": "data/source/flaim/rosters_2026-11-12_pm.transcribed.csv",
-   "sha256": "7c704cfe420db9312836485571eacea7e41306c336438b6cf766cad7e31180cc",
+   "sha256": "8a53ece48b96883d5236fc2bea824b208cd0a16d993f089d632c62c1df19a5cf",
    "method": "flaim_live.to_rows (mechanical; Yahoo slots and status letters for every team)"
   },
   "draft_board": "report/after-reports/draft-league-2026-10-14/recap.json",
@@ -802,7 +802,7 @@
       "PG",
       "SG"
      ],
-     "status": "Q"
+     "status": null
     },
     {
      "player": "Precious Achiuwa",
@@ -986,7 +986,7 @@
       "PF",
       "C"
      ],
-     "status": null
+     "status": "P"
     },
     {
      "player": "Trey Murphy III",
@@ -1168,7 +1168,7 @@
      "positions": [
       "PF"
      ],
-     "status": "Q"
+     "status": "O"
     },
     {
      "player": "Kingston Flemings",
@@ -1700,7 +1700,7 @@
       "PF",
       "C"
      ],
-     "status": null
+     "status": "O"
     },
     {
      "player": "Victor Wembanyama",
@@ -1906,7 +1906,7 @@
      "positions": [
       "C"
      ],
-     "status": "P"
+     "status": null
     },
     {
      "player": "Brayden Burries",
