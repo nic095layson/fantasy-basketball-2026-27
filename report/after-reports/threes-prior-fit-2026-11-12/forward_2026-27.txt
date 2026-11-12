@@ -1,0 +1,15 @@
+players 179 this-season attempts 9253 makes 3302 pct 0.3569 last-season pct of same players 0.3683 median last-season attempts 296
+raw last-season % | best flat weight 200 | logL at best -6032.74 | at 750 -6033.59 | at 356 ~400 -6033.07
+last-season % pulled toward league (K=356) | best flat weight 400 | logL at best -6023.73 | at 750 -6023.83 | at 356 ~400 -6023.73
+league average only | best flat weight 300 | logL at best -6027.67 | at 750 -6028.24 | at 356 ~400 -6027.81
+textbook: centre pulled, weight K+n0: logL -6023.61
+raw centre, best weight over 500 resamples: [(100, 60), (150, 119), (200, 102), (300, 92), (400, 37), (500, 30), (750, 14), (1000, 15), (1500, 5), (2500, 3), (5000, 3), (20000, 20)]
+raw last-season % weighted RMSE of this-season pct 0.0773
+last-season % pulled toward league (K=356) weighted RMSE of this-season pct 0.0739
+league average only weighted RMSE of this-season pct 0.0755
+---
+pulled minus raw at weight 750: logL gain 9.76, 95% 1.41 to 18.15, share of resamples above 0: 0.989
+Derrick White last season 209 of 640 = 0.327; pulled centre 0.338; this season 21 of 63
+Julian Champagnie last season 195 of 512 = 0.381; pulled centre 0.372; this season 34 of 78
+Ty Jerome last season 42 of 100 = 0.420; pulled centre 0.372; this season 26 of 71
+Kevin Durant last season 186 of 450 = 0.413; pulled centre 0.389; this season 16 of 46

@@ -63,6 +63,28 @@ class Inputs(unittest.TestCase):
         got = TL.prior_pct(["Alpha Man", "Few Shots", "Luka Doncic", "Rookie"], prior, aliases={})
         self.assertEqual(sorted(got), ["Alpha Man", "Luka Doncic"]); self.assertAlmostEqual(got["Alpha Man"], 0.40); self.assertAlmostEqual(got["Luka Doncic"], 0.35)
 
+    def test_the_prior_percentage_is_pulled_toward_the_league_and_weighted_by_its_own_attempts(self):
+        # owner pick 2026-11-12 ("Re-centre it"): one season of threes is a small sample; K fitted on 2025-26 = 356
+        prior = [dict(player="Hot Hand", games=30, fg3=42, fg3a=100), dict(player="Volume", games=80, fg3=280, fg3a=800),
+                 dict(player="Few Shots", games=70, fg3=30, fg3a=60)]
+        pct, w, mu = TL.prior_centre(["Hot Hand", "Volume", "Few Shots", "Rookie"], prior, aliases={})
+        self.assertEqual(mu, 0.3581)                               # the fitted mean, with the fitted 356
+        self.assertEqual(sorted(pct), ["Hot Hand", "Volume"])
+        self.assertAlmostEqual(pct["Hot Hand"], (356 * 0.3581 + 42) / 456)   # .420 on 100 attempts reads .3717
+        self.assertAlmostEqual(pct["Volume"], (356 * 0.3581 + 280) / 1156)   # .350 on 800 attempts barely moves: .3525
+        self.assertEqual(w, {"Hot Hand": 456.0, "Volume": 1156.0})
+        self.assertLess(abs(pct["Volume"] - 0.35), abs(pct["Hot Hand"] - 0.42))
+
+    def test_a_per_player_weight_reaches_the_split(self):
+        d = tempfile.mkdtemp(); pool = os.path.join(d, "pool.csv")
+        open(pool, "w").write("player,tpm\nA,2.0\nB,2.0\n")
+        rec = TL.build(pool, {"A": 2.4, "B": 2.4}, {"A": 0.40, "B": 0.40}, {"A": (10, 15, 60), "B": (10, 15, 60)}, att_prior=10.0,
+                       pct_prior={"A": 456.0, "B": 1156.0}, league=0.36)
+        self.assertAlmostEqual(rec["detail"]["A"]["pct"], round((456 * 0.40 + 15) / 516, 4))
+        self.assertAlmostEqual(rec["detail"]["B"]["pct"], round((1156 * 0.40 + 15) / 1216, 4))
+        self.assertLess(rec["detail"]["A"]["pct"], rec["detail"]["B"]["pct"])     # the same cold start moves the lighter prior more
+        self.assertEqual(rec["method"]["league_pct"], 0.36)
+
 
 class Build(unittest.TestCase):
     def setUp(self):
@@ -94,8 +116,9 @@ class Build(unittest.TestCase):
                             "--pool", self.pool, "--kit", kit, "--pre-kit", pre, "--prior", prior], capture_output=True, text=True)
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr); self.assertRegex(r.stdout, r"^THREES LINE: PASS — 2026-10-21: 2 players, 1 split, 1 unsplit")
         rec = json.load(open(os.path.join(out, "threes_line_2026-10-21.json")))
-        self.assertEqual(rec["unsplit"], ["Rookie"]); self.assertEqual(rec["method"]["pct_prior_att"], 750.0)
-        self.assertEqual([r["tpm"] for r in csv.DictReader(open(os.path.join(out, "projections_season_3s.csv")))], ["2.4"])   # one game, 2 of 6: (9.5 x 6.0 + 6) / 10.5 x (300 + 2) / 756 = 2.40
+        self.assertEqual(rec["unsplit"], ["Rookie"]); self.assertEqual(rec["method"]["pct_prior_k"], 356.0)
+        self.assertEqual(rec["method"]["league_pct"], 0.3581); self.assertEqual(rec["detail"]["Alpha Man"]["prior_weight"], 556.0)
+        self.assertEqual([r["tpm"] for r in csv.DictReader(open(os.path.join(out, "projections_season_3s.csv")))], ["2.4"])   # prior % (356 x .3581 + 80) / 556 = .3732, prior attempts 2.4 / .3732 = 6.43; one game, 2 of 6: (9.5 x 6.43 + 6) / 10.5 x (556 x .3732 + 2) / 562 = 6.39 x .3728 = 2.38
 
 
 if __name__ == "__main__":

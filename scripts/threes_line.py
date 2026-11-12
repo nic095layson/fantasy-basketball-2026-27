@@ -4,11 +4,15 @@ with one column rebuilt. The blend treats threes made as a count with a prior wo
 games, so a cold fortnight pulls a shooter's line down as fast as a real change of role would. This candidate separates
 the part that settles quickly (attempts) from the part that settles slowly (the percentage):
 
-    prior percentage  = the player's 2025-26 three-point percentage (data/reference/threes_prior_2025-26.csv,
-                        Basketball-Reference season totals), used only at MIN_PRIOR_ATT attempts or more
+    prior percentage  = (PCT_PRIOR_K x PCT_PRIOR_MU + his 2025-26 makes) / (PCT_PRIOR_K + his 2025-26 attempts)
+                        (data/reference/threes_prior_2025-26.csv, Basketball-Reference season totals; used only at
+                        MIN_PRIOR_ATT attempts or more). One season of threes is itself a small sample, so last
+                        season's mark is pulled toward the league before it is used (owner pick 2026-11-12,
+                        "Re-centre it").
+    prior weight      = PCT_PRIOR_K + his 2025-26 attempts   (what that pulled percentage is worth, in attempts)
     prior attempts    = the preseason line's threes made / the prior percentage   (the projection's own volume)
     attempts per game = (ATT_PRIOR_GAMES x prior attempts + this season's attempts) / (ATT_PRIOR_GAMES + games)
-    percentage        = (PCT_PRIOR_ATT x prior percentage + this season's makes) / (PCT_PRIOR_ATT + this season's attempts)
+    percentage        = (prior weight x prior percentage + this season's makes) / (prior weight + this season's attempts)
     candidate threes  = attempts per game x percentage
 
 With no games the candidate equals the preseason line (the prior attempts times the prior percentage is the preseason
@@ -16,8 +20,11 @@ threes by construction). Only `tpm` changes; points, FG% and every other column 
 2025-26 row, under MIN_PRIOR_ATT attempts, or no preseason threes keeps the live line and is listed as unsplit.
 
 ATT_PRIOR_GAMES is read live from the blend (its own threes prior), so attempts move at the speed threes move today.
-PCT_PRIOR_ATT is the owner-supplied figure of 2026-11-12 ("3-Point %: ~750 3PA"), unverified: hand-set, uncalibrated,
-and the reason this is a graded candidate (D-TS-1).
+PCT_PRIOR_K and PCT_PRIOR_MU are fitted together (report/after-reports/threes-prior-fit-2026-11-12/): the beta-binomial
+strength and mean of three-point talent among the 307 players with 100+ attempts in 2025-26, 356 (95% 249 to 635) and
+.3581. The mean is the fit's, not makes over attempts (.363), which leans toward the high-volume shooters. It replaces the owner-supplied flat
+750 of the first version; on this season's first four weeks the flat weight could not be told from 400, and the
+pulled centre beat the raw one. The line is still a graded candidate (D-TS-1).
 
 CANDIDATE ONLY: nothing on the board, in the brief or in the simulator reads these files. The Sunday step snapshots
 them (report/accuracy/lines_week<N>_3s.csv) and the Monday accuracy card grades them beside the blend on threes made.
@@ -47,7 +54,8 @@ KIT_CSV = os.path.join(SEASON, "projections_season.csv")
 PRE_KIT = os.path.join(KIT, "report", "projections-2026-27.csv")   # the preseason threes (never edited in season)
 PRIOR = os.path.join(KIT, "data", "reference", "threes_prior_2025-26.csv")
 
-PCT_PRIOR_ATT = 750.0   # attempts the prior percentage is worth (owner-supplied 2026-11-12, unverified; uncalibrated: D-TS-1)
+PCT_PRIOR_K = 356.0     # attempts of league-average shooting a 2025-26 percentage is pulled toward (fitted, see the docstring)
+PCT_PRIOR_MU = 0.3581   # that league average: the fitted mean of three-point talent, 2025-26, 100+ attempts
 MIN_PRIOR_ATT = 100     # a 2025-26 percentage on fewer attempts than this is not used (hand-set, uncalibrated: D-TS-1)
 
 
@@ -91,6 +99,21 @@ def prior_pct(names, prior_rows, aliases=None, min_att=MIN_PRIOR_ATT):
     return out
 
 
+def prior_centre(names, prior_rows, aliases=None, min_att=MIN_PRIOR_ATT, k=PCT_PRIOR_K, mu=PCT_PRIOR_MU):
+    """({line name: pulled 2025-26 percentage}, {line name: its weight in attempts}, league percentage) for the names
+    that resolve to a prior row with min_att attempts or more."""
+    index = box_pull.name_index([r["player"] for r in prior_rows], aliases if aliases is not None else box_pull.load_aliases())
+    by = {r["player"]: r for r in prior_rows}
+    pct, weight = {}, {}
+    for n in names:
+        hit = box_pull.match_name(n, index)
+        r = by.get(hit) if hit else None
+        if r and r["fg3a"] >= min_att:
+            pct[n] = (k * mu + r["fg3"]) / (k + r["fg3a"])
+            weight[n] = k + r["fg3a"]
+    return pct, weight, mu
+
+
 def preseason_tpm(path=PRE_KIT):
     with open(path, encoding="utf-8", newline="") as f:
         out = {}
@@ -122,7 +145,7 @@ def resolve_pre(names, pre_raw, aliases=None):
     return out
 
 
-def split(pre_tpm, pct0, games, makes, attempts, att_prior, pct_prior=PCT_PRIOR_ATT):
+def split(pre_tpm, pct0, games, makes, attempts, att_prior, pct_prior=PCT_PRIOR_K):
     """(threes per game, attempts per game, percentage) for one player, or None when he cannot be split."""
     if pre_tpm is None or not pct0 or pre_tpm <= 0:
         return None
@@ -132,14 +155,16 @@ def split(pre_tpm, pct0, games, makes, attempts, att_prior, pct_prior=PCT_PRIOR_
     return att * pct, att, pct
 
 
-def build(lines_csv, pre, pct0, threes, att_prior=None, pct_prior=PCT_PRIOR_ATT, name_col="player"):
+def build(lines_csv, pre, pct0, threes, att_prior=None, pct_prior=PCT_PRIOR_K, name_col="player", league=None):
+    """pct_prior: the prior percentage's weight in attempts, one number for everyone or {name: weight}."""
     att_prior = att_prior_games() if att_prior is None else att_prior
+    weight = (lambda n: pct_prior.get(n, PCT_PRIOR_K)) if isinstance(pct_prior, dict) else (lambda n: pct_prior)
     with open(lines_csv, encoding="utf-8", newline="") as f:
         rd = csv.DictReader(f); fields = rd.fieldnames; rows = list(rd)
     out, detail, unsplit = [], {}, []
     for r in rows:
         name = r[name_col]; g, m, a = threes.get(name, (0, 0, 0))
-        s = split(pre.get(name), pct0.get(name), g, m, a, att_prior, pct_prior)
+        s = split(pre.get(name), pct0.get(name), g, m, a, att_prior, weight(name))
         if s is None:
             unsplit.append(name); out.append(dict(r)); continue
         new = dict(r); new["tpm"] = f"{s[0]:.1f}"
@@ -148,11 +173,14 @@ def build(lines_csv, pre, pct0, threes, att_prior=None, pct_prior=PCT_PRIOR_ATT,
         except (ValueError, TypeError):
             live = None
         detail[name] = dict(live=live, candidate=round(s[0], 2), attempts=round(s[1], 2), pct=round(s[2], 4),
-                            prior_pct=round(pct0[name], 4), games=g, makes=m, att=a)
+                            prior_pct=round(pct0[name], 4), prior_weight=round(weight(name), 1), games=g, makes=m, att=a)
         out.append(new)
     return dict(rows=out, fields=fields, detail=detail, unsplit=sorted(unsplit),
-                method=dict(att_prior_games=att_prior, pct_prior_att=pct_prior, min_prior_att=MIN_PRIOR_ATT,
-                            rule="tpm = blended attempts x shrunk percentage; every other column is the live line's"))
+                method=dict(att_prior_games=att_prior, pct_prior_k=PCT_PRIOR_K if isinstance(pct_prior, dict) else None,
+                            pct_prior_weight="PCT_PRIOR_K + 2025-26 attempts, per player" if isinstance(pct_prior, dict) else pct_prior,
+                            league_pct=None if league is None else round(league, 4), min_prior_att=MIN_PRIOR_ATT,
+                            rule="tpm = blended attempts x shrunk percentage; the prior percentage is last season's pulled "
+                                 "toward the league; every other column is the live line's"))
 
 
 def write_csv(path, rows, fields):
@@ -171,10 +199,10 @@ def main():
     try:
         threes = season_threes(a.actuals, a.through); prior = read_prior(a.prior)
         names = line_names((a.pool, "player"), (a.kit, "name"))
-        pre = resolve_pre(names, preseason_tpm(a.pre_kit)); pct0 = prior_pct(names, prior)
+        pre = resolve_pre(names, preseason_tpm(a.pre_kit)); pct0, wt, mu = prior_centre(names, prior)
         threes = dict(threes, **{n: v for n, v in resolve_pre(names, threes).items() if v is not None})   # the box scores' spelling
-        rec = build(a.pool, pre, pct0, threes)
-        kit = build(a.kit, pre, pct0, threes, name_col="name")
+        rec = build(a.pool, pre, pct0, threes, pct_prior=wt, league=mu)
+        kit = build(a.kit, pre, pct0, threes, pct_prior=wt, name_col="name", league=mu)
     except (OSError, ValueError, KeyError) as e:
         print(f"THREES LINE: FAIL — {e}"); return 1
     os.makedirs(a.out_dir, exist_ok=True)
