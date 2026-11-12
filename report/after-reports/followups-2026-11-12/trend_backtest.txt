@@ -1,0 +1,14 @@
+player-dates with three later TEAM games: 1536 | players 370
+minutes up 6+ (onsets)         n= 126 | appeared in  88% of the team's next 3 | minutes per TEAM game (missed = 0): before  21.3 next  20.5 (-0.8) | points per team game: before   9.9 next   9.4 (-0.6) | points per 36 change -0.5
+usage up 4+ only (onsets)      n= 160 | appeared in  84% of the team's next 3 | minutes per TEAM game (missed = 0): before  20.7 next  19.1 (-1.6) | points per team game: before   9.9 next   9.0 (-0.9) | points per 36 change -0.1
+not flagged                    n=1043 | appeared in  90% of the team's next 3 | minutes per TEAM game (missed = 0): before  23.8 next  22.0 (-1.8) | points per team game: before  11.4 next  10.6 (-0.8) | points per 36 change -0.1
+minutes, under 26 mpg          n=  84 | appeared in  88% of the team's next 3 | minutes per TEAM game (missed = 0): before  17.1 next  17.3 (+0.2) | points per team game: before   6.4 next   6.5 (+0.1) | points per 36 change -0.5
+usage only, under 26 mpg       n= 106 | appeared in  81% of the team's next 3 | minutes per TEAM game (missed = 0): before  15.2 next  14.8 (-0.4) | points per team game: before   6.0 next   5.9 (-0.1) | points per 36 change +0.5
+not flagged, under 26 mpg      n= 553 | appeared in  87% of the team's next 3 | minutes per TEAM game (missed = 0): before  17.3 next  16.5 (-0.8) | points per team game: before   6.6 next   6.6 (+0.0) | points per 36 change +0.1
+('minutes', 'min') edge over unflagged: median 0.96, 95% -0.38 to 2.41
+('minutes', 'pts') edge over unflagged: median 0.24, 95% -0.66 to 1.15
+('minutes', 'app') edge over unflagged: median -2.04, 95% -6.91 to 2.87
+('usage only', 'min') edge over unflagged: median 0.19, 95% -0.95 to 1.29
+('usage only', 'pts') edge over unflagged: median -0.10, 95% -0.88 to 0.62
+('usage only', 'app') edge over unflagged: median -5.66, 95% -10.07 to -1.34
+minutes trigger with 5 later games: n=71 | prior 16.2 last3 25.0 games 1-3 after 24.1 games 4-5 after 23.3

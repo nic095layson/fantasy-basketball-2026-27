@@ -1,58 +1,33 @@
 {
- "ran_at_utc": "2026-11-12T20:59:33Z",
+ "ran_at_utc": "2026-11-12T22:05:56Z",
  "inputs": {
-  "report/after-reports/after-report-2026-11-12-threes-prior-fit.md": "c0ea0ac30cdd0553bcb854a62df09b9d6b2f902b17bef5e93c33d808b671cc30",
-  "scripts/threes_line.py": "67f8962ea7f94886b7f0ab728e4d1b5cbd13c7376dcee0093deb6b51bff224e6",
-  "scripts/redteam/constants_registry.json": "ab2225a051ea73311d6ae4fbdb9e3894e0323c2ba6a39188ad7f4b5d7b5d031e",
-  "report/after-reports/threes-prior-fit-2026-11-12/fit_2025-26.py": "fc313d3a0aa6c977e5364dedef1baa72ed8be0458c2c4c869f567940b1249292",
-  "report/after-reports/threes-prior-fit-2026-11-12/fit_2025-26.txt": "f5c24c68f3b689786a9672c8b15cba91ab33887863031e1c7b4f1cd9f6b4e482",
-  "report/after-reports/threes-prior-fit-2026-11-12/forward_2026-27.py": "d812ba303c5e0de7025585d62334d8020a5f990e52dbdaca54cffb8a67def9d9",
-  "report/after-reports/threes-prior-fit-2026-11-12/forward_2026-27.txt": "ac721381db332a7261c51739bca78f73a21dd93e6f7f2e2e2b0d2a8d39f272ca",
+  "report/after-reports/after-report-2026-11-12-followup-builds.md": "0bc294831c377a502632e63764b021b5d47488f3d7a8fe815fb3ab6a43c98e9f",
+  "scripts/season_deck.py": "b59e124b8aca8fad86fd4abda595d5133edeb0e492757681333c89b0ddbb2bd1",
+  "scripts/test_season_deck.py": "ac5bfb85bbf4b8fdd56b29d3c9d115aaa724cbccf36a907a41b848ccf96ec29e",
+  "scripts/redteam/attacks.json": "92a95a1db2b8a0d9e7f8d5bb4c3bbf22bcc2e5d25b46e1b0f66c08529ae047c0",
+  "report/after-reports/findings-fix-2026-11-12/drop_band.py": "84a865f9cd28a9614ea24fa3e459638945c510f81781f3f5015fd2f8a19c9507",
+  "report/after-reports/findings-fix-2026-11-12/drop_band.json": "596c4b11a0706d236f78f18f4943ea6fed07f1773c9cd50e7a336146f69fa2b1",
+  "report/corrections-log.md": "0d428c67dc160739f71c8100d20c9b332f16fae56f45406ad17ff009ef78d367",
+  "report/pull-log.md": "bd1cc483beff53721fa912e28bb7e2c1433eb68f256dd3416f99c66c8c1a7b83",
   "../wtsd/report/after-reports/redteam-2026-11-09-season/sweep.json": "7cebe2a3101d6d88b154c99b3082d5819197193ddb2be591d0c3b6d479d2a305"
  },
  "gates": [
   {
    "name": "kit check_report",
-   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-12-threes-prior-fit.md",
+   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-12-followup-builds.md",
    "cwd": ".",
    "pass_re": "^REPORT GATE: PASS",
    "exit": 0,
-   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-11-12-threes-prior-fit.md (structure, publication rule, pull-log row)",
+   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-11-12-followup-builds.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "REPORT GATE: PASS \u2014 after-report-2026-11-12-threes-prior-fit.md (structure, publication rule, pull-log row)"
-   ]
-  },
-  {
-   "name": "deck judgment_open_items --check-report",
-   "cmd": "/usr/local/bin/python3 scripts/judgment_open_items.py --check-report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-12-threes-prior-fit.md",
-   "cwd": "../yahoo-fantasy-basketball",
-   "pass_re": "^receipts check PASS",
-   "exit": 0,
-   "pass_line": "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-11-12-threes-prior-fit.md",
-   "verdict": "PASS",
-   "why": "",
-   "tail": [
-    "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-11-12-threes-prior-fit.md"
-   ]
-  },
-  {
-   "name": "deck repeat_market_check --check-report",
-   "cmd": "/usr/local/bin/python3 scripts/repeat_market_check.py --check-report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-12-threes-prior-fit.md",
-   "cwd": "../yahoo-fantasy-basketball",
-   "pass_re": "^REPEAT-NAME CHECK: PASS",
-   "exit": 0,
-   "pass_line": "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-11-12-threes-prior-fit.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)",
-   "verdict": "PASS",
-   "why": "",
-   "tail": [
-    "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-11-12-threes-prior-fit.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)"
+    "REPORT GATE: PASS \u2014 after-report-2026-11-12-followup-builds.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)"
    ]
   },
   {
    "name": "claim receipts",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/independent_audit/claim_receipts.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-12-threes-prior-fit.md",
+   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/independent_audit/claim_receipts.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-12-followup-builds.md",
    "cwd": ".",
    "pass_re": "^CLAIM RECEIPTS: (PASS|ADVISORY)",
    "exit": 0,
@@ -91,7 +66,7 @@
   },
   {
    "name": "redteam bands",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/redteam/check_bands.py --report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-12-threes-prior-fit.md --sweep /home/user/wtsd/report/after-reports/redteam-2026-11-09-season/sweep.json",
+   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/redteam/check_bands.py --report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-12-followup-builds.md --sweep /home/user/wtsd/report/after-reports/redteam-2026-11-09-season/sweep.json",
    "cwd": ".",
    "pass_re": "^BANDS CHECK: PASS",
    "exit": 0,
@@ -131,5 +106,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "cf331cf8979e14feb365a17dc4178736a21fea04"
+ "base_commit": "f6d49f5fee6af413b971211ac6359926fb0ba6e2"
 }

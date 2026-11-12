@@ -40,7 +40,7 @@ def main():
     if missing:
         print(f"DROP BAND: HALT — not on the roster of {state.get('as_of')}: {sorted(set(missing))}"); return 1
     path, rows = IR.newest_espn(DATE, os.path.join(a.records, "data", "status"))
-    il = IR.il_players(state, rows, DATE, weeks)
+    il = IR.il_players(state, rows, DATE, weeks, by=by)
     for x in il:
         if x["player"] in RETURNS:
             x["return_date"] = RETURNS[x["player"]]; x["week"] = IR.return_week(RETURNS[x["player"]], DATE, weeks)

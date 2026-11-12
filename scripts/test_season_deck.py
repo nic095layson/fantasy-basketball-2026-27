@@ -2517,7 +2517,8 @@ def season_board_dom(html_path, clicks):
                         head=pg.evaluate("() => [...document.querySelectorAll('#pane-board table tr:first-child th')].map(x=>x.textContent.replace(/[ ↑↓]/g,''))"),
                         rows=pg.evaluate("() => [...document.querySelectorAll('#pane-board table tr')].slice(1).map(r=>[...r.cells].map(c=>c.textContent))"),
                         off=pg.evaluate("() => [...document.querySelectorAll('#bd-punt button[aria-pressed=false]')].map(x=>x.dataset.cat)"),
-                        text=pg.evaluate("() => document.querySelector('#pane-board').textContent"))
+                        text=pg.evaluate("() => document.querySelector('#pane-board').textContent"),
+                        notes=pg.evaluate("() => [...document.querySelectorAll('#pane-board .more')].map(m=>m.title).join(' | ')"))
         finally:
             b.close()
 
@@ -2564,6 +2565,69 @@ class PuntView(unittest.TestCase):
         self.assertEqual([r[1].split(" · ")[0] for r in d["rows"]], ["Alpha Man", "Free Agent", "Bench Guy"])
 
 
+class FullHealthBuild(unittest.TestCase):
+    """Owner 2026-11-12 (council verdict): "My build" reads the league with IL players counting 0 (D-IS-8), so a category
+    can look weak only because someone is hurt. "Full health" switches off the categories that are weak with every
+    team's IL players counted as active, before any cuts. Display only; shown only when some roster has an IL player."""
+    CATS = PuntView.CATS
+
+    def build(self, il_slot):
+        d = tempfile.mkdtemp(); fx = fixtures(d)
+        z = lambda **kw: {c: kw.get(c, 0.0) for c in self.CATS}
+        b = json.load(open(fx["board"]))
+        b["board"] = [dict(rank=1, name="Alpha Man", team="DEN", pos="PG", gp=82.0, z_adj=4.0, z_total=4.0, z=z(AST=3.0, PTS=1.0)),
+                      dict(rank=2, name="Star Hurt", team="LAC", pos="SF", gp=82.0, z_adj=5.0, z_total=5.0, z=z(STL=5.0)),
+                      dict(rank=3, name="Rival One", team="BOS", pos="PG", gp=82.0, z_adj=6.0, z_total=6.0, z=z(STL=2.0, AST=4.0)),
+                      dict(rank=4, name="Rival Hurt", team="PHI", pos="C", gp=82.0, z_adj=6.0, z_total=6.0, z=z(PTS=6.0))]
+        b["n_rows"] = 4
+        json.dump(b, open(fx["board"], "w"))
+        lg = json.load(open(fx["league_state"]))
+        pl = lambda n, slot: dict(player=n, slot=slot, status=None, positions=["PG"])
+        lg["teams"][0]["players"] = [pl("Alpha Man", "PG"), pl("Star Hurt", il_slot)]
+        lg["teams"][1]["players"] = [pl("Rival One", "PG"), pl("Rival Hurt", il_slot)]
+        json.dump(lg, open(fx["league_state"], "w"))
+        html, _, _ = SD.build(fx, date="2026-10-21")
+        p = os.path.join(d, "deck.html")
+        with open(p, "w", encoding="utf-8") as f:
+            f.write(html)
+        return p
+
+    def test_my_build_reads_today_and_full_health_counts_every_teams_il_players(self):
+        p = self.build("IL")
+        d = season_board_dom(p, ["#bd-mybuild"])                # IL counts 0: steals 0 v 2, assists 3 v 4
+        self.assertEqual(d["errors"], []); self.assertEqual(d["off"], ["AST", "STL"])
+        d = season_board_dom(p, ["#bd-fullhealth"])             # steals 5 v 2; the rival's hurt scorer now tops points 6 v 1
+        self.assertEqual(d["errors"], []); self.assertEqual(d["off"], ["PTS", "AST"])
+        self.assertIn("Full health", d["text"]); self.assertIn("every team's IL players counted as active", d["notes"])
+        from playwright.sync_api import sync_playwright         # the same button on the analyzer tab sets the same shared switches
+        with sync_playwright() as pw:
+            br, exe, tried = DRC._launch(pw)
+            try:
+                pg = br.new_page(); errs = []
+                pg.on("pageerror", lambda e: errs.append(str(e))); pg.route(re.compile(r"^https?://"), lambda r: r.abort())
+                pg.goto("file://" + os.path.abspath(p), wait_until="load")
+                pg.click("nav.tabs button:has-text('Trade Analyzer')"); pg.click("#tr-fullhealth")
+                off = lambda pfx: pg.evaluate("(p) => [...document.querySelectorAll('#'+p+'-punt button[aria-pressed=false]')].map(x=>x.dataset.cat)", pfx)
+                self.assertEqual((off("tr"), off("bd"), errs), (["PTS", "AST"], ["PTS", "AST"], []))
+            finally:
+                br.close()
+
+    def test_with_nobody_on_il_the_button_is_not_drawn(self):
+        p = self.build("BN")
+        d = season_board_dom(p, [])
+        self.assertEqual(d["errors"], []); self.assertNotIn("Full health", d["notes"])
+        from playwright.sync_api import sync_playwright
+        with sync_playwright() as pw:
+            b, exe, tried = DRC._launch(pw)
+            try:
+                pg = b.new_page(); pg.route(re.compile(r"^https?://"), lambda r: r.abort())
+                pg.goto("file://" + os.path.abspath(p), wait_until="load")
+                self.assertEqual(pg.evaluate("() => document.querySelectorAll('#bd-fullhealth, #tr-fullhealth, #fa-fullhealth').length"), 0)
+                self.assertEqual(pg.evaluate("() => document.querySelectorAll('#bd-mybuild').length"), 1)
+            finally:
+                b.close()
+
+
 def trending_dom(html_path):
     from playwright.sync_api import sync_playwright
     with sync_playwright() as p:
@@ -2576,6 +2640,7 @@ def trending_dom(html_path):
             pg.click("nav.tabs button:has-text('Free Agents')")
             return dict(errors=errs,
                         text=pg.evaluate("() => { const c=document.querySelector('#pane-fa #fa-trending'); return c? c.textContent : null }"),
+                        note=pg.evaluate("() => { const m=document.querySelector('#fa-trending .more'); return m? m.title : null }"),
                         rows=pg.evaluate("() => [...document.querySelectorAll('#fa-trending table tr')].slice(1).map(r=>[...r.cells].map(c=>c.textContent))"))
         finally:
             b.close()
@@ -2583,7 +2648,8 @@ def trending_dom(html_path):
 
 class TrendingUp(unittest.TestCase):
     """Owner 2026-11-12 (card: "Trending-up screen"): the Free Agents tab lists free agents whose last 3 games run above
-    the games before them in minutes or usage, from the form record. Rostered players never appear. Display only."""
+    the games before them in minutes, from the form record, with usage beside it. Rostered players never appear.
+    Display only."""
     def build(self, edit):
         d = tempfile.mkdtemp(); fx = fixtures(d); fr = form_record(); fr["method"]["usg_trend_min"] = 4.0
         edit({r["name"]: r for r in fr["rows"]}, fr)
@@ -2596,18 +2662,22 @@ class TrendingUp(unittest.TestCase):
             f.write(html)
         return trending_dom(p)
 
-    def test_a_free_agent_up_in_minutes_or_usage_is_listed_and_a_rostered_player_is_not(self):
+    def test_a_free_agent_up_in_minutes_is_listed_and_usage_alone_does_not_list_one(self):
+        """Owner 2026-11-12 (council verdict on the backtest): a usage rise without a minutes rise no longer lists a
+        player; usage stays as two columns, with its own mark."""
         def edit(by, fr):
-            by["Free Agent"].update(games=6, trend="up", last3_mpg=28.0, prior_mpg=19.0, usg_trend="flat", last3_usg=18.0, prior_usg=17.0)
+            by["Free Agent"].update(games=6, trend="up", last3_mpg=28.0, prior_mpg=19.0, usg_trend="up", last3_usg=22.0, prior_usg=17.0)
             by["Hurt FA"].update(games=5, trend="flat", last3_mpg=20.0, prior_mpg=19.0, usg_trend="up", last3_usg=24.5, prior_usg=18.0, status="Q")
             by["Bench Guy"].update(games=6, trend="up", last3_mpg=30.0, prior_mpg=12.0, usg_trend="up", last3_usg=30.0, prior_usg=10.0)   # rostered
             fr["rows"].append(dict(by["Free Agent"], name="Fading FA", trend="down", last3_mpg=12.0, prior_mpg=24.0, usg_trend="up", last3_usg=25.0, prior_usg=17.0))
         d = self.build(edit)
         self.assertEqual(d["errors"], [])
-        self.assertEqual([r[0] for r in d["rows"]], ["Free Agent · GSW", "Hurt FA · MIA"])        # by minutes gained: +9, then +1
-        self.assertEqual(d["rows"][0][2:6], ["▲ 28.0", "19.0", "18.0%", "17.0%"])
-        self.assertEqual(d["rows"][1][2:7], ["20.0", "19.0", "▲ 24.5%", "18.0%", "Q"])
-        self.assertNotIn("Bench Guy", d["text"]); self.assertNotIn("Fading FA", d["text"])   # usage up on minutes down is not a rise
+        self.assertEqual([r[0] for r in d["rows"]], ["Free Agent · GSW"])
+        self.assertEqual(d["rows"][0][2:6], ["▲ 28.0", "19.0", "▲ 22.0%", "17.0%"])
+        for name in ("Hurt FA", "Bench Guy", "Fading FA"):
+            self.assertNotIn(name, d["text"])
+        self.assertIn("minutes are up 6", d["note"]); self.assertNotIn("or his usage is up", d["note"])
+        self.assertIn("A usage rise alone does not list a player", d["note"]); self.assertIn("up 4 points or more", d["note"])
 
     def test_nobody_trending_says_so_and_an_older_record_without_usage_still_draws(self):
         d = self.build(lambda by, fr: None)                              # the fixture's rows carry no trend

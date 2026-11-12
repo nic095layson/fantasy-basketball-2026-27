@@ -83,5 +83,73 @@ class RunnerImpact(unittest.TestCase):
         self.assertEqual(code, 1)
 
 
+
+SLIM = """# A report
+
+Pull window: 2026-11-12 → 2026-11-12 (test)
+
+## 1. Something
+
+text
+
+Runner impact: none
+
+{line}
+"""
+
+
+class PoolRowsTouched(unittest.TestCase):
+    """Council verdict 2026-11-12 (owner: "proceed with their verdicts"): 33 reports carried an identical copied tail
+    (a past watch item and preseason receipt tables marked "did not check"). A report that states
+    "Pool rows touched: none", and whose claim holds against main, does not owe the Watchlist, Open-item receipts and
+    Repeat-name sections; any other report owes them as before."""
+    def run_check(self, text, changed=()):
+        d = tempfile.mkdtemp(); path = os.path.join(d, "after-report-2026-11-12-x.md")
+        open(path, "w", encoding="utf-8").write(text)
+        log = os.path.join(d, "pull-log.md"); open(log, "w").write("| 2026-11-12 | t | 0 | 0 | 0 | x |\n")
+        old_log, old_fn = C.PULL_LOG, C.changed_pool_files
+        C.PULL_LOG, C.changed_pool_files = log, (lambda root=None: changed)
+        try:
+            buf = io.StringIO()
+            with redirect_stdout(buf):
+                rc = C.check(path)
+            return rc, buf.getvalue()
+        finally:
+            C.PULL_LOG, C.changed_pool_files = old_log, old_fn
+
+    def test_the_stated_and_verified_line_lifts_the_three_sections(self):
+        rc, out = self.run_check(SLIM.format(line="Pool rows touched: none"), changed=[])
+        self.assertEqual(rc, 0, out); self.assertIn("no pool row touched", out)
+
+    def test_without_the_line_the_three_sections_are_owed(self):
+        rc, out = self.run_check(SLIM.format(line=""), changed=[])
+        self.assertEqual(rc, 1)
+        for name in ("watchlist section", "Open-item receipts", "Repeat-name market check"):
+            self.assertIn(name, out)
+
+    def test_the_line_is_refused_when_a_projection_file_differs_from_main(self):
+        rc, out = self.run_check(SLIM.format(line="Pool rows touched: none"), changed=["report/projections-2026-27.csv"])
+        self.assertEqual(rc, 1); self.assertIn("report/projections-2026-27.csv", out); self.assertIn("watchlist section", out)
+
+    def test_the_line_is_refused_when_main_cannot_be_read(self):
+        rc, out = self.run_check(SLIM.format(line="Pool rows touched: none"), changed=None)
+        self.assertEqual(rc, 1); self.assertIn("could not be checked against main", out)
+
+    def test_the_rest_of_the_gate_still_applies(self):
+        rc, out = self.run_check(SLIM.format(line="Pool rows touched: none").replace("Runner impact: none", ""), changed=[])
+        self.assertEqual(rc, 1); self.assertIn("Runner impact", out)
+
+    def test_exempt_reads_the_same_rule_for_the_gate_runner(self):
+        d = tempfile.mkdtemp(); path = os.path.join(d, "r.md"); open(path, "w").write(SLIM.format(line="Pool rows touched: none"))
+        old = C.changed_pool_files
+        try:
+            C.changed_pool_files = lambda root=None: []
+            self.assertTrue(C.pool_exempt(path)[0])
+            C.changed_pool_files = lambda root=None: ["data/pool_additions.csv"]
+            self.assertFalse(C.pool_exempt(path)[0])
+        finally:
+            C.changed_pool_files = old
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

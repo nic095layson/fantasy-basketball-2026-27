@@ -125,11 +125,28 @@ def quote(rec):
     return "\n".join(out)
 
 
-def report_gates(report, deck):
+def _pool_exempt(report):
+    """report/check_report.py's own rule (council verdict 2026-11-12): the report states "Pool rows touched: none"
+    and no projection file differs from main."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("check_report", os.path.join(KIT, "report", "check_report.py"))
+    m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
+    try:
+        return m.pool_exempt(report)[0]
+    except OSError:
+        return False
+
+
+def report_gates(report, deck, exempt=None):
+    """The kit's report gate, and the deck's two receipt gates unless the report touched no pool row (they verify
+    the content of sections such a report does not owe)."""
     py = sys.executable
+    kit = {"name": "kit check_report", "cwd": KIT, "pass_re": r"^REPORT GATE: PASS",
+           "cmd": [py, "report/check_report.py", report]}
+    if _pool_exempt(report) if exempt is None else exempt:
+        return [kit]
     return [
-        {"name": "kit check_report", "cwd": KIT, "pass_re": r"^REPORT GATE: PASS",
-         "cmd": [py, "report/check_report.py", report]},
+        kit,
         {"name": "deck judgment_open_items --check-report", "cwd": deck,
          "pass_re": r"^receipts check PASS", "cmd": [py, "scripts/judgment_open_items.py",
                                                        "--check-report", report]},
