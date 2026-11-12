@@ -4,14 +4,14 @@ Pull window: 2026-10-17 → 2026-11-12 (one fetch: Basketball-Reference's 2025-2
 
 **Method up front.** The owner sent a list of fifteen valuation formulas and asked which the kit already has, which are useful, and how they would be used. The assessment (read from the code) found nine present, four absent and two partial, and put four options on a card. He picked three: "Punt-aware build view", "Trending-up screen", "Split threes into attempts and %". Parameters, stated to him before the build: (1) a category switched off leaves every player's sum, with the board's own availability rule, and a "My build" button switches off the categories where his team ranks 10th or worse of 12; (2) last 3 games against the games before them from 4 games played, flagged at minutes up 6 or usage up 4 points, usage = (FGA + 0.44 FTA + TOV) as a share of the team's while he is on the floor; (3) prior percentage = the player's 2025-26 three-point percentage, attempts settling at the blend's own threes prior (9.5 games) and the percentage at 750 attempts, the owner-supplied figure. EVIDENCE marks what a run showed; INFERENCE what is derived.
 
-**Verdict: all three are built and run on today's records. The Board has nine category chips and a fit column that appears when one is off; the Free Agents tab has a Trending Up card; a third line (`pool_season_3s.csv`) is written each morning, snapshotted on Sundays and graded on Mondays on threes made. Nothing changes the board's order, the live line, the brief or the simulator.**
+**Verdict: all three are built and run on today's records. The Board has nine category chips and a fit column that appears when one is off; the same chips drive the Trade Analyzer's and the Free Agents adder's verdicts; the Free Agents tab has a Trending Up card; a third line (`pool_season_3s.csv`) is written each morning, snapshotted on Sundays and graded on Mondays on threes made. Nothing changes the board's order, the live line, the brief or the simulator.**
 
 Runner impact: code-only — the morning run gains one non-fatal step, "threes line" (23 steps, was 22); `form_board.py` adds usage fields to its record; the deck draws one new control row and one new card. No prompt edit.
 
 ## 1. Two changes of plan, both told to the owner before the work that used them
 
 - **The prior's source.** The plan named the 2025-26 game logs on file. They carry threes made and no attempts, so they cannot give a percentage. The prior comes instead from Basketball-Reference's 2025-26 season totals (one fetch, 582 players, checksum in the manifest; the first row per player, which is the combined row for the 71 who were traded).
-- **The Trade Analyzer.** The card's wording included it. Its net figure and tier verdict rest on all nine categories and are covered by existing tests; the punt chips are on the Board only. A trade read with categories off is done by sorting the Board by fit. Left for the owner to ask for.
+- **The Trade Analyzer.** First left alone, then built the same day on the owner's word ("If it is valuable, then have punt chips drive the trade analyzer as well. Run analysis. If worth, build"). The analysis: with assists and steals off, three of his players change sign or size on today's board (Derrick White 0.95 → −0.37, John Collins −0.39 → 1.30, Tyrese Haliburton 4.11 → 1.06), so a verdict on all nine misreads the trades he is weighing. Section 2a.
 
 One rule was tightened after the first real run: a free agent whose usage is up while his minutes are down by the threshold is left off the list (Jarace Walker read 24.0 to 12.3 minutes with usage up; that is not a rise).
 
@@ -32,6 +32,12 @@ EVIDENCE, today's records with the owner's weak categories off (assists and stea
 | Derrick White | 46 | 0.95 | −0.37 |
 
 INFERENCE: his rank in assists is read with Haliburton on the IL, where he counts zero. When Haliburton is active the "My build" button may no longer switch assists off; the view follows the roster as it stands.
+
+## 2a. The chips on the Trade Analyzer
+
+One shared set of switched-off categories (`PUNT_OFF`) for the Board, the Trade Analyzer and the Free Agents adder; chips `#tr-punt` on the Trade Analyzer. With any category off, the verdict's net counts the categories still on, the left-out rows of the category table are dimmed, and the line reads "fit net Δz … without AST, STL (all nine: …)". With all nine on the block is as before; the existing verdict tests pass unchanged.
+
+EVIDENCE: `test_season_deck.PuntVerdict` — out a player worth 3.0 assists and 1.0 points, in one worth 1.5 rebounds and 1.5 blocks: all nine −1.00 (unfavorable); with assists off, +2.00 (favorable), and the Board's chips show the same category off. A first version of this test skipped itself on the fixture and was replaced before it was counted.
 
 ## 3. Trending-up screen
 
@@ -82,8 +88,7 @@ A fault caught before anything was written to the kit: the first parse of the to
 ## 7. Next steps (owner decisions)
 
 1. Merge on your word; the next morning run writes the candidate and the next deck build shows the chips and the card.
-2. Whether the punt chips should also drive the Trade Analyzer.
-3. D-TS-1: the threes candidate replaces nothing until it beats the in-season line on threes made in 3 of 4 consecutive graded weeks, and then only on your word.
+2. D-TS-1: the threes candidate replaces nothing until it beats the in-season line on threes made in 3 of 4 consecutive graded weeks, and then only on your word.
 ## Watchlist
 
 - 2026-11-09: week 3 on the accuracy card, the candidate's second graded week under D-ML-1.

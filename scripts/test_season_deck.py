@@ -2616,3 +2616,48 @@ class TrendingUp(unittest.TestCase):
             fr["method"].pop("usg_trend_min"); by["Free Agent"].update(games=6, trend="up", last3_mpg=28.0, prior_mpg=19.0)
         d = self.build(old)
         self.assertEqual(d["errors"], []); self.assertEqual(d["rows"][0][0], "Free Agent · GSW"); self.assertEqual(d["rows"][0][4], "—")
+
+
+def punt_verdict_dom(html_path, chip_clicks):
+    """Click chips on the Trade Analyzer, then score "drop Alpha Man, add Free Agent" on the Free Agents tab (the same
+    verdict block the Trade Analyzer draws) and read the verdict line and each pane's switched-off chips."""
+    from playwright.sync_api import sync_playwright
+    with sync_playwright() as p:
+        b, exe, tried = DRC._launch(p)
+        try:
+            pg = b.new_page(); errs = []
+            pg.on("pageerror", lambda e: errs.append(str(e)))
+            pg.route(re.compile(r"^https?://"), lambda r: r.abort())
+            pg.goto("file://" + os.path.abspath(html_path), wait_until="load")
+            pg.click("nav.tabs button:has-text('Trade Analyzer')")
+            for sel in chip_clicks:
+                pg.click(sel)
+            off = lambda pfx: pg.evaluate("(p) => [...document.querySelectorAll('#'+p+'-punt button[aria-pressed=false]')].map(x=>x.dataset.cat)", pfx)
+            tr_off = off("tr")
+            pg.click("nav.tabs button:has-text('Free Agents')")
+            pg.click("#pane-fa .plist label:has-text('Alpha Man') input"); pg.click("#pane-fa .plist label:has-text('Free Agent') input")
+            return dict(errors=errs, tr_off=tr_off, bd_off=off("bd"),
+                        verdict=pg.evaluate("() => { const v=document.querySelector('#pane-fa .verdict'); return v? v.parentElement.textContent : null }"),
+                        dimmed=pg.evaluate("() => [...document.querySelectorAll('#pane-fa tr.puntoff td:first-child')].map(x=>x.textContent)"),
+                        tr_chips=pg.evaluate("() => document.querySelectorAll('#tr-punt button[data-cat]').length"))
+        finally:
+            b.close()
+
+
+class PuntVerdict(PuntView):
+    """Owner 2026-11-12 ("have punt chips drive the trade analyzer as well"): the same switches on the Trade Analyzer,
+    one shared set; with a category off the verdict counts the categories still on and names what was left out, with
+    the all-nine figure beside it. Out: Alpha Man (assists 3.0, points 1.0). In: Free Agent (rebounds 1.5, blocks 1.5)."""
+    def test_all_nine_reads_as_before(self):
+        d = punt_verdict_dom(self.p, [])
+        self.assertEqual(d["errors"], []); self.assertEqual(d["tr_chips"], 9); self.assertEqual(d["tr_off"], []); self.assertEqual(d["dimmed"], [])
+        self.assertIn("net Δz", d["verdict"]); self.assertNotIn("fit net", d["verdict"]); self.assertNotIn("all nine", d["verdict"])
+        self.assertRegex(d["verdict"], r"net Δz [−-]1\.00")                                   # 3.0 in, 4.0 out
+        self.assertIn("UNFAVORABLE", d["verdict"])
+
+    def test_assists_off_on_the_trade_tab_flips_the_verdict_everywhere(self):
+        d = punt_verdict_dom(self.p, ["#tr-punt button[data-cat='AST']"])
+        self.assertEqual(d["errors"], []); self.assertEqual(d["tr_off"], ["AST"]); self.assertEqual(d["bd_off"], ["AST"])   # one shared set
+        self.assertEqual(d["dimmed"], ["AST"])
+        self.assertRegex(d["verdict"], r"fit net Δz \+2\.00 without AST \(all nine: [−-]1\.00\)")      # 3.0 in, 1.0 out
+        self.assertIn("FAVORABLE", d["verdict"]); self.assertNotIn("UNFAVORABLE", d["verdict"])
