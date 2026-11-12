@@ -108,7 +108,11 @@
    "kit_files": [
     "report/after-reports/findings-fix-2026-11-12/drop_band.py"
    ],
-   "added": "2026-11-12"
+   "added": "2026-11-12",
+   "history": [
+    "2026-11-12: first record (now drop_band_2026-11-12_pre-il-fix.json), made before the il_players fix: the script built its IL list without the pool, so rivals' unpooled IL-slot players were missing and every level read about 1 point low",
+    "2026-11-12: script passes by=by to il_players; record re-made on the 21:03 rosters (records 0e21df1). Levels up 1.0 to 1.4, order unchanged, the rule's Washington cut last in 22 of 22 seed-runs"
+   ]
   }
  ]
 }
