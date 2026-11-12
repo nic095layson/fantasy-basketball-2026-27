@@ -4,14 +4,14 @@
   "flaim": {
    "transcript": "3cdbbd9b-02dd-585e-8d00-b8a370128fae.jsonl",
    "method": "mechanical json extraction of Flaim (Yahoo) tool results from the session transcript",
-   "since": "2026-11-12T17:33:00Z",
+   "since": "2026-11-12T21:03:10Z",
    "pull_file": "data/source/flaim/pull_2026-11-12_pm.json",
-   "pull_sha256": "b9a82a3bac394f4c067c47c0bffc37a8d0441e18e69129add88285a9e2bbc762",
+   "pull_sha256": "0808ee371635faf5c5c1d6663b9d31061d90b1c9171b4ee2ab3c67828327cad8",
    "view": "Flaim connector (Yahoo, read-only): get_roster per team (current), get_matchups, get_free_agents"
   },
   "transcription": {
    "file": "data/source/flaim/rosters_2026-11-12_pm.transcribed.csv",
-   "sha256": "e3b925abeab290495ada0f1ba904df9cb92328f70017e53b5239266d3a3d718c",
+   "sha256": "7c704cfe420db9312836485571eacea7e41306c336438b6cf766cad7e31180cc",
    "method": "flaim_live.to_rows (mechanical; Yahoo slots and status letters for every team)"
   },
   "draft_board": "report/after-reports/draft-league-2026-10-14/recap.json",
@@ -31,7 +31,7 @@
    "player": "Morez Johnson Jr.",
    "fantasy_team": "Podz save the league",
    "seat": 9,
-   "slot": "IL",
+   "slot": "F",
    "nba_team": "DAL",
    "status": "P"
   },
@@ -591,7 +591,7 @@
       "SG",
       "SF"
      ],
-     "status": null
+     "status": "Q"
     },
     {
      "player": "Rui Hachimura",
@@ -998,7 +998,7 @@
       "SG",
       "SF"
      ],
-     "status": "Q"
+     "status": "D"
     },
     {
      "player": "Jalen Suggs",
@@ -1121,7 +1121,7 @@
      "positions": [
       "C"
      ],
-     "status": "P"
+     "status": null
     },
     {
      "player": "Pascal Siakam",
@@ -1309,7 +1309,7 @@
       "SF",
       "PF"
      ],
-     "status": "Q"
+     "status": "O"
     },
     {
      "player": "Day'Ron Sharpe",
@@ -1472,14 +1472,14 @@
      "status": null
     },
     {
-     "player": "Klay Thompson",
-     "yahoo_name": "Klay Thompson",
+     "player": "Matas Buzelis",
+     "yahoo_name": "Matas Buzelis",
      "slot": "SF",
-     "yahoo_nba_team": "MIA",
-     "pool_team": "MIA",
+     "yahoo_nba_team": "CHI",
+     "pool_team": "CHI",
      "positions": [
-      "SG",
-      "SF"
+      "SF",
+      "PF"
      ],
      "status": null
     },
@@ -1491,18 +1491,6 @@
      "pool_team": "DAL",
      "positions": [
       "SG",
-      "SF",
-      "PF"
-     ],
-     "status": null
-    },
-    {
-     "player": "Matas Buzelis",
-     "yahoo_name": "Matas Buzelis",
-     "slot": "F",
-     "yahoo_nba_team": "CHI",
-     "pool_team": "CHI",
-     "positions": [
       "SF",
       "PF"
      ],
@@ -1578,6 +1566,18 @@
      "status": null
     },
     {
+     "player": "Klay Thompson",
+     "yahoo_name": "Klay Thompson",
+     "slot": "IL",
+     "yahoo_nba_team": "MIA",
+     "pool_team": "MIA",
+     "positions": [
+      "SG",
+      "SF"
+     ],
+     "status": "Q"
+    },
+    {
      "player": "Brandon Miller",
      "yahoo_name": "Brandon Miller",
      "slot": "IL",
@@ -1595,7 +1595,7 @@
    "unpooled": [
     {
      "player": "Morez Johnson Jr.",
-     "slot": "IL",
+     "slot": "F",
      "nba_team": "DAL",
      "positions": [
       "PF"
