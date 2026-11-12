@@ -89,7 +89,20 @@
    "script": "scripts/il_return.py",
    "record": "report/after-reports/il-return-2026-10-31/rt_il_return.json",
    "commit_field": "fingerprint.deck_head",
-   "added": "2026-10-31"
+   "added": "2026-10-31",
+   "kit_files_pending": "2026-11-12 (audit F3): a re-run with --checks --attack-record failed after_last_week_equals_headline (report/after-reports/findings-fix-2026-11-12/rt_il_return_2026-11-12_FAILED.json); kit_files is added to this row with the first passing record"
+  },
+  {
+   "id": "A-11",
+   "name": "Drop-order decision robustness",
+   "question": "Does the order of the owner's candidate drop pairs for the two IL returns hold under every non-zero variant of the assumption sweep?",
+   "script": "report/after-reports/findings-fix-2026-11-12/drop_band.py",
+   "record": "report/after-reports/findings-fix-2026-11-12/drop_band.json",
+   "commit_field": "fingerprint.deck_head",
+   "kit_files": [
+    "report/after-reports/findings-fix-2026-11-12/drop_band.py"
+   ],
+   "added": "2026-11-12"
   }
  ]
 }

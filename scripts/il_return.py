@@ -156,6 +156,37 @@ def run_scenarios(state, by, il, weeks, seasons, work, room=True, checks=False, 
     return out
 
 
+def known_answers(sc, brief_title, error):
+    """Attack A-10's checks on a --checks run (the 2026-10-31 record's, less the one that needed the late worlds retired
+    on 2026-11-11). Exact checks compare the two seeds' figures to two decimals: identical rosters, windows and seeds
+    must give identical draws. brief_title is the day's brief headline by seed ({seed: title}), or None."""
+    by = lambda k: sc[k]["title_by_seed"]
+    ch = {}
+    if brief_title is not None:
+        b = {str(k): round(float(v), 2) for k, v in brief_title.items()}
+        ch["never_equals_brief_headline"] = dict(ok=by("never") == b, never=by("never"), brief=b)
+    ch["week1_no_room_equals_include_il"] = dict(ok=by("check_week1_no_room") == by("check_include_il"),
+                                                 a=by("check_week1_no_room"), b=by("check_include_il"),
+                                                 note="exact: identical windows give identical models and draws")
+    ch["after_last_week_equals_headline"] = dict(ok=by("check_after_last_week") == by("never"),
+                                                 a=by("check_after_last_week"), b=by("never"))
+    ch["seat10_only_within_error_of_never_or_above"] = dict(
+        ok=sc["seat10_only_on_time"]["title"] >= sc["never"]["title"] - error,
+        seat10_only_on_time=sc["seat10_only_on_time"]["title"], never=sc["never"]["title"], error=error,
+        note="the owner's own IL players returning must not lower his title odds beyond sampling error")
+    ch["seat10_monotonic_within_error"] = dict(ok=None, retired="2026-11-11: the +2 wk and +4 wk worlds are no longer run")
+    ch["two_seeds_spread"] = {k: v["seed_spread"] for k, v in sc.items() if isinstance(v, dict) and "seed_spread" in v}
+    return ch
+
+
+def attack_record(rec, checks, deck_head, kit_sha256):
+    return dict(attack="A-10 IL-return scenario known answers", date=rec["date"],
+                inputs=dict(state=rec["state"], state_as_of=rec["state_as_of"], espn=rec["espn"], pool=rec["pool"],
+                            seasons=rec["seasons"], seeds=rec["seeds"], n_il=rec["n_il"]),
+                fingerprint=dict(deck_head=deck_head, kit_sha256=kit_sha256),
+                checks=checks, verdict="PASS" if all(c.get("ok") is not False for c in checks.values() if isinstance(c, dict) and "ok" in c) else "FAIL")
+
+
 def room_band(sc, room=True):
     """The room rule's structural band on the on-time title: the figure with the rule flipped minus the figure as run,
     tiered by the kit's thresholds (1 / 2 title points: ROBUST / SENSITIVE / FRAGILE)."""
@@ -210,7 +241,12 @@ def main(argv=None):
     ap.add_argument("--no-room", action="store_true", default=not ROOM_RULE_ON, help="switch the roster-room rule off")
     ap.add_argument("--checks", action="store_true", help="also run the known-answer checks (4 more runs)")
     ap.add_argument("--state", default=CG.STATE); ap.add_argument("--status-dir", default=STATUS_DIR); ap.add_argument("--out", default=OUTDIR)
+    ap.add_argument("--attack-record", help="with --checks: write attack A-10's known-answer record here (audit F3, 2026-11-12: "
+                                            "it carries this script's sha256, so a later change marks the record STALE)")
+    ap.add_argument("--brief", help="the day's brief record for the headline check (default report/briefs/brief_<date>.json)")
     a = ap.parse_args(argv)
+    if a.attack_record and not a.checks:
+        ap.error("--attack-record needs --checks")
     state = json.load(open(a.state, encoding="utf-8"))
     sched = json.load(open(CG.SCHEDULE, encoding="utf-8"))
     weeks = int(sched["regular_season_weeks"])
@@ -236,6 +272,20 @@ def main(argv=None):
     path = os.path.join(a.out, f"il_return_{a.date}.json")
     json.dump(rec, open(path, "w", encoding="utf-8"), indent=1, ensure_ascii=False)
     print("\n".join(rec["lines"]))
+    if a.attack_record:
+        sys.path.insert(0, os.path.join(HERE, "redteam"))
+        import run_attacks as RA
+        bp = a.brief or os.path.join(KIT, "report", "briefs", f"brief_{a.date}.json")
+        brief_title = json.load(open(bp, encoding="utf-8")).get("title") if os.path.exists(bp) else None
+        ar = attack_record(rec, known_answers(sc, brief_title, rec["error"]), RA.live_commit(os.path.abspath(CG.DECK)),
+                           RA.kit_fingerprint(["scripts/il_return.py"]))
+        os.makedirs(os.path.dirname(os.path.abspath(a.attack_record)), exist_ok=True)
+        json.dump(ar, open(a.attack_record, "w", encoding="utf-8"), indent=1, ensure_ascii=False)
+        print(f"IL RETURN CHECKS: {ar['verdict']} — " + ", ".join(f"{k} {'ok' if c.get('ok') else 'retired' if c.get('ok') is None else 'FAILED'}"
+                                                                 for k, c in ar["checks"].items() if isinstance(c, dict) and "ok" in c)
+              + f"; wrote {os.path.relpath(os.path.abspath(a.attack_record), KIT)}")
+        if ar["verdict"] != "PASS":
+            return 1
     print(f"IL RETURN: PASS wrote {os.path.relpath(path, KIT)}")
     return 0
 

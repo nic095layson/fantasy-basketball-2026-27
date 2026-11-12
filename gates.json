@@ -1,53 +1,61 @@
 {
- "ran_at_utc": "2026-11-12T19:24:46Z",
+ "ran_at_utc": "2026-11-12T19:59:20Z",
  "inputs": {
-  "report/after-reports/after-report-2026-11-12-system-audit.md": "ab8cbf4ab00744d8546485054171bd4ccc2e185917959cd60036f4b9602ccc52",
-  "report/after-reports/audit-2026-11-12/sweep_2026-11-12.json": "f3b6ffe3e41e21b37af4b946e55993238d472f4c178bf630be3887a761d5a4d8",
+  "report/after-reports/after-report-2026-11-12-findings-fixes.md": "c1c9bf9e48f6cc23ecdd524aee63c5a22672853ae08e3328f97f421c4e2c5655",
+  "scripts/morning.py": "908800ae9707464754376790e6b6d336ce2d7dfc0979b545debd27447fc4c19d",
+  "scripts/sweep_record.py": "1c0cc222bbe5e5824f292865b55e5107da3aca9e301a937903e2d601ad446b1b",
+  "scripts/daily_brief.py": "33956a407b8abc07d028dbde1c8b55efca9294e3d1708fe37b5696f7311d5ddf",
+  "scripts/season_deck.py": "603a17e843662953227164a7c29f3a5d2e34cda10b852c4be180387ba3bb2f9a",
+  "scripts/redteam/run_attacks.py": "e01d99befa63f18f40b386661852dba194be0c7d3d1b0e9f0b97bf372b94f286",
+  "scripts/redteam/attacks.json": "dd2b21794551073383a4280639771b9baa4125db77c378a3a6c3b408e1f39f8c",
+  "scripts/il_return.py": "6a6fbd8b2f1ea316828909375d9c3df036a29d2fba5974faf333c070e67040bd",
+  "report/after-reports/findings-fix-2026-11-12/drop_band.json": "505a4015fd57cfb5e8b42ec472311f77b44dec0cc1e347dbba9a4d61ed8c3ffa",
+  "report/after-reports/findings-fix-2026-11-12/drop_band.py": "76b5ed1e46509097c7da62c81aac89a75859a05bdfe26204b43d95a534029a46",
   "../wtsd/report/after-reports/redteam-2026-11-09-season/sweep.json": "7cebe2a3101d6d88b154c99b3082d5819197193ddb2be591d0c3b6d479d2a305"
  },
  "gates": [
   {
    "name": "kit check_report",
-   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-12-system-audit.md",
+   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-12-findings-fixes.md",
    "cwd": ".",
    "pass_re": "^REPORT GATE: PASS",
    "exit": 0,
-   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-11-12-system-audit.md (structure, publication rule, pull-log row)",
+   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-11-12-findings-fixes.md (structure, publication rule, pull-log row)",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "REPORT GATE: PASS \u2014 after-report-2026-11-12-system-audit.md (structure, publication rule, pull-log row)"
+    "REPORT GATE: PASS \u2014 after-report-2026-11-12-findings-fixes.md (structure, publication rule, pull-log row)"
    ]
   },
   {
    "name": "deck judgment_open_items --check-report",
-   "cmd": "/usr/local/bin/python3 scripts/judgment_open_items.py --check-report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-12-system-audit.md",
+   "cmd": "/usr/local/bin/python3 scripts/judgment_open_items.py --check-report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-12-findings-fixes.md",
    "cwd": "../yahoo-fantasy-basketball",
    "pass_re": "^receipts check PASS",
    "exit": 0,
-   "pass_line": "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-11-12-system-audit.md",
+   "pass_line": "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-11-12-findings-fixes.md",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-11-12-system-audit.md"
+    "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-11-12-findings-fixes.md"
    ]
   },
   {
    "name": "deck repeat_market_check --check-report",
-   "cmd": "/usr/local/bin/python3 scripts/repeat_market_check.py --check-report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-12-system-audit.md",
+   "cmd": "/usr/local/bin/python3 scripts/repeat_market_check.py --check-report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-12-findings-fixes.md",
    "cwd": "../yahoo-fantasy-basketball",
    "pass_re": "^REPEAT-NAME CHECK: PASS",
    "exit": 0,
-   "pass_line": "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-11-12-system-audit.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)",
+   "pass_line": "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-11-12-findings-fixes.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-11-12-system-audit.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)"
+    "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-11-12-findings-fixes.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)"
    ]
   },
   {
    "name": "claim receipts",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/independent_audit/claim_receipts.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-12-system-audit.md",
+   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/independent_audit/claim_receipts.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-12-findings-fixes.md",
    "cwd": ".",
    "pass_re": "^CLAIM RECEIPTS: (PASS|ADVISORY)",
    "exit": 0,
@@ -55,8 +63,21 @@
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "  /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-12-system-audit.md:113: 'run each' \u2014 F2: re-run the season sweep in the Monday run each week (it ran on 11-02 and 11-09), or on every roster change.",
+    "  /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-12-findings-fixes.md:11: 'is live' \u2014 F3's mechanism is built and tested and is live on the new drop-order attack, but its exemplar could not be switched over: re-running A-10 failed one known-answer check, which exposed a real defect in ",
     "CLAIM RECEIPTS: ADVISORY \u2014 1 unreceipted claim(s) in 1 file(s); show a receipt or mark the status"
+   ]
+  },
+  {
+   "name": "full suite",
+   "cmd": "bash -c 'cd scripts && python3 -W ignore -m unittest discover -p \"test_*.py\" 2>&1 | tail -1'",
+   "cwd": ".",
+   "pass_re": "^OK",
+   "exit": 0,
+   "pass_line": "OK (skipped=2)",
+   "verdict": "PASS",
+   "why": "",
+   "tail": [
+    "OK (skipped=2)"
    ]
   },
   {
@@ -74,7 +95,7 @@
   },
   {
    "name": "redteam bands",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/redteam/check_bands.py --report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-12-system-audit.md --sweep /home/user/wtsd/report/after-reports/redteam-2026-11-09-season/sweep.json",
+   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/redteam/check_bands.py --report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-12-findings-fixes.md --sweep /home/user/wtsd/report/after-reports/redteam-2026-11-09-season/sweep.json",
    "cwd": ".",
    "pass_re": "^BANDS CHECK: PASS",
    "exit": 0,
@@ -91,11 +112,11 @@
    "cwd": ".",
    "pass_re": "^ATTACKS CHECK: PASS",
    "exit": 0,
-   "pass_line": "ATTACKS CHECK: PASS \u2014 10 attacks on engine 01483de (engine files last changed 95ebade), simulator aa470f8; CURRENT 9, UNFINGERPRINTED 1",
+   "pass_line": "ATTACKS CHECK: PASS \u2014 11 attacks on engine 01483de (engine files last changed 95ebade), simulator aa470f8; CURRENT 10, UNFINGERPRINTED 1",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "ATTACKS CHECK: PASS \u2014 10 attacks on engine 01483de (engine files last changed 95ebade), simulator aa470f8; CURRENT 9, UNFINGERPRINTED 1"
+    "ATTACKS CHECK: PASS \u2014 11 attacks on engine 01483de (engine files last changed 95ebade), simulator aa470f8; CURRENT 10, UNFINGERPRINTED 1"
    ]
   },
   {
@@ -114,5 +135,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "94117d84cd023798061fd1c5577d22635ad5d199"
+ "base_commit": "b75038d7c0720105cc1900c4a1467eb705b28a22"
 }
