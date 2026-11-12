@@ -19,6 +19,10 @@ these win here):
 - A question about the board's method gets an assessment and the decision
   options; a candidate (WO-5b class) is built only on an owner go.
 
+The owner's own operating rules and his read of the league (the 2-for-1, the monthly free-agent budget, weekly adds,
+how this league prices names) are in `OWNER-PLAYBOOK.md`; read it before advising on a roster move or a trade. A
+session's corrected errors are in `report/corrections-log.md`. Both record; neither authorizes anything.
+
 ---- BEGIN BLOCK ----
 
 ## Operating doctrine (every session, every surface)
