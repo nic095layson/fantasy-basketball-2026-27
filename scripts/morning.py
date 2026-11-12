@@ -92,6 +92,10 @@ def steps(date, fetch=True, seasons=10000, since=None):
            # candidate only (nothing reads it; the Sunday snapshot and the Monday accuracy card grade it); non-fatal
            dict(name="minutes line", cmd=[PY, os.path.join(HERE, "minutes_line.py"), "--date", date], cwd=KIT,
                 pass_re=r"^MINUTES LINE: PASS", env={}, fatal=False),
+           # owner 2026-11-12 (card: "Split threes into attempts and %"): the threes-split candidate line, from the season
+           # lines just written; candidate only (the Sunday snapshot and the Monday accuracy card grade it); non-fatal
+           dict(name="threes line", cmd=[PY, os.path.join(HERE, "threes_line.py"), "--date", date], cwd=KIT,
+                pass_re=r"^THREES LINE: PASS", env={}, fatal=False),
            dict(name="season board", cmd=[PY, os.path.join(HERE, "season_board.py"), "--date", date], cwd=KIT, pass_re=r"^SEASON BOARD: PASS", env={}),
            dict(name="status feed", cmd=["bash", "-c", f"{shlex.quote(PY)} {shlex.quote(os.path.join(HERE, 'status_feed.py'))} --date {date} && "
                                                   f"{shlex.quote(PY)} {shlex.quote(os.path.join(HERE, 'status_feed.py'))} --check "

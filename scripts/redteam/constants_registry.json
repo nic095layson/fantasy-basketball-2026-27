@@ -743,6 +743,24 @@
    "status": "uncalibrated",
    "record": "after-report-2026-11-05-swap-grid-auto-pool.md; season_lines.py auto_rows/replacement_prior",
    "decision": "D-AP-1: fit after four graded weeks of auto rows (accuracy_week grades them like any line); until then hand-set, named here"
+  },
+  {
+   "module": "threes_line",
+   "name": "PCT_PRIOR_ATT",
+   "value": 750.0,
+   "role": "three-point attempts the 2025-26 percentage is worth in the threes-split candidate line (owner-supplied figure, unverified)",
+   "status": "uncalibrated",
+   "record": "report/after-reports/after-report-2026-11-12-punt-trending-threes.md",
+   "decision": "D-TS-1 (owner 2026-11-12, card \"Split threes into attempts and %\"): the weekly accuracy card (report/accuracy.json, column candidate_threes) is the calibration — the candidate replaces nothing until its MAE on threes made beats the in-season line's in 3 of 4 consecutive graded weeks, on the owner's word"
+  },
+  {
+   "module": "threes_line",
+   "name": "MIN_PRIOR_ATT",
+   "value": 100,
+   "role": "2025-26 three-point attempts below which a player's prior percentage is not used (he keeps the live line)",
+   "status": "uncalibrated",
+   "record": "report/after-reports/after-report-2026-11-12-punt-trending-threes.md",
+   "decision": "D-TS-1 (owner 2026-11-12, card \"Split threes into attempts and %\"): the weekly accuracy card (report/accuracy.json, column candidate_threes) is the calibration — the candidate replaces nothing until its MAE on threes made beats the in-season line's in 3 of 4 consecutive graded weeks, on the owner's word"
   }
  ]
 }

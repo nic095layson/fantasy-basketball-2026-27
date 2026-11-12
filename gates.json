@@ -1,54 +1,60 @@
 {
- "ran_at_utc": "2026-11-12T18:13:41Z",
+ "ran_at_utc": "2026-11-12T19:00:52Z",
  "inputs": {
-  "report/after-reports/after-report-2026-11-12-compare-header-align.md": "f500dce993cf1ea8b2d84097ee1988f0a8db7eed0084c6cb24c7fe60e8c3af70",
-  "scripts/season_deck.py": "12fc8974159ba47946efd7fc720d3fd87d96dc5483d3ef4f9cfe3d41c29040b8",
-  "scripts/test_season_deck.py": "3ffee60f0772e47cb65dd68ee21482dee2ab759180a8efcd279196196eeda2fa",
+  "report/after-reports/after-report-2026-11-12-punt-trending-threes.md": "235636285d236552369c27abc074b4f719c31ec2382a8e7d502e7248e527e59d",
+  "scripts/season_deck.py": "236dbe29e45a841f678d2ba672688bba61c391459156d5b97fc24dd719233058",
+  "scripts/form_board.py": "c9287f3aedf55f81ec36e1743d610d9a81cb4c9920e403c9deab51ce3550104d",
+  "scripts/threes_line.py": "8a8cc56eb07611b965ebcd2b88b2a4a86f1e2066d9ef0fc18552cfdb0b4dd454",
+  "scripts/accuracy_week.py": "a94e07347985c4e0cf9e83b0bd607e65c59e387d3f8c3908e0975e37de98ccb4",
+  "scripts/weekly_preview.py": "96bef82ac72d70471acf63df7971056fa81a9bb0ea1130bc37e9f9f229ec1b27",
+  "scripts/morning.py": "b47be4138dab6de0919467838e177b85ce2dac82ac3ba636342153d6044a9533",
+  "scripts/redteam/constants_registry.json": "fffee9f8d604d7c26db226f5626f4b9fab67376c33ede610c37a9b8af4c5d94b",
+  "data/reference/threes_prior_2025-26.csv": "487ba84bb2e59f4d07531b302930add3042b05803fde942cbbd3fa08524247a9",
   "../wtsd/report/after-reports/redteam-2026-11-09-season/sweep.json": "7cebe2a3101d6d88b154c99b3082d5819197193ddb2be591d0c3b6d479d2a305"
  },
  "gates": [
   {
    "name": "kit check_report",
-   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-12-compare-header-align.md",
+   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-12-punt-trending-threes.md",
    "cwd": ".",
    "pass_re": "^REPORT GATE: PASS",
    "exit": 0,
-   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-11-12-compare-header-align.md (structure, publication rule, pull-log row)",
+   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-11-12-punt-trending-threes.md (structure, publication rule, pull-log row)",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "REPORT GATE: PASS \u2014 after-report-2026-11-12-compare-header-align.md (structure, publication rule, pull-log row)"
+    "REPORT GATE: PASS \u2014 after-report-2026-11-12-punt-trending-threes.md (structure, publication rule, pull-log row)"
    ]
   },
   {
    "name": "deck judgment_open_items --check-report",
-   "cmd": "/usr/local/bin/python3 scripts/judgment_open_items.py --check-report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-12-compare-header-align.md",
+   "cmd": "/usr/local/bin/python3 scripts/judgment_open_items.py --check-report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-12-punt-trending-threes.md",
    "cwd": "../yahoo-fantasy-basketball",
    "pass_re": "^receipts check PASS",
    "exit": 0,
-   "pass_line": "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-11-12-compare-header-align.md",
+   "pass_line": "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-11-12-punt-trending-threes.md",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-11-12-compare-header-align.md"
+    "receipts check PASS \u2014 all 10 flagged names carry a receipts row in after-report-2026-11-12-punt-trending-threes.md"
    ]
   },
   {
    "name": "deck repeat_market_check --check-report",
-   "cmd": "/usr/local/bin/python3 scripts/repeat_market_check.py --check-report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-12-compare-header-align.md",
+   "cmd": "/usr/local/bin/python3 scripts/repeat_market_check.py --check-report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-12-punt-trending-threes.md",
    "cwd": "../yahoo-fantasy-basketball",
    "pass_re": "^REPEAT-NAME CHECK: PASS",
    "exit": 0,
-   "pass_line": "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-11-12-compare-header-align.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)",
+   "pass_line": "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-11-12-punt-trending-threes.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-11-12-compare-header-align.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)"
+    "REPEAT-NAME CHECK: PASS \u2014 after-report-2026-11-12-punt-trending-threes.md: 12 flagged name(s), each with a row (33 of 33 mocks replayed)"
    ]
   },
   {
    "name": "claim receipts",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/independent_audit/claim_receipts.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-12-compare-header-align.md",
+   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/independent_audit/claim_receipts.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-12-punt-trending-threes.md",
    "cwd": ".",
    "pass_re": "^CLAIM RECEIPTS: (PASS|ADVISORY)",
    "exit": 0,
@@ -60,16 +66,16 @@
    ]
   },
   {
-   "name": "touched tests",
-   "cmd": "bash -c 'cd scripts && python3 -W ignore -m unittest test_season_deck test_deck_render_check 2>&1 | tail -1'",
+   "name": "full suite",
+   "cmd": "bash -c 'cd scripts && python3 -W ignore -m unittest discover -p \"test_*.py\" 2>&1 | tail -1'",
    "cwd": ".",
    "pass_re": "^OK",
    "exit": 0,
-   "pass_line": "OK",
+   "pass_line": "OK (skipped=2)",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "OK"
+    "OK (skipped=2)"
    ]
   },
   {
@@ -78,16 +84,16 @@
    "cwd": ".",
    "pass_re": "^CONSTANTS CHECK: PASS",
    "exit": 0,
-   "pass_line": "CONSTANTS CHECK: PASS \u2014 49 registered = 49 live on deck 01483de; declared_band 5, measured 7, settings 8, structural 6, uncalibrated 23",
+   "pass_line": "CONSTANTS CHECK: PASS \u2014 51 registered = 51 live on deck 01483de; declared_band 5, measured 7, settings 8, structural 6, uncalibrated 25",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "CONSTANTS CHECK: PASS \u2014 49 registered = 49 live on deck 01483de; declared_band 5, measured 7, settings 8, structural 6, uncalibrated 23"
+    "CONSTANTS CHECK: PASS \u2014 51 registered = 51 live on deck 01483de; declared_band 5, measured 7, settings 8, structural 6, uncalibrated 25"
    ]
   },
   {
    "name": "redteam bands",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/redteam/check_bands.py --report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-12-compare-header-align.md --sweep /home/user/wtsd/report/after-reports/redteam-2026-11-09-season/sweep.json",
+   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/redteam/check_bands.py --report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-12-punt-trending-threes.md --sweep /home/user/wtsd/report/after-reports/redteam-2026-11-09-season/sweep.json",
    "cwd": ".",
    "pass_re": "^BANDS CHECK: PASS",
    "exit": 0,
@@ -127,5 +133,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "9427d25164b8ce4102eb8df3d47454a9783f515f"
+ "base_commit": "d40741efd21584a446f61aa4236c606101fedfa1"
 }

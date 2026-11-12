@@ -24,6 +24,7 @@ import argparse, datetime, hashlib, json, os, sys
 HERE = os.path.dirname(os.path.abspath(__file__)); KIT = os.path.dirname(HERE)
 sys.path.insert(0, HERE)
 import sweep_record as SR  # noqa: E402
+import season_board as SB  # noqa: E402  (the board's availability rule: SB.RE.STREAM_R)
 
 class DeckError(Exception): pass
 
@@ -34,6 +35,11 @@ def _load(path, what):
         return json.load(open(path, encoding="utf-8"))
     except Exception as e:
         raise DeckError(f"{what} record unreadable: {path}: {e}")
+
+
+# owner 2026-11-12 (card: "Punt-aware build view"): the Board's "My build" button switches off the categories where the
+# owner's league rank is this many places from the bottom or worse (12 teams: 10th to 12th). Display only; hand-set.
+PUNT_WEAK_FROM = 3
 
 
 def _draft_check_path(date):
@@ -442,7 +448,7 @@ def build(paths, date, phase=None):
                 week_matchup=week_matchup, league_table=league_rec, playoff=playoff, faab=faab,
                 # owner 2026-11-09 (runner pick B1): inputs named but absent, so an empty card can say why
                 absent_inputs=sorted(k for k, p in paths.items() if not (p and os.path.exists(p))),
-                form=form_rec, scores=scores, accuracy=accuracy, lineup_scorecard=lineup_sc, decision_card=dcard, draft_check=draft_chk, fa_status=fa_status, out_today=out_now, swap_grid=grid_now, waiver_notes=waiver_notes,
+                punt=dict(stream_r=SB.RE.STREAM_R, weak_rank_from=PUNT_WEAK_FROM), form=form_rec, scores=scores, accuracy=accuracy, lineup_scorecard=lineup_sc, decision_card=dcard, draft_check=draft_chk, fa_status=fa_status, out_today=out_now, swap_grid=grid_now, waiver_notes=waiver_notes,
                 # owner 2026-10-28 ("Rebuild, flag morning parts"): the 3 PM run's rebuild says which parts are the 5 AM run's
                 **({"refresh": {"phase": phase, "not_on_board": not_on_board,
                                 # owner 2026-11-06 ("why does Today still show Matkovic?", "please build it"): the morning brief's
@@ -1018,6 +1024,16 @@ function leagueRanks(deltas){ const teams=Object.keys(D.league.rosters); const t
   CATS.forEach(c=>{ ranks[c]=1; teams.forEach(t=>{ if(t!==D.my_team && tot[t][c]>mine[c]) ranks[c]++; }); });
   return ranks; }
 const RANKS0=leagueRanks(null), NTEAMS=Object.keys(D.league.rosters).length;
+/* owner 2026-11-12 ("Punt-aware build view", then "have punt chips drive the trade analyzer as well"): one set of
+   switched-off categories shared by the Board's fit column and the Trade Analyzer / Free Agents verdicts. Display only. */
+const PUNT_OFF=new Set(), puntSubs=[], PUNT_WEAK=Math.max(NTEAMS-((D.punt||{}).weak_rank_from||3)+1, Math.ceil(NTEAMS/2)+1);
+function puntSet(f){ f(PUNT_OFF); puntSubs.forEach(g=>g()); }
+function puntChips(pfx){ return h("div",{id:pfx+"-punt",class:"mode",style:"flex-wrap:wrap"},
+  CATS.map(c=>h("button",{"aria-pressed":PUNT_OFF.has(c)?"false":"true","data-cat":c,title:(PUNT_OFF.has(c)?"Left out of":"Counted in")+" the fit value and the verdict",
+    onclick:()=>puntSet(o=>{ o.has(c)? o.delete(c) : o.add(c); })},c==="TOV"?"TO":c)),
+  h("button",{id:pfx+"-mybuild",class:"resetbtn",title:"Leave out the categories where your team ranks "+PUNT_WEAK+"th or worse of "+NTEAMS,
+    onclick:()=>puntSet(o=>{ o.clear(); CATS.forEach(c=>{ if(RANKS0[c]>=PUNT_WEAK) o.add(c); }); })},"My build"),
+  h("button",{id:pfx+"-allcats",class:"resetbtn",onclick:()=>puntSet(o=>o.clear())},"All nine")); }
 function buildStrip(id, deltas, active){ const after=active? leagueRanks(deltas) : null;
   return h("div",{id:id},h("h2",{},"Your build — rank 1–"+NTEAMS+" vs the league"),
     h("div",{class:"build"},CATS.map(c=>{ const b=RANKS0[c], a=after? after[c] : null, moved=(a!==null&&a!==b);
@@ -1082,15 +1098,18 @@ function seasonCompare(names){ if(names.length!==2) return null;
   card.append(h("div",{class:"tablebox"},t)); return card; }
 function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
   if(!(inRows.length||outRows.length)) return h("p",{class:"zero"},"Pick players on both sides to score a move.");
-  const m=swapMath(inRows,outRows,CATS);
+  const m=swapMath(inRows,outRows,CATS), offs=CATS.filter(c=>PUNT_OFF.has(c)), all9=m.net;
+  if(offs.length) m.net=swapMath(inRows,outRows,CATS.filter(c=>!PUNT_OFF.has(c))).net;   // the verdict counts the categories still on
   return h("div",{},
     h("div",{class:"tablebox"},h("table",{},
       h("tr",{},h("th",{},"category"),h("th",{class:"num"},"Δz"),h("th",{},"size"),h("th",{},"")),
-      CATS.map(c=>h("tr",{},h("td",{},c),h("td",{class:"num"},zv(m.d[c],true)),h("td",{},tier(m.d[c],C.tier_low,C.tier_high)),
+      CATS.map(c=>h("tr",{...(PUNT_OFF.has(c)?{class:"puntoff",style:"opacity:.35",title:"Left out of the verdict"}:{})},h("td",{},c),h("td",{class:"num"},zv(m.d[c],true)),h("td",{},tier(m.d[c],C.tier_low,C.tier_high)),
         h("td",{},h("span",{class:"bar "+(m.d[c]>=0?"pos":"neg")},h("i",{style:"width:"+Math.min(120,Math.round(Math.abs(m.d[c])*40))+"px"}))))))),
     h("p",{},h("span",{class:"verdict "+(m.net>=C.verdict_edge?"pos":(m.net<=-C.verdict_edge?"neg":"even"))},
       (m.net>=C.verdict_strong?"STRONG FAVORABLE "+noun:m.net>=C.verdict_edge?"FAVORABLE "+noun:m.net<=-C.verdict_strong?"STRONG UNFAVORABLE "+noun:m.net<=-C.verdict_edge?"UNFAVORABLE "+noun:"ABOUT EVEN")),
-      " ",h("span",{class:"note"},"net Δz ",zv(m.net,true)," · in "+inRows.length+" / out "+outRows.length+" · z screen only — not the simulator")),
+      " ",h("span",{class:"note"},(offs.length?"fit net Δz ":"net Δz "),zv(m.net,true),
+        ...(offs.length? [" without "+offs.map(c=>c==="TOV"?"TO":c).join(", ")+" (all nine: ",zv(all9,true),")"] : []),
+        " · in "+inRows.length+" / out "+outRows.length+" · z screen only — not the simulator")),
     (inRows.length!==outRows.length)? h("p",{class:"note"},"Unequal player counts: the net also prices the empty or extra roster spot at z 0; judge accordingly."):null);
 }
 (function(){ const p=$("#pane-trade"); const teams=Object.keys(D.league.rosters).filter(t=>t!==D.my_team).sort();
@@ -1101,6 +1120,9 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
     keepScroll(root,()=>root.replaceChildren(
       h("div",{class:"h2row"},h("h2",{},"Trade Analyzer"),
         h("button",{id:"tr-reset",class:"resetbtn",onclick:()=>{out.clear();inc.clear();render();}},"Reset")),
+      noteMore("Fit for your build: switch a category off to leave it out of the verdict",
+        "The same switches as the Board. With one or more off, the verdict below counts only the categories still on and says which were left out, with the all-nine figure beside it. The category table still shows all nine; the left-out rows are dimmed."),
+      puntChips("tr"),
       h("div",{class:"pick"},
         h("div",{},h("h2",{},"I send"),myField(),pickList(MINE,out,render,"No players of yours on the board."),myHeld()),
         h("div",{},h("h2",{},"I receive"),
@@ -1111,9 +1133,27 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
       ...[seasonCompare([...out,...inc])].filter(Boolean),
       scoreBlock([...inc].map(n=>BYNAME[n]),[...out].map(n=>BYNAME[n]),"TRADE")));
   }
-  render();
+  puntSubs.push(render); render();
 })();
-(function(){ const p=$("#pane-fa"); let search=""; const drop=new Set(), add=new Set(); const root=h("div",{class:"card"}); p.append(root, howItWorks());
+// owner 2026-11-12 (card: "Trending-up screen"): free agents whose last 3 games run above the games before them in
+// minutes or in usage, from the morning's form record (form_board.py). Display only; nothing ranks or simulates on it.
+function trendingCard(){ const F=D.form; if(!F||!F.rows) return null;
+  const M=F.method||{}, up=F.rows.filter(r=>r.fa&&(r.trend==="up"||(r.usg_trend==="up"&&r.trend!=="down")));   // usage up on falling minutes is not a rise
+  const dm=(r)=>(r.last3_mpg==null||r.prior_mpg==null)?-99:r.last3_mpg-r.prior_mpg;
+  up.sort((x,y)=>dm(y)-dm(x));
+  const card=h("div",{class:"card",id:"fa-trending"},h("h2",{},"Trending up — free agents"),
+    noteMore("Last 3 games against the games before them · box scores through "+((F.window||[])[1]||"—"),
+      "A free agent is listed when his minutes are up "+M.trend_min+" or more, or his usage is up "+(M.usg_trend_min==null?"—":M.usg_trend_min)+" points or more, over his last 3 games against his earlier games (from "+M.trend_min_games+" games played). A player whose usage is up while his minutes are down by that much is left off. Usage is the share of his team's possessions he uses while on the floor: shots, free-throw trips and turnovers. A rise in minutes or usage often comes before the box-score numbers follow. This is a list to look at, not a recommendation: nothing here is ranked by value or simulated."));
+  if(!up.length){ card.append(h("p",{class:"zero"},"No free agent is trending up on these thresholds today.")); return card; }
+  const ar=(t)=>t==="up"?"▲ ":"";
+  card.append(h("div",{class:"tablebox"},h("table",{},
+    h("tr",{},h("th",{},"player"),h("th",{class:"num"},"games"),h("th",{class:"num"},"minutes: last 3"),h("th",{class:"num"},"before"),
+      h("th",{class:"num"},"usage: last 3"),h("th",{class:"num"},"before"),h("th",{},"status")),
+    up.map(r=>h("tr",{},h("td",{},r.name+" · "+(r.nba||"—")),h("td",{class:"num"},String(r.games)),
+      h("td",{class:"num"},ar(r.trend)+f1(r.last3_mpg)),h("td",{class:"num"},f1(r.prior_mpg)),
+      h("td",{class:"num"},ar(r.usg_trend)+(r.last3_usg==null?"—":f1(r.last3_usg)+"%")),h("td",{class:"num"},r.prior_usg==null?"—":f1(r.prior_usg)+"%"),
+      h("td",{},r.status||"")))))); return card; }
+(function(){ const p=$("#pane-fa"); let search=""; const drop=new Set(), add=new Set(); const root=h("div",{class:"card"}); p.append(root, ...[trendingCard()].filter(Boolean), howItWorks());
   const inp=h("input",{type:"search",id:"fa-search",class:"field",placeholder:"Search free agents",oninput:()=>{search=inp.value; keepTyping(inp,render);}});
   // owner 2026-11-06 ("remove this and make it zscore season outlook ... so that the player fields are equal"): the list
   // is season z only — no sort control, no this-week or minutes notes on the rows (the Week tab and the Today tab's
@@ -1144,13 +1184,22 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
       ...[seasonCompare([...drop,...add])].filter(Boolean),
       scoreBlock([...add].map(n=>BYNAME[n]),[...drop].map(n=>BYNAME[n]))));
   }
-  render();
+  puntSubs.push(render); render();
 })();
 
 // ---- Board ----
 (function(){ const p=$("#pane-board"); const rows=D.board.board.slice();
   let key="rank", asc=true, q="", fa=false;
   let ca=null, cb=null;
+  // owner 2026-11-12 ("Punt-aware build view"): categories switched off leave every player's sum; the same availability
+  // rule as the board's z adj (GP/82 + (1-GP/82) x stream_r on a positive sum). Display only: rank and z adj never change.
+  const off=PUNT_OFF, PR=(D.punt||{}).stream_r, WEAK=PUNT_WEAK;
+  const fit=(r)=>{ let t=0; CATS.forEach(c=>{ if(!off.has(c)) t+=r.z[c]; }); const g=(r.gp||0)/82;
+    return t>0&&PR!=null? t*(g+(1-g)*PR) : t; };
+  const chips=h("div",{});
+  function chipRender(){ chips.replaceChildren(puntChips("bd")); }
+  function pick(){ if(off.size){ key="fit"; asc=false; } else if(key==="fit"){ key="rank"; asc=true; } chipRender(); render(); }
+  puntSubs.push(pick);
   const box=h("div",{class:"card"}), cmp=h("div",{class:"card"});
   p.append(box,cmp);
   // owner 2026-10-20: the search box and filter are built once (rebuilding them on each keystroke dropped focus);
@@ -1159,11 +1208,13 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
   const faBox=h("input",{type:"checkbox",id:"bd-fa",onchange:(e)=>{fa=e.target.checked;render();}});
   const tbl=h("div",{});
   box.append(h("div",{class:"h2row"},h("h2",{},"Season board — "+rows.length+" ranked players"),
-      h("button",{id:"bd-reset",class:"resetbtn",onclick:()=>{q="";inp.value="";fa=false;faBox.checked=false;key="rank";asc=true;ca=null;cb=null;render();}},"Reset")),
+      h("button",{id:"bd-reset",class:"resetbtn",onclick:()=>{q="";inp.value="";fa=false;faBox.checked=false;key="rank";asc=true;ca=null;cb=null;puntSet(o=>o.clear());}},"Reset")),
     noteMore("Season lines blended with games so far ("+D.season_lines.players_with_games+" players) · "+(D.board.held.length? D.board.held.length+" held off the board" : "none held off the board"),
       D.board.held.length? "Held off the board: "+D.board.held.join(", ")+"." : null),
     h("div",{class:"pick"},inp,h("label",{style:"display:flex;align-items:center;gap:6px"},faBox,"free agents only")),
-    tbl);
+    noteMore("Fit for your build: switch a category off to leave it out of every player's value",
+      "A category you are conceding should not count for or against a player. With one or more switched off, the table adds a fit column (the sum of the categories still on, with the board's own availability discount) and sorts by it. My build switches off the categories where your team ranks "+WEAK+"th or worse of "+NTEAMS+" today. The # and z adj columns never change, and the simulator does not read this."),
+    chips, tbl);
   function cmpRender(){ const a=ca&&rows.find(r=>r.name===ca), b=cb&&rows.find(r=>r.name===cb);
     const sel=(id,val,on)=>h("select",{id:id,onchange:(e)=>on(e.target.value)},h("option",{value:""},"pick a player"),
       rows.map(r=>h("option",{value:r.name,...(r.name===val?{selected:""}:{})},r.rank+". "+r.name)));
@@ -1183,18 +1234,19 @@ function scoreBlock(inRows, outRows, noun){ noun=noun||"SCREEN";
     return h("td",{class:"num",title: g? r.team+" in fantasy playoff weeks "+PO.weeks.join(", ")+": "+g.join(" + ")+" games. The simulator does not use this: it plays every week at the same games per player."
       : "No game listed for "+r.team+" in the playoff weeks."}, g? String(r.po_games) : "–"); };
   function render(){ let rs=rows.filter(r=>(!q||r.name.toLowerCase().includes(q.toLowerCase())||(r.owner||"FA").toLowerCase().includes(q.toLowerCase()))&&(!fa||r.fa));
-    rs.sort((x,y)=>{ const a=key==="name"?x.name:(key==="owner"?(x.owner||"zzFA"):(key in x? x[key] : x.z[key])); const b=key==="name"?y.name:(key==="owner"?(y.owner||"zzFA"):(key in y? y[key] : y.z[key]));
+    const kv=(r)=>key==="fit"? fit(r) : key==="name"?r.name:(key==="owner"?(r.owner||"zzFA"):(key in r? r[key] : r.z[key]));
+    rs.sort((x,y)=>{ const a=kv(x), b=kv(y);
       return (a<b?-1:a>b?1:0)*(asc?1:-1); });
     const hd=(label,k,num)=>h("th",{class:"sort"+(num?" num":""),onclick:()=>{asc=(key===k)?!asc:(k==="rank"||k==="name"||k==="owner"); key=k; render();}},label+(key===k?(asc?" ↑":" ↓"):""));
     tbl.replaceChildren(h("div",{},  // h() skips the null note; replaceChildren alone would print "null"
       h("div",{class:"tablebox"},h("table",{},
-        h("tr",{},hd("#","rank",true),hd("player","name"),h("th",{},"pos"),hd("owner","owner"),hd("z adj","z_adj",true),PO?hd("PO g","po_games",true):null,CATS.map(c=>hd(c,c,true))),
+        h("tr",{},hd("#","rank",true),hd("player","name"),h("th",{},"pos"),hd("owner","owner"),hd("z adj","z_adj",true),off.size?hd("fit","fit",true):null,PO?hd("PO g","po_games",true):null,CATS.map(c=>hd(c,c,true))),
         rs.slice(0,200).map(r=>h("tr",{},h("td",{class:"num"},String(r.rank)),h("td",{},r.name+" · "+r.team),h("td",{},r.pos),
-          h("td",{},ownChip(r)),h("td",{class:"num"},zv(r.z_adj)),PO?poCell(r):null,CATS.map(c=>h("td",{class:"num"},zv(r.z[c]))))))),
+          h("td",{},ownChip(r)),h("td",{class:"num"},zv(r.z_adj)),off.size?h("td",{class:"num fit"},zv(fit(r))):null,PO?poCell(r):null,CATS.map(c=>h("td",{class:"num",...(off.has(c)?{style:"opacity:.35"}:{})},zv(r.z[c]))))))),
       rs.length>200?h("p",{class:"note"},"Showing the first 200 of "+rs.length+" rows; narrow with search."):null));
     cmpRender();
   }
-  render();
+  chipRender(); render();
 })();
 
 // ---- Draft Check (owner 2026-11-11: "include this on the season deck replacing the Movers tab") ----
