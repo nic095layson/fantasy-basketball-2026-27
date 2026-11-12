@@ -32,6 +32,12 @@ Checks, for a given report (default: the newest report/after-reports/*.md):
   4. A "Runner impact: none | code-only | prompt edit" line (RULES rule 11, owner 2026-10-28): what the work does to
      the runner's scheduled tasks. Reports written before the rule are not re-gated.
 
+  5. "Pool rows touched: none" (council verdict 2026-11-12, owner: "proceed with their verdicts"): a report that
+     states this on a line of its own, and whose claim holds (no projection file differs from origin/main or is
+     modified in the working tree), does not owe the Watchlist, Open-item receipts and Repeat-name sections: 33
+     reports had carried an identical copied tail. Any other report owes them as before; a claim that cannot be
+     checked against main is refused.
+
 Exit 0 = pass. Exit 1 = fail, problems listed on stdout.
 """
 import glob
@@ -88,12 +94,49 @@ def outlet_count(text):
     return len(found)
 
 
+POOL_FILES = ("report/projections-2026-27.csv", "data/pool_additions.csv")
+POOL_LINE = re.compile(r"^Pool rows touched: none\b", re.M)
+TAIL_ANCHORS = ("Watchlist", "Open-item receipts", "Repeat-name market check")
+
+
+def changed_pool_files(root=None):
+    """The projection files that differ from origin/main or are modified in the working tree; None when git cannot
+    say (no origin/main, not a checkout)."""
+    import subprocess
+    root = root or os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    try:
+        a = subprocess.run(["git", "diff", "--name-only", "origin/main", "--", *POOL_FILES], cwd=root,
+                           capture_output=True, text=True)
+        b = subprocess.run(["git", "status", "--porcelain", "--", *POOL_FILES], cwd=root, capture_output=True, text=True)
+    except OSError:
+        return None
+    if a.returncode != 0 or b.returncode != 0:
+        return None
+    return sorted(set(a.stdout.split()) | {ln[3:].strip() for ln in b.stdout.splitlines() if ln.strip()})
+
+
+def pool_exempt(path):
+    """(exempt, why): True when the report states "Pool rows touched: none" and no projection file has changed."""
+    with open(path, encoding="utf-8") as f:
+        if not POOL_LINE.search(f.read()):
+            return False, ""
+    changed = changed_pool_files()
+    if changed is None:
+        return False, "'Pool rows touched: none' could not be checked against main (no origin/main in this checkout)"
+    if changed:
+        return False, "'Pool rows touched: none' but " + ", ".join(changed) + " differs from main"
+    return True, "no pool row touched, checked against main"
+
+
 def check(path):
     problems = []
     text = open(path, encoding="utf-8").read()
     name = os.path.basename(path)
 
     # 1. structure
+    exempt, why_not = pool_exempt(path)
+    if why_not and not exempt:
+        problems.append(why_not)
     m = re.search(r"Pull window: (\d{4}-\d{2}-\d{2}) → (\d{4}-\d{2}-\d{2})",
                   text)
     if not m:
@@ -110,6 +153,8 @@ def check(path):
          "--check-report against this file; otherwise point to the day's "
          "refresh report)"),
     ):
+        if exempt and anchor in TAIL_ANCHORS:
+            continue
         if anchor not in text:
             problems.append(f"missing {why}")
 
@@ -166,7 +211,7 @@ def check(path):
             print(f"  {p}")
         return 1
     print(f"REPORT GATE: PASS — {name} (structure, publication rule, "
-          "pull-log row)")
+          "pull-log row" + ("; no pool row touched, checked against main: tail sections not owed" if exempt else "") + ")")
     return 0
 
 

@@ -137,5 +137,44 @@ class RedTeam(unittest.TestCase):
             self.assertEqual(G.run_gate(G.redteam_gates(good, sweep, "/deck")[1])["verdict"], "PASS")
 
 
+
+class BandsOnlyWhereATitleShareIsQuoted(unittest.TestCase):
+    """Council verdict 2026-11-12: 89 reports carried the FRAGILE sentence, among them reports that quote no title
+    share. The bands check's own rule is "a report that quotes a title share must quote every FRAGILE band"; a report
+    that quotes none passes and says so."""
+    def setUp(self):
+        sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "redteam"))
+        import check_bands
+        self.B = check_bands
+        self.d = tempfile.mkdtemp()
+        self.sweep = os.path.join(self.d, "sweep.json")
+        json.dump({"fragile": ["arena.weekly_availability"], "constants": {"arena.weekly_availability": {"variants": [
+            {"label": "a", "shift_mean": -4.8}, {"label": "b", "shift_mean": 2.9}]}}}, open(self.sweep, "w"))
+
+    def rep(self, text):
+        p = os.path.join(self.d, "r.md"); open(p, "w", encoding="utf-8").write(text); return p
+
+    def test_a_report_with_no_title_share_passes_without_the_band(self):
+        ok, problems = self.B.check(self.rep("The header was centred. Shooting 35.8% from three.\n"), self.sweep)
+        self.assertTrue(ok, problems); self.assertFalse(self.B.quotes_title_share("Shooting 35.8% from three."))
+
+    def test_a_report_quoting_a_title_share_still_owes_the_band(self):
+        for text in ("Title odds are 20.2% this morning.\n", "| Headline title odds | 20.2% |\n", "A 25.1% championship share.\n"):
+            ok, problems = self.B.check(self.rep(text), self.sweep)
+            self.assertFalse(ok, text); self.assertIn("FRAGILE", " ".join(problems))
+
+    def test_a_report_quoting_one_with_the_band_passes(self):
+        ok, problems = self.B.check(self.rep("Title odds 20.2%. weekly_availability is FRAGILE: -4.8 (a) / +2.9 (b).\n"), self.sweep)
+        self.assertTrue(ok, problems)
+
+
+class ReportGatesFollowThePoolLine(unittest.TestCase):
+    def test_the_deck_receipt_gates_run_unless_the_report_is_exempt(self):
+        names = lambda specs: [s["name"] for s in specs]
+        full = names(G.report_gates("/x/r.md", "/deck", exempt=False))
+        self.assertEqual(len(full), 3); self.assertIn("deck judgment_open_items --check-report", full)
+        self.assertEqual(names(G.report_gates("/x/r.md", "/deck", exempt=True)), ["kit check_report"])
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
