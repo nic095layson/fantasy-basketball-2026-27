@@ -52,7 +52,7 @@ def band_line(path=None, date=None):
     for key in sw.get("fragile", []):
         c = sw["constants"][key]
         parts.append(f"{key.split('.')[-1]} is FRAGILE: " + " / ".join(f"{v['shift_mean']:+.1f} ({v['label']})" for v in c["variants"]))
-    return "Structural band (" + SR.describe(sw, path) + ", deck " + str(sw.get("engine_commit", "?")) + "): " + ("; ".join(parts) if parts else "no FRAGILE constant") + "."
+    return "Structural band (" + SR.describe(sw, path, as_of=date) + ", deck " + str(sw.get("engine_commit", "?")) + "): " + ("; ".join(parts) if parts else "no FRAGILE constant") + "."
 
 
 def odds_line(a, b, n):

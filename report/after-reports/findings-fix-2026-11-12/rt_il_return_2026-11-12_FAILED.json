@@ -1,0 +1,80 @@
+{
+ "attack": "A-10 IL-return scenario known answers",
+ "date": "2026-11-12",
+ "inputs": {
+  "state": "data/league_state.json",
+  "state_as_of": "2026-11-12",
+  "espn": "data/status/espn_injuries_2026-11-12.json",
+  "pool": "data/season/pool_season.csv (records branch, morning commit c14c1ec)",
+  "seasons": 10000,
+  "seeds": [
+   2026,
+   2027
+  ],
+  "n_il": 20
+ },
+ "fingerprint": {
+  "deck_head": "01483de",
+  "kit_sha256": {
+   "scripts/il_return.py": "6a6fbd8b2f1ea316828909375d9c3df036a29d2fba5974faf333c070e67040bd"
+  }
+ },
+ "checks": {
+  "never_equals_brief_headline": {
+   "ok": true,
+   "never": {
+    "2026": 20.56,
+    "2027": 19.92
+   },
+   "brief": {
+    "2026": 20.56,
+    "2027": 19.92
+   }
+  },
+  "week1_no_room_equals_include_il": {
+   "ok": true,
+   "a": {
+    "2026": 34.6,
+    "2027": 33.62
+   },
+   "b": {
+    "2026": 34.6,
+    "2027": 33.62
+   },
+   "note": "exact: identical windows give identical models and draws"
+  },
+  "after_last_week_equals_headline": {
+   "ok": false,
+   "a": {
+    "2026": 18.68,
+    "2027": 18.45
+   },
+   "b": {
+    "2026": 20.56,
+    "2027": 19.92
+   }
+  },
+  "seat10_only_within_error_of_never_or_above": {
+   "ok": true,
+   "seat10_only_on_time": 36.11,
+   "never": 20.24,
+   "error": 0.56,
+   "note": "the owner's own IL players returning must not lower his title odds beyond sampling error"
+  },
+  "seat10_monotonic_within_error": {
+   "ok": null,
+   "retired": "2026-11-11: the +2 wk and +4 wk worlds are no longer run"
+  },
+  "two_seeds_spread": {
+   "never": 0.64,
+   "on_time": 0.75,
+   "seat10_only_on_time": 1.15,
+   "on_time_rule_flipped": 0.79,
+   "check_week1_no_room": 0.98,
+   "check_include_il": 0.98,
+   "check_after_last_week": 0.23
+  }
+ },
+ "verdict": "FAIL",
+ "note": "Audit F3 re-run of attack A-10, 2026-11-12: FAIL on after_last_week_equals_headline. Cause, read from the code: since 2026-11-09 co_gm.rosters(include_il=True) carries unpooled IL-slot players that have an auto season line (seat 5 Nolan Traore, seat 9 Morez Johnson Jr.), and il_return.il_players reads only the pooled list, so those two play every week in every return world. Not the standing A-10 record: the registry row still names the 2026-10-31 record until the owner picks a fix."
+}

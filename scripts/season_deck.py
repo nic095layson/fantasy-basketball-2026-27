@@ -431,7 +431,7 @@ def build(paths, date, phase=None):
         if not bands[-1]["variants"]: raise DeckError(f"FRAGILE band {key} with no variants")
     band_engine = sweep.get("engine_commit") or sweep.get("engine")
     # owner 2026-10-26: which configuration and day the bands were measured on (sweep_record.describe, the brief's wording)
-    band_config = SR.describe(sweep, paths["sweep"])
+    band_config = SR.describe(sweep, paths["sweep"], as_of=date)   # audit F2 (2026-11-12): the sweep's age on the page
     # owner 2026-11-10: each board row's games in the fantasy playoff weeks, and the league's winning FAAB bids
     playoff = playoff_games(paths.get("games"), paths.get("league_schedule"), co_gm.TEAM_CODE)
     if playoff:

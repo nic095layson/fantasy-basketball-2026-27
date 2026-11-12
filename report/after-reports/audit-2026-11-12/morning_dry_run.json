@@ -1,0 +1,102 @@
+{
+ "note": "Dry run of morning.py --date 2026-11-12 --no-fetch in the same scratch copy (19 of 23 steps; the four fetch steps are skipped by --no-fetch). Nothing was written to the records branch.",
+ "ran_at_utc": "2026-11-12T19:06:58Z",
+ "verdict": "PASS",
+ "steps": [
+  {
+   "name": "preflight",
+   "verdict": "PASS",
+   "line": "PREFLIGHT: PASS \u2014 kit morning run: 4 checks"
+  },
+  {
+   "name": "tag outcomes",
+   "verdict": "PASS",
+   "line": "TAG OUTCOMES: PASS \u2014 2026-11-11: already recorded (28 row(s) on the ledger); nothing appended"
+  },
+  {
+   "name": "lineup log",
+   "verdict": "PASS",
+   "line": "LINEUP LOG: PASS \u2014 already logged: 2026-11-11; ledger 7 days, 1 pairs, start followed 1/1, night kit 0 / against 0"
+  },
+  {
+   "name": "accuracy render",
+   "verdict": "PASS",
+   "line": "ACCURACY RENDER: PASS \u2014 report/accuracy.md (2813 chars)"
+  },
+  {
+   "name": "season lines",
+   "verdict": "PASS",
+   "line": "SEASON LINES: PASS \u2014 2026-11-12: 25 box-score records, 302 pool players with regular-season games, 301 lines moved by 0.25+ (priors in games: FG% 26.0, FT% 37.5, 3PM 9.5, PTS 11.7, REB 12.4, AST 11.7, STL 21.7, BLK 14.5, TO 14.0); 4 auto row(s) for rostered players the pool lacked (Nolan Traore 10g,"
+  },
+  {
+   "name": "minutes line",
+   "verdict": "PASS",
+   "line": "MINUTES LINE: PASS \u2014 2026-11-12: 342 players, 297 with games; ratio >= 1.10 for 6, <= 0.90 for 28; 36 unscaled (no preseason mpg); candidate only, wrote pool_season_mt.csv, projections_season_mt.csv"
+  },
+  {
+   "name": "threes line",
+   "verdict": "PASS",
+   "line": "THREES LINE: PASS \u2014 2026-11-12: 342 players, 233 split, 109 unsplit (no 2025-26 percentage on 100+ attempts or no preseason threes); candidate above the live line by 0.2+ for 30, below for 16; candidate only, wrote pool_season_3s.csv, projections_season_3s.csv"
+  },
+  {
+   "name": "season board",
+   "verdict": "PASS",
+   "line": "SEASON BOARD: PASS \u2014 2026-11-12: report/season/board_2026-11-12.md (301 movers listed)"
+  },
+  {
+   "name": "status feed",
+   "verdict": "PASS",
+   "line": "STATUS GATE: PASS \u2014 status_2026-11-12.json: 33 flagged row(s), each tiered with a dated receipt"
+  },
+  {
+   "name": "league pairings",
+   "verdict": "PASS",
+   "line": "LEAGUE PAIRINGS: PASS \u2014 17 weeks of pairings for all 12 teams, owner opponents match, 3 week(s) played; wrote data/league_schedule.json"
+  },
+  {
+   "name": "il return",
+   "verdict": "PASS",
+   "line": "IL RETURN: PASS wrote report/il_return/il_return_2026-11-12.json"
+  },
+  {
+   "name": "daily brief",
+   "verdict": "PASS",
+   "line": "wrote report/briefs/brief_2026-11-12.md"
+  },
+  {
+   "name": "decision log",
+   "verdict": "PASS",
+   "line": "DECISION LOG: PASS brief 2026-11-12 already recorded; moves: nothing new; re-join: nothing changed"
+  },
+  {
+   "name": "title watch",
+   "verdict": "PASS",
+   "line": "TITLE WATCH: PASS \u2014 2026-11-12: title 19.4% (was 16.1% on 2026-11-11), +3.3 against a band of \u00b10.7: MOVED. 9 kit merge(s): #257: morning --resume, package scan, integrity checks; #258: manager log script and tests on main; #259: ESPN's date worded as the earliest return; return dates graded; #260: t"
+  },
+  {
+   "name": "week matchup",
+   "verdict": "PASS",
+   "line": "WEEK MATCHUP: PASS \u2014 2026-11-12: week 4 vs SNOWTIME WHITE WALKERS; to date from Yahoo (rebuild agrees); to date 3 day(s), 0 missing; projected 6-3-0; pickups: no finished low-value player; pool pool_season.csv; wrote report/briefs/week_matchup_2026-11-12.json"
+  },
+  {
+   "name": "decision card",
+   "verdict": "PASS",
+   "line": "DECISION CARD: PASS \u2014 2026-11-12: no pair today; wrote report/briefs/decision_card_2026-11-12.json"
+  },
+  {
+   "name": "league table",
+   "verdict": "PASS",
+   "line": "LEAGUE TABLE: PASS \u2014 2026-11-12: week 4; wk1 finished (rebuild), wk2 finished (yahoo), wk3 finished (yahoo), wk4 in_progress (yahoo); power #1 SNOWTIME WHITE WALKERS (0.625), you #5 (0.548); standings pull_2026-11-12.json, Yahoo W-L-T matches the kit's finished weeks for 12 teams; wrote report/leagu"
+  },
+  {
+   "name": "form board",
+   "verdict": "PASS",
+   "line": "FORM BOARD: PASS \u2014 173 rostered + 99 free agents, 262 with games over 22 box days (2026-10-20 to 2026-11-11); (10 without a game yet); 0 Yahoo names in neither pool nor box scores; report/form/form_2026-11-12.json"
+  },
+  {
+   "name": "season deck",
+   "verdict": "PASS",
+   "line": "SEASON DECK: PASS \u2014 2026-11-12: report/season/deck_2026-11-12.html (7 panes, 315 board rows, 33 status rows; record deck_record_2026-11-12.json pins 21 inputs; render: 7 tabs, 0 page errors)"
+  }
+ ]
+}

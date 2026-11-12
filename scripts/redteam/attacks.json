@@ -85,11 +85,30 @@
   {
    "id": "A-10",
    "name": "IL-return scenario known answers",
-   "question": "Do the IL-return scenarios reduce to the headline when every return is after the last week, to include_il when every return is week 1 with the room rule off, and does seat 10's title fall monotonically with the slip?",
+   "question": "Do the IL-return scenarios reduce to the headline when every return is after the last week, to include_il when every return is week 1 with the room rule off, and do the owner's own returns never lower his title odds? (Until 2026-11-11 also: does seat 10's title fall monotonically with the slip; those worlds are no longer run.)",
    "script": "scripts/il_return.py",
-   "record": "report/after-reports/il-return-2026-10-31/rt_il_return.json",
+   "record": "report/after-reports/findings-fix-2026-11-12/rt_il_return.json",
    "commit_field": "fingerprint.deck_head",
-   "added": "2026-10-31"
+   "added": "2026-10-31",
+   "kit_files": [
+    "scripts/il_return.py"
+   ],
+   "history": [
+    "2026-10-31: first record, report/after-reports/il-return-2026-10-31/rt_il_return.json",
+    "2026-11-12: re-run failed one check (rt_il_return_2026-11-12_FAILED.json); il_players fixed on the owner's pick; record re-made by il_return.py --checks --attack-record, with the script's sha256"
+   ]
+  },
+  {
+   "id": "A-11",
+   "name": "Drop-order decision robustness",
+   "question": "Does the order of the owner's candidate drop pairs for the two IL returns hold under every non-zero variant of the assumption sweep?",
+   "script": "report/after-reports/findings-fix-2026-11-12/drop_band.py",
+   "record": "report/after-reports/findings-fix-2026-11-12/drop_band.json",
+   "commit_field": "fingerprint.deck_head",
+   "kit_files": [
+    "report/after-reports/findings-fix-2026-11-12/drop_band.py"
+   ],
+   "added": "2026-11-12"
   }
  ]
 }
