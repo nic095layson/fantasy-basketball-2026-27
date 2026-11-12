@@ -746,12 +746,19 @@
   },
   {
    "module": "threes_line",
-   "name": "PCT_PRIOR_ATT",
-   "value": 750.0,
-   "role": "three-point attempts the 2025-26 percentage is worth in the threes-split candidate line (owner-supplied figure, unverified)",
-   "status": "uncalibrated",
-   "record": "report/after-reports/after-report-2026-11-12-punt-trending-threes.md",
-   "decision": "D-TS-1 (owner 2026-11-12, card \"Split threes into attempts and %\"): the weekly accuracy card (report/accuracy.json, column candidate_threes) is the calibration — the candidate replaces nothing until its MAE on threes made beats the in-season line's in 3 of 4 consecutive graded weeks, on the owner's word"
+   "name": "PCT_PRIOR_K",
+   "value": 356.0,
+   "role": "attempts of league-average shooting a player's 2025-26 three-point percentage is pulled toward in the threes-split candidate line; the pulled percentage is then worth PCT_PRIOR_K + his 2025-26 attempts",
+   "status": "measured",
+   "record": "report/after-reports/threes-prior-fit-2026-11-12/fit_2025-26.txt (beta-binomial maximum likelihood on the 307 players with 100+ attempts in 2025-26: 356, 95% 249 to 635 over 1,000 player resamples; moments estimate 360); after-report-2026-11-12-threes-prior-fit.md"
+  },
+  {
+   "module": "threes_line",
+   "name": "PCT_PRIOR_MU",
+   "value": 0.3581,
+   "role": "league-average three-point percentage a player's 2025-26 percentage is pulled toward in the threes-split candidate line (the fitted mean that goes with PCT_PRIOR_K)",
+   "status": "measured",
+   "record": "report/after-reports/threes-prior-fit-2026-11-12/fit_2025-26.txt (beta-binomial maximum likelihood on the 307 players with 100+ attempts in 2025-26: mean 0.3581, fitted with the strength 356); after-report-2026-11-12-threes-prior-fit.md"
   },
   {
    "module": "threes_line",
