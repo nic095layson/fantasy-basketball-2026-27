@@ -43,6 +43,12 @@ BOX = ("pts", "fgm", "fga", "tpm", "ftm", "fta", "reb", "ast", "tov", "stl", "bl
 PER36 = ("pts", "reb", "ast", "stl", "blk", "tpm", "tov")
 TREND_MIN_GAMES = 4      # a last-3 needs at least one game before it
 TREND_MIN = 6.0          # minutes; display threshold, hand-set (declared 2026-10-23), nothing downstream reads it
+# owner 2026-11-12 (card: "Trending-up screen"): usage = a player's share of his team's possessions used while he is on
+# the floor, 100 x (FGA + 0.44 FTA + TOV) x (team minutes / 5) / (his minutes x team (FGA + 0.44 FTA + TOV)), the formula
+# the owner sent; last 3 games against the games before them, as the minutes trend. USG_TREND_MIN is in usage points,
+# a display threshold, hand-set (declared 2026-11-12), nothing downstream reads it.
+USG_TREND_MIN = 4.0
+FT_POSS = 0.44
 
 
 class FormError(Exception):
@@ -55,6 +61,12 @@ def game_log(records):
     out = {}
     for rec in sorted(records, key=lambda r: r.get("date") or ""):
         regular = {g["espn_id"] for g in rec.get("games", []) if g.get("season_type") == 2}
+        team = {}   # (game, team) -> [possessions used, minutes] over everyone who played
+        for p in rec.get("players", []):
+            if p.get("dnp") or p.get("game") not in regular:
+                continue
+            t = team.setdefault((p.get("game"), p.get("team")), [0.0, 0.0])
+            t[0] += _poss(p); t[1] += p.get("min", 0) or 0
         for p in rec.get("players", []):
             if p.get("dnp") or p.get("game") not in regular:
                 continue
@@ -63,8 +75,24 @@ def game_log(records):
                      team=p.get("team"), unpooled=p.get("pool_name") is None, source_name=p["name"])
             for k in BOX:
                 g[k] = p.get(k, 0) or 0
+            g["poss"] = _poss(p); g["team_poss"], g["team_min"] = team[(p.get("game"), p.get("team"))]
             out.setdefault(key, []).append(g)
     return out
+
+
+def _poss(p):
+    return (p.get("fga", 0) or 0) + FT_POSS * (p.get("fta", 0) or 0) + (p.get("tov", 0) or 0)
+
+
+def usage(games):
+    """Usage over a set of games, pooled: 100 x his possessions / the team's possessions in his minutes; None when he
+    logged no minutes or a game carries no team totals (a hand-built log)."""
+    num = den = 0.0
+    for g in games:
+        if not g.get("team_poss") or not g.get("team_min") or not g["min"]:
+            continue
+        num += g["poss"]; den += g["min"] * g["team_poss"] / (g["team_min"] / 5)
+    return round(100 * num / den, 1) if den else None
 
 
 def summarize(log):
@@ -87,8 +115,13 @@ def summarize(log):
         s["prior_mpg"] = round(sum(prior) / len(prior), 1)
         d = s["last3_mpg"] - s["prior_mpg"]
         s["trend"] = "up" if d >= TREND_MIN else "down" if d <= -TREND_MIN else "flat"
+        s["last3_usg"], s["prior_usg"] = usage(log[-3:]), usage(log[:-3])
+        du = None if s["last3_usg"] is None or s["prior_usg"] is None else s["last3_usg"] - s["prior_usg"]
+        s["usg_trend"] = None if du is None else "up" if du >= USG_TREND_MIN else "down" if du <= -USG_TREND_MIN else "flat"
     else:
         s["last3_mpg"] = s["prior_mpg"] = s["trend"] = None
+        s["last3_usg"] = s["prior_usg"] = s["usg_trend"] = None
+    s["usg"] = usage(log)
     return s
 
 
@@ -161,7 +194,8 @@ def build(date, paths):
                             with_games=sum(1 for r in rows if r["games"]), no_game=sum(1 for r in rows if not r["games"]),
                             days=len(days)),
                 method=dict(source="regular-season box scores in data/actuals (season_lines.totals' rules, per game), "
-                                   "DNPs excluded", rate_base=36, trend_min_games=TREND_MIN_GAMES, trend_min=TREND_MIN,
+                                   "DNPs excluded", rate_base=36, trend_min_games=TREND_MIN_GAMES, trend_min=TREND_MIN, usg_trend_min=USG_TREND_MIN,
+                            usage="100 x (FGA + 0.44 FTA + TOV) x (team minutes / 5) / (minutes x team (FGA + 0.44 FTA + TOV)), pooled over the games",
                             role="starter = started every game; bench = none; mixed otherwise (the box score's starter flag)",
                             not_a_projection="the season line stays the per-game line; minutes have no preseason expectation "
                                              "in the pool CSV, so the trend is within-season only"),

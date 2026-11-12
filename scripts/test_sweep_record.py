@@ -45,11 +45,23 @@ class Describe(unittest.TestCase):
     def test_the_configuration_and_its_date(self):
         p = os.path.join("x", "redteam-2026-11-02-season", "sweep.json")
         self.assertEqual(SR.describe({"state_sha256": "a", "schedule": "s"}, p),
-                         "season sweep of 2026-11-02 (current rosters, season pool, real schedule)")
+                         "season sweep of 2026-11-02 (rosters of that date, season pool, real schedule)")
         self.assertEqual(SR.describe({"state_sha256": "a"}, os.path.join("x", "redteam-2026-10-26-season", "sweep.json")),
-                         "season sweep of 2026-10-26 (current rosters, season pool, practice schedule)")
+                         "season sweep of 2026-10-26 (rosters of that date, season pool, practice schedule)")
         self.assertEqual(SR.describe({}, os.path.join("x", "redteam-2026-10-19", "sweep.json")),
                          "draft sweep of 2026-10-19 (draft rosters, frozen pool)")
+
+    def test_the_age_on_the_day_it_is_quoted(self):
+        # audit finding F2 (2026-11-12): a sweep three days old was labelled "current rosters"
+        p = os.path.join("x", "redteam-2026-11-09-season", "sweep.json")
+        rec = {"state_sha256": "a", "schedule": "s"}
+        self.assertEqual(SR.describe(rec, p, as_of="2026-11-12"),
+                         "season sweep of 2026-11-09 (3 days old; rosters of that date, season pool, real schedule)")
+        self.assertEqual(SR.describe(rec, p, as_of="2026-11-10"),
+                         "season sweep of 2026-11-09 (1 day old; rosters of that date, season pool, real schedule)")
+        self.assertEqual(SR.describe(rec, p, as_of="2026-11-09"),
+                         "season sweep of 2026-11-09 (made today; rosters of that date, season pool, real schedule)")
+        self.assertNotIn("current rosters", SR.describe(rec, p, as_of="2026-11-12"))
 
 
 if __name__ == "__main__":

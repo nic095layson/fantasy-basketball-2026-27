@@ -72,6 +72,13 @@ class Snapshot(unittest.TestCase):
         self.assertEqual(sorted(os.path.basename(x) for x in out), ["lines_week3.csv", "lines_week3_mt.csv"])
         self.assertEqual(open(os.path.join(self.dst, "lines_week3_mt.csv")).read(), "player,pts\nA,11.0\n")
 
+    def test_the_threes_candidate_is_snapshotted_when_it_exists(self):
+        # owner 2026-11-12 (card: "Split threes into attempts and %"): pool_season_3s.csv beside the live pool
+        open(os.path.join(self.src, "pool_season_3s.csv"), "w").write("player,tpm\nA,2.3\n")
+        out = WP.snapshot(3, os.path.join(self.src, "pool_season.csv"), self.dst)
+        self.assertEqual(sorted(os.path.basename(x) for x in out), ["lines_week3.csv", "lines_week3_3s.csv"])
+        self.assertEqual(open(os.path.join(self.dst, "lines_week3_3s.csv")).read(), "player,tpm\nA,2.3\n")
+
     def test_the_league_state_and_the_days_status_file_are_snapshotted_too(self):
         # owner 2026-10-27 (build 3): the Monday fit models each week on the rosters and tags true before it
         st = os.path.join(self.src, "league_state.json"); open(st, "w").write('{"as_of": "2026-11-01", "teams": []}')

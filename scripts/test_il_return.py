@@ -50,6 +50,18 @@ class Dates(unittest.TestCase):
         self.assertEqual(got, {"Tyrese Haliburton": ("Tyrese Haliburton", 4), "Naji Marshall": (None, None), "Cameron Johnson": ("Cam Johnson", 2)})
         self.assertNotIn("A", got)
 
+    def test_an_unpooled_il_slot_player_the_pool_has_a_row_for_is_an_il_player(self):
+        # owner pick 2026-11-12 (the A-10 re-run): off this list he played every week in every return world
+        state = {"teams": [{"seat": 5, "name": "T5", "players": [{"player": "Jalen Suggs", "slot": "IL"}, {"player": "A", "slot": "PG"}],
+                            "unpooled": [{"player": "Nolan Traore", "slot": "IL"}, {"player": "Bench Rookie", "slot": "BN"},
+                                         {"player": "No Row", "slot": "IL"}]}]}
+        rows = [{"player": "Nolan Traore", "status": "Out", "return_date": "2026-11-13"}]
+        with __import__("unittest.mock").mock.patch.object(IR.CG, "week_of", week_of):
+            il = IR.il_players(state, rows, "2026-10-31", WEEKS, aliases={}, by={"Nolan Traore": {}, "Bench Rookie": {}, "Jalen Suggs": {}})
+            old = IR.il_players(state, rows, "2026-10-31", WEEKS, aliases={})
+        self.assertEqual({x["player"]: x["week"] for x in il}, {"Jalen Suggs": None, "Nolan Traore": 4})
+        self.assertEqual([x["player"] for x in old], ["Jalen Suggs"])     # without the pool, the list as before
+
 
 class Windows(unittest.TestCase):
     def setUp(self):
@@ -143,6 +155,41 @@ class TwoWorlds(unittest.TestCase):
         self.assertIsNone(IR.blend(dict(never=dict(title=16.0), on_time=dict(title=26.0))))
         old = {k: dict(title=t) for k, t in (("never", 10.0), ("on_time", 20.0), ("late_2", 20.0), ("late_4", 20.0))}
         self.assertEqual(IR.blend(old), 19.0)
+
+
+
+class KnownAnswers(unittest.TestCase):
+    """Audit finding F3 (2026-11-12): attack A-10's record is written by the script (--checks --attack-record) with
+    the script's own sha256, so the checks are reproducible and a changed script stales the record."""
+    def sc(self, **over):
+        o = lambda a, b: dict(title_by_seed={"2026": a, "2027": b}, title=round((a + b) / 2, 2), seed_spread=round(abs(a - b), 2))
+        sc = dict(never=o(20.0, 20.4), on_time=o(25.0, 25.2), seat10_only_on_time=o(29.0, 29.4),
+                  check_week1_no_room=o(40.0, 41.0), check_include_il=o(40.0, 41.0), check_after_last_week=o(20.0, 20.4))
+        sc.update({k: o(*v) for k, v in over.items()})
+        return sc
+
+    def test_every_check_passes_on_consistent_runs(self):
+        ch = IR.known_answers(self.sc(), {"2026": 20.0, "2027": 20.4}, 0.5)
+        rec = IR.attack_record(dict(date="d", state="s", state_as_of="d", espn="e", pool="p", seasons=1, seeds=[1], n_il=2), ch, "abc1234", {"scripts/il_return.py": "x"})
+        self.assertEqual(rec["verdict"], "PASS", ch)
+        self.assertEqual(rec["fingerprint"], {"deck_head": "abc1234", "kit_sha256": {"scripts/il_return.py": "x"}})
+        self.assertIsNone(ch["seat10_monotonic_within_error"]["ok"])
+
+    def test_a_headline_that_differs_from_the_brief_fails(self):
+        ch = IR.known_answers(self.sc(), {"2026": 20.1, "2027": 20.4}, 0.5)
+        self.assertFalse(ch["never_equals_brief_headline"]["ok"])
+        self.assertEqual(IR.attack_record(dict(date="d", state="s", state_as_of="d", espn="e", pool="p", seasons=1, seeds=[1], n_il=2), ch, "a", {})["verdict"], "FAIL")
+
+    def test_the_exact_checks_fail_on_a_one_hundredth_difference(self):
+        ch = IR.known_answers(self.sc(check_include_il=(40.01, 41.0)), None, 0.5)
+        self.assertFalse(ch["week1_no_room_equals_include_il"]["ok"])
+        self.assertNotIn("never_equals_brief_headline", ch)
+        ch = IR.known_answers(self.sc(check_after_last_week=(20.0, 20.41)), None, 0.5)
+        self.assertFalse(ch["after_last_week_equals_headline"]["ok"])
+
+    def test_own_returns_lowering_the_title_beyond_error_fails(self):
+        ch = IR.known_answers(self.sc(seat10_only_on_time=(19.0, 19.2)), None, 0.5)
+        self.assertFalse(ch["seat10_only_within_error_of_never_or_above"]["ok"])
 
 
 if __name__ == "__main__":

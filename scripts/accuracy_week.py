@@ -159,7 +159,9 @@ def grade_snapshots(week, games, snapshots):
     (owner 2026-10-27, build 2: lines_week<N>_mt.csv); a missing file is named, never substituted."""
     out = {}
     for key, name, what in (("in_season", f"lines_week{week}.csv", "in-season snapshot"),
-                            ("candidate_minutes", f"lines_week{week}_mt.csv", "minutes-trend candidate snapshot")):
+                            ("candidate_minutes", f"lines_week{week}_mt.csv", "minutes-trend candidate snapshot"),
+                            # owner 2026-11-12: the threes-split candidate (threes_line.py), graded on threes made
+                            ("candidate_threes", f"lines_week{week}_3s.csv", "threes-split candidate snapshot")):
         p = os.path.join(snapshots, name)
         out[key] = grade_lines(_lines(p), games) if os.path.exists(p) else dict(note=f"no {what} recorded before this week")
     return out
@@ -225,6 +227,14 @@ def render(rec):
         L.append(f"| {k} | {r['preseason']['players']} | " + " | ".join(cell((r.get(x) or {}).get("cats", {}).get("pts", {})) for x in ("preseason", "in_season", "candidate_minutes")) + " |")
     L += ["", "Switch rule (D-ML-1, pre-committed 2026-10-27): the minutes candidate replaces nothing until its MAE beats the "
           "in-season line's on PTS, REB and AST in 3 of 4 consecutive graded weeks, on the owner's word."]
+    L += ["", "## Player lines: threes made per game (projected / actual, bias, MAE, rank correlation)", "",
+          "| week | players | in-season | bias | MAE | rank | threes-split candidate | bias | MAE | rank |",
+          "|---|---|---|---|---|---|---|---|---|---|"]
+    for k in sorted(rec["weeks"], key=int):
+        r = rec["weeks"][k]["lines"]
+        L.append(f"| {k} | {r['preseason']['players']} | " + " | ".join(cell((r.get(x) or {}).get("cats", {}).get("tpm", {})) for x in ("in_season", "candidate_threes")) + " |")
+    L += ["", "Switch rule (D-TS-1, pre-committed 2026-11-12): the threes-split candidate replaces nothing until its MAE on threes "
+          "made beats the in-season line's in 3 of 4 consecutive graded weeks, on the owner's word."]
     L += ["", "## Availability: share of team games played, by the tier the simulator assumes", "",
           "| week | tier | assumed | played / team games | share |", "|---|---|---|---|---|"]
     for k in sorted(rec["weeks"], key=int):

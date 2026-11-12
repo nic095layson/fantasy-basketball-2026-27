@@ -23,11 +23,12 @@ class Steps(unittest.TestCase):
         # 2026-10-21: "preflight" became step 0 (independent-audit adoption); the indices below moved by one.
         # 2026-10-23 (owner, Build 1): "league table" after the week matchup, before the deck that draws it
         # 2026-10-26 (owner, "results so far"): "league pairings" before the brief that runs the simulator
-        self.assertEqual([s["name"] for s in st], ["preflight", "league live", "matchup live", "box scores 2026-10-20", "tag outcomes", "lineup log", "accuracy render", "season lines", "minutes line", "season board", "status feed", "transactions", "league pairings", "il return", "daily brief", "decision log", "title watch", "week matchup", "decision card", "league table", "form board", "season deck"])
+        self.assertEqual([s["name"] for s in st], ["preflight", "league live", "matchup live", "box scores 2026-10-20", "manager log 2026-10-20", "tag outcomes", "lineup log", "accuracy render", "season lines", "minutes line", "threes line", "season board", "status feed", "transactions", "league pairings", "il return", "daily brief", "decision log", "title watch", "week matchup", "decision card", "league table", "form board", "season deck"])
         self.assertIn("2026-10-20", st[3]["cmd"])
-        self.assertIn("2026-10-20", st[4]["cmd"])   # 2026-10-27: "tag outcomes" grades yesterday; indices below moved by one
-        self.assertIn("2026-10-21", st[5]["cmd"])    # 2026-11-05: "lineup log" takes the morning date and grades the day before
-        self.assertIn("2026-10-21", st[13]["cmd"])   # 2026-10-27: "minutes line" after season lines; +1 again; 2026-11-02: "accuracy render"; +1; 2026-11-05: "lineup log"; +1
+        self.assertIn("2026-10-20", st[4]["cmd"])   # 2026-11-12 (audit F1): "manager log" logs yesterday; indices below +1
+        self.assertIn("2026-10-20", st[5]["cmd"])   # 2026-10-27: "tag outcomes" grades yesterday; indices below moved by one
+        self.assertIn("2026-10-21", st[6]["cmd"])    # 2026-11-05: "lineup log" takes the morning date and grades the day before
+        self.assertIn("2026-10-21", st[15]["cmd"])   # 2026-11-12: "threes line" after the minutes line; +1; 2026-10-27: "minutes line" after season lines; +1 again; 2026-11-02: "accuracy render"; +1; 2026-11-05: "lineup log"; +1
         self.assertTrue(all(s["pass_re"] for s in st))
 
     def test_no_fetch_skips_the_box_score_step(self):
@@ -46,12 +47,12 @@ class Steps(unittest.TestCase):
         gate = next(s for s in st if s["name"] == "status feed")["cmd"][-1]
         self.assertIn("--check", gate); self.assertTrue(gate.endswith("status_2026-10-20.json"))
 
-    def test_since_reaches_both_transcript_readers_and_only_them(self):
+    def test_since_reaches_the_transcript_readers_and_only_them(self):
         # GAUNTLET 2026-10-21 item 7: the persistent runner passes its start time so yesterday's pull never counts
         st = M.steps("2026-10-21", fetch=True, seasons=10000, since="2026-10-21T12:53:00Z")
         for s in st:
             has = "--since" in s["cmd"]
-            self.assertEqual(has, s["name"] in ("league live", "matchup live"), s["name"])
+            self.assertEqual(has, s["name"] in ("league live", "matchup live", "manager log 2026-10-20"), s["name"])   # 2026-11-12 (audit F1): the manager log reads get_transactions from the transcript
             if has:
                 self.assertEqual(s["cmd"][s["cmd"].index("--since") + 1], "2026-10-21T12:53:00Z")
         self.assertFalse(any("--since" in s["cmd"] for s in M.steps("2026-10-21", fetch=True, seasons=10000)))
@@ -156,6 +157,27 @@ class SundayForecasts(unittest.TestCase):
 
     def test_another_day_does_not(self):
         self.assertNotIn("next week forecasts", [s["name"] for s in M.steps("2026-11-02")])
+
+
+class ManagerLog(unittest.TestCase):
+    """Audit finding F1 (2026-11-12): the league's moves file was rewritten after the morning deck had pinned it,
+    because the manager log ran outside the sequence. It is a step: after the pull and the box scores it reads,
+    before everything that reads the moves file, non-fatal, on fetch runs only."""
+    def test_it_runs_after_its_inputs_and_before_every_reader_of_the_moves_file(self):
+        st = M.steps("2026-11-12", since="2026-11-12T13:03:00Z")
+        names = [s["name"] for s in st]
+        i = names.index("manager log 2026-11-11")
+        self.assertLess(names.index("league live"), i)
+        self.assertLess(names.index("box scores 2026-11-11"), i)
+        for reader in ("daily brief", "week matchup", "season deck"):
+            self.assertLess(i, names.index(reader), reader)
+        m = st[i]
+        self.assertIs(m["fatal"], False)
+        self.assertEqual(m["pass_re"], r"^MANAGER LOG: PASS")
+        self.assertIn("--date 2026-11-11 --since 2026-11-12T13:03:00Z", " ".join(m["cmd"]))
+
+    def test_a_run_without_fetches_does_not_read_the_transcript(self):
+        self.assertEqual([s for s in M.steps("2026-11-12", fetch=False) if s["name"].startswith("manager log")], [])
 
 
 class TagOutcomes(unittest.TestCase):

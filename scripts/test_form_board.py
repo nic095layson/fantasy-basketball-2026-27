@@ -99,6 +99,43 @@ class GameLog(unittest.TestCase):
         self.assertEqual(FB.summarize(mixed)["role"], "mixed")
 
 
+class Usage(unittest.TestCase):
+    """Owner 2026-11-12 (card: "Trending-up screen"): usage and its last-3 trend, by hand. Every game: five players at
+    48 minutes (team 240, a fifth is 48) using 40 possessions between them, so a player's usage is his own / 40."""
+    def recs(self, mine):
+        out = []
+        for i, a in enumerate(mine):
+            g = f"g{i}"
+            out.append(day(f"2026-10-2{i}", [g], [box("Alpha Man", "DEN", 48, fga=a, game=g)] +
+                           [box(f"Mate {k}", "DEN", 48, fga=(40 - a) / 4, game=g) for k in range(4)] +
+                           [box("Other Side", "LAL", 48, fga=99, game=g), box("Sat Out", "DEN", 0, fga=50, game=g, dnp=True)]))
+        return out
+
+    def test_usage_is_his_share_of_the_teams_possessions_in_his_minutes(self):
+        s = FB.summarize(FB.game_log(self.recs([4, 12, 12, 12]))["Alpha Man"])
+        self.assertEqual(s["prior_usg"], 10.0); self.assertEqual(s["last3_usg"], 30.0)     # 4/40, then 36/120
+        self.assertEqual(s["usg"], 25.0)                                                  # 40/160 over the four games
+        self.assertEqual(s["usg_trend"], "up")                                            # +20 over the 4-point threshold
+
+    def test_free_throws_and_turnovers_count_and_the_other_team_and_dnps_do_not(self):
+        rec = [day("2026-10-20", ["g0"], [box("Alpha Man", "DEN", 24, fga=5, fta=10, tov=1, game="g0"),      # 5 + 4.4 + 1 = 10.4
+                                          box("Mate", "DEN", 216, fga=29.6, game="g0"),                       # team 40.0 in 240 minutes
+                                          box("Other Side", "LAL", 48, fga=99, game="g0")])]
+        # 100 x 10.4 x (240 / 5) / (24 x 40) = 52.0
+        self.assertEqual(FB.usage(FB.game_log(rec)["Alpha Man"]), 52.0)
+
+    def test_trend_is_signed_and_null_under_four_games(self):
+        self.assertEqual(FB.summarize(FB.game_log(self.recs([12, 12, 12, 4]))["Alpha Man"])["usg_trend"], "down")   # 23.3 vs 30.0
+        self.assertEqual(FB.summarize(FB.game_log(self.recs([10, 11, 10, 11]))["Alpha Man"])["usg_trend"], "flat")
+        s = FB.summarize(FB.game_log(self.recs([4, 12, 12]))["Alpha Man"])
+        self.assertIsNone(s["usg_trend"]); self.assertIsNone(s["last3_usg"]); self.assertEqual(s["usg"], round(100 * 28 / 120, 1))
+
+    def test_a_log_without_team_totals_gives_no_usage(self):
+        log = [dict(date="2026-10-20", min=30, starter=True, pts=0, fgm=0, fga=9, tpm=0, ftm=0, fta=0, reb=0, ast=0, tov=0, stl=0, blk=0)] * 4
+        s = FB.summarize(log)
+        self.assertIsNone(s["usg"]); self.assertIsNone(s["usg_trend"])
+
+
 class Build(unittest.TestCase):
     def setUp(self):
         self.d = tempfile.mkdtemp()

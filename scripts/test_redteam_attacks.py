@@ -81,6 +81,58 @@ class ShippedList(unittest.TestCase):
                 self.assertTrue(A._dig(json.load(f), a["commit_field"]), i)
 
 
+
+class KitFiles(unittest.TestCase):
+    """Audit finding F3 (2026-11-12): A-10's record read CURRENT after scripts/il_return.py had changed, because the
+    fingerprint followed the deck engine only. An attack that names kit_files is held to their content."""
+    def setUp(self):
+        self.d = tempfile.mkdtemp()
+        os.makedirs(os.path.join(self.d, "s"))
+        with open(os.path.join(self.d, "s", "attack.py"), "w") as f:
+            f.write("print('x')\n")
+        self.row = {"id": "A-1", "name": "n", "question": "q", "script": "s/attack.py", "record": "rec.json",
+                    "commit_field": "fingerprint.deck_head", "kit_files": ["s/attack.py"], "added": "2026-11-12"}
+
+    def record(self, kit=True):
+        fp = {"deck_head": "abc1234"}
+        if kit:
+            fp["kit_sha256"] = A.kit_fingerprint(["s/attack.py"], root=self.d)
+        with open(os.path.join(self.d, "rec.json"), "w") as f:
+            json.dump({"fingerprint": fp}, f)
+
+    def check(self):
+        return A.check({"attacks": [self.row]}, root=self.d, live_commit="abc1234")
+
+    def test_an_unchanged_kit_file_is_current(self):
+        self.record()
+        rec = self.check()
+        self.assertEqual(rec["attacks"][0]["status"], "CURRENT", rec)
+        self.assertEqual(rec["kit_fingerprinted"], 1)
+        self.assertEqual(rec["verdict"], "PASS")
+
+    def test_one_changed_byte_in_the_kit_file_is_stale(self):
+        self.record()
+        with open(os.path.join(self.d, "s", "attack.py"), "a") as f:
+            f.write("#\n")
+        rec = self.check()
+        self.assertEqual(rec["attacks"][0]["status"], "STALE")
+        self.assertIn("s/attack.py changed since the record was made", rec["attacks"][0]["why"])
+        self.assertEqual(rec["verdict"], "FAIL")
+
+    def test_a_record_without_the_hash_is_stale(self):
+        self.record(kit=False)
+        rec = self.check()
+        self.assertEqual(rec["attacks"][0]["status"], "STALE")
+        self.assertIn("no hash for kit file s/attack.py", rec["attacks"][0]["why"])
+
+    def test_an_attack_without_kit_files_is_judged_as_before(self):
+        self.record(kit=False)
+        del self.row["kit_files"]
+        rec = self.check()
+        self.assertEqual(rec["attacks"][0]["status"], "CURRENT")
+        self.assertEqual(rec["kit_fingerprinted"], 0)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
 

@@ -74,6 +74,14 @@ def steps(date, fetch=True, seasons=10000, since=None):
         st.append(dict(name="matchup live", cmd=[PY, os.path.join(HERE, "matchup_live.py"), "--date", date] + tail, cwd=KIT,
                        pass_re=r"^MATCHUP LIVE: PASS", env={}, fatal=False))
         st.append(dict(name=f"box scores {y}", cmd=[PY, os.path.join(HERE, "box_pull.py"), "--date", y], cwd=KIT, pass_re=r"^BOX PULL: PASS", env={}))
+        # audit finding F1 (2026-11-12): the league's moves file was rewritten after the deck had pinned it, because the
+        # manager log ran outside this sequence and left no ledger row. It runs here, after the pull is pinned and
+        # yesterday's box scores are in, so the brief, the week card and the deck read today's moves; non-fatal (a
+        # HALT names what is missing and the moves on record stand). The transactions are read from the transcript
+        # (the Runner calls get_transactions in its step 3, before this script); a later standalone run finds the
+        # same rows and writes the same bytes.
+        st.append(dict(name=f"manager log {y}", cmd=[PY, os.path.join(HERE, "manager_log.py"), "--date", y] + tail, cwd=KIT,
+                       pass_re=r"^MANAGER LOG: PASS", env={}, fatal=False))
     # owner 2026-10-27 (build 4, "capture now"): what yesterday's flagged players then did, from yesterday's status
     # file and box record; append-only ledger, non-fatal (a day with neither file is named, not guessed)
     st.append(dict(name="tag outcomes", cmd=[PY, os.path.join(HERE, "tag_outcomes.py"), "--date", y], cwd=KIT,
@@ -92,6 +100,10 @@ def steps(date, fetch=True, seasons=10000, since=None):
            # candidate only (nothing reads it; the Sunday snapshot and the Monday accuracy card grade it); non-fatal
            dict(name="minutes line", cmd=[PY, os.path.join(HERE, "minutes_line.py"), "--date", date], cwd=KIT,
                 pass_re=r"^MINUTES LINE: PASS", env={}, fatal=False),
+           # owner 2026-11-12 (card: "Split threes into attempts and %"): the threes-split candidate line, from the season
+           # lines just written; candidate only (the Sunday snapshot and the Monday accuracy card grade it); non-fatal
+           dict(name="threes line", cmd=[PY, os.path.join(HERE, "threes_line.py"), "--date", date], cwd=KIT,
+                pass_re=r"^THREES LINE: PASS", env={}, fatal=False),
            dict(name="season board", cmd=[PY, os.path.join(HERE, "season_board.py"), "--date", date], cwd=KIT, pass_re=r"^SEASON BOARD: PASS", env={}),
            dict(name="status feed", cmd=["bash", "-c", f"{shlex.quote(PY)} {shlex.quote(os.path.join(HERE, 'status_feed.py'))} --date {date} && "
                                                   f"{shlex.quote(PY)} {shlex.quote(os.path.join(HERE, 'status_feed.py'))} --check "

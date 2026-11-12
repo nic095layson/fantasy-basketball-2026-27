@@ -5,7 +5,8 @@ live engine, written as a numbered artifact (post-mortem 2026-10-19; RULES.md ru
 For each attack: the script must exist, the record it writes must exist, and where the record carries an engine
 commit it must equal the live deck's HEAD, otherwise the attack is STALE: it was run on a different engine than
 the one the report would describe (the 10/19 finding that the engine changed under the report). A record with no
-commit field is UNFINGERPRINTED (allowed, named). --out writes the artifact; the PASS line carries the counts.
+commit field is UNFINGERPRINTED (allowed, named). An attack that lists kit_files (audit finding F3, 2026-11-12) is also STALE
+when one of those kit files differs from the sha256 its record carries under fingerprint.kit_sha256. --out writes the artifact; the PASS line carries the counts.
 
     python3 scripts/redteam/run_attacks.py --check [--out report/.../attacks.json] [--deck PATH]
 """
@@ -67,6 +68,32 @@ def _sha(path):
     return h.hexdigest()[:12]
 
 
+def kit_fingerprint(paths, root=KIT):
+    """{kit path: sha256} of the kit files an attack's answer depends on: what the attack's script writes into its
+    record as fingerprint.kit_sha256, and what check() compares the live files to (audit finding F3, 2026-11-12: the
+    commit field follows the deck engine, so a record read CURRENT after the kit script it attacked had changed)."""
+    out = {}
+    for p in paths:
+        with open(os.path.join(root, p), "rb") as f:
+            out[p] = hashlib.sha256(f.read()).hexdigest()
+    return out
+
+
+def kit_stale(attack, record, root):
+    """Why the record is stale against the attack's kit_files, or '' when every file matches its recorded hash."""
+    have = _dig(record, "fingerprint.kit_sha256") or {}
+    for p in attack.get("kit_files") or []:
+        fp = os.path.join(root, p)
+        if not os.path.exists(fp):
+            return f"kit file {p} not found"
+        if p not in have:
+            return f"record carries no hash for kit file {p}"
+        with open(fp, "rb") as f:
+            if hashlib.sha256(f.read()).hexdigest() != have[p]:
+                return f"kit file {p} changed since the record was made"
+    return ""
+
+
 def check(attacks, root, live_commit, deck=None):
     """With `deck`, a record made on another commit is CURRENT when the engine files are unchanged between its
     commit and `live_commit` (engine_commit of both agree); without `deck`, only the commit itself counts."""
@@ -93,9 +120,11 @@ def check(attacks, root, live_commit, deck=None):
         else:
             row["record_sha256"] = _sha(rp)
             if a.get("commit_field"):
+                recj = {}
                 try:
                     with open(rp, encoding="utf-8") as f:
-                        c = _dig(json.load(f), a["commit_field"])
+                        recj = json.load(f)
+                    c = _dig(recj, a["commit_field"])
                 except ValueError as e:
                     c = None
                     row["why"] = f"record unreadable: {e}"
@@ -109,6 +138,13 @@ def check(attacks, root, live_commit, deck=None):
                 else:
                     row["status"], row["why"] = "STALE", (f"record made on engine {c}, live engine is {live_commit}"
                                                           + (f" (engine files last changed {live_eng})" if live_eng else ""))
+                # audit finding F3 (2026-11-12): an attack that names kit_files is also held to their content
+                if row["status"] == "CURRENT" and a.get("kit_files"):
+                    why = kit_stale(a, recj, root)
+                    if why:
+                        row["status"], row["why"] = "STALE", why
+                    else:
+                        row["kit_files"] = list(a["kit_files"])
             else:
                 row["status"] = "UNFINGERPRINTED"
         if row["status"] in ("MISSING", "STALE", "DUPLICATE"):
@@ -119,8 +155,10 @@ def check(attacks, root, live_commit, deck=None):
     counts = {}
     for r in rows:
         counts[r["status"]] = counts.get(r["status"], 0) + 1
+    counts_kit = sum(1 for r in rows if r.get("kit_files"))
     return dict(checked_at_utc=datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
                 live_engine_commit=live_commit, live_engine_files_commit=live_eng, attacks=rows, by_status=counts,
+                kit_fingerprinted=counts_kit,
                 problems=problems,
                 verdict="PASS" if not problems else "FAIL")
 
