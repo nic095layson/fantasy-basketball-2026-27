@@ -530,7 +530,7 @@ td.num,th.num{text-align:right}
 .chip.mine{background:var(--mine); color:#fff}
 .chip.fa{border:1px solid var(--line); background:none}
 .chip.warn{background:var(--warn); color:#fff} .chip.gone{margin-left:6px}
-.cmp2 td.best{font-weight:700} .cmp2 td.best span{background:var(--lead); border-radius:999px; padding:2px 10px} .cmp2 td.num{text-align:center}
+.cmp2 td.best{font-weight:700} .cmp2 td.best span{background:var(--lead); border-radius:999px; padding:2px 10px} .cmp2 td.num,.cmp2 th.num{text-align:center}
 .chip.ok{color:var(--ok)} .chip.warn{color:var(--warn)} .chip.crit{color:var(--crit)}
 .bar{display:flex; align-items:center; gap:6px; min-width:120px}
 .bar i{display:block; height:10px; border-radius:4px; min-width:2px}

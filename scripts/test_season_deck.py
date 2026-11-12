@@ -2036,7 +2036,10 @@ def compare_dom(html_path, tab, pane, picks):
             for name in picks:
                 pg.click(f"#{pane} .plist label:has-text('{name}') input")
             return dict(errors=errs, text=pg.evaluate(f"() => {{ const c=document.querySelector('#{pane} #season-compare'); return c? c.innerText : null }}"),
-                        best=pg.evaluate(f"() => [...document.querySelectorAll('#{pane} #season-compare td.best')].map(x=>x.textContent)"))
+                        best=pg.evaluate(f"() => [...document.querySelectorAll('#{pane} #season-compare td.best')].map(x=>x.textContent)"),
+                        align=pg.evaluate(f"() => {{ const t=document.querySelector('#{pane} #season-compare table'); if(!t) return null; "
+                                          "const a=e=>getComputedStyle(e).textAlign; const r=t.rows; "
+                                          "return {head:[a(r[0].cells[1]),a(r[0].cells[2])], body:[a(r[1].cells[1]),a(r[1].cells[2])]} }"))
         finally:
             b.close()
 
@@ -2065,6 +2068,14 @@ class SeasonCompare(unittest.TestCase):
         self.assertIn("PTS", t); self.assertIn("3PM", t); self.assertIn("TO", t)
         self.assertIn("10", d["best"])                                           # Free Agent's 10 pts (18.0 per 36 × 20 min) beats Bench Guy's 4
         self.assertEqual(len([x for x in d["best"] if x == "2"]), 0)             # equal figures (2 tov each) mark nobody
+
+    def test_each_name_sits_over_its_own_figures(self):
+        """Owner 2026-11-12 (screenshot): the two names were right-aligned over centered figures. The header cells
+        take the alignment of the cells under them."""
+        d = compare_dom(self.p, "Trade Analyzer", "pane-trade", ["Alpha Man", "Bench Guy"])
+        self.assertEqual(d["errors"], [])
+        self.assertEqual(d["align"]["head"], d["align"]["body"])
+        self.assertEqual(d["align"]["head"], ["center", "center"])
 
     def test_one_pick_shows_nothing_and_the_trade_tab_compares_across_sides(self):
         self.assertIsNone(compare_dom(self.p, "Free Agents", "pane-fa", ["Bench Guy"])["text"])
