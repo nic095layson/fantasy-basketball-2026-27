@@ -1,33 +1,29 @@
 {
- "ran_at_utc": "2026-11-12T22:05:56Z",
+ "ran_at_utc": "2026-11-13T18:34:34Z",
  "inputs": {
-  "report/after-reports/after-report-2026-11-12-followup-builds.md": "0bc294831c377a502632e63764b021b5d47488f3d7a8fe815fb3ab6a43c98e9f",
-  "scripts/season_deck.py": "b59e124b8aca8fad86fd4abda595d5133edeb0e492757681333c89b0ddbb2bd1",
-  "scripts/test_season_deck.py": "ac5bfb85bbf4b8fdd56b29d3c9d115aaa724cbccf36a907a41b848ccf96ec29e",
-  "scripts/redteam/attacks.json": "92a95a1db2b8a0d9e7f8d5bb4c3bbf22bcc2e5d25b46e1b0f66c08529ae047c0",
-  "report/after-reports/findings-fix-2026-11-12/drop_band.py": "84a865f9cd28a9614ea24fa3e459638945c510f81781f3f5015fd2f8a19c9507",
-  "report/after-reports/findings-fix-2026-11-12/drop_band.json": "596c4b11a0706d236f78f18f4943ea6fed07f1773c9cd50e7a336146f69fa2b1",
-  "report/corrections-log.md": "0d428c67dc160739f71c8100d20c9b332f16fae56f45406ad17ff009ef78d367",
-  "report/pull-log.md": "bd1cc483beff53721fa912e28bb7e2c1433eb68f256dd3416f99c66c8c1a7b83",
+  "report/after-reports/after-report-2026-11-13-board-category-lens.md": "a71363f61da9dd6e0ef1e24af2e736d8d17827bbacc6cb700e1a21deb5ff0b3b",
+  "scripts/season_deck.py": "44afa36d88c7332cce1d0a5254c615e9c6acd0f2c46b2a55ad1fe8b4484b1942",
+  "scripts/test_season_deck.py": "a746372eec52f9a623639488701cb3015ac232f2b981d3d3d3e02e81b22b212f",
+  "report/pull-log.md": "91163b702071de40e3f9951f6902525d194f435391ad5af8d8e1a48090f9494b",
   "../wtsd/report/after-reports/redteam-2026-11-09-season/sweep.json": "7cebe2a3101d6d88b154c99b3082d5819197193ddb2be591d0c3b6d479d2a305"
  },
  "gates": [
   {
    "name": "kit check_report",
-   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-12-followup-builds.md",
+   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-13-board-category-lens.md",
    "cwd": ".",
    "pass_re": "^REPORT GATE: PASS",
    "exit": 0,
-   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-11-12-followup-builds.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)",
+   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-11-13-board-category-lens.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "REPORT GATE: PASS \u2014 after-report-2026-11-12-followup-builds.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)"
+    "REPORT GATE: PASS \u2014 after-report-2026-11-13-board-category-lens.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)"
    ]
   },
   {
    "name": "claim receipts",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/independent_audit/claim_receipts.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-12-followup-builds.md",
+   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/independent_audit/claim_receipts.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-13-board-category-lens.md",
    "cwd": ".",
    "pass_re": "^CLAIM RECEIPTS: (PASS|ADVISORY)",
    "exit": 0,
@@ -66,15 +62,15 @@
   },
   {
    "name": "redteam bands",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/redteam/check_bands.py --report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-12-followup-builds.md --sweep /home/user/wtsd/report/after-reports/redteam-2026-11-09-season/sweep.json",
+   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/redteam/check_bands.py --report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-13-board-category-lens.md --sweep /home/user/wtsd/report/after-reports/redteam-2026-11-09-season/sweep.json",
    "cwd": ".",
    "pass_re": "^BANDS CHECK: PASS",
    "exit": 0,
-   "pass_line": "BANDS CHECK: PASS \u2014 1 FRAGILE band(s) quoted (arena.weekly_availability); engine 01483de",
+   "pass_line": "BANDS CHECK: PASS \u2014 the report quotes no title share and names no FRAGILE constant; bands not owed; engine 01483de",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "BANDS CHECK: PASS \u2014 1 FRAGILE band(s) quoted (arena.weekly_availability); engine 01483de"
+    "BANDS CHECK: PASS \u2014 the report quotes no title share and names no FRAGILE constant; bands not owed; engine 01483de"
    ]
   },
   {
@@ -106,5 +102,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "f6d49f5fee6af413b971211ac6359926fb0ba6e2"
+ "base_commit": "8dc596d8d04b18e1d4d74c7a4cb218a3a2ade7b3"
 }

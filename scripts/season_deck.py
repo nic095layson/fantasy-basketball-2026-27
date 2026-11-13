@@ -604,6 +604,10 @@ details.how{margin-top:8px} details.how summary{cursor:pointer; font-size:12px; 
 .zneg{color:var(--negtx)}  /* text red: 4.5:1+ on surface, bg and chip in both themes (--neg is for fills) */
 .h2row{display:flex; justify-content:space-between; align-items:center; gap:10px; margin:0 0 8px}
 .h2row h2{margin:0}
+.catchip{border:1px solid var(--accent); background:var(--surface); color:var(--ink); border-radius:999px; padding:4px 10px; cursor:pointer; font-size:13px; min-height:30px}
+.catchip.drilled{background:var(--accent); color:var(--surface)}
+.catchip .x{margin-left:6px; opacity:.7}
+.capwarn{color:var(--warn,#b4541a)}
 .resetbtn{border:1px solid var(--line); background:var(--surface); color:var(--ink2); border-radius:999px; padding:5px 14px; cursor:pointer; font-size:13px; min-height:32px}
 .resetbtn:hover{background:var(--chip); color:var(--ink)}
 .mode{display:flex; gap:8px; margin-bottom:10px}
@@ -1202,6 +1206,27 @@ function trendingCard(){ const F=D.form; if(!F||!F.rows) return null;
 (function(){ const p=$("#pane-board"); const rows=D.board.board.slice();
   let key="rank", asc=true, q="", fa=false;
   let ca=null, cb=null;
+  // owner 2026-11-13 ("add the multi-category filter ability like on the Draft Deck tool"): a category header click
+  // stacks it into a lens of up to 3, ranked by the selected categories' combined z (the plain sum of the z shown in
+  // the table); a re-click drills into one (combined as the tie-break); × or Reset removes; any other header, or a
+  // change to the build switches, clears it. Display only: # and z adj never change.
+  let lens=[], drill=null, capWarn=false;
+  const lensSum=(r)=>lens.reduce((t,c)=>t+r.z[c],0);
+  const catBox=h("div",{id:"bd-cats",class:"pick",style:"flex-wrap:wrap;align-items:center"});
+  function lensRender(){ catBox.replaceChildren();
+    if(!lens.length){ catBox.style.display="none"; capWarn=false; return; }
+    catBox.style.display="";
+    catBox.append(h("span",{class:"note"},"Category lens"),
+      ...lens.map(c=>h("button",{class:"catchip"+(c===drill?" drilled":""),"data-cat":c,title:(c===drill?"Ranked by "+c+" alone. ":"")+"Click to remove "+c+" from the lens",
+        onclick:()=>{ lens=lens.filter(k=>k!==c); if(drill===c) drill=null; lensRender(); render(); }},c==="TOV"?"TO":c,h("span",{class:"x"},"×"))),
+      h("span",{class:"small note"+(capWarn?" capwarn":"")}, capWarn? "3-category limit: remove one with its × or Reset before adding another"
+        : drill? "Ranked by "+(drill==="TOV"?"TO":drill)+" alone; click its header again for the combined z"
+        : "Ranked by the combined z of "+(lens.length<3?"these categories; click up to 3 headers":"these 3 categories")+"; click a selected header to rank by it alone"));
+    capWarn=false; }
+  function lensClick(c){ if(lens.includes(c)){ drill= drill===c? null : c; }
+    else if(lens.length>=3){ capWarn=true; }
+    else { lens.push(c); }
+    lensRender(); render(); }
   // owner 2026-11-12 ("Punt-aware build view"): categories switched off leave every player's sum; the same availability
   // rule as the board's z adj (GP/82 + (1-GP/82) x stream_r on a positive sum). Display only: rank and z adj never change.
   const off=PUNT_OFF, PR=(D.punt||{}).stream_r, WEAK=PUNT_WEAK;
@@ -1209,7 +1234,7 @@ function trendingCard(){ const F=D.form; if(!F||!F.rows) return null;
     return t>0&&PR!=null? t*(g+(1-g)*PR) : t; };
   const chips=h("div",{});
   function chipRender(){ chips.replaceChildren(puntChips("bd")); }
-  function pick(){ if(off.size){ key="fit"; asc=false; } else if(key==="fit"){ key="rank"; asc=true; } chipRender(); render(); }
+  function pick(){ if(off.size){ key="fit"; asc=false; } else if(key==="fit"){ key="rank"; asc=true; } lens=[]; drill=null; lensRender(); chipRender(); render(); }
   puntSubs.push(pick);
   const box=h("div",{class:"card"}), cmp=h("div",{class:"card"});
   p.append(box,cmp);
@@ -1219,13 +1244,13 @@ function trendingCard(){ const F=D.form; if(!F||!F.rows) return null;
   const faBox=h("input",{type:"checkbox",id:"bd-fa",onchange:(e)=>{fa=e.target.checked;render();}});
   const tbl=h("div",{});
   box.append(h("div",{class:"h2row"},h("h2",{},"Season board — "+rows.length+" ranked players"),
-      h("button",{id:"bd-reset",class:"resetbtn",onclick:()=>{q="";inp.value="";fa=false;faBox.checked=false;key="rank";asc=true;ca=null;cb=null;puntSet(o=>o.clear());}},"Reset")),
+      h("button",{id:"bd-reset",class:"resetbtn",onclick:()=>{q="";inp.value="";fa=false;faBox.checked=false;key="rank";asc=true;ca=null;cb=null;lens=[];drill=null;lensRender();puntSet(o=>o.clear());}},"Reset")),
     noteMore("Season lines blended with games so far ("+D.season_lines.players_with_games+" players) · "+(D.board.held.length? D.board.held.length+" held off the board" : "none held off the board"),
       D.board.held.length? "Held off the board: "+D.board.held.join(", ")+"." : null),
     h("div",{class:"pick"},inp,h("label",{style:"display:flex;align-items:center;gap:6px"},faBox,"free agents only")),
     noteMore("Fit for your build: switch a category off to leave it out of every player's value",
       "A category you are conceding should not count for or against a player. With one or more switched off, the table adds a fit column (the sum of the categories still on, with the board's own availability discount) and sorts by it. My build switches off the categories where your team ranks "+WEAK+"th or worse of "+NTEAMS+" today, with IL players counting nothing."+(ANY_IL?" Full health does the same with every team's IL players counted as active (those the board ranks), before any cuts to make room: use it to tell a category that is weak for good from one that is weak only while someone is hurt.":"")+" The # and z adj columns never change, and the simulator does not read this."),
-    chips, tbl);
+    chips, catBox, tbl);
   function cmpRender(){ const a=ca&&rows.find(r=>r.name===ca), b=cb&&rows.find(r=>r.name===cb);
     const sel=(id,val,on)=>h("select",{id:id,onchange:(e)=>on(e.target.value)},h("option",{value:""},"pick a player"),
       rows.map(r=>h("option",{value:r.name,...(r.name===val?{selected:""}:{})},r.rank+". "+r.name)));
@@ -1246,18 +1271,22 @@ function trendingCard(){ const F=D.form; if(!F||!F.rows) return null;
       : "No game listed for "+r.team+" in the playoff weeks."}, g? String(r.po_games) : "–"); };
   function render(){ let rs=rows.filter(r=>(!q||r.name.toLowerCase().includes(q.toLowerCase())||(r.owner||"FA").toLowerCase().includes(q.toLowerCase()))&&(!fa||r.fa));
     const kv=(r)=>key==="fit"? fit(r) : key==="name"?r.name:(key==="owner"?(r.owner||"zzFA"):(key in r? r[key] : r.z[key]));
-    rs.sort((x,y)=>{ const a=kv(x), b=kv(y);
+    if(lens.length) rs.sort((x,y)=> drill? (y.z[drill]-x.z[drill])||(lensSum(y)-lensSum(x)) : lensSum(y)-lensSum(x));
+    else rs.sort((x,y)=>{ const a=kv(x), b=kv(y);
       return (a<b?-1:a>b?1:0)*(asc?1:-1); });
-    const hd=(label,k,num)=>h("th",{class:"sort"+(num?" num":""),onclick:()=>{asc=(key===k)?!asc:(k==="rank"||k==="name"||k==="owner"); key=k; render();}},label+(key===k?(asc?" ↑":" ↓"):""));
+    const hd=(label,k,num)=>{ const isCat=CATS.indexOf(k)>=0, inLens=lens.includes(k);
+      return h("th",{class:"sort"+(num?" num":"")+(inLens?" lensed":""),...(isCat?{title:"Add "+k+" to the category lens (up to 3); click again to rank by it alone"}:{}),
+        onclick:()=>{ if(isCat){ lensClick(k); return; } lens=[]; drill=null; lensRender(); asc=(key===k)?!asc:(k==="rank"||k==="name"||k==="owner"); key=k; render();}},
+        label+(lens.length? (inLens? (k===drill?" ▼":" •") : "") : (key===k?(asc?" ↑":" ↓"):""))); };
     tbl.replaceChildren(h("div",{},  // h() skips the null note; replaceChildren alone would print "null"
       h("div",{class:"tablebox"},h("table",{},
-        h("tr",{},hd("#","rank",true),hd("player","name"),h("th",{},"pos"),hd("owner","owner"),hd("z adj","z_adj",true),off.size?hd("fit","fit",true):null,PO?hd("PO g","po_games",true):null,CATS.map(c=>hd(c,c,true))),
+        h("tr",{},hd("#","rank",true),hd("player","name"),h("th",{},"pos"),hd("owner","owner"),hd("z adj","z_adj",true),off.size?hd("fit","fit",true):null,lens.length?h("th",{class:"num",title:"The combined z of the categories in the lens"},"cats"):null,PO?hd("PO g","po_games",true):null,CATS.map(c=>hd(c,c,true))),
         rs.slice(0,200).map(r=>h("tr",{},h("td",{class:"num"},String(r.rank)),h("td",{},r.name+" · "+r.team),h("td",{},r.pos),
-          h("td",{},ownChip(r)),h("td",{class:"num"},zv(r.z_adj)),off.size?h("td",{class:"num fit"},zv(fit(r))):null,PO?poCell(r):null,CATS.map(c=>h("td",{class:"num",...(off.has(c)?{style:"opacity:.35"}:{})},zv(r.z[c]))))))),
+          h("td",{},ownChip(r)),h("td",{class:"num"},zv(r.z_adj)),off.size?h("td",{class:"num fit"},zv(fit(r))):null,lens.length?h("td",{class:"num fit"},zv(lensSum(r))):null,PO?poCell(r):null,CATS.map(c=>h("td",{class:"num",...(off.has(c)?{style:"opacity:.35"}:{})},zv(r.z[c]))))))),
       rs.length>200?h("p",{class:"note"},"Showing the first 200 of "+rs.length+" rows; narrow with search."):null));
     cmpRender();
   }
-  chipRender(); render();
+  chipRender(); lensRender(); render();
 })();
 
 // ---- Draft Check (owner 2026-11-11: "include this on the season deck replacing the Movers tab") ----
