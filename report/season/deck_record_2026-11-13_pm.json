@@ -15,12 +15,12 @@
   "status": {
    "path": "data/status/status_2026-11-13_pm.json",
    "present": true,
-   "sha256": "a9dbbab7bd195feebc428c9645f32a1bce5db7516124c6abd186b879a0d2d58d"
+   "sha256": "4c03469f26139b78a28eb30274bad47e9059d97c577767a67bb4e7794cbbf92a"
   },
   "league_state": {
    "path": "data/league_state.json",
    "present": true,
-   "sha256": "05f32814bd8192ba271621b0391bcbe2fd7a87964bffcb3691dc0b7d43a32b53"
+   "sha256": "15c71ec314e2b4ebd2ad8d641c5577661019ee2c23130605e13c2266de670ca0"
   },
   "season_lines": {
    "path": "data/season/season_lines_2026-11-13.json",
@@ -45,7 +45,7 @@
   "week_matchup": {
    "path": "report/briefs/week_matchup_2026-11-13_pm.json",
    "present": true,
-   "sha256": "c2c2f3c8fdfa850defe4d021a0709d9f7234601b3e072675388e821a60ac7fb2"
+   "sha256": "fa9301126ad4d8bb782d2f7163113bd3c4a85258af9395b7ab08583c02be0238"
   },
   "league": {
    "path": "report/league/league_2026-11-13.json",
@@ -100,16 +100,16 @@
   "yahoo_pull": {
    "path": "data/source/flaim/pull_2026-11-13_pm.json",
    "present": true,
-   "sha256": "f072b5e5e387f8618c5ac1da18682b8540ba0cd8b43de1984accefdbfebada7a"
+   "sha256": "a59c5d9ad86edc0bf87017577c4987c5d1797e4f8348fb4cc2d467d677e4c66c"
   },
   "espn_injuries": {
    "path": "data/status/espn_injuries_2026-11-13_pm.json",
    "present": true,
-   "sha256": "3c7a98248957adcbf0a8de73e24578478b701ffbd66c57f6e6af6b59ed35b233"
+   "sha256": "6a39d8be553efd9a8035a6be9468094eea092a3320dfb905e6ea2db2d377a920"
   }
  },
  "board_rows": 315,
- "status_rows": 36,
+ "status_rows": 34,
  "panes": 7,
  "join": {
   "rostered": 173,
@@ -161,6 +161,6 @@
    "League"
   ],
   "page_errors": 0,
-  "browser": "153.0.8010.12 (/opt/pw-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell)"
+  "browser": "141.0.7390.37 (playwright default)"
  }
 }

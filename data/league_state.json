@@ -2,16 +2,16 @@
  "as_of": "2026-11-13",
  "sources": {
   "flaim": {
-   "transcript": "3cdbbd9b-02dd-585e-8d00-b8a370128fae.jsonl",
+   "transcript": "f7b74300-8501-5e41-b8c5-d2c75dd06ce4.jsonl",
    "method": "mechanical json extraction of Flaim (Yahoo) tool results from the session transcript",
-   "since": "2026-11-13T17:57:34Z",
+   "since": "2026-11-13T23:04:54Z",
    "pull_file": "data/source/flaim/pull_2026-11-13_pm.json",
-   "pull_sha256": "f072b5e5e387f8618c5ac1da18682b8540ba0cd8b43de1984accefdbfebada7a",
+   "pull_sha256": "a59c5d9ad86edc0bf87017577c4987c5d1797e4f8348fb4cc2d467d677e4c66c",
    "view": "Flaim connector (Yahoo, read-only): get_roster per team (current), get_matchups, get_free_agents"
   },
   "transcription": {
    "file": "data/source/flaim/rosters_2026-11-13_pm.transcribed.csv",
-   "sha256": "429acc3997b6582d6f1399d97d90fd6dc3ec12747da0fb9a5c80b1c81a3d6f38",
+   "sha256": "bba37b3b7cd5566678b5311f18c0be30210cc9ddb3f8e38cee86ea11dccc535c",
    "method": "flaim_live.to_rows (mechanical; Yahoo slots and status letters for every team)"
   },
   "draft_board": "report/after-reports/draft-league-2026-10-14/recap.json",
@@ -25,7 +25,7 @@
    "seat": 5,
    "slot": "IL",
    "nba_team": "BKN",
-   "status": "Q"
+   "status": "P"
   },
   {
    "player": "Morez Johnson Jr.",
@@ -33,7 +33,7 @@
    "seat": 9,
    "slot": "PF",
    "nba_team": "DAL",
-   "status": null
+   "status": "P"
   },
   {
    "player": "Meleek Thomas",
@@ -225,7 +225,7 @@
       "PG",
       "SG"
      ],
-     "status": "Q"
+     "status": "P"
     },
     {
      "player": "Lauri Markkanen",
@@ -356,18 +356,6 @@
      "status": "O"
     },
     {
-     "player": "Dejounte Murray",
-     "yahoo_name": "Dejounte Murray",
-     "slot": "UTIL",
-     "yahoo_nba_team": "NOP",
-     "pool_team": "NOP",
-     "positions": [
-      "PG",
-      "SG"
-     ],
-     "status": null
-    },
-    {
      "player": "Damian Lillard",
      "yahoo_name": "Damian Lillard",
      "slot": "UTIL",
@@ -375,6 +363,18 @@
      "pool_team": "POR",
      "positions": [
       "PG"
+     ],
+     "status": null
+    },
+    {
+     "player": "Tristan da Silva",
+     "yahoo_name": "Tristan da Silva",
+     "slot": "UTIL",
+     "yahoo_nba_team": "ORL",
+     "pool_team": "ORL",
+     "positions": [
+      "SF",
+      "PF"
      ],
      "status": null
     },
@@ -414,6 +414,18 @@
      "status": null
     },
     {
+     "player": "Dejounte Murray",
+     "yahoo_name": "Dejounte Murray",
+     "slot": "IL",
+     "yahoo_nba_team": "NOP",
+     "pool_team": "NOP",
+     "positions": [
+      "PG",
+      "SG"
+     ],
+     "status": "O"
+    },
+    {
      "player": "Paolo Banchero",
      "yahoo_name": "Paolo Banchero",
      "slot": "IL",
@@ -423,18 +435,6 @@
       "PF"
      ],
      "status": "O"
-    },
-    {
-     "player": "Tristan da Silva",
-     "yahoo_name": "Tristan da Silva",
-     "slot": "IL",
-     "yahoo_nba_team": "ORL",
-     "pool_team": "ORL",
-     "positions": [
-      "SF",
-      "PF"
-     ],
-     "status": "Q"
     }
    ],
    "empty_slots": [],
@@ -568,7 +568,7 @@
       "SG",
       "SF"
      ],
-     "status": "Q"
+     "status": "D"
     },
     {
      "player": "Sion James",
@@ -803,7 +803,7 @@
       "PF",
       "C"
      ],
-     "status": "Q"
+     "status": "O"
     },
     {
      "player": "Anthony Edwards",
@@ -874,16 +874,16 @@
      "status": null
     },
     {
-     "player": "Trey Murphy III",
-     "yahoo_name": "Trey Murphy III",
+     "player": "Jalen Suggs",
+     "yahoo_name": "Jalen Suggs",
      "slot": "G",
-     "yahoo_nba_team": "NOP",
-     "pool_team": "NOP",
+     "yahoo_nba_team": "ORL",
+     "pool_team": "ORL",
      "positions": [
-      "SG",
-      "SF"
+      "PG",
+      "SG"
      ],
-     "status": "D"
+     "status": null
     },
     {
      "player": "Toumani Camara",
@@ -942,7 +942,7 @@
       "PF",
       "C"
      ],
-     "status": "P"
+     "status": null
     },
     {
      "player": "De'Aaron Fox",
@@ -1001,14 +1001,14 @@
      "status": null
     },
     {
-     "player": "Jalen Suggs",
-     "yahoo_name": "Jalen Suggs",
+     "player": "Trey Murphy III",
+     "yahoo_name": "Trey Murphy III",
      "slot": "IL",
-     "yahoo_nba_team": "ORL",
-     "pool_team": "ORL",
+     "yahoo_nba_team": "NOP",
+     "pool_team": "NOP",
      "positions": [
-      "PG",
-      "SG"
+      "SG",
+      "SF"
      ],
      "status": "O"
     }
@@ -1023,7 +1023,7 @@
      "positions": [
       "PG"
      ],
-     "status": "Q"
+     "status": "P"
     }
    ],
    "seat": 5,
@@ -1346,13 +1346,14 @@
      "status": null
     },
     {
-     "player": "Oso Ighodaro",
-     "yahoo_name": "Oso Ighodaro",
+     "player": "Jaylen Wells",
+     "yahoo_name": "Jaylen Wells",
      "slot": "UTIL",
-     "yahoo_nba_team": "PHX",
-     "pool_team": "PHX",
+     "yahoo_nba_team": "MEM",
+     "pool_team": "MEM",
      "positions": [
-      "C"
+      "SG",
+      "SF"
      ],
      "status": null
     },
@@ -1424,7 +1425,7 @@
    "draft_overlap": 12,
    "added_since_draft": [
     "Devin Vassell",
-    "Oso Ighodaro",
+    "Jaylen Wells",
     "Wendell Carter Jr."
    ],
    "dropped_since_draft": [
@@ -1587,7 +1588,7 @@
       "SG",
       "SF"
      ],
-     "status": "Q"
+     "status": "P"
     }
    ],
    "empty_slots": [],
@@ -1600,7 +1601,7 @@
      "positions": [
       "PF"
      ],
-     "status": null
+     "status": "P"
     }
    ],
    "seat": 9,

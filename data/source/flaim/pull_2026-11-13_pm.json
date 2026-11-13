@@ -5549,7 +5549,7 @@
      "playerKey": "478.p.6014",
      "position": "PG,SG",
      "selectedPosition": "IL",
-     "status": "Q",
+     "status": "P",
      "team": "LAL"
     },
     {
@@ -6652,26 +6652,6 @@
     {
      "eligiblePositions": [
       "PG",
-      "SG",
-      "G",
-      "Util"
-     ],
-     "isKeeper": {
-      "cost": false,
-      "kept": false,
-      "status": false
-     },
-     "isUndroppable": false,
-     "name": "Dejounte Murray",
-     "playerId": "5660",
-     "playerKey": "478.p.5660",
-     "position": "PG,SG",
-     "selectedPosition": "Util",
-     "team": "NOP"
-    },
-    {
-     "eligiblePositions": [
-      "PG",
       "G",
       "Util"
      ],
@@ -6687,6 +6667,26 @@
      "position": "PG",
      "selectedPosition": "Util",
      "team": "POR"
+    },
+    {
+     "eligiblePositions": [
+      "SF",
+      "PF",
+      "F",
+      "Util"
+     ],
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "isUndroppable": false,
+     "name": "Tristan da Silva",
+     "playerId": "10275",
+     "playerKey": "478.p.10275",
+     "position": "SF,PF",
+     "selectedPosition": "Util",
+     "team": "ORL"
     },
     {
      "eligiblePositions": [
@@ -6749,6 +6749,28 @@
     },
     {
      "eligiblePositions": [
+      "PG",
+      "SG",
+      "G",
+      "Util",
+      "IL"
+     ],
+     "isKeeper": {
+      "cost": false,
+      "kept": false,
+      "status": false
+     },
+     "isUndroppable": false,
+     "name": "Dejounte Murray",
+     "playerId": "5660",
+     "playerKey": "478.p.5660",
+     "position": "PG,SG",
+     "selectedPosition": "IL",
+     "status": "O",
+     "team": "NOP"
+    },
+    {
+     "eligiblePositions": [
       "PF",
       "F",
       "Util",
@@ -6766,28 +6788,6 @@
      "position": "PF",
      "selectedPosition": "IL",
      "status": "O",
-     "team": "ORL"
-    },
-    {
-     "eligiblePositions": [
-      "SF",
-      "PF",
-      "F",
-      "Util",
-      "IL"
-     ],
-     "isKeeper": {
-      "cost": false,
-      "kept": false,
-      "status": false
-     },
-     "isUndroppable": false,
-     "name": "Tristan da Silva",
-     "playerId": "10275",
-     "playerKey": "478.p.10275",
-     "position": "SF,PF",
-     "selectedPosition": "IL",
-     "status": "Q",
      "team": "ORL"
     }
    ],
@@ -7003,7 +7003,7 @@
      "playerKey": "478.p.10312",
      "position": "SG,SF",
      "selectedPosition": "Util",
-     "status": "Q",
+     "status": "D",
      "team": "MIA"
     },
     {
@@ -7378,7 +7378,7 @@
      "playerKey": "478.p.6412",
      "position": "PF,C",
      "selectedPosition": "BN",
-     "status": "Q",
+     "status": "O",
      "team": "SAC"
     },
     {
@@ -7476,12 +7476,10 @@
     },
     {
      "eligiblePositions": [
+      "PG",
       "SG",
       "G",
-      "SF",
-      "F",
-      "Util",
-      "IL"
+      "Util"
      ],
      "isKeeper": {
       "cost": false,
@@ -7489,13 +7487,12 @@
       "status": false
      },
      "isUndroppable": false,
-     "name": "Trey Murphy III",
-     "playerId": "6559",
-     "playerKey": "478.p.6559",
-     "position": "SG,SF",
+     "name": "Jalen Suggs",
+     "playerId": "6516",
+     "playerKey": "478.p.6516",
+     "position": "PG,SG",
      "selectedPosition": "G",
-     "status": "D",
-     "team": "NOP"
+     "team": "ORL"
     },
     {
      "eligiblePositions": [
@@ -7580,8 +7577,7 @@
       "PF",
       "F",
       "C",
-      "Util",
-      "IL"
+      "Util"
      ],
      "isKeeper": {
       "cost": false,
@@ -7594,7 +7590,6 @@
      "playerKey": "478.p.5185",
      "position": "PF,C",
      "selectedPosition": "C",
-     "status": "P",
      "team": "MIA"
     },
     {
@@ -7696,9 +7691,10 @@
     },
     {
      "eligiblePositions": [
-      "PG",
       "SG",
       "G",
+      "SF",
+      "F",
       "Util",
       "IL"
      ],
@@ -7708,13 +7704,13 @@
       "status": false
      },
      "isUndroppable": false,
-     "name": "Jalen Suggs",
-     "playerId": "6516",
-     "playerKey": "478.p.6516",
-     "position": "PG,SG",
+     "name": "Trey Murphy III",
+     "playerId": "6559",
+     "playerKey": "478.p.6559",
+     "position": "SG,SF",
      "selectedPosition": "IL",
      "status": "O",
-     "team": "ORL"
+     "team": "NOP"
     },
     {
      "eligiblePositions": [
@@ -7734,7 +7730,7 @@
      "playerKey": "478.p.10455",
      "position": "PG",
      "selectedPosition": "IL",
-     "status": "Q",
+     "status": "P",
      "team": "BKN"
     }
    ],
@@ -8250,7 +8246,10 @@
     },
     {
      "eligiblePositions": [
-      "C",
+      "SG",
+      "G",
+      "SF",
+      "F",
       "Util"
      ],
      "isKeeper": {
@@ -8259,12 +8258,12 @@
       "status": false
      },
      "isUndroppable": false,
-     "name": "Oso Ighodaro",
-     "playerId": "10313",
-     "playerKey": "478.p.10313",
-     "position": "C",
+     "name": "Jaylen Wells",
+     "playerId": "10340",
+     "playerKey": "478.p.10340",
+     "position": "SG,SF",
      "selectedPosition": "Util",
-     "team": "PHX"
+     "team": "MEM"
     },
     {
      "eligiblePositions": [
@@ -8466,7 +8465,8 @@
      "eligiblePositions": [
       "PF",
       "F",
-      "Util"
+      "Util",
+      "IL"
      ],
      "isKeeper": {
       "cost": false,
@@ -8479,6 +8479,7 @@
      "playerKey": "478.p.10572",
      "position": "PF",
      "selectedPosition": "PF",
+     "status": "P",
      "team": "DAL"
     },
     {
@@ -8658,7 +8659,7 @@
      "playerKey": "478.p.4892",
      "position": "SG,SF",
      "selectedPosition": "IL",
-     "status": "Q",
+     "status": "P",
      "team": "MIA"
     }
    ],
