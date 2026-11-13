@@ -2,16 +2,16 @@
  "as_of": "2026-11-13",
  "sources": {
   "flaim": {
-   "transcript": "f7b74300-8501-5e41-b8c5-d2c75dd06ce4.jsonl",
+   "transcript": "3cdbbd9b-02dd-585e-8d00-b8a370128fae.jsonl",
    "method": "mechanical json extraction of Flaim (Yahoo) tool results from the session transcript",
-   "since": "2026-11-13T15:17:37Z",
-   "pull_file": "data/source/flaim/pull_2026-11-13.json",
-   "pull_sha256": "7a6897f6a55dd7113fabae7680c9ed7dd1485551296e0bd1ed2a489af5b07cc4",
+   "since": "2026-11-13T17:57:34Z",
+   "pull_file": "data/source/flaim/pull_2026-11-13_pm.json",
+   "pull_sha256": "f072b5e5e387f8618c5ac1da18682b8540ba0cd8b43de1984accefdbfebada7a",
    "view": "Flaim connector (Yahoo, read-only): get_roster per team (current), get_matchups, get_free_agents"
   },
   "transcription": {
-   "file": "data/source/flaim/rosters_2026-11-13.transcribed.csv",
-   "sha256": "fb020879a5516a500e3432f5eb634229a6d0e3a77fbec48d4a3eaa5c214e4f0a",
+   "file": "data/source/flaim/rosters_2026-11-13_pm.transcribed.csv",
+   "sha256": "429acc3997b6582d6f1399d97d90fd6dc3ec12747da0fb9a5c80b1c81a3d6f38",
    "method": "flaim_live.to_rows (mechanical; Yahoo slots and status letters for every team)"
   },
   "draft_board": "report/after-reports/draft-league-2026-10-14/recap.json",
@@ -1679,9 +1679,21 @@
      "status": null
     },
     {
+     "player": "Desmond Bane",
+     "yahoo_name": "Desmond Bane",
+     "slot": "F",
+     "yahoo_nba_team": "ORL",
+     "pool_team": "ORL",
+     "positions": [
+      "SG",
+      "SF"
+     ],
+     "status": null
+    },
+    {
      "player": "Draymond Green",
      "yahoo_name": "Draymond Green",
-     "slot": "F",
+     "slot": "C",
      "yahoo_nba_team": "GSW",
      "pool_team": "GSW",
      "positions": [
@@ -1702,23 +1714,23 @@
      "status": null
     },
     {
-     "player": "Desmond Bane",
-     "yahoo_name": "Desmond Bane",
-     "slot": "UTIL",
-     "yahoo_nba_team": "ORL",
-     "pool_team": "ORL",
-     "positions": [
-      "SG",
-      "SF"
-     ],
-     "status": null
-    },
-    {
      "player": "CJ McCollum",
      "yahoo_name": "CJ McCollum",
      "slot": "UTIL",
      "yahoo_nba_team": "ATL",
      "pool_team": "ATL",
+     "positions": [
+      "PG",
+      "SG"
+     ],
+     "status": null
+    },
+    {
+     "player": "De'Anthony Melton",
+     "yahoo_name": "De'Anthony Melton",
+     "slot": "UTIL",
+     "yahoo_nba_team": "GSW",
+     "pool_team": "GSW",
      "positions": [
       "PG",
       "SG"
@@ -1745,18 +1757,6 @@
      "positions": [
       "SF",
       "PF"
-     ],
-     "status": null
-    },
-    {
-     "player": "De'Anthony Melton",
-     "yahoo_name": "De'Anthony Melton",
-     "slot": "BN",
-     "yahoo_nba_team": "GSW",
-     "pool_team": "GSW",
-     "positions": [
-      "PG",
-      "SG"
      ],
      "status": null
     },
