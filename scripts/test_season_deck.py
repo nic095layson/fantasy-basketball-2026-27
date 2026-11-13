@@ -2565,6 +2565,76 @@ class PuntView(unittest.TestCase):
         self.assertEqual([r[1].split(" · ")[0] for r in d["rows"]], ["Alpha Man", "Free Agent", "Bench Guy"])
 
 
+def board_lens_dom(html_path, clicks):
+    """Open the Board, click each selector in order (a header is "th:<label>"), then read rows, chips, the note and the
+    cats column."""
+    from playwright.sync_api import sync_playwright
+    with sync_playwright() as p:
+        b, exe, tried = DRC._launch(p)
+        try:
+            pg = b.new_page(); errs = []
+            pg.on("pageerror", lambda e: errs.append(str(e)))
+            pg.route(re.compile(r"^https?://"), lambda r: r.abort())
+            pg.goto("file://" + os.path.abspath(html_path), wait_until="load")
+            pg.click("nav.tabs button:has-text('Board')")
+            for sel in clicks:
+                if sel.startswith("th:"):
+                    lab = sel[3:]
+                    pg.evaluate("(l) => [...document.querySelectorAll('#pane-board table tr:first-child th')].find(x=>x.textContent.replace(/[ ↑↓•▼]/g,'')===l).click()", lab)
+                else:
+                    pg.click(sel)
+            head = pg.evaluate("() => [...document.querySelectorAll('#pane-board table tr:first-child th')].map(x=>x.textContent.replace(/[ ↑↓•▼]/g,''))")
+            rows = pg.evaluate("() => [...document.querySelectorAll('#pane-board table tr')].slice(1).map(r=>[...r.cells].map(c=>c.textContent))")
+            return dict(errors=errs, head=head, names=[r[1].split(" · ")[0] for r in rows], rows=rows,
+                        chips=pg.evaluate("() => [...document.querySelectorAll('#bd-cats .catchip')].map(x=>x.dataset.cat+(x.classList.contains('drilled')?'*':''))"),
+                        note=pg.evaluate("() => { const n=document.querySelector('#bd-cats .small'); return n? n.textContent : '' }"))
+        finally:
+            b.close()
+
+
+class BoardCategoryLens(unittest.TestCase):
+    """Owner 2026-11-13 ("add the multi-category filter ability like on the Draft Deck tool"): clicking a category
+    header stacks it into a lens of up to 3; the board ranks by the selected categories' combined z, a re-click drills
+    into one, × removes, Reset clears, any other header clears. Display only."""
+    CATS = PuntView.CATS
+
+    def setUp(self):
+        self.d = tempfile.mkdtemp(); fx = fixtures(self.d)
+        z = lambda **kw: {c: kw.get(c, 0.0) for c in self.CATS}
+        b = json.load(open(fx["board"]))
+        b["board"] = [dict(rank=1, name="Alpha Man", team="DEN", pos="PG", gp=82.0, z_adj=4.0, z_total=4.0, z=z(AST=3.0, PTS=1.0)),
+                      dict(rank=2, name="Free Agent", team="GSW", pos="C", gp=82.0, z_adj=3.0, z_total=3.0, z=z(REB=2.0, BLK=1.0)),
+                      dict(rank=3, name="Bench Guy", team="DAL", pos="SF", gp=82.0, z_adj=2.5, z_total=2.5, z=z(PTS=2.0, REB=0.5)),
+                      dict(rank=4, name="Steal Man", team="BOS", pos="SG", gp=82.0, z_adj=2.0, z_total=2.0, z=z(STL=2.0))]
+        b["n_rows"] = 4
+        json.dump(b, open(fx["board"], "w"))
+        html, _, _ = SD.build(fx, date="2026-10-21")
+        self.p = os.path.join(self.d, "deck.html")
+        with open(self.p, "w", encoding="utf-8") as f:
+            f.write(html)
+
+    def test_two_categories_rank_by_their_combined_z_and_show_it(self):
+        d = board_lens_dom(self.p, ["th:PTS", "th:REB"])
+        self.assertEqual(d["errors"], []); self.assertEqual(d["chips"], ["PTS", "REB"])
+        self.assertEqual(d["names"], ["Bench Guy", "Free Agent", "Alpha Man", "Steal Man"])    # 2.5, 2.0, 1.0, 0.0
+        i = d["head"].index("cats"); self.assertEqual([r[i] for r in d["rows"]], ["2.50", "2.00", "1.00", "0.00"])
+        self.assertIn("combined", d["note"])
+
+    def test_a_reclick_drills_into_one_category_and_a_fourth_is_blocked(self):
+        d = board_lens_dom(self.p, ["th:PTS", "th:REB", "th:REB"])
+        self.assertEqual(d["chips"], ["PTS", "REB*"]); self.assertEqual(d["names"][:2], ["Free Agent", "Bench Guy"])   # REB alone
+        d = board_lens_dom(self.p, ["th:PTS", "th:REB", "th:AST", "th:STL"])
+        self.assertEqual(d["errors"], []); self.assertEqual(d["chips"], ["PTS", "REB", "AST"]); self.assertIn("3-category limit", d["note"])
+
+    def test_the_x_reset_and_another_header_clear_the_lens(self):
+        d = board_lens_dom(self.p, ["th:PTS", "th:REB", "#bd-cats .catchip[data-cat='PTS']"])
+        self.assertEqual(d["chips"], ["REB"]); self.assertEqual(d["names"][0], "Free Agent")
+        d = board_lens_dom(self.p, ["th:PTS", "#bd-reset"])
+        self.assertEqual((d["chips"], d["names"][0]), ([], "Alpha Man")); self.assertNotIn("cats", d["head"])
+        d = board_lens_dom(self.p, ["th:PTS", "th:zadj"])
+        self.assertEqual(d["chips"], []); self.assertEqual(d["names"][0], "Alpha Man")      # z adj, highest first
+
+
 class FullHealthBuild(unittest.TestCase):
     """Owner 2026-11-12 (council verdict): "My build" reads the league with IL players counting 0 (D-IS-8), so a category
     can look weak only because someone is hurt. "Full health" switches off the categories that are weak with every
