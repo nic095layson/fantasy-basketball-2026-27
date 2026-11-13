@@ -12,6 +12,16 @@ Each finished week graded against the box scores and the final scores (`scripts/
 
 Switch rule (D-ML-1, pre-committed 2026-10-27): the minutes candidate replaces nothing until its MAE beats the in-season line's on PTS, REB and AST in 3 of 4 consecutive graded weeks, on the owner's word.
 
+## Player lines: threes made per game (projected / actual, bias, MAE, rank correlation)
+
+| week | players | in-season | bias | MAE | rank | threes-split candidate | bias | MAE | rank |
+|---|---|---|---|---|---|---|---|---|---|
+| 1 | 261 | no snapshot | | |  | no snapshot | | |  |
+| 2 | 252 | 1.42 / 1.37 | 3.3% | 0.67 | 0.68 | no snapshot | | |  |
+| 3 | 255 | 1.39 / 1.28 | 9.1% | 0.61 | 0.76 | no snapshot | | |  |
+
+Switch rule (D-TS-1, pre-committed 2026-11-12): the threes-split candidate replaces nothing until its MAE on threes made beats the in-season line's in 3 of 4 consecutive graded weeks, on the owner's word.
+
 ## Availability: share of team games played, by the tier the simulator assumes
 
 | week | tier | assumed | played / team games | share |
