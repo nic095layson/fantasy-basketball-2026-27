@@ -1,0 +1,810 @@
+{
+ "date": "2026-11-09",
+ "week": 4,
+ "weeks": 17,
+ "seasons": 10000,
+ "seeds": [
+  2026,
+  2027
+ ],
+ "state": "data/league_state.json",
+ "state_as_of": "2026-11-09",
+ "espn": "data/status/espn_injuries_2026-11-09.json",
+ "espn_date": "2026-11-09",
+ "pool": "/home/user/fantasy-basketball-2026-27/data/season/pool_season.csv",
+ "room_rule": "lowest adj_value active player leaves from the return week",
+ "slips": {
+  "on_time": 0,
+  "late_2": 2,
+  "late_4": 4
+ },
+ "n_il": 19,
+ "il_players": [
+  {
+   "seat": 3,
+   "team": "SNOWTIME WHITE WALKERS",
+   "player": "Lauri Markkanen",
+   "espn": "Lauri Markkanen",
+   "status": "Out",
+   "return_date": "2026-11-10",
+   "week": 4
+  },
+  {
+   "seat": 3,
+   "team": "SNOWTIME WHITE WALKERS",
+   "player": "Luka Doncic",
+   "espn": "Luka Doncic",
+   "status": "Out",
+   "return_date": "2026-11-09",
+   "week": 4
+  },
+  {
+   "seat": 4,
+   "team": "Booker T Floppers",
+   "player": "Paolo Banchero",
+   "espn": "Paolo Banchero",
+   "status": "Out",
+   "return_date": "2026-11-22",
+   "week": 5
+  },
+  {
+   "seat": 4,
+   "team": "Booker T Floppers",
+   "player": "Keegan Murray",
+   "espn": null,
+   "status": null,
+   "return_date": null,
+   "week": null
+  },
+  {
+   "seat": 1,
+   "team": "Looking Cool Joker!",
+   "player": "Ja Morant",
+   "espn": "Ja Morant",
+   "status": "Out",
+   "return_date": "2026-12-01",
+   "week": 7
+  },
+  {
+   "seat": 1,
+   "team": "Looking Cool Joker!",
+   "player": "Jaren Jackson Jr.",
+   "espn": "Jaren Jackson Jr.",
+   "status": "Out",
+   "return_date": "2026-12-14",
+   "week": 8
+  },
+  {
+   "seat": 8,
+   "team": "Scottie’s Thotties",
+   "player": "Norman Powell",
+   "espn": "Norman Powell",
+   "status": "Out",
+   "return_date": "2026-11-11",
+   "week": 4
+  },
+  {
+   "seat": 8,
+   "team": "Scottie’s Thotties",
+   "player": "Anthony Edwards",
+   "espn": "Anthony Edwards",
+   "status": "Out",
+   "return_date": "2026-12-21",
+   "week": 9
+  },
+  {
+   "seat": 5,
+   "team": "ANONG NANGIANNIS?!",
+   "player": "Jalen Suggs",
+   "espn": "Jalen Suggs",
+   "status": "Out",
+   "return_date": "2026-11-10",
+   "week": 4
+  },
+  {
+   "seat": 6,
+   "team": "Cade n em",
+   "player": "Jalen Duren",
+   "espn": "Jalen Duren",
+   "status": "Out",
+   "return_date": "2026-11-24",
+   "week": 6
+  },
+  {
+   "seat": 12,
+   "team": "Thompson Telepathy",
+   "player": "Egor Demin",
+   "espn": "Egor Demin",
+   "status": "Out",
+   "return_date": "2026-11-11",
+   "week": 4
+  },
+  {
+   "seat": 12,
+   "team": "Thompson Telepathy",
+   "player": "Jimmy Butler",
+   "espn": "Jimmy Butler III",
+   "status": "Out",
+   "return_date": "2027-01-02",
+   "week": 10
+  },
+  {
+   "seat": 9,
+   "team": "Podz save the league",
+   "player": "Brandon Miller",
+   "espn": "Brandon Miller",
+   "status": "Out",
+   "return_date": "2026-11-12",
+   "week": 4
+  },
+  {
+   "seat": 2,
+   "team": "ROOKS FTW",
+   "player": "Desmond Bane",
+   "espn": "Desmond Bane",
+   "status": "Day-To-Day",
+   "return_date": "2026-11-10",
+   "week": 4
+  },
+  {
+   "seat": 2,
+   "team": "ROOKS FTW",
+   "player": "Jusuf Nurkic",
+   "espn": "Jusuf Nurkic",
+   "status": "Out",
+   "return_date": "2026-11-20",
+   "week": 5
+  },
+  {
+   "seat": 11,
+   "team": "MAXEY-MUM OVERDRIVE",
+   "player": "Kon Knueppel",
+   "espn": "Kon Knueppel",
+   "status": "Out",
+   "return_date": "2026-12-12",
+   "week": 7
+  },
+  {
+   "seat": 10,
+   "team": "KEL'EL YAXEL HALQUETA",
+   "player": "Tyrese Haliburton",
+   "espn": "Tyrese Haliburton",
+   "status": "Out",
+   "return_date": "2026-11-13",
+   "week": 4
+  },
+  {
+   "seat": 10,
+   "team": "KEL'EL YAXEL HALQUETA",
+   "player": "Kawhi Leonard",
+   "espn": "Kawhi Leonard",
+   "status": "Out",
+   "return_date": "2026-11-23",
+   "week": 6
+  },
+  {
+   "seat": 7,
+   "team": "John's Cool Team",
+   "player": "Brandon Ingram",
+   "espn": "Brandon Ingram",
+   "status": "Out",
+   "return_date": "2026-11-10",
+   "week": 4
+  }
+ ],
+ "scenarios": {
+  "never": {
+   "title_by_seed": {
+    "2026": 17.84,
+    "2027": 18.27
+   },
+   "title": 18.05,
+   "playoffs": 99.3,
+   "seed_spread": 0.43
+  },
+  "on_time": {
+   "title_by_seed": {
+    "2026": 25.78,
+    "2027": 26.14
+   },
+   "title": 25.96,
+   "playoffs": 99.97,
+   "seed_spread": 0.36,
+   "windows": {
+    "1": {
+     "Ja Morant": [
+      7,
+      17
+     ],
+     "Scoot Henderson": [
+      1,
+      6
+     ],
+     "Jaren Jackson Jr.": [
+      8,
+      17
+     ],
+     "Aaron Nesmith": [
+      1,
+      7
+     ]
+    },
+    "2": {
+     "Desmond Bane": [
+      4,
+      17
+     ],
+     "Jared McCain": [
+      1,
+      3
+     ],
+     "Jusuf Nurkic": [
+      5,
+      17
+     ],
+     "Draymond Green": [
+      1,
+      4
+     ]
+    },
+    "3": {
+     "Lauri Markkanen": [
+      4,
+      17
+     ],
+     "Jaxson Hayes": [
+      1,
+      3
+     ],
+     "Luka Doncic": [
+      4,
+      17
+     ],
+     "Jonathan Kuminga": [
+      1,
+      3
+     ]
+    },
+    "4": {
+     "Paolo Banchero": [
+      5,
+      17
+     ],
+     "Tristan da Silva": [
+      1,
+      4
+     ],
+     "Keegan Murray": [
+      18,
+      17
+     ]
+    },
+    "5": {
+     "Jalen Suggs": [
+      4,
+      17
+     ],
+     "Malik Monk": [
+      1,
+      3
+     ]
+    },
+    "6": {
+     "Jalen Duren": [
+      6,
+      17
+     ],
+     "Kingston Flemings": [
+      1,
+      5
+     ]
+    },
+    "7": {
+     "Brandon Ingram": [
+      4,
+      17
+     ],
+     "Kyle Kuzma": [
+      1,
+      3
+     ]
+    },
+    "8": {
+     "Norman Powell": [
+      4,
+      17
+     ],
+     "Precious Achiuwa": [
+      1,
+      3
+     ],
+     "Anthony Edwards": [
+      9,
+      17
+     ],
+     "DeMar DeRozan": [
+      1,
+      8
+     ]
+    },
+    "9": {
+     "Brandon Miller": [
+      4,
+      17
+     ],
+     "Aday Mara": [
+      1,
+      3
+     ]
+    },
+    "10": {
+     "Tyrese Haliburton": [
+      4,
+      17
+     ],
+     "Neemias Queta": [
+      1,
+      3
+     ],
+     "Kawhi Leonard": [
+      6,
+      17
+     ],
+     "Cameron Johnson": [
+      1,
+      5
+     ]
+    },
+    "11": {
+     "Kon Knueppel": [
+      7,
+      17
+     ],
+     "Brayden Burries": [
+      1,
+      6
+     ]
+    },
+    "12": {
+     "Egor Demin": [
+      4,
+      17
+     ],
+     "Karlo Matkovic": [
+      1,
+      3
+     ],
+     "Jimmy Butler": [
+      10,
+      17
+     ],
+     "Khaman Maluach": [
+      1,
+      9
+     ]
+    }
+   }
+  },
+  "late_2": {
+   "title_by_seed": {
+    "2026": 26.38,
+    "2027": 27.0
+   },
+   "title": 26.69,
+   "playoffs": 99.98,
+   "seed_spread": 0.62,
+   "windows": {
+    "1": {
+     "Ja Morant": [
+      9,
+      17
+     ],
+     "Scoot Henderson": [
+      1,
+      8
+     ],
+     "Jaren Jackson Jr.": [
+      10,
+      17
+     ],
+     "Aaron Nesmith": [
+      1,
+      9
+     ]
+    },
+    "2": {
+     "Desmond Bane": [
+      6,
+      17
+     ],
+     "Jared McCain": [
+      1,
+      5
+     ],
+     "Jusuf Nurkic": [
+      7,
+      17
+     ],
+     "Draymond Green": [
+      1,
+      6
+     ]
+    },
+    "3": {
+     "Lauri Markkanen": [
+      6,
+      17
+     ],
+     "Jaxson Hayes": [
+      1,
+      5
+     ],
+     "Luka Doncic": [
+      6,
+      17
+     ],
+     "Jonathan Kuminga": [
+      1,
+      5
+     ]
+    },
+    "4": {
+     "Paolo Banchero": [
+      7,
+      17
+     ],
+     "Tristan da Silva": [
+      1,
+      6
+     ],
+     "Keegan Murray": [
+      18,
+      17
+     ]
+    },
+    "5": {
+     "Jalen Suggs": [
+      6,
+      17
+     ],
+     "Malik Monk": [
+      1,
+      5
+     ]
+    },
+    "6": {
+     "Jalen Duren": [
+      8,
+      17
+     ],
+     "Kingston Flemings": [
+      1,
+      7
+     ]
+    },
+    "7": {
+     "Brandon Ingram": [
+      6,
+      17
+     ],
+     "Kyle Kuzma": [
+      1,
+      5
+     ]
+    },
+    "8": {
+     "Norman Powell": [
+      6,
+      17
+     ],
+     "Precious Achiuwa": [
+      1,
+      5
+     ],
+     "Anthony Edwards": [
+      11,
+      17
+     ],
+     "DeMar DeRozan": [
+      1,
+      10
+     ]
+    },
+    "9": {
+     "Brandon Miller": [
+      6,
+      17
+     ],
+     "Aday Mara": [
+      1,
+      5
+     ]
+    },
+    "10": {
+     "Tyrese Haliburton": [
+      6,
+      17
+     ],
+     "Neemias Queta": [
+      1,
+      5
+     ],
+     "Kawhi Leonard": [
+      8,
+      17
+     ],
+     "Cameron Johnson": [
+      1,
+      7
+     ]
+    },
+    "11": {
+     "Kon Knueppel": [
+      9,
+      17
+     ],
+     "Brayden Burries": [
+      1,
+      8
+     ]
+    },
+    "12": {
+     "Egor Demin": [
+      6,
+      17
+     ],
+     "Karlo Matkovic": [
+      1,
+      5
+     ],
+     "Jimmy Butler": [
+      12,
+      17
+     ],
+     "Khaman Maluach": [
+      1,
+      11
+     ]
+    }
+   }
+  },
+  "late_4": {
+   "title_by_seed": {
+    "2026": 26.79,
+    "2027": 26.97
+   },
+   "title": 26.88,
+   "playoffs": 99.94,
+   "seed_spread": 0.18,
+   "windows": {
+    "1": {
+     "Ja Morant": [
+      11,
+      17
+     ],
+     "Scoot Henderson": [
+      1,
+      10
+     ],
+     "Jaren Jackson Jr.": [
+      12,
+      17
+     ],
+     "Aaron Nesmith": [
+      1,
+      11
+     ]
+    },
+    "2": {
+     "Desmond Bane": [
+      8,
+      17
+     ],
+     "Jared McCain": [
+      1,
+      7
+     ],
+     "Jusuf Nurkic": [
+      9,
+      17
+     ],
+     "Draymond Green": [
+      1,
+      8
+     ]
+    },
+    "3": {
+     "Lauri Markkanen": [
+      8,
+      17
+     ],
+     "Jaxson Hayes": [
+      1,
+      7
+     ],
+     "Luka Doncic": [
+      8,
+      17
+     ],
+     "Jonathan Kuminga": [
+      1,
+      7
+     ]
+    },
+    "4": {
+     "Paolo Banchero": [
+      9,
+      17
+     ],
+     "Tristan da Silva": [
+      1,
+      8
+     ],
+     "Keegan Murray": [
+      18,
+      17
+     ]
+    },
+    "5": {
+     "Jalen Suggs": [
+      8,
+      17
+     ],
+     "Malik Monk": [
+      1,
+      7
+     ]
+    },
+    "6": {
+     "Jalen Duren": [
+      10,
+      17
+     ],
+     "Kingston Flemings": [
+      1,
+      9
+     ]
+    },
+    "7": {
+     "Brandon Ingram": [
+      8,
+      17
+     ],
+     "Kyle Kuzma": [
+      1,
+      7
+     ]
+    },
+    "8": {
+     "Norman Powell": [
+      8,
+      17
+     ],
+     "Precious Achiuwa": [
+      1,
+      7
+     ],
+     "Anthony Edwards": [
+      13,
+      17
+     ],
+     "DeMar DeRozan": [
+      1,
+      12
+     ]
+    },
+    "9": {
+     "Brandon Miller": [
+      8,
+      17
+     ],
+     "Aday Mara": [
+      1,
+      7
+     ]
+    },
+    "10": {
+     "Tyrese Haliburton": [
+      8,
+      17
+     ],
+     "Neemias Queta": [
+      1,
+      7
+     ],
+     "Kawhi Leonard": [
+      10,
+      17
+     ],
+     "Cameron Johnson": [
+      1,
+      9
+     ]
+    },
+    "11": {
+     "Kon Knueppel": [
+      11,
+      17
+     ],
+     "Brayden Burries": [
+      1,
+      10
+     ]
+    },
+    "12": {
+     "Egor Demin": [
+      8,
+      17
+     ],
+     "Karlo Matkovic": [
+      1,
+      7
+     ],
+     "Jimmy Butler": [
+      14,
+      17
+     ],
+     "Khaman Maluach": [
+      1,
+      13
+     ]
+    }
+   }
+  },
+  "seat10_only_on_time": {
+   "title_by_seed": {
+    "2026": 39.98,
+    "2027": 39.33
+   },
+   "title": 39.66,
+   "playoffs": 99.99,
+   "seed_spread": 0.65
+  },
+  "on_time_rule_flipped": {
+   "title_by_seed": {
+    "2026": 37.33,
+    "2027": 36.86
+   },
+   "title": 37.09,
+   "playoffs": 100.0,
+   "seed_spread": 0.47
+  }
+ },
+ "error": 0.53,
+ "blend": {
+  "weights": {
+   "on_time": 0.4,
+   "late_2": 0.3,
+   "late_4": 0.2,
+   "never": 0.1
+  },
+  "title": 25.57,
+  "status": "UNCALIBRATED; not shown in the brief"
+ },
+ "room_band": {
+  "constant": "il_return.ROOM_RULE_ON",
+  "shift": 11.1,
+  "label": "rule off",
+  "tier": "FRAGILE"
+ },
+ "slip_range": [
+  26.0,
+  26.9
+ ],
+ "label": "scenario range, not a forecast; never replaces or averages into the headline",
+ "lines": [
+  "**If IL players return** (scenario range, not a forecast; ESPN dates of 2026-11-09, all 12 teams, 19 IL players): if they return ≈26% (26.0 to 26.9 across on time / +2 wk / +4 wk) · never = headline 18.1%. Error ± 0.53 each (2 runs × 10,000 seasons). Returns are uncertain; the headline counts the current roster. Room rule (lowest adj_value active player leaves from the return week): **ROOM_RULE_ON is FRAGILE: +11.1 (rule off)**.",
+  "- KEL'EL YAXEL HALQUETA: Tyrese Haliburton (2026-11-13, wk 4); Kawhi Leonard (2026-11-23, wk 6)",
+  "- Looking Cool Joker!: Ja Morant (2026-12-01, wk 7); Jaren Jackson Jr. (2026-12-14, wk 8)",
+  "- ROOKS FTW: Desmond Bane (2026-11-10, wk 4); Jusuf Nurkic (2026-11-20, wk 5)",
+  "- SNOWTIME WHITE WALKERS: Lauri Markkanen (2026-11-10, wk 4); Luka Doncic (2026-11-09, wk 4)",
+  "- Booker T Floppers: Paolo Banchero (2026-11-22, wk 5); Keegan Murray (no ESPN date, never)",
+  "- ANONG NANGIANNIS?!: Jalen Suggs (2026-11-10, wk 4)",
+  "- Cade n em: Jalen Duren (2026-11-24, wk 6)",
+  "- John's Cool Team: Brandon Ingram (2026-11-10, wk 4)",
+  "- Scottie’s Thotties: Norman Powell (2026-11-11, wk 4); Anthony Edwards (2026-12-21, wk 9)",
+  "- Podz save the league: Brandon Miller (2026-11-12, wk 4)",
+  "- MAXEY-MUM OVERDRIVE: Kon Knueppel (2026-12-12, wk 7)",
+  "- Thompson Telepathy: Egor Demin (2026-11-11, wk 4); Jimmy Butler (2027-01-02, wk 10)"
+ ]
+}

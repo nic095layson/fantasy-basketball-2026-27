@@ -1,0 +1,194 @@
+{
+ "backfill": {
+  "why": "owner 2026-10-28 (\"proceed with 2-6\", item 6): the 10-28 morning run's dated get_roster for team 5 at 2026-10-27 returned a retryable Cloudflare 502 and was not retried, so MANAGER LOG halted at 11 of 12 lineups",
+  "read": "Flaim get_roster (Yahoo, read-only) team_id 5 as_of_date 2026-10-27, from the main session",
+  "pulled_utc": "2026-10-28T16:52:37Z",
+  "note": "daily block only, in flaim_live.keep_daily's shape; a separate file so pull_2026-10-28.json and the sha256 records citing it stay unchanged"
+ },
+ "daily": {
+  "478.l.36464.t.5": {
+   "2026-10-27": {
+    "teamKey": "478.l.36464.t.5",
+    "teamName": "Giavaris Jamal Javarison-Lamar",
+    "ownerName": "Kyle",
+    "snapshot": {
+     "type": "date",
+     "date": "2026-10-27"
+    },
+    "limitations": {
+     "playerProTeamAvailable": false
+    },
+    "players": [
+     {
+      "playerKey": "478.p.6580",
+      "playerId": "6580",
+      "name": "Ayo Dosunmu",
+      "position": "PG,SG",
+      "selectedPosition": "PG",
+      "isKeeper": {
+       "status": false,
+       "cost": false,
+       "kept": false
+      }
+     },
+     {
+      "playerKey": "478.p.10288",
+      "playerId": "10288",
+      "name": "Reed Sheppard",
+      "position": "PG,SG",
+      "selectedPosition": "SG",
+      "isKeeper": {
+       "status": false,
+       "cost": false,
+       "kept": false
+      }
+     },
+     {
+      "playerKey": "478.p.5638",
+      "playerId": "5638",
+      "name": "Jamal Murray",
+      "position": "PG",
+      "selectedPosition": "G",
+      "isKeeper": {
+       "status": false,
+       "cost": false,
+       "kept": false
+      }
+     },
+     {
+      "playerKey": "478.p.5836",
+      "playerId": "5836",
+      "name": "OG Anunoby",
+      "position": "SF,PF",
+      "selectedPosition": "SF",
+      "isKeeper": {
+       "status": false,
+       "cost": false,
+       "kept": false
+      }
+     },
+     {
+      "playerKey": "478.p.10065",
+      "playerId": "10065",
+      "name": "Toumani Camara",
+      "position": "SF,PF",
+      "selectedPosition": "PF",
+      "isKeeper": {
+       "status": false,
+       "cost": false,
+       "kept": false
+      }
+     },
+     {
+      "playerKey": "478.p.10296",
+      "playerId": "10296",
+      "name": "Zaccharie Risacher",
+      "position": "SF,PF",
+      "selectedPosition": "F",
+      "isKeeper": {
+       "status": false,
+       "cost": false,
+       "kept": false
+      }
+     },
+     {
+      "playerKey": "478.p.5197",
+      "playerId": "5197",
+      "name": "Rudy Gobert",
+      "position": "C",
+      "selectedPosition": "C",
+      "isKeeper": {
+       "status": false,
+       "cost": false,
+       "kept": false
+      }
+     },
+     {
+      "playerKey": "478.p.10294",
+      "playerId": "10294",
+      "name": "Alex Sarr",
+      "position": "C",
+      "selectedPosition": "C",
+      "isKeeper": {
+       "status": false,
+       "cost": false,
+       "kept": false
+      }
+     },
+     {
+      "playerKey": "478.p.5767",
+      "playerId": "5767",
+      "name": "De'Aaron Fox",
+      "position": "PG",
+      "selectedPosition": "Util",
+      "isKeeper": {
+       "status": false,
+       "cost": false,
+       "kept": false
+      }
+     },
+     {
+      "playerKey": "478.p.6047",
+      "playerId": "6047",
+      "name": "Mitchell Robinson",
+      "position": "C",
+      "selectedPosition": "Util",
+      "isKeeper": {
+       "status": false,
+       "cost": false,
+       "kept": false
+      }
+     },
+     {
+      "playerKey": "478.p.5185",
+      "playerId": "5185",
+      "name": "Giannis Antetokounmpo",
+      "position": "PF,C",
+      "selectedPosition": "BN",
+      "isKeeper": {
+       "status": false,
+       "cost": false,
+       "kept": false
+      }
+     },
+     {
+      "playerKey": "478.p.10443",
+      "playerId": "10443",
+      "name": "Collin Murray-Boyles",
+      "position": "PF,C",
+      "selectedPosition": "BN",
+      "isKeeper": {
+       "status": false,
+       "cost": false,
+       "kept": false
+      }
+     },
+     {
+      "playerKey": "478.p.6559",
+      "playerId": "6559",
+      "name": "Trey Murphy III",
+      "position": "SG,SF",
+      "selectedPosition": "BN",
+      "isKeeper": {
+       "status": false,
+       "cost": false,
+       "kept": false
+      }
+     },
+     {
+      "playerKey": "478.p.6516",
+      "playerId": "6516",
+      "name": "Jalen Suggs",
+      "position": "PG,SG",
+      "selectedPosition": "IL",
+      "isKeeper": {
+       "status": false,
+       "cost": false,
+       "kept": false
+      }
+     }
+    ]
+   }
+  }
+ }
+}

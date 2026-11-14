@@ -1,0 +1,29 @@
+{
+ "date": "2026-11-10",
+ "window": [
+  "2026-11-08",
+  "2026-11-10"
+ ],
+ "league_state_as_of": "2026-11-10",
+ "source": {
+  "attempted": "2026-11-10T13:06:55Z",
+  "ok": true,
+  "pages": [
+   {
+    "url": "https://site.web.api.espn.com/apis/site/v2/sports/basketball/nba/transactions?limit=100&page=1",
+    "http": 200
+   }
+  ]
+ },
+ "items_in_window": 2,
+ "hits": [
+  {
+   "date": "2026-11-08",
+   "nba_team": "SAC",
+   "description": "Traded G Nique Clifford to the Oklahoma City Thunder.",
+   "player": "Nique Clifford",
+   "fantasy_team": null,
+   "seat": null
+  }
+ ]
+}
