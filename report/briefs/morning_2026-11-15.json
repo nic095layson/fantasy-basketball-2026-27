@@ -1,0 +1,360 @@
+{
+ "ran_at_utc": "2026-11-15T12:45:35Z",
+ "steps": [
+  {
+   "name": "preflight",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/independent_audit/preflight.py --spec /home/user/fantasy-basketball-2026-27/scripts/independent_audit/morning_preflight.json",
+   "exit": 0,
+   "pass_line": "PREFLIGHT: PASS — kit morning run: 4 checks",
+   "verdict": "PASS",
+   "wrote": [],
+   "tail": [
+    "PREFLIGHT: PASS — kit morning run: 4 checks"
+   ]
+  },
+  {
+   "name": "league live",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/league_live.py --as-of 2026-11-15 --since 2026-11-15T12:41:27Z",
+   "exit": 0,
+   "pass_line": "LEAGUE LIVE: PASS — rosters from Flaim (Yahoo), pinned data/source/flaim/pull_2026-11-15.json; 6 not in the deck pool (simulated once the season lines give an auto row, 3+ games): Sidy Cissoko (Looking Cool Joker!, UTIL), Nolan Traore (ANONG NANGIANNIS?!, BN), Tyrese Proctor (Podz save the league, SG), Meleek Thomas (MISSI ELLIOTT, BN), Mario Hezonja (KEL'EL YAXEL HALQUETA, BN), Danny Wolf (John's Cool Team, C)",
+   "verdict": "PASS",
+   "wrote": [
+    "data/league_state.json",
+    "data/news/league_moves_2026-11-15.json",
+    "data/news/league_state_am_2026-11-15.json",
+    "data/source/flaim/pull_2026-11-15.json",
+    "data/source/flaim/rosters_2026-11-15.transcribed.csv",
+    "report/run-ledger.jsonl"
+   ],
+   "tail": [
+    "LEAGUE INTAKE: WARN — 6 name(s) not in the pool, carried as unpooled (no deck line; simulated once the season lines give an auto row): Sidy Cissoko (Looking Cool Joker!, UTIL, POR); Nolan Traore (ANONG NANGIANNIS?!, BN, BKN); Tyrese Proctor (Podz save the league, SG, CLE); Meleek Thomas (MISSI ELLIOTT, BN, CLE); Mario Hezonja (KEL'EL YAXEL HALQUETA, BN, CLE); Danny Wolf (John's Cool Team, C, BKN)",
+    "LEAGUE INTAKE: PASS — 12 teams, 172 players, 172 of 172 resolved; 6 unpooled; 0 NBA-team disagreement(s) with the pool; wrote data/league_state.json",
+    "LEAGUE MOVES: PASS — 6 team(s) changed, 15 move(s), 2026-11-14 to 2026-11-15 (am); wrote data/news/league_moves_2026-11-15.json",
+    "LEAGUE LIVE: PASS — rosters from Flaim (Yahoo), pinned data/source/flaim/pull_2026-11-15.json; 6 not in the deck pool (simulated once the season lines give an auto row, 3+ games): Sidy Cissoko (Looking Cool Joker!, UTIL), Nolan Traore (ANONG NANGIANNIS?!, BN), Tyrese Proctor (Podz save the league, SG), Meleek Thomas (MISSI ELLIOTT, BN), Mario Hezonja (KEL'EL YAXEL HALQUETA, BN), Danny Wolf (John's Cool Team, C)"
+   ]
+  },
+  {
+   "name": "matchup live",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/matchup_live.py --date 2026-11-15 --since 2026-11-15T12:41:27Z",
+   "exit": 0,
+   "pass_line": "MATCHUP LIVE: PASS — week 4, games left 7 mine / 10 SNOWTIME WHITE WALKERS; wrote data/news/matchup_live_2026-11-15.json",
+   "verdict": "PASS",
+   "wrote": [
+    "data/news/matchup_live_2026-11-15.json",
+    "data/source/fantasybot/outlook_2026-11-15.json"
+   ],
+   "tail": [
+    "MATCHUP LIVE: PASS — week 4, games left 7 mine / 10 SNOWTIME WHITE WALKERS; wrote data/news/matchup_live_2026-11-15.json"
+   ]
+  },
+  {
+   "name": "box scores 2026-11-14",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/box_pull.py --date 2026-11-14",
+   "exit": 0,
+   "pass_line": "BOX PULL: PASS — 2026-11-14: 5 games, 132 player lines, 85 in the pool, 47 unpooled; single-source (ESPN only); written data/actuals/2026-11-14.json",
+   "verdict": "PASS",
+   "wrote": [
+    "data/actuals/2026-11-14.json"
+   ],
+   "tail": [
+    "BOX PULL: PASS — 2026-11-14: 5 games, 132 player lines, 85 in the pool, 47 unpooled; single-source (ESPN only); written data/actuals/2026-11-14.json"
+   ]
+  },
+  {
+   "name": "manager log 2026-11-14",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/manager_log.py --date 2026-11-14 --since 2026-11-15T12:41:27Z",
+   "exit": 0,
+   "pass_line": "MANAGER LOG: PASS — 2026-11-14: 12 lineups, 0 start(s) lost league-wide; outside IL, team played but no box line (inactive or unmatched name): Donovan Mitchell, Jalen Smith, Nic Claxton, Pelle Larsson, Ty Jerome; profile 2026-10-22..2026-11-14 (23 day(s)); 3 new move(s), 168 on record; Flaim could not read 1 row(s) on Yahoo's page (the moves on record may be short)",
+   "verdict": "PASS",
+   "wrote": [
+    "data/managers/day_2026-11-14.json",
+    "data/managers/profile.json",
+    "data/managers/transactions.json"
+   ],
+   "tail": [
+    "MANAGER LOG: PASS — 2026-11-14: 12 lineups, 0 start(s) lost league-wide; outside IL, team played but no box line (inactive or unmatched name): Donovan Mitchell, Jalen Smith, Nic Claxton, Pelle Larsson, Ty Jerome; profile 2026-10-22..2026-11-14 (23 day(s)); 3 new move(s), 168 on record; Flaim could not read 1 row(s) on Yahoo's page (the moves on record may be short)"
+   ]
+  },
+  {
+   "name": "tag outcomes",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/tag_outcomes.py --date 2026-11-14",
+   "exit": 0,
+   "pass_line": "TAG OUTCOMES: PASS — 2026-11-14: 33 flagged player(s) 21 no game, 2 played, 9 sat, 1 unresolved; data/status/tag_outcomes.jsonl",
+   "verdict": "PASS",
+   "wrote": [
+    "data/status/tag_outcomes.jsonl"
+   ],
+   "tail": [
+    "TAG OUTCOMES: PASS — 2026-11-14: 33 flagged player(s) 21 no game, 2 played, 9 sat, 1 unresolved; data/status/tag_outcomes.jsonl"
+   ]
+  },
+  {
+   "name": "lineup log",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/lineup_log.py --date 2026-11-15",
+   "exit": 0,
+   "pass_line": "LINEUP LOG: PASS — 2026-11-14: agreed; ledger 10 days, 1 pairs, start followed 1/1, night kit 0 / against 0",
+   "verdict": "PASS",
+   "wrote": [
+    "data/decisions/lineup.jsonl",
+    "report/decisions/lineup_scorecard.json",
+    "report/decisions/lineup_scorecard.md"
+   ],
+   "tail": [
+    "LINEUP LOG: PASS — 2026-11-14: agreed; ledger 10 days, 1 pairs, start followed 1/1, night kit 0 / against 0"
+   ]
+  },
+  {
+   "name": "accuracy render",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/accuracy_week.py --render",
+   "exit": 0,
+   "pass_line": "ACCURACY RENDER: PASS — report/accuracy.md (2813 chars)",
+   "verdict": "PASS",
+   "wrote": [],
+   "tail": [
+    "ACCURACY RENDER: PASS — report/accuracy.md (2813 chars)"
+   ]
+  },
+  {
+   "name": "season lines",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/season_lines.py --date 2026-11-15",
+   "exit": 0,
+   "pass_line": "SEASON LINES: PASS — 2026-11-15: 28 box-score records, 302 pool players with regular-season games, 301 lines moved by 0.25+ (priors in games: FG% 26.0, FT% 37.5, 3PM 9.5, PTS 11.7, REB 12.4, AST 11.7, STL 21.7, BLK 14.5, TO 14.0); 6 auto row(s) for rostered players the pool lacked (Sidy Cissoko 12g, Nolan Traore 11g, Tyrese Proctor 13g, Meleek Thomas 11g, Mario Hezonja 14g, Danny Wolf 7g); 152 unpooled players with games; 1 tag override(s)",
+   "verdict": "PASS",
+   "wrote": [
+    "data/season/pool_season.csv",
+    "data/season/projections_season.csv",
+    "data/season/season_lines_2026-11-15.json"
+   ],
+   "tail": [
+    "SEASON LINES: PASS — 2026-11-15: 28 box-score records, 302 pool players with regular-season games, 301 lines moved by 0.25+ (priors in games: FG% 26.0, FT% 37.5, 3PM 9.5, PTS 11.7, REB 12.4, AST 11.7, STL 21.7, BLK 14.5, TO 14.0); 6 auto row(s) for rostered players the pool lacked (Sidy Cissoko 12g, Nolan Traore 11g, Tyrese Proctor 13g, Meleek Thomas 11g, Mario Hezonja 14g, Danny Wolf 7g); 152 unpooled players with games; 1 tag override(s)",
+    "/home/user/fantasy-basketball-2026-27/scripts/season_lines.py:86: DeprecationWarning: 'maxsplit' is passed as positional argument",
+    "  return re.split(r\"[\\s(]\", (note or \"\").lower(), 1)[0]"
+   ]
+  },
+  {
+   "name": "minutes line",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/minutes_line.py --date 2026-11-15",
+   "exit": 0,
+   "pass_line": "MINUTES LINE: PASS — 2026-11-15: 344 players, 298 with games; ratio >= 1.10 for 6, <= 0.90 for 25; 39 unscaled (no preseason mpg); candidate only, wrote pool_season_mt.csv, projections_season_mt.csv",
+   "verdict": "PASS",
+   "wrote": [
+    "data/season/minutes_line_2026-11-15.json",
+    "data/season/pool_season_mt.csv",
+    "data/season/projections_season_mt.csv"
+   ],
+   "tail": [
+    "MINUTES LINE: PASS — 2026-11-15: 344 players, 298 with games; ratio >= 1.10 for 6, <= 0.90 for 25; 39 unscaled (no preseason mpg); candidate only, wrote pool_season_mt.csv, projections_season_mt.csv"
+   ]
+  },
+  {
+   "name": "threes line",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/threes_line.py --date 2026-11-15",
+   "exit": 0,
+   "pass_line": "THREES LINE: PASS — 2026-11-15: 344 players, 233 split, 111 unsplit (no 2025-26 percentage on 100+ attempts or no preseason threes); candidate above the live line by 0.2+ for 22, below for 16; candidate only, wrote pool_season_3s.csv, projections_season_3s.csv",
+   "verdict": "PASS",
+   "wrote": [
+    "data/season/pool_season_3s.csv",
+    "data/season/projections_season_3s.csv",
+    "data/season/threes_line_2026-11-15.json"
+   ],
+   "tail": [
+    "THREES LINE: PASS — 2026-11-15: 344 players, 233 split, 111 unsplit (no 2025-26 percentage on 100+ attempts or no preseason threes); candidate above the live line by 0.2+ for 22, below for 16; candidate only, wrote pool_season_3s.csv, projections_season_3s.csv"
+   ]
+  },
+  {
+   "name": "season board",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/season_board.py --date 2026-11-15",
+   "exit": 0,
+   "pass_line": "SEASON BOARD: PASS — 2026-11-15: report/season/board_2026-11-15.md (301 movers listed)",
+   "verdict": "PASS",
+   "wrote": [
+    "report/season/board_2026-11-15.json",
+    "report/season/board_2026-11-15.md"
+   ],
+   "tail": [
+    "SEASON BOARD: PASS — 2026-11-15: report/season/board_2026-11-15.md (301 movers listed)"
+   ]
+  },
+  {
+   "name": "status feed",
+   "cmd": "bash -c '/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/status_feed.py --date 2026-11-15 && /usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/status_feed.py --check /home/user/fantasy-basketball-2026-27/data/status/status_2026-11-15.json'",
+   "exit": 0,
+   "pass_line": "STATUS GATE: PASS — status_2026-11-15.json: 41 flagged row(s), each tiered with a dated receipt",
+   "verdict": "PASS",
+   "wrote": [
+    "data/status/espn_injuries_2026-11-15.json",
+    "data/status/status_2026-11-15.json"
+   ],
+   "tail": [
+    "status: 41 flagged row(s) league-wide; yours: Kawhi Leonard O→0.00, Ty Jerome O→0.00, Tyrese Haliburton O→0.00",
+    "ESPN injuries: read",
+    "wrote data/status/status_2026-11-15.json",
+    "STATUS GATE: PASS — status_2026-11-15.json: 41 flagged row(s), each tiered with a dated receipt"
+   ]
+  },
+  {
+   "name": "transactions",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/transactions.py --date 2026-11-15",
+   "exit": 0,
+   "pass_line": "TRANSACTIONS: PASS — 2026-11-15: 2 feed item(s) 2026-11-13 to 2026-11-15; 1 name a pool player, 0 rostered; wrote data/news/transactions_2026-11-15.json",
+   "verdict": "PASS",
+   "wrote": [
+    "data/news/transactions_2026-11-15.json"
+   ],
+   "tail": [
+    "TRANSACTIONS: PASS — 2026-11-15: 2 feed item(s) 2026-11-13 to 2026-11-15; 1 name a pool player, 0 rostered; wrote data/news/transactions_2026-11-15.json"
+   ]
+  },
+  {
+   "name": "league pairings",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/league_pairings.py",
+   "exit": 0,
+   "pass_line": "LEAGUE PAIRINGS: PASS — 17 weeks of pairings for all 12 teams, owner opponents match, 3 week(s) played; wrote data/league_schedule.json",
+   "verdict": "PASS",
+   "wrote": [],
+   "tail": [
+    "LEAGUE PAIRINGS: PASS — 17 weeks of pairings for all 12 teams, owner opponents match, 3 week(s) played; wrote data/league_schedule.json"
+   ]
+  },
+  {
+   "name": "next week forecasts",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/weekly_preview.py --week 5 --record --league --snapshot",
+   "exit": 0,
+   "pass_line": "WEEKLY PREVIEW: PASS — week 5",
+   "verdict": "PASS",
+   "wrote": [
+    "report/accuracy/lines_week5.csv",
+    "report/accuracy/lines_week5_3s.csv",
+    "report/accuracy/lines_week5_mt.csv",
+    "report/accuracy/state_week5.json",
+    "report/accuracy/status_week5.json",
+    "report/calibration.json",
+    "report/calibration.md",
+    "report/calibration_league.json",
+    "report/calibration_league_real.json",
+    "report/previews/week_05.md"
+   ],
+   "tail": [
+    "wrote report/previews/week_05.md",
+    "recorded week 5 in report/calibration.json at 2026-11-15T12:45:45Z (week starts 2026-11-16)",
+    "league: 6 matchup(s) recorded (rosters as of 2026-11-15)",
+    "league (real games): 6 matchup(s) recorded",
+    "snapshot: report/accuracy/lines_week5.csv, report/accuracy/lines_week5_mt.csv, report/accuracy/lines_week5_3s.csv, report/accuracy/state_week5.json, report/accuracy/status_week5.json",
+    "WEEKLY PREVIEW: PASS — week 5"
+   ]
+  },
+  {
+   "name": "il return",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/il_return.py --date 2026-11-15 --seasons 10000",
+   "exit": 0,
+   "pass_line": "IL RETURN: PASS wrote report/il_return/il_return_2026-11-15.json",
+   "verdict": "PASS",
+   "wrote": [
+    "report/il_return/il_return_2026-11-15.json"
+   ],
+   "tail": [
+    "- John's Cool Team: Brandon Ingram (earliest 2026-11-19, wk 5)",
+    "- Scottie’s Thotties: Anthony Edwards (earliest 2026-12-21, wk 9); Stephen Curry (earliest 2026-12-12, wk 7)",
+    "- Podz save the league: Nic Claxton (earliest 2026-11-16, wk 5)",
+    "- MISSI ELLIOTT: Kon Knueppel (earliest 2026-12-12, wk 7); Yves Missi (no ESPN date, never)",
+    "- Thompson Telepathy: Austin Reaves (earliest 2026-11-17, wk 5); Jimmy Butler (earliest 2027-01-02, wk 10)",
+    "IL RETURN: PASS wrote report/il_return/il_return_2026-11-15.json"
+   ]
+  },
+  {
+   "name": "daily brief",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/daily_brief.py --date 2026-11-15 --seasons 10000",
+   "exit": 1,
+   "pass_line": "",
+   "verdict": "FAIL",
+   "wrote": [],
+   "tail": [
+    "    main()",
+    "    ~~~~^^",
+    "  File \"/home/user/fantasy-basketball-2026-27/scripts/daily_brief.py\", line 298, in main",
+    "    weak_games = left.get(next(x[\"yahoo_nba_team\"] for x in me[\"players\"] if x[\"player\"] == weakest[\"player\"]), 0)",
+    "                          ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+    "StopIteration"
+   ]
+  },
+  {
+   "name": "decision log",
+   "verdict": "SKIPPED",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/decision_log.py --brief 2026-11-15 --moves --rejoin"
+  },
+  {
+   "name": "title watch",
+   "verdict": "SKIPPED",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/title_watch.py --date 2026-11-15"
+  },
+  {
+   "name": "week matchup",
+   "verdict": "SKIPPED",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/week_matchup.py --date 2026-11-15"
+  },
+  {
+   "name": "decision card",
+   "verdict": "SKIPPED",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/decision_card.py --date 2026-11-15 --seasons 10000"
+  },
+  {
+   "name": "league table",
+   "verdict": "SKIPPED",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/league_table.py --date 2026-11-15"
+  },
+  {
+   "name": "form board",
+   "verdict": "SKIPPED",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/form_board.py --date 2026-11-15"
+  },
+  {
+   "name": "season deck",
+   "verdict": "SKIPPED",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/season_deck.py --date 2026-11-15"
+  }
+ ],
+ "verdict": "FAIL",
+ "wrote": [
+  "data/actuals/2026-11-14.json",
+  "data/decisions/lineup.jsonl",
+  "data/league_state.json",
+  "data/managers/day_2026-11-14.json",
+  "data/managers/profile.json",
+  "data/managers/transactions.json",
+  "data/news/league_moves_2026-11-15.json",
+  "data/news/league_state_am_2026-11-15.json",
+  "data/news/matchup_live_2026-11-15.json",
+  "data/news/transactions_2026-11-15.json",
+  "data/season/minutes_line_2026-11-15.json",
+  "data/season/pool_season.csv",
+  "data/season/pool_season_3s.csv",
+  "data/season/pool_season_mt.csv",
+  "data/season/projections_season.csv",
+  "data/season/projections_season_3s.csv",
+  "data/season/projections_season_mt.csv",
+  "data/season/season_lines_2026-11-15.json",
+  "data/season/threes_line_2026-11-15.json",
+  "data/source/fantasybot/outlook_2026-11-15.json",
+  "data/source/flaim/pull_2026-11-15.json",
+  "data/source/flaim/rosters_2026-11-15.transcribed.csv",
+  "data/status/espn_injuries_2026-11-15.json",
+  "data/status/status_2026-11-15.json",
+  "data/status/tag_outcomes.jsonl",
+  "report/accuracy/lines_week5.csv",
+  "report/accuracy/lines_week5_3s.csv",
+  "report/accuracy/lines_week5_mt.csv",
+  "report/accuracy/state_week5.json",
+  "report/accuracy/status_week5.json",
+  "report/calibration.json",
+  "report/calibration.md",
+  "report/calibration_league.json",
+  "report/calibration_league_real.json",
+  "report/decisions/lineup_scorecard.json",
+  "report/decisions/lineup_scorecard.md",
+  "report/il_return/il_return_2026-11-15.json",
+  "report/previews/week_05.md",
+  "report/run-ledger.jsonl",
+  "report/season/board_2026-11-15.json",
+  "report/season/board_2026-11-15.md"
+ ]
+}
