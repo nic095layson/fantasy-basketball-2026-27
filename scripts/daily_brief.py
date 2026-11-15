@@ -295,7 +295,13 @@ def main():
 
     # 4. streaming: free agents by per-game board value x games left this week
     weakest = min((p for p in ros[CG.OWNER_SEAT]), key=lambda p: CG.hoops.adj_value(p, ()))
-    weak_games = left.get(next(x["yahoo_nba_team"] for x in me["players"] if x["player"] == weakest["player"]), 0)
+    # owner 2026-11-15: a player outside the pool (an auto row) sits in state["unpooled"], not in me["players"];
+    # look there too, and fall back to 0 games rather than crash the brief
+    weak_team = next((x["yahoo_nba_team"] for x in me["players"] if x["player"] == weakest["player"]), None)
+    if weak_team is None:
+        weak_team = next((u.get("nba_team") for u in (state.get("unpooled") or [])
+                          if u.get("seat") == CG.OWNER_SEAT and u.get("player") == weakest["player"]), None)
+    weak_games = left.get(weak_team, 0)
     # owner 2026-10-28 (item 5): a short Out streams on its games from ESPN's return date
     stream = CG.streaming(CG.stream_rows(fa, st, games, a.date, wend), weak_games)
     # owner pick 2026-11-03 (display only): Yahoo's waiver date and the owner's own recent drop beside each pick; the
