@@ -420,27 +420,52 @@ def scan_drop_alone(me_now, opp_now, opp_rem, roster, drops, sched, today, avail
 
 
 def scan_this_week(me_now, opp_now, opp_rem, roster, drops, fas, sched, today, avail, lines):
-    """Each free agent in place of the drop candidate that helps most, from the day after `today` (M8): the change in
-    P(win) per category and their sum, the change in expected categories won, split into the drop alone (nobody
-    added) and the add's share; best first."""
+    """Each free agent in place of the drop candidate that helps most (M8): the change in P(win) per category and their
+    sum, the change in expected categories won, split into the drop alone (nobody added) and the add's share; best
+    first. Timing (owner 2026-11-16, "Price both timings"; the league counts a same-day add made before the player's
+    game): "after tonight" = the drop plays today and the add counts from tomorrow; when the add's team plays today,
+    "same day" = drop and add before tip, the add counting from today and the drop losing today's game. Each row keeps
+    the better timing for its drop, names it (timing), gives the starts under it (games), and carries the other
+    timing's figures (other_timing) when both were priced."""
     now_s, rest = _split(sched, today)
     r_today = remaining(roster, now_s, avail, lines)
     base = cat_chances(me_now, _both(r_today, remaining(roster, rest, avail, lines)), opp_now, opp_rem)
     alone = scan_drop_alone(me_now, opp_now, opp_rem, roster, drops, sched, today, avail, lines)
+    playing_today = set().union(*now_s.values()) if now_s else set()
+    alone_sd = {}
+
+    def same_day_alone(d):
+        if d not in alone_sd:
+            p = cat_chances(me_now, remaining([r for r in roster if r["player"] != d], sched, avail, lines), opp_now, opp_rem)
+            alone_sd[d] = sum(p[c] - base[c] for c in CATS)
+        return alone_sd[d]
+
     out = []
     for fa in fas:
         best = None
         for d in drops:
-            rr = remaining([r for r in roster if r["player"] != d] + [fa], rest, avail, lines)
+            keep = [r for r in roster if r["player"] != d] + [fa]
+            rr = remaining(keep, rest, avail, lines)
             p = cat_chances(me_now, _both(r_today, rr), opp_now, opp_rem)
-            dc = {c: p[c] - base[c] for c in CATS}
-            de = sum(dc[c] for c in CATS)
-            if best is None or de > best["d_exp"]:
-                best = dict(add=fa["player"], team=fa["team"], drop=d, d_exp=de, d_cat=dc,
-                            d_exp_drop=alone[d], d_exp_add=de - alone[d],
-                            games=rr["games"].get(fa["player"], 0),
-                            games_left=sum(1 for x in rest if fa["team"] in rest[x]),
-                            value=round(fa.get("adj", fa["value"]), 2), status=fa.get("status"), missed=fa.get("missed"))
+            priced = [("after tonight", p, rr["games"].get(fa["player"], 0), alone[d],
+                       sum(1 for x in rest if fa["team"] in rest[x]))]
+            if fa["team"] in playing_today:
+                rs = remaining(keep, sched, avail, lines)
+                priced.append(("same day", cat_chances(me_now, rs, opp_now, opp_rem), rs["games"].get(fa["player"], 0),
+                               same_day_alone(d), sum(1 for x in sched if fa["team"] in sched[x])))
+            rows = []
+            for timing, pp, games, drop_alone, left in priced:
+                dc = {c: pp[c] - base[c] for c in CATS}
+                de = sum(dc[c] for c in CATS)
+                rows.append(dict(add=fa["player"], team=fa["team"], drop=d, timing=timing, d_exp=de, d_cat=dc,
+                                 d_exp_drop=drop_alone, d_exp_add=de - drop_alone, games=games, games_left=left,
+                                 value=round(fa.get("adj", fa["value"]), 2), status=fa.get("status"), missed=fa.get("missed")))
+            rows.sort(key=lambda r: (-r["d_exp"], r["timing"] != "after tonight"))   # a tie keeps tonight's game
+            pick = rows[0]
+            if len(rows) > 1:
+                pick["other_timing"] = dict(timing=rows[1]["timing"], d_exp=rows[1]["d_exp"], games=rows[1]["games"])
+            if best is None or pick["d_exp"] > best["d_exp"]:
+                best = pick
         if best:
             out.append(best)
     out.sort(key=lambda r: (-r["d_exp"], -r["games"], r["add"]))
@@ -1003,7 +1028,8 @@ def build(date, paths, capture=None):
             chances=("P(win) per category: the normal approximation on the final totals; to date fixed, the remaining "
                      "games' variance from the season per-game CV (FG%/FT%: binomial makes x PCT_MIX_INFL^2); the "
                      "shared weekly shock left out"),
-            this_week=("each free agent in place of the below-median player whose drop helps most, from tomorrow; "
+            this_week=("each free agent in place of the below-median player whose drop helps most, after tonight or, when "
+                       "his team plays today, the same day if that is better (row 'timing'); "
                        "ranked by the change in expected categories won (the sum of the nine changes in P(win)); "
                        "season cost = the change in expected weekly categories against the other eleven teams"),
             pickups=("Yahoo's available-player list (" + str(pool["listed"]) + " listed, Yahoo-wide ownership order), "

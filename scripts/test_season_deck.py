@@ -942,6 +942,16 @@ class WeekMatchupCard(unittest.TestCase):
         for s in ("Free Agent", "for Bench Guy", "+0.54", "BLK +0.43", "REB +0.12", "−0.03", "+0.012", "Idle Man"):
             self.assertIn(s, dom["text"])
 
+    def test_the_this_week_scan_says_when_to_make_each_move(self):
+        # owner 2026-11-16 ("Price both timings"): a same-day swap is labelled, and the other timing's starts shown
+        rows = [dict(TW["rows"][0], timing="same day", games=4, other_timing=dict(timing="after tonight", d_exp=0.4, games=3)),
+                dict(TW["rows"][1], timing="after tonight")]
+        k = dict(week_matchup_record()["pickups"], this_week=dict(TW, rows=rows))
+        dom = today_dom(self.page(week_matchup_record(k)))
+        self.assertEqual(dom["errors"], [])
+        for s in ("4 · today", "3 if after tonight", "2 · from tomorrow"):
+            self.assertIn(s, dom["text"])
+
     def test_the_free_agent_notice_names_the_add_the_drop_and_the_gap(self):
         # owner 2026-10-22: "if there is a valuable player available in the free agent pull, make this notice to me on
         # the Today tab"
