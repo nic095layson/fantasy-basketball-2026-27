@@ -41,9 +41,21 @@ The owner picked healthy 0.80 and injury-risk 0.65 (minor knock stays 0.79: meas
 
 **weekly_availability is FRAGILE:** -3.2 (no in-sim injury discount (risk 0.88 like healthy)) / +2.8 (harsher risk tier (0.65)) / -0.1 (healthy players play 0.95 of games) / -0.4 (healthy players play 0.80 of games), on the 2026-11-16 sweep (`redteam-2026-11-16-season/sweep.json`). The owner's two values sit on two of these variants, each swept alone (+2.8 and -0.4 points of title share); together they were not run. This report quotes no title share.
 
-## 4. Bounds
+## 4. Prior strength: re-run and the combination test (owner: "Test with the switch first", then "Keep; re-test at week 10")
 
-Out of scope by design: prior strength (the owner chose to wait for today's recency re-run); a blend column on the weekly accuracy card from week 6 (week 5's snapshots were taken on 11-15, before the switch, so week 5 grades both lines as they stand).
+The scheduled week-5 re-run of the recency backtest (`recency-2026-11-05/backtest.py` from main, box scores through 11-15, min games 6 and 8; records in `recency-2026-11-16/backtest_min*_all.json`) again finds halving the PTS/REB/AST prior better than the blend: PTS −0.067, REB −0.023, AST −0.018 (6+ games, 2,177 player-games), every interval excluding zero at both cutoffs. Run again with today's minutes switch in both arms (`recency-2026-11-16/backtest_switch.py`, records `switch_min*_all.json`):
+
+| | switch vs blend | prior /2 on top of the switch | interval of that extra gain (6+ / 8+) |
+|---|---|---|---|
+| PTS | −0.069 | −0.020 | −0.043 to +0.002 / −0.044 to +0.003 |
+| REB | −0.030 | −0.004 / −0.003 | −0.015 to +0.004 / −0.014 to +0.006 |
+| AST | −0.017 | −0.006 | −0.014 to +0.001 / −0.013 to +0.001 |
+
+The switch's gain over the blend is confirmed on this backtest (intervals excluding zero). Halving the prior adds a gain whose interval includes zero on all three; the owner kept the prior and asked for this test again at week 10.
+
+## 5. Bounds
+
+Out of scope by design: a change to the prior strength (section 4: kept, re-tested at week 10); a blend column on the weekly accuracy card from week 6 (week 5's snapshots were taken on 11-15, before the switch, so week 5 grades both lines as they stand).
 
 In scope and unverified:
 - The advice back-fill into `data/decisions/session.jsonl` is on the records branch season/daily, which takes the owner's explicit word; not written.
