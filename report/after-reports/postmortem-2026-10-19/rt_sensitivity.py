@@ -64,7 +64,7 @@ def run(args):
         champ,po=arena.simulate_seasons(ros,SEASONS,rng)
     return name,sd,100*champ[10]/SEASONS,100*po[10]/SEASONS,{i:100*champ[i]/SEASONS for i in champ}
 VARIANTS={
- "baseline (shipped: 17 weeks, reseeded bracket, category record, 0.80/0.65, shock 0.06)":{},
+ "baseline (shipped: 17 weeks, reseeded bracket, category record, 0.80/0.65, shock 0.11)":{},
  "18 regular-season weeks (the engine of the draft grade)":{"const":{"WEEKS":18}},
  "20 regular-season weeks":{"const":{"WEEKS":20}},
  "fixed bracket, no reseed after round 1 (the engine of the draft grade)":{"fixed_bracket":True},
@@ -74,8 +74,10 @@ VARIANTS={
  "healthy at the unfloored fit (0.78)":{"avail":(0.78,0.65)},
  "risk at the old 0.75":{"avail":(0.80,0.75)},
  "risk at the unfloored fit (0.56)":{"avail":(0.80,0.56)},
+ # the shock variants are the registry's band since the Council of 2026-11-16 (live 0.11): none, the old 0.06, the fit + 2 SE
  "no shared games shock":{"const":{"TEAM_WEEK_SHOCK":0.0}},
- "shared games shock doubled (0.12)":{"const":{"TEAM_WEEK_SHOCK":0.12}},
+ "shock at the old 0.06":{"const":{"TEAM_WEEK_SHOCK":0.06}},
+ "shock at the fit + 2 SE (0.13)":{"const":{"TEAM_WEEK_SHOCK":0.13}},
  "per-game variance x0.8":{"cv":0.8},
  "per-game variance x1.2":{"cv":1.2},
  "percentages share a hot/cold shock (0.5 sd)":{"pct_shock":0.5},
@@ -84,7 +86,7 @@ if __name__=="__main__":
     jobs=[(n,p,sd) for n,p in VARIANTS.items() for sd in SEEDS]
     with ProcessPoolExecutor(4) as ex: R=list(ex.map(run,jobs))
     # harness self-check: the baseline must reproduce league_sim's 10,000-season figures within 3 SE on both seeds
-    ref={sd:json.load(open(f"{DECK}/arena/results/m100_league_sim_10k_s{sd}_w17r_av0_t8065.json"))["teams"]["10"]["champ"] for sd in SEEDS}  # the live engine's reference (_av0: recovery/out 0.0, 2026-10-21; _t8065: tiers 0.80/0.65, 2026-11-16)
+    ref={sd:json.load(open(f"{DECK}/arena/results/m100_league_sim_10k_s{sd}_w17r_av0_t8065_s11.json"))["teams"]["10"]["champ"] for sd in SEEDS}  # the live engine's reference (_av0: recovery/out 0.0, 2026-10-21; _t8065: tiers 0.80/0.65, 2026-11-16)
     ref_old={sd:json.load(open(f"{DECK}/arena/results/m100_league_sim_10k_s{sd}.json"))["teams"]["10"]["champ"] for sd in SEEDS}
     out={}
     for n,sd,c,p,allc in R: out.setdefault(n,{})[sd]=dict(title=round(c,2),playoff=round(p,2),all=allc)

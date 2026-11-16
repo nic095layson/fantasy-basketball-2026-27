@@ -161,10 +161,10 @@
   {
    "module": "arena",
    "name": "TEAM_WEEK_SHOCK",
-   "value": 0.06,
+   "value": 0.11,
    "role": "shared games-played shock correlating the counting categories within a team-week",
    "status": "declared_band",
-   "record": "deck analysis_2026-08-09_findings_table.md F39 hand-set; band: postmortem rt_sensitivity.json shock 0 / 0.12 (FRAGILE: +3.0/+3.8 and -2.0/-2.7 title points)",
+   "record": "deck analysis_2026-08-09_findings_table.md F39 hand-set; band: postmortem rt_sensitivity.json shock 0 / 0.12 (FRAGILE: +3.0/+3.8 and -2.0/-2.7 title points); 0.06 -> 0.11 on 2026-11-16 (Council 4-1, owner: \"Have council deliberate the shock fit and proceed\"): the level-relative fit of weeks 1-4 (fit_constants on season/daily, 48 team-weeks), 0.107, SE 0.013 (weeks 2-4: 0.097, 0.112, 0.107), the same on the 0.88/0.75 and 0.80/0.65 tiers (0.1068 / 0.1067); the raw fit on the new tiers, 0.118, is the model's weekly level running 10% low (mean actual/model 1.103), not a larger shock. Band from the same day: no shock, the old value 0.06, and the fit + 2 SE (0.13)",
    "decision": "D-PM-1 calibrate the shock",
    "band": [
     {
@@ -174,9 +174,15 @@
      }
     },
     {
-     "label": "shared games shock doubled (0.12)",
+     "label": "shock at the old 0.06",
      "const": {
-      "TEAM_WEEK_SHOCK": 0.12
+      "TEAM_WEEK_SHOCK": 0.06
+     }
+    },
+    {
+     "label": "shock at the fit + 2 SE (0.13)",
+     "const": {
+      "TEAM_WEEK_SHOCK": 0.13
      }
     }
    ]

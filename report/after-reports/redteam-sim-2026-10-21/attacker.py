@@ -212,8 +212,8 @@ def season_mc(seats, models, N, seed):
     idx = range(len(CATS))
 
     def matchup(a, b):
-        sa = gauss(1.0, 0.06)
-        sb = gauss(1.0, 0.06)
+        sa = gauss(1.0, 0.11)  # SPEC.md section 6 as amended 2026-11-16 (edited by a session that had read the engine)
+        sb = gauss(1.0, 0.11)
         mua, mub, sga, sgb = MU[a], MU[b], SG[a], SG[b]
         wins = 0
         for i in idx:
