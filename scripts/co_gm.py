@@ -254,6 +254,9 @@ def free_agents(P, state, status, n=WAIVER_CANDIDATES):
     (Out beyond the short-Out line, or a code the kit does not tier) from among the n the scan would otherwise have
     taken. A short Out stays in, flagged by its status entry."""
     rostered = {p["player"] for t in state["teams"] for p in t["players"]}
+    # owner 2026-11-16: a rostered player outside the pool (an auto row) is held in state["unpooled"], not in a team's
+    # players; he is not claimable, so he is never a waiver candidate
+    rostered |= {u["player"] for u in (state.get("unpooled") or [])}
     veto = hoops.do_not_draft()
     pool = sorted((p for p in P if p["player"] not in rostered and hoops.availability(p) > 0 and p["player"] not in veto),
                   key=lambda p: -hoops.adj_value(p, ()))
