@@ -1,0 +1,15 @@
+SWEEP: 6,000 seasons x seeds [2026, 2027] on deck 01483de; MC SE 0.54; baseline within 3 SE of the 10k reference: {'2026': True, '2027': True}
+baseline                                              11.30 /  12.23
+bench weight 0.50                                     11.30 /  12.23   shift +0.00  ROBUST    [arena.BENCH_WEIGHT]
+bench weight 1.00 (F07's flip)                        11.30 /  12.23   shift +0.00  ROBUST    [arena.BENCH_WEIGHT]
+binomial floor only (1.0)                             11.80 /  12.63   shift +0.45  ROBUST    [arena.PCT_MIX_INFL]
+inflation 1.30                                        11.05 /  11.82   shift -0.33  ROBUST    [arena.PCT_MIX_INFL]
+no shared games shock (0.0)                           11.47 /  11.63   shift -0.21  ROBUST    [arena.TEAM_WEEK_SHOCK]
+shared games shock doubled (0.12)                     11.47 /  11.18   shift -0.44  ROBUST    [arena.TEAM_WEEK_SHOCK]
+no in-sim injury discount (risk 0.88 like healthy)     8.52 /   8.63   shift -3.19  FRAGILE   [arena.weekly_availability]
+harsher risk tier (0.65)                              13.70 /  14.32   shift +2.25  FRAGILE   [arena.weekly_availability]
+healthy players play 0.95 of games                    11.10 /  11.88   shift -0.28  ROBUST    [arena.weekly_availability]
+healthy players play 0.80 of games                    11.32 /  11.83   shift -0.19  ROBUST    [arena.weekly_availability]
+3.0 games per healthy week                            11.43 /  11.03   shift -0.53  ROBUST    [arena.GAMES_PER_WEEK]
+4.0 games per healthy week                            12.18 /  12.07   shift +0.36  ROBUST    [arena.GAMES_PER_WEEK]
+FRAGILE: ['arena.weekly_availability']   SENSITIVE: none
