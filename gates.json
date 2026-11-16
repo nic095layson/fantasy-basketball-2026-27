@@ -1,29 +1,27 @@
 {
- "ran_at_utc": "2026-11-13T18:34:34Z",
+ "ran_at_utc": "2026-11-16T15:26:55Z",
  "inputs": {
-  "report/after-reports/after-report-2026-11-13-board-category-lens.md": "a71363f61da9dd6e0ef1e24af2e736d8d17827bbacc6cb700e1a21deb5ff0b3b",
-  "scripts/season_deck.py": "44afa36d88c7332cce1d0a5254c615e9c6acd0f2c46b2a55ad1fe8b4484b1942",
-  "scripts/test_season_deck.py": "a746372eec52f9a623639488701cb3015ac232f2b981d3d3d3e02e81b22b212f",
-  "report/pull-log.md": "91163b702071de40e3f9951f6902525d194f435391ad5af8d8e1a48090f9494b",
-  "../wtsd/report/after-reports/redteam-2026-11-09-season/sweep.json": "7cebe2a3101d6d88b154c99b3082d5819197193ddb2be591d0c3b6d479d2a305"
+  "report/after-reports/after-report-2026-11-16-confidence.md": "b077db086e96958ea1dad602b8e9b78b0cb78f25446e6742d8b021a187982afe",
+  "report/pull-log.md": "3bacec70b27985a0695ac255feedd207ec175ec8424850a25c487121e39234d3",
+  "../wtsd/report/after-reports/redteam-2026-11-16-season/sweep.json": "30d9009b00f09cfbe0539b70176b583b24ae3b94983ecee38c38a051156bb3a7"
  },
  "gates": [
   {
    "name": "kit check_report",
-   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-13-board-category-lens.md",
+   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-16-confidence.md",
    "cwd": ".",
    "pass_re": "^REPORT GATE: PASS",
    "exit": 0,
-   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-11-13-board-category-lens.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)",
+   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-11-16-confidence.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "REPORT GATE: PASS \u2014 after-report-2026-11-13-board-category-lens.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)"
+    "REPORT GATE: PASS \u2014 after-report-2026-11-16-confidence.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)"
    ]
   },
   {
    "name": "claim receipts",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/independent_audit/claim_receipts.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-13-board-category-lens.md",
+   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/independent_audit/claim_receipts.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-16-confidence.md",
    "cwd": ".",
    "pass_re": "^CLAIM RECEIPTS: (PASS|ADVISORY)",
    "exit": 0,
@@ -62,15 +60,15 @@
   },
   {
    "name": "redteam bands",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/redteam/check_bands.py --report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-13-board-category-lens.md --sweep /home/user/wtsd/report/after-reports/redteam-2026-11-09-season/sweep.json",
+   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/redteam/check_bands.py --report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-16-confidence.md --sweep /home/user/wtsd/report/after-reports/redteam-2026-11-16-season/sweep.json",
    "cwd": ".",
    "pass_re": "^BANDS CHECK: PASS",
    "exit": 0,
-   "pass_line": "BANDS CHECK: PASS \u2014 the report quotes no title share and names no FRAGILE constant; bands not owed; engine 01483de",
+   "pass_line": "BANDS CHECK: PASS \u2014 1 FRAGILE band(s) quoted (arena.weekly_availability); engine c933f07",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "BANDS CHECK: PASS \u2014 the report quotes no title share and names no FRAGILE constant; bands not owed; engine 01483de"
+    "BANDS CHECK: PASS \u2014 1 FRAGILE band(s) quoted (arena.weekly_availability); engine c933f07"
    ]
   },
   {
@@ -102,5 +100,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "8dc596d8d04b18e1d4d74c7a4cb218a3a2ade7b3"
+ "base_commit": "8ab1d8dfb540c93c7320d12e6201e4ef8faa8fd1"
 }
