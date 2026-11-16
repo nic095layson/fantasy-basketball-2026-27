@@ -35,10 +35,12 @@ with the first matching rule winning:
    player is excluded. This tier order mirrors the ranking engine's availability rule.
 2. the tag contains `mild`: **0.79**
 3. the tag ends with `-recovery`: **0.0**
-4. the tag ends with `-risk`, or equals `risk` or `inj-risk`: **0.75**
+4. the tag ends with `-risk`, or equals `risk` or `inj-risk`: **0.65**
 5. the tag contains `recovery`: **0.0**
-6. the tag contains `risk`: **0.75**
-7. anything else: **0.88**
+6. the tag contains `risk`: **0.65**
+7. anything else: **0.80**
+
+(Rules 4, 6 and 7 were 0.75, 0.75 and 0.88 until the owner's pick of 2026-11-16.)
 
 The order is deliberate: a risk tag followed by a parenthetical mentioning recovery is a
 risk, because the parenthetical is not part of the tag.

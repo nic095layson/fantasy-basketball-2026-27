@@ -128,17 +128,7 @@
    }
   },
   {
-   "label": "no in-sim injury discount (risk 0.88 like healthy)",
-   "constant": "arena.weekly_availability",
-   "patch": {
-    "avail": [
-     0.88,
-     0.88
-    ]
-   }
-  },
-  {
-   "label": "harsher risk tier (0.65)",
+   "label": "healthy at the old 0.88",
    "constant": "arena.weekly_availability",
    "patch": {
     "avail": [
@@ -148,22 +138,32 @@
    }
   },
   {
-   "label": "healthy players play 0.95 of games",
+   "label": "healthy at the unfloored fit (0.78)",
    "constant": "arena.weekly_availability",
    "patch": {
     "avail": [
-     0.95,
-     0.75
+     0.78,
+     0.65
     ]
    }
   },
   {
-   "label": "healthy players play 0.80 of games",
+   "label": "risk at the old 0.75",
    "constant": "arena.weekly_availability",
    "patch": {
     "avail": [
      0.8,
      0.75
+    ]
+   }
+  },
+  {
+   "label": "risk at the unfloored fit (0.56)",
+   "constant": "arena.weekly_availability",
+   "patch": {
+    "avail": [
+     0.8,
+     0.56
     ]
    }
   },
@@ -185,253 +185,253 @@
  "title_by_seed": {
   "rule's pick": {
    "baseline": {
-    "2026": 27.433333333333334,
-    "2027": 25.25
+    "2026": 28.566666666666666,
+    "2027": 27.25
    },
    "binomial floor only (1.0)": {
-    "2026": 28.683333333333334,
-    "2027": 26.616666666666667
+    "2026": 29.466666666666665,
+    "2027": 29.166666666666668
    },
    "inflation 1.30": {
-    "2026": 26.033333333333335,
-    "2027": 24.683333333333334
+    "2026": 27.7,
+    "2027": 26.583333333333332
    },
    "no shared games shock (0.0)": {
-    "2026": 29.466666666666665,
-    "2027": 28.233333333333334
+    "2026": 30.583333333333332,
+    "2027": 30.75
    },
    "shared games shock doubled (0.12)": {
-    "2026": 22.3,
-    "2027": 21.816666666666666
+    "2026": 24.25,
+    "2027": 23.25
    },
-   "no in-sim injury discount (risk 0.88 like healthy)": {
-    "2026": 25.25,
-    "2027": 24.516666666666666
-   },
-   "harsher risk tier (0.65)": {
+   "healthy at the old 0.88": {
     "2026": 25.783333333333335,
     "2027": 24.916666666666668
    },
-   "healthy players play 0.95 of games": {
-    "2026": 24.183333333333334,
-    "2027": 22.566666666666666
+   "healthy at the unfloored fit (0.78)": {
+    "2026": 29.25,
+    "2027": 27.116666666666667
    },
-   "healthy players play 0.80 of games": {
+   "risk at the old 0.75": {
     "2026": 28.416666666666668,
     "2027": 27.3
    },
+   "risk at the unfloored fit (0.56)": {
+    "2026": 28.583333333333332,
+    "2027": 27.833333333333332
+   },
    "3.0 games per healthy week": {
-    "2026": 26.383333333333333,
-    "2027": 24.5
+    "2026": 27.966666666666665,
+    "2027": 27.266666666666666
    },
    "4.0 games per healthy week": {
-    "2026": 27.266666666666666,
-    "2027": 25.483333333333334
+    "2026": 29.516666666666666,
+    "2027": 28.383333333333333
    }
   },
   "Queta + Cam Johnson": {
    "baseline": {
-    "2026": 29.133333333333333,
-    "2027": 27.066666666666666
+    "2026": 30.266666666666666,
+    "2027": 28.566666666666666
    },
    "binomial floor only (1.0)": {
-    "2026": 29.7,
-    "2027": 28.35
+    "2026": 32.06666666666667,
+    "2027": 29.866666666666667
    },
    "inflation 1.30": {
-    "2026": 27.983333333333334,
-    "2027": 26.916666666666668
+    "2026": 29.433333333333334,
+    "2027": 28.2
    },
    "no shared games shock (0.0)": {
-    "2026": 32.28333333333333,
-    "2027": 31.1
+    "2026": 33.266666666666666,
+    "2027": 32.31666666666667
    },
    "shared games shock doubled (0.12)": {
-    "2026": 24.616666666666667,
-    "2027": 23.316666666666666
+    "2026": 25.883333333333333,
+    "2027": 24.316666666666666
    },
-   "no in-sim injury discount (risk 0.88 like healthy)": {
-    "2026": 27.9,
-    "2027": 26.733333333333334
-   },
-   "harsher risk tier (0.65)": {
+   "healthy at the old 0.88": {
     "2026": 28.216666666666665,
     "2027": 27.366666666666667
    },
-   "healthy players play 0.95 of games": {
-    "2026": 27.4,
-    "2027": 25.95
+   "healthy at the unfloored fit (0.78)": {
+    "2026": 30.416666666666668,
+    "2027": 29.333333333333332
    },
-   "healthy players play 0.80 of games": {
+   "risk at the old 0.75": {
     "2026": 30.25,
     "2027": 27.95
    },
+   "risk at the unfloored fit (0.56)": {
+    "2026": 29.616666666666667,
+    "2027": 29.216666666666665
+   },
    "3.0 games per healthy week": {
-    "2026": 28.383333333333333,
-    "2027": 26.05
+    "2026": 29.35,
+    "2027": 28.666666666666668
    },
    "4.0 games per healthy week": {
-    "2026": 29.466666666666665,
-    "2027": 28.133333333333333
+    "2026": 31.25,
+    "2027": 30.216666666666665
    }
   },
   "Champagnie + Queta": {
    "baseline": {
-    "2026": 28.9,
-    "2027": 26.966666666666665
+    "2026": 30.416666666666668,
+    "2027": 28.6
    },
    "binomial floor only (1.0)": {
-    "2026": 29.733333333333334,
-    "2027": 27.833333333333332
+    "2026": 32.166666666666664,
+    "2027": 30.216666666666665
    },
    "inflation 1.30": {
-    "2026": 27.55,
-    "2027": 26.833333333333332
+    "2026": 29.45,
+    "2027": 27.683333333333334
    },
    "no shared games shock (0.0)": {
-    "2026": 31.316666666666666,
-    "2027": 31.1
+    "2026": 32.43333333333333,
+    "2027": 32.53333333333333
    },
    "shared games shock doubled (0.12)": {
-    "2026": 24.35,
-    "2027": 23.4
+    "2026": 26.25,
+    "2027": 24.65
    },
-   "no in-sim injury discount (risk 0.88 like healthy)": {
-    "2026": 27.366666666666667,
-    "2027": 26.383333333333333
-   },
-   "harsher risk tier (0.65)": {
+   "healthy at the old 0.88": {
     "2026": 27.716666666666665,
     "2027": 26.933333333333334
    },
-   "healthy players play 0.95 of games": {
-    "2026": 27.433333333333334,
-    "2027": 25.233333333333334
+   "healthy at the unfloored fit (0.78)": {
+    "2026": 31.216666666666665,
+    "2027": 29.666666666666668
    },
-   "healthy players play 0.80 of games": {
+   "risk at the old 0.75": {
     "2026": 29.833333333333332,
     "2027": 27.65
    },
+   "risk at the unfloored fit (0.56)": {
+    "2026": 29.3,
+    "2027": 29.05
+   },
    "3.0 games per healthy week": {
-    "2026": 28.0,
-    "2027": 25.95
+    "2026": 28.65,
+    "2027": 28.366666666666667
    },
    "4.0 games per healthy week": {
-    "2026": 28.816666666666666,
-    "2027": 27.183333333333334
+    "2026": 31.05,
+    "2027": 29.433333333333334
    }
   },
   "Champagnie + Cam Johnson": {
    "baseline": {
-    "2026": 28.016666666666666,
-    "2027": 26.666666666666668
+    "2026": 29.416666666666668,
+    "2027": 28.7
    },
    "binomial floor only (1.0)": {
-    "2026": 29.15,
-    "2027": 27.666666666666668
+    "2026": 31.033333333333335,
+    "2027": 29.483333333333334
    },
    "inflation 1.30": {
-    "2026": 26.666666666666668,
-    "2027": 26.0
+    "2026": 28.333333333333332,
+    "2027": 27.25
    },
    "no shared games shock (0.0)": {
-    "2026": 30.816666666666666,
-    "2027": 30.05
+    "2026": 31.816666666666666,
+    "2027": 32.46666666666667
    },
    "shared games shock doubled (0.12)": {
-    "2026": 24.183333333333334,
-    "2027": 22.416666666666668
+    "2026": 25.066666666666666,
+    "2027": 24.25
    },
-   "no in-sim injury discount (risk 0.88 like healthy)": {
-    "2026": 27.233333333333334,
-    "2027": 25.916666666666668
-   },
-   "harsher risk tier (0.65)": {
+   "healthy at the old 0.88": {
     "2026": 28.116666666666667,
     "2027": 27.266666666666666
    },
-   "healthy players play 0.95 of games": {
-    "2026": 26.15,
-    "2027": 24.383333333333333
+   "healthy at the unfloored fit (0.78)": {
+    "2026": 30.033333333333335,
+    "2027": 29.316666666666666
    },
-   "healthy players play 0.80 of games": {
+   "risk at the old 0.75": {
     "2026": 29.616666666666667,
     "2027": 28.266666666666666
    },
+   "risk at the unfloored fit (0.56)": {
+    "2026": 29.116666666666667,
+    "2027": 28.733333333333334
+   },
    "3.0 games per healthy week": {
-    "2026": 27.316666666666666,
-    "2027": 26.016666666666666
+    "2026": 27.866666666666667,
+    "2027": 28.3
    },
    "4.0 games per healthy week": {
-    "2026": 28.4,
-    "2027": 27.766666666666666
+    "2026": 30.816666666666666,
+    "2027": 29.7
    }
   }
  },
  "title": {
   "rule's pick": {
-   "baseline": 26.34,
-   "binomial floor only (1.0)": 27.65,
-   "inflation 1.30": 25.36,
-   "no shared games shock (0.0)": 28.85,
-   "shared games shock doubled (0.12)": 22.06,
-   "no in-sim injury discount (risk 0.88 like healthy)": 24.88,
-   "harsher risk tier (0.65)": 25.35,
-   "healthy players play 0.95 of games": 23.38,
-   "healthy players play 0.80 of games": 27.86,
-   "3.0 games per healthy week": 25.44,
-   "4.0 games per healthy week": 26.38
+   "baseline": 27.91,
+   "binomial floor only (1.0)": 29.32,
+   "inflation 1.30": 27.14,
+   "no shared games shock (0.0)": 30.67,
+   "shared games shock doubled (0.12)": 23.75,
+   "healthy at the old 0.88": 25.35,
+   "healthy at the unfloored fit (0.78)": 28.18,
+   "risk at the old 0.75": 27.86,
+   "risk at the unfloored fit (0.56)": 28.21,
+   "3.0 games per healthy week": 27.62,
+   "4.0 games per healthy week": 28.95
   },
   "Queta + Cam Johnson": {
-   "baseline": 28.1,
-   "binomial floor only (1.0)": 29.02,
-   "inflation 1.30": 27.45,
-   "no shared games shock (0.0)": 31.69,
-   "shared games shock doubled (0.12)": 23.97,
-   "no in-sim injury discount (risk 0.88 like healthy)": 27.32,
-   "harsher risk tier (0.65)": 27.79,
-   "healthy players play 0.95 of games": 26.67,
-   "healthy players play 0.80 of games": 29.1,
-   "3.0 games per healthy week": 27.22,
-   "4.0 games per healthy week": 28.8
+   "baseline": 29.42,
+   "binomial floor only (1.0)": 30.97,
+   "inflation 1.30": 28.82,
+   "no shared games shock (0.0)": 32.79,
+   "shared games shock doubled (0.12)": 25.1,
+   "healthy at the old 0.88": 27.79,
+   "healthy at the unfloored fit (0.78)": 29.88,
+   "risk at the old 0.75": 29.1,
+   "risk at the unfloored fit (0.56)": 29.42,
+   "3.0 games per healthy week": 29.01,
+   "4.0 games per healthy week": 30.73
   },
   "Champagnie + Queta": {
-   "baseline": 27.93,
-   "binomial floor only (1.0)": 28.78,
-   "inflation 1.30": 27.19,
-   "no shared games shock (0.0)": 31.21,
-   "shared games shock doubled (0.12)": 23.88,
-   "no in-sim injury discount (risk 0.88 like healthy)": 26.88,
-   "harsher risk tier (0.65)": 27.32,
-   "healthy players play 0.95 of games": 26.33,
-   "healthy players play 0.80 of games": 28.74,
-   "3.0 games per healthy week": 26.98,
-   "4.0 games per healthy week": 28.0
+   "baseline": 29.51,
+   "binomial floor only (1.0)": 31.19,
+   "inflation 1.30": 28.57,
+   "no shared games shock (0.0)": 32.48,
+   "shared games shock doubled (0.12)": 25.45,
+   "healthy at the old 0.88": 27.32,
+   "healthy at the unfloored fit (0.78)": 30.44,
+   "risk at the old 0.75": 28.74,
+   "risk at the unfloored fit (0.56)": 29.18,
+   "3.0 games per healthy week": 28.51,
+   "4.0 games per healthy week": 30.24
   },
   "Champagnie + Cam Johnson": {
-   "baseline": 27.34,
-   "binomial floor only (1.0)": 28.41,
-   "inflation 1.30": 26.33,
-   "no shared games shock (0.0)": 30.43,
-   "shared games shock doubled (0.12)": 23.3,
-   "no in-sim injury discount (risk 0.88 like healthy)": 26.58,
-   "harsher risk tier (0.65)": 27.69,
-   "healthy players play 0.95 of games": 25.27,
-   "healthy players play 0.80 of games": 28.94,
-   "3.0 games per healthy week": 26.67,
-   "4.0 games per healthy week": 28.08
+   "baseline": 29.06,
+   "binomial floor only (1.0)": 30.26,
+   "inflation 1.30": 27.79,
+   "no shared games shock (0.0)": 32.14,
+   "shared games shock doubled (0.12)": 24.66,
+   "healthy at the old 0.88": 27.69,
+   "healthy at the unfloored fit (0.78)": 29.68,
+   "risk at the old 0.75": 28.94,
+   "risk at the unfloored fit (0.56)": 28.93,
+   "3.0 games per healthy week": 28.08,
+   "4.0 games per healthy week": 30.26
   }
  },
  "order": {
   "baseline": [
-   "Queta + Cam Johnson",
    "Champagnie + Queta",
+   "Queta + Cam Johnson",
    "Champagnie + Cam Johnson",
    "rule's pick"
   ],
   "binomial floor only (1.0)": [
-   "Queta + Cam Johnson",
    "Champagnie + Queta",
+   "Queta + Cam Johnson",
    "Champagnie + Cam Johnson",
    "rule's pick"
   ],
@@ -448,33 +448,33 @@
    "rule's pick"
   ],
   "shared games shock doubled (0.12)": [
-   "Queta + Cam Johnson",
    "Champagnie + Queta",
+   "Queta + Cam Johnson",
    "Champagnie + Cam Johnson",
    "rule's pick"
   ],
-  "no in-sim injury discount (risk 0.88 like healthy)": [
-   "Queta + Cam Johnson",
-   "Champagnie + Queta",
-   "Champagnie + Cam Johnson",
-   "rule's pick"
-  ],
-  "harsher risk tier (0.65)": [
+  "healthy at the old 0.88": [
    "Queta + Cam Johnson",
    "Champagnie + Cam Johnson",
    "Champagnie + Queta",
    "rule's pick"
   ],
-  "healthy players play 0.95 of games": [
-   "Queta + Cam Johnson",
+  "healthy at the unfloored fit (0.78)": [
    "Champagnie + Queta",
+   "Queta + Cam Johnson",
    "Champagnie + Cam Johnson",
    "rule's pick"
   ],
-  "healthy players play 0.80 of games": [
+  "risk at the old 0.75": [
    "Queta + Cam Johnson",
    "Champagnie + Cam Johnson",
    "Champagnie + Queta",
+   "rule's pick"
+  ],
+  "risk at the unfloored fit (0.56)": [
+   "Queta + Cam Johnson",
+   "Champagnie + Queta",
+   "Champagnie + Cam Johnson",
    "rule's pick"
   ],
   "3.0 games per healthy week": [
@@ -491,20 +491,20 @@
   ]
  },
  "spread_best_minus_rule": {
-  "baseline": 1.76,
-  "binomial floor only (1.0)": 1.37,
-  "inflation 1.30": 2.09,
-  "no shared games shock (0.0)": 2.84,
-  "shared games shock doubled (0.12)": 1.91,
-  "no in-sim injury discount (risk 0.88 like healthy)": 2.44,
-  "harsher risk tier (0.65)": 2.44,
-  "healthy players play 0.95 of games": 3.29,
-  "healthy players play 0.80 of games": 1.24,
-  "3.0 games per healthy week": 1.78,
-  "4.0 games per healthy week": 2.42
+  "baseline": 1.6,
+  "binomial floor only (1.0)": 1.87,
+  "inflation 1.30": 1.68,
+  "no shared games shock (0.0)": 2.12,
+  "shared games shock doubled (0.12)": 1.7,
+  "healthy at the old 0.88": 2.44,
+  "healthy at the unfloored fit (0.78)": 2.26,
+  "risk at the old 0.75": 1.24,
+  "risk at the unfloored fit (0.56)": 1.21,
+  "3.0 games per healthy week": 1.39,
+  "4.0 games per healthy week": 1.78
  },
  "fingerprint": {
-  "deck_head": "01483de",
+  "deck_head": "56b3a6b",
   "records_head": "0e21df1",
   "state_sha256": "333c2a3ac834e0cc7567eef20ad1f330685f0cd9bc46e488683c573f3299065c",
   "pool_sha256": "c0646017ccf43fc679d3c8eeb641890e041c9507d3985c2ea236e39c8b89494b",

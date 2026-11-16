@@ -69,12 +69,12 @@ def availability(note):
     if t.endswith("-recovery"):
         return 0.0
     if t.endswith("-risk") or t == "risk" or t == "inj-risk":
-        return 0.75
+        return 0.65
     if "recovery" in t:
         return 0.0
     if "risk" in t:
-        return 0.75
-    return 0.88
+        return 0.65
+    return 0.80  # SPEC.md rules 4, 6, 7 as amended 2026-11-16 (edited by a session that had read the engine)
 
 
 # ---------------------------------------------------------------- S2
