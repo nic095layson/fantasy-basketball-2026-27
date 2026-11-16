@@ -498,7 +498,7 @@
    "module": "minutes_line",
    "name": "HALF_LIFE",
    "value": 5.0,
-   "role": "games over which the recency weight on a player's minutes halves (the minutes forecast of the candidate line)",
+   "role": "games over which the recency weight on a player's minutes halves (the minutes forecast of the candidate line); since 2026-11-16 it reaches the live line's PTS/REB/AST (season_lines.SWITCH_CATS)",
    "status": "uncalibrated",
    "record": "report/after-reports/after-report-2026-10-27-minutes-line.md",
    "decision": "D-ML-1 (owner 2026-10-27, build 2): the weekly accuracy card (report/accuracy.json, column candidate_minutes) is the calibration — the candidate replaces nothing until it beats the blend's MAE on PTS, REB and AST in 3 of 4 consecutive graded weeks, on the owner's word"
@@ -507,7 +507,7 @@
    "module": "minutes_line",
    "name": "MIN_PRIOR_GAMES",
    "value": 3.0,
-   "role": "games the preseason mpg is worth in the minutes forecast; the blend's own points prior (season_lines.PRIOR_GAMES['PTS']) is the denominator, read live",
+   "role": "games the preseason mpg is worth in the minutes forecast; the blend's own points prior (season_lines.PRIOR_GAMES['PTS']) is the denominator, read live; since 2026-11-16 it reaches the live line's PTS/REB/AST (season_lines.SWITCH_CATS)",
    "status": "uncalibrated",
    "record": "report/after-reports/after-report-2026-10-27-minutes-line.md",
    "decision": "D-ML-1 (owner 2026-10-27, build 2): the weekly accuracy card (report/accuracy.json, column candidate_minutes) is the calibration — the candidate replaces nothing until it beats the blend's MAE on PTS, REB and AST in 3 of 4 consecutive graded weeks, on the owner's word"
@@ -743,6 +743,18 @@
    "status": "uncalibrated",
    "record": "after-report-2026-11-05-swap-grid-auto-pool.md; season_lines.py auto_rows/replacement_prior",
    "decision": "D-AP-1: fit after four graded weeks of auto rows (accuracy_week grades them like any line); until then hand-set, named here"
+  },
+  {
+   "module": "season_lines",
+   "name": "SWITCH_CATS",
+   "value": [
+    "pts",
+    "reb",
+    "ast"
+   ],
+   "role": "the season-line columns that carry the minutes ratio (minutes_line forecast / implicit minutes) since 2026-11-16",
+   "status": "measured",
+   "record": "report/accuracy.json weeks 2-4: candidate_minutes MAE below in_season on PTS, REB and AST in each week (D-ML-1 rule, pre-committed 2026-10-27); owner card 2026-11-16 \"Switch now\""
   },
   {
    "module": "threes_line",

@@ -59,6 +59,24 @@ def pin_file(d, pin=PIN):
     return p
 
 
+class Scale(unittest.TestCase):
+    def test_the_board_json_carries_the_scale_that_reproduces_every_rows_z(self):
+        # owner 2026-11-16 (card: "Grade from box scores"): the grader scores an off-board player on this scale
+        d = tempfile.mkdtemp(); path = os.path.join(d, "lines.csv")
+        with open(path, "w") as f:
+            f.write("name,team,pos,gp,mpg,fgp,fga,ftp,fta,tpm,pts,reb,ast,stl,blk,tov\n"
+                    "A,DEN,C,70,30,0.55,12,0.70,5,0.5,22,11,4,1.0,1.5,2.5\n"
+                    "B,BOS,PG,60,32,0.45,15,0.88,4,2.8,20,4,7,1.3,0.3,2.0\n"
+                    "C,LAL,SF,75,28,0.47,10,0.80,3,1.9,14,6,2,0.9,0.6,1.2\n"
+                    "D,MIA,PF,50,24,0.50,8,0.75,2,1.0,10,7,1.5,0.7,0.9,1.0\n")
+        b = SB.build(path)
+        for r in b["board"]:
+            z = SB.score_line({k: r[k] for k in ("fgp", "fga", "ftp", "fta", "tpm", "pts", "reb", "ast", "stl", "blk", "tov")},
+                              b["scale"])
+            self.assertAlmostEqual(sum(z.values()), r["z_total"], places=9)
+        self.assertEqual(sorted(b["scale"]), ["mean_sd", "pool_fgp", "pool_ftp"])
+
+
 class GScore(unittest.TestCase):
     def test_known_answer_on_a_hand_built_pool(self):
         # Table 5 by hand (population SDs over the three, kappa 26/25, tau on the per-game scale = tau / 3.5):

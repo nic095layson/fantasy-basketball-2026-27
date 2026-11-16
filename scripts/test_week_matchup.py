@@ -120,6 +120,25 @@ class Projection(unittest.TestCase):
         self.assertAlmostEqual(t["reb"], 10.0)
         self.assertEqual(r["games"], {"A": 2})        # Out never starts; Idle's team has no game
 
+    def test_an_out_player_counts_from_his_espn_return_date_on_later_days(self):
+        # owner 2026-11-16 (card: "Build both fixes"): today keeps today's tag; on a later day a return date on or
+        # before that day makes him available (1.0); no return date keeps today's tag all week
+        roster = [dict(player="Back", team="DEN", positions=["C"], value=1.0),
+                  dict(player="Long", team="DEN", positions=["PG"], value=3.0)]
+        lines = {"Back": line(pts=20), "Long": line(pts=30)}
+        sched = {"2026-11-16": {"DEN"}, "2026-11-17": {"DEN"}, "2026-11-18": {"DEN"}, "2026-11-20": {"DEN"}}
+        avail = {"Back": 0.0, "Long": 0.0, WM.RETURNS: {"today": "2026-11-16", "players": {"Back": "2026-11-18"}}}
+        r = WM.remaining(roster, sched, avail, lines)
+        self.assertEqual(r["games"], {"Back": 2})                # 11-18 and 11-20; Long has no return date
+        self.assertAlmostEqual(r["totals"]["pts"], 40.0)
+
+    def test_a_return_date_on_today_leaves_todays_tag_for_today(self):
+        roster = [dict(player="Q", team="DEN", positions=["C"], value=1.0)]
+        sched = {"2026-11-16": {"DEN"}, "2026-11-17": {"DEN"}}
+        avail = {"Q": 0.5, WM.RETURNS: {"today": "2026-11-16", "players": {"Q": "2026-11-16T00:00Z"}}}
+        r = WM.remaining(roster, sched, avail, {"Q": line(pts=10)})
+        self.assertAlmostEqual(r["totals"]["pts"], 15.0)         # 10 x 0.5 today + 10 x 1.0 on 11-17
+
     def test_the_ten_slot_cap_applies_to_projected_days_too(self):
         roster = [dict(player=f"P{i}", team="DEN", positions=ALLPOS, value=float(i)) for i in range(1, 12)]
         lines = {f"P{i}": line(pts=float(i)) for i in range(1, 12)}
@@ -527,6 +546,32 @@ class Record(unittest.TestCase):
         self.assertEqual(rec["pickups"]["drop"]["player"], "Derrick White")
         self.assertTrue(rec["pickups"]["top"]); self.assertGreater(rec["pickups"]["pool_size"], 300)
         self.assertNotIn("Joel Embiid", [r["add"] for r in rec["pickups"]["top"]])   # rostered (IL) is not a free agent
+
+    def test_an_auto_row_player_on_the_roster_is_projected_and_an_il_auto_row_is_not(self):
+        # owner 2026-11-16 (card: "Build both fixes"): a rostered player outside the pooled list sits in the team's
+        # "unpooled" rows (Mario Hezonja, 2026-11-15); his pool line (an auto row) now counts in the week card
+        st = json.load(open(self.state))
+        st["teams"][0]["unpooled"] = [dict(player="Anthony Edwards", slot="UTIL", nba_team="MIN", positions=["SG"], status=None),
+                                      dict(player="Tyrese Haliburton", slot="IL", nba_team="IND", positions=["PG"], status=None)]
+        dump(st, self.state)
+        with open(self.paths["games"], "a") as f:
+            f.write("2026-10-22,1,MIN,IND,\n")
+        rec = WM.build("2026-10-21", self.paths)
+        self.assertEqual(rec["games"]["me"]["remaining_by_player"], {"Nikola Jokic": 2, "Anthony Edwards": 1})
+
+    def test_the_espn_return_date_reaches_the_card_from_the_days_feed_file(self):
+        dump(dict(date="2026-10-21", rows=[dict(player="Nikola Jokic", team="DEN", status="Out", return_date="2026-10-23")]),
+             os.path.join(self.paths["status"], "espn_injuries_2026-10-21.json"))
+        st = json.load(open(os.path.join(self.paths["status"], "status_2026-10-21.json")))
+        st["rows"][0]["availability"] = 0.0
+        dump(st, os.path.join(self.paths["status"], "status_2026-10-21.json"))
+        rec = WM.build("2026-10-21", self.paths)
+        self.assertEqual(rec["games"]["me"]["remaining_by_player"], {"Nikola Jokic": 1})   # 10-23 only
+        self.assertEqual(rec["return_dates"], dict(file="espn_injuries_2026-10-21.json", players={"Nikola Jokic": "2026-10-23"}))
+
+    def test_no_feed_file_means_no_return_dates_and_the_record_says_so(self):
+        rec = WM.build("2026-10-21", self.paths)
+        self.assertEqual(rec["return_dates"], dict(file=None, players={}))
 
     def test_a_line_the_kits_file_spells_differently_still_counts_for_its_roster(self):
         # owner 2026-10-22 (the name-mismatch fix): Darius Acuff Jr.'s 10/21 game was missing from the rebuild because

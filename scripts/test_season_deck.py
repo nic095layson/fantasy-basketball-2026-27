@@ -1759,8 +1759,10 @@ class AccuracyCard(unittest.TestCase):
         self.assertIn("Healthy", t); self.assertIn("0.88", t); self.assertIn("0.79", t); self.assertIn("727 / 918", t)
         # forecasts: P(win), result, daily Brier vs the lead-only baseline
         self.assertIn("0.606", t); self.assertIn("3 cats", t); self.assertIn("0.145", t); self.assertIn("0.294", t)
-        # the switch rules are stated in plain words on the page (their codes are in the hovers), not decided
-        self.assertEqual(t.count("only on your OK"), 2)
+        # the switch rules are stated in plain words on the page (their codes are in the hovers); the threes rule is
+        # undecided, the minutes rule was switched on the owner's word 2026-11-16 ("Switch now")
+        self.assertEqual(t.count("only on your OK"), 1)
+        self.assertIn("since 2026-11-16 the current line uses it for those three", t)
         self.assertEqual(dom["page_overflow"], 0)
 
     def test_record_pins_the_accuracy_input(self):

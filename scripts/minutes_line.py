@@ -19,7 +19,10 @@ on file is left unscaled and named. HALF_LIFE and MIN_PRIOR_GAMES are hand-set a
 (scripts/redteam/constants_registry.json, module minutes_line); the weekly accuracy card is the decision that
 calibrates them.
 
-CANDIDATE ONLY: nothing on the board, in the brief or in the simulator reads these files. The Sunday step snapshots
+SWITCHED 2026-11-16 on PTS, REB and AST (owner card "Switch now"; D-ML-1 met in weeks 2, 3 and 4): season_lines.py
+applies this ratio to those three columns of the live season line. The full candidate below (every counting column)
+is still written from the unswitched blend and graded; otherwise nothing on the board, in the brief or in the
+simulator reads these files. The Sunday step snapshots
 them (report/accuracy/lines_week<N>_mt.csv) and the Monday accuracy card grades them beside the blend; the owner
 decides any switch on that record (pre-committed rule: lower MAE than the blend on PTS, REB and AST in at least 3
 of 4 consecutive graded weeks).
@@ -41,8 +44,11 @@ KIT = os.path.dirname(HERE)
 sys.path.insert(0, HERE)
 SEASON = os.path.join(KIT, "data", "season")
 ACTUALS = os.path.join(KIT, "data", "actuals")
-POOL = os.path.join(SEASON, "pool_season.csv")
-KIT_CSV = os.path.join(SEASON, "projections_season.csv")
+# owner 2026-11-16 ("Switch now"): the season line now carries this file's ratio on PTS/REB/AST (season_lines.py), so
+# the candidate reads the unswitched blend season_lines writes beside it; the live file before the switch existed
+_blend = lambda live, blend: blend if os.path.exists(blend) else live
+POOL = _blend(os.path.join(SEASON, "pool_season.csv"), os.path.join(SEASON, "pool_season_blend.csv"))
+KIT_CSV = _blend(os.path.join(SEASON, "projections_season.csv"), os.path.join(SEASON, "projections_season_blend.csv"))
 PRE_KIT = os.path.join(KIT, "report", "projections-2026-27.csv")   # the preseason mpg (never edited in season)
 
 HALF_LIFE = 5.0        # games; the recency weight halves every HALF_LIFE games (hand-set, uncalibrated: D-ML-1)
@@ -175,7 +181,7 @@ def main():
         json.dump(out, f, indent=1, ensure_ascii=False); f.write("\n")
     up = sum(1 for r in rec["ratios"].values() if r >= 1.10); down = sum(1 for r in rec["ratios"].values() if r <= 0.90)
     print(f"MINUTES LINE: PASS — {a.date}: {out['players']} players, {out['with_games']} with games; ratio >= 1.10 for {up}, <= 0.90 for {down}; "
-          f"{len(rec['unscaled'])} unscaled (no preseason mpg); candidate only, wrote pool_season_mt.csv, projections_season_mt.csv")
+          f"{len(rec['unscaled'])} unscaled (no preseason mpg); full candidate from the blend (PTS/REB/AST switched in season lines), wrote pool_season_mt.csv, projections_season_mt.csv")
     return 0
 
 

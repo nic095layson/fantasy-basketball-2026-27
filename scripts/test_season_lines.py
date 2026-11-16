@@ -166,6 +166,47 @@ if __name__ == "__main__":
     unittest.main(verbosity=2)
 
 
+class MinutesSwitch(unittest.TestCase):
+    """Owner 2026-11-16 (card: "Switch now", D-ML-1 met weeks 2-4): the season line's points, rebounds and assists are
+    the blend's times the minutes ratio (forecast / implicit minutes, minutes_line.py); every other column is the
+    blend's. The unswitched blend is written beside it as *_blend.csv."""
+
+    def _run(self, d, mins=40, n=3):
+        kit = os.path.join(d, "kit.csv"); deck = os.path.join(d, "deck.csv"); pre = os.path.join(d, "pre.csv")
+        for path, row in ((kit, KIT_ROW), (deck, DECK_ROW), (pre, KIT_ROW)):
+            with open(path, "w", newline="") as f:
+                w = csv.DictWriter(f, fieldnames=list(row)); w.writeheader(); w.writerow(row)
+        rows = [dict(r, game=str(i)) for i, r in enumerate(box("Test Guard", n, min=mins, pts=30))]
+        recs = [record(f"2026-11-{10 + i:02d}", [rows[i]]) for i in range(n)]
+        rec = S.run(date="2026-11-16", actuals=recs, kit_csv=kit, deck_csv=deck, out_dir=d, pre_kit_csv=pre)
+        read = lambda name: next(csv.DictReader(open(os.path.join(d, name))))
+        return rec, read
+
+    def test_points_rebounds_and_assists_take_the_minutes_ratio_and_nothing_else_moves(self):
+        with tempfile.TemporaryDirectory() as d:
+            rec, read = self._run(d)
+            w = [0.5 ** (age / 5.0) for age in (0, 1, 2)]                    # newest first
+            forecast = (3.0 * 30.0 + sum(w) * 40.0) / (3.0 + sum(w))
+            k = float(S.PRIOR_GAMES["PTS"]); implicit = (k * 30.0 + 120.0) / (k + 3)
+            ratio = forecast / implicit
+            blend, live = read("projections_season_blend.csv"), read("projections_season.csv")
+            for c in ("pts", "reb", "ast"):
+                self.assertAlmostEqual(float(live[c]), round(float(blend[c]) * ratio, 1), places=6)
+            for c in ("fgp", "fga", "ftp", "fta", "tpm", "stl", "blk", "tov", "gp", "mpg"):
+                self.assertEqual(live[c], blend[c])
+            dblend, dlive = read("pool_season_blend.csv"), read("pool_season.csv")
+            self.assertEqual((dlive["pts"], dlive["reb"], dlive["ast"]), (live["pts"], live["reb"], live["ast"]))
+            self.assertEqual(dlive["fga"], dblend["fga"])
+            self.assertEqual(rec["line_switch"]["cats"], ["pts", "reb", "ast"])
+            self.assertAlmostEqual(rec["line_switch"]["ratios"]["Test Guard"], round(ratio, 4))
+
+    def test_no_games_leaves_the_live_line_equal_to_the_blend(self):
+        with tempfile.TemporaryDirectory() as d:
+            rec, read = self._run(d, n=0)
+            self.assertEqual(open(os.path.join(d, "projections_season.csv")).read(),
+                             open(os.path.join(d, "projections_season_blend.csv")).read())
+
+
 class AutoRows(unittest.TestCase):
     """Owner 2026-11-05 ("Not in the pool ... is this not something the tool can pull during the morning runner?"),
     pick "auto season line": a rostered player the pool lacks with AUTO_MIN_GAMES+ box games gets a plane row whose

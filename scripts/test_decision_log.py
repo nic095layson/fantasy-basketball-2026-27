@@ -202,6 +202,57 @@ S_1030 = {"id": "S-2026-10-30-01", "date": "2026-10-30", "source": "session", "h
                            {"add": "Cameron Johnson", "drop": "Julian Champagnie", "d_title": -0.45}]}
 
 
+class OffBoardPlayer(unittest.TestCase):
+    """Owner 2026-11-16 (card: "Grade from box scores"): a player the board does not carry (an auto-row pickup such
+    as Mario Hezonja) is scored from his box-score games in the window on the window-end board's own z scale."""
+
+    SCALE = dict(pool_fgp=0.5, pool_ftp=0.8, mean_sd={c: [0.0, 1.0] for c in ("tpm", "pts", "reb", "ast", "stl", "blk", "fg_imp", "ft_imp", "tov")})
+
+    def setUp(self):
+        self.d = tempfile.mkdtemp()
+        self.boards = os.path.join(self.d, "season"); self.acts = os.path.join(self.d, "actuals")
+        os.makedirs(self.boards); os.makedirs(self.acts)
+        self.rec = DL.session_row([], "2026-11-16", "Off Board", "Collin Gillespie", 0.5, made_at="t")
+        b = dict(date="2026-12-14", board=[dict(name="Collin Gillespie", z_adj=-1.0, gp=70)], scale=self.SCALE)
+        json.dump(b, open(os.path.join(self.boards, "board_2026-12-14.json"), "w"))
+        import datetime as dt
+        for i in range(29):
+            d = (dt.date(2026, 11, 16) + dt.timedelta(days=i)).isoformat()
+            rows = [dict(name="Off Board", pool_name=None, team="CLE", min=30, dnp=False, pts=10, reb=2, ast=0, stl=0, blk=0, tov=1,
+                         tpm=0, fgm=3, fga=6, ftm=0, fta=0),
+                    dict(name="Collin Gillespie", pool_name="Collin Gillespie", team="PHX", min=20, dnp=False, pts=8, reb=0, ast=0,
+                         stl=0, blk=0, tov=0, tpm=0, fgm=0, fga=0, ftm=0, fta=0)]
+            json.dump(dict(date=d, games=[], players=rows), open(os.path.join(self.acts, f"{d}.json"), "w"))
+
+    def test_the_off_board_add_is_scored_from_his_box_line_on_the_boards_scale(self):
+        g = DG.grade(self.rec, [], "2026-12-15", self.boards, self.acts, aliases={})
+        # per game: pts 10, reb 2, tov 1, fg 3/6 at the pool's .500 (impact 0); z = 10 + 2 - 1 = 11; all 29 team games
+        # played, so gp 82 and availability 1.0
+        self.assertEqual(g["games"]["kit_add"]["games"], 29)        # matched by his box-score name (no pool name)
+        self.assertAlmostEqual(g["values"]["kit_add"]["z_adj_end"], 11.0)
+        self.assertEqual(g["values"]["kit_add"]["source"], "box scores on the board's scale")
+        self.assertAlmostEqual(g["kit_gap_end"], 12.0)
+        self.assertEqual(g["verdict"], "KIT RIGHT")
+
+    def test_half_the_team_games_takes_the_boards_availability_factor(self):
+        import datetime as dt
+        for i in range(0, 29, 2):
+            d = (dt.date(2026, 11, 16) + dt.timedelta(days=i)).isoformat()
+            f = os.path.join(self.acts, f"{d}.json"); a = json.load(open(f))
+            a["players"][0].update(min=0, dnp=True); json.dump(a, open(f, "w"))
+        g = DG.grade(self.rec, [], "2026-12-15", self.boards, self.acts, aliases={})
+        played, team = 14, 29
+        a = (82 * played / team) / 82.0; a = a + (1 - a) * 0.20
+        self.assertAlmostEqual(g["values"]["kit_add"]["z_adj_end"], 11.0 * a, places=6)
+
+    def test_a_board_without_a_scale_leaves_him_pending_and_says_why(self):
+        json.dump(dict(date="2026-12-14", board=[dict(name="Collin Gillespie", z_adj=-1.0, gp=70)]),
+                  open(os.path.join(self.boards, "board_2026-12-14.json"), "w"))
+        g = DG.grade(self.rec, [], "2026-12-15", self.boards, self.acts, aliases={})
+        self.assertEqual(g["verdict"], "PENDING")
+        self.assertIn("not on the 2026-12-14 board and the board carries no z scale: Off Board", g["note"])
+
+
 class AlternativePairs(unittest.TestCase):
     """Owner 2026-11-09 (runner pick C1): the join reads each recommendation's alternative pairs as well as its top
     pair and records which one matched; the newest row in horizon is preferred, then exact over partial."""

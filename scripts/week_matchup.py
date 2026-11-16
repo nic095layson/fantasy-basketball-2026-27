@@ -21,7 +21,10 @@ owner before the first run (2026-10-21):
                  matchup that does not name both teams: the reconstruction is the column, and the record says why.
   M3 projection  season-pool per-game line (SEASON_POOL, the brief's blended lines) x each remaining game x today's
                  availability from the status file (no row: 1.0, the brief's rule); the same ten-slot fill each day;
-                 IL counts 0 (D-IS-8).
+                 IL counts 0 (D-IS-8). Owner 2026-11-16 ("Build both fixes"): on a day after today, a player whose ESPN
+                 return date (espn_injuries_<date>.json beside the status file) is on or before that day counts 1.0;
+                 no return date keeps today's tag all week. A team's unpooled rows (auto-row players) count through
+                 their pool line; an IL-slot unpooled row counts 0.
   M4 percentages FG% and FT% are total makes / total attempts, actual plus projected; makes projected as line % x
                  attempts.
   M5 leader      higher final wins; TO lower wins; equal (or no attempts) is a tie. Point estimates, no probability.
@@ -316,6 +319,20 @@ def _status_range(mine, sched, avail, lines, me_now, opp_now, opp_rem, me_rem):
     return dict(players=[dict(player=n, availability=avail[n]) for n in part], plays=end(1.0), sits=end(0.0))
 
 
+RETURNS = "__espn_returns__"   # owner 2026-11-16: avail's reserved key, {"today": date, "players": {name: return date}}
+
+
+def day_avail(avail, d):
+    """Owner 2026-11-16 (card: "Build both fixes"): the availability map for day d. Today keeps today's tags; on a
+    later day a player whose ESPN return date falls on or before d plays (1.0); no return date keeps today's tag (the
+    card's rule before 2026-11-16). avail without the reserved key is returned as given."""
+    r = avail.get(RETURNS)
+    if not r or d <= r["today"]:
+        return avail
+    back = {n: 1.0 for n, rd in r["players"].items() if rd and rd[:10] <= d}
+    return dict(avail, **back) if back else avail
+
+
 def remaining(roster, sched, avail, lines):
     """roster: [{player, team, positions, value}]; sched: {date: set of teams playing}; avail: {player: probability}
     (missing = 1.0); lines: {player: per-game line}. Expected totals under M3, each player's projected starts, and
@@ -325,11 +342,12 @@ def remaining(roster, sched, avail, lines):
     t, games, started = {k: 0.0 for k in STATS}, {}, {}
     var = {k: 0.0 for k in list(COUNT) + ["fg_mk", "ft_mk"]}
     for d in sorted(sched):
-        cand = [dict(r, availability=avail.get(r["player"], 1.0)) for r in roster if r["team"] in sched[d]]
+        av = day_avail(avail, d)
+        cand = [dict(r, availability=av.get(r["player"], 1.0)) for r in roster if r["team"] in sched[d]]
         counted, _ = _fill(cand)
         started[d] = counted
         for n in counted:
-            a, g = avail.get(n, 1.0), per_game(lines[n])
+            a, g = av.get(n, 1.0), per_game(lines[n])
             t = {k: t[k] + g[k] * a for k in STATS}
             games[n] = games.get(n, 0) + 1
             for c, k in COUNT.items():
@@ -686,6 +704,20 @@ def _sha(p):
     return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
 
 
+def _return_dates(status_file, P):
+    """Owner 2026-11-16: ESPN's expected return dates from the injury feed pinned beside the day's status file
+    (espn_injuries_<date>[_pm].json), resolved to pool names. No file: {file: None, players: {}}."""
+    if not status_file:
+        return dict(file=None, players={})
+    f = os.path.join(os.path.dirname(status_file), os.path.basename(status_file).replace("status_", "espn_injuries_", 1))
+    if not os.path.exists(f):
+        return dict(file=None, players={})
+    rows = [r for r in (json.load(open(f, encoding="utf-8")).get("rows") or []) if r.get("return_date")]
+    import league_intake as LI
+    res, _ = LI.resolve([r["player"] for r in rows], P, {})
+    return dict(file=os.path.basename(f), players={res[r["player"]]: r["return_date"][:10] for r in rows if r["player"] in res})
+
+
 def _status(status_dir, date):
     files = sorted(f for f in glob.glob(os.path.join(status_dir, "status_*.json"))
                    if os.path.basename(f)[len("status_"):-len(".json")] <= date)
@@ -782,6 +814,16 @@ def build(date, paths, capture=None):
                 unpooled.append(p["player"]); continue
             out.append(dict(player=p["player"], team=p["yahoo_nba_team"], positions=p["positions"],
                             value=zsum(p["player"]), adj=CG.hoops.adj_value(by[p["player"]], ())))
+        # owner 2026-11-16 (card: "Build both fixes"): the team's unpooled rows (a rostered player the pooled list
+        # does not carry, e.g. Mario Hezonja 2026-11-15) count through their pool line (the auto row) when one exists
+        for u in t.get("unpooled") or []:
+            if (u.get("slot") or "").upper() == "IL":
+                continue
+            if u["player"] not in by:
+                unpooled.append(u["player"]); continue
+            out.append(dict(player=u["player"], team=u.get("nba_team"),
+                            positions=u.get("positions") or [x.strip() for x in by[u["player"]]["pos"].split(",")],
+                            value=zsum(u["player"]), adj=CG.hoops.adj_value(by[u["player"]], ())))
         return out
     mine, theirs = active(me_t), active(opp_t)
 
@@ -829,6 +871,8 @@ def build(date, paths, capture=None):
     else:
         status, status_file = _status(paths["status"], date)
     avail = {r["player"]: r["availability"] for r in status.get("rows", [])}
+    return_dates = _return_dates(status_file, P)
+    avail[RETURNS] = {"today": date, "players": return_dates["players"]}
     lines = {p["player"]: p for p in P}
     me_rem, opp_rem = remaining(mine, sched, avail, lines), remaining(theirs, sched, avail, lines)
     me_fin, opp_fin = add(me_now, me_rem["totals"]), add(opp_now, opp_rem["totals"])
@@ -898,6 +942,7 @@ def build(date, paths, capture=None):
 
     # today's lineup (owner 2026-10-22, the 3 PM check): Yahoo's slots against the best fill of today's games
     slot = {p["player"]: p["slot"] for p in me_t["players"]}
+    slot.update({u["player"]: u.get("slot") or "BN" for u in me_t.get("unpooled") or []})   # owner 2026-11-16
     me_slots = [dict(player=r["player"], slot=slot[r["player"]], positions=r["positions"], team=r["team"]) for r in mine]
     playing = sched.get(date, set())
     value = {r["player"]: r["value"] for r in mine}
@@ -930,7 +975,9 @@ def build(date, paths, capture=None):
         date=date, week=wk, window=[ws, we], me=dict(name=me_t["name"], seat=me_t["seat"]),
         opponent=dict(name=opp_t["name"], seat=opp_t["seat"]), league_state_as_of=state.get("as_of"),
         to_date_days=read, missing_days=missing, to_date_source=src, remaining_days=[d for d in rem_days if sched[d]],
-        status_file=os.path.basename(status_file) if status_file else None, cats=cats,
+        status_file=os.path.basename(status_file) if status_file else None,
+        return_dates=dict(file=return_dates["file"], players={n: d for n, d in return_dates["players"].items()
+                                                              if n in {r["player"] for r in mine + theirs}}), cats=cats,
         projected=dict(wins=W, losses=L, ties=len(CATS) - W - L), exp_cats=sum(chance[c] for c in CATS),
         p_5plus=win_week_chance([chance[c] for c in CATS]), status_range=status_range, adds_this_week=adds, pair_checks=checks,
         lineup_gap=lineup_gap((y_left or {}).get("me"), sum(me_rem["games"].values())),
@@ -949,8 +996,8 @@ def build(date, paths, capture=None):
             rebuild=("a day with Yahoo's pinned lineup counts its active slots (not BN, IL or IL+); any other day "
                      "counts every non-IL player on today's roster who played, ten per day by the daily-fill rule "
                      "when more played; each day's source is in rebuild_rosters"),
-            projection="season-pool per-game line x each remaining game x today's status availability; ten-slot "
-                       "daily fill; IL counts 0",
+            projection="season-pool per-game line x each remaining game x today's status availability (a later day: 1.0 "
+                       "from the ESPN return date on); ten-slot daily fill; IL counts 0; unpooled rows through their pool line",
             percentages="total makes / total attempts, actual plus projected",
             drop="no game left this week and board value below the active roster's median",
             chances=("P(win) per category: the normal approximation on the final totals; to date fixed, the remaining "
