@@ -1,0 +1,79 @@
+{
+ "attack": "A-10 IL-return scenario known answers",
+ "date": "2026-11-12",
+ "inputs": {
+  "state": "data/league_state.json",
+  "state_as_of": "2026-11-12",
+  "espn": "data/status/espn_injuries_2026-11-12.json",
+  "pool": "data/season/pool_season.csv",
+  "seasons": 10000,
+  "seeds": [
+   2026,
+   2027
+  ],
+  "n_il": 22
+ },
+ "fingerprint": {
+  "deck_head": "01483de",
+  "kit_sha256": {
+   "scripts/il_return.py": "fee0dbcba0c5cdb6240e288549ef02e550a2dcdea186a1f54dd60e0a0ef3ab9b"
+  }
+ },
+ "checks": {
+  "never_equals_brief_headline": {
+   "ok": true,
+   "never": {
+    "2026": 20.56,
+    "2027": 19.92
+   },
+   "brief": {
+    "2026": 20.56,
+    "2027": 19.92
+   }
+  },
+  "week1_no_room_equals_include_il": {
+   "ok": true,
+   "a": {
+    "2026": 34.6,
+    "2027": 33.62
+   },
+   "b": {
+    "2026": 34.6,
+    "2027": 33.62
+   },
+   "note": "exact: identical windows give identical models and draws"
+  },
+  "after_last_week_equals_headline": {
+   "ok": true,
+   "a": {
+    "2026": 20.56,
+    "2027": 19.92
+   },
+   "b": {
+    "2026": 20.56,
+    "2027": 19.92
+   }
+  },
+  "seat10_only_within_error_of_never_or_above": {
+   "ok": true,
+   "seat10_only_on_time": 38.53,
+   "never": 20.24,
+   "error": 0.56,
+   "note": "the owner's own IL players returning must not lower his title odds beyond sampling error"
+  },
+  "seat10_monotonic_within_error": {
+   "ok": null,
+   "retired": "2026-11-11: the +2 wk and +4 wk worlds are no longer run"
+  },
+  "two_seeds_spread": {
+   "never": 0.64,
+   "on_time": 1.24,
+   "seat10_only_on_time": 0.76,
+   "on_time_rule_flipped": 0.79,
+   "check_week1_no_room": 0.98,
+   "check_include_il": 0.98,
+   "check_after_last_week": 0.64
+  }
+ },
+ "verdict": "PASS"
+}

@@ -6,7 +6,7 @@ Pull window: 2026-11-16 → 2026-11-16 (no pull: kit main efe4356, deck main c93
 
 **Method up front.** Stated to the owner before any run (plan table in the session): the sweep runs `scripts/redteam/sweep.py --season … --real-schedule …`, 6,000 seasons x seeds 2026 and 2027, on this morning's pinned inputs from season/daily `report/after-reports/redteam-2026-11-16-season/` (league state sha b84f453f, season pool dbe05f8d, schedule 11e5bece; the derived picks file a12ecf58 matches the 5 AM record), deck at the change commit 9a009af. Basis: the same inputs as the 5 AM sweep (deck c933f07), so the engine change is the only difference between the two records. Tests were edited first and seen failing on the old engine, then the code changed. Mid-run, one owner card: the stale attack list (section 4).
 
-**Verdict: the change is built and green on both repositories. On today's rosters the owner's title share moves from 14.8% to 17.1% (sweep baselines, mean of two seeds: 14.95 / 14.60 → 17.70 / 16.55; the 10k references agree, 14.69 / 14.52 → 17.26 / 16.63, +2.3). This is a method change, not a league event. weekly_availability stays FRAGILE, now through its risk tier only. The kit PR cannot merge yet: the attack gate fails because the engine changed under 9 of the 11 standing attacks (owner card: "Report it, decide later").**
+**Verdict: the change is built and green on both repositories. On today's rosters the owner's title share moves from 14.8% to 17.1% (sweep baselines, mean of two seeds: 14.95 / 14.60 → 17.70 / 16.55; the 10k references agree, 14.69 / 14.52 → 17.26 / 16.63, +2.3). This is a method change, not a league event. weekly_availability stays FRAGILE, now through its risk tier only. The 11 standing attacks were re-run on the new engine on the owner's word. All are CURRENT and every gate passes. Two decision findings: one swap verdict is now conditional (A-6), and the 11-12 drop order's top two swapped inside a near-tie (A-11), section 9.**
 
 Runner impact: code-only — tomorrow's morning run sweeps and simulates on the new tiers once the deck PR is merged; the title watch names the registry change as a METHOD CHANGE (checked: `title_watch.registry_changes` on main vs this branch returns the one `arena.weekly_availability` row). No step, record schema or Runner prompt changes.
 
@@ -55,7 +55,7 @@ Reading it:
 - **The healthy tier no longer matters much** (+0.4, +0.1). The title share now hangs on the risk tier: its old value is 2.7 points down, its unfloored fit 1.8 up.
 - **Two constants moved from ROBUST to SENSITIVE**, TEAM_WEEK_SHOCK (-1.2) and PCT_MIX_INFL (+1.1). Neither was touched. INFERENCE: both sit about 1.5 SE (shift SE about 0.76 points if the runs are independent) from the 1-point line they crossed, so the new tier may be noise as much as the new availability mix. The Monday sweep will show which.
 
-## 4. The standing attack list: STALE by design (owner card)
+## 4. The standing attack list: STALE at first (owner card), then re-run (section 9)
 
 `run_attacks.py --check` on deck 9a009af: every record is fingerprinted to the engine, so the change marked all 11 STALE. EVIDENCE: the check's output, 2026-11-16. A-1 (`rt_math.py`) and A-9 (the from-spec simulator `attacker.py`, `SPEC.md`) also hard-code 0.88 / 0.75, so re-running them unchanged would fail on the new engine.
 
@@ -74,7 +74,7 @@ The season sweep the owner ordered (section 3) is a separate record. It does not
 
 Out of scope by design:
 - Minor knock stays 0.79 (owner). It was derived 2026-10-13 as a share of the old 0.88-to-0.75 gap and now sits 0.01 below healthy (measured 0.885, n 26). Flagged, not changed.
-- Re-running the 9 stale attacks, regenerating the deck's draft 10k references, and decision robustness (red-team step 5) for the week-5 advice under the new band. All three are on the decision sheet.
+- Decision robustness (red-team step 5) for today's week-5 advice under the new band. A-6 and A-11 cover the standing decisions (section 9); the 11-16 advice was not re-run.
 - The board's ranking discount (`hoops.availability`: 1.0 / 0.85 / 0.78) is a separate constant and is not changed. The registry's D-PM-4 reconciliation note still applies.
 
 In scope and unverified:
@@ -85,19 +85,49 @@ In scope and unverified:
 
 ## 6. Gates
 
-The gate record is `gates.json` (this branch). Its verdict is quoted in the PR body. **Two gates are known FAILs with one cause**, the stale attack list (section 4, owner card):
-- `redteam attacks`: A-1 to A-6 and A-8 to A-11 STALE on engine 9a009af.
-- `kit check_claims --gate`: CL-6 ("the red team's attack records describe the live engine") reads FALSIFIED, because the latest `run_attacks` row is that FAIL. The same thing happened on 2026-10-21 (`after-report-2026-10-21-council-fixes.md`, D-RT-STALE).
-
-The other gates pass: kit check_report, claim receipts, redteam constants (53 = 53 on 9a009af), redteam bands (the FRAGILE band quoted). Kit suite: 1,244 tests OK (2 skipped).
+The gate records are `gates.json` in each repository, quoted in each PR body. The first run, before the attacks were re-run, had two known FAILs with one cause (the stale attack list; `check_claims` CL-6 falls with it, as on 2026-10-21, D-RT-STALE). After the re-run (section 9), every gate passes: kit check_report, claim receipts, redteam constants (53 = 53), redteam bands, redteam attacks (11 of 11 CURRENT), check_claims (7 of 7 as expected). The deck record adds the deck and kit tests that pin the tiers. Kit suite: 1,244 tests OK (2 skipped).
 
 ## 7. Decisions for the owner
 
-1. **Merge the deck PR, then the kit PR, on your word.** Both PRs' gate records (deck `gates.json` with the deck and kit tests added, kit `gates.json`) carry the same two known FAILs. Rule 7 (in both repositories) refuses both merges until decision 2 is taken. Records made on deck 9a009af stay CURRENT after the merge, because the check compares the commit that last changed the engine files. So the attacks can be re-run before either merge.
-2. **The stale attacks.** (a) Re-run them on the new engine: A-1 and A-9 with their spec updated to 0.80 / 0.65, and the deck's draft 10k references regenerated for A-8. (b) Leave them STALE until the Monday sweep.
+1. **Merge the deck PR, then the kit PR, on your word.** Both gate records pass (section 6).
+2. **A-6, Draymond Green for Braun (the 10-19 draft pickup):** now conditional on the games shock, negative on one seed with no shock (section 9). Record it as conditional, or re-test it at 10,000 seasons to separate it from noise.
 3. **Minor knock at 0.79,** 0.01 below healthy. Keep it, or re-derive it on the new gap (0.80 - 0.15 x 0.15 / 0.22 ≈ 0.70)? The measurement (0.885, n 26) is thin.
 4. **The fit's pooling across the tier change** (section 5). (a) Pool by tier name, so weeks 1-4 and week 5 on count together. The measured share is the players', not the assumption's, so this is a small change to `fit_constants.py`. (b) Leave it keyed by value, so each assumption gets a fresh measurement.
 
 ## 8. Provenance
 
-Produced by one Claude Code session on 2026-11-16 (session model A), at the owner's order above. Records beside this report: `availability-tiers-2026-11-16/sweep.json`, `sweep.log`, `sweep_before_0500.json` (copied from season/daily `redteam-2026-11-16-season/sweep.json`). Re-verify: `python3 scripts/redteam/check_constants.py` (expect 53 = 53 on the deck commit that carries 0.80 / 0.65); `python3 scripts/redteam/check_bands.py --report <this> --sweep report/after-reports/availability-tiers-2026-11-16/sweep.json`; `git show origin/season/daily:report/fits/fit_week4.json` for the fit.
+Produced by one Claude Code session on 2026-11-16 (session model A), at the owner's order above. Records beside this report: `availability-tiers-2026-11-16/sweep.json`, `sweep.log`, `sweep_before_0500.json` (copied from season/daily `redteam-2026-11-16-season/sweep.json`). Section 9's records sit beside each attack's script (old ones as `*_pre-2026-11-16-tiers.json`); scratch work for A-10 and A-11 was a worktree of season/daily 0e21df1. Re-verify: `python3 scripts/redteam/run_attacks.py --check` (expect 11 CURRENT on the deck that carries 9a009af); `python3 scripts/redteam/check_constants.py` (expect 53 = 53 on the deck commit that carries 0.80 / 0.65); `python3 scripts/redteam/check_bands.py --report <this> --sweep report/after-reports/availability-tiers-2026-11-16/sweep.json`; `git show origin/season/daily:report/fits/fit_week4.json` for the fit.
+
+## 9. The attacks re-run on the new engine (owner: "Re-run the stale attacks on the new engine")
+
+Stated before the run: each attack re-runs on the same inputs as its current record, so only the engine changes. Those inputs are the draft state 100 and pool v69 (A-1 to A-6, A-8, A-9), the 11-12 evening records (season/daily 0e21df1) for A-10 and A-11, and each script's own seasons and seeds. Old records are kept beside the new ones as `*_pre-2026-11-16-tiers.json`, and each attack's history row in `scripts/redteam/attacks.json` says what changed. `run_attacks.py --check`: **PASS, 11 of 11 CURRENT** (engine files last changed 9a009af).
+
+| Attack | Change needed | Result on the new engine |
+|---|---|---|
+| A-1 known-answer math | known-answer tiers 0.80 / 0.65 | z, availability, owner week FG% and PTS mean and variance equal to the last digit |
+| A-2 line join | none | 0 line differences on 309 rows, as before |
+| A-3 card vs simulator | none | every category at 50%; max gap 0.023 / 0.026 (was 0.036 / 0.038); rank agreement 0.972 / 0.979 |
+| A-4 ties | none | 0.177 / 0.180 tied categories per matchup (was 0.175 / 0.176) |
+| A-5 structural sensitivity | patch keys to 0.80 / 0.65 (on the old keys every tier variant was a silent no-op); tier variants = the new band; new reference | baseline 25.67 / 26.07 within 3 SE of 26.11 / 26.26; shock is the widest (+6.1 / +4.7 with no shock) |
+| A-6 decision robustness | "no discount" lifts risk to 0.80 | **Jalen Johnson for Durant positive everywhere (smallest +0.18). Draymond Green for Braun is NOT: no shock gives -0.18 / +0.67** |
+| A-7 constants | none | 53 = 53 |
+| A-8 draft sweep | new reference (`_scv_t8065`, 25.52 / 25.68) | baseline within 3 SE; TEAM_WEEK_SHOCK FRAGILE +2.4 / -3.4; weekly_availability SENSITIVE (worst -1.5) |
+| A-9 separate-attacker simulator | SPEC.md rules 4, 6, 7 and attacker.py to 0.65 / 0.65 / 0.80 | every exact section PASS; seasons max abs z 2.21; same-seed stream 12 of 12 |
+| A-10 IL-return known answers | brief headline recomputed on the live engine (daily_brief's section-5 code path, 22.23 / 21.36) | 4 of 4 live checks PASS |
+| A-11 drop order | the new band overlaid on the 11-12 registry | **top two swap inside a near-tie; rule's pick last 21 of 22** |
+
+Known answers on the new references (EVIDENCE: deck commit 56b3a6b). `league_sim --verify` passes on all four new files. The new engine with the tiers patched back to 0.88 / 0.75 reproduces the four old reference files seat for seat. In A-5 and the season sweep, the engine points shared with the old records reproduce them to the hundredth.
+
+**A-6 finding.** Under "no shared games shock", Draymond Green for Braun is -0.18 on seed 2026 and +0.67 on 2027. The mean is +0.25, against the difference's MC SE of 0.76. The old record's smallest value was +0.42. Per the red-team rule, a verdict that flips sign under a plausible constant is reported as conditional. INFERENCE: the 10-19 pickup's value now rests on the games shock being non-zero. A separate cross-check (`attacks/` scratch, 2026-11-16) found this swap's shipped-setting figure (26.32 / 27.82) equal to A-5's "healthy 0.78" variant on both seeds. Every other seat differs between the two runs, so it is a coincidence of shared random streams, not a shared computation.
+
+**A-11 finding.** On the same 11-12 records (state, pool and schedule sha equal to the old record), the baseline order of the top two swaps:
+
+| | Old engine | New engine |
+|---|---|---|
+| Queta + Cam Johnson / Champagnie + Queta (title %) | 28.10 / 27.93 | 29.42 / 29.51 |
+| Best pair across 22 seed-runs | 18 / 3 / 1 | 11 / 9 / 2 (Queta + CJ / Champagnie + Queta / Champagnie + CJ) |
+| Rule's pick last | 22 of 22 | 21 of 22 |
+
+The top two were within 0.2 points before and are within 0.1 now, so on both engines they are a near-tie. The 11-12 conclusion that any of the three pairs beats the rule's pick still holds in 21 of 22 seed-runs. The decision itself is past: today's roster no longer carries Champagnie (season/daily `data/league_state.json`, as of 2026-11-16).
+
+A-9 caveat: the three amended numbers in `attacker.py` were edited by this session, which had read `arena.py`. Independence for those three is not fresh. The rest of the attacker is the 10-21 separate attacker's. A-1 keeps its pre-existing recovery 0.60 (the engine has used 0.0 since 10-21). It is untested here because no recovery-tagged player is on the checked roster; flagged, not changed.

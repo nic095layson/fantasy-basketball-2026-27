@@ -36,8 +36,9 @@ POOL = "arena/results/players_v69.csv"
 # The 10k reference of the engine the sweep runs on (league_sim.py --verify, 17 weeks, reseeded). Regenerated when the
 # engine moves the reference: _av0 = recovery and out-* at 0.0 (2026-10-21); _scv = the same on arena.SEASON_CV, the
 # season tools' per-game variation fitted to the 2025-26 game logs (D-ZS-3, 2026-10-21); the _w17r and _av0 files keep
-# the figures that earlier reports cite.
-REFERENCE = "arena/results/m100_league_sim_10k_s{seed}_w17r_av0_scv.json"
+# the figures that earlier reports cite. _t8065 = the same on the availability tiers 0.80 / 0.65 (owner pick 2026-11-16);
+# the current engine patched back to 0.88 / 0.75 reproduces the _av0_scv files seat for seat.
+REFERENCE = "arena/results/m100_league_sim_10k_s{seed}_w17r_av0_scv_t8065.json"
 OWNER_SEAT = 10
 TIERS = ((1.0, "ROBUST"), (2.0, "SENSITIVE"))
 

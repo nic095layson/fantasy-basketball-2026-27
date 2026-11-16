@@ -53,7 +53,7 @@ st=json.load(open(f"{DECK}/arena/data/states/draft_state_100.json")); mine=[eby[
 mu,var=arena.team_week_model(mine); w=arena.daily_fill_weights(mine)
 def wa(p):
     t=hoops.note_tag(p.get("note"));
-    return 0.79 if "mild" in t else 0.60 if "recovery" in t else 0.75 if "risk" in t else 0.88
+    return 0.79 if "mild" in t else 0.60 if "recovery" in t else 0.65 if "risk" in t else 0.80  # healthy/risk per the owner's 2026-11-16 pick
 mk=sum(w[id(p)]*p["fg_pct"]*p["fga"]*3.5*wa(p) for p in mine); at=sum(w[id(p)]*p["fga"]*3.5*wa(p) for p in mine)
 naive=sum(p["fg_pct"] for p in mine)/len(mine)
 pts=sum(w[id(p)]*p["pts"]*3.5*wa(p) for p in mine)

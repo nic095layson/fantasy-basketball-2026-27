@@ -25,7 +25,7 @@ def run(args):
     patch=VARIANTS[var]
     for k,v in patch.get("const",{}).items(): setattr(arena,k,v)
     if patch.get("avail"):
-        orig=arena.weekly_availability; arena.weekly_availability=lambda p,orig=orig:(0.88 if orig(p)==0.75 else orig(p))
+        orig=arena.weekly_availability; arena.weekly_availability=lambda p,orig=orig:(0.80 if orig(p)==0.65 else orig(p))  # risk like healthy; live tiers since 2026-11-16
     champ,po=arena.simulate_seasons(ros,SEASONS,random.Random(sd))
     return swap,var,sd,100*champ[10]/SEASONS
 if __name__=="__main__":
