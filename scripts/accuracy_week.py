@@ -226,7 +226,8 @@ def render(rec):
         # a week graded before a snapshot column existed (week 1 predates candidate_minutes) renders "no snapshot"
         L.append(f"| {k} | {r['preseason']['players']} | " + " | ".join(cell((r.get(x) or {}).get("cats", {}).get("pts", {})) for x in ("preseason", "in_season", "candidate_minutes")) + " |")
     L += ["", "Switch rule (D-ML-1, pre-committed 2026-10-27): the minutes candidate replaces nothing until its MAE beats the "
-          "in-season line's on PTS, REB and AST in 3 of 4 consecutive graded weeks, on the owner's word."]
+          "in-season line's on PTS, REB and AST in 3 of 4 consecutive graded weeks, on the owner's word. Met in weeks 2, 3 and "
+          "4; switched on PTS, REB and AST on 2026-11-16 (owner: \"Switch now\"). From week 6 the in-season line carries it."]
     L += ["", "## Player lines: threes made per game (projected / actual, bias, MAE, rank correlation)", "",
           "| week | players | in-season | bias | MAE | rank | threes-split candidate | bias | MAE | rank |",
           "|---|---|---|---|---|---|---|---|---|---|"]

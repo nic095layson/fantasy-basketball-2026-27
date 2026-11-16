@@ -69,6 +69,34 @@ def gscores(rows, pool, pin):
     return out
 
 
+SCALE_CATS = RE.COUNTING + ["fg_imp", "ft_imp", "tov"]
+
+
+def scale_of(pool):
+    """Owner 2026-11-16 (card: "Grade from box scores"): the z scale RE.zscores uses on this pool (volume-weighted pool
+    FG% and FT%, and the population mean and SD of each scored column), so a line the board does not carry can be
+    scored on it (score_line). Rounded nowhere: score_line reproduces each row's z exactly."""
+    fgp = sum(r["fgp"] * r["fga"] for r in pool) / max(sum(r["fga"] for r in pool), 1e-9)
+    ftp = sum(r["ftp"] * r["fta"] for r in pool) / max(sum(r["fta"] for r in pool), 1e-9)
+    imp = lambda r: dict(r, fg_imp=(r["fgp"] - fgp) * r["fga"], ft_imp=(r["ftp"] - ftp) * r["fta"])
+    rows = [imp(r) for r in pool]
+    ms = {}
+    for c in SCALE_CATS:
+        v = [r[c] for r in rows]; m = sum(v) / len(v)
+        ms[c] = [m, math.sqrt(sum((x - m) ** 2 for x in v) / len(v)) or 1.0]
+    return dict(pool_fgp=fgp, pool_ftp=ftp, mean_sd=ms)
+
+
+def score_line(line, scale):
+    """{category: z} for a per-game line ({fgp, fga, ftp, fta, tpm, pts, reb, ast, stl, blk, tov}) on a board's scale."""
+    ms = scale["mean_sd"]
+    z = {c: (line[c] - ms[c][0]) / ms[c][1] for c in RE.COUNTING}
+    z["fgp"] = ((line["fgp"] - scale["pool_fgp"]) * line["fga"] - ms["fg_imp"][0]) / ms["fg_imp"][1]
+    z["ftp"] = ((line["ftp"] - scale["pool_ftp"]) * line["fta"] - ms["ft_imp"][0]) / ms["ft_imp"][1]
+    z["tov"] = -((line["tov"] - ms["tov"][0]) / ms["tov"][1])
+    return z
+
+
 def build(path, gscore_path=GSCORE):
     rows = RE.load(path)
     rows, held = RE.exclude_held(rows)
@@ -92,7 +120,8 @@ def build(path, gscore_path=GSCORE):
         for i, r in enumerate(sorted(rows, key=lambda r: -r["g_adj"]), 1):
             r["g_rank"] = i
     gmeta = dict(file=os.path.relpath(gscore_path, KIT), **pin) if pin else None
-    return dict(board=board, n_held=len(held), held=sorted(r["name"] for r in held), n_rows=len(rows) + len(held), gscore=gmeta)
+    return dict(board=board, n_held=len(held), held=sorted(r["name"] for r in held), n_rows=len(rows) + len(held), gscore=gmeta,
+                scale=scale_of(pool))
 
 
 def render(b, date, lines_rel, movers):
@@ -135,6 +164,7 @@ def write(lines_path, date, out_dir, movers, gscore_path=GSCORE):
     rec = dict(date=date, lines=os.path.relpath(lines_path, KIT), n_rows=b["n_rows"], held=b["held"])
     if b["gscore"]:
         rec["gscore"] = b["gscore"]
+    rec["scale"] = b["scale"]   # owner 2026-11-16: the z scale, so the grader can score a player the board does not carry
     rec["board"] = rows
     with open(js, "w", encoding="utf-8") as f:
         json.dump(rec, f, indent=1, ensure_ascii=False)

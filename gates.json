@@ -1,27 +1,26 @@
 {
- "ran_at_utc": "2026-11-16T15:26:55Z",
+ "ran_at_utc": "2026-11-16T16:52:03Z",
  "inputs": {
-  "report/after-reports/after-report-2026-11-16-confidence.md": "b077db086e96958ea1dad602b8e9b78b0cb78f25446e6742d8b021a187982afe",
-  "report/pull-log.md": "3bacec70b27985a0695ac255feedd207ec175ec8424850a25c487121e39234d3",
+  "report/after-reports/after-report-2026-11-16-owner-picks-builds.md": "0ea3299264636c49c4a6fbb9d0a2785c00a778ca2c04d250628cc36ac71f3c3f",
   "../wtsd/report/after-reports/redteam-2026-11-16-season/sweep.json": "30d9009b00f09cfbe0539b70176b583b24ae3b94983ecee38c38a051156bb3a7"
  },
  "gates": [
   {
    "name": "kit check_report",
-   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-16-confidence.md",
+   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-16-owner-picks-builds.md",
    "cwd": ".",
    "pass_re": "^REPORT GATE: PASS",
    "exit": 0,
-   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-11-16-confidence.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)",
+   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-11-16-owner-picks-builds.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "REPORT GATE: PASS \u2014 after-report-2026-11-16-confidence.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)"
+    "REPORT GATE: PASS \u2014 after-report-2026-11-16-owner-picks-builds.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)"
    ]
   },
   {
    "name": "claim receipts",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/independent_audit/claim_receipts.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-16-confidence.md",
+   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/independent_audit/claim_receipts.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-16-owner-picks-builds.md",
    "cwd": ".",
    "pass_re": "^CLAIM RECEIPTS: (PASS|ADVISORY)",
    "exit": 0,
@@ -51,16 +50,16 @@
    "cwd": ".",
    "pass_re": "^CONSTANTS CHECK: PASS",
    "exit": 0,
-   "pass_line": "CONSTANTS CHECK: PASS \u2014 52 registered = 52 live on deck 01483de; declared_band 5, measured 9, settings 8, structural 6, uncalibrated 24",
+   "pass_line": "CONSTANTS CHECK: PASS \u2014 53 registered = 53 live on deck 01483de; declared_band 5, measured 10, settings 8, structural 6, uncalibrated 24",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "CONSTANTS CHECK: PASS \u2014 52 registered = 52 live on deck 01483de; declared_band 5, measured 9, settings 8, structural 6, uncalibrated 24"
+    "CONSTANTS CHECK: PASS \u2014 53 registered = 53 live on deck 01483de; declared_band 5, measured 10, settings 8, structural 6, uncalibrated 24"
    ]
   },
   {
    "name": "redteam bands",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/redteam/check_bands.py --report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-16-confidence.md --sweep /home/user/wtsd/report/after-reports/redteam-2026-11-16-season/sweep.json",
+   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/redteam/check_bands.py --report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-16-owner-picks-builds.md --sweep /home/user/wtsd/report/after-reports/redteam-2026-11-16-season/sweep.json",
    "cwd": ".",
    "pass_re": "^BANDS CHECK: PASS",
    "exit": 0,
@@ -100,5 +99,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "8ab1d8dfb540c93c7320d12e6201e4ef8faa8fd1"
+ "base_commit": "843c774d85f909d0b0298f58c8b2031a0a359f8b"
 }

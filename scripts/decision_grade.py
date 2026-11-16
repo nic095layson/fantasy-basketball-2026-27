@@ -65,6 +65,26 @@ def board_values(path, aliases=None):
     return vals, box_pull.name_index(list(vals), aliases if aliases is not None else box_pull.load_aliases())
 
 
+def board_scale(path):
+    """The board's z scale (season_board.scale_of), or None for a board written before 2026-11-16."""
+    return json.load(open(path, encoding="utf-8")).get("scale")
+
+
+def box_value(played, team_games, tot, scale):
+    """Owner 2026-11-16 (card: "Grade from box scores"): z_adj of a player the board does not carry, from his box-score
+    games in the window on the board's own scale: the per-game line scored by season_board.score_line, the total
+    times the board's availability factor (rank_engine.avail) at gp = 82 x games played / team games, positive totals
+    only, as the board does. None without a game."""
+    if not played:
+        return None
+    import season_board as SB
+    pg = {k: tot[k] / played for k in ("pts", "reb", "ast", "stl", "blk", "tov", "tpm", "fga", "fta")}
+    pg["fgp"] = tot["fgm"] / tot["fga"] if tot["fga"] else 0.0
+    pg["ftp"] = tot["ftm"] / tot["fta"] if tot["fta"] else 0.0
+    z = sum(SB.score_line(pg, scale).values())
+    return z * SB.RE.avail(82.0 * played / max(team_games, played)) if z > 0 else z
+
+
 def value(name, vals, index):
     hit = box_pull.match_name(name, index) if name else None
     return (vals.get(hit), hit) if hit else (None, None)
@@ -88,7 +108,8 @@ def games_in(name, start, end, actuals=ACTUALS, aliases=None):
         index = box_pull.name_index(sorted({r["pool_name"] for r in rows if r.get("pool_name")}),
                                     aliases if aliases is not None else box_pull.load_aliases())
         hit = box_pull.match_name(name, index) if name else None
-        mine = [r for r in rows if hit and r.get("pool_name") == hit]
+        # owner 2026-11-16: a player the box pull left unpooled (an auto-row pickup) matches on his box-score name
+        mine = [r for r in rows if (hit and r.get("pool_name") == hit) or (name and not r.get("pool_name") and r.get("name") == name)]
         if mine:
             team = mine[0].get("team") or team
         if team and any(r.get("team") == team for r in rows):
@@ -155,9 +176,20 @@ def grade(rec, moves, as_of, boards=BOARDS, actuals=ACTUALS, window=WINDOW_DAYS,
         games[role] = {"name": name, "games": g, "team_games": tg, "totals": tot}
         if v is None:
             missing.append(name)
+    unscaled = []
+    if missing:   # owner 2026-11-16 (card: "Grade from box scores"): off the board, scored on its scale from his games
+        scale = board_scale(bpath)
+        for role, name in players.items():
+            if name in missing:
+                bv = box_value(games[role]["games"], games[role]["team_games"], games[role]["totals"], scale) if scale else None
+                if bv is None:
+                    unscaled.append(name)
+                else:
+                    pv[role].update(z_adj_end=bv, source="box scores on the board's scale")
     row.update(values=pv, games=games, box_days=len(days) if players.get("kit_add") else 0)
-    if missing:
-        row.update(verdict="PENDING", note=f"not on the {bdate} board: {', '.join(missing)}")
+    if unscaled:
+        why = "the board carries no z scale" if not board_scale(bpath) else "he has no game in the window"
+        row.update(verdict="PENDING", note=f"not on the {bdate} board and {why}: {', '.join(unscaled)}")
         return row
     gap_end = pv["kit_add"]["z_adj_end"] - pv["kit_drop"]["z_adj_end"]
     gap_start = (pv["kit_add"]["z_adj_start"] - pv["kit_drop"]["z_adj_start"]
