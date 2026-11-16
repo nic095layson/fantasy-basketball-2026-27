@@ -1,7 +1,7 @@
 {
- "ran_at_utc": "2026-11-16T19:01:13Z",
+ "ran_at_utc": "2026-11-16T19:07:25Z",
  "inputs": {
-  "report/after-reports/after-report-2026-11-16-state-of-system.md": "f36a6561e6e93326037b573baf2f52b04a3b426e79eb6f0bc4a16f9970a277d7",
+  "report/after-reports/after-report-2026-11-16-state-of-system.md": "b8ee3b3ba0572e683349b373288a1a2a0e422832a3d2b98812c4dd1a7ddb1cc6",
   "report/after-reports/state-of-system-2026-11-16/sweep.json": "1223396aa9c4bc7b46f994ffc3de64bba9cff778035c81697e651f049a03fc48"
  },
  "gates": [
@@ -76,11 +76,11 @@
    "cwd": ".",
    "pass_re": "^ATTACKS CHECK: PASS",
    "exit": 0,
-   "pass_line": "ATTACKS CHECK: PASS \u2014 11 attacks on engine 01483de (engine files last changed 95ebade), simulator aa470f8; CURRENT 10, UNFINGERPRINTED 1",
+   "pass_line": "ATTACKS CHECK: PASS \u2014 11 attacks on engine 01483de (engine files last changed 95ebade), simulator aa470f8; CURRENT 11",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "ATTACKS CHECK: PASS \u2014 11 attacks on engine 01483de (engine files last changed 95ebade), simulator aa470f8; CURRENT 10, UNFINGERPRINTED 1"
+    "ATTACKS CHECK: PASS \u2014 11 attacks on engine 01483de (engine files last changed 95ebade), simulator aa470f8; CURRENT 11"
    ]
   },
   {
@@ -99,5 +99,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "b7d8a10f282e46245bad6612fd548c7cab0dbd07"
+ "base_commit": "2eb089a8d8f5219f662eadc3701d5d6919d1f378"
 }

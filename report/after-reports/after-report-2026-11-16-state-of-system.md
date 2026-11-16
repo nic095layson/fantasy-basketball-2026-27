@@ -8,7 +8,7 @@ Pull window: 2026-11-09 → 2026-11-16 (no pull: kit main b7d8a10; the records b
 
 **Verdict: the machinery is sound and grew a lot this week (32 pull requests); the forecasts are a little better than a week ago. The largest finding is today's: the minutes-based line moves the owner's title share from about 14.8% to about 11.8% on the same rosters, a method change, not an event, and tomorrow's title watch will show it as a drop.**
 
-Runner impact: none (a report; nothing the morning or afternoon runs execute changes).
+Runner impact: code-only — the morning title-watch step now names method changes (section 7); no step, record or prompt changes.
 
 Pool rows touched: none
 
@@ -56,7 +56,7 @@ Afternoon checks ran all seven days; the 11-15 afternoon deck was not built beca
 | Check | Result |
 |---|---|
 | Constants registry against the live engine (`check_constants.py`) | PASS, 53 registered = 53 live, deck 01483de |
-| Standing attack list (`run_attacks.py --check`, record `state-of-system-2026-11-16/attacks.json`) | PASS: CURRENT 10 of 11; A-6 (decision robustness) carries no engine fingerprint, as it has since October |
+| Standing attack list (`run_attacks.py --check`, record `state-of-system-2026-11-16/attacks.json`) | PASS: CURRENT 10 of 11 at the start of this audit; A-6 (decision robustness) read UNFINGERPRINTED since October. After the owner's pick, CURRENT 11 of 11 (section 7) |
 | Deck engine between this morning's sweep (c933f07) and this one (01483de) | the two commits differ only in hook files; no engine file differs |
 | Season sweep on the switched lines (`state-of-system-2026-11-16/sweep.json`) | baseline within 3 SE of its 10k reference on both seeds; MC SE 0.54 |
 
@@ -98,7 +98,15 @@ Players graded: 246 to 261 a week. Decision grades at 5 AM: 34 rows, none final 
 | 4 | Attack A-6 (decision robustness) has no engine fingerprint | `attacks.json` | re-run A-6 and fingerprint it |
 | 5 | Four session statements corrected since 11-14, each caught by the owner or the gates | `corrections-log.md` | none beyond the rules already logged |
 
-## 7. Bounds
+## 7. Built on the owner's picks (2026-11-16, cards after section 6)
+
+| Pick | What was done | Check |
+|---|---|---|
+| "Mark method changes (Recommended)" | `title_watch.py` names a METHOD CHANGE first among the causes when the season line's minutes switch differs between the two days' `season_lines_<date>.json`, or when a registered constant was added, removed or changed between the earlier run's commit and now | 5 tests written first and seen failing; on the real records the step reads "line method: the minutes ratio now applies to PTS, REB, AST (before: none)" and "constant season_lines.SWITCH_CATS added", which is what tomorrow's run will compare |
+| "Re-run and stamp it (Recommended)" | A-6 re-run on engine 01483de; `attacks.json` reads its `engine_commit`; the 10-19 record kept as `rt_decisions_2026-10-19.json` | both swap verdicts stay positive under every variant (smallest +0.42 title points); attack list CURRENT 11 of 11 |
+| "New session with deck repo (Recommended)" | not built here: the availability floor needs the deck repository, which this session cannot attach; the hand-off is in the chat answer of 2026-11-16 | none |
+
+## 8. Bounds
 
 Out of scope by design: no line, constant, roster or code changed; the decision card and the brief were not re-run on the switched lines; hypothetical trades (standing owner veto).
 

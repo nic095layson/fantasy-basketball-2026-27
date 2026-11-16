@@ -52,8 +52,12 @@
    "question": "Do the two headline swap verdicts stay positive under every A-5 variant?",
    "script": "report/after-reports/postmortem-2026-10-19/rt_decisions.py",
    "record": "report/after-reports/postmortem-2026-10-19/rt_decisions.json",
-   "commit_field": null,
-   "added": "2026-10-19"
+   "commit_field": "engine_commit",
+   "added": "2026-10-19",
+   "history": [
+    "2026-10-19: first record on engine 259c630 (now rt_decisions_2026-10-19.json); commit_field was left empty, so the runner read it UNFINGERPRINTED although the record carried engine_commit",
+    "2026-11-16 (owner card: 'Re-run and stamp it'): commit_field set to engine_commit; record re-made on engine 01483de. Both swap verdicts stay positive under every variant (smallest +0.42 title points, shock 0.12, seed 2026), as on 10-19"
+   ]
   },
   {
    "id": "A-7",
