@@ -779,6 +779,17 @@ class Record(unittest.TestCase):
         self.assertEqual(pk["pool"]["source"], "kit")
         self.assertGreater(pk["pool_size"], 300)
 
+    def test_a_rostered_player_outside_the_pool_never_enters_the_kits_pickup_pool(self):
+        # owner 2026-11-16: an auto-row player rostered in the league sits in state["unpooled"], not in a team's
+        # players; the kit-pool fallback must not offer him (the waiver-scan twin was fixed in #273)
+        base = WM.build("2026-10-21", dict(self.paths, yahoo_pull=self.pull()))["pickups"]["pool_size"]
+        st = json.load(open(self.state))
+        st["unpooled"] = [dict(player="Jrue Holiday", fantasy_team="THEIRS", seat=10, slot="BN", nba_team="POR")]
+        dump(st, self.state)
+        pk = WM.build("2026-10-21", dict(self.paths, yahoo_pull=self.pull()))["pickups"]
+        self.assertEqual(pk["pool_size"], base - 1)
+        self.assertNotIn("Jrue Holiday", [r["add"] for r in pk["top"]])
+
 
 class MatchupBoard(Record):
     """Owner 2026-10-23 (the Today page as a matchup board): both teams' players by today's slot, each with his week
