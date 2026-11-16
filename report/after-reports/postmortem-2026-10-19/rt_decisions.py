@@ -10,7 +10,7 @@ H=os.path.dirname(os.path.abspath(__file__)); DECK="/home/user/yahoo-fantasy-bas
 sys.path.insert(0,DECK+"/scripts"); sys.path.insert(0,DECK+"/arena")
 SEASONS=6000; SEEDS=(2026,2027)
 SWAPS={"as drafted":[], "Draymond Green for Braun":[("Christian Braun","Draymond Green")], "Jalen Johnson for Durant (#15)":[("Kevin Durant","Jalen Johnson")]}
-VARIANTS={"shock 0.06 (shipped)":{}, "shock 0":{"const":{"TEAM_WEEK_SHOCK":0.0}}, "shock 0.12":{"const":{"TEAM_WEEK_SHOCK":0.12}}, "no in-sim injury discount":{"avail":True}}
+VARIANTS={"shock 0.11 (shipped)":{}, "shock 0":{"const":{"TEAM_WEEK_SHOCK":0.0}}, "shock 0.06":{"const":{"TEAM_WEEK_SHOCK":0.06}}, "shock 0.13":{"const":{"TEAM_WEEK_SHOCK":0.13}}, "no in-sim injury discount":{"avail":True}}
 def run(args):
     swap,var,sd=args
     import importlib, hoops, arena; importlib.reload(arena)

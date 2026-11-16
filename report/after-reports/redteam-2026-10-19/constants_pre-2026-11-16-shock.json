@@ -1,0 +1,47 @@
+{
+ "verdict": "PASS",
+ "engine_commit": "9a009af",
+ "registered": 53,
+ "live": 53,
+ "by_status": {
+  "settings": 8,
+  "structural": 6,
+  "declared_band": 5,
+  "uncalibrated": 24,
+  "measured": 10
+ },
+ "uncalibrated": [
+  "arena.CV",
+  "arena.GRAD_K",
+  "arena.GRAD_SCALE",
+  "arena.MKT_W",
+  "arena.MKT_PIN",
+  "hoops.PAIR_MIN_GAIN",
+  "hoops.PAIR_WAIT_MIN",
+  "hoops.availability",
+  "season_lines.SEASON_GAMES",
+  "minutes_line.HALF_LIFE",
+  "minutes_line.MIN_PRIOR_GAMES",
+  "co_gm.WAIVER_CANDIDATES",
+  "co_gm.ESPN_TIERS",
+  "co_gm.SHORT_OUT_DAYS",
+  "status_feed.TIERS",
+  "decision_grade.WINDOW_DAYS",
+  "decision_grade.LINE",
+  "decision_grade.MIN_GAMES",
+  "il_return.BLEND_WEIGHTS",
+  "il_return.ROOM_RULE_ON",
+  "season_lines.AUTO_MIN_GAMES",
+  "season_lines.AUTO_PRIOR_LO",
+  "season_lines.AUTO_PRIOR_HI",
+  "threes_line.MIN_PRIOR_ATT"
+ ],
+ "declared_band": [
+  "arena.BENCH_WEIGHT",
+  "arena.PCT_MIX_INFL",
+  "arena.TEAM_WEEK_SHOCK",
+  "arena.weekly_availability",
+  "arena.GAMES_PER_WEEK"
+ ],
+ "problems": []
+}

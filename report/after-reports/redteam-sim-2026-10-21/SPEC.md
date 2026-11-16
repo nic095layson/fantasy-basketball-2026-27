@@ -117,7 +117,7 @@ Fixed per team: the §4 models, and `σ_c = sqrt(var_c)`, using 1e-6 where that 
 One season:
 - **17 regular weeks.** Each week, shuffle the 12 teams uniformly and pair them as
   positions (0,1), (2,3), …, (10,11).
-- **A matchup (a, b).** Draw a shared games shock for each team, `s_a, s_b ~ Normal(1, 0.06)`.
+- **A matchup (a, b).** Draw a shared games shock for each team, `s_a, s_b ~ Normal(1, 0.11)` (0.06 until 2026-11-16).
   For each category `c`:
   - the mean is `mu_c` multiplied by the team's shock if `c` is a counting category, and is
     not multiplied for FG% and FT%;
