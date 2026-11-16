@@ -696,16 +696,17 @@ function thisWeek(W){ const K=W.pickups, TW=K&&K.this_week; if(!TW) return null;
   const moved=(dc)=>Object.keys(dc).filter(c=>Math.abs(dc[c])>=0.005).sort((a,b)=>Math.abs(dc[b])-Math.abs(dc[a])).map(c=>c+" "+swk(dc[c],2)).join(", ")||"none";
   const da=TW.drop_alone||{}, das=Object.keys(da).map(d=>d+" "+swk(da[d],2));
   return [h("p",{},h("b",{},"Best adds this week")," ("+Math.min(8,TW.rows.length)+" of "+TW.pool_size+" scored):",
-      more("Each free agent from tomorrow in place of the lower-valued player whose drop helps most, by the change in expected categories won against "+W.opponent.name+" ("+TW.pool_size+" scored; best "+Math.min(8,TW.rows.length)+" shown).")),
+      more("Each free agent in place of the lower-valued player whose drop helps most, by the change in expected categories won against "+W.opponent.name+" ("+TW.pool_size+" scored; best "+Math.min(8,TW.rows.length)+" shown). Games: \"today\" = drop and add before tip today (his team plays today and that timing is better); \"from tomorrow\" = keep the drop's game tonight and swap after it.")),
     TW.rows.length? h("div",{class:"tablebox"},h("table",{},
       h("tr",{},h("th",{},"move"),h("th",{class:"num",title:"Δ cats = the change in expected categories won this week (the sum of the nine changes in each category's chance); categories moved = those changes, largest first; season = the change in expected weekly categories over the season against the other eleven teams, the cost or gain beyond this week. Chances are normal approximations on the projected finals, with the variation of each remaining game (season per-game CV); the league allows 4 adds a week."},"Δ cats",more("Δ cats = the change in expected categories won this week (the sum of the nine changes in each category's chance); categories moved = those changes, largest first; season = the change in expected weekly categories over the season against the other eleven teams, the cost or gain beyond this week. Chances are normal approximations on the projected finals, with the variation of each remaining game (season per-game CV); the league allows 4 adds a week.")),h("th",{class:"num"},"games"),h("th",{class:"num"},"drop's part"),h("th",{class:"num"},"season"),h("th",{},"categories moved")),
       TW.rows.slice(0,8).map(r=>h("tr",{},h("td",{style:"white-space:normal;min-width:9em"},r.add+" ("+r.team+")"+(r.status?" · "+r.status:"")+(r.missed?" · sat out "+r.missed:""),waiverChip(r.add),
           h("div",{class:"note"},"for "+r.drop,goneChip(r.drop))),
-        h("td",{class:"num"},swk(r.d_exp,2)),h("td",{class:"num"},String(r.games)),h("td",{class:"num"},swk(r.d_exp_drop,2)),
+        h("td",{class:"num"},swk(r.d_exp,2)),h("td",{class:"num"},String(r.games)+(r.timing==="same day"?" · today":r.timing?" · from tomorrow":""),
+          r.other_timing? h("div",{class:"note"},r.other_timing.games+" if "+r.other_timing.timing) : null),h("td",{class:"num"},swk(r.d_exp_drop,2)),
         h("td",{class:"num"},r.season_d_ecw==null?"—":swk(r.season_d_ecw,3)),h("td",{style:"white-space:normal;min-width:10em"},moved(r.d_cat)))))) : h("div",{class:"zero"},"No free agent has a playable game after today."),
     das.length? noteMore("Dropping with nobody added (from tomorrow): "+das.join("; "),
       "A positive figure means that player's remaining games cost you categories this week; it is part of every move that drops him.") : null,
-    (TW.no_games||[]).length? h("p",{class:"note"},"No playable game after today, so not ranked: "+TW.no_games.join(", ")+".") : null,
+    (TW.no_games||[]).length? h("p",{class:"note"},"No playable game left this week, so not ranked: "+TW.no_games.join(", ")+".") : null,
     null];
 }
 

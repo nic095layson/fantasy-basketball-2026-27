@@ -270,10 +270,38 @@ class ThisWeek(unittest.TestCase):
         me_now, opp_now, roster, lines, sched, fas = self._fixture()
         opp_rem = dict(totals=box(), var={k: 0.0 for k in ("3PTM", "PTS", "REB", "AST", "ST", "BLK", "TO", "fg_mk", "ft_mk")})
         by = {r["add"]: r for r in WM.scan_this_week(me_now, opp_now, opp_rem, roster, ["Done"], fas, sched, "t0", {}, lines)}
-        for n in ("TodayOnly", "Idle"):        # PHX plays only today (the swap starts tomorrow); MIA never
-            self.assertEqual(by[n]["drop"], "Done")
-            self.assertEqual(by[n]["games"], 0)
-            self.assertEqual(by[n]["d_exp"], 0.0)
+        # MIA never plays: nothing either way
+        self.assertEqual((by["Idle"]["drop"], by["Idle"]["games"], by["Idle"]["d_exp"]), ("Done", 0, 0.0))
+        # owner 2026-11-16 ("Price both timings"): PHX plays only today. The swap after tonight gives him nothing; a
+        # same-day swap (drop and add before tip; the league counts a same-day add made before the game) gives him today
+        t = by["TodayOnly"]
+        self.assertEqual((t["timing"], t["games"], t["drop"]), ("same day", 1, "Done"))
+        self.assertGreater(t["d_exp"], 0.0)
+        self.assertEqual(t["other_timing"], dict(timing="after tonight", d_exp=0.0, games=0))
+
+    def test_an_add_who_does_not_play_today_keeps_the_after_tonight_rule(self):
+        # LAL plays today and later, PHX only today, MIA never: a team with no game today has nothing to gain from a
+        # same-day swap, and the drop keeps his game tonight
+        me_now, opp_now, roster, lines, sched, fas = self._fixture()
+        sched = {"t0": {"BOS", "DEN", "PHX"}, "t1": {"BOS", "DEN", "LAL"}, "t2": {"DEN", "LAL"}}
+        opp_rem = dict(totals=box(), var={k: 0.0 for k in ("3PTM", "PTS", "REB", "AST", "ST", "BLK", "TO", "fg_mk", "ft_mk")})
+        by = {r["add"]: r for r in WM.scan_this_week(me_now, opp_now, opp_rem, roster, ["Scorer", "Done"], fas, sched, "t0", {}, lines)}
+        self.assertEqual(by["Rim"]["timing"], "after tonight")
+        self.assertNotIn("other_timing", by["Rim"])
+        self.assertEqual(by["Rim"]["games"], 2)
+
+    def test_both_play_today_the_better_timing_is_kept_and_the_other_is_reported(self):
+        # Rim (LAL) plays t0, t1, t2; dropping Done (NYK, no game) costs nothing today, so the same-day swap adds
+        # Rim's t0 game and wins; the after-tonight figure stays on the row
+        me_now, opp_now, roster, lines, sched, fas = self._fixture()
+        opp_rem = dict(totals=box(), var={k: 0.0 for k in ("3PTM", "PTS", "REB", "AST", "ST", "BLK", "TO", "fg_mk", "ft_mk")})
+        rows = WM.scan_this_week(me_now, opp_now, opp_rem, roster, ["Done"], fas, sched, "t0", {}, lines)
+        rim = next(r for r in rows if r["add"] == "Rim")
+        self.assertEqual((rim["timing"], rim["games"]), ("same day", 3))
+        self.assertEqual((rim["other_timing"]["timing"], rim["other_timing"]["games"]), ("after tonight", 2))
+        self.assertGreater(rim["d_exp"], rim["other_timing"]["d_exp"])
+        self.assertAlmostEqual(sum(rim["d_cat"].values()), rim["d_exp"], places=12)
+        self.assertAlmostEqual(rim["d_exp_drop"] + rim["d_exp_add"], rim["d_exp"], places=12)
 
     def test_the_drop_loses_his_remaining_games(self):
         me_now, opp_now, roster, lines, sched, fas = self._fixture()
@@ -300,7 +328,9 @@ class ThisWeek(unittest.TestCase):
         names = [r["add"] for r in rows]
         self.assertLess(names.index("Rim"), names.index("Gunner"))
         rim = rows[names.index("Rim")]
-        self.assertEqual(rim["games"], 2)                      # LAL on t1 and t2; t0 is before the swap
+        # owner 2026-11-16 ("Price both timings"): LAL also plays t0, and swapping before tip there beats keeping the
+        # drop's t0 game, so the row is the same-day swap with 3 starts; the after-tonight figure (2 starts) rides along
+        self.assertEqual((rim["timing"], rim["games"], rim["other_timing"]["games"]), ("same day", 3, 2))
         self.assertGreater(rim["d_cat"]["BLK"], 0)
         self.assertEqual([r["d_exp"] for r in rows], sorted((r["d_exp"] for r in rows), reverse=True))
 
