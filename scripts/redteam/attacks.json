@@ -8,7 +8,11 @@
    "script": "report/after-reports/postmortem-2026-10-19/rt_math.py",
    "record": "report/after-reports/postmortem-2026-10-19/rt_math.json",
    "commit_field": "settings_check.engine_commit",
-   "added": "2026-10-19"
+   "added": "2026-10-19",
+   "history": [
+    "2026-11-16 (owner: \"Re-run the stale attacks on the new engine\", after the availability tiers 0.80 / 0.65, deck 9a009af): known-answer tiers set to 0.80 / 0.65 (rt_math.py, the one hard-coded pair); re-run on the same lock pool: z, availability and the owner's weekly FG%/PTS known answers equal the engine to the last digit. Old record rt_math_pre-2026-11-16-tiers.json. Its recovery 0.60 is pre-existing (engine 0.0 since 10-21), untested here because no recovery-tagged player is on the checked roster; flagged, not changed",
+    "2026-11-16 (Council on the shock fit, owner: \"Have council deliberate the shock fit and proceed\"; TEAM_WEEK_SHOCK 0.06 -> 0.11, deck ecb60cb): re-run unchanged (the known answers do not draw the shock); equal to the last digit. Old record rt_math_pre-2026-11-16-shock.json"
+   ]
   },
   {
    "id": "A-2",
@@ -17,7 +21,11 @@
    "script": "report/after-reports/postmortem-2026-10-19/rt_join.py",
    "record": "report/after-reports/postmortem-2026-10-19/rt_join.json",
    "commit_field": "engine_commit",
-   "added": "2026-10-19"
+   "added": "2026-10-19",
+   "history": [
+    "2026-11-16 (owner: \"Re-run the stale attacks on the new engine\", after the availability tiers 0.80 / 0.65, deck 9a009af): re-run unchanged; 0 line differences on 309 joined rows, as before. Old record rt_join_pre-2026-11-16-tiers.json",
+    "2026-11-16 (Council on the shock fit, owner: \"Have council deliberate the shock fit and proceed\"; TEAM_WEEK_SHOCK 0.06 -> 0.11, deck ecb60cb): re-run unchanged; 0 line differences. Old record rt_join_pre-2026-11-16-shock.json"
+   ]
   },
   {
    "id": "A-3",
@@ -26,7 +34,12 @@
    "script": "report/after-reports/postmortem-2026-10-19/rt_consistency.py",
    "record": "report/after-reports/postmortem-2026-10-19/rt_consistency.json",
    "commit_field": "engine_commit",
-   "added": "2026-10-19"
+   "added": "2026-10-19",
+   "history": [
+    "2026-11-16 (owner: \"Re-run the stale attacks on the new engine\", after the availability tiers 0.80 / 0.65, deck 9a009af): re-run unchanged; every category at 50%, max ECW-vs-sim gap 0.023 / 0.026 (was 0.036 / 0.038), rank agreement 0.972 / 0.979. Old record rt_consistency_pre-2026-11-16-tiers.json",
+    "2026-11-16 (Council on the shock fit, owner: \"Have council deliberate the shock fit and proceed\"; TEAM_WEEK_SHOCK 0.06 -> 0.11, deck ecb60cb): the simulator side repointed to deck _w17r_av0_t8065_s11: the tier re-run of the same day had left it on _w17r_av0 (0.88/0.75, shock 0.06), so that record compared the new card with the old engine's seasons (corrections-log row of 2026-11-16). Card vs simulator on matching references: max gap 0.084 / 0.086, mean 0.021 (on the tiers alone with shock 0.06: 0.030 / 0.031): the card's ECW carries no shock term and overstates category edges more as the shock grows; rank agreement 0.993. Old record rt_consistency_pre-2026-11-16-shock.json",
+    "2026-11-16 (Council on the two open decisions, owner: \"Have council deliberate the two open decisions and proceed\", 5-0 on the card): the card's measure (co_gm.pwins) now carries the shared games shock's variance on the counting categories, and this script's ECW mirrors it. On the live references (_t8065_s11): max gap 0.0029 / 0.0036, mean 0.0009 / 0.0010, rank agreement 1.0 / 1.0 (was 0.084 / 0.086 without the shock term). Old record rt_consistency_pre-2026-11-16-card.json"
+   ]
   },
   {
    "id": "A-4",
@@ -35,7 +48,11 @@
    "script": "report/after-reports/postmortem-2026-10-19/rt_ties.py",
    "record": "report/after-reports/postmortem-2026-10-19/rt_ties.json",
    "commit_field": "engine_commit",
-   "added": "2026-10-19"
+   "added": "2026-10-19",
+   "history": [
+    "2026-11-16 (owner: \"Re-run the stale attacks on the new engine\", after the availability tiers 0.80 / 0.65, deck 9a009af): re-run unchanged; 0.177 / 0.180 tied categories per matchup (was 0.175 / 0.176). Old record rt_ties_pre-2026-11-16-tiers.json",
+    "2026-11-16 (Council on the shock fit, owner: \"Have council deliberate the shock fit and proceed\"; TEAM_WEEK_SHOCK 0.06 -> 0.11, deck ecb60cb): re-run unchanged; 0.162 / 0.162 tied categories per matchup (was 0.177 / 0.180). Old record rt_ties_pre-2026-11-16-shock.json"
+   ]
   },
   {
    "id": "A-5",
@@ -44,7 +61,11 @@
    "script": "report/after-reports/postmortem-2026-10-19/rt_sensitivity.py",
    "record": "report/after-reports/postmortem-2026-10-19/rt_sensitivity.json",
    "commit_field": "engine_commit",
-   "added": "2026-10-19"
+   "added": "2026-10-19",
+   "history": [
+    "2026-11-16 (owner: \"Re-run the stale attacks on the new engine\", after the availability tiers 0.80 / 0.65, deck 9a009af): patch keys moved to the live 0.80 / 0.65 (on 0.88 / 0.75 every tier variant would have been a silent no-op); the four tier variants are the registry's new band; reference = deck m100_league_sim_10k_s{seed}_w17r_av0_t8065.json (26.11 / 26.26), baseline within 3 SE on both seeds. Two engine points shared with the old record reproduce it to the hundredth. Old record rt_sensitivity_pre-2026-11-16-tiers.json",
+    "2026-11-16 (Council on the shock fit, owner: \"Have council deliberate the shock fit and proceed\"; TEAM_WEEK_SHOCK 0.06 -> 0.11, deck ecb60cb): shock variants = the registry's new band (0.0, the old 0.06, the fit + 2 SE 0.13); reference -> deck _w17r_av0_t8065_s11 (22.90 / 22.98), baseline 23.28 / 22.38 within 3 SE. Old record rt_sensitivity_pre-2026-11-16-shock.json"
+   ]
   },
   {
    "id": "A-6",
@@ -52,8 +73,15 @@
    "question": "Do the two headline swap verdicts stay positive under every A-5 variant?",
    "script": "report/after-reports/postmortem-2026-10-19/rt_decisions.py",
    "record": "report/after-reports/postmortem-2026-10-19/rt_decisions.json",
-   "commit_field": null,
-   "added": "2026-10-19"
+   "commit_field": "engine_commit",
+   "added": "2026-10-19",
+   "history": [
+    "2026-10-19: first record on engine 259c630 (now rt_decisions_2026-10-19.json); commit_field was left empty, so the runner read it UNFINGERPRINTED although the record carried engine_commit",
+    "2026-11-16 (owner card: 'Re-run and stamp it'): commit_field set to engine_commit; record re-made on engine 01483de. Both swap verdicts stay positive under every variant (smallest +0.42 title points, shock 0.12, seed 2026), as on 10-19",
+    "2026-11-16 (owner: \"Re-run the stale attacks on the new engine\", after the availability tiers 0.80 / 0.65, deck 9a009af): 'no in-sim injury discount' now lifts risk 0.65 to the live healthy 0.80 (the old 0.75 -> 0.88 key would no-op). Jalen Johnson for Durant stays positive under every variant (smallest +0.18). Draymond Green for Braun is NOT positive under every variant: shock 0 gives -0.18 (seed 2026) / +0.67 (2027), mean +0.25 against the difference's MC SE 0.76, so that verdict is conditional (was smallest +0.42). Old record rt_decisions_pre-2026-11-16-tiers.json",
+    "2026-11-16 Council (owner: \"Have council deliberate pending decisions and proceed with their vote\"), 4-1: Draymond Green for Braun is recorded as CONDITIONAL on the games shock (no shock: -0.18 / +0.67, mean +0.25 against the difference's MC SE 0.76); no 10k re-test, because 10,000 seasons shrink that SE only to about 0.59 and cannot resolve a +0.25 mean, and the swap is no live decision (Draymond Green rostered by another team, Braun dropped by the owner; league_state of 2026-11-16). Dissent (Expansionist): re-test, as it costs about a minute; flips if the swap becomes live again",
+    "2026-11-16 (Council on the shock fit, owner: \"Have council deliberate the shock fit and proceed\"; TEAM_WEEK_SHOCK 0.06 -> 0.11, deck ecb60cb): variants shock 0.11 (shipped) / 0 / 0.06 / 0.13 / no discount. Jalen Johnson for Durant positive everywhere (smallest +0.67). Draymond Green for Braun stays conditional (shock 0: -0.18 / +0.67, unchanged); positive at the shipped 0.11 (+0.47 / +1.75). The shock 0.06 row reproduces the previous shipped record to the hundredth. Old record rt_decisions_pre-2026-11-16-shock.json"
+   ]
   },
   {
    "id": "A-7",
@@ -62,7 +90,11 @@
    "script": "scripts/redteam/check_constants.py",
    "record": "report/after-reports/redteam-2026-10-19/constants.json",
    "commit_field": "engine_commit",
-   "added": "2026-10-19"
+   "added": "2026-10-19",
+   "history": [
+    "2026-11-16 (owner: \"Re-run the stale attacks on the new engine\", after the availability tiers 0.80 / 0.65, deck 9a009af): check_constants re-run, 53 = 53 on 9a009af (refreshed with the change itself)",
+    "2026-11-16 (Council on the shock fit, owner: \"Have council deliberate the shock fit and proceed\"; TEAM_WEEK_SHOCK 0.06 -> 0.11, deck ecb60cb): check_constants 53 = 53 on the new engine"
+   ]
   },
   {
    "id": "A-8",
@@ -71,7 +103,11 @@
    "script": "scripts/redteam/sweep.py",
    "record": "report/after-reports/redteam-2026-10-19/sweep.json",
    "commit_field": "engine_commit",
-   "added": "2026-10-19"
+   "added": "2026-10-19",
+   "history": [
+    "2026-11-16 (owner: \"Re-run the stale attacks on the new engine\", after the availability tiers 0.80 / 0.65, deck 9a009af): draft-configuration sweep on the new 10k reference (sweep.py REFERENCE -> _w17r_av0_scv_t8065, 25.52 / 25.68), baseline within 3 SE on both seeds; TEAM_WEEK_SHOCK FRAGILE (+2.4 / -3.4), weekly_availability SENSITIVE (worst -1.5), PCT_MIX_INFL SENSITIVE. Old record sweep_pre-2026-11-16-tiers.json",
+    "2026-11-16 (Council on the shock fit, owner: \"Have council deliberate the shock fit and proceed\"; TEAM_WEEK_SHOCK 0.06 -> 0.11, deck ecb60cb): draft-configuration sweep on deck _w17r_av0_scv_t8065_s11 (22.53 / 22.55), baseline within 3 SE; TEAM_WEEK_SHOCK FRAGILE (+5.1 no shock, +2.8 at the old 0.06, -1.1 at 0.13), weekly_availability SENSITIVE. Old record sweep_pre-2026-11-16-shock.json"
+   ]
   },
   {
    "id": "A-9",
@@ -80,7 +116,11 @@
    "script": "report/after-reports/redteam-sim-2026-10-21/compare.py",
    "record": "report/after-reports/redteam-sim-2026-10-21/rt_sim.json",
    "commit_field": "fingerprint.deck_head",
-   "added": "2026-10-21"
+   "added": "2026-10-21",
+   "history": [
+    "2026-11-16 (owner: \"Re-run the stale attacks on the new engine\", after the availability tiers 0.80 / 0.65, deck 9a009af): SPEC.md section 1 rules 4, 6, 7 amended to 0.65 / 0.65 / 0.80 and attacker.py edited to match by this session, which had read arena.py: independence for those three numbers is not fresh (the rest of the attacker is the 10-21 separate attacker's). Every exact section PASS (availability 335, hash 603, weights 155, models 216, pcat 1188, pwins 12), season max |z| 2.21, same-seed stream 12 of 12. Old records rt_sim / attacker_out _pre-2026-11-16-tiers.json",
+    "2026-11-16 (Council on the shock fit, owner: \"Have council deliberate the shock fit and proceed\"; TEAM_WEEK_SHOCK 0.06 -> 0.11, deck ecb60cb): SPEC.md section 6 and attacker.py shock 0.06 -> 0.11, edited by this session (independence not fresh for that number); every exact section PASS, seasons max abs z 1.74. Old records *_pre-2026-11-16-shock.json"
+   ]
   },
   {
    "id": "A-10",
@@ -95,7 +135,9 @@
    ],
    "history": [
     "2026-10-31: first record, report/after-reports/il-return-2026-10-31/rt_il_return.json",
-    "2026-11-12: re-run failed one check (rt_il_return_2026-11-12_FAILED.json); il_players fixed on the owner's pick; record re-made by il_return.py --checks --attack-record, with the script's sha256"
+    "2026-11-12: re-run failed one check (rt_il_return_2026-11-12_FAILED.json); il_players fixed on the owner's pick; record re-made by il_return.py --checks --attack-record, with the script's sha256",
+    "2026-11-16 (owner: \"Re-run the stale attacks on the new engine\", after the availability tiers 0.80 / 0.65, deck 9a009af): re-run with --checks --attack-record on the records of 2026-11-12 (season/daily 0e21df1, the evening state A-11 uses; the old record matched the morning brief), ESPN pin of 11-12; the brief headline for the never_equals check computed on the live engine by daily_brief's section-5 code path (CG.rosters, run_league_sim, 10,000 seasons, seeds 2026/2027): 22.23 / 21.36. All four live checks PASS. Old record rt_il_return_pre-2026-11-16-tiers.json",
+    "2026-11-16 (Council on the shock fit, owner: \"Have council deliberate the shock fit and proceed\"; TEAM_WEEK_SHOCK 0.06 -> 0.11, deck ecb60cb): re-run on the same 11-12 records, brief headline recomputed on the live engine (brief_headline_2026-11-12_t8065_s11.json); 4 of 4 live checks PASS. Old record rt_il_return_pre-2026-11-16-shock.json"
    ]
   },
   {
@@ -111,7 +153,9 @@
    "added": "2026-11-12",
    "history": [
     "2026-11-12: first record (now drop_band_2026-11-12_pre-il-fix.json), made before the il_players fix: the script built its IL list without the pool, so rivals' unpooled IL-slot players were missing and every level read about 1 point low",
-    "2026-11-12: script passes by=by to il_players; record re-made on the 21:03 rosters (records 0e21df1). Levels up 1.0 to 1.4, order unchanged, the rule's Washington cut last in 22 of 22 seed-runs"
+    "2026-11-12: script passes by=by to il_players; record re-made on the 21:03 rosters (records 0e21df1). Levels up 1.0 to 1.4, order unchanged, the rule's Washington cut last in 22 of 22 seed-runs",
+    "2026-11-16 (owner: \"Re-run the stale attacks on the new engine\", after the availability tiers 0.80 / 0.65, deck 9a009af): re-run on the same 11-12 records (state, pool, schedule sha equal to the old record) with the registry's new band overlaid. Finding: the top two pairs swap at baseline (Champagnie + Queta 29.51 vs Queta + Cam Johnson 29.42; was 27.93 vs 28.10), the best pair is now split 11 / 9 / 2 across the 22 seed-runs (was 18 / 3 / 1), and the rule's pick is last in 21 of 22 (was 22). The top two were within 0.2 points before and are within 0.1 now: a near-tie on both engines. Old record drop_band_pre-2026-11-16-tiers.json",
+    "2026-11-16 (Council on the shock fit, owner: \"Have council deliberate the shock fit and proceed\"; TEAM_WEEK_SHOCK 0.06 -> 0.11, deck ecb60cb): re-run on the same 11-12 records with the new band; rule's pick last in 24 of 24 seed-runs; best pair Champagnie + Queta 13, Queta + Cam Johnson 9, Champagnie + Cam Johnson 2 (baseline 25.88 / 25.77 / 25.21: still a near-tie at the top). Old record drop_band_pre-2026-11-16-shock.json"
    ]
   }
  ]

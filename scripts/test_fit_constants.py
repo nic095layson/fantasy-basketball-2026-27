@@ -68,6 +68,26 @@ class Availability(unittest.TestCase):
         self.assertAlmostEqual(a["0.75"]["measured"], q)
         self.assertFalse(a["0.75"]["live_within_2se"])          # 0.75 vs ~0.59 at n=196
 
+    def test_a_tier_is_pooled_across_a_change_of_its_assumed_value(self):
+        # Council 2026-11-16 (owner: "proceed with their vote"): the share played is the players', not the
+        # assumption's, so a tier's weeks recorded under its old value (healthy 0.88, risk 0.75) pool with the
+        # weeks under its live value (0.80, 0.65), keyed and judged by the live value, the per-value counts kept
+        weeks = [{"0.88": dict(assumed=0.88, played=670, team_games=809), "0.75": dict(assumed=0.75, played=55, team_games=96),
+                  "0.79": dict(assumed=0.79, played=5, team_games=6), "0.00": dict(assumed=0.0, played=1, team_games=20)},
+                 {"0.80": dict(assumed=0.80, played=700, team_games=800), "0.65": dict(assumed=0.65, played=60, team_games=100)}]
+        a = FC.availability_pool(weeks, live=dict(healthy="0.80", risk="0.65", mild="0.79"))
+        self.assertEqual(sorted(a), ["0.00", "0.65", "0.79", "0.80"])
+        p = (670 + 700) / (809 + 800)
+        self.assertAlmostEqual(a["0.80"]["measured"], p); self.assertEqual(a["0.80"]["n"], 1609)
+        self.assertEqual(a["0.80"]["live"], 0.80); self.assertFalse(a["0.80"]["live_within_2se"])  # 0.80 vs ~0.852: ~5.8 SE
+        self.assertEqual(a["0.80"]["pooled_from"], {"0.88": 809, "0.80": 800})
+        self.assertEqual(a["0.65"]["pooled_from"], {"0.75": 96, "0.65": 100}); self.assertEqual(a["0.65"]["live"], 0.65)
+        self.assertEqual(a["0.79"]["n"], 6); self.assertEqual(a["0.00"]["n"], 20)   # untouched tiers stay as they were
+
+    def test_without_live_keys_the_pool_is_by_value_as_before(self):
+        a = FC.availability_pool([{"0.88": dict(assumed=0.88, played=7, team_games=8)}, {"0.80": dict(assumed=0.8, played=3, team_games=4)}])
+        self.assertEqual(sorted(a), ["0.80", "0.88"])
+
 
 class Gate(unittest.TestCase):
     def test_fewer_than_four_weeks_is_reported_not_proposed(self):
@@ -109,7 +129,7 @@ class BoardComparison(unittest.TestCase):
     def test_the_instruments_are_read_from_the_engines(self):
         i = FC.board_instruments()
         self.assertEqual(i["risk"]["deck"], 0.78); self.assertEqual(i["mild"]["deck"], 0.85)
-        self.assertAlmostEqual(i["risk"]["simulator"], round(0.75 / 0.88, 4))
+        self.assertAlmostEqual(i["risk"]["simulator"], round(0.65 / 0.80, 4))   # live tiers, owner pick 2026-11-16
         self.assertIn("kit", i["risk"])
 
     def test_the_weekly_record_carries_the_comparison(self):
@@ -119,6 +139,67 @@ class BoardComparison(unittest.TestCase):
         self.assertIn("risk", r["board_comparison"])
         self.assertIn("board comparison", open(os.path.join(d, "fits.md")).read())
 
+
+
+class CardShock(unittest.TestCase):
+    """Council 2026-11-16 (owner: "Have council deliberate the two open decisions and proceed"), 5-0: the card's
+    per-category edge is the simulator's marginal, so a counting category carries the shared games shock's variance
+    (shock^2 * mu^2 per team); the percentages carry none."""
+    def test_the_counting_edge_widens_by_the_shock_and_the_percentage_edge_does_not(self):
+        import co_gm as CG
+        m = ({"PTS": 600.0, "FG%": 0.48}, {"PTS": 3000.0, "FG%": 0.0004})
+        o = ({"PTS": 560.0, "FG%": 0.46}, {"PTS": 2800.0, "FG%": 0.0004})
+        s = CG.arena.TEAM_WEEK_SHOCK
+        d = 40.0 / math.sqrt(3000.0 + 2800.0 + s ** 2 * (600.0 ** 2 + 560.0 ** 2))
+        self.assertAlmostEqual(CG._pcat(m, o, "PTS", s), 0.5 * (1 + math.erf(d / math.sqrt(2))))
+        d2 = 0.02 / math.sqrt(0.0008)
+        self.assertAlmostEqual(CG._pcat(m, o, "FG%", s), 0.5 * (1 + math.erf(d2 / math.sqrt(2))))
+        # the season card (pwins) carries it; the week card's in-week call (no shock argument) does not
+        full = lambda t, k: ({c: t[0].get(c, k) for c in CG.CATS}, {c: t[1].get(c, 1.0) for c in CG.CATS})
+        fm, fo = full(m, 10.0), full(o, 9.0)
+        self.assertAlmostEqual(CG.pwins(fm, [fo]), sum(CG._pcat(fm, fo, c, s) for c in CG.CATS))
+        d0 = 40.0 / math.sqrt(3000.0 + 2800.0)
+        self.assertAlmostEqual(CG._pcat(m, o, "PTS"), 0.5 * (1 + math.erf(d0 / math.sqrt(2))))
+
+
+class LevelAndInWeek(unittest.TestCase):
+    """Council 2026-11-16, 4-1: the Monday fit records the model's level (actual / model per counting category) and
+    each team's in-week roster factor (Yahoo total / the Sunday roster's box-score total), with the between-team F."""
+    def test_level_is_the_mean_ratio_per_category_and_overall(self):
+        rows = [{c: dict(actual=110.0, mu=100.0, var=1.0) for c in FC.COUNTING},
+                {c: dict(actual=90.0, mu=100.0, var=1.0) for c in FC.COUNTING}]
+        rows[0]["PTS"] = dict(actual=130.0, mu=100.0, var=1.0)
+        lv = FC.level(rows)
+        self.assertAlmostEqual(lv["by_cat"]["PTS"], 1.1); self.assertAlmostEqual(lv["by_cat"]["REB"], 1.0)
+        self.assertAlmostEqual(lv["overall"], (1.1 + 6 * 1.0) / 7); self.assertEqual(lv["n"], 2)
+
+    def test_the_in_week_factor_joins_names_across_suffix_and_punctuation(self):
+        d = tempfile.mkdtemp()
+        os.makedirs(os.path.join(d, "weeks")); os.makedirs(os.path.join(d, "snap")); os.makedirs(os.path.join(d, "actuals"))
+        line = {"FG%": 0.5, "FT%": 0.8, "3PTM": 2, "PTS": 30, "REB": 10, "AST": 6, "ST": 2, "BLK": 1, "TO": 3}
+        json.dump({"week": 4, "teams": {"A": {"seat": 1, "line": line}}}, open(os.path.join(d, "weeks", "week_4.json"), "w"))
+        json.dump({"teams": [{"seat": 1, "players": [{"player": "Jaime Jaquez Jr.", "slot": "F"}, {"player": "Hurt Guy", "slot": "IL"}]}]},
+                  open(os.path.join(d, "snap", "state_week4.json"), "w"))
+        box = lambda name, pts: dict(name=name, pool_name=None, dnp=False, min=30, pts=pts, reb=5, ast=3, stl=1, blk=0, tpm=1, tov=2)
+        json.dump({"date": "2026-11-10", "players": [box("Jaime Jaquez Jr", 12), box("Hurt Guy", 40)]}, open(os.path.join(d, "actuals", "2026-11-10.json"), "w"))
+        json.dump({"date": "2026-11-12", "players": [box("Jaime Jaquez Jr", 13)]}, open(os.path.join(d, "actuals", "2026-11-12.json"), "w"))
+        f = FC.in_week_factors(4, os.path.join(d, "weeks"), os.path.join(d, "snap"), os.path.join(d, "actuals"))
+        # PTS 30 / 25 = 1.2 (the IL player's 40 never counts); the other six counting categories each Yahoo / Sunday roster
+        roster = dict(PTS=25, REB=10, AST=6, ST=2, BLK=0, **{"3PTM": 2}, TO=4)
+        want = sum(line[c] / roster[c] for c in FC.COUNTING if roster[c]) / sum(1 for c in FC.COUNTING if roster[c])
+        self.assertAlmostEqual(f["1"], want)
+
+    def test_the_shock_is_also_read_relative_to_the_level(self):
+        # the Council of 2026-11-16 set the shock from its level-relative value (raw shock / mean actual-over-model)
+        self.assertAlmostEqual(FC.level_relative(dict(shock=0.1177), dict(overall=1.103)), 0.1177 / 1.103)
+        self.assertIsNone(FC.level_relative(dict(shock=None), dict(overall=1.1)))
+
+    def test_between_team_f_is_the_one_way_anova(self):
+        same = {"1": [1.0, 1.1], "2": [1.0, 1.1]}
+        self.assertAlmostEqual(FC.between_team_f(same)["F"], 0.0)
+        apart = {"1": [1.0, 1.0, 1.0], "2": [1.2, 1.2, 1.21]}
+        r = FC.between_team_f(apart)
+        self.assertGreater(r["F"], 100); self.assertEqual((r["df_between"], r["df_within"]), (1, 4))
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

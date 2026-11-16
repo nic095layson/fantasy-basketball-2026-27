@@ -38,12 +38,19 @@ struck through, so the history reads.
   snag them before another team can." (2026-11-11)
 - The last add of the week: "I will hold final add until Saturday/Sunday for emergency pickup if needed (or if a
   valuable asset becomes available from pool)." (2026-11-11)
+- Same-day pickups: asked whether a player added that day counts for that day, "Yes as long as I add before game
+  start" (2026-11-14). A same-day add counts when it is made before the player's game tips off.
+- Matchup read: "Lendeborg shot awful because he played against Wembanyama on the Spurs. The same fate may away
+  Jackson on Sunday." (2026-11-14) *(session reading)* He weighs the opponent's rim protection when judging a big's
+  shooting night.
 
 ## 4. Core players
 
 - "I am still in a holding mode for now for the top players on my roster. We can re-visit this later down the season."
   (2026-11-11)
 - Derrick White: "I am not opposed to trading White, as I already have Kyrie and Jerome." (2026-11-12)
+- Keldon Johnson, a long-term target: "Also I want Johnson for long term season... so I'm thinking about dropping
+  Champagnie." (2026-11-14)
 
 ## 5. How this league prices players (owner's read)
 

@@ -696,16 +696,17 @@ function thisWeek(W){ const K=W.pickups, TW=K&&K.this_week; if(!TW) return null;
   const moved=(dc)=>Object.keys(dc).filter(c=>Math.abs(dc[c])>=0.005).sort((a,b)=>Math.abs(dc[b])-Math.abs(dc[a])).map(c=>c+" "+swk(dc[c],2)).join(", ")||"none";
   const da=TW.drop_alone||{}, das=Object.keys(da).map(d=>d+" "+swk(da[d],2));
   return [h("p",{},h("b",{},"Best adds this week")," ("+Math.min(8,TW.rows.length)+" of "+TW.pool_size+" scored):",
-      more("Each free agent from tomorrow in place of the lower-valued player whose drop helps most, by the change in expected categories won against "+W.opponent.name+" ("+TW.pool_size+" scored; best "+Math.min(8,TW.rows.length)+" shown).")),
+      more("Each free agent in place of the lower-valued player whose drop helps most, by the change in expected categories won against "+W.opponent.name+" ("+TW.pool_size+" scored; best "+Math.min(8,TW.rows.length)+" shown). Games: \"today\" = drop and add before tip today (his team plays today and that timing is better); \"from tomorrow\" = keep the drop's game tonight and swap after it.")),
     TW.rows.length? h("div",{class:"tablebox"},h("table",{},
       h("tr",{},h("th",{},"move"),h("th",{class:"num",title:"Δ cats = the change in expected categories won this week (the sum of the nine changes in each category's chance); categories moved = those changes, largest first; season = the change in expected weekly categories over the season against the other eleven teams, the cost or gain beyond this week. Chances are normal approximations on the projected finals, with the variation of each remaining game (season per-game CV); the league allows 4 adds a week."},"Δ cats",more("Δ cats = the change in expected categories won this week (the sum of the nine changes in each category's chance); categories moved = those changes, largest first; season = the change in expected weekly categories over the season against the other eleven teams, the cost or gain beyond this week. Chances are normal approximations on the projected finals, with the variation of each remaining game (season per-game CV); the league allows 4 adds a week.")),h("th",{class:"num"},"games"),h("th",{class:"num"},"drop's part"),h("th",{class:"num"},"season"),h("th",{},"categories moved")),
       TW.rows.slice(0,8).map(r=>h("tr",{},h("td",{style:"white-space:normal;min-width:9em"},r.add+" ("+r.team+")"+(r.status?" · "+r.status:"")+(r.missed?" · sat out "+r.missed:""),waiverChip(r.add),
           h("div",{class:"note"},"for "+r.drop,goneChip(r.drop))),
-        h("td",{class:"num"},swk(r.d_exp,2)),h("td",{class:"num"},String(r.games)),h("td",{class:"num"},swk(r.d_exp_drop,2)),
+        h("td",{class:"num"},swk(r.d_exp,2)),h("td",{class:"num"},String(r.games)+(r.timing==="same day"?" · today":r.timing?" · from tomorrow":""),
+          r.other_timing? h("div",{class:"note"},r.other_timing.games+" if "+r.other_timing.timing) : null),h("td",{class:"num"},swk(r.d_exp_drop,2)),
         h("td",{class:"num"},r.season_d_ecw==null?"—":swk(r.season_d_ecw,3)),h("td",{style:"white-space:normal;min-width:10em"},moved(r.d_cat)))))) : h("div",{class:"zero"},"No free agent has a playable game after today."),
     das.length? noteMore("Dropping with nobody added (from tomorrow): "+das.join("; "),
       "A positive figure means that player's remaining games cost you categories this week; it is part of every move that drops him.") : null,
-    (TW.no_games||[]).length? h("p",{class:"note"},"No playable game after today, so not ranked: "+TW.no_games.join(", ")+".") : null,
+    (TW.no_games||[]).length? h("p",{class:"note"},"No playable game left this week, so not ranked: "+TW.no_games.join(", ")+".") : null,
     null];
 }
 
@@ -1481,9 +1482,9 @@ function trendingCard(){ const F=D.form; if(!F||!F.rows) return null;
         ...cols.map(c=>{ const x=L(w,c[0]); return x? [h("td",{},f2(x.proj)+" / "+f2(x.actual)),h("td",{class:"num"},pc(x.bias_pct)),h("td",{class:"num"},f2(x.mae)),h("td",{class:"num"},f2(x.rank_corr))]
           : [h("td",{class:"muted"},"no snapshot"),h("td",{},""),h("td",{},""),h("td",{},"")]; }).flat())); });
     card.append(h("h3",{},"Points per game: projected / actual"),h("div",{class:"tablebox"},lt),
-      noteMore("The test line takes over only if it's more accurate on PTS, REB and AST in 3 of 4 weeks in a row, and only on your OK.",
-        "Switch rule D-ML-1 (pre-committed 2026-10-27): the minutes candidate replaces nothing until its MAE beats the in-season line's on PTS, REB and AST in 3 of 4 consecutive graded weeks, on the owner's word."));
-    const TIER={"0.88":"Healthy","0.79":"Minor knock","0.75":"Injury risk","0.0":"Out","0.00":"Out","0":"Out"}, tierName=(t)=>TIER[t]||TIER[String(Number(t).toFixed(2))]||t;
+      noteMore("The test line was more accurate on PTS, REB and AST in weeks 2, 3 and 4; since 2026-11-16 the current line uses it for those three.",
+        "Switch rule D-ML-1 (pre-committed 2026-10-27): the minutes candidate replaces nothing until its MAE beats the in-season line's on PTS, REB and AST in 3 of 4 consecutive graded weeks, on the owner's word. Met in weeks 2-4; switched on PTS, REB and AST 2026-11-16 (owner: \"Switch now\")."));
+    const TIER={"0.80":"Healthy","0.88":"Healthy","0.79":"Minor knock","0.65":"Injury risk","0.75":"Injury risk","0.0":"Out","0.00":"Out","0":"Out"}, tierName=(t)=>TIER[t]||TIER[String(Number(t).toFixed(2))]||t;
     const at=h("table",{class:"lg"},h("tr",{},h("th",{class:"num"},"wk"),h("th",{},"Health group"),h("th",{class:"num"},"We assume they play"),h("th",{},"Games played / team's games"),h("th",{class:"num"},"Actually played")));
     wks.forEach(w=>Object.keys(w.availability||{}).sort((a,z)=>Number(z)-Number(a)).forEach(t=>{ const v=w.availability[t];
       at.append(h("tr",{},h("td",{class:"num"},String(w.week)),h("td",{},tierName(t)),h("td",{class:"num"},f2(v.assumed)),h("td",{},v.played+" / "+v.team_games),h("td",{class:"num"+(v.share<v.assumed-0.05?" zneg":"")},f2(v.share)))); }));

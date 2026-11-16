@@ -274,8 +274,59 @@ def finder(tot):
     return find
 
 
+SWITCH_CATS = ("pts", "reb", "ast")   # owner 2026-11-16 ("Switch now", D-ML-1 met weeks 2-4): the minutes-scaled columns
+
+
+def _minutes(records):
+    """{pool name: [minutes, oldest first]} from regular-season records (minutes_line.season_minutes on loaded records)."""
+    out = {}
+    for a in sorted(records, key=lambda r: r.get("date") or ""):
+        if not a.get("games") or not all(g.get("season_type") == 2 for g in a["games"]):
+            continue
+        for r in a.get("players", []):
+            if r.get("pool_name") and not r.get("dnp") and r.get("min", 0) > 0:
+                out.setdefault(r["pool_name"], []).append(r["min"])
+    return out
+
+
+def minutes_switch(out_kit, out_deck, records, pre_kit_csv):
+    """Owner 2026-11-16 (card: "Switch now"): each player's SWITCH_CATS times his minutes ratio (minutes_line.py:
+    forecast / implicit minutes, the candidate graded weeks 2-4), on the kit plane by name; the deck plane takes the
+    same player's ratio through the folded name, the box pull's name -> pool name bridge, or the alias table, so both
+    planes carry one line. No preseason
+    minutes or no game: ratio 1.0. Returns {name: ratio} for the players whose ratio is not 1.0."""
+    import minutes_line as ML
+    import box_pull
+    mins = _minutes(records)
+    pre = ML.preseason_mpg(pre_kit_csv)
+    ratios = {}
+    for r in out_kit:
+        fc = ML.forecast_minutes(mins.get(r["name"], []), pre.get(r["name"]))
+        bl = ML.implicit_minutes(mins.get(r["name"], []), pre.get(r["name"]))
+        if fc is not None and bl and fc != bl and mins.get(r["name"]):
+            ratios[r["name"]] = fc / bl
+    by_fold = {fold(n): x for n, x in ratios.items()}
+    for a in records:   # the box pull's own bridge: a box name filed under a pool name (Darius Acuff Jr. -> Darius Acuff)
+        for r in a.get("players", []):
+            if r.get("pool_name") in ratios and r.get("name"):
+                by_fold.setdefault(fold(r["name"]), ratios[r["pool_name"]])
+    for canon, variants in box_pull.load_aliases().items():
+        for v in variants:
+            if canon in ratios:
+                by_fold.setdefault(fold(v), ratios[canon])
+            elif v in ratios:
+                by_fold.setdefault(fold(canon), ratios[v])
+    for rows_, key in ((out_kit, "name"), (out_deck, "player")):
+        for r in rows_:
+            x = by_fold.get(fold(r[key]))
+            if x is not None:
+                for c in SWITCH_CATS:
+                    r[c] = f"{float(r[c]) * x:.1f}"
+    return ratios
+
+
 def run(date, actuals, kit_csv=KIT_CSV, deck_csv=DECK_CSV, out_dir=OUT, threshold=0.25, additions_csv=None,
-        overrides_csv=None, state_json=None, team_ledger=None):
+        overrides_csv=None, state_json=None, team_ledger=None, pre_kit_csv=None):
     """team_ledger (owner 2026-11-11, D3): the team-changes ledger. A player it names carries the ledger's club in the
     team column of both season files; no other cell is touched and the preseason files are not edited."""
     tot = totals(actuals)
@@ -309,6 +360,12 @@ def run(date, actuals, kit_csv=KIT_CSV, deck_csv=DECK_CSV, out_dir=OUT, threshol
             if r[key] in moved_team and r["team"] != moved_team[r[key]]:
                 r["team"] = moved_team[r[key]]; applied[r[key]] = moved_team[r[key]]
     os.makedirs(out_dir, exist_ok=True)
+    # owner 2026-11-16 ("Switch now"): the blend is kept as *_blend.csv (the minutes candidate reads it); the live files
+    # carry the minutes switch on SWITCH_CATS
+    _write(os.path.join(out_dir, "projections_season_blend.csv"), out_kit, kit_fields)
+    _write(os.path.join(out_dir, "pool_season_blend.csv"), out_deck, deck_fields)
+    import minutes_line as ML
+    ratios = minutes_switch(out_kit, out_deck, actuals, pre_kit_csv or ML.PRE_KIT)
     _write(os.path.join(out_dir, "projections_season.csv"), out_kit, kit_fields)
     _write(os.path.join(out_dir, "pool_season.csv"), out_deck, deck_fields)
     rec = dict(date=date, records=len(actuals), players_with_games=n_games, prior_games=PRIOR_GAMES, season_games=SEASON_GAMES,
@@ -316,6 +373,8 @@ def run(date, actuals, kit_csv=KIT_CSV, deck_csv=DECK_CSV, out_dir=OUT, threshol
                unpooled_with_games=sorted(k for k, v in tot.items() if v["unpooled"] and fold(k) not in auto_names),
                auto_rows=auto_rec, auto_rule=dict(min_games=AUTO_MIN_GAMES, prior_band=[AUTO_PRIOR_LO, AUTO_PRIOR_HI]),
                tag_overrides=overridden, team_updates=[dict(player=n, team=t) for n, t in sorted(applied.items())],
+               line_switch=dict(cats=list(SWITCH_CATS), rule="blend x minutes_line forecast/implicit minutes (owner 2026-11-16)",
+                                ratios={n: round(x, 4) for n, x in sorted(ratios.items())}),
                inputs=dict(kit=os.path.relpath(kit_csv, KIT), deck=deck_csv,
                            state=os.path.relpath(state_json, KIT) if state and state_json else None,
                            additions=os.path.relpath(additions_csv, KIT) if additions_csv and os.path.exists(additions_csv) else None,

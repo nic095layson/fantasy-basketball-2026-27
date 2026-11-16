@@ -130,9 +130,10 @@ class StructuralBand(unittest.TestCase):
     weekly_availability and TEAM_WEEK_SHOCK, one at a time, and prints the P(win) range beside the seed spread; every
     patch is undone after its run."""
     def fake(self, week, n):
-        # p_win reads the patched engine: the shock and the healthy tier each move it
+        # p_win reads the patched engine: the shock and the healthy tier each move it (0.80, the live healthy tier
+        # since the owner's 2026-11-16 pick, is the zero point)
         a = WP.CG.arena
-        return {"p_win": 0.40 + a.TEAM_WEEK_SHOCK + (a.weekly_availability({"note": ""}) - 0.88)}
+        return {"p_win": 0.40 + a.TEAM_WEEK_SHOCK + (a.weekly_availability({"note": ""}) - 0.80)}
 
     def test_each_variant_runs_once_and_the_engine_is_restored(self):
         a = WP.CG.arena
@@ -140,13 +141,16 @@ class StructuralBand(unittest.TestCase):
         b = WP.structural_band(4, 10, preview_fn=self.fake)
         self.assertEqual(a.TEAM_WEEK_SHOCK, shock); self.assertIs(a.weekly_availability, avail)
         labels = [v["label"] for v in b["variants"]]
-        self.assertEqual(len(labels), 6)
-        self.assertIn("no shared games shock (0.0)", labels); self.assertIn("healthy players play 0.95 of games", labels)
+        self.assertEqual(len(labels), 7)          # 3 shock variants (band of 2026-11-16) + 4 availability
+        self.assertIn("no shared games shock (0.0)", labels); self.assertIn("healthy at the old 0.88", labels)
         v = {x["label"]: x for x in b["variants"]}
-        self.assertAlmostEqual(b["baseline"], 0.46)
+        self.assertAlmostEqual(b["baseline"], 0.51)          # live shock 0.11 (Council 2026-11-16) + healthy at 0.80
         self.assertAlmostEqual(v["no shared games shock (0.0)"]["p_win"], 0.40)
-        self.assertAlmostEqual(v["healthy players play 0.95 of games"]["p_win"], 0.53)
-        self.assertAlmostEqual(b["lo"], 0.38); self.assertAlmostEqual(b["hi"], 0.53)   # healthy 0.80 -> 0.38; 0.95 -> 0.53
+        self.assertAlmostEqual(v["healthy at the old 0.88"]["p_win"], 0.59)
+        self.assertAlmostEqual(v["risk at the old 0.75"]["p_win"], 0.51)          # the fake reads only the healthy tier
+        self.assertAlmostEqual(v["shock at the old 0.06"]["p_win"], 0.46)
+        self.assertAlmostEqual(v["shock at the fit + 2 SE (0.13)"]["p_win"], 0.53)
+        self.assertAlmostEqual(b["lo"], 0.40); self.assertAlmostEqual(b["hi"], 0.59)   # shock 0.0 -> 0.40; healthy 0.88 -> 0.59
 
     def test_the_preview_prints_the_band_and_says_what_it_is(self):
         p = {"week": 4, "opponent_team": "THEM", "opponent_manager": "M", "p_win": 0.41, "exp_cats": 4.22, "n_per_seed": 10000,

@@ -942,6 +942,16 @@ class WeekMatchupCard(unittest.TestCase):
         for s in ("Free Agent", "for Bench Guy", "+0.54", "BLK +0.43", "REB +0.12", "−0.03", "+0.012", "Idle Man"):
             self.assertIn(s, dom["text"])
 
+    def test_the_this_week_scan_says_when_to_make_each_move(self):
+        # owner 2026-11-16 ("Price both timings"): a same-day swap is labelled, and the other timing's starts shown
+        rows = [dict(TW["rows"][0], timing="same day", games=4, other_timing=dict(timing="after tonight", d_exp=0.4, games=3)),
+                dict(TW["rows"][1], timing="after tonight")]
+        k = dict(week_matchup_record()["pickups"], this_week=dict(TW, rows=rows))
+        dom = today_dom(self.page(week_matchup_record(k)))
+        self.assertEqual(dom["errors"], [])
+        for s in ("4 · today", "3 if after tonight", "2 · from tomorrow"):
+            self.assertIn(s, dom["text"])
+
     def test_the_free_agent_notice_names_the_add_the_drop_and_the_gap(self):
         # owner 2026-10-22: "if there is a valuable player available in the free agent pull, make this notice to me on
         # the Today tab"
@@ -1759,8 +1769,10 @@ class AccuracyCard(unittest.TestCase):
         self.assertIn("Healthy", t); self.assertIn("0.88", t); self.assertIn("0.79", t); self.assertIn("727 / 918", t)
         # forecasts: P(win), result, daily Brier vs the lead-only baseline
         self.assertIn("0.606", t); self.assertIn("3 cats", t); self.assertIn("0.145", t); self.assertIn("0.294", t)
-        # the switch rules are stated in plain words on the page (their codes are in the hovers), not decided
-        self.assertEqual(t.count("only on your OK"), 2)
+        # the switch rules are stated in plain words on the page (their codes are in the hovers); the threes rule is
+        # undecided, the minutes rule was switched on the owner's word 2026-11-16 ("Switch now")
+        self.assertEqual(t.count("only on your OK"), 1)
+        self.assertIn("since 2026-11-16 the current line uses it for those three", t)
         self.assertEqual(dom["page_overflow"], 0)
 
     def test_record_pins_the_accuracy_input(self):

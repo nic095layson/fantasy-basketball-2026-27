@@ -152,14 +152,22 @@ def week_of(date):
 CATS = hoops.CATS
 
 
-def _pcat(m, om, c):
-    d = (m[0][c] - om[0][c]) / (math.sqrt(m[1][c] + om[1][c]) or 1e-9)
+def _pcat(m, om, c, shock=0.0):
+    # shock: the shared games shock's SD. The season card (pwins) passes arena.TEAM_WEEK_SHOCK (Council 2026-11-16,
+    # owner: "Have council deliberate the two open decisions and proceed", 5-0): its edge is the simulator's marginal,
+    # and arena.simulate_seasons draws each team's counting categories around shock * mu with shock ~ Normal(1, SD),
+    # so a counting category carries shock^2 * mu^2 per team. The week card's in-week chances (week_matchup, on
+    # totals partly already played) call this without it.
+    v = m[1][c] + om[1][c]
+    if shock and c in hoops.COUNT_COLS:
+        v += shock ** 2 * (m[0][c] ** 2 + om[0][c] ** 2)
+    d = (m[0][c] - om[0][c]) / (math.sqrt(v) or 1e-9)
     pr = 0.5 * (1 + math.erf(d / math.sqrt(2)))
     return (1 - pr) if c == "TO" else pr
 
 
 def pwins(my, opps):
-    return sum(_pcat(my, om, c) for om in opps for c in CATS) / len(opps)
+    return sum(_pcat(my, om, c, arena.TEAM_WEEK_SHOCK) for om in opps for c in CATS) / len(opps)
 
 
 # owner 2026-10-28 ("Status gate (Recommended)"): the waiver scan and streaming read the day's injury status for the
@@ -254,6 +262,9 @@ def free_agents(P, state, status, n=WAIVER_CANDIDATES):
     (Out beyond the short-Out line, or a code the kit does not tier) from among the n the scan would otherwise have
     taken. A short Out stays in, flagged by its status entry."""
     rostered = {p["player"] for t in state["teams"] for p in t["players"]}
+    # owner 2026-11-16: a rostered player outside the pool (an auto row) is held in state["unpooled"], not in a team's
+    # players; he is not claimable, so he is never a waiver candidate
+    rostered |= {u["player"] for u in (state.get("unpooled") or [])}
     veto = hoops.do_not_draft()
     pool = sorted((p for p in P if p["player"] not in rostered and hoops.availability(p) > 0 and p["player"] not in veto),
                   key=lambda p: -hoops.adj_value(p, ()))

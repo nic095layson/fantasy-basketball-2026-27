@@ -10,7 +10,7 @@ H=os.path.dirname(os.path.abspath(__file__)); DECK="/home/user/yahoo-fantasy-bas
 sys.path.insert(0,DECK+"/scripts"); sys.path.insert(0,DECK+"/arena")
 SEASONS=6000; SEEDS=(2026,2027)
 SWAPS={"as drafted":[], "Draymond Green for Braun":[("Christian Braun","Draymond Green")], "Jalen Johnson for Durant (#15)":[("Kevin Durant","Jalen Johnson")]}
-VARIANTS={"shock 0.06 (shipped)":{}, "shock 0":{"const":{"TEAM_WEEK_SHOCK":0.0}}, "shock 0.12":{"const":{"TEAM_WEEK_SHOCK":0.12}}, "no in-sim injury discount":{"avail":True}}
+VARIANTS={"shock 0.11 (shipped)":{}, "shock 0":{"const":{"TEAM_WEEK_SHOCK":0.0}}, "shock 0.06":{"const":{"TEAM_WEEK_SHOCK":0.06}}, "shock 0.13":{"const":{"TEAM_WEEK_SHOCK":0.13}}, "no in-sim injury discount":{"avail":True}}
 def run(args):
     swap,var,sd=args
     import importlib, hoops, arena; importlib.reload(arena)
@@ -25,7 +25,7 @@ def run(args):
     patch=VARIANTS[var]
     for k,v in patch.get("const",{}).items(): setattr(arena,k,v)
     if patch.get("avail"):
-        orig=arena.weekly_availability; arena.weekly_availability=lambda p,orig=orig:(0.88 if orig(p)==0.75 else orig(p))
+        orig=arena.weekly_availability; arena.weekly_availability=lambda p,orig=orig:(0.80 if orig(p)==0.65 else orig(p))  # risk like healthy; live tiers since 2026-11-16
     champ,po=arena.simulate_seasons(ros,SEASONS,random.Random(sd))
     return swap,var,sd,100*champ[10]/SEASONS
 if __name__=="__main__":

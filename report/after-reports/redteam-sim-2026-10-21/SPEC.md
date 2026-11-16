@@ -35,10 +35,12 @@ with the first matching rule winning:
    player is excluded. This tier order mirrors the ranking engine's availability rule.
 2. the tag contains `mild`: **0.79**
 3. the tag ends with `-recovery`: **0.0**
-4. the tag ends with `-risk`, or equals `risk` or `inj-risk`: **0.75**
+4. the tag ends with `-risk`, or equals `risk` or `inj-risk`: **0.65**
 5. the tag contains `recovery`: **0.0**
-6. the tag contains `risk`: **0.75**
-7. anything else: **0.88**
+6. the tag contains `risk`: **0.65**
+7. anything else: **0.80**
+
+(Rules 4, 6 and 7 were 0.75, 0.75 and 0.88 until the owner's pick of 2026-11-16.)
 
 The order is deliberate: a risk tag followed by a parenthetical mentioning recovery is a
 risk, because the parenthetical is not part of the tag.
@@ -115,7 +117,7 @@ Fixed per team: the §4 models, and `σ_c = sqrt(var_c)`, using 1e-6 where that 
 One season:
 - **17 regular weeks.** Each week, shuffle the 12 teams uniformly and pair them as
   positions (0,1), (2,3), …, (10,11).
-- **A matchup (a, b).** Draw a shared games shock for each team, `s_a, s_b ~ Normal(1, 0.06)`.
+- **A matchup (a, b).** Draw a shared games shock for each team, `s_a, s_b ~ Normal(1, 0.11)` (0.06 until 2026-11-16).
   For each category `c`:
   - the mean is `mu_c` multiplied by the team's shock if `c` is a counting category, and is
     not multiplied for FG% and FT%;

@@ -161,10 +161,10 @@
   {
    "module": "arena",
    "name": "TEAM_WEEK_SHOCK",
-   "value": 0.06,
+   "value": 0.11,
    "role": "shared games-played shock correlating the counting categories within a team-week",
    "status": "declared_band",
-   "record": "deck analysis_2026-08-09_findings_table.md F39 hand-set; band: postmortem rt_sensitivity.json shock 0 / 0.12 (FRAGILE: +3.0/+3.8 and -2.0/-2.7 title points)",
+   "record": "deck analysis_2026-08-09_findings_table.md F39 hand-set; band: postmortem rt_sensitivity.json shock 0 / 0.12 (FRAGILE: +3.0/+3.8 and -2.0/-2.7 title points); 0.06 -> 0.11 on 2026-11-16 (Council 4-1, owner: \"Have council deliberate the shock fit and proceed\"): the level-relative fit of weeks 1-4 (fit_constants on season/daily, 48 team-weeks), 0.107, SE 0.013 (weeks 2-4: 0.097, 0.112, 0.107), the same on the 0.88/0.75 and 0.80/0.65 tiers (0.1068 / 0.1067); the raw fit on the new tiers, 0.118, is the model's weekly level running 10% low (mean actual/model 1.103), not a larger shock. Band from the same day: no shock, the old value 0.06, and the fit + 2 SE (0.13)",
    "decision": "D-PM-1 calibrate the shock",
    "band": [
     {
@@ -174,9 +174,15 @@
      }
     },
     {
-     "label": "shared games shock doubled (0.12)",
+     "label": "shock at the old 0.06",
      "const": {
-      "TEAM_WEEK_SHOCK": 0.12
+      "TEAM_WEEK_SHOCK": 0.06
+     }
+    },
+    {
+     "label": "shock at the fit + 2 SE (0.13)",
+     "const": {
+      "TEAM_WEEK_SHOCK": 0.13
      }
     }
    ]
@@ -314,43 +320,43 @@
    "module": "arena",
    "name": "weekly_availability",
    "value": {
-    "healthy": 0.88,
+    "healthy": 0.8,
     "mild": 0.79,
-    "risk": 0.75,
+    "risk": 0.65,
     "recovery": 0.0,
     "out": 0.0
    },
    "role": "in-sim share of games played by tier (g = 3.5 a, Var[G] = 3.5 a (1-a))",
    "status": "declared_band",
-   "record": "deck analysis_2026-08-09_findings_table.md F39 hand-set; 0.79 derived 2026-10-13 as the mild share of the healthy-to-risk gap; band: postmortem rt_sensitivity.json healthy 0.95/0.80, risk 0.88/0.65 (no-discount SENSITIVE -1.3/-1.5); recovery 0.60 -> 0.0 on 2026-10-21 (owner \"build council's fixes\", Council 4-1 D-PM-4 recovery part): the board's exclusion (hoops.availability, owner ruling 2026-07-12), real 2025-26 recovery players ~9% of games (deck LESSONS item 5), returnees re-tagged -risk; in-season effect at the change: 0 rostered players (4 of 4 on IL, D-IS-8); draft-day effect measured 2026-10-21: seat 10 title 21.10/21.33 -> 23.27/24.07 on the 10k references (Nurkic seat 2, Butler seat 12; decomposed exactly by re-running at 0.60). out 0.0 on 2026-10-21 (owner \"proceed with all\", decision-sheet item 2): the branch hoops.availability already had; before it out-* fell through to the healthy 0.88 (A-9 pre-registered divergence); 0 rostered or drafted out-* players at the change",
+   "record": "deck analysis_2026-08-09_findings_table.md F39 hand-set; 0.79 derived 2026-10-13 as the mild share of the healthy-to-risk gap; band: postmortem rt_sensitivity.json healthy 0.95/0.80, risk 0.88/0.65 (no-discount SENSITIVE -1.3/-1.5); recovery 0.60 -> 0.0 on 2026-10-21 (owner \"build council's fixes\", Council 4-1 D-PM-4 recovery part): the board's exclusion (hoops.availability, owner ruling 2026-07-12), real 2025-26 recovery players ~9% of games (deck LESSONS item 5), returnees re-tagged -risk; in-season effect at the change: 0 rostered players (4 of 4 on IL, D-IS-8); draft-day effect measured 2026-10-21: seat 10 title 21.10/21.33 -> 23.27/24.07 on the 10k references (Nurkic seat 2, Butler seat 12; decomposed exactly by re-running at 0.60). out 0.0 on 2026-10-21 (owner \"proceed with all\", decision-sheet item 2): the branch hoops.availability already had; before it out-* fell through to the healthy 0.88 (A-9 pre-registered divergence); 0 rostered or drafted out-* players at the change; healthy 0.88 -> 0.80 and risk 0.75 -> 0.65 on 2026-11-16 (owner pick \"Fit with a floor\", floor \"Band edge: 0.80 / 0.65\"): report/fits/fit_week4.json on season/daily, weeks 1-4 of 2026-27, healthy measured 0.779 (n 3,694), risk 0.559 (n 438), each floored at the edge of the declared band; band redefined the same day as old value / unfloored fit per tier (healthy 0.88 / 0.78, risk 0.75 / 0.56), one tier moved at a time with the other at its live value; mild kept at 0.79 (owner); mild kept at 0.79 by the Council of 2026-11-16, 5-0 (owner: \"proceed with their vote\"): the only measurement, 0.885 (n 26, weeks 1-4), sits above both healthy and the old derivation; re-deriving on the new gap (about 0.70) would sit 2.9 SE below it and would cut the owner's Kyrie Irving's games (mild-tagged players on 2026-11-16: Kyrie Irving, Damian Lillard)",
    "decision": "D-PM-4 reconcile with hoops.availability (recovery and out reconciled 2026-10-21; risk/mild after the composed per-player comparison)",
    "band": [
     {
-     "label": "no in-sim injury discount (risk 0.88 like healthy)",
-     "avail": [
-      0.88,
-      0.88
-     ]
-    },
-    {
-     "label": "harsher risk tier (0.65)",
+     "label": "healthy at the old 0.88",
      "avail": [
       0.88,
       0.65
      ]
     },
     {
-     "label": "healthy players play 0.95 of games",
+     "label": "healthy at the unfloored fit (0.78)",
      "avail": [
-      0.95,
+      0.78,
+      0.65
+     ]
+    },
+    {
+     "label": "risk at the old 0.75",
+     "avail": [
+      0.8,
       0.75
      ]
     },
     {
-     "label": "healthy players play 0.80 of games",
+     "label": "risk at the unfloored fit (0.56)",
      "avail": [
       0.8,
-      0.75
+      0.56
      ]
     }
    ]
@@ -498,7 +504,7 @@
    "module": "minutes_line",
    "name": "HALF_LIFE",
    "value": 5.0,
-   "role": "games over which the recency weight on a player's minutes halves (the minutes forecast of the candidate line)",
+   "role": "games over which the recency weight on a player's minutes halves (the minutes forecast of the candidate line); since 2026-11-16 it reaches the live line's PTS/REB/AST (season_lines.SWITCH_CATS)",
    "status": "uncalibrated",
    "record": "report/after-reports/after-report-2026-10-27-minutes-line.md",
    "decision": "D-ML-1 (owner 2026-10-27, build 2): the weekly accuracy card (report/accuracy.json, column candidate_minutes) is the calibration — the candidate replaces nothing until it beats the blend's MAE on PTS, REB and AST in 3 of 4 consecutive graded weeks, on the owner's word"
@@ -507,7 +513,7 @@
    "module": "minutes_line",
    "name": "MIN_PRIOR_GAMES",
    "value": 3.0,
-   "role": "games the preseason mpg is worth in the minutes forecast; the blend's own points prior (season_lines.PRIOR_GAMES['PTS']) is the denominator, read live",
+   "role": "games the preseason mpg is worth in the minutes forecast; the blend's own points prior (season_lines.PRIOR_GAMES['PTS']) is the denominator, read live; since 2026-11-16 it reaches the live line's PTS/REB/AST (season_lines.SWITCH_CATS)",
    "status": "uncalibrated",
    "record": "report/after-reports/after-report-2026-10-27-minutes-line.md",
    "decision": "D-ML-1 (owner 2026-10-27, build 2): the weekly accuracy card (report/accuracy.json, column candidate_minutes) is the calibration — the candidate replaces nothing until it beats the blend's MAE on PTS, REB and AST in 3 of 4 consecutive graded weeks, on the owner's word"
@@ -743,6 +749,18 @@
    "status": "uncalibrated",
    "record": "after-report-2026-11-05-swap-grid-auto-pool.md; season_lines.py auto_rows/replacement_prior",
    "decision": "D-AP-1: fit after four graded weeks of auto rows (accuracy_week grades them like any line); until then hand-set, named here"
+  },
+  {
+   "module": "season_lines",
+   "name": "SWITCH_CATS",
+   "value": [
+    "pts",
+    "reb",
+    "ast"
+   ],
+   "role": "the season-line columns that carry the minutes ratio (minutes_line forecast / implicit minutes) since 2026-11-16",
+   "status": "measured",
+   "record": "report/accuracy.json weeks 2-4: candidate_minutes MAE below in_season on PTS, REB and AST in each week (D-ML-1 rule, pre-committed 2026-10-27); owner card 2026-11-16 \"Switch now\""
   },
   {
    "module": "threes_line",

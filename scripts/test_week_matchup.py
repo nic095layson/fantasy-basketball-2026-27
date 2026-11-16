@@ -120,6 +120,25 @@ class Projection(unittest.TestCase):
         self.assertAlmostEqual(t["reb"], 10.0)
         self.assertEqual(r["games"], {"A": 2})        # Out never starts; Idle's team has no game
 
+    def test_an_out_player_counts_from_his_espn_return_date_on_later_days(self):
+        # owner 2026-11-16 (card: "Build both fixes"): today keeps today's tag; on a later day a return date on or
+        # before that day makes him available (1.0); no return date keeps today's tag all week
+        roster = [dict(player="Back", team="DEN", positions=["C"], value=1.0),
+                  dict(player="Long", team="DEN", positions=["PG"], value=3.0)]
+        lines = {"Back": line(pts=20), "Long": line(pts=30)}
+        sched = {"2026-11-16": {"DEN"}, "2026-11-17": {"DEN"}, "2026-11-18": {"DEN"}, "2026-11-20": {"DEN"}}
+        avail = {"Back": 0.0, "Long": 0.0, WM.RETURNS: {"today": "2026-11-16", "players": {"Back": "2026-11-18"}}}
+        r = WM.remaining(roster, sched, avail, lines)
+        self.assertEqual(r["games"], {"Back": 2})                # 11-18 and 11-20; Long has no return date
+        self.assertAlmostEqual(r["totals"]["pts"], 40.0)
+
+    def test_a_return_date_on_today_leaves_todays_tag_for_today(self):
+        roster = [dict(player="Q", team="DEN", positions=["C"], value=1.0)]
+        sched = {"2026-11-16": {"DEN"}, "2026-11-17": {"DEN"}}
+        avail = {"Q": 0.5, WM.RETURNS: {"today": "2026-11-16", "players": {"Q": "2026-11-16T00:00Z"}}}
+        r = WM.remaining(roster, sched, avail, {"Q": line(pts=10)})
+        self.assertAlmostEqual(r["totals"]["pts"], 15.0)         # 10 x 0.5 today + 10 x 1.0 on 11-17
+
     def test_the_ten_slot_cap_applies_to_projected_days_too(self):
         roster = [dict(player=f"P{i}", team="DEN", positions=ALLPOS, value=float(i)) for i in range(1, 12)]
         lines = {f"P{i}": line(pts=float(i)) for i in range(1, 12)}
@@ -251,10 +270,38 @@ class ThisWeek(unittest.TestCase):
         me_now, opp_now, roster, lines, sched, fas = self._fixture()
         opp_rem = dict(totals=box(), var={k: 0.0 for k in ("3PTM", "PTS", "REB", "AST", "ST", "BLK", "TO", "fg_mk", "ft_mk")})
         by = {r["add"]: r for r in WM.scan_this_week(me_now, opp_now, opp_rem, roster, ["Done"], fas, sched, "t0", {}, lines)}
-        for n in ("TodayOnly", "Idle"):        # PHX plays only today (the swap starts tomorrow); MIA never
-            self.assertEqual(by[n]["drop"], "Done")
-            self.assertEqual(by[n]["games"], 0)
-            self.assertEqual(by[n]["d_exp"], 0.0)
+        # MIA never plays: nothing either way
+        self.assertEqual((by["Idle"]["drop"], by["Idle"]["games"], by["Idle"]["d_exp"]), ("Done", 0, 0.0))
+        # owner 2026-11-16 ("Price both timings"): PHX plays only today. The swap after tonight gives him nothing; a
+        # same-day swap (drop and add before tip; the league counts a same-day add made before the game) gives him today
+        t = by["TodayOnly"]
+        self.assertEqual((t["timing"], t["games"], t["drop"]), ("same day", 1, "Done"))
+        self.assertGreater(t["d_exp"], 0.0)
+        self.assertEqual(t["other_timing"], dict(timing="after tonight", d_exp=0.0, games=0))
+
+    def test_an_add_who_does_not_play_today_keeps_the_after_tonight_rule(self):
+        # LAL plays today and later, PHX only today, MIA never: a team with no game today has nothing to gain from a
+        # same-day swap, and the drop keeps his game tonight
+        me_now, opp_now, roster, lines, sched, fas = self._fixture()
+        sched = {"t0": {"BOS", "DEN", "PHX"}, "t1": {"BOS", "DEN", "LAL"}, "t2": {"DEN", "LAL"}}
+        opp_rem = dict(totals=box(), var={k: 0.0 for k in ("3PTM", "PTS", "REB", "AST", "ST", "BLK", "TO", "fg_mk", "ft_mk")})
+        by = {r["add"]: r for r in WM.scan_this_week(me_now, opp_now, opp_rem, roster, ["Scorer", "Done"], fas, sched, "t0", {}, lines)}
+        self.assertEqual(by["Rim"]["timing"], "after tonight")
+        self.assertNotIn("other_timing", by["Rim"])
+        self.assertEqual(by["Rim"]["games"], 2)
+
+    def test_both_play_today_the_better_timing_is_kept_and_the_other_is_reported(self):
+        # Rim (LAL) plays t0, t1, t2; dropping Done (NYK, no game) costs nothing today, so the same-day swap adds
+        # Rim's t0 game and wins; the after-tonight figure stays on the row
+        me_now, opp_now, roster, lines, sched, fas = self._fixture()
+        opp_rem = dict(totals=box(), var={k: 0.0 for k in ("3PTM", "PTS", "REB", "AST", "ST", "BLK", "TO", "fg_mk", "ft_mk")})
+        rows = WM.scan_this_week(me_now, opp_now, opp_rem, roster, ["Done"], fas, sched, "t0", {}, lines)
+        rim = next(r for r in rows if r["add"] == "Rim")
+        self.assertEqual((rim["timing"], rim["games"]), ("same day", 3))
+        self.assertEqual((rim["other_timing"]["timing"], rim["other_timing"]["games"]), ("after tonight", 2))
+        self.assertGreater(rim["d_exp"], rim["other_timing"]["d_exp"])
+        self.assertAlmostEqual(sum(rim["d_cat"].values()), rim["d_exp"], places=12)
+        self.assertAlmostEqual(rim["d_exp_drop"] + rim["d_exp_add"], rim["d_exp"], places=12)
 
     def test_the_drop_loses_his_remaining_games(self):
         me_now, opp_now, roster, lines, sched, fas = self._fixture()
@@ -281,7 +328,9 @@ class ThisWeek(unittest.TestCase):
         names = [r["add"] for r in rows]
         self.assertLess(names.index("Rim"), names.index("Gunner"))
         rim = rows[names.index("Rim")]
-        self.assertEqual(rim["games"], 2)                      # LAL on t1 and t2; t0 is before the swap
+        # owner 2026-11-16 ("Price both timings"): LAL also plays t0, and swapping before tip there beats keeping the
+        # drop's t0 game, so the row is the same-day swap with 3 starts; the after-tonight figure (2 starts) rides along
+        self.assertEqual((rim["timing"], rim["games"], rim["other_timing"]["games"]), ("same day", 3, 2))
         self.assertGreater(rim["d_cat"]["BLK"], 0)
         self.assertEqual([r["d_exp"] for r in rows], sorted((r["d_exp"] for r in rows), reverse=True))
 
@@ -528,6 +577,32 @@ class Record(unittest.TestCase):
         self.assertTrue(rec["pickups"]["top"]); self.assertGreater(rec["pickups"]["pool_size"], 300)
         self.assertNotIn("Joel Embiid", [r["add"] for r in rec["pickups"]["top"]])   # rostered (IL) is not a free agent
 
+    def test_an_auto_row_player_on_the_roster_is_projected_and_an_il_auto_row_is_not(self):
+        # owner 2026-11-16 (card: "Build both fixes"): a rostered player outside the pooled list sits in the team's
+        # "unpooled" rows (Mario Hezonja, 2026-11-15); his pool line (an auto row) now counts in the week card
+        st = json.load(open(self.state))
+        st["teams"][0]["unpooled"] = [dict(player="Anthony Edwards", slot="UTIL", nba_team="MIN", positions=["SG"], status=None),
+                                      dict(player="Tyrese Haliburton", slot="IL", nba_team="IND", positions=["PG"], status=None)]
+        dump(st, self.state)
+        with open(self.paths["games"], "a") as f:
+            f.write("2026-10-22,1,MIN,IND,\n")
+        rec = WM.build("2026-10-21", self.paths)
+        self.assertEqual(rec["games"]["me"]["remaining_by_player"], {"Nikola Jokic": 2, "Anthony Edwards": 1})
+
+    def test_the_espn_return_date_reaches_the_card_from_the_days_feed_file(self):
+        dump(dict(date="2026-10-21", rows=[dict(player="Nikola Jokic", team="DEN", status="Out", return_date="2026-10-23")]),
+             os.path.join(self.paths["status"], "espn_injuries_2026-10-21.json"))
+        st = json.load(open(os.path.join(self.paths["status"], "status_2026-10-21.json")))
+        st["rows"][0]["availability"] = 0.0
+        dump(st, os.path.join(self.paths["status"], "status_2026-10-21.json"))
+        rec = WM.build("2026-10-21", self.paths)
+        self.assertEqual(rec["games"]["me"]["remaining_by_player"], {"Nikola Jokic": 1})   # 10-23 only
+        self.assertEqual(rec["return_dates"], dict(file="espn_injuries_2026-10-21.json", players={"Nikola Jokic": "2026-10-23"}))
+
+    def test_no_feed_file_means_no_return_dates_and_the_record_says_so(self):
+        rec = WM.build("2026-10-21", self.paths)
+        self.assertEqual(rec["return_dates"], dict(file=None, players={}))
+
     def test_a_line_the_kits_file_spells_differently_still_counts_for_its_roster(self):
         # owner 2026-10-22 (the name-mismatch fix): Darius Acuff Jr.'s 10/21 game was missing from the rebuild because
         # the box pull left it unpooled ("Darius Acuff" in the kit's file); his 12 points now count for THEIRS
@@ -703,6 +778,17 @@ class Record(unittest.TestCase):
         pk = WM.build("2026-10-21", dict(self.paths, yahoo_pull=self.pull()))["pickups"]
         self.assertEqual(pk["pool"]["source"], "kit")
         self.assertGreater(pk["pool_size"], 300)
+
+    def test_a_rostered_player_outside_the_pool_never_enters_the_kits_pickup_pool(self):
+        # owner 2026-11-16: an auto-row player rostered in the league sits in state["unpooled"], not in a team's
+        # players; the kit-pool fallback must not offer him (the waiver-scan twin was fixed in #273)
+        base = WM.build("2026-10-21", dict(self.paths, yahoo_pull=self.pull()))["pickups"]["pool_size"]
+        st = json.load(open(self.state))
+        st["unpooled"] = [dict(player="Jrue Holiday", fantasy_team="THEIRS", seat=10, slot="BN", nba_team="POR")]
+        dump(st, self.state)
+        pk = WM.build("2026-10-21", dict(self.paths, yahoo_pull=self.pull()))["pickups"]
+        self.assertEqual(pk["pool_size"], base - 1)
+        self.assertNotIn("Jrue Holiday", [r["add"] for r in pk["top"]])
 
 
 class MatchupBoard(Record):

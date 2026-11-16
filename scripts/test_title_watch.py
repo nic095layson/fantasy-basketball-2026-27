@@ -70,6 +70,53 @@ class Check(unittest.TestCase):
         self.assertIn("no kit merge and no roster move", TW.pass_line(r, "x.json"))
 
 
+class MethodChange(unittest.TestCase):
+    """Owner 2026-11-16 (card: "Mark method changes"): a move that comes from a change of method (the line method or a
+    registered constant) is named as such, first among the causes, so it is not read as a league result."""
+
+    def test_a_line_switch_that_began_between_the_runs_is_named(self):
+        prev, today = dict(date="2026-11-16"), dict(date="2026-11-17", line_switch=dict(cats=["pts", "reb", "ast"]))
+        self.assertEqual(TW.line_method_changes(prev, today),
+                         ["line method: the minutes ratio now applies to PTS, REB, AST (before: none)"])
+        self.assertEqual(TW.line_method_changes(today, dict(today, date="2026-11-18")), [])
+        self.assertEqual(TW.line_method_changes(None, today), ["line method: no season-lines record for the earlier run"])
+
+    def test_registered_constants_added_removed_or_changed_are_named(self):
+        old = [dict(module="arena", name="X", value=0.88), dict(module="season_lines", name="GONE", value=1)]
+        new = [dict(module="arena", name="X", value=0.80), dict(module="season_lines", name="SWITCH_CATS", value=["pts"])]
+        self.assertEqual(TW.registry_changes(old, new),
+                         ["constant arena.X: 0.88 to 0.8", "constant season_lines.SWITCH_CATS added", "constant season_lines.GONE removed"])
+        self.assertEqual(TW.registry_changes(new, new), [])
+
+    def test_a_moved_title_with_a_method_change_says_so_first(self):
+        r = TW.check(brief("2026-11-17", 11.3, 12.2, MOVES), brief("2026-11-16", 14.9, 14.6),
+                     merges=["Merge pull request #274: x"], method=["line method: the minutes ratio now applies to PTS, REB, AST (before: none)"])
+        self.assertTrue(r["moved"])
+        causes = TW._causes(r)
+        self.assertTrue(causes[0].startswith("METHOD CHANGE"))
+        self.assertIn("part or all of the move is the method, not the league", causes[0])
+        self.assertIn("METHOD CHANGE", TW.pass_line(r, "x.json"))
+        self.assertIn("**Method change between the two runs.**", "\n".join(TW.render(r)))
+
+    def test_no_method_change_reads_as_before(self):
+        r = TW.check(brief("2026-11-10", 12.3, 12.2, MOVES), brief("2026-11-09", 18.1, 18.0), merges=[], method=[])
+        self.assertNotIn("METHOD CHANGE", TW.pass_line(r, "x.json"))
+
+    def test_main_reads_the_two_season_lines_records(self):
+        d, s = tempfile.mkdtemp(), tempfile.mkdtemp()
+        json.dump(brief("2026-11-16", 14.9, 14.6), open(os.path.join(d, "brief_2026-11-16.json"), "w"))
+        json.dump(brief("2026-11-17", 11.3, 12.2), open(os.path.join(d, "brief_2026-11-17.json"), "w"))
+        json.dump(dict(date="2026-11-16"), open(os.path.join(s, "season_lines_2026-11-16.json"), "w"))
+        json.dump(dict(date="2026-11-17", line_switch=dict(cats=["pts", "reb", "ast"])), open(os.path.join(s, "season_lines_2026-11-17.json"), "w"))
+        import io, contextlib
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            TW.main(["--date", "2026-11-17", "--briefs", d, "--season", s, "--root", tempfile.mkdtemp()])
+        rec = json.load(open(os.path.join(d, "title_watch_2026-11-17.json")))
+        self.assertEqual(rec["method_changes"], ["line method: the minutes ratio now applies to PTS, REB, AST (before: none)"])
+        self.assertIn("METHOD CHANGE", buf.getvalue())
+
+
 class Files(unittest.TestCase):
     def test_the_previous_brief_is_the_newest_before_the_date_and_never_a_pm_file(self):
         d = tempfile.mkdtemp()

@@ -16,14 +16,18 @@ def ecw(s):
     for o in ros:
         if o==s: continue
         for c in CATS:
-            d=(M[s][0][c]-M[o][0][c])/(math.sqrt(M[s][1][c]+M[o][1][c]) or 1e-9); pr=0.5*(1+math.erf(d/math.sqrt(2))); v=(1-pr) if c=="TO" else pr
+            # the card's measure since the Council of 2026-11-16 (co_gm._pcat): a counting category carries the shock's variance
+            sv=arena.TEAM_WEEK_SHOCK**2*(M[s][0][c]**2+M[o][0][c]**2) if c in hoops.COUNT_COLS else 0.0
+            d=(M[s][0][c]-M[o][0][c])/(math.sqrt(M[s][1][c]+M[o][1][c]+sv) or 1e-9); pr=0.5*(1+math.erf(d/math.sqrt(2))); v=(1-pr) if c=="TO" else pr
             tot+=v; cats[c]+=v/11
     return tot/11,cats
 E={s:ecw(s) for s in ros}
 # 2026-10-21 (owner "implement fixes", decision 5 (a)) pinned this to the _w17r references of the 0.60-recovery engine;
 # 2026-10-29 (owner "Repoint to current runs", audit F2): the live engine's references, the _w17r_av0 files (deck #128),
 # so the card and the seasons come from one engine and the record carries that engine's commit
-S={sd:json.load(open(f"{DECK}/arena/results/m100_league_sim_10k_s{sd}_w17r_av0.json"))["teams"] for sd in (2026,2027)}  # the shipped engine's reference runs (17 weeks, reseeded; Session 1 item 2)
+# 2026-11-16: repointed to the references of the engine the card now runs (tiers 0.80/0.65, shock 0.11, _t8065_s11); the
+# re-run of the same day after the tier change had left this on _w17r_av0 (0.88/0.75, shock 0.06), a card-vs-old-engine comparison
+S={sd:json.load(open(f"{DECK}/arena/results/m100_league_sim_10k_s{sd}_w17r_av0_t8065_s11.json"))["teams"] for sd in (2026,2027)}  # the shipped engine's reference runs (17 weeks, reseeded; Session 1 item 2)
 def rank(vals):
     o=sorted(vals,key=lambda k:-vals[k]); return {k:i+1 for i,k in enumerate(o)}
 def spearman(a,b):
