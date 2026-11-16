@@ -224,21 +224,105 @@ def team_week_rows(week, weeks_dir=WEEKS, snapshots=SNAPSHOTS):
     return rows, note
 
 
-def run(week, weeks_dir=WEEKS, snapshots=SNAPSHOTS, accuracy=ACCURACY, out_dir=OUT, boots=500):
+ACTUALS = os.path.join(KIT, "data", "actuals")
+BOX_COLS = {"3PTM": "tpm", "PTS": "pts", "REB": "reb", "AST": "ast", "ST": "stl", "BLK": "blk", "TO": "tov"}
+
+
+def level(rows):
+    """Council 2026-11-16 (4-1): the model's level, the mean of actual / model per counting category over the
+    team-weeks and over the seven. 1.0 is a model whose weekly means are right; the shock fit is read relative to it."""
+    by = {c: sum(r[c]["actual"] / r[c]["mu"] for r in rows) / len(rows) for c in COUNTING} if rows else {}
+    return dict(n=len(rows), by_cat=by, overall=(sum(by.values()) / len(by)) if by else None)
+
+
+def level_relative(shock, lv):
+    """The shock relative to the model's level (raw shock / level overall): the value the Council of 2026-11-16 set
+    TEAM_WEEK_SHOCK from (0.107 on both the 0.88/0.75 and the 0.80/0.65 tiers, where the raw fit read 0.107 / 0.118)."""
+    if shock.get("shock") is None or not (lv or {}).get("overall"):
+        return None
+    return shock["shock"] / lv["overall"]
+
+
+def in_week_factors(week, weeks_dir=WEEKS, snapshots=SNAPSHOTS, actuals_dir=ACTUALS):
+    """Council 2026-11-16 (4-1): each team's in-week roster factor for `week`, {seat: factor}: Yahoo's counted total
+    over everything its Sunday roster (non-IL, the accuracy snapshot) produced in the week's box scores, benched games
+    included, per counting category, averaged over the categories with a non-zero roster total. Above 1 is production
+    from players added during the week. Names join through box_pull's fold, suffix key and alias table (a bare string
+    match lost every Jr./Herb-Herbert spelling in the first measurement of 2026-11-16)."""
+    import co_gm as CG
+    import box_pull as BP
+    import glob
+    wk_path = os.path.join(weeks_dir, f"week_{week}.json"); state_p = os.path.join(snapshots, f"state_week{week}.json")
+    if not (os.path.exists(wk_path) and os.path.exists(state_p) and os.path.isdir(actuals_dir)):
+        return {}
+    wk = json.load(open(wk_path, encoding="utf-8")); state = json.load(open(state_p, encoding="utf-8"))
+    aliases = BP.load_aliases()
+    out = {}
+    rosters = {}
+    for t in state["teams"]:
+        names = [p["player"] for p in t["players"] if p.get("slot") != "IL"]
+        names += [u if isinstance(u, str) else u.get("player") for u in (t.get("unpooled") or []) if (u if isinstance(u, str) else u.get("slot")) != "IL"]
+        rosters[t["seat"]] = (BP.name_index(names, aliases), {c: 0.0 for c in COUNTING})
+    for f in sorted(glob.glob(os.path.join(actuals_dir, "*.json"))):
+        d = json.load(open(f, encoding="utf-8"))
+        try:
+            if CG.week_of(d["date"])[0] != week:
+                continue
+        except (ValueError, KeyError):
+            continue
+        for p in d.get("players", []):
+            if p.get("dnp") or not p.get("min"):
+                continue
+            for seat, (index, tot) in rosters.items():
+                if BP.match_name(p["name"], index) or (p.get("pool_name") and BP.match_name(p["pool_name"], index)):
+                    for c, k in BOX_COLS.items():
+                        tot[c] += float(p.get(k) or 0)
+                    break
+    for t in wk["teams"].values():
+        if t["seat"] not in rosters:
+            continue
+        tot = rosters[t["seat"]][1]
+        r = [float(t["line"][c]) / tot[c] for c in COUNTING if tot[c]]
+        if r:
+            out[str(t["seat"])] = sum(r) / len(r)
+    return out
+
+
+def between_team_f(by_team):
+    """One-way ANOVA of the weekly in-week factors by team ({seat: [factor per week]}): F, its degrees of freedom and
+    the 95% line. F near or below 1 means the teams differ no more than week-to-week noise."""
+    groups = [v for v in by_team.values() if len(v) >= 2]
+    k = len(groups); n = sum(len(v) for v in groups)
+    if k < 2 or n <= k:
+        return dict(F=None, df_between=k - 1, df_within=n - k, note="too few team-weeks")
+    grand = sum(sum(v) for v in groups) / n
+    msb = sum(len(v) * (sum(v) / len(v) - grand) ** 2 for v in groups) / (k - 1)
+    msw = sum((x - sum(v) / len(v)) ** 2 for v in groups for x in v) / (n - k)
+    return dict(F=(msb / msw) if msw else None, df_between=k - 1, df_within=n - k,
+                means={s: sum(v) / len(v) for s, v in by_team.items() if v})
+
+
+def run(week, weeks_dir=WEEKS, snapshots=SNAPSHOTS, accuracy=ACCURACY, out_dir=OUT, boots=500, actuals_dir=ACTUALS):
     """Fit on every finished week up to and including `week` that has its inputs; write the week's record."""
     rows, notes, weeks_used = [], [], []
+    in_week = {}
     for w in range(1, week + 1):
         r, n = team_week_rows(w, weeks_dir, snapshots)
         notes.append(f"week {w}: {n}")
         if r:
             rows += r; weeks_used.append(w)
+            for seat, fct in in_week_factors(w, weeks_dir, snapshots, actuals_dir).items():
+                in_week.setdefault(seat, []).append(fct)
     shock = shock_estimate([{c: r[c] for c in COUNTING} for r in rows], boots=boots, seed=week) if rows else dict(n=0, shock=None, se=None, note="no team-weeks")
     acc = json.load(open(accuracy, encoding="utf-8"))["weeks"] if os.path.exists(accuracy) else {}
     avail = availability_pool([acc[k]["availability"] for k in sorted(acc, key=int) if int(k) <= week and acc[k].get("availability")],
                               live=tier_keys())
     import co_gm as CG
     rec = dict(week=week, weeks_used=weeks_used, status=proposal_status(len(weeks_used)), notes=notes,
-               team_week_shock=dict(live=CG.arena.TEAM_WEEK_SHOCK, **shock),
+               team_week_shock=dict(live=CG.arena.TEAM_WEEK_SHOCK, **shock, level_relative=level_relative(shock, level(rows))),
+               level=level(rows),
+               in_week=dict(by_team=in_week, **between_team_f(in_week),
+                            reopen="Council 2026-11-16: re-open per-team streaming in the simulator when F clears its 95% line"),
                weekly_availability=avail,
                board_comparison=board_comparison(avail, board_instruments()),
                method=dict(shock="f = mean over 7 counting cats of actual/mu per team-week; Var(f) = shock^2 + mean(mean_c var/mu^2)/7 "
@@ -302,12 +386,16 @@ def main():
 
 def summary(r):
     s = r["team_week_shock"]; av = r["weekly_availability"]
-    sh = f"shock {s['shock']:.4f} ± {s['se']:.4f} (live {s['live']})" if s.get("shock") is not None else f"shock: {s.get('note')}"
+    sh = (f"shock {s['shock']:.4f} ± {s['se']:.4f}" + (f", level-relative {s['level_relative']:.4f}" if s.get("level_relative") else "")
+          + f" (live {s['live']})") if s.get("shock") is not None else f"shock: {s.get('note')}"
     tiers = ", ".join(f"{t}: {a['measured']:.2f} ± {a['se']:.2f} (n {a['n']})" for t, a in sorted(av.items()))
     bc = r.get("board_comparison") or {}
     cmp = ", ".join(f"{t} {c['measured']:.2f} ± {c['se']:.2f} vs deck {c['deck']} / sim {c['simulator']} / kit {c['kit']}"
                     for t, c in sorted(bc.items()) if c.get("measured") is not None)
-    return (f"through week {r['week']}, weeks {r['weeks_used']}, {s.get('n', 0)} team-weeks; {sh}; availability {tiers or 'none'}; "
+    lv, iw = r.get("level") or {}, r.get("in_week") or {}
+    lvl = f"level (actual/model) {lv['overall']:.3f}" if lv.get("overall") is not None else "level: none"
+    iwk = f"in-week factor F {iw['F']:.2f} (df {iw['df_between']}, {iw['df_within']})" if iw.get("F") is not None else "in-week factor: none"
+    return (f"through week {r['week']}, weeks {r['weeks_used']}, {s.get('n', 0)} team-weeks; {sh}; {lvl}; {iwk}; availability {tiers or 'none'}; "
             f"board comparison {cmp or 'none'}; {r['status']}; proposes only")
 
 

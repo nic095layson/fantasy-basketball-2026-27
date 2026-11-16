@@ -16,7 +16,9 @@ def ecw(s):
     for o in ros:
         if o==s: continue
         for c in CATS:
-            d=(M[s][0][c]-M[o][0][c])/(math.sqrt(M[s][1][c]+M[o][1][c]) or 1e-9); pr=0.5*(1+math.erf(d/math.sqrt(2))); v=(1-pr) if c=="TO" else pr
+            # the card's measure since the Council of 2026-11-16 (co_gm._pcat): a counting category carries the shock's variance
+            sv=arena.TEAM_WEEK_SHOCK**2*(M[s][0][c]**2+M[o][0][c]**2) if c in hoops.COUNT_COLS else 0.0
+            d=(M[s][0][c]-M[o][0][c])/(math.sqrt(M[s][1][c]+M[o][1][c]+sv) or 1e-9); pr=0.5*(1+math.erf(d/math.sqrt(2))); v=(1-pr) if c=="TO" else pr
             tot+=v; cats[c]+=v/11
     return tot/11,cats
 E={s:ecw(s) for s in ros}
