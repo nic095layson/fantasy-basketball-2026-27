@@ -68,6 +68,26 @@ class Availability(unittest.TestCase):
         self.assertAlmostEqual(a["0.75"]["measured"], q)
         self.assertFalse(a["0.75"]["live_within_2se"])          # 0.75 vs ~0.59 at n=196
 
+    def test_a_tier_is_pooled_across_a_change_of_its_assumed_value(self):
+        # Council 2026-11-16 (owner: "proceed with their vote"): the share played is the players', not the
+        # assumption's, so a tier's weeks recorded under its old value (healthy 0.88, risk 0.75) pool with the
+        # weeks under its live value (0.80, 0.65), keyed and judged by the live value, the per-value counts kept
+        weeks = [{"0.88": dict(assumed=0.88, played=670, team_games=809), "0.75": dict(assumed=0.75, played=55, team_games=96),
+                  "0.79": dict(assumed=0.79, played=5, team_games=6), "0.00": dict(assumed=0.0, played=1, team_games=20)},
+                 {"0.80": dict(assumed=0.80, played=700, team_games=800), "0.65": dict(assumed=0.65, played=60, team_games=100)}]
+        a = FC.availability_pool(weeks, live=dict(healthy="0.80", risk="0.65", mild="0.79"))
+        self.assertEqual(sorted(a), ["0.00", "0.65", "0.79", "0.80"])
+        p = (670 + 700) / (809 + 800)
+        self.assertAlmostEqual(a["0.80"]["measured"], p); self.assertEqual(a["0.80"]["n"], 1609)
+        self.assertEqual(a["0.80"]["live"], 0.80); self.assertFalse(a["0.80"]["live_within_2se"])  # 0.80 vs ~0.852: ~5.8 SE
+        self.assertEqual(a["0.80"]["pooled_from"], {"0.88": 809, "0.80": 800})
+        self.assertEqual(a["0.65"]["pooled_from"], {"0.75": 96, "0.65": 100}); self.assertEqual(a["0.65"]["live"], 0.65)
+        self.assertEqual(a["0.79"]["n"], 6); self.assertEqual(a["0.00"]["n"], 20)   # untouched tiers stay as they were
+
+    def test_without_live_keys_the_pool_is_by_value_as_before(self):
+        a = FC.availability_pool([{"0.88": dict(assumed=0.88, played=7, team_games=8)}, {"0.80": dict(assumed=0.8, played=3, team_games=4)}])
+        self.assertEqual(sorted(a), ["0.80", "0.88"])
+
 
 class Gate(unittest.TestCase):
     def test_fewer_than_four_weeks_is_reported_not_proposed(self):

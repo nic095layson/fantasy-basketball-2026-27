@@ -1,26 +1,28 @@
 {
- "ran_at_utc": "2026-11-16T20:43:47Z",
+ "ran_at_utc": "2026-11-16T21:29:18Z",
  "inputs": {
-  "report/after-reports/after-report-2026-11-16-availability-tiers.md": "58fb7a956bbc25f5190191a1181be34a302af2ea0877e94867b7c4c5e54fecf4",
-  "report/after-reports/availability-tiers-2026-11-16/sweep.json": "ea6ac03e65ac2b56e0146a5754f8e2f66f939f2d4aad34b4c14df1aa394da95d"
+  "report/after-reports/after-report-2026-11-16-council-pending.md": "8c8be7abb234c76bc979ea5b262e111aca8436f935bc0b6a81b6321cb29b9a42",
+  "scripts/fit_constants.py": "4f51e182d2846e3be744de7f305b24a4a995a910ab7e764df6f377b8802be052",
+  "scripts/redteam/constants_registry.json": "dca9f623fc7b16ce2f4cb0570dfa24ebe379b5867359bab1aaffa9db2587204c",
+  "scripts/redteam/attacks.json": "9413c1168e99cc3139c7f1fbb394776ea9e63507a4bebd2c4fcc7d1c41aedf78"
  },
  "gates": [
   {
    "name": "kit check_report",
-   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-16-availability-tiers.md",
+   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-16-council-pending.md",
    "cwd": ".",
    "pass_re": "^REPORT GATE: PASS",
    "exit": 0,
-   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-11-16-availability-tiers.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)",
+   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-11-16-council-pending.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "REPORT GATE: PASS \u2014 after-report-2026-11-16-availability-tiers.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)"
+    "REPORT GATE: PASS \u2014 after-report-2026-11-16-council-pending.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)"
    ]
   },
   {
    "name": "claim receipts",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/independent_audit/claim_receipts.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-16-availability-tiers.md",
+   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/independent_audit/claim_receipts.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-16-council-pending.md",
    "cwd": ".",
    "pass_re": "^CLAIM RECEIPTS: (PASS|ADVISORY)",
    "exit": 0,
@@ -32,42 +34,44 @@
    ]
   },
   {
-   "name": "redteam constants",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/redteam/check_constants.py --deck /home/user/yahoo-fantasy-basketball",
+   "name": "kit test_fit_constants",
+   "cmd": "python3 scripts/test_fit_constants.py",
    "cwd": ".",
-   "pass_re": "^CONSTANTS CHECK: PASS",
+   "pass_re": "^OK",
    "exit": 0,
-   "pass_line": "CONSTANTS CHECK: PASS \u2014 53 registered = 53 live on deck 56b3a6b; declared_band 5, measured 10, settings 8, structural 6, uncalibrated 24",
+   "pass_line": "OK",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "CONSTANTS CHECK: PASS \u2014 53 registered = 53 live on deck 56b3a6b; declared_band 5, measured 10, settings 8, structural 6, uncalibrated 24"
+    "----------------------------------------------------------------------",
+    "Ran 13 tests in 1.523s",
+    "OK"
    ]
   },
   {
-   "name": "redteam bands",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/redteam/check_bands.py --report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-16-availability-tiers.md --sweep /home/user/fantasy-basketball-2026-27/report/after-reports/availability-tiers-2026-11-16/sweep.json",
+   "name": "redteam constants",
+   "cmd": "python3 scripts/redteam/check_constants.py",
    "cwd": ".",
-   "pass_re": "^BANDS CHECK: PASS",
+   "pass_re": "^CONSTANTS CHECK: PASS",
    "exit": 0,
-   "pass_line": "BANDS CHECK: PASS \u2014 1 FRAGILE band(s) quoted (arena.weekly_availability); engine 9a009af",
+   "pass_line": "CONSTANTS CHECK: PASS \u2014 53 registered = 53 live on deck 944b98a; declared_band 5, measured 10, settings 8, structural 6, uncalibrated 24",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "BANDS CHECK: PASS \u2014 1 FRAGILE band(s) quoted (arena.weekly_availability); engine 9a009af"
+    "CONSTANTS CHECK: PASS \u2014 53 registered = 53 live on deck 944b98a; declared_band 5, measured 10, settings 8, structural 6, uncalibrated 24"
    ]
   },
   {
    "name": "redteam attacks",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/redteam/run_attacks.py --check --deck /home/user/yahoo-fantasy-basketball",
+   "cmd": "python3 scripts/redteam/run_attacks.py --check",
    "cwd": ".",
    "pass_re": "^ATTACKS CHECK: PASS",
    "exit": 0,
-   "pass_line": "ATTACKS CHECK: PASS \u2014 11 attacks on engine 56b3a6b (engine files last changed 9a009af), simulator aa470f8; CURRENT 11",
+   "pass_line": "ATTACKS CHECK: PASS \u2014 11 attacks on engine 944b98a (engine files last changed 9a009af), simulator aa470f8; CURRENT 11",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "ATTACKS CHECK: PASS \u2014 11 attacks on engine 56b3a6b (engine files last changed 9a009af), simulator aa470f8; CURRENT 11"
+    "ATTACKS CHECK: PASS \u2014 11 attacks on engine 944b98a (engine files last changed 9a009af), simulator aa470f8; CURRENT 11"
    ]
   },
   {
@@ -86,5 +90,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "2d2b6e83de91cd9fd7a211c75aadd2b8be368eea"
+ "base_commit": "a2aa86f17a9d28ba200df1ab9158d13146c26718"
 }

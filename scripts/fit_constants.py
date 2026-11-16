@@ -89,13 +89,23 @@ def shock_estimate(rows, boots=500, seed=0):
     return out
 
 
-def availability_pool(weeks):
-    """weeks: the accuracy card's availability dicts, {tier: {assumed, played, team_games}}."""
+# Every value each tier has been assumed at (constants_registry.json weekly_availability record): the accuracy
+# card keys its rows by the assumed value, so a tier's weeks before a value change carry the old key.
+VALUE_TIER = {"0.88": "healthy", "0.80": "healthy", "0.75": "risk", "0.65": "risk", "0.79": "mild"}
+
+
+def availability_pool(weeks, live=None):
+    """weeks: the accuracy card's availability dicts, {tier: {assumed, played, team_games}}. live: {tier name: live
+    key} (tier_keys()); with it, a tier's rows under an earlier value pool with its live-value rows, keyed and judged
+    by the live value, with the team games per recorded value under pooled_from (Council 2026-11-16, owner "proceed
+    with their vote": the share played is the players', not the assumption's). Without it, pooled by value only."""
     acc = {}
     for w in weeks:
         for t, a in w.items():
-            r = acc.setdefault(t, dict(assumed=a["assumed"], played=0, team_games=0))
+            k = live.get(VALUE_TIER.get(t), t) if live else t
+            r = acc.setdefault(k, dict(assumed=float(k) if k != t else a["assumed"], played=0, team_games=0, by={}))
             r["played"] += a["played"]; r["team_games"] += a["team_games"]
+            r["by"][t] = r["by"].get(t, 0) + a["team_games"]
     out = {}
     for t, r in acc.items():
         n = r["team_games"]
@@ -104,6 +114,8 @@ def availability_pool(weeks):
         p = r["played"] / n; se = math.sqrt(p * (1 - p) / n) if 0 < p < 1 else 0.0
         out[t] = dict(live=r["assumed"], measured=p, se=se, n=n, played=r["played"],
                       live_within_2se=abs(r["assumed"] - p) <= 2 * se)
+        if live and set(r["by"]) != {t}:
+            out[t]["pooled_from"] = r["by"]
     return out
 
 
@@ -222,7 +234,8 @@ def run(week, weeks_dir=WEEKS, snapshots=SNAPSHOTS, accuracy=ACCURACY, out_dir=O
             rows += r; weeks_used.append(w)
     shock = shock_estimate([{c: r[c] for c in COUNTING} for r in rows], boots=boots, seed=week) if rows else dict(n=0, shock=None, se=None, note="no team-weeks")
     acc = json.load(open(accuracy, encoding="utf-8"))["weeks"] if os.path.exists(accuracy) else {}
-    avail = availability_pool([acc[k]["availability"] for k in sorted(acc, key=int) if int(k) <= week and acc[k].get("availability")])
+    avail = availability_pool([acc[k]["availability"] for k in sorted(acc, key=int) if int(k) <= week and acc[k].get("availability")],
+                              live=tier_keys())
     import co_gm as CG
     rec = dict(week=week, weeks_used=weeks_used, status=proposal_status(len(weeks_used)), notes=notes,
                team_week_shock=dict(live=CG.arena.TEAM_WEEK_SHOCK, **shock),
@@ -230,7 +243,8 @@ def run(week, weeks_dir=WEEKS, snapshots=SNAPSHOTS, accuracy=ACCURACY, out_dir=O
                board_comparison=board_comparison(avail, board_instruments()),
                method=dict(shock="f = mean over 7 counting cats of actual/mu per team-week; Var(f) = shock^2 + mean(mean_c var/mu^2)/7 "
                                  "(cats independent under no shock, A2); shock = sqrt(excess); bootstrap SE over team-weeks",
-                           availability="pooled share of team games played per assumed tier, binomial SE; from report/accuracy.json",
+                           availability="pooled share of team games played per tier, binomial SE, keyed and judged by the tier's live "
+                                        "value; weeks under an earlier value pool in (pooled_from, Council 2026-11-16); from report/accuracy.json",
                            board_comparison="realized tier/healthy ratio, delta-method SE, beside deck, simulator and kit-board ratios; frozen preseason tags",
                            inputs="data/weeks/week_N.json actuals; report/accuracy/lines_weekN.csv + state_weekN.json for the model",
                            rosters="co_gm.team_roster since 2026-11-10: active players plus the team's unpooled players the week's "
