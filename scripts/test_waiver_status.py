@@ -96,6 +96,12 @@ class StatusGate(unittest.TestCase):
         self.assertEqual(st["sources"], {"yahoo": False, "espn": True})
         self.assertNotIn(self.a, names(CG.free_agents(P, STATE, st)[0]))
 
+    def test_a_rostered_player_outside_the_pool_is_never_a_candidate(self):
+        # owner 2026-11-16: an auto-row player rostered in the league sits in state["unpooled"], not in a team's
+        # players; the 11-16 scan offered Meleek Thomas (MISSI ELLIOTT) as an add
+        state = {"teams": [], "unpooled": [{"player": self.a, "fantasy_team": "X", "seat": 11}]}
+        self.assertNotIn(self.a, names(CG.free_agents(P, state, CG.fa_status(P, [], []))[0]))
+
     def test_the_candidate_count_is_filled_after_the_gate(self):
         st = CG.fa_status(P, [{"name": self.a, "status": "O"}], [])
         self.assertEqual(len(CG.free_agents(P, STATE, st, n=10)[0]), 10)
