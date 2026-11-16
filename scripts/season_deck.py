@@ -1484,7 +1484,7 @@ function trendingCard(){ const F=D.form; if(!F||!F.rows) return null;
     card.append(h("h3",{},"Points per game: projected / actual"),h("div",{class:"tablebox"},lt),
       noteMore("The test line was more accurate on PTS, REB and AST in weeks 2, 3 and 4; since 2026-11-16 the current line uses it for those three.",
         "Switch rule D-ML-1 (pre-committed 2026-10-27): the minutes candidate replaces nothing until its MAE beats the in-season line's on PTS, REB and AST in 3 of 4 consecutive graded weeks, on the owner's word. Met in weeks 2-4; switched on PTS, REB and AST 2026-11-16 (owner: \"Switch now\")."));
-    const TIER={"0.88":"Healthy","0.79":"Minor knock","0.75":"Injury risk","0.0":"Out","0.00":"Out","0":"Out"}, tierName=(t)=>TIER[t]||TIER[String(Number(t).toFixed(2))]||t;
+    const TIER={"0.80":"Healthy","0.88":"Healthy","0.79":"Minor knock","0.65":"Injury risk","0.75":"Injury risk","0.0":"Out","0.00":"Out","0":"Out"}, tierName=(t)=>TIER[t]||TIER[String(Number(t).toFixed(2))]||t;
     const at=h("table",{class:"lg"},h("tr",{},h("th",{class:"num"},"wk"),h("th",{},"Health group"),h("th",{class:"num"},"We assume they play"),h("th",{},"Games played / team's games"),h("th",{class:"num"},"Actually played")));
     wks.forEach(w=>Object.keys(w.availability||{}).sort((a,z)=>Number(z)-Number(a)).forEach(t=>{ const v=w.availability[t];
       at.append(h("tr",{},h("td",{class:"num"},String(w.week)),h("td",{},tierName(t)),h("td",{class:"num"},f2(v.assumed)),h("td",{},v.played+" / "+v.team_games),h("td",{class:"num"+(v.share<v.assumed-0.05?" zneg":"")},f2(v.share)))); }));

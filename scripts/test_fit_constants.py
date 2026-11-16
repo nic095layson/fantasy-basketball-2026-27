@@ -109,7 +109,7 @@ class BoardComparison(unittest.TestCase):
     def test_the_instruments_are_read_from_the_engines(self):
         i = FC.board_instruments()
         self.assertEqual(i["risk"]["deck"], 0.78); self.assertEqual(i["mild"]["deck"], 0.85)
-        self.assertAlmostEqual(i["risk"]["simulator"], round(0.75 / 0.88, 4))
+        self.assertAlmostEqual(i["risk"]["simulator"], round(0.65 / 0.80, 4))   # live tiers, owner pick 2026-11-16
         self.assertIn("kit", i["risk"])
 
     def test_the_weekly_record_carries_the_comparison(self):

@@ -69,7 +69,7 @@ class Override(unittest.TestCase):
             S.run(date="2026-10-22", actuals=[], kit_csv=kit, deck_csv=deck, out_dir=d, overrides_csv=ov)
             row = pool(d)[0]
             self.assertEqual(co_gm.hoops.availability(row), 1.0)
-            self.assertEqual(co_gm.arena.weekly_availability(row), 0.88)
+            self.assertEqual(co_gm.arena.weekly_availability(row), 0.80)   # healthy tier, owner pick 2026-11-16
             self.assertEqual(co_gm.hoops.availability(DECK_ROW), 0.78)
 
     def test_a_stale_override_is_refused_and_nothing_is_written(self):

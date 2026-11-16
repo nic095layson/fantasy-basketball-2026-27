@@ -1,0 +1,103 @@
+# Availability tiers 0.80 / 0.65: the simulator change, the registry, and the re-run sweep
+
+Pull window: 2026-11-16 → 2026-11-16 (no pull: kit main efe4356, deck main c933f07; the records branch season/daily at b35ad98, read only; this morning's pinned sweep inputs re-run in scratch).
+
+**Owner's order, verbatim (2026-11-16):** "Owner pick 2026-11-16 (“Fit with a floor”, floor “Band edge: 0.80 / 0.65”): set the simulator’s availability tiers to healthy 0.80 (was 0.88) and injury-risk 0.65 (was 0.75); minor-knock stays 0.79, out/recovery stay 0." Deck: the two return values and the tests that pin them, red first, a PR. Kit: the registry value and its band ("healthy 0.88 / 0.78 and risk 0.75 / 0.56 (old value / unfloored fit)"), `season_deck.py`'s `TIER` labels, the kit tests that pin 0.88 / 0.75, a re-run of `sweep.py` on today's records, this report and its gates, a PR. Merge order: deck first, then kit, on the owner's word.
+
+**Method up front.** Stated to the owner before any run (plan table in the session): the sweep runs `scripts/redteam/sweep.py --season … --real-schedule …`, 6,000 seasons x seeds 2026 and 2027, on this morning's pinned inputs from season/daily `report/after-reports/redteam-2026-11-16-season/` (league state sha b84f453f, season pool dbe05f8d, schedule 11e5bece; the derived picks file a12ecf58 matches the 5 AM record), deck at the change commit 9a009af. Basis: the same inputs as the 5 AM sweep (deck c933f07), so the engine change is the only difference between the two records. Tests were edited first and seen failing on the old engine, then the code changed. Mid-run, one owner card: the stale attack list (section 4).
+
+**Verdict: the change is built and green on both repositories. On today's rosters the owner's title share moves from 14.8% to 17.1% (sweep baselines, mean of two seeds: 14.95 / 14.60 → 17.70 / 16.55; the 10k references agree, 14.69 / 14.52 → 17.26 / 16.63, +2.3). This is a method change, not a league event. weekly_availability stays FRAGILE, now through its risk tier only. The kit PR cannot merge yet: the attack gate fails because the engine changed under 9 of the 11 standing attacks (owner card: "Report it, decide later").**
+
+Runner impact: code-only — tomorrow's morning run sweeps and simulates on the new tiers once the deck PR is merged; the title watch names the registry change as a METHOD CHANGE (checked: `title_watch.registry_changes` on main vs this branch returns the one `arena.weekly_availability` row). No step, record schema or Runner prompt changes.
+
+Pool rows touched: none
+
+## 1. What changed
+
+| Where | Before | After | Evidence |
+|---|---|---|---|
+| Deck `arena/arena.py` `weekly_availability` | healthy 0.88, risk 0.75 | healthy 0.80, risk 0.65 (mild 0.79, recovery 0, out 0 unchanged) | deck commit 9a009af |
+| Deck `docs/draft-deck.html` `weeklyAvail` (the page twin) | 0.88 / 0.75 | 0.80 / 0.65 | `test_card.py` asserts the exact twin; blocking dependency |
+| Deck `arena/patches.py` `avail` patch | matched the live tiers by `== 0.75 / == 0.88` | matches `== 0.65 / == 0.80` | blocking dependency: on the old keys every avail variant in this sweep would have run as a silent no-op |
+| Kit `constants_registry.json` `weekly_availability` | value 0.88 / 0.75; band: no discount, risk 0.65, healthy 0.95, healthy 0.80 | value 0.80 / 0.65; band (one tier moved, the other at its live value): healthy 0.88, healthy 0.78, risk 0.75, risk 0.56 | `check_constants.py`: PASS, 53 registered = 53 live on deck 9a009af |
+| Kit `season_deck.py` `TIER` | 0.88 Healthy, 0.75 Injury risk | adds 0.80 Healthy and 0.65 Injury risk; keeps 0.88 and 0.75 | weeks 1-4 accuracy records are keyed by the old values |
+
+The fit the pick rests on (EVIDENCE, `report/fits/fit_week4.json` on season/daily, read 2026-11-16): healthy tier measured 0.7788 (2,877 of 3,694 team games, SE 0.0068), risk tier 0.5594 (245 of 438, SE 0.0237), minor knock 0.885 (23 of 26), weeks 1-4. Both live values sat outside 2 SE of the measurement. The new values are each floored at the band edge, above the fit: healthy 0.80 is 3.1 SE above 0.779, risk 0.65 is 3.8 SE above 0.559.
+
+## 2. Tests
+
+| Repository | Red on the old engine (tests edited first) | Green after the change |
+|---|---|---|
+| Deck | `test_patches` 1 failure; `test_card` 2 of 103 (MILD weekly values, page twin); `test_season_cv` engine fingerprint (models sha and 600-season champion counts), re-pinned with the old values kept in a comment | each `arena/test_*.py` module OK run alone; `test_card` 103 of 103; `test_draft` 67 of 67; `test_gates`: see section 6 |
+| Kit | 3 pins: `test_tag_overrides` (healthy read 0.88), `test_fit_constants` (risk ratio 0.75 / 0.88), `test_weekly_preview` (band labels and P(win) range) | full suite: section 6 |
+
+## 3. The sweep on today's rosters (`availability-tiers-2026-11-16/sweep.json`)
+
+Baseline within 3 SE of its own 10k reference on both seeds (17.70 / 16.55 against 17.26 / 16.63); MC SE 0.54 points per seed; engine 9a009af; inputs sha as in the method line. The 5 AM record on the same inputs and the old engine is beside it (`sweep_before_0500.json`, from season/daily).
+
+| Constant | Variant | 5 AM, old tiers | Now, new tiers | Tier now |
+|---|---|---|---|---|
+| — | baseline, 6k sweep (10k reference) | 14.95 / 14.60 (14.69 / 14.52) | 17.70 / 16.55 (17.26 / 16.63) | — |
+| weekly_availability | healthy at the old 0.88 | (live) | +0.4 | ROBUST |
+| weekly_availability | healthy at the unfloored fit (0.78) | — | +0.1 | ROBUST |
+| weekly_availability | risk at the old 0.75 | (live) | -2.7 | FRAGILE |
+| weekly_availability | risk at the unfloored fit (0.56) | — | +1.8 | SENSITIVE |
+| TEAM_WEEK_SHOCK | no shock / doubled | +0.4 / -0.9 | +0.9 / -1.2 | SENSITIVE (was ROBUST) |
+| PCT_MIX_INFL | binomial floor only / 1.30 | +0.5 / -0.3 | +1.1 / +0.1 | SENSITIVE (was ROBUST) |
+| GAMES_PER_WEEK | 3.0 / 4.0 | -0.2 / +0.9 | -0.3 / +0.4 | ROBUST |
+| BENCH_WEIGHT | 0.50 / 1.00 | 0.0 / 0.0 | 0.0 / 0.0 | ROBUST |
+
+**weekly_availability is FRAGILE:** +0.4 (healthy at the old 0.88) / +0.1 (healthy at the unfloored fit (0.78)) / -2.7 (risk at the old 0.75) / +1.8 (risk at the unfloored fit (0.56)); headline title share 17.1% ± 0.5 (MC) within that band, -2.7 to +1.8 points. Sweep of 2026-11-16 on this morning's rosters and season pool, engine 9a009af.
+
+Reading it:
+- **The move is the risk tier.** The 5 AM sweep had already measured risk 0.65 alone at +2.8 and healthy 0.80 alone at -0.4; together they predict about +2.4, and the change measures +2.3 on the sweep baselines (14.78 → 17.13) and on the 10k references (14.61 → 16.95). EVIDENCE: both records.
+- **Cross-check, passed exactly.** Two engine points appear in both records, once as a patch on the old engine and once on the new: healthy 0.80 / risk 0.75 gives 14.38 / 14.45 in both ("healthy players play 0.80 of games" at 5 AM, "risk at the old 0.75" now), and healthy 0.88 / risk 0.65 gives 17.67 / 17.40 in both ("harsher risk tier (0.65)", "healthy at the old 0.88"). Identical to the hundredth on both seeds, so the new code path and the re-keyed patch compute what the old engine computed at those values. EVIDENCE: `variants` in both records.
+- **The healthy tier no longer matters much** (+0.4, +0.1). The title share now hangs on the risk tier: its old value is 2.7 points down, its unfloored fit 1.8 up.
+- **Two constants moved from ROBUST to SENSITIVE**, TEAM_WEEK_SHOCK (-1.2) and PCT_MIX_INFL (+1.1). Neither was touched. INFERENCE: both sit about 1.5 SE (shift SE about 0.76 points if the runs are independent) from the 1-point line they crossed, so the new tier may be noise as much as the new availability mix. The Monday sweep will show which.
+
+## 4. The standing attack list: STALE by design (owner card)
+
+`run_attacks.py --check` on deck 9a009af: every record is fingerprinted to the engine, so the change marked all 11 STALE. EVIDENCE: the check's output, 2026-11-16. A-1 (`rt_math.py`) and A-9 (the from-spec simulator `attacker.py`, `SPEC.md`) also hard-code 0.88 / 0.75, so re-running them unchanged would fail on the new engine.
+
+Owner card (2026-11-16, verbatim pick): **"Report it, decide later (Recommended)"**: re-run A-7 and A-8 only, open the kit PR with the attack gate as a known FAIL, the rest on a decision sheet.
+
+| Attack | Now | What was done |
+|---|---|---|
+| A-7 constants registry | **CURRENT** | `check_constants.py --json` re-written to its record (`redteam-2026-10-19/constants.json`), engine 9a009af |
+| A-8 assumption sweep (draft configuration) | STALE | ATTEMPTED-FAILED: run on the draft configuration (draft_state_100, pool v69), the baseline came out 25.68 / 25.27, outside 3 SE of the deck's 10k reference (23.06 / 23.25, built on the old engine), so its tiers cannot be read; record not written. The reference is a deck file (`arena/results/m100_league_sim_10k_s{seed}_w17r_av0_scv.json`) and needs regenerating on the new engine |
+| A-1, A-9 | STALE | not re-run (owner card); the spec and attacker hold 0.88 / 0.75 |
+| A-2 to A-6, A-10, A-11 | STALE | not re-run (owner card) |
+
+The season sweep the owner ordered (section 3) is a separate record. It does not refresh A-8, which is the draft-configuration sweep.
+
+## 5. Bounds
+
+Out of scope by design:
+- Minor knock stays 0.79 (owner). It was derived 2026-10-13 as a share of the old 0.88-to-0.75 gap and now sits 0.01 below healthy (measured 0.885, n 26). Flagged, not changed.
+- Re-running the 9 stale attacks, regenerating the deck's draft 10k references, and decision robustness (red-team step 5) for the week-5 advice under the new band. All three are on the decision sheet.
+- The board's ranking discount (`hoops.availability`: 1.0 / 0.85 / 0.78) is a separate constant and is not changed. The registry's D-PM-4 reconciliation note still applies.
+
+In scope and unverified:
+- The sweep ran once (two seeds) on one configuration (this morning's rosters, blend season pool). The minutes-switched pool that the morning run uses from 11-17 was not swept with the new tiers (NOT-ATTEMPTED). The Monday sweep will do it.
+- The SENSITIVE tiers for TEAM_WEEK_SHOCK and PCT_MIX_INFL are within MC error of the boundary (section 3; INFERENCE).
+- Found in verification, flagged and not changed: `fit_constants.availability_pool` pools the weekly accuracy records by the tier's value string, and `board_comparison` reads the live keys (`tier_keys()`, now "0.80" / "0.65"). From week 5 the next fit therefore splits healthy into a "0.88" row (weeks 1-4, n 3,694) and a "0.80" row (week 5 on), and compares only the second. The same happens to risk. Nothing crashes. The healthy and risk measurements restart at week-5 sample sizes (EVIDENCE: `scripts/fit_constants.py` lines 92-106 and 110-114, read 2026-11-16).
+- Pre-existing in the deck, not caused here: `test_season_cv` fails under `unittest discover` on deck main as well (models sha a876b1a0 in the shared process vs 88073a51 alone). It passes run alone, and that is how it was verified. Flagged, not touched.
+
+## 6. Gates
+
+The gate record is `gates.json` (this branch). Its verdict is quoted in the PR body. **Two gates are known FAILs with one cause**, the stale attack list (section 4, owner card):
+- `redteam attacks`: A-1 to A-6 and A-8 to A-11 STALE on engine 9a009af.
+- `kit check_claims --gate`: CL-6 ("the red team's attack records describe the live engine") reads FALSIFIED, because the latest `run_attacks` row is that FAIL. The same thing happened on 2026-10-21 (`after-report-2026-10-21-council-fixes.md`, D-RT-STALE).
+
+The other gates pass: kit check_report, claim receipts, redteam constants (53 = 53 on 9a009af), redteam bands (the FRAGILE band quoted). Kit suite: 1,244 tests OK (2 skipped).
+
+## 7. Decisions for the owner
+
+1. **Merge the deck PR, then the kit PR, on your word.** Both PRs' gate records (deck `gates.json` with the deck and kit tests added, kit `gates.json`) carry the same two known FAILs. Rule 7 (in both repositories) refuses both merges until decision 2 is taken. Records made on deck 9a009af stay CURRENT after the merge, because the check compares the commit that last changed the engine files. So the attacks can be re-run before either merge.
+2. **The stale attacks.** (a) Re-run them on the new engine: A-1 and A-9 with their spec updated to 0.80 / 0.65, and the deck's draft 10k references regenerated for A-8. (b) Leave them STALE until the Monday sweep.
+3. **Minor knock at 0.79,** 0.01 below healthy. Keep it, or re-derive it on the new gap (0.80 - 0.15 x 0.15 / 0.22 ≈ 0.70)? The measurement (0.885, n 26) is thin.
+4. **The fit's pooling across the tier change** (section 5). (a) Pool by tier name, so weeks 1-4 and week 5 on count together. The measured share is the players', not the assumption's, so this is a small change to `fit_constants.py`. (b) Leave it keyed by value, so each assumption gets a fresh measurement.
+
+## 8. Provenance
+
+Produced by one Claude Code session on 2026-11-16 (session model A), at the owner's order above. Records beside this report: `availability-tiers-2026-11-16/sweep.json`, `sweep.log`, `sweep_before_0500.json` (copied from season/daily `redteam-2026-11-16-season/sweep.json`). Re-verify: `python3 scripts/redteam/check_constants.py` (expect 53 = 53 on the deck commit that carries 0.80 / 0.65); `python3 scripts/redteam/check_bands.py --report <this> --sweep report/after-reports/availability-tiers-2026-11-16/sweep.json`; `git show origin/season/daily:report/fits/fit_week4.json` for the fit.
