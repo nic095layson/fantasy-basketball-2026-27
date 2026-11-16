@@ -932,6 +932,8 @@ def build(date, paths, capture=None):
                 top=[], pool_size=0, drop=None, pool=pool)
     # the pool is built every morning (M8 scans before anyone finishes); M7's scan still runs only on a finished player
     rostered = {p["player"] for t in state["teams"] for p in t["players"]}
+    # owner 2026-11-16: a rostered player outside the pool (an auto row) is held in state["unpooled"]; never free
+    rostered |= {u["player"] for u in (state.get("unpooled") or [])}
     veto = CG.hoops.do_not_draft()
     recent = _recent_boxes(paths["actuals"], date, names=list(by))
     kit_free = [p for p in P if p["player"] not in rostered and p["player"] not in veto and CG.hoops.availability(p) > 0]
