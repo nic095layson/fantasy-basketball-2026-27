@@ -1701,6 +1701,32 @@ class LineupGapLine(unittest.TestCase):
         self.assertNotIn("Check that your lineup is set", self.gap_text(None))
 
 
+class MethodStampOnThePage(unittest.TestCase):
+    """Owner 2026-11-17 (pick F2): the Today tab prints, under the title odds, the method the brief's share was made
+    with; a brief written before the stamp existed builds the page as before."""
+
+    def setUp(self):
+        self.d = tempfile.mkdtemp(); self.fx = fixtures(self.d)
+
+    @unittest.skipUnless(RENDER_OK, RENDER_WHY)
+    def test_the_title_tile_carries_the_briefs_method_line(self):
+        line = "Method: deck engine ecb60cb; line method: minutes ratio on PTS, REB, AST; constants registry 0123456789ab"
+        b = json.load(open(self.fx["brief"])); b["method"] = dict(line=line); json.dump(b, open(self.fx["brief"], "w"))
+        html, _, _ = SD.build(self.fx, date="2026-10-21")
+        p = os.path.join(self.d, "deck.html"); open(p, "w", encoding="utf-8").write(html)
+        res = DRC.check(p)
+        self.assertEqual(res["status"], "PASS", res["reasons"])
+        self.assertIn(line, res["panes"]["today"])
+
+    @unittest.skipUnless(RENDER_OK, RENDER_WHY)
+    def test_a_brief_without_a_stamp_renders_as_before(self):
+        html, _, _ = SD.build(self.fx, date="2026-10-21")
+        p = os.path.join(self.d, "deck.html"); open(p, "w", encoding="utf-8").write(html)
+        res = DRC.check(p)
+        self.assertEqual(res["status"], "PASS", res["reasons"])
+        self.assertNotIn("Method:", res["panes"]["today"])
+
+
 if __name__ == "__main__":
     unittest.main()
 

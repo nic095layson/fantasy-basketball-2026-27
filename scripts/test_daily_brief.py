@@ -3,8 +3,10 @@
 
     python3 scripts/test_daily_brief.py
 """
+import json
 import os
 import sys
+import tempfile
 import unittest
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -336,6 +338,50 @@ class EarliestReturnWording(unittest.TestCase):
 
     def test_the_seven_day_line_is_unchanged(self):
         self.assertEqual(CG.SHORT_OUT_DAYS, 7)
+
+
+class MethodStamp(unittest.TestCase):
+    """Owner 2026-11-17 (pick F2, after-report-2026-11-17-gaps-and-fixes.md): a title share carries the method it was
+    made with. On 2026-11-16 three method changes reached the live figures at three different moments, and a session
+    quoted new constants on old lines as "tonight's engine"."""
+
+    def _day(self, rec=None, registry=b'{"constants": []}'):
+        import hashlib
+        d = tempfile.mkdtemp()
+        if rec is not None:
+            json.dump(rec, open(os.path.join(d, "season_lines_2026-11-17.json"), "w"))
+        r = os.path.join(d, "registry.json"); open(r, "wb").write(registry)
+        return d, r, hashlib.sha256(registry).hexdigest()
+
+    def test_the_stamp_names_the_engine_the_line_method_and_the_registry(self):
+        d, r, sha = self._day(dict(date="2026-11-17", line_switch=dict(cats=["pts", "reb", "ast"])))
+        m = DB.method_stamp("2026-11-17", season_dir=d, registry=r, engine="ecb60cb")
+        self.assertEqual(m["line"], f"Method: deck engine ecb60cb; line method: minutes ratio on PTS, REB, AST; constants registry {sha[:12]}")
+        self.assertEqual((m["engine"], m["line_switch"], m["registry_sha256"]), ("ecb60cb", ["PTS", "REB", "AST"], sha))
+
+    def test_no_ratio_and_no_record_read_differently(self):
+        d, r, _ = self._day(dict(date="2026-11-17"))
+        self.assertIn("line method: blend only (no minutes ratio)", DB.method_stamp("2026-11-17", season_dir=d, registry=r, engine="ecb60cb")["line"])
+        d, r, _ = self._day(None)
+        m = DB.method_stamp("2026-11-17", season_dir=d, registry=r, engine="ecb60cb")
+        self.assertIn("line method: no season-lines record for the day", m["line"]); self.assertIsNone(m["line_switch"])
+
+    def test_a_changed_constant_changes_the_stamp_and_nothing_else_does(self):
+        rec = dict(date="2026-11-17", line_switch=dict(cats=["pts"]))
+        d, r, _ = self._day(rec); a = DB.method_stamp("2026-11-17", season_dir=d, registry=r, engine="ecb60cb")
+        d2, r2, _ = self._day(rec); self.assertEqual(a["line"], DB.method_stamp("2026-11-17", season_dir=d2, registry=r2, engine="ecb60cb")["line"])
+        d3, r3, _ = self._day(rec, registry=b'{"constants": [{"name": "TEAM_WEEK_SHOCK", "value": 0.11}]}')
+        self.assertNotEqual(a["line"], DB.method_stamp("2026-11-17", season_dir=d3, registry=r3, engine="ecb60cb")["line"])
+
+    def test_what_cannot_be_read_is_said(self):
+        d, _, _ = self._day(dict(date="2026-11-17"))
+        m = DB.method_stamp("2026-11-17", season_dir=d, registry=os.path.join(d, "absent.json"), engine="")
+        self.assertIn("deck engine not readable", m["line"]); self.assertIn("constants registry not readable", m["line"])
+        self.assertIsNone(m["registry_sha256"])
+
+    def test_the_title_section_prints_the_stamp(self):
+        self.assertEqual(DB.method_md(dict(line="Method: deck engine ecb60cb; x")), ["- Method: deck engine ecb60cb; x"])
+        self.assertEqual(DB.method_md(None), [])
 
 
 if __name__ == "__main__":

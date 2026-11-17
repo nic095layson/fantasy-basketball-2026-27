@@ -16,6 +16,7 @@ Writes report/briefs/brief_<date>.md and brief_<date>.json (the numbers behind t
 import argparse
 import datetime
 import glob
+import hashlib
 import json
 import math
 import os
@@ -27,6 +28,44 @@ import co_gm as CG  # noqa: E402
 
 OUTDIR = os.path.join(CG.KIT, "report", "briefs")
 SEEDS = (2026, 2027)
+
+# owner 2026-11-17 (pick F2, after-report-2026-11-17-gaps-and-fixes.md): the method a title share was made with,
+# printed beside it. On 2026-11-16 three method changes reached the live figures at three different moments.
+SEASON_DIR = os.path.join(CG.KIT, "data", "season")
+REGISTRY = os.path.join(CG.KIT, "scripts", "redteam", "constants_registry.json")
+
+
+def _engine_commit():
+    """The deck's engine fingerprint, as the attack runner defines it (the last commit that touched the engine files)."""
+    sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "redteam"))
+    import run_attacks as RA
+    return RA.engine_commit(CG.DECK)
+
+
+def method_stamp(date, season_dir=SEASON_DIR, registry=REGISTRY, engine=None):
+    """What the day's title share is made with: the deck engine's commit, the season line's method (which columns
+    carry the minutes ratio, from season_lines_<date>.json) and the sha256 of the constants registry. Read, never
+    typed; what cannot be read is said. Two figures with the same stamp were made the same way."""
+    engine = _engine_commit() if engine is None else engine
+    try:
+        with open(os.path.join(season_dir, f"season_lines_{date}.json"), encoding="utf-8") as f:
+            switch = [c.upper() for c in ((json.load(f).get("line_switch") or {}).get("cats") or [])]
+    except (OSError, ValueError):
+        switch = None
+    try:
+        with open(registry, "rb") as f:
+            sha = hashlib.sha256(f.read()).hexdigest()
+    except OSError:
+        sha = None
+    how = ("no season-lines record for the day" if switch is None
+           else "minutes ratio on " + ", ".join(switch) if switch else "blend only (no minutes ratio)")
+    return dict(engine=engine or None, line_switch=switch, registry_sha256=sha,
+                line=f"Method: deck engine {engine or 'not readable'}; line method: {how}; "
+                     f"constants registry {sha[:12] if sha else 'not readable'}")
+
+
+def method_md(method):
+    return [f"- {method['line']}"] if method else []
 
 
 # owner 2026-10-26 ("re-measure the uncertainty ranges ... now that they use the updated stats"; "every Monday"): the
@@ -315,7 +354,8 @@ def main():
 
     lm = league_moves_for(a.date)
     ilr = il_return_for(a.date)
-    rec = {"date": a.date, "week": wk, "week_window": [wstart, wend], "league_state_as_of": state["as_of"],
+    method = method_stamp(a.date)
+    rec = {"date": a.date, "week": wk, "method": method, "week_window": [wstart, wend], "league_state_as_of": state["as_of"],
            "unpooled": state.get("unpooled") or [],
            "status_file": status_file, "lines": lines_label(), "opponent": opp_team["name"] if opp_team else None,
            "today": rows_today, "lineup": lineup, "bench": bench,
@@ -387,7 +427,7 @@ def main():
           + (f" — {waiver_note(r['player'], winfo)}" if waiver_note(r["player"], winfo) else "") for r in stream] or ["- none"]
     L += ["", "## Title odds (real schedule)", "", f"- Title: {odds_line(base[SEEDS[0]]['champ'], base[SEEDS[1]]['champ'], a.seasons)}",
           f"- Playoffs: {(base[SEEDS[0]]['playoff'] + base[SEEDS[1]]['playoff']) / 2:.1f}%",
-          f"- {band_line(date=a.date)}"] + ([f"- {sim_absent_line(absent)}"] if absent else []) + (
+          f"- {band_line(date=a.date)}"] + method_md(method) + ([f"- {sim_absent_line(absent)}"] if absent else []) + (
           ["", "### If IL players return (scenario range)", ""] + ["- " + x if not x.startswith("- ") else x for x in ilr["lines"]] if ilr else []) + ["",
           "_Cannot see: news after the morning FantasyBot pull (or the last paste) beyond ESPN's transactions and injury feeds (the injury feed gates the waiver scan only); minutes limits; "
           "other managers' pending claims. Q counts as a coin flip._"]
