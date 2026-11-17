@@ -49,7 +49,7 @@ The whole walk from the 11-16 brief to the 11-17 brief:
 
 The 11-17 title watch printed "14.6% to 14.1%, change -0.5 (band ±0.7) … within the band", under a METHOD CHANGE heading that names the switch and both constants. It is correct and it names the changes; it cannot say that +1.9 (constants), +1.9 (rosters and week 4) and -4.3 (lines) sit inside that -0.5, because it "does not split the move between the causes" (its own docstring).
 
-**weekly_availability is FRAGILE:** -2.6 (risk at the old 0.75) / +1.4 (risk at the unfloored fit 0.56); headline title share 14.1% ± 0.5 (MC) within that band. Sweep of 2026-11-16, made on the lines before the minutes switch; no sweep has run on the switched lines with the new constants.
+**weekly_availability is FRAGILE:** -0.8 (healthy at the old 0.88) / -0.3 (healthy at the unfloored fit (0.78)) / -2.6 (risk at the old 0.75) / +1.4 (risk at the unfloored fit (0.56)); headline title share 14.1% ± 0.5 (MC) within that band. Sweep of 2026-11-16, made on the lines before the minutes switch; no sweep has run on the switched lines with the new constants.
 
 ## 2. Change window: what the record shows
 
