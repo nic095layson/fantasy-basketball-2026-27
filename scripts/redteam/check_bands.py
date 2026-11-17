@@ -12,8 +12,15 @@ Prints 'BANDS CHECK: PASS — ...' / 'BANDS CHECK: FAIL' + problems. Exit 0 / 1.
 """
 import argparse
 import json
+import os
 import re
 import sys
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+KIT = os.path.dirname(os.path.dirname(HERE))
+DECK = os.path.abspath(os.environ.get("DECK_REPO") or os.path.join(KIT, "..", "yahoo-fantasy-basketball"))
+sys.path.insert(0, os.path.dirname(HERE))
+import sweep_record as SR  # noqa: E402
 
 
 def _signed(x):
@@ -30,12 +37,19 @@ def quotes_title_share(text):
     return bool(TITLE_SHARE.search(text))
 
 
-def check(report_path, sweep_path):
+def check(report_path, sweep_path, deck=None):
+    """deck (owner 2026-11-17, "Flag it and re-sweep"): with a deck checkout, a sweep measured on another engine fails
+    the check, whatever the report quotes: its figures are not the live engine's band (sweep_record.stale)."""
     with open(report_path, encoding="utf-8") as f:
         text = f.read().replace("−", "-").replace("–", "-")
     with open(sweep_path, encoding="utf-8") as f:
         sw = json.load(f)
     problems = []
+    if deck:
+        s = SR.stale(sw, deck)
+        if s["status"] == "STALE":
+            problems.append(f"the sweep record is STALE: {s['why']}; quote a sweep made on the live engine")
+            return False, problems
     # owed when the report quotes a title share, or names a FRAGILE constant (a half-quoted band is still a fault)
     if not quotes_title_share(text) and not any(k.split(".", 1)[-1] in text for k in sw.get("fragile", [])):
         return True, problems
@@ -58,8 +72,9 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--report", required=True)
     ap.add_argument("--sweep", required=True)
+    ap.add_argument("--deck", default=DECK, help="deck checkout the sweep's engine is compared with ('' to skip)")
     a = ap.parse_args()
-    ok, problems = check(a.report, a.sweep)
+    ok, problems = check(a.report, a.sweep, deck=a.deck or None)
     with open(a.sweep, encoding="utf-8") as f:
         sw = json.load(f)
     with open(a.report, encoding="utf-8") as f:
