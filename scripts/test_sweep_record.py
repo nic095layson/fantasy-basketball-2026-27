@@ -7,6 +7,7 @@ the draft sweep before the first season record.
 """
 import json
 import os
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -63,6 +64,86 @@ class Describe(unittest.TestCase):
                          "season sweep of 2026-11-09 (made today; rosters of that date, season pool, real schedule)")
         self.assertNotIn("current rosters", SR.describe(rec, p, as_of="2026-11-12"))
 
+
+
+def _git(d, *args):
+    subprocess.run(["git", "-C", d, "-c", "user.name=t", "-c", "user.email=t@t", *args], check=True, capture_output=True)
+
+
+class Stale(unittest.TestCase):
+    """Owner 2026-11-17 (card: "Flag it and re-sweep"): on 2026-11-17 the brief and the deck printed the band of a sweep
+    made on Monday morning's engine (shock 0.06, healthy 0.88) beside a title share computed on the engine changed that
+    afternoon. The record now says so: STALE when the engine files at its commit are not the live ones (the attack
+    runner's own rule), and "not compared" when it cannot tell."""
+    def setUp(self):
+        self.deck = tempfile.mkdtemp()
+        _git(self.deck, "init", "-q")
+        for f in ("scripts", "arena"):
+            os.makedirs(os.path.join(self.deck, f))
+        self.write("scripts/hoops.py", "A = 1\n"); self.write("arena/arena.py", "SHOCK = 0.06\n")
+        self.first = self.commit("engine v1")
+        self.write("README.md", "docs\n")
+        self.docs = self.commit("docs only")
+
+    def write(self, rel, text):
+        with open(os.path.join(self.deck, rel), "w") as f:
+            f.write(text)
+
+    def commit(self, msg):
+        _git(self.deck, "add", "-A"); _git(self.deck, "commit", "-q", "-m", msg)
+        return subprocess.run(["git", "-C", self.deck, "rev-parse", "--short=7", "HEAD"], capture_output=True, text=True).stdout.strip()
+
+    def test_a_record_on_the_live_engine_is_current_even_after_a_docs_commit(self):
+        self.assertEqual(SR.stale({"engine_commit": self.first}, self.deck), dict(status="CURRENT", why=""))
+        self.assertEqual(SR.stale({"engine_commit": self.docs}, self.deck)["status"], "CURRENT")
+
+    def test_a_record_made_before_an_engine_change_is_stale_and_says_which_engines(self):
+        self.write("arena/arena.py", "SHOCK = 0.11\n")
+        live = self.commit("engine v2")
+        s = SR.stale({"engine_commit": self.docs}, self.deck)
+        self.assertEqual(s["status"], "STALE")
+        self.assertEqual(s["why"], f"measured on engine {self.first}, the live engine is {live}")
+
+    def test_a_commit_the_checkout_does_not_hold_is_not_compared(self):
+        s = SR.stale({"engine_commit": "0123abc"}, self.deck)
+        self.assertEqual(s["status"], "UNKNOWN"); self.assertIn("0123abc is not in the deck checkout", s["why"])
+
+    def test_a_record_with_no_engine_or_no_deck_is_not_compared(self):
+        self.assertEqual(SR.stale({}, self.deck)["status"], "UNKNOWN")
+        self.assertEqual(SR.stale({"engine_commit": self.first}, None)["status"], "UNKNOWN")
+        self.assertEqual(SR.stale({"engine_commit": self.first}, os.path.join(self.deck, "nowhere"))["status"], "UNKNOWN")
+
+    def test_the_older_records_engine_key_is_read_too(self):
+        self.assertEqual(SR.stale({"engine": self.first}, self.deck)["status"], "CURRENT")
+
+    def test_the_note_is_loud_for_stale_quiet_for_unknown_and_empty_for_current(self):
+        self.assertEqual(SR.stale_note(dict(status="CURRENT", why="")), "")
+        self.assertEqual(SR.stale_note(dict(status="STALE", why="measured on engine aaa, the live engine is bbb")),
+                         "STALE: measured on engine aaa, the live engine is bbb, so these shifts are not today's")
+        self.assertEqual(SR.stale_note(dict(status="UNKNOWN", why="commit x is not in the deck checkout")),
+                         "not compared with the live engine: commit x is not in the deck checkout")
+
+
+class ShownBands(unittest.TestCase):
+    """Owner 2026-11-17 ("Show the largest band anyway"): the FRAGILE constants, else the largest SENSITIVE one."""
+    def rec(self, **tiers):
+        return {"fragile": [k for k, (t, _) in tiers.items() if t == "FRAGILE"],
+                "constants": {k: {"tier": t, "max_abs_shift": m, "variants": [{"label": "x", "shift_mean": m}]} for k, (t, m) in tiers.items()}}
+
+    def test_fragile_constants_are_shown_and_nothing_else(self):
+        self.assertEqual(SR.shown_bands(self.rec(a=("FRAGILE", 2.6), b=("SENSITIVE", 1.9))), ["a"])
+
+    def test_with_none_fragile_the_largest_sensitive_one(self):
+        self.assertEqual(SR.shown_bands(self.rec(a=("SENSITIVE", 1.52), b=("SENSITIVE", 1.93), c=("ROBUST", 0.7))), ["b"])
+
+    def test_a_record_without_max_abs_shift_reads_its_variants(self):
+        r = {"constants": {"a": {"tier": "SENSITIVE", "variants": [{"shift_mean": -1.2}]},
+                           "b": {"tier": "SENSITIVE", "variants": [{"shift_mean": 1.0}, {"shift_mean": -1.6}]}}}
+        self.assertEqual(SR.shown_bands(r), ["b"])
+
+    def test_all_robust_or_empty_shows_none(self):
+        self.assertEqual(SR.shown_bands(self.rec(a=("ROBUST", 0.7))), [])
+        self.assertEqual(SR.shown_bands({}), []); self.assertEqual(SR.shown_bands(None), [])
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

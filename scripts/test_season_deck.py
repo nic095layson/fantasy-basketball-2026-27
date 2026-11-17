@@ -1701,6 +1701,32 @@ class LineupGapLine(unittest.TestCase):
         self.assertNotIn("Check that your lineup is set", self.gap_text(None))
 
 
+class MethodStampOnThePage(unittest.TestCase):
+    """Owner 2026-11-17 (pick F2): the Today tab prints, under the title odds, the method the brief's share was made
+    with; a brief written before the stamp existed builds the page as before."""
+
+    def setUp(self):
+        self.d = tempfile.mkdtemp(); self.fx = fixtures(self.d)
+
+    @unittest.skipUnless(RENDER_OK, RENDER_WHY)
+    def test_the_title_tile_carries_the_briefs_method_line(self):
+        line = "Method: deck engine ecb60cb; line method: minutes ratio on PTS, REB, AST; constants registry 0123456789ab"
+        b = json.load(open(self.fx["brief"])); b["method"] = dict(line=line); json.dump(b, open(self.fx["brief"], "w"))
+        html, _, _ = SD.build(self.fx, date="2026-10-21")
+        p = os.path.join(self.d, "deck.html"); open(p, "w", encoding="utf-8").write(html)
+        res = DRC.check(p)
+        self.assertEqual(res["status"], "PASS", res["reasons"])
+        self.assertIn(line, res["panes"]["today"])
+
+    @unittest.skipUnless(RENDER_OK, RENDER_WHY)
+    def test_a_brief_without_a_stamp_renders_as_before(self):
+        html, _, _ = SD.build(self.fx, date="2026-10-21")
+        p = os.path.join(self.d, "deck.html"); open(p, "w", encoding="utf-8").write(html)
+        res = DRC.check(p)
+        self.assertEqual(res["status"], "PASS", res["reasons"])
+        self.assertNotIn("Method:", res["panes"]["today"])
+
+
 if __name__ == "__main__":
     unittest.main()
 
@@ -2813,3 +2839,133 @@ class PuntVerdict(PuntView):
         self.assertEqual(d["dimmed"], ["AST"])
         self.assertRegex(d["verdict"], r"fit net Δz \+2\.00 without AST \(all nine: [−-]1\.00\)")      # 3.0 in, 1.0 out
         self.assertIn("FAVORABLE", d["verdict"]); self.assertNotIn("UNFAVORABLE", d["verdict"])
+
+
+def role_dom(html_path):
+    from playwright.sync_api import sync_playwright
+    with sync_playwright() as p:
+        b, exe, tried = DRC._launch(p)
+        try:
+            pg = b.new_page(); errs = []
+            pg.on("pageerror", lambda e: errs.append(str(e)))
+            pg.route(re.compile(r"^https?://"), lambda r: r.abort())
+            pg.goto("file://" + os.path.abspath(html_path), wait_until="load")
+            pg.click("nav.tabs button:has-text('Free Agents')")
+            card = lambda i: dict(  # noqa: E731
+                text=pg.evaluate("(i) => { const c=document.querySelector('#pane-fa #'+i); return c? c.textContent : null }", i),
+                note=pg.evaluate("(i) => { const m=document.querySelector('#'+i+' .more'); return m? m.title : null }", i),
+                rows=pg.evaluate("(i) => [...document.querySelectorAll('#'+i+' table tr')].slice(1).map(r=>[...r.cells].map(c=>c.textContent))", i))
+            return dict(errors=errs, starts=card("fa-starts"), hold=card("fa-hold"))
+        finally:
+            b.close()
+
+
+class RoleWatchCards(unittest.TestCase):
+    """Owner 2026-11-17 (card: "Add to the Waivers tab"; the Free Agents tab carries it): the brief's starts watch and
+    hold check (role_watch.py) on the page, drawn from the brief's record and nothing else."""
+    LINE = dict(pts=15.3, reb=5.0, ast=1.0, stl=2.3, blk=1.0, tpm=1.0, tov=1.0)
+
+    def build(self, rw):
+        d = tempfile.mkdtemp(); fx = fixtures(d)
+        with open(fx["brief"]) as f:
+            brief = json.load(f)
+        if rw is not None:
+            brief["role_watch"] = rw
+        with open(fx["brief"], "w") as f:
+            json.dump(brief, f)
+        html, _, _ = SD.build(fx, date="2026-10-21")
+        p = os.path.join(d, "deck.html")
+        with open(p, "w", encoding="utf-8") as f:
+            f.write(html)
+        return role_dom(p)
+
+    def rec(self, starts, hold, shown=8):
+        return dict(box_scores=["2026-10-20", "2026-11-16"], rule=dict(start_run=2, stale_days=7, dropped_days=3, hold_days=7, shown=shown),
+                    starts_watch=starts, hold_check=hold)
+
+    def row(self, name, new=False, dropped=None, pooled=True, status=None, run=3):
+        return dict(player=name, team="IND", starts_in_a_row=run, new=new, last_game="2026-11-15", season_games=9, pooled=pooled,
+                    status=status, dropped=dropped, games=3, minutes=[34, 30, 29], starts=3, line=self.LINE)
+
+    def test_the_starts_watch_lists_the_news_first_and_fills_to_the_cap(self):
+        d = self.build(self.rec([self.row("Fresh Drop", dropped=dict(day="2026-11-17", team="Rival")),
+                                 self.row("New Run", new=True, pooled=False, run=2, status=dict(status="Day-To-Day", return_date="2026-11-18")),
+                                 self.row("Standing One"), self.row("Standing Two")], [], shown=3))
+        self.assertEqual(d["errors"], [])
+        s = d["starts"]
+        self.assertEqual([r[0] for r in s["rows"]], ["Fresh Drop · IND", "New Run · IND", "Standing One · IND"])
+        self.assertEqual(s["rows"][0][1:3], ["3", "last 3: 34/30/29 min, 3 starts · 15.3 pts, 5 reb, 1 ast, 2.3 stl, 1 blk, 1 3s, 1 to"])
+        self.assertEqual(s["rows"][0][3], "dropped Nov 17 by Rival")
+        self.assertEqual(s["rows"][1][3], "new run · no line in the pool · ESPN: Day-To-Day")
+        self.assertIn("4 on the list, 3 shown", s["text"]); self.assertIn("box scores through 2026-11-16", s["text"])
+        self.assertIn("not a pick", s["note"]); self.assertNotIn("Standing Two", s["text"])
+
+    def test_the_hold_check_reads_unjudged_hold_and_no_run(self):
+        base = dict(starts_in_a_row=0, hold=False, season_games=5, games=3, minutes=[24, 34, 32], starts=2, line=self.LINE,
+                    added=None, games_since_add=None, unjudged=False)
+        d = self.build(self.rec([], [dict(base, player="New Guy", why=["added 2026-11-16"], added="2026-11-16", games_since_add=0, unjudged=True),
+                                     dict(base, player="Starter", why=["named as a drop today"], starts_in_a_row=14, hold=True),
+                                     dict(base, player="Rental", why=["added 2026-11-12", "named as a drop today"], added="2026-11-12", games_since_add=1)]))
+        self.assertEqual(d["errors"], [])
+        rows = d["hold"]["rows"]
+        self.assertEqual([(r[0], r[1], r[3]) for r in rows],
+                         [("New Guy", "added Nov 16 · 0 games since", "not played since the add"),
+                          ("Starter", "named as a drop today", "Hold?"),
+                          ("Rental", "added Nov 12 · named as a drop today · 1 game since", "no start run")])
+        self.assertIn("A question, not an instruction", d["hold"]["note"])
+        self.assertIn("No free player has started his last 2 games.", d["starts"]["text"])
+
+    def test_empty_lists_an_error_and_an_older_brief_each_read_plainly(self):
+        d = self.build(self.rec([], []))
+        self.assertEqual(d["errors"], []); self.assertIn("None of your active players was added in the last 7 days", d["hold"]["text"])
+        d = self.build({"error": "KeyError: 'date'"})
+        self.assertEqual(d["errors"], [])
+        self.assertIn("Not available today (KeyError: 'date').", d["starts"]["text"]); self.assertIn("Not available today", d["hold"]["text"])
+        d = self.build(None)                                             # a brief written before role_watch existed
+        self.assertEqual(d["errors"], []); self.assertIsNone(d["starts"]["text"]); self.assertIsNone(d["hold"]["text"])
+
+
+class BandStale(unittest.TestCase):
+    """Owner 2026-11-17 ("Flag it and re-sweep"): a band measured on another engine says STALE on the Today tab, and a
+    sweep with no FRAGILE constant says so instead of printing an empty band."""
+    def page(self, sweep, stale):
+        from unittest import mock
+        d = tempfile.mkdtemp(); fx = fixtures(d)
+        with open(fx["sweep"], "w") as f:
+            json.dump(sweep, f)
+        with mock.patch.object(SD.SR, "stale", return_value=stale):
+            html, data, rec = SD.build(fx, date="2026-10-21")
+        p = os.path.join(d, "deck.html")
+        with open(p, "w", encoding="utf-8") as f:
+            f.write(html)
+        return data, visible_dom(p, "Today", "pane-today")
+
+    def test_a_stale_band_is_marked_on_the_page(self):
+        sw = dict(engine_commit="c933f07", fragile=["arena.weekly_availability"], constants={"arena.weekly_availability": dict(
+            tier="FRAGILE", variants=[dict(label="risk at the old 0.75", shift_mean=-3.2), dict(label="harsher", shift_mean=2.8)])})
+        data, v = self.page(sw, dict(status="STALE", why="measured on engine 95ebade, the live engine is ecb60cb"))
+        self.assertEqual(v["errors"], [])
+        self.assertEqual(data["band_stale"]["status"], "STALE")
+        self.assertIn("Model bands: STALE, weekly_availability -3.2/+2.8 title pts", v["text"])
+        self.assertTrue(any("STALE: measured on engine 95ebade, the live engine is ecb60cb, so these shifts are not today's" in t
+                            for t in v["titles"]))
+
+    def test_no_fragile_constant_shows_the_largest_sensitive_band_and_a_current_band_carries_no_mark(self):
+        # owner 2026-11-17 ("Show the largest band anyway")
+        sw = dict(engine_commit="3551a15", fragile=[], constants={
+            "arena.weekly_availability": dict(tier="SENSITIVE", max_abs_shift=1.93, variants=[
+                dict(label="risk at the old 0.75", shift_mean=-1.93), dict(label="risk at the unfloored fit (0.56)", shift_mean=1.9)]),
+            "arena.TEAM_WEEK_SHOCK": dict(tier="SENSITIVE", max_abs_shift=1.52, variants=[dict(label="no shock", shift_mean=1.52)])})
+        data, v = self.page(sw, dict(status="CURRENT", why=""))
+        self.assertEqual(v["errors"], [])
+        self.assertIn("Model bands: weekly_availability (SENSITIVE, the largest) -1.9/+1.9 title pts", v["text"])
+        self.assertTrue(any("weekly_availability is SENSITIVE: -1.9 (risk at the old 0.75) / +1.9" in t for t in v["titles"]))
+        self.assertNotIn("TEAM_WEEK_SHOCK", v["text"])
+        self.assertNotIn("STALE", v["text"]); self.assertFalse(any("STALE" in t for t in v["titles"]))
+
+    def test_an_all_robust_sweep_says_no_fragile_constant(self):
+        sw = dict(engine_commit="3551a15", fragile=[], constants={"arena.BENCH_WEIGHT": dict(
+            tier="ROBUST", max_abs_shift=0.0, variants=[dict(label="bench", shift_mean=0.0)])})
+        data, v = self.page(sw, dict(status="CURRENT", why=""))
+        self.assertEqual(v["errors"], []); self.assertIn("Model bands: no FRAGILE constant", v["text"])
+

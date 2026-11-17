@@ -3,8 +3,10 @@
 
     python3 scripts/test_daily_brief.py
 """
+import json
 import os
 import sys
+import tempfile
 import unittest
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -80,9 +82,48 @@ class Note(unittest.TestCase):
 class Band(unittest.TestCase):
     """Post-mortem D-PM-6 / D-RT-2: every title figure carries the structural band from the standing sweep."""
     def test_band_line_names_the_fragile_constant_and_its_figures(self):
-        line = DB.band_line()
+        # a fixture record (2026-11-17): the live sweep may carry no FRAGILE constant, which says nothing about the line
+        import json, tempfile
+        rec = dict(engine_commit="abc1234", fragile=["arena.TEAM_WEEK_SHOCK"], constants={"arena.TEAM_WEEK_SHOCK": dict(
+            tier="FRAGILE", variants=[dict(label="no shock", shift_mean=3.0), dict(label="doubled", shift_mean=-2.5)])})
+        p = os.path.join(tempfile.mkdtemp(), "s.json")
+        json.dump(rec, open(p, "w"))
+        line = DB.band_line(p)
         self.assertIn("TEAM_WEEK_SHOCK", line); self.assertIn("FRAGILE", line)
         self.assertRegex(line, r"[+-]\d\.\d")
+
+    def test_a_band_from_another_engine_says_stale_and_the_record_carries_the_check(self):
+        """Owner 2026-11-17 ("Flag it and re-sweep"): the 11-17 brief printed Monday morning's band beside a share on
+        the engine changed that afternoon."""
+        import json, tempfile
+        from unittest import mock
+        rec = dict(engine_commit="abc1234", fragile=[], constants={})
+        p = os.path.join(tempfile.mkdtemp(), "s.json")
+        json.dump(rec, open(p, "w"))
+        stale = dict(status="STALE", why="measured on engine aaa1111, the live engine is bbb2222")
+        with mock.patch.object(DB.SR, "stale", return_value=stale):
+            self.assertIn("deck abc1234; STALE: measured on engine aaa1111, the live engine is bbb2222, so these shifts are not today's)",
+                          DB.band_line(p))
+            self.assertEqual(DB.band_check(p)["status"], "STALE")
+        with mock.patch.object(DB.SR, "stale", return_value=dict(status="CURRENT", why="")):
+            self.assertNotIn("STALE", DB.band_line(p)); self.assertIn("no FRAGILE constant", DB.band_line(p))
+
+    def test_with_no_fragile_constant_the_largest_sensitive_band_is_printed(self):
+        """Owner 2026-11-17 ("Show the largest band anyway"): the 11-17 sweep had none at 2 points."""
+        import json, tempfile
+        from unittest import mock
+        rec = dict(engine_commit="3551a15", fragile=[], constants={
+            "arena.weekly_availability": dict(tier="SENSITIVE", max_abs_shift=1.93, variants=[
+                dict(label="risk at the old 0.75", shift_mean=-1.93), dict(label="risk at the unfloored fit (0.56)", shift_mean=1.9)]),
+            "arena.TEAM_WEEK_SHOCK": dict(tier="SENSITIVE", max_abs_shift=1.52, variants=[dict(label="no shared games shock (0.0)", shift_mean=1.52)]),
+            "arena.BENCH_WEIGHT": dict(tier="ROBUST", max_abs_shift=0.0, variants=[dict(label="bench", shift_mean=0.0)])})
+        p = os.path.join(tempfile.mkdtemp(), "s.json")
+        json.dump(rec, open(p, "w"))
+        with mock.patch.object(DB.SR, "stale", return_value=dict(status="CURRENT", why="")):
+            line = DB.band_line(p)
+        self.assertIn("): no FRAGILE constant; the largest band, weekly_availability is SENSITIVE: -1.9 (risk at the old 0.75) / +1.9 (risk at the unfloored fit (0.56)).", line)
+        self.assertNotIn("TEAM_WEEK_SHOCK", line)
+        self.assertEqual(DB.band_check(os.path.join(tempfile.mkdtemp(), "none.json"))["status"], "UNKNOWN")
 
 
 class SeasonBand(unittest.TestCase):
@@ -336,6 +377,76 @@ class EarliestReturnWording(unittest.TestCase):
 
     def test_the_seven_day_line_is_unchanged(self):
         self.assertEqual(CG.SHORT_OUT_DAYS, 7)
+
+
+class RoleWatch(unittest.TestCase):
+    """Owner 2026-11-17 (picks "Starts watch", "Hold check on drops"): both lists reach the brief; a failure is said,
+    never raised."""
+
+    def test_the_brief_asks_for_the_days_drops_and_carries_the_record(self):
+        seen = {}
+
+        def build(date, state, pool_names, espn=None, drops=()):
+            seen.update(date=date, pool=pool_names, espn=espn, drops=list(drops))
+            return {"box_scores": ["2026-10-20", "2026-11-16"], "rule": dict(start_run=2, stale_days=7, dropped_days=3, hold_days=7, shown=8),
+                    "starts_watch": [], "hold_check": []}
+        rw = DB.role_watch_for("2026-11-17", {"teams": []}, ["A"], [{"player": "A"}], ["B", "C"], build=build)
+        self.assertEqual(seen, dict(date="2026-11-17", pool=["A"], espn=[{"player": "A"}], drops=["B", "C"]))
+        md = DB.role_watch_md(rw)
+        self.assertIn("## Starts watch (free players)", md)
+        self.assertIn("## Hold check (before you drop)", md)
+        self.assertIn("No free player has started his last 2 games.", md)
+
+    def test_a_failure_is_printed_and_the_brief_goes_on(self):
+        def build(*a, **k):
+            raise KeyError("date")
+        rw = DB.role_watch_for("2026-11-17", {}, [], None, [], build=build)
+        self.assertEqual(rw, {"error": "KeyError: 'date'"})
+        self.assertEqual(DB.role_watch_md(rw).count("Not available today (KeyError: 'date')."), 2)
+
+
+class MethodStamp(unittest.TestCase):
+    """Owner 2026-11-17 (pick F2, after-report-2026-11-17-gaps-and-fixes.md): a title share carries the method it was
+    made with. On 2026-11-16 three method changes reached the live figures at three different moments, and a session
+    quoted new constants on old lines as "tonight's engine"."""
+
+    def _day(self, rec=None, registry=b'{"constants": []}'):
+        import hashlib
+        d = tempfile.mkdtemp()
+        if rec is not None:
+            json.dump(rec, open(os.path.join(d, "season_lines_2026-11-17.json"), "w"))
+        r = os.path.join(d, "registry.json"); open(r, "wb").write(registry)
+        return d, r, hashlib.sha256(registry).hexdigest()
+
+    def test_the_stamp_names_the_engine_the_line_method_and_the_registry(self):
+        d, r, sha = self._day(dict(date="2026-11-17", line_switch=dict(cats=["pts", "reb", "ast"])))
+        m = DB.method_stamp("2026-11-17", season_dir=d, registry=r, engine="ecb60cb")
+        self.assertEqual(m["line"], f"Method: deck engine ecb60cb; line method: minutes ratio on PTS, REB, AST; constants registry {sha[:12]}")
+        self.assertEqual((m["engine"], m["line_switch"], m["registry_sha256"]), ("ecb60cb", ["PTS", "REB", "AST"], sha))
+
+    def test_no_ratio_and_no_record_read_differently(self):
+        d, r, _ = self._day(dict(date="2026-11-17"))
+        self.assertIn("line method: blend only (no minutes ratio)", DB.method_stamp("2026-11-17", season_dir=d, registry=r, engine="ecb60cb")["line"])
+        d, r, _ = self._day(None)
+        m = DB.method_stamp("2026-11-17", season_dir=d, registry=r, engine="ecb60cb")
+        self.assertIn("line method: no season-lines record for the day", m["line"]); self.assertIsNone(m["line_switch"])
+
+    def test_a_changed_constant_changes_the_stamp_and_nothing_else_does(self):
+        rec = dict(date="2026-11-17", line_switch=dict(cats=["pts"]))
+        d, r, _ = self._day(rec); a = DB.method_stamp("2026-11-17", season_dir=d, registry=r, engine="ecb60cb")
+        d2, r2, _ = self._day(rec); self.assertEqual(a["line"], DB.method_stamp("2026-11-17", season_dir=d2, registry=r2, engine="ecb60cb")["line"])
+        d3, r3, _ = self._day(rec, registry=b'{"constants": [{"name": "TEAM_WEEK_SHOCK", "value": 0.11}]}')
+        self.assertNotEqual(a["line"], DB.method_stamp("2026-11-17", season_dir=d3, registry=r3, engine="ecb60cb")["line"])
+
+    def test_what_cannot_be_read_is_said(self):
+        d, _, _ = self._day(dict(date="2026-11-17"))
+        m = DB.method_stamp("2026-11-17", season_dir=d, registry=os.path.join(d, "absent.json"), engine="")
+        self.assertIn("deck engine not readable", m["line"]); self.assertIn("constants registry not readable", m["line"])
+        self.assertIsNone(m["registry_sha256"])
+
+    def test_the_title_section_prints_the_stamp(self):
+        self.assertEqual(DB.method_md(dict(line="Method: deck engine ecb60cb; x")), ["- Method: deck engine ecb60cb; x"])
+        self.assertEqual(DB.method_md(None), [])
 
 
 if __name__ == "__main__":

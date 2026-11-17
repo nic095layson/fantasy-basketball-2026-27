@@ -16,6 +16,7 @@ Writes report/briefs/brief_<date>.md and brief_<date>.json (the numbers behind t
 import argparse
 import datetime
 import glob
+import hashlib
 import json
 import math
 import os
@@ -24,9 +25,48 @@ import tempfile
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import co_gm as CG  # noqa: E402
+import role_watch as RW  # noqa: E402
 
 OUTDIR = os.path.join(CG.KIT, "report", "briefs")
 SEEDS = (2026, 2027)
+
+# owner 2026-11-17 (pick F2, after-report-2026-11-17-gaps-and-fixes.md): the method a title share was made with,
+# printed beside it. On 2026-11-16 three method changes reached the live figures at three different moments.
+SEASON_DIR = os.path.join(CG.KIT, "data", "season")
+REGISTRY = os.path.join(CG.KIT, "scripts", "redteam", "constants_registry.json")
+
+
+def _engine_commit():
+    """The deck's engine fingerprint, as the attack runner defines it (the last commit that touched the engine files)."""
+    sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "redteam"))
+    import run_attacks as RA
+    return RA.engine_commit(CG.DECK)
+
+
+def method_stamp(date, season_dir=SEASON_DIR, registry=REGISTRY, engine=None):
+    """What the day's title share is made with: the deck engine's commit, the season line's method (which columns
+    carry the minutes ratio, from season_lines_<date>.json) and the sha256 of the constants registry. Read, never
+    typed; what cannot be read is said. Two figures with the same stamp were made the same way."""
+    engine = _engine_commit() if engine is None else engine
+    try:
+        with open(os.path.join(season_dir, f"season_lines_{date}.json"), encoding="utf-8") as f:
+            switch = [c.upper() for c in ((json.load(f).get("line_switch") or {}).get("cats") or [])]
+    except (OSError, ValueError):
+        switch = None
+    try:
+        with open(registry, "rb") as f:
+            sha = hashlib.sha256(f.read()).hexdigest()
+    except OSError:
+        sha = None
+    how = ("no season-lines record for the day" if switch is None
+           else "minutes ratio on " + ", ".join(switch) if switch else "blend only (no minutes ratio)")
+    return dict(engine=engine or None, line_switch=switch, registry_sha256=sha,
+                line=f"Method: deck engine {engine or 'not readable'}; line method: {how}; "
+                     f"constants registry {sha[:12] if sha else 'not readable'}")
+
+
+def method_md(method):
+    return [f"- {method['line']}"] if method else []
 
 
 # owner 2026-10-26 ("re-measure the uncertainty ranges ... now that they use the updated stats"; "every Monday"): the
@@ -39,9 +79,22 @@ def lines_label():
     return CG.lines_label()
 
 
-def band_line(path=None, date=None):
+def band_check(path=None, date=None, deck=None):
+    """Owner 2026-11-17 ("Flag it and re-sweep"): the quoted sweep against the live engine (sweep_record.stale), with
+    the record's path. On 2026-11-17 the brief printed a band measured before that afternoon's constant changes."""
+    path = path or SR.latest(date or datetime.date.today().isoformat())
+    try:
+        with open(path, encoding="utf-8") as f:
+            sw = json.load(f)
+    except (OSError, ValueError):
+        return dict(sweep=None, status="UNKNOWN", why="no sweep record found")
+    return dict(sweep=os.path.relpath(path, CG.KIT), **SR.stale(sw, deck or CG.DECK))
+
+
+def band_line(path=None, date=None, deck=None):
     """The structural band every title figure carries (post-mortem 2026-10-19 D-PM-6, D-RT-2): each FRAGILE constant
-    of the standing sweep with its shifts, read from the record, never typed."""
+    of the standing sweep with its shifts, or the largest SENSITIVE one when none is FRAGILE (sweep_record.shown_bands),
+    read from the record, never typed."""
     path = path or SR.latest(date or datetime.date.today().isoformat())
     try:
         with open(path, encoding="utf-8") as f:
@@ -49,10 +102,16 @@ def band_line(path=None, date=None):
     except (OSError, ValueError):
         return "Structural band: no sweep record found (scripts/redteam/sweep.py writes it)."
     parts = []
-    for key in sw.get("fragile", []):
+    # owner 2026-11-17 ("Show the largest band anyway"): with no FRAGILE constant, the largest SENSITIVE one
+    shown = SR.shown_bands(sw)
+    for key in shown:
         c = sw["constants"][key]
-        parts.append(f"{key.split('.')[-1]} is FRAGILE: " + " / ".join(f"{v['shift_mean']:+.1f} ({v['label']})" for v in c["variants"]))
-    return "Structural band (" + SR.describe(sw, path, as_of=date) + ", deck " + str(sw.get("engine_commit", "?")) + "): " + ("; ".join(parts) if parts else "no FRAGILE constant") + "."
+        parts.append(f"{key.split('.')[-1]} is {c.get('tier', 'FRAGILE')}: " + " / ".join(f"{v['shift_mean']:+.1f} ({v['label']})" for v in c["variants"]))
+    if shown and all(sw["constants"][k].get("tier") == "SENSITIVE" for k in shown):
+        parts[0] = "no FRAGILE constant; the largest band, " + parts[0]
+    note = SR.stale_note(SR.stale(sw, deck or CG.DECK))   # owner 2026-11-17: a band from another engine says so
+    return ("Structural band (" + SR.describe(sw, path, as_of=date) + ", deck " + str(sw.get("engine_commit", "?"))
+            + (f"; {note}" if note else "") + "): " + ("; ".join(parts) if parts else "no FRAGILE constant") + ".")
 
 
 def odds_line(a, b, n):
@@ -315,7 +374,10 @@ def main():
 
     lm = league_moves_for(a.date)
     ilr = il_return_for(a.date)
-    rec = {"date": a.date, "week": wk, "week_window": [wstart, wend], "league_state_as_of": state["as_of"],
+    method = method_stamp(a.date)
+    # owner 2026-11-17: free players on a run of starts, and the owner's recent pickups and named drops; display only
+    rw = role_watch_for(a.date, state, list(by), espn_rows, [x["drop"] for x in top] + [weakest["player"]])
+    rec = {"date": a.date, "week": wk, "method": method, "week_window": [wstart, wend], "league_state_as_of": state["as_of"],
            "unpooled": state.get("unpooled") or [],
            "status_file": status_file, "lines": lines_label(), "opponent": opp_team["name"] if opp_team else None,
            "today": rows_today, "lineup": lineup, "bench": bench,
@@ -325,6 +387,8 @@ def main():
                             "by": winfo["by"]},
            "streaming_vs": {"player": weakest["player"], "games_left": weak_games,
                             "value_per_game": round(CG.hoops.adj_value(weakest, ()), 2)},
+           "role_watch": rw,
+           "band_check": band_check(date=a.date),
            "title": {str(s): base[s]["champ"] for s in SEEDS}, "playoffs": {str(s): base[s]["playoff"] for s in SEEDS},
            "seasons": a.seasons, "absent_from_sim": absent, "transactions": tx and {"window": tx["window"], "ok": tx["source"].get("ok"), "hits": tx["hits"]},
            "league_moves": lm and lm["moves"],
@@ -385,15 +449,30 @@ def main():
           + stream_flag(r)
           + f", {r['value_per_game']:+.2f} per game"
           + (f" — {waiver_note(r['player'], winfo)}" if waiver_note(r["player"], winfo) else "") for r in stream] or ["- none"]
+    L += role_watch_md(rw)
     L += ["", "## Title odds (real schedule)", "", f"- Title: {odds_line(base[SEEDS[0]]['champ'], base[SEEDS[1]]['champ'], a.seasons)}",
           f"- Playoffs: {(base[SEEDS[0]]['playoff'] + base[SEEDS[1]]['playoff']) / 2:.1f}%",
-          f"- {band_line(date=a.date)}"] + ([f"- {sim_absent_line(absent)}"] if absent else []) + (
+          f"- {band_line(date=a.date)}"] + method_md(method) + ([f"- {sim_absent_line(absent)}"] if absent else []) + (
           ["", "### If IL players return (scenario range)", ""] + ["- " + x if not x.startswith("- ") else x for x in ilr["lines"]] if ilr else []) + ["",
           "_Cannot see: news after the morning FantasyBot pull (or the last paste) beyond ESPN's transactions and injury feeds (the injury feed gates the waiver scan only); minutes limits; "
           "other managers' pending claims. Q counts as a coin flip._"]
     path = os.path.join(OUTDIR, f"brief_{a.date}.md")
     open(path, "w", encoding="utf-8").write("\n".join(L) + "\n")
     print(f"wrote {os.path.relpath(path, CG.KIT)}")
+
+
+def role_watch_for(date, state, pool_names, espn_rows, drops, build=None):
+    """Owner 2026-11-17 (picks "Starts watch", "Hold check on drops"): role_watch.build's record, or {"error": ...}.
+    Display only, so a failure here is said in the brief and never stops it."""
+    try:
+        return (build or RW.build)(date, state, pool_names, espn=espn_rows, drops=drops)
+    except Exception as e:   # noqa: BLE001 - any failure is printed in the brief, the rest of the brief stands
+        return {"error": f"{type(e).__name__}: {e}"}
+
+
+def role_watch_md(rw):
+    return (["", "## Starts watch (free players)", ""] + RW.watch_lines(rw)
+            + ["", "## Hold check (before you drop)", ""] + RW.hold_lines(rw))
 
 
 def il_return_for(date, outdir=None):
