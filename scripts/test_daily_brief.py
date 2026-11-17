@@ -340,6 +340,32 @@ class EarliestReturnWording(unittest.TestCase):
         self.assertEqual(CG.SHORT_OUT_DAYS, 7)
 
 
+class RoleWatch(unittest.TestCase):
+    """Owner 2026-11-17 (picks "Starts watch", "Hold check on drops"): both lists reach the brief; a failure is said,
+    never raised."""
+
+    def test_the_brief_asks_for_the_days_drops_and_carries_the_record(self):
+        seen = {}
+
+        def build(date, state, pool_names, espn=None, drops=()):
+            seen.update(date=date, pool=pool_names, espn=espn, drops=list(drops))
+            return {"box_scores": ["2026-10-20", "2026-11-16"], "rule": dict(start_run=2, stale_days=7, dropped_days=3, hold_days=7, shown=8),
+                    "starts_watch": [], "hold_check": []}
+        rw = DB.role_watch_for("2026-11-17", {"teams": []}, ["A"], [{"player": "A"}], ["B", "C"], build=build)
+        self.assertEqual(seen, dict(date="2026-11-17", pool=["A"], espn=[{"player": "A"}], drops=["B", "C"]))
+        md = DB.role_watch_md(rw)
+        self.assertIn("## Starts watch (free players)", md)
+        self.assertIn("## Hold check (before you drop)", md)
+        self.assertIn("No free player has started his last 2 games.", md)
+
+    def test_a_failure_is_printed_and_the_brief_goes_on(self):
+        def build(*a, **k):
+            raise KeyError("date")
+        rw = DB.role_watch_for("2026-11-17", {}, [], None, [], build=build)
+        self.assertEqual(rw, {"error": "KeyError: 'date'"})
+        self.assertEqual(DB.role_watch_md(rw).count("Not available today (KeyError: 'date')."), 2)
+
+
 class MethodStamp(unittest.TestCase):
     """Owner 2026-11-17 (pick F2, after-report-2026-11-17-gaps-and-fixes.md): a title share carries the method it was
     made with. On 2026-11-16 three method changes reached the live figures at three different moments, and a session

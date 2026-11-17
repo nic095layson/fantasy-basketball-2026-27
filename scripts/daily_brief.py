@@ -25,6 +25,7 @@ import tempfile
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import co_gm as CG  # noqa: E402
+import role_watch as RW  # noqa: E402
 
 OUTDIR = os.path.join(CG.KIT, "report", "briefs")
 SEEDS = (2026, 2027)
@@ -355,6 +356,8 @@ def main():
     lm = league_moves_for(a.date)
     ilr = il_return_for(a.date)
     method = method_stamp(a.date)
+    # owner 2026-11-17: free players on a run of starts, and the owner's recent pickups and named drops; display only
+    rw = role_watch_for(a.date, state, list(by), espn_rows, [x["drop"] for x in top] + [weakest["player"]])
     rec = {"date": a.date, "week": wk, "method": method, "week_window": [wstart, wend], "league_state_as_of": state["as_of"],
            "unpooled": state.get("unpooled") or [],
            "status_file": status_file, "lines": lines_label(), "opponent": opp_team["name"] if opp_team else None,
@@ -365,6 +368,7 @@ def main():
                             "by": winfo["by"]},
            "streaming_vs": {"player": weakest["player"], "games_left": weak_games,
                             "value_per_game": round(CG.hoops.adj_value(weakest, ()), 2)},
+           "role_watch": rw,
            "title": {str(s): base[s]["champ"] for s in SEEDS}, "playoffs": {str(s): base[s]["playoff"] for s in SEEDS},
            "seasons": a.seasons, "absent_from_sim": absent, "transactions": tx and {"window": tx["window"], "ok": tx["source"].get("ok"), "hits": tx["hits"]},
            "league_moves": lm and lm["moves"],
@@ -425,6 +429,7 @@ def main():
           + stream_flag(r)
           + f", {r['value_per_game']:+.2f} per game"
           + (f" — {waiver_note(r['player'], winfo)}" if waiver_note(r["player"], winfo) else "") for r in stream] or ["- none"]
+    L += role_watch_md(rw)
     L += ["", "## Title odds (real schedule)", "", f"- Title: {odds_line(base[SEEDS[0]]['champ'], base[SEEDS[1]]['champ'], a.seasons)}",
           f"- Playoffs: {(base[SEEDS[0]]['playoff'] + base[SEEDS[1]]['playoff']) / 2:.1f}%",
           f"- {band_line(date=a.date)}"] + method_md(method) + ([f"- {sim_absent_line(absent)}"] if absent else []) + (
@@ -434,6 +439,20 @@ def main():
     path = os.path.join(OUTDIR, f"brief_{a.date}.md")
     open(path, "w", encoding="utf-8").write("\n".join(L) + "\n")
     print(f"wrote {os.path.relpath(path, CG.KIT)}")
+
+
+def role_watch_for(date, state, pool_names, espn_rows, drops, build=None):
+    """Owner 2026-11-17 (picks "Starts watch", "Hold check on drops"): role_watch.build's record, or {"error": ...}.
+    Display only, so a failure here is said in the brief and never stops it."""
+    try:
+        return (build or RW.build)(date, state, pool_names, espn=espn_rows, drops=drops)
+    except Exception as e:   # noqa: BLE001 - any failure is printed in the brief, the rest of the brief stands
+        return {"error": f"{type(e).__name__}: {e}"}
+
+
+def role_watch_md(rw):
+    return (["", "## Starts watch (free players)", ""] + RW.watch_lines(rw)
+            + ["", "## Hold check (before you drop)", ""] + RW.hold_lines(rw))
 
 
 def il_return_for(date, outdir=None):
