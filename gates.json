@@ -1,26 +1,26 @@
 {
- "ran_at_utc": "2026-11-17T19:42:30Z",
+ "ran_at_utc": "2026-11-17T20:20:29Z",
  "inputs": {
-  "report/after-reports/after-report-2026-11-17-missed-pickups.md": "102fcc333e1803cad2dc51773389c619986db9ca4d18eaa75afa737bdd065e7b",
+  "report/after-reports/after-report-2026-11-17-scan-repeats-and-williams.md": "282a67dadf21e4b206a5194a8d748c8f5c96eef5f147961092525ad86ea50917",
   "report/after-reports/shock-fit-2026-11-16/sweep.json": "52a897bd6283a50308f141107653b01e4cce9eff4e2a81b22d776003a1d531eb"
  },
  "gates": [
   {
    "name": "kit check_report",
-   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-17-missed-pickups.md",
+   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-17-scan-repeats-and-williams.md",
    "cwd": ".",
    "pass_re": "^REPORT GATE: PASS",
    "exit": 0,
-   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-11-17-missed-pickups.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)",
+   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-11-17-scan-repeats-and-williams.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "REPORT GATE: PASS \u2014 after-report-2026-11-17-missed-pickups.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)"
+    "REPORT GATE: PASS \u2014 after-report-2026-11-17-scan-repeats-and-williams.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)"
    ]
   },
   {
    "name": "claim receipts",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/independent_audit/claim_receipts.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-17-missed-pickups.md",
+   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/independent_audit/claim_receipts.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-17-scan-repeats-and-williams.md",
    "cwd": ".",
    "pass_re": "^CLAIM RECEIPTS: (PASS|ADVISORY)",
    "exit": 0,
@@ -32,8 +32,8 @@
    ]
   },
   {
-   "name": "deck card tests",
-   "cmd": "python3 -m unittest scripts.test_season_deck.RoleWatchCards scripts.test_season_deck.TrendingUp",
+   "name": "waiver status tests",
+   "cmd": "python3 scripts/test_waiver_status.py",
    "cwd": ".",
    "pass_re": "^OK",
    "exit": 0,
@@ -42,7 +42,22 @@
    "why": "",
    "tail": [
     "----------------------------------------------------------------------",
-    "Ran 5 tests in 5.381s",
+    "Ran 38 tests in 0.378s",
+    "OK"
+   ]
+  },
+  {
+   "name": "daily brief tests",
+   "cmd": "python3 scripts/test_daily_brief.py",
+   "cwd": ".",
+   "pass_re": "^OK",
+   "exit": 0,
+   "pass_line": "OK",
+   "verdict": "PASS",
+   "why": "",
+   "tail": [
+    "----------------------------------------------------------------------",
+    "Ran 44 tests in 1.035s",
     "OK"
    ]
   },
@@ -57,7 +72,7 @@
    "why": "",
    "tail": [
     "----------------------------------------------------------------------",
-    "Ran 1302 tests in 184.208s",
+    "Ran 1316 tests in 195.436s",
     "OK (skipped=2)"
    ]
   },
@@ -76,7 +91,7 @@
   },
   {
    "name": "redteam bands",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/redteam/check_bands.py --report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-17-missed-pickups.md --sweep /home/user/fantasy-basketball-2026-27/report/after-reports/shock-fit-2026-11-16/sweep.json",
+   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/redteam/check_bands.py --report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-17-scan-repeats-and-williams.md --sweep /home/user/fantasy-basketball-2026-27/report/after-reports/shock-fit-2026-11-16/sweep.json",
    "cwd": ".",
    "pass_re": "^BANDS CHECK: PASS",
    "exit": 0,
@@ -116,5 +131,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "6a33e99df9f6dad0cb461ea77647b6483c93e59f"
+ "base_commit": "2463a1de7e5fd7c47972cd0811010917dccf7a98"
 }

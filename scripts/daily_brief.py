@@ -102,6 +102,52 @@ def odds_line(a, b, n):
     return f"{m:.1f}% ± {e:.1f} (avg of 2 runs × {n:,} seasons)"
 
 
+def scan_noise(share, seasons, runs=len(SEEDS)):
+    """The sampling error of a DIFFERENCE between two title shares (points, 95%), each the average of `runs` runs of
+    `seasons` seasons: odds_line's error for one share, times the square root of two."""
+    p = share / 100
+    return 196 * math.sqrt(2 * p * (1 - p) / (runs * seasons))
+
+
+def scan_read(top, base_title, seasons):
+    """Owner 2026-11-17 (card: "Both fixes"; the assessment found the pairs listed as a ranked "Best 3" while 32 of 69
+    title changes were inside the sampling error or negative, and most large ones belonged to one weak roster spot):
+    how to read the day's listed pairs. Display only: the pairs, their order and every figure are untouched.
+      noise      the sampling error of a title change, in points
+      picks      per pair: "no title gain" (at or below zero), "inside sampling error", or None
+      same_drop  the one player every pair drops, when two or more pairs all name him
+      tied       two or more pairs whose title changes span no more than the noise: the scan cannot rank them"""
+    if not top:
+        return None
+    noise = scan_noise(base_title, seasons)
+    d = [x["d_title"] for x in top]
+    drops = {x["drop"] for x in top}
+    return dict(noise=round(noise, 2),
+                picks=[dict(add=x["add"], read="no title gain" if x["d_title"] <= 0 else
+                            ("inside sampling error" if x["d_title"] <= noise else None)) for x in top],
+                same_drop=next(iter(drops)) if len(top) >= 2 and len(drops) == 1 else None,
+                tied=len(top) >= 2 and max(d) - min(d) <= noise, spread=[min(d), max(d)])
+
+
+def read_note(read, i):
+    r = read and read["picks"][i]["read"]
+    return f" [{r}]" if r else ""
+
+
+def read_lines(read):
+    """The lines under the listed pairs: what the figures can and cannot tell apart."""
+    if not read:
+        return []
+    n, L = len(read["picks"]), []
+    if read["same_drop"]:
+        L.append(f"All {n} name {read['same_drop']} as the drop: the title figures say more about that roster spot than "
+                 f"about which player you add.")
+    if read["tied"]:
+        L.append(f"The {n} adds are within sampling error of each other ({read['spread'][0]:+.1f} to {read['spread'][1]:+.1f} "
+                 f"title points): the scan cannot rank them.")
+    return L
+
+
 def newest_status(date):
     # the newest file dated on or before the brief: a later-dated file (a test run of tomorrow) must not shadow today's
     files = sorted(f for f in glob.glob(os.path.join(CG.KIT, "data", "status", "status_*.json"))
@@ -123,7 +169,11 @@ EARLIEST = "ESPN's earliest return"
 
 def aside_flag(x):
     """A player the waiver scan set aside as Out, with ESPN's date when it gives one."""
-    return f"{x['player']} ({x['code']}, {x['source']}" + (f", {EARLIEST} {x['return_date'][:10]}" if x.get("return_date") else "") + ")"
+    # owner 2026-11-17: an Out the feed has listed since out_since, whose return date is near but more than
+    # SHORT_OUT_DAYS after that day, says so (the Tobias Harris case)
+    return (f"{x['player']} ({x['code']}, {x['source']}" + (f", {EARLIEST} {x['return_date'][:10]}" if x.get("return_date") else "")
+            + (f"; out since {x['out_since']}{' or earlier' if x.get('out_capped') else ''}, so not a short absence"
+               if x.get("long_out") else "") + ")")
 
 
 def stream_flag(r):
@@ -294,7 +344,8 @@ def main():
     # owner 2026-10-28 ("Status gate"): the day's injury status gates the candidates; with no source the scan stops
     yahoo_fa, espn_rows = status_inputs(a.date)
     try:
-        st = CG.fa_status(P, yahoo_fa, espn_rows, date=a.date)
+        # owner 2026-11-17: the pinned feeds of the days before make "short Out" a short absence (co_gm.out_since)
+        st = CG.fa_status(P, yahoo_fa, espn_rows, date=a.date, history=CG.espn_history(a.date))
         fa, aside = CG.free_agents(P, state, st)
         gate = {"sources": st["sources"], "set_aside": aside}
     except CG.StatusMissing as e:
@@ -351,6 +402,8 @@ def main():
     annotate_waivers(top, "add", winfo)
     annotate_waivers(stream, "player", winfo)
 
+    # owner 2026-11-17: how to read the listed pairs (display only)
+    read = scan_read(top, sum(base[s]["champ"] for s in SEEDS) / len(SEEDS), a.seasons)
     tx = transactions_for(a.date)
 
     lm = league_moves_for(a.date)
@@ -363,7 +416,7 @@ def main():
            "status_file": status_file, "lines": lines_label(), "opponent": opp_team["name"] if opp_team else None,
            "today": rows_today, "lineup": lineup, "bench": bench,
            "waiver_base_ecw": round(base_ecw, 4) if base_ecw is not None else None, "waiver_gate": gate,
-           "waiver_positive_pairs": len(pos), "waiver_pairs_scored": len(pairs), "waiver_top": top, "streaming": stream,
+           "waiver_positive_pairs": len(pos), "waiver_pairs_scored": len(pairs), "waiver_top": top, "waiver_read": read, "streaming": stream,
            "waiver_notes": {"read": winfo["read"], "window_days": CG.WAIVER_DROP_WINDOW, "missing_days": mv_missing,
                             "by": winfo["by"]},
            "streaming_vs": {"player": weakest["player"], "games_left": weak_games,
@@ -403,12 +456,14 @@ def main():
         L.append(f"**HALT** — {gate['halt']}. No pairs and no streaming list today: the scan never runs on the pool unchecked.")
     elif top:
         L.append(f"{len(pos)} of {len(pairs)} add/drop pairs raise expected weekly category wins (base {base_ecw:.3f}). "
-                 f"Best {len(top)}, checked in the simulator (avg of 2 runs × {a.seasons:,} seasons, real schedule):")
+                 f"Top {len(top)} by weekly category wins, each checked in the simulator (avg of 2 runs × {a.seasons:,} seasons, "
+                 f"real schedule; a title change within ±{read['noise']:.1f} is inside sampling error):")
         L += [f"- Add **{x['add']}** ({x['add_team']}), drop {x['drop']}: {x['d_ecw']:+.3f} cats/week; "
-              f"title {x['title']:.1f}% ({x['d_title']:+.1f})"
+              f"title {x['title']:.1f}% ({x['d_title']:+.1f})" + read_note(read, i)
               + (f" — {add_flag(x['add_status'])}, check before claiming" if x.get("add_status") else "")
               + ((" · " if x.get("add_status") else " — ") + waiver_note(x["add"], winfo) if waiver_note(x["add"], winfo) else "")
-              for x in top]
+              for i, x in enumerate(top)]
+        L += read_lines(read)
     else:
         L.append(f"No add/drop pair raises expected weekly category wins ({len(pairs)} scored). Stand pat.")
     if "halt" not in gate:

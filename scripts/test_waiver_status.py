@@ -17,8 +17,11 @@ ESPN entry without one) stays set aside.
 
     python3 scripts/test_waiver_status.py
 """
+import datetime
+import json
 import os
 import sys
+import tempfile
 import unittest
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -140,6 +143,91 @@ class StreamingGate(unittest.TestCase):
     def test_streaming_without_availability_reads_as_healthy(self):
         out = CG.streaming([{"player": "A", "team": "X", "games_left": 3, "value_per_game": 1.0}], drop_games=2)
         self.assertEqual(out[0]["exp_games"], 3.0)
+
+
+class SlidingReturn(unittest.TestCase):
+    """Owner 2026-11-17 (card: "Both fixes"): a short Out is a short ABSENCE. Tobias Harris passed the 7-day line on 13
+    mornings because ESPN's return date kept moving and the gate asked afresh each day. With the pinned feeds of the days
+    before, the line runs from the first day of the unbroken run of Out listings to the return date."""
+    DAY = "2026-11-05"
+
+    def setUp(self):
+        self.a, self.b, self.c, self.d = top_healthy(4)
+
+    def out(self, name, ret):
+        return {"player": name, "status": "Out", "return_date": ret}
+
+    def gate(self, espn, history):
+        st = CG.fa_status(P, [], espn, date=self.DAY, history=history)
+        return st, CG.free_agents(P, STATE, st)
+
+    def test_a_return_date_that_slipped_past_seven_days_of_absence_sets_him_aside(self):
+        hist = {"2026-11-04": [self.out(self.a, "2026-11-06")], "2026-11-03": [self.out(self.a, "2026-11-06")],
+                "2026-11-02": [self.out(self.a, "2026-11-04")], "2026-11-01": [self.out(self.a, "2026-11-04")],
+                "2026-10-31": [self.out(self.a, "2026-11-01")]}
+        st, (fa, aside) = self.gate([self.out(self.a, "2026-11-09")], hist)        # 10-31 to 11-09: nine days
+        self.assertNotIn(self.a, names(fa))
+        self.assertEqual((st["by"][self.a]["short_out"], st["by"][self.a]["out_since"]), (False, "2026-10-31"))
+        x = [x for x in aside if x["player"] == self.a][0]
+        self.assertEqual((x["out_since"], x["long_out"], x["out_capped"], x["return_date"]), ("2026-10-31", True, False, "2026-11-09"))
+
+    def test_with_no_history_the_gate_reads_as_before(self):
+        for hist in (None, {}):
+            st, (fa, aside) = self.gate([self.out(self.a, "2026-11-09")], hist)
+            self.assertIn(self.a, names(fa)); self.assertTrue(st["by"][self.a]["short_out"])
+            self.assertNotIn("out_since", st["by"][self.a])
+
+    def test_exactly_seven_days_of_absence_stays_and_eight_does_not(self):
+        hist = {"2026-11-04": [self.out(self.a, "2026-11-07"), self.out(self.b, "2026-11-07")],
+                "2026-11-03": [self.out(self.b, "2026-11-07")]}
+        _, (fa, _) = self.gate([self.out(self.a, "2026-11-11"), self.out(self.b, "2026-11-11")], hist)
+        self.assertIn(self.a, names(fa))            # out since 11-04, back 11-11: seven
+        self.assertNotIn(self.b, names(fa))         # out since 11-03, back 11-11: eight
+
+    def test_the_run_must_be_unbroken(self):
+        # listed Out a week ago, healthy in between (absent from the feed, or Day-To-Day): the run starts after the gap
+        hist = {"2026-11-04": [self.out(self.a, "2026-11-06"), self.out(self.b, "2026-11-06")],
+                "2026-11-03": [{"player": self.b, "status": "Day-To-Day", "return_date": "2026-11-04"}],
+                "2026-11-02": [self.out(self.a, "2026-11-03"), self.out(self.b, "2026-11-03")],
+                "2026-10-29": [self.out(self.a, "2026-10-30")]}
+        st, (fa, _) = self.gate([self.out(self.a, "2026-11-10"), self.out(self.b, "2026-11-10")], hist)
+        self.assertEqual((st["by"][self.a]["out_since"], st["by"][self.b]["out_since"]), ("2026-11-04", "2026-11-04"))
+        self.assertTrue({self.a, self.b} <= set(names(fa)))
+
+    def test_a_day_with_no_pinned_feed_ends_the_walk(self):
+        hist = {"2026-11-04": [self.out(self.a, "2026-11-06")], "2026-11-02": [self.out(self.a, "2026-11-03")],
+                "2026-11-01": [self.out(self.a, "2026-11-03")]}                       # no feed for 11-03
+        st, (fa, _) = self.gate([self.out(self.a, "2026-11-10")], hist)
+        self.assertEqual(st["by"][self.a]["out_since"], "2026-11-04")
+        self.assertIn(self.a, names(fa))
+
+    def test_a_yahoo_out_with_an_espn_date_uses_the_same_run(self):
+        hist = {(datetime.date(2026, 11, 5) - datetime.timedelta(days=k)).isoformat(): [self.out(self.a, "2026-11-06")] for k in range(1, 8)}
+        st = CG.fa_status(P, [{"name": self.a, "status": "O"}], [self.out(self.a, "2026-11-09")], date=self.DAY, history=hist)
+        self.assertEqual((st["by"][self.a]["source"], st["by"][self.a]["short_out"], st["by"][self.a]["out_since"]),
+                         ("yahoo", False, "2026-10-29"))
+        self.assertTrue(st["by"][self.a]["out_capped"])       # seven days of feeds, all Out: since 10-29 or earlier
+
+    def test_a_healthy_or_day_to_day_player_carries_no_run(self):
+        hist = {"2026-11-04": [self.out(self.a, "2026-11-06")]}
+        st = CG.fa_status(P, [], [{"player": self.a, "status": "Day-To-Day", "return_date": "2026-11-06"}], date=self.DAY, history=hist)
+        self.assertNotIn("out_since", st["by"][self.a]); self.assertFalse(st["by"][self.a]["short_out"])
+
+    def test_the_history_loader_reads_the_seven_days_before_the_date(self):
+        d = tempfile.mkdtemp()
+
+        def pin(name, rows):
+            with open(os.path.join(d, name), "w") as f:
+                json.dump({"rows": rows}, f)
+        pin("espn_injuries_2026-11-04.json", [self.out(self.a, "2026-11-06")])
+        pin("espn_injuries_2026-11-03_pm.json", [self.out(self.b, "2026-11-06")])     # no morning pin: the afternoon one
+        pin("espn_injuries_2026-11-02.json", [self.out(self.c, "2026-11-06")])
+        pin("espn_injuries_2026-11-02_pm.json", [self.out(self.d, "2026-11-06")])     # the morning pin wins
+        pin("espn_injuries_2026-10-28.json", [self.out(self.a, "2026-10-29")])        # eight days back: not read
+        pin("espn_injuries_2026-11-05.json", [self.out(self.a, "2026-11-09")])        # the day itself: not history
+        h = CG.espn_history(self.DAY, d)
+        self.assertEqual(sorted(h), ["2026-11-02", "2026-11-03", "2026-11-04"])
+        self.assertEqual((h["2026-11-03"][0]["player"], h["2026-11-02"][0]["player"]), (self.b, self.c))
 
 
 class EspnPin(unittest.TestCase):

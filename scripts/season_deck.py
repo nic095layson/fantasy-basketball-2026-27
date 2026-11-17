@@ -393,7 +393,10 @@ def build(paths, date, phase=None):
     if yp is not None or ep is not None:
         st = co_gm.fa_status([{"player": r["name"]} for r in board["board"] if r["fa"]],
                              ((yp or {}).get("free_agents") or {}).get("freeAgents") if yp is not None else None,
-                             ep["rows"] if ep is not None else None, date=date)
+                             ep["rows"] if ep is not None else None, date=date,
+                             # owner 2026-11-17: the same short-absence rule as the brief (co_gm.out_since), from the
+                             # pinned feeds beside the day's; those earlier feeds are read, not pinned in the record
+                             history=co_gm.espn_history(date, os.path.dirname(paths["espn_injuries"])) if paths.get("espn_injuries") else None)
         fa_status = dict(sources=st["sources"], by={n: {k: v[k] for k in ("code", "source", "return_date", "short_out")}
                                                      for n, v in st["by"].items()})
     # owner pick 2026-11-03 (display only): the brief's waiver dates and own drops (waiver_notes, 5 AM run), keyed by

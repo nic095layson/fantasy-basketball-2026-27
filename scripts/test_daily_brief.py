@@ -340,6 +340,56 @@ class EarliestReturnWording(unittest.TestCase):
         self.assertEqual(CG.SHORT_OUT_DAYS, 7)
 
 
+class LongOutWording(unittest.TestCase):
+    """Owner 2026-11-17: a player set aside because his absence is no longer short says so, with the day the feed first
+    listed him Out (or "or earlier" when the look-back reached its limit)."""
+    def test_the_set_aside_line_names_the_run(self):
+        x = dict(player="Tobias Harris", code="O", source="yahoo", return_date="2026-11-09", out_since="2026-10-29", long_out=True, out_capped=True)
+        self.assertEqual(DB.aside_flag(x), "Tobias Harris (O, yahoo, ESPN's earliest return 2026-11-09; out since 2026-10-29 or earlier, so not a short absence)")
+        self.assertIn("out since 2026-11-03, so", DB.aside_flag(dict(x, out_since="2026-11-03", out_capped=False)))
+
+    def test_an_ordinary_out_reads_as_before(self):
+        self.assertEqual(DB.aside_flag(dict(player="A", code="Out", source="espn", return_date=None)), "A (Out, espn)")
+        self.assertEqual(DB.aside_flag(dict(player="A", code="O", source="yahoo", return_date="2026-12-03", out_since="2026-11-10", long_out=False, out_capped=True)),
+                         "A (O, yahoo, ESPN's earliest return 2026-12-03)")
+
+
+class ScanRead(unittest.TestCase):
+    """Owner 2026-11-17 (card: "Both fixes"): the listed pairs say what their title figures can and cannot tell apart.
+    Display only: nothing is reordered."""
+    def pair(self, add, drop, d):
+        return {"add": add, "drop": drop, "d_title": d, "title": 14.1 + d}
+
+    def test_the_noise_is_the_error_of_a_difference_of_two_shares(self):
+        # 14.1% over 2 runs x 10,000 seasons: one share is +/- 0.48 (odds_line), a difference +/- 0.68
+        self.assertAlmostEqual(DB.scan_noise(14.1, 10000), 0.68, places=2)
+        self.assertAlmostEqual(DB.scan_noise(14.1, 10000) / (196 * (0.141 * 0.859 / 20000) ** 0.5), 2 ** 0.5, places=6)
+
+    def test_each_pair_is_read_against_the_noise(self):
+        r = DB.scan_read([self.pair("A", "X", 2.1), self.pair("B", "Y", 0.4), self.pair("C", "Z", -0.5)], 14.1, 10000)
+        self.assertEqual([p["read"] for p in r["picks"]], [None, "inside sampling error", "no title gain"])
+        self.assertEqual((r["same_drop"], r["tied"]), (None, False))
+        self.assertEqual(DB.read_note(r, 0), ""); self.assertEqual(DB.read_note(r, 1), " [inside sampling error]")
+        self.assertEqual(DB.read_lines(r), [])
+
+    def test_one_shared_drop_and_a_tie_are_said(self):
+        # the 11-03 brief: three adds for Karlo Matkovic at +3.39, +3.12 and +2.55 share the drop but are not tied
+        r = DB.scan_read([self.pair("A", "Karlo Matkovic", 3.39), self.pair("B", "Karlo Matkovic", 3.12),
+                          self.pair("C", "Karlo Matkovic", 2.55)], 14.1, 10000)
+        self.assertEqual((r["same_drop"], r["tied"]), ("Karlo Matkovic", False))
+        self.assertEqual(DB.read_lines(r), ["All 3 name Karlo Matkovic as the drop: the title figures say more about that "
+                                            "roster spot than about which player you add."])
+        r = DB.scan_read([self.pair("A", "X", 3.03), self.pair("B", "X", 3.08), self.pair("C", "X", 2.69)], 14.1, 10000)
+        self.assertTrue(r["tied"])
+        self.assertIn("The 3 adds are within sampling error of each other (+2.7 to +3.1 title points): the scan cannot rank them.",
+                      DB.read_lines(r))
+
+    def test_one_pair_is_never_a_tie_and_no_pair_reads_nothing(self):
+        r = DB.scan_read([self.pair("A", "X", 0.75)], 14.1, 10000)
+        self.assertEqual((r["same_drop"], r["tied"], r["picks"][0]["read"]), (None, False, None))
+        self.assertIsNone(DB.scan_read([], 14.1, 10000)); self.assertEqual(DB.read_lines(None), []); self.assertEqual(DB.read_note(None, 0), "")
+
+
 class RoleWatch(unittest.TestCase):
     """Owner 2026-11-17 (picks "Starts watch", "Hold check on drops"): both lists reach the brief; a failure is said,
     never raised."""
