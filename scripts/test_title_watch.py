@@ -117,6 +117,124 @@ class MethodChange(unittest.TestCase):
         self.assertIn("METHOD CHANGE", buf.getvalue())
 
 
+class Walk(unittest.TestCase):
+    """Owner 2026-11-17 (pick F1, after-report-2026-11-17-gaps-and-fixes.md): on a day with a method change the two
+    figures are walked like for like, one input at a time on today's engine. On 2026-11-17 the watch printed
+    "-0.5, within the band" over +1.9 (constants), +1.9 (rosters and results) and -4.3 (lines)."""
+
+    METHOD = ["line method: the minutes ratio now applies to PTS, REB, AST (before: none)"]
+
+    def test_the_walk_splits_a_small_net_change_into_its_offsetting_steps(self):
+        w = TW.walk(14.6, 14.1, dict(prev_inputs=16.5, rosters=18.4, today=14.1))
+        self.assertTrue(w["reproduced"])
+        self.assertEqual([(s["what"], round(s["delta"], 1)) for s in w["steps"]],
+                         [("the engine and its constants, on the earlier run's inputs", 1.9),
+                          ("rosters and results recorded since", 1.9),
+                          ("the lines file (line method and the day's games)", -4.3)])
+        self.assertAlmostEqual(sum(s["delta"] for s in w["steps"]), 14.1 - 14.6)
+
+    def test_a_change_inside_the_band_still_prints_its_walk(self):
+        r = TW.check(brief("2026-11-17", 13.98, 14.19), brief("2026-11-16", 14.69, 14.52), merges=[], method=self.METHOD)
+        self.assertFalse(r["moved"])
+        r["walk"] = TW.walk(r["prev_title"], r["title"], dict(prev_inputs=16.5, rosters=18.4, today=r["title"]))
+        text = "\n".join(TW.render(r))
+        self.assertIn("Like for like", text)
+        self.assertIn("| the lines file (line method and the day's games) | -4.3 |", text)
+        self.assertNotIn("no larger than two runs of the same simulator differ by", text)
+        self.assertIn("walk: +1.9 engine, +1.9 rosters and results, -4.3 lines", TW.pass_line(r, "x.json"))
+
+    def test_a_brief_that_does_not_reproduce_shows_no_steps(self):
+        w = TW.walk(14.6, 14.1, dict(prev_inputs=16.5, rosters=18.4, today=15.0))
+        self.assertFalse(w["reproduced"]); self.assertEqual(w["steps"], [])
+        self.assertIn("did not reproduce", w["error"])
+        r = TW.check(brief("2026-11-17", 13.98, 14.19), brief("2026-11-16", 14.69, 14.52), merges=[], method=self.METHOD)
+        r["walk"] = w
+        self.assertIn("did not reproduce", "\n".join(TW.render(r)))
+
+    def _repo(self):
+        d = tempfile.mkdtemp()
+        env = dict(os.environ, GIT_AUTHOR_NAME="t", GIT_AUTHOR_EMAIL="t@t", GIT_COMMITTER_NAME="t", GIT_COMMITTER_EMAIL="t@t")
+        git = lambda *a: subprocess.run(["git", "-C", d] + list(a), check=True, env=env, capture_output=True)
+        git("init", "-q", "-b", "daily")
+        def put(rel, text):
+            os.makedirs(os.path.dirname(os.path.join(d, rel)), exist_ok=True)
+            open(os.path.join(d, rel), "w").write(text)
+        for rel, text in (("data/league_state.json", "state-am-16"), ("data/season/pool_season.csv", "pool-16"),
+                          ("data/league_schedule.json", "sched-16"), ("report/briefs/brief_2026-11-16.json", "{}")):
+            put(rel, text)
+        git("add", "-A"); git("commit", "-q", "-m", "Morning run 2026-11-16")
+        put("data/league_state.json", "state-pm-16"); git("add", "-A"); git("commit", "-q", "-m", "Afternoon check 2026-11-16")
+        for rel, text in (("data/league_state.json", "state-am-17"), ("data/season/pool_season.csv", "pool-17"),
+                          ("data/league_schedule.json", "sched-17"), ("report/briefs/brief_2026-11-17.json", "{}")):
+            put(rel, text)
+        return d
+
+    def test_the_earlier_inputs_come_from_the_commit_that_added_its_brief(self):
+        d = self._repo()
+        got = TW.inputs_at(d, "2026-11-16")
+        self.assertEqual({k: open(v).read() for k, v in got.items()},
+                         dict(state="state-am-16", pool="pool-16", schedule="sched-16"))
+        self.assertIsNone(TW.inputs_at(d, "2026-11-10"))
+        self.assertIsNone(TW.inputs_at(tempfile.mkdtemp(), "2026-11-16"))
+
+    def test_like_for_like_runs_the_three_rows_one_input_at_a_time(self):
+        d, calls = self._repo(), []
+        def sim(state, pool, schedule, seasons):
+            row = (open(state).read(), open(pool).read(), open(schedule).read(), seasons); calls.append(row)
+            return {("state-am-16", "pool-16", "sched-16"): 16.5, ("state-am-17", "pool-16", "sched-17"): 18.4,
+                    ("state-am-17", "pool-17", "sched-17"): 14.1}[row[:3]]
+        today = dict(state=os.path.join(d, "data/league_state.json"), pool=os.path.join(d, "data/season/pool_season.csv"),
+                     schedule=os.path.join(d, "data/league_schedule.json"))
+        w = TW.like_for_like(d, "2026-11-16", 14.6, 14.1, today, 10000, sim=sim)
+        self.assertEqual(len(calls), 3); self.assertTrue(all(c[3] == 10000 for c in calls))
+        self.assertEqual([round(s["delta"], 1) for s in w["steps"]], [1.9, 1.9, -4.3])
+        self.assertEqual(w["rows"], dict(prev_inputs=16.5, rosters=18.4, today=14.1))
+
+    def test_unreadable_history_is_said_not_guessed(self):
+        w = TW.like_for_like(tempfile.mkdtemp(), "2026-11-16", 14.6, 14.1, {}, 10000, sim=lambda *a: self.fail("no run without inputs"))
+        self.assertEqual(w["steps"], [])
+        self.assertIn("not readable from git history", w["error"])
+
+    def test_main_walks_only_on_a_method_change(self):
+        import io, contextlib
+        d = self._repo(); b = os.path.join(d, "report", "briefs"); s = tempfile.mkdtemp()
+        json.dump(brief("2026-11-16", 14.69, 14.52), open(os.path.join(b, "brief_2026-11-16.json"), "w"))
+        json.dump(brief("2026-11-17", 13.98, 14.19), open(os.path.join(b, "brief_2026-11-17.json"), "w"))
+        subprocess.run(["git", "-C", d, "add", "-A"], check=True)
+        json.dump(dict(date="2026-11-16"), open(os.path.join(s, "season_lines_2026-11-16.json"), "w"))
+        json.dump(dict(date="2026-11-17"), open(os.path.join(s, "season_lines_2026-11-17.json"), "w"))
+        calls, old = [], TW.SIM
+        TW.SIM = lambda state, pool, schedule, seasons: (calls.append(1), {"pool-16": 16.5, "pool-17": 14.085}[open(pool).read()]
+                                                         if open(state).read() == "state-am-16" or open(pool).read() == "pool-17" else 18.4)[1]
+        try:
+            args = ["--date", "2026-11-17", "--briefs", b, "--season", s, "--root", d, "--state", os.path.join(d, "data/league_state.json"),
+                    "--pool", os.path.join(d, "data/season/pool_season.csv"), "--schedule", os.path.join(d, "data/league_schedule.json")]
+            with contextlib.redirect_stdout(io.StringIO()):
+                TW.main(args)
+            self.assertEqual(calls, [])                                   # no method change: no walk, no simulator run
+            self.assertIsNone(json.load(open(os.path.join(b, "title_watch_2026-11-17.json"))).get("walk"))
+            json.dump(dict(date="2026-11-17", line_switch=dict(cats=["pts", "reb", "ast"])), open(os.path.join(s, "season_lines_2026-11-17.json"), "w"))
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                TW.main(args)
+            rec = json.load(open(os.path.join(b, "title_watch_2026-11-17.json")))
+            self.assertEqual(len(calls), 3)
+            self.assertEqual([round(x["delta"], 1) for x in rec["walk"]["steps"]], [1.9, 1.9, -4.3])
+            self.assertIn("walk:", buf.getvalue())
+            with contextlib.redirect_stdout(io.StringIO()):
+                TW.main(args + ["--no-walk"])
+            self.assertEqual(len(calls), 3)
+        finally:
+            TW.SIM = old
+
+    def test_the_simulator_row_plays_the_files_it_is_given(self):
+        """One real run at a small size: the row reads the state, pool and schedule handed to it, in its own process."""
+        kit = os.path.dirname(HERE)
+        t = TW.SIM(os.path.join(kit, "data", "league_state.json"), os.path.join(kit, "data", "season", "pool_season.csv"),
+                   os.path.join(kit, "data", "league_schedule.json"), 200)
+        self.assertTrue(0.0 <= t <= 100.0)
+
+
 class Files(unittest.TestCase):
     def test_the_previous_brief_is_the_newest_before_the_date_and_never_a_pm_file(self):
         d = tempfile.mkdtemp()
