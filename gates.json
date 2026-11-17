@@ -1,5 +1,5 @@
 {
- "ran_at_utc": "2026-11-17T18:08:41Z",
+ "ran_at_utc": "2026-11-17T18:16:34Z",
  "inputs": {
   "report/after-reports/after-report-2026-11-17-gaps-and-fixes.md": "b42f997d798cbad8bbb5e292aefc2c0c962c5e3506d5fee0e2da4c2af54af8f7",
   "report/after-reports/shock-fit-2026-11-16/sweep.json": "52a897bd6283a50308f141107653b01e4cce9eff4e2a81b22d776003a1d531eb"
@@ -7,7 +7,7 @@
  "gates": [
   {
    "name": "kit check_report",
-   "cmd": "/usr/local/bin/python3 report/check_report.py /tmp/claude-0/-home-user/2707cd51-ac23-5481-9e46-598496719ebc/scratchpad/f1/report/after-reports/after-report-2026-11-17-gaps-and-fixes.md",
+   "cmd": "/usr/local/bin/python3 report/check_report.py /tmp/claude-0/-home-user/2707cd51-ac23-5481-9e46-598496719ebc/scratchpad/f2/report/after-reports/after-report-2026-11-17-gaps-and-fixes.md",
    "cwd": ".",
    "pass_re": "^REPORT GATE: PASS",
    "exit": 0,
@@ -20,7 +20,7 @@
   },
   {
    "name": "claim receipts",
-   "cmd": "/usr/local/bin/python3 /tmp/claude-0/-home-user/2707cd51-ac23-5481-9e46-598496719ebc/scratchpad/f1/scripts/independent_audit/claim_receipts.py /tmp/claude-0/-home-user/2707cd51-ac23-5481-9e46-598496719ebc/scratchpad/f1/report/after-reports/after-report-2026-11-17-gaps-and-fixes.md",
+   "cmd": "/usr/local/bin/python3 /tmp/claude-0/-home-user/2707cd51-ac23-5481-9e46-598496719ebc/scratchpad/f2/scripts/independent_audit/claim_receipts.py /tmp/claude-0/-home-user/2707cd51-ac23-5481-9e46-598496719ebc/scratchpad/f2/report/after-reports/after-report-2026-11-17-gaps-and-fixes.md",
    "cwd": ".",
    "pass_re": "^CLAIM RECEIPTS: (PASS|ADVISORY)",
    "exit": 0,
@@ -32,8 +32,8 @@
    ]
   },
   {
-   "name": "kit test_title_watch",
-   "cmd": "python3 scripts/test_title_watch.py",
+   "name": "kit test_daily_brief",
+   "cmd": "python3 scripts/test_daily_brief.py",
    "cwd": ".",
    "pass_re": "^OK",
    "exit": 0,
@@ -42,13 +42,28 @@
    "why": "",
    "tail": [
     "----------------------------------------------------------------------",
-    "Ran 25 tests in 1.937s",
+    "Ran 36 tests in 0.934s",
+    "OK"
+   ]
+  },
+  {
+   "name": "kit test_season_deck (module run)",
+   "cmd": "python3 -m unittest discover -s scripts -p test_season_deck.py",
+   "cwd": ".",
+   "pass_re": "^OK",
+   "exit": 0,
+   "pass_line": "OK",
+   "verdict": "PASS",
+   "why": "",
+   "tail": [
+    "----------------------------------------------------------------------",
+    "Ran 239 tests in 147.351s",
     "OK"
    ]
   },
   {
    "name": "redteam constants",
-   "cmd": "/usr/local/bin/python3 /tmp/claude-0/-home-user/2707cd51-ac23-5481-9e46-598496719ebc/scratchpad/f1/scripts/redteam/check_constants.py --deck /tmp/claude-0/-home-user/2707cd51-ac23-5481-9e46-598496719ebc/scratchpad/yahoo-fantasy-basketball",
+   "cmd": "/usr/local/bin/python3 /tmp/claude-0/-home-user/2707cd51-ac23-5481-9e46-598496719ebc/scratchpad/f2/scripts/redteam/check_constants.py --deck /tmp/claude-0/-home-user/2707cd51-ac23-5481-9e46-598496719ebc/scratchpad/yahoo-fantasy-basketball",
    "cwd": ".",
    "pass_re": "^CONSTANTS CHECK: PASS",
    "exit": 0,
@@ -61,7 +76,7 @@
   },
   {
    "name": "redteam bands",
-   "cmd": "/usr/local/bin/python3 /tmp/claude-0/-home-user/2707cd51-ac23-5481-9e46-598496719ebc/scratchpad/f1/scripts/redteam/check_bands.py --report /tmp/claude-0/-home-user/2707cd51-ac23-5481-9e46-598496719ebc/scratchpad/f1/report/after-reports/after-report-2026-11-17-gaps-and-fixes.md --sweep /tmp/claude-0/-home-user/2707cd51-ac23-5481-9e46-598496719ebc/scratchpad/f1/report/after-reports/shock-fit-2026-11-16/sweep.json",
+   "cmd": "/usr/local/bin/python3 /tmp/claude-0/-home-user/2707cd51-ac23-5481-9e46-598496719ebc/scratchpad/f2/scripts/redteam/check_bands.py --report /tmp/claude-0/-home-user/2707cd51-ac23-5481-9e46-598496719ebc/scratchpad/f2/report/after-reports/after-report-2026-11-17-gaps-and-fixes.md --sweep /tmp/claude-0/-home-user/2707cd51-ac23-5481-9e46-598496719ebc/scratchpad/f2/report/after-reports/shock-fit-2026-11-16/sweep.json",
    "cwd": ".",
    "pass_re": "^BANDS CHECK: PASS",
    "exit": 0,
@@ -74,7 +89,7 @@
   },
   {
    "name": "redteam attacks",
-   "cmd": "/usr/local/bin/python3 /tmp/claude-0/-home-user/2707cd51-ac23-5481-9e46-598496719ebc/scratchpad/f1/scripts/redteam/run_attacks.py --check --deck /tmp/claude-0/-home-user/2707cd51-ac23-5481-9e46-598496719ebc/scratchpad/yahoo-fantasy-basketball",
+   "cmd": "/usr/local/bin/python3 /tmp/claude-0/-home-user/2707cd51-ac23-5481-9e46-598496719ebc/scratchpad/f2/scripts/redteam/run_attacks.py --check --deck /tmp/claude-0/-home-user/2707cd51-ac23-5481-9e46-598496719ebc/scratchpad/yahoo-fantasy-basketball",
    "cwd": ".",
    "pass_re": "^ATTACKS CHECK: PASS",
    "exit": 0,
@@ -87,7 +102,7 @@
   },
   {
    "name": "kit check_claims --gate",
-   "cmd": "/usr/local/bin/python3 /tmp/claude-0/-home-user/2707cd51-ac23-5481-9e46-598496719ebc/scratchpad/f1/scripts/check_claims.py --gate",
+   "cmd": "/usr/local/bin/python3 /tmp/claude-0/-home-user/2707cd51-ac23-5481-9e46-598496719ebc/scratchpad/f2/scripts/check_claims.py --gate",
    "cwd": ".",
    "pass_re": "^CLAIM GATE: PASS",
    "exit": 0,
@@ -101,5 +116,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "166f7fd7e81ee87ea38b55a2f895303a6702145c"
+ "base_commit": "15f5350c9126a1b2ecd7999dc1c49034f37f59e1"
 }
