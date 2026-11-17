@@ -82,8 +82,8 @@ Each new test failed on the code before this change (brief 1 error, gate 1 error
 
 ## 6. Decisions for the owner (nothing changes without a pick)
 
-1. This pull request: merge before the Runner's 04:40 PT run (no constant or line method changes; the band line and page change from FRAGILE -3.2 / +2.8 to "no FRAGILE constant"), or keep it as a draft.
-2. With no FRAGILE constant, the brief and page print no band at all, while the largest is about ±2 points. Options: also print the largest SENSITIVE constant's band when none is FRAGILE; leave the tier rule as built.
+1. Done on the owner's card click ("Merge #291 now"): merged as kit #291 (main 7950fba), before the Runner's 04:40 PT run of 2026-11-18.
+2. Done on the owner's card click ("Show the largest band anyway"): section 8.
 3. The Runner's morning prompt (the owner edits it from the Runner's conversation): the wording is drafted in the session's message of 2026-11-17; the repository copy is refreshed after the edit.
 4. The kit board's risk discount (assumed ratio 0.904 against 0.718 measured, SE 0.031, weeks 1-4): assessment at the Monday review of 2026-11-23 (owner pick).
 
@@ -101,6 +101,14 @@ In scope and unverified:
 - `stale()` sees the engine only: a sweep made before a change to how the season lines are made (the minutes switch of 2026-11-16) reads CURRENT. The configuration it ran on is named beside it (`describe`).
 - 17 hand-set constants await calibration, each with a named decision in the registry; 7 more are draft-day only.
 
-## 8. Provenance
+## 8. Follow-up the same evening: the largest band
+
+With no FRAGILE constant, the brief and the deck printed no band at all while the availability tiers moved the title share by 1.9 points. On the owner's pick, both now fall back to the SENSITIVE constant with the largest shift, labelled as such (`sweep_record.shown_bands`; a sweep with any FRAGILE constant prints exactly what it printed before). The report gate (`check_bands.py`) still owes FRAGILE bands only.
+
+Tomorrow's band line from the sweep of 2026-11-17, printed by the merged code plus this change: "no FRAGILE constant; the largest band, weekly_availability is SENSITIVE: -0.6 (healthy at the old 0.88) / +0.2 (healthy at the unfloored fit (0.78)) / -1.9 (risk at the old 0.75) / +1.9 (risk at the unfloored fit (0.56))". The deck's note: "Model bands: weekly_availability (SENSITIVE, the largest) -0.6/+0.2/-1.9/+1.9 title pts".
+
+Tests: `test_sweep_record.py` ShownBands (4), `test_daily_brief.py` (1), `test_season_deck.py` BandStale (2, one rewritten from "no FRAGILE constant" to the fallback, one new for an all-ROBUST sweep). On the code before the change: 4 errors, 1 failure, 1 failure.
+
+## 9. Provenance
 
 Session of 2026-11-17 (session models A and B), the Main session; branch `claude/stale-band-flag`. Records: kit main 80b2be4, deck main 3551a15, season/daily e971a0f. Re-verify: `python3 scripts/test_sweep_record.py`; `python3 -m unittest scripts.test_season_deck.BandStale`; `python3 scripts/redteam/check_bands.py --report <report> --sweep report/after-reports/redteam-2026-11-16-season/sweep.json` from a season/daily checkout (expect FAIL, STALE); the sweep: `python3 scripts/redteam/sweep.py --season <state> <pool> --real-schedule <schedule> --out <dir>/sweep.json` on season/daily e971a0f with main merged.

@@ -2950,11 +2950,22 @@ class BandStale(unittest.TestCase):
         self.assertTrue(any("STALE: measured on engine 95ebade, the live engine is ecb60cb, so these shifts are not today's" in t
                             for t in v["titles"]))
 
-    def test_no_fragile_constant_reads_plainly_and_a_current_band_carries_no_mark(self):
-        sw = dict(engine_commit="3551a15", fragile=[], constants={"arena.weekly_availability": dict(
-            tier="SENSITIVE", variants=[dict(label="risk at the old 0.75", shift_mean=-1.93)])})
+    def test_no_fragile_constant_shows_the_largest_sensitive_band_and_a_current_band_carries_no_mark(self):
+        # owner 2026-11-17 ("Show the largest band anyway")
+        sw = dict(engine_commit="3551a15", fragile=[], constants={
+            "arena.weekly_availability": dict(tier="SENSITIVE", max_abs_shift=1.93, variants=[
+                dict(label="risk at the old 0.75", shift_mean=-1.93), dict(label="risk at the unfloored fit (0.56)", shift_mean=1.9)]),
+            "arena.TEAM_WEEK_SHOCK": dict(tier="SENSITIVE", max_abs_shift=1.52, variants=[dict(label="no shock", shift_mean=1.52)])})
         data, v = self.page(sw, dict(status="CURRENT", why=""))
         self.assertEqual(v["errors"], [])
-        self.assertIn("Model bands: no FRAGILE constant", v["text"])
+        self.assertIn("Model bands: weekly_availability (SENSITIVE, the largest) -1.9/+1.9 title pts", v["text"])
+        self.assertTrue(any("weekly_availability is SENSITIVE: -1.9 (risk at the old 0.75) / +1.9" in t for t in v["titles"]))
+        self.assertNotIn("TEAM_WEEK_SHOCK", v["text"])
         self.assertNotIn("STALE", v["text"]); self.assertFalse(any("STALE" in t for t in v["titles"]))
+
+    def test_an_all_robust_sweep_says_no_fragile_constant(self):
+        sw = dict(engine_commit="3551a15", fragile=[], constants={"arena.BENCH_WEIGHT": dict(
+            tier="ROBUST", max_abs_shift=0.0, variants=[dict(label="bench", shift_mean=0.0)])})
+        data, v = self.page(sw, dict(status="CURRENT", why=""))
+        self.assertEqual(v["errors"], []); self.assertIn("Model bands: no FRAGILE constant", v["text"])
 

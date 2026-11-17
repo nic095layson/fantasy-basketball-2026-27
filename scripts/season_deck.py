@@ -422,13 +422,14 @@ def build(paths, date, phase=None):
     respelled = sorted((n, m) for n, m in rmap.items() if n != m)
     # every constant the standing sweep tiers FRAGILE, as daily_brief.band_line quotes them (2026-10-21: two since
     # deck 80eecdf, TEAM_WEEK_SHOCK and weekly_availability); a record without the list falls back to the tiers
-    fragile = sweep.get("fragile") or [k for k, c in sweep["constants"].items() if c.get("tier") == "FRAGILE"]
+    # owner 2026-11-17 ("Show the largest band anyway"): with no FRAGILE constant, the largest SENSITIVE one
+    fragile = SR.shown_bands(sweep)
     bands = []
     for key in fragile:
         c = sweep["constants"][key]
         bands.append(dict(name=key, tier=c["tier"], variants=[
             dict(label=v.get("label"), shift=v.get("shift_mean_1dp", f"{v['shift_mean']:+.1f}")) for v in c["variants"]]))
-        if not bands[-1]["variants"]: raise DeckError(f"FRAGILE band {key} with no variants")
+        if not bands[-1]["variants"]: raise DeckError(f"{c['tier']} band {key} with no variants")
     band_engine = sweep.get("engine_commit") or sweep.get("engine")
     # owner 2026-10-26: which configuration and day the bands were measured on (sweep_record.describe, the brief's wording)
     band_config = SR.describe(sweep, paths["sweep"], as_of=date)   # audit F2 (2026-11-12): the sweep's age on the page
@@ -996,7 +997,7 @@ function matchupBoard(){ const W=D.week_matchup, B=W&&W.board; if(!B) return nul
   if(!swapCard.has) p.append(swapCard.card);
   p.append(
     h("div",{class:"cols"},
-      h("div",{class:"card span2"},h("h2",{},"Odds"),tiles,ilReturn(b.il_return),(b.method&&b.method.line)?h("p",{class:"note"},b.method.line):null,noteMore("Model bands: "+((D.band_stale||{}).status==="STALE"?"STALE, ":"")+((D.bands||[]).length?(D.bands||[]).map(b=>b.name.split(".").pop()+" "+b.variants.map(v=>v.shift).join("/")).join(" · ")+" title pts":"no FRAGILE constant"),
+      h("div",{class:"card span2"},h("h2",{},"Odds"),tiles,ilReturn(b.il_return),(b.method&&b.method.line)?h("p",{class:"note"},b.method.line):null,noteMore("Model bands: "+((D.band_stale||{}).status==="STALE"?"STALE, ":"")+((D.bands||[]).length?(D.bands||[]).map(b=>b.name.split(".").pop()+(b.tier!=="FRAGILE"?" ("+b.tier+", the largest)":"")+" "+b.variants.map(v=>v.shift).join("/")).join(" · ")+" title pts":"no FRAGILE constant"),
         "Structural band ("+D.band_config+"): "+bandLine())),
       h("div",{class:"card"},h("h2",{},"Lineup"),h("div",{class:"tablebox"},h("table",{},
         lineupRows().map(([slot,name])=>h("tr",{},h("td",{},h("span",{class:"chip"},slot)),h("td",{},name,goneChip(name)))))),

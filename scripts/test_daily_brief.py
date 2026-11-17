@@ -107,6 +107,22 @@ class Band(unittest.TestCase):
             self.assertEqual(DB.band_check(p)["status"], "STALE")
         with mock.patch.object(DB.SR, "stale", return_value=dict(status="CURRENT", why="")):
             self.assertNotIn("STALE", DB.band_line(p)); self.assertIn("no FRAGILE constant", DB.band_line(p))
+
+    def test_with_no_fragile_constant_the_largest_sensitive_band_is_printed(self):
+        """Owner 2026-11-17 ("Show the largest band anyway"): the 11-17 sweep had none at 2 points."""
+        import json, tempfile
+        from unittest import mock
+        rec = dict(engine_commit="3551a15", fragile=[], constants={
+            "arena.weekly_availability": dict(tier="SENSITIVE", max_abs_shift=1.93, variants=[
+                dict(label="risk at the old 0.75", shift_mean=-1.93), dict(label="risk at the unfloored fit (0.56)", shift_mean=1.9)]),
+            "arena.TEAM_WEEK_SHOCK": dict(tier="SENSITIVE", max_abs_shift=1.52, variants=[dict(label="no shared games shock (0.0)", shift_mean=1.52)]),
+            "arena.BENCH_WEIGHT": dict(tier="ROBUST", max_abs_shift=0.0, variants=[dict(label="bench", shift_mean=0.0)])})
+        p = os.path.join(tempfile.mkdtemp(), "s.json")
+        json.dump(rec, open(p, "w"))
+        with mock.patch.object(DB.SR, "stale", return_value=dict(status="CURRENT", why="")):
+            line = DB.band_line(p)
+        self.assertIn("): no FRAGILE constant; the largest band, weekly_availability is SENSITIVE: -1.9 (risk at the old 0.75) / +1.9 (risk at the unfloored fit (0.56)).", line)
+        self.assertNotIn("TEAM_WEEK_SHOCK", line)
         self.assertEqual(DB.band_check(os.path.join(tempfile.mkdtemp(), "none.json"))["status"], "UNKNOWN")
 
 

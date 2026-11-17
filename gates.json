@@ -1,7 +1,7 @@
 {
- "ran_at_utc": "2026-11-17T21:46:11Z",
+ "ran_at_utc": "2026-11-17T22:09:58Z",
  "inputs": {
-  "report/after-reports/after-report-2026-11-17-system-red-team.md": "adcd38056fdf29653c9d36b6b69498e9027bee8aa8db32f06776910a9682e4c3",
+  "report/after-reports/after-report-2026-11-17-system-red-team.md": "126fbfeb908b219ce54de74c01e5fe565e6a9c1c808291e4e09743e0b1c71176",
   "report/after-reports/redteam-2026-11-17-season/sweep.json": "13dd355f9c22b85cbdc79140be471a2e1be61e49d32114fd8ae37c2ac800b8ea"
  },
  "gates": [
@@ -42,22 +42,7 @@
    "why": "",
    "tail": [
     "----------------------------------------------------------------------",
-    "Ran 12 tests in 0.954s",
-    "OK"
-   ]
-  },
-  {
-   "name": "redteam sweep tests",
-   "cmd": "python3 scripts/test_redteam_sweep.py",
-   "cwd": ".",
-   "pass_re": "^OK",
-   "exit": 0,
-   "pass_line": "OK",
-   "verdict": "PASS",
-   "why": "",
-   "tail": [
-    "----------------------------------------------------------------------",
-    "Ran 17 tests in 2.592s",
+    "Ran 16 tests in 0.987s",
     "OK"
    ]
   },
@@ -72,7 +57,7 @@
    "why": "",
    "tail": [
     "----------------------------------------------------------------------",
-    "Ran 39 tests in 0.949s",
+    "Ran 40 tests in 0.902s",
     "OK"
    ]
   },
@@ -87,13 +72,13 @@
    "why": "",
    "tail": [
     "----------------------------------------------------------------------",
-    "Ran 244 tests in 130.985s",
+    "Ran 245 tests in 131.509s",
     "OK"
    ]
   },
   {
    "name": "kit suite",
-   "cmd": "bash -o pipefail -c 'python3 -m unittest discover -s scripts -p '\"'\"'test_*.py'\"'\"' 2>&1 | tee /tmp/claude-0/-home-user/2707cd51-ac23-5481-9e46-598496719ebc/scratchpad/suite_gate2.log | tail -3'",
+   "cmd": "bash -o pipefail -c 'python3 -m unittest discover -s scripts -p '\"'\"'test_*.py'\"'\"' 2>&1 | tee /tmp/claude-0/-home-user/2707cd51-ac23-5481-9e46-598496719ebc/scratchpad/suite_gate3.log | tail -3'",
    "cwd": ".",
    "pass_re": "^OK",
    "exit": 0,
@@ -101,7 +86,7 @@
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "Ran 1312 tests in 184.812s",
+    "Ran 1318 tests in 187.789s",
     "OK (skipped=2)"
    ]
   },
@@ -160,5 +145,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "80b2be471b1a11b1181167994fdad3df24808b03"
+ "base_commit": "7950fba2bf22d5a91300b76c3cc8b0e7f2acf8e7"
 }
