@@ -90,6 +90,22 @@ class Bands(unittest.TestCase):
         ok, problems = self.run_check("TEAM_WEEK_SHOCK is FRAGILE: +3.4 with no shock, -2.3 doubled.\n")
         self.assertTrue(ok, problems)
 
+    def test_a_stale_sweep_fails_whatever_the_report_quotes(self):
+        """Owner 2026-11-17 ("Flag it and re-sweep"): a band from another engine is not today's band."""
+        from unittest import mock
+        with tempfile.TemporaryDirectory() as d:
+            r, s = os.path.join(d, "r.md"), os.path.join(d, "s.json")
+            with open(r, "w") as f:
+                f.write("TEAM_WEEK_SHOCK is FRAGILE: +3.4 with no shock, -2.3 doubled.\n")
+            with open(s, "w") as f:
+                json.dump(self.SWEEP, f)
+            with mock.patch.object(B.SR, "stale", return_value=dict(status="STALE", why="measured on engine a, the live engine is b")):
+                ok, problems = B.check(r, s, deck=d)
+            self.assertFalse(ok); self.assertIn("STALE", problems[0])
+            with mock.patch.object(B.SR, "stale", return_value=dict(status="UNKNOWN", why="x")):
+                self.assertTrue(B.check(r, s, deck=d)[0])
+            self.assertTrue(B.check(r, s)[0])                 # no deck: not compared, as before
+
     def test_unicode_minus_is_accepted(self):
         ok, _ = self.run_check("TEAM_WEEK_SHOCK FRAGILE: +3.4 / −2.3\n")
         self.assertTrue(ok)

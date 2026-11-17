@@ -2924,3 +2924,37 @@ class RoleWatchCards(unittest.TestCase):
         d = self.build(None)                                             # a brief written before role_watch existed
         self.assertEqual(d["errors"], []); self.assertIsNone(d["starts"]["text"]); self.assertIsNone(d["hold"]["text"])
 
+
+class BandStale(unittest.TestCase):
+    """Owner 2026-11-17 ("Flag it and re-sweep"): a band measured on another engine says STALE on the Today tab, and a
+    sweep with no FRAGILE constant says so instead of printing an empty band."""
+    def page(self, sweep, stale):
+        from unittest import mock
+        d = tempfile.mkdtemp(); fx = fixtures(d)
+        with open(fx["sweep"], "w") as f:
+            json.dump(sweep, f)
+        with mock.patch.object(SD.SR, "stale", return_value=stale):
+            html, data, rec = SD.build(fx, date="2026-10-21")
+        p = os.path.join(d, "deck.html")
+        with open(p, "w", encoding="utf-8") as f:
+            f.write(html)
+        return data, visible_dom(p, "Today", "pane-today")
+
+    def test_a_stale_band_is_marked_on_the_page(self):
+        sw = dict(engine_commit="c933f07", fragile=["arena.weekly_availability"], constants={"arena.weekly_availability": dict(
+            tier="FRAGILE", variants=[dict(label="risk at the old 0.75", shift_mean=-3.2), dict(label="harsher", shift_mean=2.8)])})
+        data, v = self.page(sw, dict(status="STALE", why="measured on engine 95ebade, the live engine is ecb60cb"))
+        self.assertEqual(v["errors"], [])
+        self.assertEqual(data["band_stale"]["status"], "STALE")
+        self.assertIn("Model bands: STALE, weekly_availability -3.2/+2.8 title pts", v["text"])
+        self.assertTrue(any("STALE: measured on engine 95ebade, the live engine is ecb60cb, so these shifts are not today's" in t
+                            for t in v["titles"]))
+
+    def test_no_fragile_constant_reads_plainly_and_a_current_band_carries_no_mark(self):
+        sw = dict(engine_commit="3551a15", fragile=[], constants={"arena.weekly_availability": dict(
+            tier="SENSITIVE", variants=[dict(label="risk at the old 0.75", shift_mean=-1.93)])})
+        data, v = self.page(sw, dict(status="CURRENT", why=""))
+        self.assertEqual(v["errors"], [])
+        self.assertIn("Model bands: no FRAGILE constant", v["text"])
+        self.assertNotIn("STALE", v["text"]); self.assertFalse(any("STALE" in t for t in v["titles"]))
+

@@ -82,9 +82,32 @@ class Note(unittest.TestCase):
 class Band(unittest.TestCase):
     """Post-mortem D-PM-6 / D-RT-2: every title figure carries the structural band from the standing sweep."""
     def test_band_line_names_the_fragile_constant_and_its_figures(self):
-        line = DB.band_line()
+        # a fixture record (2026-11-17): the live sweep may carry no FRAGILE constant, which says nothing about the line
+        import json, tempfile
+        rec = dict(engine_commit="abc1234", fragile=["arena.TEAM_WEEK_SHOCK"], constants={"arena.TEAM_WEEK_SHOCK": dict(
+            tier="FRAGILE", variants=[dict(label="no shock", shift_mean=3.0), dict(label="doubled", shift_mean=-2.5)])})
+        p = os.path.join(tempfile.mkdtemp(), "s.json")
+        json.dump(rec, open(p, "w"))
+        line = DB.band_line(p)
         self.assertIn("TEAM_WEEK_SHOCK", line); self.assertIn("FRAGILE", line)
         self.assertRegex(line, r"[+-]\d\.\d")
+
+    def test_a_band_from_another_engine_says_stale_and_the_record_carries_the_check(self):
+        """Owner 2026-11-17 ("Flag it and re-sweep"): the 11-17 brief printed Monday morning's band beside a share on
+        the engine changed that afternoon."""
+        import json, tempfile
+        from unittest import mock
+        rec = dict(engine_commit="abc1234", fragile=[], constants={})
+        p = os.path.join(tempfile.mkdtemp(), "s.json")
+        json.dump(rec, open(p, "w"))
+        stale = dict(status="STALE", why="measured on engine aaa1111, the live engine is bbb2222")
+        with mock.patch.object(DB.SR, "stale", return_value=stale):
+            self.assertIn("deck abc1234; STALE: measured on engine aaa1111, the live engine is bbb2222, so these shifts are not today's)",
+                          DB.band_line(p))
+            self.assertEqual(DB.band_check(p)["status"], "STALE")
+        with mock.patch.object(DB.SR, "stale", return_value=dict(status="CURRENT", why="")):
+            self.assertNotIn("STALE", DB.band_line(p)); self.assertIn("no FRAGILE constant", DB.band_line(p))
+        self.assertEqual(DB.band_check(os.path.join(tempfile.mkdtemp(), "none.json"))["status"], "UNKNOWN")
 
 
 class SeasonBand(unittest.TestCase):

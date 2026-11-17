@@ -79,7 +79,19 @@ def lines_label():
     return CG.lines_label()
 
 
-def band_line(path=None, date=None):
+def band_check(path=None, date=None, deck=None):
+    """Owner 2026-11-17 ("Flag it and re-sweep"): the quoted sweep against the live engine (sweep_record.stale), with
+    the record's path. On 2026-11-17 the brief printed a band measured before that afternoon's constant changes."""
+    path = path or SR.latest(date or datetime.date.today().isoformat())
+    try:
+        with open(path, encoding="utf-8") as f:
+            sw = json.load(f)
+    except (OSError, ValueError):
+        return dict(sweep=None, status="UNKNOWN", why="no sweep record found")
+    return dict(sweep=os.path.relpath(path, CG.KIT), **SR.stale(sw, deck or CG.DECK))
+
+
+def band_line(path=None, date=None, deck=None):
     """The structural band every title figure carries (post-mortem 2026-10-19 D-PM-6, D-RT-2): each FRAGILE constant
     of the standing sweep with its shifts, read from the record, never typed."""
     path = path or SR.latest(date or datetime.date.today().isoformat())
@@ -92,7 +104,9 @@ def band_line(path=None, date=None):
     for key in sw.get("fragile", []):
         c = sw["constants"][key]
         parts.append(f"{key.split('.')[-1]} is FRAGILE: " + " / ".join(f"{v['shift_mean']:+.1f} ({v['label']})" for v in c["variants"]))
-    return "Structural band (" + SR.describe(sw, path, as_of=date) + ", deck " + str(sw.get("engine_commit", "?")) + "): " + ("; ".join(parts) if parts else "no FRAGILE constant") + "."
+    note = SR.stale_note(SR.stale(sw, deck or CG.DECK))   # owner 2026-11-17: a band from another engine says so
+    return ("Structural band (" + SR.describe(sw, path, as_of=date) + ", deck " + str(sw.get("engine_commit", "?"))
+            + (f"; {note}" if note else "") + "): " + ("; ".join(parts) if parts else "no FRAGILE constant") + ".")
 
 
 def odds_line(a, b, n):
@@ -369,6 +383,7 @@ def main():
            "streaming_vs": {"player": weakest["player"], "games_left": weak_games,
                             "value_per_game": round(CG.hoops.adj_value(weakest, ()), 2)},
            "role_watch": rw,
+           "band_check": band_check(date=a.date),
            "title": {str(s): base[s]["champ"] for s in SEEDS}, "playoffs": {str(s): base[s]["playoff"] for s in SEEDS},
            "seasons": a.seasons, "absent_from_sim": absent, "transactions": tx and {"window": tx["window"], "ok": tx["source"].get("ok"), "hits": tx["hits"]},
            "league_moves": lm and lm["moves"],

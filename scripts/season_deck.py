@@ -432,6 +432,11 @@ def build(paths, date, phase=None):
     band_engine = sweep.get("engine_commit") or sweep.get("engine")
     # owner 2026-10-26: which configuration and day the bands were measured on (sweep_record.describe, the brief's wording)
     band_config = SR.describe(sweep, paths["sweep"], as_of=date)   # audit F2 (2026-11-12): the sweep's age on the page
+    # owner 2026-11-17 ("Flag it and re-sweep"): a sweep measured on another engine says so on the page
+    band_stale = SR.stale(sweep, co_gm.DECK)
+    band_note = SR.stale_note(band_stale)
+    if band_note:
+        band_config += "; " + band_note
     # owner 2026-11-10: each board row's games in the fantasy playoff weeks, and the league's winning FAAB bids
     playoff = playoff_games(paths.get("games"), paths.get("league_schedule"), co_gm.TEAM_CODE)
     if playoff:
@@ -444,7 +449,7 @@ def build(paths, date, phase=None):
                 my_team=my_team, my_seat=my_seat, brief=brief, board=board, status=status,
                 league=dict(as_of=league["as_of"], rosters=rosters, managers={t["name"]: t.get("manager") for t in league["teams"]},
                             unpooled=league.get("unpooled") or [], my_positions=my_positions), season_lines=lines, matchup=wk,
-                ledger={k: dict(v, result_text=ledger_result(v)) for k, v in calib.get("weeks", {}).items()}, bands=bands, band_engine=band_engine, band_config=band_config, matchup_live=matchup_live,
+                ledger={k: dict(v, result_text=ledger_result(v)) for k, v in calib.get("weeks", {}).items()}, bands=bands, band_engine=band_engine, band_config=band_config, band_stale=band_stale, matchup_live=matchup_live,
                 week_matchup=week_matchup, league_table=league_rec, playoff=playoff, faab=faab,
                 # owner 2026-11-09 (runner pick B1): inputs named but absent, so an empty card can say why
                 absent_inputs=sorted(k for k, p in paths.items() if not (p and os.path.exists(p))),
@@ -991,7 +996,7 @@ function matchupBoard(){ const W=D.week_matchup, B=W&&W.board; if(!B) return nul
   if(!swapCard.has) p.append(swapCard.card);
   p.append(
     h("div",{class:"cols"},
-      h("div",{class:"card span2"},h("h2",{},"Odds"),tiles,ilReturn(b.il_return),(b.method&&b.method.line)?h("p",{class:"note"},b.method.line):null,noteMore("Model bands: "+(D.bands||[]).map(b=>b.name.split(".").pop()+" "+b.variants.map(v=>v.shift).join("/")).join(" · ")+" title pts",
+      h("div",{class:"card span2"},h("h2",{},"Odds"),tiles,ilReturn(b.il_return),(b.method&&b.method.line)?h("p",{class:"note"},b.method.line):null,noteMore("Model bands: "+((D.band_stale||{}).status==="STALE"?"STALE, ":"")+((D.bands||[]).length?(D.bands||[]).map(b=>b.name.split(".").pop()+" "+b.variants.map(v=>v.shift).join("/")).join(" · ")+" title pts":"no FRAGILE constant"),
         "Structural band ("+D.band_config+"): "+bandLine())),
       h("div",{class:"card"},h("h2",{},"Lineup"),h("div",{class:"tablebox"},h("table",{},
         lineupRows().map(([slot,name])=>h("tr",{},h("td",{},h("span",{class:"chip"},slot)),h("td",{},name,goneChip(name)))))),
