@@ -5,9 +5,260 @@
   "uninterpreted": 1,
   "dropped_invalid_timestamp": 0,
   "warning": "Yahoo returned 1 entry Flaim could not interpret (an unrecognized transaction type or a malformed entry). This count covers the whole page Flaim fetched, before the date, team, and transaction-type filters, so it does not show that 1 matching move is missing.",
-  "read_for": "2026-11-15"
+  "read_for": "2026-11-16"
  },
  "rows": [
+  {
+   "transaction_id": "478.l.36464.tr.201",
+   "type": "drop",
+   "status": "complete",
+   "timestamp": 1794909592000,
+   "date": "2026-11-17",
+   "week": null,
+   "team_ids": [
+    "478.l.36464.t.10"
+   ],
+   "players_added": [],
+   "players_dropped": [
+    {
+     "id": "10278",
+     "name": "Ja'Kobe Walter",
+     "position": "PG,SG",
+     "team": "TOR"
+    }
+   ],
+   "faab_bid": null,
+   "waiver_priority": null,
+   "draft_picks": null
+  },
+  {
+   "transaction_id": "478.l.36464.tr.200",
+   "type": "trade",
+   "status": "complete",
+   "timestamp": 1794909592000,
+   "date": "2026-11-17",
+   "week": null,
+   "team_ids": [
+    "478.l.36464.t.7",
+    "478.l.36464.t.10"
+   ],
+   "players_added": [],
+   "players_dropped": [],
+   "trade_sides": [
+    {
+     "team_id": "478.l.36464.t.7",
+     "acquired": [
+      {
+       "id": "5471",
+       "name": "Myles Turner",
+       "position": "C",
+       "team": "MIL"
+      }
+     ],
+     "gave_up": [
+      {
+       "id": "6720",
+       "name": "Peyton Watson",
+       "position": "SF,PF",
+       "team": "CLE"
+      },
+      {
+       "id": "6403",
+       "name": "Devin Vassell",
+       "position": "SG,SF",
+       "team": "SAS"
+      }
+     ]
+    },
+    {
+     "team_id": "478.l.36464.t.10",
+     "acquired": [
+      {
+       "id": "6720",
+       "name": "Peyton Watson",
+       "position": "SF,PF",
+       "team": "CLE"
+      },
+      {
+       "id": "6403",
+       "name": "Devin Vassell",
+       "position": "SG,SF",
+       "team": "SAS"
+      }
+     ],
+     "gave_up": [
+      {
+       "id": "5471",
+       "name": "Myles Turner",
+       "position": "C",
+       "team": "MIL"
+      }
+     ]
+    }
+   ],
+   "faab_bid": null,
+   "waiver_priority": null,
+   "draft_picks": null
+  },
+  {
+   "transaction_id": "478.l.36464.tr.199",
+   "type": "add",
+   "status": "complete",
+   "timestamp": 1794902453000,
+   "date": "2026-11-17",
+   "week": null,
+   "team_ids": [
+    "478.l.36464.t.9"
+   ],
+   "players_added": [
+    {
+     "id": "6017",
+     "name": "Mo Bamba",
+     "position": "C",
+     "team": "UTA"
+    }
+   ],
+   "players_dropped": [
+    {
+     "id": "6057",
+     "name": "De'Anthony Melton",
+     "position": "PG,SG",
+     "team": "GSW"
+    }
+   ],
+   "faab_bid": null,
+   "waiver_priority": null,
+   "draft_picks": null
+  },
+  {
+   "transaction_id": "478.l.36464.tr.198",
+   "type": "drop",
+   "status": "complete",
+   "timestamp": 1794891533000,
+   "date": "2026-11-17",
+   "week": null,
+   "team_ids": [
+    "478.l.36464.t.8"
+   ],
+   "players_added": [],
+   "players_dropped": [
+    {
+     "id": "6219",
+     "name": "Nic Claxton",
+     "position": "C",
+     "team": "CHI"
+    }
+   ],
+   "faab_bid": null,
+   "waiver_priority": null,
+   "draft_picks": null
+  },
+  {
+   "transaction_id": "478.l.36464.tr.197",
+   "type": "add",
+   "status": "complete",
+   "timestamp": 1794878178000,
+   "date": "2026-11-17",
+   "week": null,
+   "team_ids": [
+    "478.l.36464.t.1"
+   ],
+   "players_added": [
+    {
+     "id": "6030",
+     "name": "Kevin Huerter",
+     "position": "SG,SF",
+     "team": "DET"
+    }
+   ],
+   "players_dropped": [],
+   "faab_bid": null,
+   "waiver_priority": null,
+   "draft_picks": null
+  },
+  {
+   "transaction_id": "478.l.36464.tr.196",
+   "type": "add",
+   "status": "complete",
+   "timestamp": 1794854524000,
+   "date": "2026-11-16",
+   "week": null,
+   "team_ids": [
+    "478.l.36464.t.11"
+   ],
+   "players_added": [
+    {
+     "id": "10327",
+     "name": "Cam Spencer",
+     "position": "PG,SG",
+     "team": "MEM"
+    }
+   ],
+   "players_dropped": [
+    {
+     "id": "5465",
+     "name": "Mario Hezonja",
+     "position": "SF,PF",
+     "team": "CLE"
+    }
+   ],
+   "faab_bid": null,
+   "waiver_priority": null,
+   "draft_picks": null
+  },
+  {
+   "transaction_id": "478.l.36464.tr.195",
+   "type": "add",
+   "status": "complete",
+   "timestamp": 1794847877000,
+   "date": "2026-11-16",
+   "week": null,
+   "team_ids": [
+    "478.l.36464.t.12"
+   ],
+   "players_added": [
+    {
+     "id": "6208",
+     "name": "Matisse Thybulle",
+     "position": "SG,SF",
+     "team": "LAL"
+    }
+   ],
+   "players_dropped": [
+    {
+     "id": "6166",
+     "name": "De'Andre Hunter",
+     "position": "SF,PF",
+     "team": "SAC"
+    }
+   ],
+   "faab_bid": null,
+   "waiver_priority": null,
+   "draft_picks": null
+  },
+  {
+   "transaction_id": "478.l.36464.tr.194",
+   "type": "drop",
+   "status": "complete",
+   "timestamp": 1794838250000,
+   "date": "2026-11-16",
+   "week": null,
+   "team_ids": [
+    "478.l.36464.t.1"
+   ],
+   "players_added": [],
+   "players_dropped": [
+    {
+     "id": "6499",
+     "name": "Naji Marshall",
+     "position": "SG,SF,PF",
+     "team": "DAL"
+    }
+   ],
+   "faab_bid": null,
+   "waiver_priority": null,
+   "draft_picks": null
+  },
   {
    "transaction_id": "478.l.36464.tr.193",
    "type": "add",

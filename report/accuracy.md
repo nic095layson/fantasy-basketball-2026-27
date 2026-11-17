@@ -11,7 +11,7 @@ Each finished week graded against the box scores and the final scores (`scripts/
 | 3 | 255 | 13.06 / 11.63 | 12.3% | 3.77 | 0.73 | 12.61 / 11.55 | 9.1% | 3.39 | 0.79 | 12.50 / 11.55 | 8.2% | 3.30 | 0.80 |
 | 4 | 240 | 13.26 / 12.55 | 5.7% | 3.64 | 0.72 | 12.62 / 12.41 | 1.7% | 3.21 | 0.77 | 12.51 / 12.41 | 0.8% | 3.12 | 0.78 |
 
-Switch rule (D-ML-1, pre-committed 2026-10-27): the minutes candidate replaces nothing until its MAE beats the in-season line's on PTS, REB and AST in 3 of 4 consecutive graded weeks, on the owner's word.
+Switch rule (D-ML-1, pre-committed 2026-10-27): the minutes candidate replaces nothing until its MAE beats the in-season line's on PTS, REB and AST in 3 of 4 consecutive graded weeks, on the owner's word. Met in weeks 2, 3 and 4; switched on PTS, REB and AST on 2026-11-16 (owner: "Switch now"). From week 6 the in-season line carries it.
 
 ## Player lines: threes made per game (projected / actual, bias, MAE, rank correlation)
 
