@@ -1,6 +1,6 @@
 # The waiver scan's repeated names, Ziaire Williams, and two scan fixes (2026-11-17)
 
-Pull window: 2026-11-17 → 2026-11-17 (no pull: kit main 80b2be4, deck main 3551a15, the records branch season/daily at e971a0f, read only; 38 simulator runs and two replays in throwaway worktrees; one live Flaim lookup of one player at 19:54 UTC).
+Pull window: 2026-11-17 → 2026-11-17 (no pull: kit main 80b2be4, deck main 3551a15, the records branch season/daily at e971a0f, read only; 54 simulator runs and two replays in throwaway worktrees; one live Flaim lookup of one player at 19:54 UTC).
 
 **Owner's requests, verbatim (2026-11-17).** "Assess the waiver scan's repeated names now, and expand your report on Ziaire Williams". Then, on the card: "Both fixes (Recommended)" for the scan, and "Score the post-return roster (Recommended)" for Williams.
 
@@ -69,6 +69,15 @@ Two error bars. Sampling: about ±0.7 on a difference. Structural: the choice of
 
 What holds on every line: Queta is the costlier drop (rebounds and blocks), and Washington is the spot where Williams helps most or hurts least. The one row that does not depend on Williams's line is the last: keeping Cam Spencer over PJ Washington adds 8 points of assists win rate, the owner's weakest category, for about 6 each of rebounds and blocks; at +0.8 it is just outside the sampling error.
 
+**The last spot, on more seeds (owner's pick the same evening: "Re-run on more seeds").** The plan (Johnson and Spencer out) against keeping Spencer and dropping Washington, both stars active from week 6. EVIDENCE: `seeds.json`, `seeds2.json`.
+
+| lines | seeds | title, Spencer kept minus the plan | final |
+|---|---|---|---|
+| the kit's | 2026 to 2031 | +0.67, by seed +0.56, +1.03, +1.46, +0.46, +0.59, -0.06; standard error across seeds 0.21 | +0.89, positive on all six, standard error 0.17 |
+| both players on their season-to-date box lines (14 games each) | 2026, 2027 | +1.08 (+0.73, +1.42) | +1.69 (+1.28, +2.10) |
+
+The first two seeds reproduced the earlier run to the digit. The sign holds on five of six seeds for the title and on all six for the final, and it holds on both lines: unlike the Williams rows, this one does not turn on the line. Category effect on the kit's lines: assists +8.4, FT% +5.5, FG% +2.6, rebounds -6.2, blocks -6.5. Not varied: the return week, Queta's and Ware's lines (the two centres who would carry the rebounds and blocks Washington takes with him).
+
 The session's read, against its own earlier framing: the audit of the same day listed Williams beside Anthony Black and Christian Braun as a pickup dropped too soon. He is the weakest of those cases. His standing on the audit's scale came from efficiency on low minutes, and his role has shrunk, not grown.
 
 ## 4. The two fixes
@@ -97,7 +106,7 @@ The reading lines on the 26 briefs with picks: "one shared drop" on 16 mornings,
 
 1. This pull request: merge on Monday 2026-11-23 after grading (rule 12), merge now as his exception, or keep as a draft.
 2. Williams: his call. Section 3 is conditional on the line.
-3. The last spot after the returns: the plan (Johnson and Spencer out) against keeping Spencer over Washington. One more run would say whether +0.8 holds on other seeds.
+3. The last spot after the returns: the plan (Johnson and Spencer out) against keeping Spencer over Washington. Run on six seeds and two lines (section 3): about +0.7 to +1.1 title and +0.9 to +1.7 final for keeping Spencer. His call.
 4. `SHORT_OUT_DAYS` itself is graded on 2026-11-25 (D-WS-2). The replay's 32% belongs with that decision.
 
 ## 6. Bounds
