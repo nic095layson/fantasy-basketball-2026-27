@@ -83,3 +83,17 @@ def stale_note(s):
         return f"STALE: {s['why']}, so these shifts are not today's"
     return f"not compared with the live engine: {s['why']}"
 
+
+def shown_bands(rec):
+    """The constants whose band the brief and the deck print beside a title share: every FRAGILE one; when none is
+    FRAGILE, the SENSITIVE one that moves the headline most (owner 2026-11-17, card "Show the largest band anyway":
+    the sweep of that day had none at 2 points while the availability tiers moved the title share by 1.9). A record
+    with neither shows none."""
+    consts = (rec or {}).get("constants") or {}
+    fragile = (rec or {}).get("fragile") or [k for k, c in consts.items() if c.get("tier") == "FRAGILE"]
+    if fragile:
+        return list(fragile)
+    size = lambda k: consts[k].get("max_abs_shift", max((abs(v["shift_mean"]) for v in consts[k].get("variants") or []), default=0.0))
+    sens = [k for k, c in consts.items() if c.get("tier") == "SENSITIVE"]
+    return [max(sens, key=size)] if sens else []
+

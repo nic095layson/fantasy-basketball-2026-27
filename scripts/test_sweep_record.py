@@ -123,5 +123,27 @@ class Stale(unittest.TestCase):
         self.assertEqual(SR.stale_note(dict(status="UNKNOWN", why="commit x is not in the deck checkout")),
                          "not compared with the live engine: commit x is not in the deck checkout")
 
+
+class ShownBands(unittest.TestCase):
+    """Owner 2026-11-17 ("Show the largest band anyway"): the FRAGILE constants, else the largest SENSITIVE one."""
+    def rec(self, **tiers):
+        return {"fragile": [k for k, (t, _) in tiers.items() if t == "FRAGILE"],
+                "constants": {k: {"tier": t, "max_abs_shift": m, "variants": [{"label": "x", "shift_mean": m}]} for k, (t, m) in tiers.items()}}
+
+    def test_fragile_constants_are_shown_and_nothing_else(self):
+        self.assertEqual(SR.shown_bands(self.rec(a=("FRAGILE", 2.6), b=("SENSITIVE", 1.9))), ["a"])
+
+    def test_with_none_fragile_the_largest_sensitive_one(self):
+        self.assertEqual(SR.shown_bands(self.rec(a=("SENSITIVE", 1.52), b=("SENSITIVE", 1.93), c=("ROBUST", 0.7))), ["b"])
+
+    def test_a_record_without_max_abs_shift_reads_its_variants(self):
+        r = {"constants": {"a": {"tier": "SENSITIVE", "variants": [{"shift_mean": -1.2}]},
+                           "b": {"tier": "SENSITIVE", "variants": [{"shift_mean": 1.0}, {"shift_mean": -1.6}]}}}
+        self.assertEqual(SR.shown_bands(r), ["b"])
+
+    def test_all_robust_or_empty_shows_none(self):
+        self.assertEqual(SR.shown_bands(self.rec(a=("ROBUST", 0.7))), [])
+        self.assertEqual(SR.shown_bands({}), []); self.assertEqual(SR.shown_bands(None), [])
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
