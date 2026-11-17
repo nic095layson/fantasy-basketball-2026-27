@@ -16,7 +16,7 @@ Pull window: 2026-11-17 → 2026-11-17 (no pull: kit main a90bdbf, deck main 355
 
 **Verdict: the best pickups of the last four weeks were mostly players the owner or the kit already had in hand. The kit's gap is coverage, not accuracy: it named 2 of the 16 rival pickups that then played at top-100 level, and its own flagged names did well (5 of 9 top-100). A pool-wide minutes watch as set for Wiggins and Claxton (30+ minutes, three straight) would have named none of the misses; "started his last two games" named 8 of 14. Two display lists are built from that: a starts watch and a hold check. The third pick, opening the pool, is not built: only 4 of the 24 unlined free players have a position on file, which a line needs, so the choice goes back to the owner.**
 
-Runner impact: code-only (the morning brief gains two sections and one record key, `role_watch`). Display only; a failure inside it is printed in the brief and the brief still passes. No prompt, step, pass line or other output changes; the deck page is unchanged.
+Runner impact: code-only (the morning brief gains two sections and one record key, `role_watch`; from the follow-up of the same day the deck page gains two cards on its Free Agents tab that draw that key). Display only; a failure inside it is printed in the brief and on the page, and the brief still passes. No prompt, step or pass line changes.
 
 Pool rows touched: none
 
@@ -105,6 +105,7 @@ What holds on both lines: Williams is the best of the three, and Ware is the wor
 |---|---|---|
 | Starts watch | `scripts/role_watch.py`, a new "Starts watch (free players)" section in the brief: every player on no roster who started his last two games, with the last three games' minutes and line, the length of the run, whether the pool has a line for him, ESPN's injury line, and the day a team dropped him. New runs and fresh drops are always printed; the rest fill the list to eight by minutes | `scripts/test_role_watch.py`, 23 tests |
 | Hold check | The same module, a "Hold check (before you drop)" section: the owner's active players added in the last seven days or named as a drop by the day's pairs or streaming line; the last three games, games since the add, "nothing to judge yet" when he has not played since, and "HOLD?" when a free player with his run would be on the starts watch | the same file; two tests in `scripts/test_daily_brief.py` |
+| Deck cards (follow-up, owner's pick the same day) | `scripts/season_deck.py`: "Starts watch — free players" and "Hold check — before you drop" on the Free Agents tab, drawn from the brief's `role_watch` and nothing else; a brief without the key draws no card | `scripts/test_season_deck.py` RoleWatchCards, 3 rendered-page tests; a real page built from e971a0f: 7 tabs, 0 page errors, no sideways scroll at 390 px |
 
 Run on the real records (scratch worktree of e971a0f, `python3 scripts/daily_brief.py --date 2026-11-17 --seasons 10000`): every key of this morning's brief record is unchanged; the new record lists 20 free players on a run of starts (9 printed) and three hold lines.
 
@@ -128,9 +129,9 @@ It is also a change to how the season line is made, with new constants to regist
 
 ## 8. Decisions for the owner (nothing changes without a pick)
 
-1. This pull request (the report, the two lists, three corrections rows): merge or keep as a draft.
-2. Open the pool: the narrow version (the four with a position, for Monday 11-23), the wide version (a positions source, which means a change to the morning pull from the Runner's own conversation), or leave it to the starts watch.
-3. The two lists reach the brief only. Showing them on the deck's Waivers tab is a separate change to `season_deck.py`.
+1. Done on the owner's card click ("Merge #288"): the report, the two lists and three corrections rows merged as kit #288.
+2. Decided by the owner ("Leave it to the starts watch"): the pool is not opened. The narrow and wide versions stay as described in section 7.
+3. Built on the owner's pick ("Add to the Waivers tab"): the deck has had no Waivers tab since 2026-10-19, so the two lists are on the Free Agents tab, below the trending-up card (section 6). Merge or keep as a draft.
 4. The waiver scan's repeated names (Tobias Harris 17 days without a game; Portis 9 days): assess the scan's ranking, or leave it.
 5. A keep rule for the playbook: the owner's own words, at Monday's review, if he wants one.
 6. Ziaire Williams: section 5 is conditional on the line. The call is his.

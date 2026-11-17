@@ -1,7 +1,7 @@
 {
- "ran_at_utc": "2026-11-17T19:04:20Z",
+ "ran_at_utc": "2026-11-17T19:42:30Z",
  "inputs": {
-  "report/after-reports/after-report-2026-11-17-missed-pickups.md": "4b4edeb2fade0f0a21fea3d4a5a88062f1c7173e2464c68fe8e1158e5a1a6fe7",
+  "report/after-reports/after-report-2026-11-17-missed-pickups.md": "102fcc333e1803cad2dc51773389c619986db9ca4d18eaa75afa737bdd065e7b",
   "report/after-reports/shock-fit-2026-11-16/sweep.json": "52a897bd6283a50308f141107653b01e4cce9eff4e2a81b22d776003a1d531eb"
  },
  "gates": [
@@ -32,8 +32,8 @@
    ]
   },
   {
-   "name": "role watch tests",
-   "cmd": "python3 scripts/test_role_watch.py",
+   "name": "deck card tests",
+   "cmd": "python3 -m unittest scripts.test_season_deck.RoleWatchCards scripts.test_season_deck.TrendingUp",
    "cwd": ".",
    "pass_re": "^OK",
    "exit": 0,
@@ -42,22 +42,7 @@
    "why": "",
    "tail": [
     "----------------------------------------------------------------------",
-    "Ran 23 tests in 0.010s",
-    "OK"
-   ]
-  },
-  {
-   "name": "daily brief tests",
-   "cmd": "python3 scripts/test_daily_brief.py",
-   "cwd": ".",
-   "pass_re": "^OK",
-   "exit": 0,
-   "pass_line": "OK",
-   "verdict": "PASS",
-   "why": "",
-   "tail": [
-    "----------------------------------------------------------------------",
-    "Ran 38 tests in 0.895s",
+    "Ran 5 tests in 5.381s",
     "OK"
    ]
   },
@@ -72,7 +57,7 @@
    "why": "",
    "tail": [
     "----------------------------------------------------------------------",
-    "Ran 1299 tests in 179.823s",
+    "Ran 1302 tests in 184.208s",
     "OK (skipped=2)"
    ]
   },
@@ -131,5 +116,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "a90bdbf09884a25386c20e30254fd2e482322059"
+ "base_commit": "6a33e99df9f6dad0cb461ea77647b6483c93e59f"
 }

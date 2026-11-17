@@ -1169,7 +1169,39 @@ function trendingCard(){ const F=D.form; if(!F||!F.rows) return null;
       h("td",{class:"num"},ar(r.trend)+f1(r.last3_mpg)),h("td",{class:"num"},f1(r.prior_mpg)),
       h("td",{class:"num"},ar(r.usg_trend)+(r.last3_usg==null?"—":f1(r.last3_usg)+"%")),h("td",{class:"num"},r.prior_usg==null?"—":f1(r.prior_usg)+"%"),
       h("td",{},r.status||"")))))); return card; }
-(function(){ const p=$("#pane-fa"); let search=""; const drop=new Set(), add=new Set(); const root=h("div",{class:"card"}); p.append(root, ...[trendingCard()].filter(Boolean), howItWorks());
+// ---- role watch (owner 2026-11-17, card "Add to the Waivers tab"; that tab was removed on 2026-10-19, so the Free Agents
+// tab carries it): the brief's two display lists (role_watch.py, brief key role_watch). Starts watch: players on no
+// roster who started their last games. Hold check: the owner's recent pickups and the players the day's pairs name as
+// a drop. The page draws what the brief recorded and derives nothing; a brief without the key draws no card.
+function rwLine(r){ if(!r.line) return "no game this season"; const x=r.line;
+  return "last "+r.games+": "+r.minutes.join("/")+" min, "+r.starts+" start"+(r.starts===1?"":"s")+" · "+x.pts+" pts, "+x.reb+" reb, "+x.ast+" ast, "+x.stl+" stl, "+x.blk+" blk, "+x.tpm+" 3s, "+x.tov+" to"; }
+function startsWatchCard(){ const W=D.brief.role_watch; if(!W) return null;
+  const card=h("div",{class:"card",id:"fa-starts"},h("h2",{},"Starts watch — free players"));
+  if(W.error){ card.append(h("p",{class:"zero"},"Not available today ("+W.error+").")); return card; }
+  const R=W.rule||{}, rows=W.starts_watch||[], isNews=(r)=>r.new||r.dropped, news=rows.filter(isNews);
+  const shown=news.concat(rows.filter(r=>!isNews(r)).slice(0,Math.max(0,(R.shown||0)-news.length)));
+  card.append(noteMore("Started the last "+R.start_run+" games · box scores through "+((W.box_scores||[])[1]||"—")+" · "+rows.length+" on the list"+(shown.length<rows.length?", "+shown.length+" shown":""),
+    "A player on no roster is listed when he started each of his last "+R.start_run+" games, the last of them within "+R.stale_days+" days. New runs and players a team dropped in the last "+R.dropped_days+" days come first, then the rest by minutes. A list to judge, not a pick: in the audit of 17 November about half of such names did not go on to play at roster level. Nothing here is ranked by value or simulated."));
+  if(!rows.length){ card.append(h("p",{class:"zero"},"No free player has started his last "+R.start_run+" games.")); return card; }
+  const note=(r)=>[r.new?"new run":null, r.dropped?"dropped "+day(r.dropped.day)+" by "+r.dropped.team:null, r.pooled?null:"no line in the pool",
+    r.status?"ESPN: "+r.status.status:null].filter(Boolean).join(" · ");
+  card.append(h("div",{class:"tablebox"},h("table",{},
+    h("tr",{},h("th",{},"player"),h("th",{class:"num"},"starts in a row"),h("th",{},"last 3 games"),h("th",{},"note")),
+    shown.map(r=>h("tr",{},h("td",{},r.player+" · "+(r.team||"—")),h("td",{class:"num"},String(r.starts_in_a_row)),
+      h("td",{style:"white-space:normal;min-width:15em"},rwLine(r)),h("td",{style:"white-space:normal;min-width:9em"},note(r))))))); return card; }
+function holdCheckCard(){ const W=D.brief.role_watch; if(!W) return null;
+  const card=h("div",{class:"card",id:"fa-hold"},h("h2",{},"Hold check — before you drop"));
+  if(W.error){ card.append(h("p",{class:"zero"},"Not available today ("+W.error+").")); return card; }
+  const R=W.rule||{}, rows=W.hold_check||[];
+  card.append(noteMore("Your players added in the last "+R.hold_days+" days, or named as a drop this morning",
+    "Each line is the player's last three games. \"Not played since the add\" means there is nothing to judge him on yet. \"Hold?\" means he started his last "+R.start_run+" games (or his only game): a free player with that run would be on the starts watch. A question, not an instruction: nothing here is ranked by value or simulated."));
+  if(!rows.length){ card.append(h("p",{class:"zero"},"None of your active players was added in the last "+R.hold_days+" days or is named as a drop today.")); return card; }
+  const verdict=(r)=> r.unjudged? h("span",{class:"chip"},"not played since the add") : r.hold? h("span",{class:"chip warn"},"Hold?") : h("span",{},"no start run");
+  const why=(r)=>r.why.map(w=>w.startsWith("added ")?"added "+day(w.slice(6)):w).join(" · ")+(r.added?" · "+r.games_since_add+" game"+(r.games_since_add===1?"":"s")+" since":"");
+  card.append(h("div",{class:"tablebox"},h("table",{},
+    h("tr",{},h("th",{},"player"),h("th",{},"why he is here"),h("th",{},"last 3 games"),h("th",{},"read")),
+    rows.map(r=>h("tr",{},h("td",{},r.player),h("td",{style:"white-space:normal;min-width:9em"},why(r)),h("td",{style:"white-space:normal;min-width:15em"},rwLine(r)),h("td",{},verdict(r))))))); return card; }
+(function(){ const p=$("#pane-fa"); let search=""; const drop=new Set(), add=new Set(); const root=h("div",{class:"card"}); p.append(root, ...[trendingCard(), startsWatchCard(), holdCheckCard()].filter(Boolean), howItWorks());
   const inp=h("input",{type:"search",id:"fa-search",class:"field",placeholder:"Search free agents",oninput:()=>{search=inp.value; keepTyping(inp,render);}});
   // owner 2026-11-06 ("remove this and make it zscore season outlook ... so that the player fields are equal"): the list
   // is season z only — no sort control, no this-week or minutes notes on the rows (the Week tab and the Today tab's

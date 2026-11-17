@@ -2839,3 +2839,88 @@ class PuntVerdict(PuntView):
         self.assertEqual(d["dimmed"], ["AST"])
         self.assertRegex(d["verdict"], r"fit net Δz \+2\.00 without AST \(all nine: [−-]1\.00\)")      # 3.0 in, 1.0 out
         self.assertIn("FAVORABLE", d["verdict"]); self.assertNotIn("UNFAVORABLE", d["verdict"])
+
+
+def role_dom(html_path):
+    from playwright.sync_api import sync_playwright
+    with sync_playwright() as p:
+        b, exe, tried = DRC._launch(p)
+        try:
+            pg = b.new_page(); errs = []
+            pg.on("pageerror", lambda e: errs.append(str(e)))
+            pg.route(re.compile(r"^https?://"), lambda r: r.abort())
+            pg.goto("file://" + os.path.abspath(html_path), wait_until="load")
+            pg.click("nav.tabs button:has-text('Free Agents')")
+            card = lambda i: dict(  # noqa: E731
+                text=pg.evaluate("(i) => { const c=document.querySelector('#pane-fa #'+i); return c? c.textContent : null }", i),
+                note=pg.evaluate("(i) => { const m=document.querySelector('#'+i+' .more'); return m? m.title : null }", i),
+                rows=pg.evaluate("(i) => [...document.querySelectorAll('#'+i+' table tr')].slice(1).map(r=>[...r.cells].map(c=>c.textContent))", i))
+            return dict(errors=errs, starts=card("fa-starts"), hold=card("fa-hold"))
+        finally:
+            b.close()
+
+
+class RoleWatchCards(unittest.TestCase):
+    """Owner 2026-11-17 (card: "Add to the Waivers tab"; the Free Agents tab carries it): the brief's starts watch and
+    hold check (role_watch.py) on the page, drawn from the brief's record and nothing else."""
+    LINE = dict(pts=15.3, reb=5.0, ast=1.0, stl=2.3, blk=1.0, tpm=1.0, tov=1.0)
+
+    def build(self, rw):
+        d = tempfile.mkdtemp(); fx = fixtures(d)
+        with open(fx["brief"]) as f:
+            brief = json.load(f)
+        if rw is not None:
+            brief["role_watch"] = rw
+        with open(fx["brief"], "w") as f:
+            json.dump(brief, f)
+        html, _, _ = SD.build(fx, date="2026-10-21")
+        p = os.path.join(d, "deck.html")
+        with open(p, "w", encoding="utf-8") as f:
+            f.write(html)
+        return role_dom(p)
+
+    def rec(self, starts, hold, shown=8):
+        return dict(box_scores=["2026-10-20", "2026-11-16"], rule=dict(start_run=2, stale_days=7, dropped_days=3, hold_days=7, shown=shown),
+                    starts_watch=starts, hold_check=hold)
+
+    def row(self, name, new=False, dropped=None, pooled=True, status=None, run=3):
+        return dict(player=name, team="IND", starts_in_a_row=run, new=new, last_game="2026-11-15", season_games=9, pooled=pooled,
+                    status=status, dropped=dropped, games=3, minutes=[34, 30, 29], starts=3, line=self.LINE)
+
+    def test_the_starts_watch_lists_the_news_first_and_fills_to_the_cap(self):
+        d = self.build(self.rec([self.row("Fresh Drop", dropped=dict(day="2026-11-17", team="Rival")),
+                                 self.row("New Run", new=True, pooled=False, run=2, status=dict(status="Day-To-Day", return_date="2026-11-18")),
+                                 self.row("Standing One"), self.row("Standing Two")], [], shown=3))
+        self.assertEqual(d["errors"], [])
+        s = d["starts"]
+        self.assertEqual([r[0] for r in s["rows"]], ["Fresh Drop · IND", "New Run · IND", "Standing One · IND"])
+        self.assertEqual(s["rows"][0][1:3], ["3", "last 3: 34/30/29 min, 3 starts · 15.3 pts, 5 reb, 1 ast, 2.3 stl, 1 blk, 1 3s, 1 to"])
+        self.assertEqual(s["rows"][0][3], "dropped Nov 17 by Rival")
+        self.assertEqual(s["rows"][1][3], "new run · no line in the pool · ESPN: Day-To-Day")
+        self.assertIn("4 on the list, 3 shown", s["text"]); self.assertIn("box scores through 2026-11-16", s["text"])
+        self.assertIn("not a pick", s["note"]); self.assertNotIn("Standing Two", s["text"])
+
+    def test_the_hold_check_reads_unjudged_hold_and_no_run(self):
+        base = dict(starts_in_a_row=0, hold=False, season_games=5, games=3, minutes=[24, 34, 32], starts=2, line=self.LINE,
+                    added=None, games_since_add=None, unjudged=False)
+        d = self.build(self.rec([], [dict(base, player="New Guy", why=["added 2026-11-16"], added="2026-11-16", games_since_add=0, unjudged=True),
+                                     dict(base, player="Starter", why=["named as a drop today"], starts_in_a_row=14, hold=True),
+                                     dict(base, player="Rental", why=["added 2026-11-12", "named as a drop today"], added="2026-11-12", games_since_add=1)]))
+        self.assertEqual(d["errors"], [])
+        rows = d["hold"]["rows"]
+        self.assertEqual([(r[0], r[1], r[3]) for r in rows],
+                         [("New Guy", "added Nov 16 · 0 games since", "not played since the add"),
+                          ("Starter", "named as a drop today", "Hold?"),
+                          ("Rental", "added Nov 12 · named as a drop today · 1 game since", "no start run")])
+        self.assertIn("A question, not an instruction", d["hold"]["note"])
+        self.assertIn("No free player has started his last 2 games.", d["starts"]["text"])
+
+    def test_empty_lists_an_error_and_an_older_brief_each_read_plainly(self):
+        d = self.build(self.rec([], []))
+        self.assertEqual(d["errors"], []); self.assertIn("None of your active players was added in the last 7 days", d["hold"]["text"])
+        d = self.build({"error": "KeyError: 'date'"})
+        self.assertEqual(d["errors"], [])
+        self.assertIn("Not available today (KeyError: 'date').", d["starts"]["text"]); self.assertIn("Not available today", d["hold"]["text"])
+        d = self.build(None)                                             # a brief written before role_watch existed
+        self.assertEqual(d["errors"], []); self.assertIsNone(d["starts"]["text"]); self.assertIsNone(d["hold"]["text"])
+
