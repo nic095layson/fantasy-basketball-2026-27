@@ -1,26 +1,26 @@
 {
- "ran_at_utc": "2026-11-17T18:16:34Z",
+ "ran_at_utc": "2026-11-17T19:04:20Z",
  "inputs": {
-  "report/after-reports/after-report-2026-11-17-gaps-and-fixes.md": "b42f997d798cbad8bbb5e292aefc2c0c962c5e3506d5fee0e2da4c2af54af8f7",
+  "report/after-reports/after-report-2026-11-17-missed-pickups.md": "4b4edeb2fade0f0a21fea3d4a5a88062f1c7173e2464c68fe8e1158e5a1a6fe7",
   "report/after-reports/shock-fit-2026-11-16/sweep.json": "52a897bd6283a50308f141107653b01e4cce9eff4e2a81b22d776003a1d531eb"
  },
  "gates": [
   {
    "name": "kit check_report",
-   "cmd": "/usr/local/bin/python3 report/check_report.py /tmp/claude-0/-home-user/2707cd51-ac23-5481-9e46-598496719ebc/scratchpad/f2/report/after-reports/after-report-2026-11-17-gaps-and-fixes.md",
+   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-17-missed-pickups.md",
    "cwd": ".",
    "pass_re": "^REPORT GATE: PASS",
    "exit": 0,
-   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-11-17-gaps-and-fixes.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)",
+   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-11-17-missed-pickups.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "REPORT GATE: PASS \u2014 after-report-2026-11-17-gaps-and-fixes.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)"
+    "REPORT GATE: PASS \u2014 after-report-2026-11-17-missed-pickups.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)"
    ]
   },
   {
    "name": "claim receipts",
-   "cmd": "/usr/local/bin/python3 /tmp/claude-0/-home-user/2707cd51-ac23-5481-9e46-598496719ebc/scratchpad/f2/scripts/independent_audit/claim_receipts.py /tmp/claude-0/-home-user/2707cd51-ac23-5481-9e46-598496719ebc/scratchpad/f2/report/after-reports/after-report-2026-11-17-gaps-and-fixes.md",
+   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/independent_audit/claim_receipts.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-17-missed-pickups.md",
    "cwd": ".",
    "pass_re": "^CLAIM RECEIPTS: (PASS|ADVISORY)",
    "exit": 0,
@@ -32,7 +32,22 @@
    ]
   },
   {
-   "name": "kit test_daily_brief",
+   "name": "role watch tests",
+   "cmd": "python3 scripts/test_role_watch.py",
+   "cwd": ".",
+   "pass_re": "^OK",
+   "exit": 0,
+   "pass_line": "OK",
+   "verdict": "PASS",
+   "why": "",
+   "tail": [
+    "----------------------------------------------------------------------",
+    "Ran 23 tests in 0.010s",
+    "OK"
+   ]
+  },
+  {
+   "name": "daily brief tests",
    "cmd": "python3 scripts/test_daily_brief.py",
    "cwd": ".",
    "pass_re": "^OK",
@@ -42,41 +57,41 @@
    "why": "",
    "tail": [
     "----------------------------------------------------------------------",
-    "Ran 36 tests in 0.934s",
+    "Ran 38 tests in 0.895s",
     "OK"
    ]
   },
   {
-   "name": "kit test_season_deck (module run)",
-   "cmd": "python3 -m unittest discover -s scripts -p test_season_deck.py",
+   "name": "kit suite",
+   "cmd": "python3 -m unittest discover -s scripts -p 'test_*.py'",
    "cwd": ".",
    "pass_re": "^OK",
    "exit": 0,
-   "pass_line": "OK",
+   "pass_line": "OK (skipped=2)",
    "verdict": "PASS",
    "why": "",
    "tail": [
     "----------------------------------------------------------------------",
-    "Ran 239 tests in 147.351s",
-    "OK"
+    "Ran 1299 tests in 179.823s",
+    "OK (skipped=2)"
    ]
   },
   {
    "name": "redteam constants",
-   "cmd": "/usr/local/bin/python3 /tmp/claude-0/-home-user/2707cd51-ac23-5481-9e46-598496719ebc/scratchpad/f2/scripts/redteam/check_constants.py --deck /tmp/claude-0/-home-user/2707cd51-ac23-5481-9e46-598496719ebc/scratchpad/yahoo-fantasy-basketball",
+   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/redteam/check_constants.py --deck /home/user/yahoo-fantasy-basketball",
    "cwd": ".",
    "pass_re": "^CONSTANTS CHECK: PASS",
    "exit": 0,
-   "pass_line": "CONSTANTS CHECK: PASS \u2014 53 registered = 53 live on deck 1a47f81; declared_band 5, measured 10, settings 8, structural 6, uncalibrated 24",
+   "pass_line": "CONSTANTS CHECK: PASS \u2014 53 registered = 53 live on deck 3551a15; declared_band 5, measured 10, settings 8, structural 6, uncalibrated 24",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "CONSTANTS CHECK: PASS \u2014 53 registered = 53 live on deck 1a47f81; declared_band 5, measured 10, settings 8, structural 6, uncalibrated 24"
+    "CONSTANTS CHECK: PASS \u2014 53 registered = 53 live on deck 3551a15; declared_band 5, measured 10, settings 8, structural 6, uncalibrated 24"
    ]
   },
   {
    "name": "redteam bands",
-   "cmd": "/usr/local/bin/python3 /tmp/claude-0/-home-user/2707cd51-ac23-5481-9e46-598496719ebc/scratchpad/f2/scripts/redteam/check_bands.py --report /tmp/claude-0/-home-user/2707cd51-ac23-5481-9e46-598496719ebc/scratchpad/f2/report/after-reports/after-report-2026-11-17-gaps-and-fixes.md --sweep /tmp/claude-0/-home-user/2707cd51-ac23-5481-9e46-598496719ebc/scratchpad/f2/report/after-reports/shock-fit-2026-11-16/sweep.json",
+   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/redteam/check_bands.py --report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-17-missed-pickups.md --sweep /home/user/fantasy-basketball-2026-27/report/after-reports/shock-fit-2026-11-16/sweep.json",
    "cwd": ".",
    "pass_re": "^BANDS CHECK: PASS",
    "exit": 0,
@@ -89,20 +104,20 @@
   },
   {
    "name": "redteam attacks",
-   "cmd": "/usr/local/bin/python3 /tmp/claude-0/-home-user/2707cd51-ac23-5481-9e46-598496719ebc/scratchpad/f2/scripts/redteam/run_attacks.py --check --deck /tmp/claude-0/-home-user/2707cd51-ac23-5481-9e46-598496719ebc/scratchpad/yahoo-fantasy-basketball",
+   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/redteam/run_attacks.py --check --deck /home/user/yahoo-fantasy-basketball",
    "cwd": ".",
    "pass_re": "^ATTACKS CHECK: PASS",
    "exit": 0,
-   "pass_line": "ATTACKS CHECK: PASS \u2014 11 attacks on engine 1a47f81 (engine files last changed ecb60cb), simulator aa470f8; CURRENT 11",
+   "pass_line": "ATTACKS CHECK: PASS \u2014 11 attacks on engine 3551a15 (engine files last changed ecb60cb), simulator aa470f8; CURRENT 11",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "ATTACKS CHECK: PASS \u2014 11 attacks on engine 1a47f81 (engine files last changed ecb60cb), simulator aa470f8; CURRENT 11"
+    "ATTACKS CHECK: PASS \u2014 11 attacks on engine 3551a15 (engine files last changed ecb60cb), simulator aa470f8; CURRENT 11"
    ]
   },
   {
    "name": "kit check_claims --gate",
-   "cmd": "/usr/local/bin/python3 /tmp/claude-0/-home-user/2707cd51-ac23-5481-9e46-598496719ebc/scratchpad/f2/scripts/check_claims.py --gate",
+   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/check_claims.py --gate",
    "cwd": ".",
    "pass_re": "^CLAIM GATE: PASS",
    "exit": 0,
@@ -116,5 +131,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "15f5350c9126a1b2ecd7999dc1c49034f37f59e1"
+ "base_commit": "a90bdbf09884a25386c20e30254fd2e482322059"
 }
