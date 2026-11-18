@@ -2025,6 +2025,28 @@ class SwapGrid(unittest.TestCase):
         self.assertEqual(SD.swap_grid(self.today, self.me, {}, None), []); self.assertEqual(SD.swap_grid(None, self.me, {}, self.repl), [])
         self.assertEqual(len(SD.swap_grid(self.today, self.me, {}, self.repl, top=1)), 1)
 
+    def test_only_swaps_that_help_once_per_bench_player_at_most_three_and_keep_otherwise(self):
+        """Owner 2026-11-18 ("dialed down to top 1-3 player suggestions ... more concise with its decision"): the card
+        had listed six PJ Washington pairs, every one costing categories."""
+        g = SD.swap_grid(self.today, self.me, {}, self.repl)
+        self.assertEqual([(r["start"], r["small"]) for r in g], [("Big Two", False), ("Wing One", True)])   # 0.02 < 0.05
+        self.assertIsNone(SD.swap_keep(self.today, self.me, {}, self.repl))
+        today = self.today + [["Guard Three", "DAL", "vs SAC", None, 1.0, 4], ["Wing Four", "SAS", "vs UTA", None, 1.0, 4],
+                              ["Big Five", "DAL", "vs SAC", None, 1.0, 4], ["Bench Six", "DAL", "vs SAC", None, 1.0, 4]]
+        me = self.me + [dict(player=n, slot="BN", positions=["PG"]) for n in ("Wing Four", "Big Five", "Bench Six")] \
+            + [dict(player="Guard Three", slot="PG", positions=["PG"])]
+        repl = {"Star Guard": dict(slot="UTIL", candidates=[dict(player="Big Two", d_exp=0.09, cats={}), dict(player="Wing Four", d_exp=0.07, cats={}),
+                                                            dict(player="Big Five", d_exp=0.03, cats={}), dict(player="Bench Six", d_exp=0.01, cats={})]),
+                "Guard Three": dict(slot="PG", candidates=[dict(player="Big Two", d_exp=0.08, cats={}), dict(player="Wing One", d_exp=-0.02, cats={})])}
+        self.assertEqual([(r["start"], r["sit"]) for r in SD.swap_grid(today, me, {}, repl)],
+                         [("Big Two", "Star Guard"), ("Wing Four", "Star Guard"), ("Big Five", "Star Guard")])   # Big Two once; three at most
+        # every swap costs categories: none suggested, and the closest is named for the keep line
+        bad = {"Star Guard": dict(slot="UTIL", candidates=[dict(player="Big Two", d_exp=-0.026, cats={}), dict(player="Wing One", d_exp=-0.010, cats={})])}
+        self.assertEqual(SD.swap_grid(self.today, self.me, {}, bad), [])
+        k = SD.swap_keep(self.today, self.me, {}, bad)
+        self.assertEqual((k["start"], k["sit"], k["d_exp"]), ("Wing One", "Star Guard", -0.010))
+        self.assertIsNone(SD.swap_keep(self.today, self.me, {}, None))
+
     def test_the_card_renders_the_heat_map_from_the_record_and_a_pending_line_without_one(self):
         j = lambda name, obj: (json.dump(obj, open(os.path.join(self.d, name), "w")), os.path.join(self.d, name))[1]
         b = json.load(open(self.fx["brief"])); b["today"] = self.today; b["lineup"] = [["PG", "Alpha Man"], ["Util", "Star Guard"]]; b["bench"] = ["Wing One", "Big Two"]
@@ -2050,7 +2072,24 @@ class SwapGrid(unittest.TestCase):
         dom = visible_dom(p, "Today", "pane-today")
         self.assertEqual(dom["errors"], [])
         t = dom["text"]
-        self.assertIn("Start/sit for today".upper(), t.upper()); self.assertIn("Big Two", t); self.assertIn("+4.0", t); self.assertIn("+0.060", t)
+        self.assertIn("Start/sit today".upper(), t.upper())
+        self.assertIn("1. Start Big Two for Star Guard (UTIL): +0.060 categories this week — helps REB +4.0, BLK +3.0 · costs PTS -1.0", t)
+        self.assertIn("2. Start Wing One for Star Guard (UTIL): +0.020 categories this week (small) — helps PTS +2.0", t)
+        self.assertNotIn("Each cell", t)                                    # the heat map is folded under "Category detail"
+        self.assertIn("Category detail", t)
+        # every swap costs categories (the owner's screenshot of 2026-11-18): one line, keep the lineup
+        wm2 = week_matchup_record(); wm2["lineup_today"] = dict(date="2026-10-21", games_today=True, moves=[], replacements={
+            "Star Guard": dict(slot="UTIL", candidates=[dict(player="Big Two", d_exp=-0.026, cats={"REB": -0.014}),
+                                                        dict(player="Wing One", d_exp=-0.010, cats={"AST": 0.015, "FG%": -0.023})])})
+        self.fx["week_matchup"] = j("wm_sg2.json", wm2)
+        html3, data3, _ = SD.build(self.fx, date="2026-10-21")
+        self.assertEqual(data3["swap_grid"], []); self.assertEqual(data3["swap_keep"]["start"], "Wing One")
+        with open(p, "w", encoding="utf-8") as f:
+            f.write(html3)
+        d3 = visible_dom(p, "Today", "pane-today")
+        self.assertEqual(d3["errors"], [])
+        self.assertIn("Keep your lineup. No bench swap adds categories this week; the closest, start Wing One for Star Guard, costs 0.010.", d3["text"])
+        self.assertNotIn("Big Two for", d3["text"])
         # no record: the card says so, nothing else changes
         self.fx.pop("week_matchup")
         html2, data2, _ = SD.build(self.fx, date="2026-10-21")

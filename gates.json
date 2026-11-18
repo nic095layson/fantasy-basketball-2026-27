@@ -1,26 +1,26 @@
 {
- "ran_at_utc": "2026-11-17T22:09:58Z",
+ "ran_at_utc": "2026-11-18T17:57:23Z",
  "inputs": {
-  "report/after-reports/after-report-2026-11-17-system-red-team.md": "126fbfeb908b219ce54de74c01e5fe565e6a9c1c808291e4e09743e0b1c71176",
+  "report/after-reports/after-report-2026-11-18-state-of-system.md": "a2bf1153db453a15b4175d8d8dc1b485b1574d3811db075e811e13ff3c118dfd",
   "report/after-reports/redteam-2026-11-17-season/sweep.json": "13dd355f9c22b85cbdc79140be471a2e1be61e49d32114fd8ae37c2ac800b8ea"
  },
  "gates": [
   {
    "name": "kit check_report",
-   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-17-system-red-team.md",
+   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-18-state-of-system.md",
    "cwd": ".",
    "pass_re": "^REPORT GATE: PASS",
    "exit": 0,
-   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-11-17-system-red-team.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)",
+   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-11-18-state-of-system.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "REPORT GATE: PASS \u2014 after-report-2026-11-17-system-red-team.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)"
+    "REPORT GATE: PASS \u2014 after-report-2026-11-18-state-of-system.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)"
    ]
   },
   {
    "name": "claim receipts",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/independent_audit/claim_receipts.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-17-system-red-team.md",
+   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/independent_audit/claim_receipts.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-18-state-of-system.md",
    "cwd": ".",
    "pass_re": "^CLAIM RECEIPTS: (PASS|ADVISORY)",
    "exit": 0,
@@ -29,65 +29,6 @@
    "why": "",
    "tail": [
     "CLAIM RECEIPTS: PASS \u2014 1 file(s), every mechanism claim carries a receipt"
-   ]
-  },
-  {
-   "name": "sweep record tests",
-   "cmd": "python3 scripts/test_sweep_record.py",
-   "cwd": ".",
-   "pass_re": "^OK",
-   "exit": 0,
-   "pass_line": "OK",
-   "verdict": "PASS",
-   "why": "",
-   "tail": [
-    "----------------------------------------------------------------------",
-    "Ran 16 tests in 0.987s",
-    "OK"
-   ]
-  },
-  {
-   "name": "daily brief tests",
-   "cmd": "python3 scripts/test_daily_brief.py",
-   "cwd": ".",
-   "pass_re": "^OK",
-   "exit": 0,
-   "pass_line": "OK",
-   "verdict": "PASS",
-   "why": "",
-   "tail": [
-    "----------------------------------------------------------------------",
-    "Ran 40 tests in 0.902s",
-    "OK"
-   ]
-  },
-  {
-   "name": "deck tests",
-   "cmd": "python3 -m unittest scripts.test_season_deck",
-   "cwd": ".",
-   "pass_re": "^OK",
-   "exit": 0,
-   "pass_line": "OK",
-   "verdict": "PASS",
-   "why": "",
-   "tail": [
-    "----------------------------------------------------------------------",
-    "Ran 245 tests in 131.509s",
-    "OK"
-   ]
-  },
-  {
-   "name": "kit suite",
-   "cmd": "bash -o pipefail -c 'python3 -m unittest discover -s scripts -p '\"'\"'test_*.py'\"'\"' 2>&1 | tee /tmp/claude-0/-home-user/2707cd51-ac23-5481-9e46-598496719ebc/scratchpad/suite_gate3.log | tail -3'",
-   "cwd": ".",
-   "pass_re": "^OK",
-   "exit": 0,
-   "pass_line": "OK (skipped=2)",
-   "verdict": "PASS",
-   "why": "",
-   "tail": [
-    "Ran 1318 tests in 187.789s",
-    "OK (skipped=2)"
    ]
   },
   {
@@ -105,7 +46,7 @@
   },
   {
    "name": "redteam bands",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/redteam/check_bands.py --report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-17-system-red-team.md --sweep /home/user/fantasy-basketball-2026-27/report/after-reports/redteam-2026-11-17-season/sweep.json",
+   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/redteam/check_bands.py --report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-18-state-of-system.md --sweep /home/user/fantasy-basketball-2026-27/report/after-reports/redteam-2026-11-17-season/sweep.json",
    "cwd": ".",
    "pass_re": "^BANDS CHECK: PASS",
    "exit": 0,
@@ -145,5 +86,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "7950fba2bf22d5a91300b76c3cc8b0e7f2acf8e7"
+ "base_commit": "471244dce1505ab54833a92a32fb50c7bcc74204"
 }

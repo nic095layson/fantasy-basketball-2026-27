@@ -303,6 +303,44 @@ class ThisWeek(unittest.TestCase):
         self.assertAlmostEqual(sum(rim["d_cat"].values()), rim["d_exp"], places=12)
         self.assertAlmostEqual(rim["d_exp_drop"] + rim["d_exp_add"], rim["d_exp"], places=12)
 
+    def test_a_waiver_player_is_never_priced_before_his_waiver_date(self):
+        """Owner 2026-11-18 ("Fix the Caruso waiver timing"): the 11-18 card offered Alex Caruso "same day" while he
+        was on waivers until 11-19. Rim (LAL) plays t0, t1 and t2."""
+        me_now, opp_now, roster, lines, sched, fas = self._fixture()
+        opp_rem = dict(totals=box(), var={k: 0.0 for k in ("3PTM", "PTS", "REB", "AST", "ST", "BLK", "TO", "fg_mk", "ft_mk")})
+        scan = lambda wd: next(r for r in WM.scan_this_week(me_now, opp_now, opp_rem, roster, ["Done"],
+                                                            [dict(fas[0], waiver_date=wd)], sched, "t0", {}, lines))
+        free = scan(None)
+        self.assertEqual((free["timing"], free["games"]), ("same day", 3))            # a free agent: as before
+        tomorrow = scan("t1")                                                          # clears tomorrow: no same day
+        self.assertEqual((tomorrow["timing"], tomorrow["games"], tomorrow["waiver_date"]), ("after tonight", 2, "t1"))
+        self.assertNotIn("other_timing", tomorrow)
+        self.assertAlmostEqual(tomorrow["d_exp"], free["other_timing"]["d_exp"], places=12)
+        later = scan("t2")                                                             # clears after tomorrow
+        self.assertEqual((later["timing"], later["games"], later["waiver_date"]), ("after waivers", 1, "t2"))
+        self.assertLess(later["d_exp"], tomorrow["d_exp"])
+        self.assertAlmostEqual(later["d_exp_drop"] + later["d_exp_add"], later["d_exp"], places=12)
+        self.assertAlmostEqual(sum(later["d_cat"].values()), later["d_exp"], places=12)
+        self.assertEqual(scan("t0")["timing"], "same day")                             # cleared today: as a free agent
+
+    def test_the_drop_keeps_his_games_until_the_add_clears_waivers(self):
+        me_now, opp_now, roster, lines, sched, fas = self._fixture()
+        opp_rem = dict(totals=box(), var={k: 0.0 for k in ("3PTM", "PTS", "REB", "AST", "ST", "BLK", "TO", "fg_mk", "ft_mk")})
+        idle = dict(fas[3], waiver_date="t2")                                          # MIA never plays
+        r = WM.scan_this_week(me_now, opp_now, opp_rem, roster, ["Scorer"], [idle], sched, "t0", {}, lines)[0]
+        r_now = WM.scan_this_week(me_now, opp_now, opp_rem, roster, ["Scorer"], [fas[3]], sched, "t0", {}, lines)[0]
+        # Scorer plays t1 before Idle clears: dropping him costs less than dropping him tonight
+        self.assertEqual(r["timing"], "after waivers")
+        self.assertNotAlmostEqual(r["d_exp"], r_now["d_exp"], places=6)
+
+    def test_yahoos_waiver_date_rides_along_only_for_a_waiver_player(self):
+        P, by = WM.CG.load_pool()
+        names = [p["player"] for p in P[:2]]
+        scored, _, _, _ = WM.yahoo_free_agents([
+            dict(name=names[0], team="LAL", status=None, position="PG", acquisitionState="waivers", waiverDate="2026-11-19"),
+            dict(name=names[1], team="LAL", status=None, position="PG", acquisitionState="free_agent", waiverDate="2026-11-19")], P)
+        self.assertEqual({x["player"]: x["waiver_date"] for x in scored}, {names[0]: "2026-11-19", names[1]: None})
+
     def test_the_drop_loses_his_remaining_games(self):
         me_now, opp_now, roster, lines, sched, fas = self._fixture()
         opp_rem = dict(totals=box(), var={k: 0.0 for k in ("3PTM", "PTS", "REB", "AST", "ST", "BLK", "TO", "fg_mk", "ft_mk")})
