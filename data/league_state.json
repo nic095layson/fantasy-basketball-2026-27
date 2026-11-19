@@ -4,14 +4,14 @@
   "flaim": {
    "transcript": "f7b74300-8501-5e41-b8c5-d2c75dd06ce4.jsonl",
    "method": "mechanical json extraction of Flaim (Yahoo) tool results from the session transcript",
-   "since": "2026-11-19T12:40:38Z",
-   "pull_file": "data/source/flaim/pull_2026-11-19.json",
-   "pull_sha256": "a25e012c48650ce7412802667698558b256e19b14711a61195fbf69972768ca9",
+   "since": "2026-11-19T23:04:17Z",
+   "pull_file": "data/source/flaim/pull_2026-11-19_pm.json",
+   "pull_sha256": "aebe306724a0b7c38906283452997a16e61529a5f9d8a35fe34f7dc09d9ed81d",
    "view": "Flaim connector (Yahoo, read-only): get_roster per team (current), get_matchups, get_free_agents"
   },
   "transcription": {
-   "file": "data/source/flaim/rosters_2026-11-19.transcribed.csv",
-   "sha256": "b4ae6b27e8bf5927c507dbc0d701b31f41638f1d09a9d442084e4ee391244e45",
+   "file": "data/source/flaim/rosters_2026-11-19_pm.transcribed.csv",
+   "sha256": "259d267a86fb2621367cd0dbabb9c26f4528387af91e6949d31a0c1d9f82012d",
    "method": "flaim_live.to_rows (mechanical; Yahoo slots and status letters for every team)"
   },
   "draft_board": "report/after-reports/draft-league-2026-10-14/recap.json",
@@ -33,6 +33,14 @@
    "seat": 5,
    "slot": "UTIL",
    "nba_team": "UTA",
+   "status": null
+  },
+  {
+   "player": "Javon Small",
+   "fantasy_team": "Thompson Telepathy",
+   "seat": 12,
+   "slot": "PG",
+   "nba_team": "MEM",
    "status": null
   },
   {
@@ -184,26 +192,26 @@
      "status": null
     },
     {
+     "player": "Julian Champagnie",
+     "yahoo_name": "Julian Champagnie",
+     "slot": "UTIL",
+     "yahoo_nba_team": "SAS",
+     "pool_team": "SAS",
+     "positions": [
+      "SF",
+      "PF"
+     ],
+     "status": null
+    },
+    {
      "player": "Jeremiah Fears",
      "yahoo_name": "Jeremiah Fears",
-     "slot": "UTIL",
+     "slot": "BN",
      "yahoo_nba_team": "NOP",
      "pool_team": "NOP",
      "positions": [
       "PG",
       "SG"
-     ],
-     "status": null
-    },
-    {
-     "player": "Kevin Huerter",
-     "yahoo_name": "Kevin Huerter",
-     "slot": "BN",
-     "yahoo_nba_team": "DET",
-     "pool_team": "DET",
-     "positions": [
-      "SG",
-      "SF"
      ],
      "status": null
     },
@@ -266,7 +274,7 @@
     "Collin Gillespie",
     "Jeremiah Fears",
     "Jrue Holiday",
-    "Kevin Huerter"
+    "Julian Champagnie"
    ],
    "dropped_since_draft": [
     "Anthony Black",
@@ -356,7 +364,7 @@
      "positions": [
       "C"
      ],
-     "status": null
+     "status": "O"
     },
     {
      "player": "Daniel Gafford",
@@ -427,7 +435,7 @@
       "SG",
       "SF"
      ],
-     "status": "Q"
+     "status": "O"
     },
     {
      "player": "Paolo Banchero",
@@ -677,7 +685,7 @@
       "PG",
       "SG"
      ],
-     "status": "O"
+     "status": null
     },
     {
      "player": "Andrew Nembhard",
@@ -689,7 +697,7 @@
       "PG",
       "SG"
      ],
-     "status": "O"
+     "status": "Q"
     },
     {
      "player": "Norman Powell",
@@ -807,7 +815,7 @@
       "PF",
       "C"
      ],
-     "status": "O"
+     "status": null
     },
     {
      "player": "Nic Claxton",
@@ -921,7 +929,7 @@
       "PF",
       "C"
      ],
-     "status": "Q"
+     "status": "O"
     },
     {
      "player": "Rudy Gobert",
@@ -1075,7 +1083,7 @@
       "PG",
       "SG"
      ],
-     "status": "O"
+     "status": "P"
     },
     {
      "player": "Donovan Mitchell",
@@ -1253,11 +1261,11 @@
    "name": "Thompson Telepathy",
    "players": [
     {
-     "player": "Amen Thompson",
-     "yahoo_name": "Amen Thompson",
-     "slot": "PG",
-     "yahoo_nba_team": "HOU",
-     "pool_team": "HOU",
+     "player": "Tyler Herro",
+     "yahoo_name": "Tyler Herro",
+     "slot": "SG",
+     "yahoo_nba_team": "MIL",
+     "pool_team": "MIL",
      "positions": [
       "PG",
       "SG"
@@ -1265,11 +1273,11 @@
      "status": null
     },
     {
-     "player": "Tyler Herro",
-     "yahoo_name": "Tyler Herro",
-     "slot": "SG",
-     "yahoo_nba_team": "MIL",
-     "pool_team": "MIL",
+     "player": "Amen Thompson",
+     "yahoo_name": "Amen Thompson",
+     "slot": "G",
+     "yahoo_nba_team": "HOU",
+     "pool_team": "HOU",
      "positions": [
       "PG",
       "SG"
@@ -1333,7 +1341,7 @@
      "positions": [
       "C"
      ],
-     "status": null
+     "status": "O"
     },
     {
      "player": "Collin Sexton",
@@ -1421,7 +1429,18 @@
    ],
    "empty_slots": [],
    "unpooled_il": [],
-   "unpooled": [],
+   "unpooled": [
+    {
+     "player": "Javon Small",
+     "slot": "PG",
+     "nba_team": "MEM",
+     "positions": [
+      "PG",
+      "SG"
+     ],
+     "status": null
+    }
+   ],
    "seat": 12,
    "manager": "Hegi",
    "draft_overlap": 11,
@@ -1696,7 +1715,7 @@
       "PF",
       "C"
      ],
-     "status": null
+     "status": "O"
     },
     {
      "player": "Victor Wembanyama",
@@ -1722,9 +1741,21 @@
      "status": null
     },
     {
+     "player": "Kasparas Jakucionis",
+     "yahoo_name": "Kasparas Jakučionis",
+     "slot": "UTIL",
+     "yahoo_nba_team": "MIL",
+     "pool_team": "MIL",
+     "positions": [
+      "PG",
+      "SG"
+     ],
+     "status": null
+    },
+    {
      "player": "Jared McCain",
      "yahoo_name": "Jared McCain",
-     "slot": "UTIL",
+     "slot": "BN",
      "yahoo_nba_team": "OKC",
      "pool_team": "OKC",
      "positions": [
@@ -1744,17 +1775,6 @@
       "SG"
      ],
      "status": "O"
-    },
-    {
-     "player": "Mo Bamba",
-     "yahoo_name": "Mo Bamba",
-     "slot": "BN",
-     "yahoo_nba_team": "UTA",
-     "pool_team": "UTA",
-     "positions": [
-      "C"
-     ],
-     "status": null
     },
     {
      "player": "Desmond Bane",
@@ -1802,7 +1822,7 @@
     "Anthony Black",
     "Draymond Green",
     "Jared McCain",
-    "Mo Bamba"
+    "Kasparas Jakucionis"
    ],
    "dropped_since_draft": [
     "Bilal Coulibaly",
@@ -1833,7 +1853,7 @@
      "positions": [
       "PG"
      ],
-     "status": "O"
+     "status": "Q"
     },
     {
      "player": "Devin Vassell",
@@ -1869,7 +1889,7 @@
       "SF",
       "PF"
      ],
-     "status": "O"
+     "status": "Q"
     },
     {
      "player": "Joel Embiid",
