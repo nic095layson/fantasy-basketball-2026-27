@@ -62,6 +62,18 @@
 - The live page stays at Version 93 (yesterday afternoon): https://claude.ai/artifact/Az6vPGzG6TLWrPjdAWL2pe
 - **WROTE:** 44 path(s) (morning.py).
 
+## Rebuild (owner, 2026-11-20 afternoon: "rebuild and publish today's deck")
+
+- After kit #298 (a rostered deck-plane player with no kit row gets one from his blended line) and #299 (the morning deck names a player with no board row) merged, season/daily took main (996ae17).
+- Reran `season_lines.py` and `season_board.py` for 2026-11-20 on the same inputs:
+  - projections_season.csv and _blend gained one row each, Landry Shamet (gp 68, the kit median; 15 games).
+  - The board gained Shamet at #238. No other z-score changed; the 78 rows below him each moved down one rank.
+- `morning.py --date 2026-11-20 --since 2026-11-20T12:41:47Z --resume` reran only the deck step:
+  - `SEASON DECK: PASS — 2026-11-20: report/season/deck_2026-11-20.html (7 panes, 316 board rows, 36 status rows; record deck_record_2026-11-20.json pins 21 inputs; render: 7 tabs, 0 page errors)`
+  - **`MORNING: PASS — 2026-11-20: 24 steps (after 1 earlier attempt(s)); brief report/briefs/brief_2026-11-20.md; record report/briefs/morning_2026-11-20.json`**
+- The brief, waiver scan, decision card and title odds were not recomputed. Shamet is on ANONG and was already in the simulator through his pool row.
+- Published as Version 94 (1795201072-313d). The 761,575 built bytes are contained in the 762,121-byte live page, which renders 7 tabs with 0 page errors.
+
 ## Decision for David
 
 1. **Hold; no roster move today (Recommended)** — you lead 8-1, and the best pair is worth +0.5 if IL players never return and +0.0 if they return on time.
