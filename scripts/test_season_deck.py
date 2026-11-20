@@ -1480,9 +1480,9 @@ class AfternoonRefresh(unittest.TestCase):
         self.assertEqual(SD.gone_since_morning(brief, None, roster + [dict(player="PJ Washington")]), [])
         self.assertEqual(SD.gone_since_morning({}, {}, []), [])
 
-    def add_rostered(self, name):
+    def add_rostered(self, name, **more):
         lg = json.load(open(self.fx["league_state"]))
-        lg["teams"][0]["players"].append(dict(player=name, slot="BN", status=None, positions=["C"]))
+        lg["teams"][0]["players"].append(dict(player=name, slot="BN", status=None, positions=["C"], **more))
         json.dump(lg, open(self.fx["league_state"], "w"))
 
     def test_a_pickup_missing_from_the_mornings_board_is_named_not_a_halt_in_the_afternoon(self):
@@ -1493,10 +1493,30 @@ class AfternoonRefresh(unittest.TestCase):
         self.assertIn("New Guy", data["league"]["rosters"]["MY TEAM"]["off_board"])
         self.assertEqual(rec["join"]["not_on_board"], ["New Guy"])
 
-    def test_the_morning_build_still_halts_on_it(self):
+    def test_the_morning_build_names_him_too_and_does_not_halt(self):
+        # owner 2026-11-20 (card "Build anyway, name him"): the 5 AM deck step failed because a rival had added Landry
+        # Shamet, who has no board row; the morning build now carries and names him as the afternoon one does, when the
+        # league intake matched him to a pool row (pool_team). A name with no pool row still halts the morning.
+        self.add_rostered("New Guy", pool_team="DEN")
+        html, data, rec = SD.build(self.fx, date="2026-10-21")
+        self.assertNotIn("refresh", data)
+        self.assertEqual(data["not_on_board"], [dict(player="New Guy", team="MY TEAM")])
+        self.assertIn("New Guy", data["league"]["rosters"]["MY TEAM"]["off_board"])
+        self.assertEqual(rec["join"]["not_on_board"], ["New Guy"])
+        p = os.path.join(self.d, "am_off.html"); open(p, "w", encoding="utf-8").write(html)
+        self.assertEqual(DRC.check(p)["status"], "PASS")
+        self.assertIn("Rostered with no row on the board (no season line on this page): New Guy, on MY TEAM (you).",
+                      visible_dom(p, "Today", "pane-today")["text"])
+
+    def test_the_morning_still_halts_on_a_name_with_no_pool_row(self):
         self.add_rostered("New Guy")
         with self.assertRaises(SD.DeckError):
             SD.build(self.fx, date="2026-10-21")
+
+    def test_a_morning_with_everyone_on_the_board_says_nothing(self):
+        html, data, rec = SD.build(self.fx, date="2026-10-21")
+        self.assertEqual(data["not_on_board"], []); self.assertEqual(rec["join"]["not_on_board"], [])
+        self.assertNotIn("Rostered with no row on the board", html.split("<script")[0])
 
     @unittest.skipUnless(RENDER_OK, RENDER_WHY)
     def test_the_afternoon_note_names_the_players_added_since_the_morning_board(self):

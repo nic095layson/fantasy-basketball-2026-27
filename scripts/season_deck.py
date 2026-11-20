@@ -247,7 +247,7 @@ def out_today(today_rows, me, avail, values, repl=None):
     return res
 
 
-def resolve_rostered(rostered, board_names, held_names, aliases, missing=None):
+def resolve_rostered(rostered, board_names, held_names, aliases, missing=None, carry=None):
     """Map each rostered name (the league paste's spelling) to its season-board row or held name (the kit's spelling).
     Owner audit 2026-10-19: Jaren Jackson Jr. / Cameron Johnson showed as free agents under an exact-string join.
     Order: exact; accent-and-punctuation fold; the kit alias table (report/market/build_market.py); suffix-dropped
@@ -275,8 +275,11 @@ def resolve_rostered(rostered, board_names, held_names, aliases, missing=None):
         (unresolved.append(n) if hit is None else out.__setitem__(n, hit))
     # owner 2026-10-28: the 3 PM rebuild passes a list; a player pooled after the 5 AM board is carried as off the board
     # and named, instead of halting the afternoon page (the morning build still halts)
+    # owner 2026-11-20 ("Build anyway, name him"): with carry, the set of names the intake matched to a pool row, only
+    # those are carried; a name found nowhere still halts (the 2026-10-19 join guard). carry None: every name, as before
     if unresolved and missing is not None:
-        missing.extend(sorted(unresolved)); out.update({n: n for n in unresolved}); unresolved = []
+        ok = sorted(n for n in unresolved if carry is None or n in carry)
+        missing.extend(ok); out.update({n: n for n in ok}); unresolved = [n for n in unresolved if n not in ok]
     if unresolved: raise DeckError(f"rostered player(s) with no season-board or held row: {sorted(unresolved)}")
     seen = {}
     for n, t in out.items():
@@ -380,8 +383,13 @@ def build(paths, date, phase=None):
     # mechanical join: each board row gains its fantasy owner
     board_names = [r["name"] for r in board["board"]]
     rostered = [p["player"] for t in league["teams"] for p in t["players"]]
-    not_on_board = [] if phase == "pm" else None
-    rmap = resolve_rostered(rostered, board_names, board.get("held") or [], BP.load_aliases(), not_on_board)
+    # owner 2026-11-20 (card "Build anyway, name him", after the 5 AM deck step failed on a rival's pickup with no board
+    # row, Landry Shamet): the morning build carries and names such a player too, as the 3 PM rebuild has since 2026-10-28
+    # The morning carries only a player the league intake matched to a pool row (league_state's pool_team): in the pool,
+    # no line on the kit's board. A rostered name with no pool row still halts the morning, as it has since 2026-10-19.
+    not_on_board = []
+    pooled = None if phase == "pm" else {p["player"] for t in league["teams"] for p in t["players"] if p.get("pool_team")}
+    rmap = resolve_rostered(rostered, board_names, board.get("held") or [], BP.load_aliases(), not_on_board, pooled)
     on_board = set(board_names)
     own = {}
     my_team = None
@@ -479,6 +487,7 @@ def build(paths, date, phase=None):
                 # owner 2026-11-09 (runner pick B1): inputs named but absent, so an empty card can say why
                 absent_inputs=sorted(k for k, p in paths.items() if not (p and os.path.exists(p))),
                 punt=dict(stream_r=SB.RE.STREAM_R, weak_rank_from=PUNT_WEAK_FROM), form=form_rec, scores=scores, accuracy=accuracy, lineup_scorecard=lineup_sc, decision_card=dcard, draft_check=draft_chk, fa_status=fa_status, out_today=out_now, swap_keep=keep_now, swap_small=SWAP_SMALL, swap_grid=grid_now, waiver_notes=waiver_notes,
+                not_on_board=[dict(player=n, team=own[n][0]) for n in not_on_board],
                 # owner 2026-10-28 ("Rebuild, flag morning parts"): the 3 PM run's rebuild says which parts are the 5 AM run's
                 **({"refresh": {"phase": phase, "not_on_board": not_on_board,
                                 # owner 2026-11-06 ("why does Today still show Matkovic?", "please build it"): the morning brief's
@@ -505,7 +514,7 @@ def build(paths, date, phase=None):
                   board_rows=len(board["board"]), status_rows=len(status["rows"]), panes=7,
                   join=dict(rostered=len(rostered), unresolved=0, on_board=sum(1 for n in rostered if rmap[n] in on_board),
                             off_board=sum(1 for n in rostered if rmap[n] not in on_board), respelled=respelled,
-                            **({"not_on_board": not_on_board} if not_on_board is not None else {}),
+                            not_on_board=not_on_board,
                             free_agents_on_board=sum(1 for r in board["board"] if r["fa"])))
     return html, data, record
 
@@ -999,6 +1008,9 @@ function matchupBoard(){ const W=D.week_matchup, B=W&&W.board; if(!B) return nul
   if(UN.length||UA.length) p.append(h("div",{class:"card"},h("p",{class:"note",id:"unpooled-note"},
     (UN.length? "Not in the pool, not simulated: "+unl(UN)+". Each needs a pool row before the simulator counts him." : "")
     +(UN.length&&UA.length? " " : "")+(UA.length? "Auto row (blended), simulated: "+unl(UA)+"." : ""))));
+  // owner 2026-11-20: the morning page names a rostered player with no board row (the 3 PM page says it in its own note)
+  if(!(D.refresh&&D.refresh.phase==="pm")&&(D.not_on_board||[]).length) p.append(h("div",{class:"card"},h("p",{class:"note",id:"off-board-note"},
+    "Rostered with no row on the board (no season line on this page): "+D.not_on_board.map(x=>x.player+", on "+T(x.team)).join("; ")+".")));
   if(D.refresh&&D.refresh.phase==="pm") p.append(h("div",{class:"card"},h("p",{class:"note",id:"pm-note"},
     (D.refresh.lineup_refreshed? "Afternoon refresh: rosters, injury status, today's lineup, the start/sit pairs and this week's adds are from the 3 PM run; the waiver pairs and title odds are the 5 AM run's."
       : "Afternoon refresh: rosters, ownership and injury status are from the 3 PM run; the lineup, waiver pairs and title odds are from the 5 AM run (they can be out of date after a roster move or a new injury).")
@@ -1749,7 +1761,8 @@ def main():
           f"{record['status_rows']} status rows; record deck_record_{a.date}{sfx}.json pins {len(record['inputs'])} inputs; "
           f"render: {len(res['tabs'])} tabs, 0 page errors{refresh_note})"
           # owner 2026-11-09 (runner pick B1): an absent input is recorded (GAUNTLET decision 4) and named here, never silent
-          + "".join(f"; absent: {', '.join(ab)}" for ab in [sorted(k for k, v in record["inputs"].items() if not v["present"])] if ab))
+          + "".join(f"; absent: {', '.join(ab)}" for ab in [sorted(k for k, v in record["inputs"].items() if not v["present"])] if ab)
+          + "".join(f"; rostered with no board row: {', '.join(nb)}" for nb in [record["join"].get("not_on_board")] if nb))
 
 
 if __name__ == "__main__":
