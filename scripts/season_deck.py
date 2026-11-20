@@ -1279,7 +1279,7 @@ function holdCheckCard(){ const W=D.brief.role_watch; if(!W) return null;
 
 // ---- Board ----
 (function(){ const p=$("#pane-board"); const rows=D.board.board.slice();
-  let key="rank", asc=true, q="", fa=false;
+  let key="rank", asc=true, q="", fa=false, pos="";
   let ca=null, cb=null;
   // owner 2026-11-13 ("add the multi-category filter ability like on the Draft Deck tool"): a category header click
   // stacks it into a lens of up to 3, ranked by the selected categories' combined z (the plain sum of the z shown in
@@ -1318,11 +1318,26 @@ function holdCheckCard(){ const W=D.brief.role_watch; if(!W) return null;
   const inp=h("input",{type:"search",id:"bd-q",placeholder:"Search player or team",oninput:(e)=>{q=e.target.value;render();}});
   const faBox=h("input",{type:"checkbox",id:"bd-fa",onchange:(e)=>{fa=e.target.checked;render();}});
   const tbl=h("div",{});
+  // owner 2026-11-20 ("give me the option to also filter by POSITION ... PG, SG, G, SF, PF, F, C"; card "Build it,
+  // display-only"): one position at a time; G is PG or SG and F is SF or PF, the league's slots (hoops.POSITIONAL_SLOTS);
+  // eligibility is the pos column (Yahoo's). Display only: # and z adj keep their overall values.
+  const POS=["PG","SG","G","SF","PF","F","C"], POSMAP={G:["PG","SG"],F:["SF","PF"]};
+  const posOk=(r)=>{ if(!pos) return true; const e=String(r.pos||"").split(",").map(x=>x.trim());
+    return (POSMAP[pos]||[pos]).some(x=>e.includes(x)); };
+  const posBox=h("div",{id:"bd-pos",class:"mode",style:"flex-wrap:wrap;align-items:center"});
+  function posRender(){ const said= pos? (POSMAP[pos]? pos+" ("+POSMAP[pos].join(" or ")+")" : pos) : "";
+    posBox.replaceChildren(h("span",{class:"note"},"Position"),
+      ...[""].concat(POS).map(k=>h("button",{"aria-pressed":pos===k?"true":"false","data-pos":k||"ALL",
+        title: k? "Show only players eligible at "+(POSMAP[k]? k+" ("+POSMAP[k].join(" or ")+")" : k)+". The # and z adj columns keep their overall values."
+          : "Show every position",
+        onclick:()=>{ pos=(pos===k?"":k); posRender(); render(); }},k||"All")),
+      h("span",{class:"small note",id:"bd-pos-n"}, pos? rows.filter(posOk).length+" of "+rows.length+" players are eligible at "+said : "")); }
   box.append(h("div",{class:"h2row"},h("h2",{},"Season board — "+rows.length+" ranked players"),
-      h("button",{id:"bd-reset",class:"resetbtn",onclick:()=>{q="";inp.value="";fa=false;faBox.checked=false;key="rank";asc=true;ca=null;cb=null;lens=[];drill=null;lensRender();puntSet(o=>o.clear());}},"Reset")),
+      h("button",{id:"bd-reset",class:"resetbtn",onclick:()=>{q="";inp.value="";fa=false;faBox.checked=false;pos="";posRender();key="rank";asc=true;ca=null;cb=null;lens=[];drill=null;lensRender();puntSet(o=>o.clear());}},"Reset")),
     noteMore("Season lines blended with games so far ("+D.season_lines.players_with_games+" players) · "+(D.board.held.length? D.board.held.length+" held off the board" : "none held off the board"),
       D.board.held.length? "Held off the board: "+D.board.held.join(", ")+"." : null),
     h("div",{class:"pick"},inp,h("label",{style:"display:flex;align-items:center;gap:6px"},faBox,"free agents only")),
+    posBox,
     noteMore("Fit for your build: switch a category off to leave it out of every player's value",
       "A category you are conceding should not count for or against a player. With one or more switched off, the table adds a fit column (the sum of the categories still on, with the board's own availability discount) and sorts by it. My build switches off the categories where your team ranks "+WEAK+"th or worse of "+NTEAMS+" today, with IL players counting nothing."+(ANY_IL?" Full health does the same with every team's IL players counted as active (those the board ranks), before any cuts to make room: use it to tell a category that is weak for good from one that is weak only while someone is hurt.":"")+" The # and z adj columns never change, and the simulator does not read this."),
     chips, catBox, tbl);
@@ -1344,7 +1359,7 @@ function holdCheckCard(){ const W=D.brief.role_watch; if(!W) return null;
   const poCell=(r)=>{ const g=PO.by_team[r.team];
     return h("td",{class:"num",title: g? r.team+" in fantasy playoff weeks "+PO.weeks.join(", ")+": "+g.join(" + ")+" games. The simulator does not use this: it plays every week at the same games per player."
       : "No game listed for "+r.team+" in the playoff weeks."}, g? String(r.po_games) : "–"); };
-  function render(){ let rs=rows.filter(r=>(!q||r.name.toLowerCase().includes(q.toLowerCase())||(r.owner||"FA").toLowerCase().includes(q.toLowerCase()))&&(!fa||r.fa));
+  function render(){ let rs=rows.filter(r=>(!q||r.name.toLowerCase().includes(q.toLowerCase())||(r.owner||"FA").toLowerCase().includes(q.toLowerCase()))&&(!fa||r.fa)&&posOk(r));
     const kv=(r)=>key==="fit"? fit(r) : key==="name"?r.name:(key==="owner"?(r.owner||"zzFA"):(key in r? r[key] : r.z[key]));
     if(lens.length) rs.sort((x,y)=> drill? (y.z[drill]-x.z[drill])||(lensSum(y)-lensSum(x)) : lensSum(y)-lensSum(x));
     else rs.sort((x,y)=>{ const a=kv(x), b=kv(y);
@@ -1361,7 +1376,7 @@ function holdCheckCard(){ const W=D.brief.role_watch; if(!W) return null;
       rs.length>200?h("p",{class:"note"},"Showing the first 200 of "+rs.length+" rows; narrow with search."):null));
     cmpRender();
   }
-  chipRender(); lensRender(); render();
+  chipRender(); lensRender(); posRender(); render();
 })();
 
 // ---- Draft Check (owner 2026-11-11: "include this on the season deck replacing the Movers tab") ----
