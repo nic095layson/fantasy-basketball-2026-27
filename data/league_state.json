@@ -4,14 +4,14 @@
   "flaim": {
    "transcript": "f7b74300-8501-5e41-b8c5-d2c75dd06ce4.jsonl",
    "method": "mechanical json extraction of Flaim (Yahoo) tool results from the session transcript",
-   "since": "2026-11-20T12:41:47Z",
-   "pull_file": "data/source/flaim/pull_2026-11-20.json",
-   "pull_sha256": "aaf0f5e0d0425ec6c0830f48796b06edbba195eb607cdcd30a86c28c066576bf",
+   "since": "2026-11-20T23:04:11Z",
+   "pull_file": "data/source/flaim/pull_2026-11-20_pm.json",
+   "pull_sha256": "97f4b6ce9a4e0937c349db27549e305a4d1b804539e7fb9b832840c5708b179b",
    "view": "Flaim connector (Yahoo, read-only): get_roster per team (current), get_matchups, get_free_agents"
   },
   "transcription": {
-   "file": "data/source/flaim/rosters_2026-11-20.transcribed.csv",
-   "sha256": "1903fbecc0907bf99427771a8cc36b2468429522abe5c53382cafd8eafbc76e2",
+   "file": "data/source/flaim/rosters_2026-11-20_pm.transcribed.csv",
+   "sha256": "be4af21facf94c418526ce8eb51ae5852b1df16a4fd0ca5068036c0143041804",
    "method": "flaim_live.to_rows (mechanical; Yahoo slots and status letters for every team)"
   },
   "draft_board": "report/after-reports/draft-league-2026-10-14/recap.json",
@@ -41,14 +41,6 @@
    "seat": 9,
    "slot": "SG",
    "nba_team": "CLE",
-   "status": null
-  },
-  {
-   "player": "Y. Konan Niederhäuser",
-   "fantasy_team": "Podz save the league",
-   "seat": 9,
-   "slot": "BN",
-   "nba_team": "LAC",
    "status": null
   },
   {
@@ -772,7 +764,7 @@
       "PF",
       "C"
      ],
-     "status": null
+     "status": "Q"
     },
     {
      "player": "Ace Bailey",
@@ -898,7 +890,7 @@
       "SF",
       "PF"
      ],
-     "status": null
+     "status": "Q"
     },
     {
      "player": "Giannis Antetokounmpo",
@@ -1393,7 +1385,7 @@
      "positions": [
       "C"
      ],
-     "status": "Q"
+     "status": null
     },
     {
      "player": "Austin Reaves",
@@ -1524,11 +1516,11 @@
      "status": null
     },
     {
-     "player": "Stephon Castle",
-     "yahoo_name": "Stephon Castle",
+     "player": "VJ Edgecombe",
+     "yahoo_name": "VJ Edgecombe",
      "slot": "UTIL",
-     "yahoo_nba_team": "SAS",
-     "pool_team": "SAS",
+     "yahoo_nba_team": "PHI",
+     "pool_team": "PHI",
      "positions": [
       "PG",
       "SG"
@@ -1536,11 +1528,23 @@
      "status": null
     },
     {
-     "player": "VJ Edgecombe",
-     "yahoo_name": "VJ Edgecombe",
+     "player": "Ja'Kobe Walter",
+     "yahoo_name": "Ja'Kobe Walter",
      "slot": "UTIL",
-     "yahoo_nba_team": "PHI",
-     "pool_team": "PHI",
+     "yahoo_nba_team": "TOR",
+     "pool_team": "TOR",
+     "positions": [
+      "PG",
+      "SG"
+     ],
+     "status": null
+    },
+    {
+     "player": "Stephon Castle",
+     "yahoo_name": "Stephon Castle",
+     "slot": "BN",
+     "yahoo_nba_team": "SAS",
+     "pool_team": "SAS",
      "positions": [
       "PG",
       "SG"
@@ -1608,15 +1612,6 @@
       "SG"
      ],
      "status": null
-    },
-    {
-     "player": "Y. Konan Niederhäuser",
-     "slot": "BN",
-     "nba_team": "LAC",
-     "positions": [
-      "C"
-     ],
-     "status": null
     }
    ],
    "seat": 9,
@@ -1624,6 +1619,7 @@
    "draft_overlap": 9,
    "added_since_draft": [
     "Daniss Jenkins",
+    "Ja'Kobe Walter",
     "Keaton Wagler",
     "Klay Thompson"
    ],
@@ -1733,18 +1729,6 @@
      "status": null
     },
     {
-     "player": "CJ McCollum",
-     "yahoo_name": "CJ McCollum",
-     "slot": "UTIL",
-     "yahoo_nba_team": "ATL",
-     "pool_team": "ATL",
-     "positions": [
-      "PG",
-      "SG"
-     ],
-     "status": "O"
-    },
-    {
      "player": "Jaxson Hayes",
      "yahoo_name": "Jaxson Hayes",
      "slot": "UTIL",
@@ -1754,6 +1738,18 @@
       "C"
      ],
      "status": null
+    },
+    {
+     "player": "Evan Mobley",
+     "yahoo_name": "Evan Mobley",
+     "slot": "UTIL",
+     "yahoo_nba_team": "CLE",
+     "pool_team": "CLE",
+     "positions": [
+      "PF",
+      "C"
+     ],
+     "status": "O"
     },
     {
      "player": "Cameron Boozer",
@@ -1791,14 +1787,14 @@
      "status": null
     },
     {
-     "player": "Evan Mobley",
-     "yahoo_name": "Evan Mobley",
+     "player": "CJ McCollum",
+     "yahoo_name": "CJ McCollum",
      "slot": "IL",
-     "yahoo_nba_team": "CLE",
-     "pool_team": "CLE",
+     "yahoo_nba_team": "ATL",
+     "pool_team": "ATL",
      "positions": [
-      "PF",
-      "C"
+      "PG",
+      "SG"
      ],
      "status": "O"
     },
@@ -2150,7 +2146,7 @@
       "PF",
       "C"
      ],
-     "status": null
+     "status": "Q"
     },
     {
      "player": "Jaden McDaniels",
