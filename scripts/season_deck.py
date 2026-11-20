@@ -1319,25 +1319,30 @@ function holdCheckCard(){ const W=D.brief.role_watch; if(!W) return null;
   const faBox=h("input",{type:"checkbox",id:"bd-fa",onchange:(e)=>{fa=e.target.checked;render();}});
   const tbl=h("div",{});
   // owner 2026-11-20 ("give me the option to also filter by POSITION ... PG, SG, G, SF, PF, F, C"; card "Build it,
-  // display-only"): one position at a time; G is PG or SG and F is SF or PF, the league's slots (hoops.POSITIONAL_SLOTS);
-  // eligibility is the pos column (Yahoo's). Display only: # and z adj keep their overall values.
-  const POS=["PG","SG","G","SF","PF","F","C"], POSMAP={G:["PG","SG"],F:["SF","PF"]};
+  // display-only"), then the same day "can you make it a drop down select, like the Draft deck tool?": one select with
+  // the Draft deck's list (deck docs/draft-deck.html #bestPos). G is PG or SG and F is SF or PF, the league's slots
+  // (hoops.POSITIONAL_SLOTS); G/F and F/C are the dual-eligible players (a guard and a forward spot; a forward spot and
+  // center). Eligibility is the pos column (Yahoo's). Display only: # and z adj keep their overall values.
+  const POS=[["","All"],["PG","PG"],["SG","SG"],["G","G"],["SF","SF"],["PF","PF"],["F","F"],["G+F","G/F"],["F+C","F/C"],["C","C"]];
+  const POSMAP={G:["PG","SG"],F:["SF","PF"]}, POSDUAL={"G+F":["G","F"],"F+C":["F","C"]},
+    POSSAID={G:"G (PG or SG)",F:"F (SF or PF)","G+F":"G/F (a guard spot and a forward spot)","F+C":"F/C (a forward spot and center)"};
+  const posHas=(e,k)=>(POSMAP[k]||[k]).some(x=>e.includes(x));
   const posOk=(r)=>{ if(!pos) return true; const e=String(r.pos||"").split(",").map(x=>x.trim());
-    return (POSMAP[pos]||[pos]).some(x=>e.includes(x)); };
-  const posBox=h("div",{id:"bd-pos",class:"mode",style:"flex-wrap:wrap;align-items:center"});
-  function posRender(){ const said= pos? (POSMAP[pos]? pos+" ("+POSMAP[pos].join(" or ")+")" : pos) : "";
-    posBox.replaceChildren(h("span",{class:"note"},"Position"),
-      ...[""].concat(POS).map(k=>h("button",{"aria-pressed":pos===k?"true":"false","data-pos":k||"ALL",
-        title: k? "Show only players eligible at "+(POSMAP[k]? k+" ("+POSMAP[k].join(" or ")+")" : k)+". The # and z adj columns keep their overall values."
-          : "Show every position",
-        onclick:()=>{ pos=(pos===k?"":k); posRender(); render(); }},k||"All")),
-      h("span",{class:"small note",id:"bd-pos-n"}, pos? rows.filter(posOk).length+" of "+rows.length+" players are eligible at "+said : "")); }
+    return POSDUAL[pos]? POSDUAL[pos].every(k=>posHas(e,k)) : posHas(e,pos); };
+  const posSel=h("select",{id:"bd-pos",title:"Show only players eligible at one position. The # and z adj columns keep their overall values.",
+    onchange:(e)=>{ pos=e.target.value; posRender(); render(); }}, POS.map(([v,l])=>h("option",{value:v},l)));
+  const posNote=h("div",{class:"small note",id:"bd-pos-n",style:"margin:6px 0 10px"});
+  function posRender(){ posSel.value=pos;
+    posNote.textContent= pos? rows.filter(posOk).length+" of "+rows.length+" players are eligible at "+(POSSAID[pos]||pos) : "";
+    posNote.style.display= pos? "" : "none"; }
   box.append(h("div",{class:"h2row"},h("h2",{},"Season board — "+rows.length+" ranked players"),
       h("button",{id:"bd-reset",class:"resetbtn",onclick:()=>{q="";inp.value="";fa=false;faBox.checked=false;pos="";posRender();key="rank";asc=true;ca=null;cb=null;lens=[];drill=null;lensRender();puntSet(o=>o.clear());}},"Reset")),
     noteMore("Season lines blended with games so far ("+D.season_lines.players_with_games+" players) · "+(D.board.held.length? D.board.held.length+" held off the board" : "none held off the board"),
       D.board.held.length? "Held off the board: "+D.board.held.join(", ")+"." : null),
-    h("div",{class:"pick"},inp,h("label",{style:"display:flex;align-items:center;gap:6px"},faBox,"free agents only")),
-    posBox,
+    h("div",{class:"pick"},h("div",{style:"flex-direction:row;align-items:center;gap:10px"},
+        h("label",{class:"note",style:"display:flex;align-items:center;gap:6px;flex:0 0 auto"},"Pos",posSel),h("div",{style:"flex:1;min-width:0"},inp)),
+      h("label",{style:"display:flex;align-items:center;gap:6px"},faBox,"free agents only")),
+    posNote,
     noteMore("Fit for your build: switch a category off to leave it out of every player's value",
       "A category you are conceding should not count for or against a player. With one or more switched off, the table adds a fit column (the sum of the categories still on, with the board's own availability discount) and sorts by it. My build switches off the categories where your team ranks "+WEAK+"th or worse of "+NTEAMS+" today, with IL players counting nothing."+(ANY_IL?" Full health does the same with every team's IL players counted as active (those the board ranks), before any cuts to make room: use it to tell a category that is weak for good from one that is weak only while someone is hurt.":"")+" The # and z adj columns never change, and the simulator does not read this."),
     chips, catBox, tbl);

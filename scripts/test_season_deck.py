@@ -2655,7 +2655,9 @@ def board_lens_dom(html_path, clicks):
             pg.goto("file://" + os.path.abspath(html_path), wait_until="load")
             pg.click("nav.tabs button:has-text('Board')")
             for sel in clicks:
-                if sel.startswith("th:"):
+                if sel.startswith("pos:"):
+                    pg.select_option("#bd-pos", sel[4:])
+                elif sel.startswith("th:"):
                     lab = sel[3:]
                     pg.evaluate("(l) => [...document.querySelectorAll('#pane-board table tr:first-child th')].find(x=>x.textContent.replace(/[ ↑↓•▼]/g,'')===l).click()", lab)
                 else:
@@ -2665,8 +2667,9 @@ def board_lens_dom(html_path, clicks):
             return dict(errors=errs, head=head, names=[r[1].split(" · ")[0] for r in rows], rows=rows,
                         chips=pg.evaluate("() => [...document.querySelectorAll('#bd-cats .catchip')].map(x=>x.dataset.cat+(x.classList.contains('drilled')?'*':''))"),
                         note=pg.evaluate("() => { const n=document.querySelector('#bd-cats .small'); return n? n.textContent : '' }"),
-                        pos_buttons=pg.evaluate("() => [...document.querySelectorAll('#bd-pos button')].map(x=>x.textContent)"),
-                        pos_on=pg.evaluate("() => [...document.querySelectorAll('#bd-pos button[aria-pressed=true]')].map(x=>x.textContent)"),
+                        pos_tag=pg.evaluate("() => { const e=document.querySelector('#bd-pos'); return e? e.tagName : '' }"),
+                        pos_buttons=pg.evaluate("() => [...document.querySelectorAll('#bd-pos option')].map(x=>x.textContent)"),
+                        pos_on=pg.evaluate("() => [...document.querySelectorAll('#bd-pos option')].filter(x=>x.selected).map(x=>x.textContent)"),
                         pos_note=pg.evaluate("() => { const n=document.querySelector('#bd-pos-n'); return n? n.textContent : '' }"))
         finally:
             b.close()
@@ -3015,7 +3018,9 @@ class BandStale(unittest.TestCase):
 class BoardPositionFilter(unittest.TestCase):
     """Owner 2026-11-20 ("give me the option to also filter by POSITION ... PG, SG, G, SF, PF, F, C", card "Build it,
     display-only"): one position at a time on the Board; G is PG or SG, F is SF or PF (the league's slots,
-    hoops.POSITIONAL_SLOTS); eligibility is the pos column. Display only: # and z adj keep their overall values."""
+    hoops.POSITIONAL_SLOTS); eligibility is the pos column. Display only: # and z adj keep their overall values.
+    Owner 2026-11-20, the same day ("can you make it a drop down select, like the Draft deck tool?"): one select with
+    the Draft deck's list, which adds G/F (eligible at a guard and a forward spot) and F/C (a forward spot and center)."""
     CATS = PuntView.CATS
 
     def setUp(self):
@@ -3027,8 +3032,9 @@ class BoardPositionFilter(unittest.TestCase):
                       dict(rank=3, name="Bench Guy", team="DAL", pos="SF", gp=82.0, z_adj=2.5, z_total=2.5, z=z(PTS=2.0, REB=0.5)),
                       dict(rank=4, name="Steal Man", team="BOS", pos="SG", gp=82.0, z_adj=2.0, z_total=2.0, z=z(STL=2.0)),
                       dict(rank=5, name="Big Wing", team="NYK", pos="PF,C", gp=82.0, z_adj=1.5, z_total=1.5, z=z(REB=1.5, PTS=3.0)),
-                      dict(rank=6, name="Combo Guard", team="LAL", pos="PG,SG", gp=82.0, z_adj=1.0, z_total=1.0, z=z(AST=1.0))]
-        b["n_rows"] = 6
+                      dict(rank=6, name="Combo Guard", team="LAL", pos="PG,SG", gp=82.0, z_adj=1.0, z_total=1.0, z=z(AST=1.0)),
+                      dict(rank=7, name="Swing Man", team="TOR", pos="SG,SF", gp=82.0, z_adj=0.5, z_total=0.5, z=z(STL=0.5))]
+        b["n_rows"] = 7
         json.dump(b, open(fx["board"], "w"))
         html, _, _ = SD.build(fx, date="2026-10-21")
         self.p = os.path.join(self.d, "deck.html")
@@ -3036,33 +3042,40 @@ class BoardPositionFilter(unittest.TestCase):
             f.write(html)
 
     def pos(self, k):
-        return "#bd-pos button[data-pos='%s']" % k
+        return "pos:" + k
 
-    def test_the_buttons_are_the_league_slots_and_all_is_on_by_default(self):
+    def test_it_is_one_select_with_the_draft_decks_list_and_all_is_on_by_default(self):
         d = board_lens_dom(self.p, [])
-        self.assertEqual(d["errors"], [])
-        self.assertEqual(d["pos_buttons"], ["All", "PG", "SG", "G", "SF", "PF", "F", "C"])
-        self.assertEqual(d["pos_on"], ["All"]); self.assertEqual(len(d["names"]), 6); self.assertEqual(d["pos_note"], "")
+        self.assertEqual(d["errors"], []); self.assertEqual(d["pos_tag"], "SELECT")
+        self.assertEqual(d["pos_buttons"], ["All", "PG", "SG", "G", "SF", "PF", "F", "G/F", "F/C", "C"])
+        self.assertEqual(d["pos_on"], ["All"]); self.assertEqual(len(d["names"]), 7); self.assertEqual(d["pos_note"], "")
+
+    def test_g_f_and_f_c_are_the_dual_eligible_players(self):
+        gf = board_lens_dom(self.p, [self.pos("G+F")])
+        self.assertEqual(gf["errors"], []); self.assertEqual(gf["names"], ["Swing Man"]); self.assertEqual(gf["pos_on"], ["G/F"])
+        self.assertIn("a guard spot and a forward spot", gf["pos_note"])
+        fc = board_lens_dom(self.p, [self.pos("F+C")])
+        self.assertEqual(fc["names"], ["Big Wing"]); self.assertIn("a forward spot and center", fc["pos_note"])
 
     def test_a_single_position_keeps_only_players_eligible_there_and_their_overall_rank(self):
         d = board_lens_dom(self.p, [self.pos("PG")])
         self.assertEqual(d["errors"], []); self.assertEqual(d["pos_on"], ["PG"])
         self.assertEqual(d["names"], ["Alpha Man", "Combo Guard"])
         self.assertEqual([r[0] for r in d["rows"]], ["1", "6"])          # the # column is the overall rank, not 1 and 2
-        self.assertIn("2 of 6", d["pos_note"])
+        self.assertIn("2 of 7", d["pos_note"])
         c = board_lens_dom(self.p, [self.pos("C")])
         self.assertEqual(c["names"], ["Free Agent", "Big Wing"])          # "PF,C" is eligible at C
 
     def test_g_is_pg_or_sg_and_f_is_sf_or_pf(self):
         g = board_lens_dom(self.p, [self.pos("G")])
-        self.assertEqual(g["names"], ["Alpha Man", "Steal Man", "Combo Guard"]); self.assertIn("PG or SG", g["pos_note"])
+        self.assertEqual(g["names"], ["Alpha Man", "Steal Man", "Combo Guard", "Swing Man"]); self.assertIn("PG or SG", g["pos_note"])
         f = board_lens_dom(self.p, [self.pos("F")])
-        self.assertEqual(f["names"], ["Bench Guy", "Big Wing"]); self.assertIn("SF or PF", f["pos_note"])
+        self.assertEqual(f["names"], ["Bench Guy", "Big Wing", "Swing Man"]); self.assertIn("SF or PF", f["pos_note"])
 
-    def test_a_second_click_all_and_reset_each_clear_it(self):
-        for clicks in ([self.pos("SG"), self.pos("SG")], [self.pos("SG"), self.pos("ALL")], [self.pos("SG"), "#bd-reset"]):
+    def test_all_and_reset_each_clear_it(self):
+        for clicks in ([self.pos("SG"), self.pos("")], [self.pos("SG"), "#bd-reset"]):
             d = board_lens_dom(self.p, clicks)
-            self.assertEqual(d["errors"], []); self.assertEqual(d["pos_on"], ["All"], clicks); self.assertEqual(len(d["names"]), 6)
+            self.assertEqual(d["errors"], []); self.assertEqual(d["pos_on"], ["All"], clicks); self.assertEqual(len(d["names"]), 7)
 
     def test_it_combines_with_the_free_agent_box_and_the_category_lens(self):
         d = board_lens_dom(self.p, [self.pos("C"), "th:PTS"])
@@ -3070,6 +3083,6 @@ class BoardPositionFilter(unittest.TestCase):
         self.assertEqual(d["pos_on"], ["C"]); self.assertEqual(d["chips"], ["PTS"])
         fa = board_lens_dom(self.p, [self.pos("G"), "#bd-fa"])
         every = board_lens_dom(self.p, ["#bd-fa"])
-        self.assertEqual(fa["names"], [n for n in every["names"] if n in ("Alpha Man", "Steal Man", "Combo Guard")])
-        self.assertLess(len(fa["names"]), 3)                               # Alpha Man is rostered in the fixture
+        self.assertEqual(fa["names"], [n for n in every["names"] if n in ("Alpha Man", "Steal Man", "Combo Guard", "Swing Man")])
+        self.assertLess(len(fa["names"]), 4)                               # Alpha Man is rostered in the fixture
 
