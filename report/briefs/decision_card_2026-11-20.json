@@ -1,0 +1,147 @@
+{
+ "date": "2026-11-20",
+ "seasons": 10000,
+ "seeds": [
+  2026,
+  2027
+ ],
+ "base": {
+  "never": 14.165,
+  "on_time": 22.17
+ },
+ "pairs": [
+  {
+   "add": "Cameron Johnson",
+   "drop": "Andrew Wiggins",
+   "never": {
+    "title": 14.68,
+    "d_title": 0.52
+   },
+   "on_time": {
+    "title": 22.174999999999997,
+    "d_title": 0.0049999999999954525,
+    "first_cut": {
+     "when": "Tyrese Haliburton",
+     "return_date": "2026-11-28",
+     "week": 6
+    }
+   },
+   "week": {
+    "d_exp": 0.016354465578477972,
+    "p_5plus": 0.998710852103141,
+    "d_p_5plus": 7.359870961087811e-05
+   }
+  },
+  {
+   "add": "Kevin Huerter",
+   "drop": "Andrew Wiggins",
+   "never": {
+    "title": 14.28,
+    "d_title": 0.12
+   },
+   "on_time": {
+    "title": 22.215,
+    "d_title": 0.04499999999999815,
+    "first_cut": {
+     "when": "Tyrese Haliburton",
+     "return_date": "2026-11-28",
+     "week": 6
+    }
+   },
+   "week": {
+    "d_exp": 0.030546811714775246,
+    "p_5plus": 0.9987848372878824,
+    "d_p_5plus": 0.0001475838943522101
+   }
+  },
+  {
+   "add": "Alex Caruso",
+   "drop": "Andrew Wiggins",
+   "never": {
+    "title": 14.34,
+    "d_title": 0.18
+   },
+   "on_time": {
+    "title": 22.265,
+    "d_title": 0.09499999999999886,
+    "first_cut": {
+     "when": "Tyrese Haliburton",
+     "return_date": "2026-11-28",
+     "week": 6
+    }
+   },
+   "week": {
+    "d_exp": 0.050074161969722364,
+    "p_5plus": 0.998863942938122,
+    "d_p_5plus": 0.00022668954459181823
+   }
+  }
+ ],
+ "order": {
+  "never": [
+   [
+    "Cameron Johnson",
+    "Andrew Wiggins"
+   ],
+   [
+    "Alex Caruso",
+    "Andrew Wiggins"
+   ],
+   [
+    "Kevin Huerter",
+    "Andrew Wiggins"
+   ]
+  ],
+  "on_time": [
+   [
+    "Alex Caruso",
+    "Andrew Wiggins"
+   ],
+   [
+    "Kevin Huerter",
+    "Andrew Wiggins"
+   ],
+   [
+    "Cameron Johnson",
+    "Andrew Wiggins"
+   ]
+  ]
+ },
+ "rank_flip": true,
+ "robust": {
+  "add": "Cameron Johnson",
+  "drop": "Andrew Wiggins",
+  "constant": "weekly_availability",
+  "variants": [
+   {
+    "label": "healthy at the old 0.88",
+    "d_title": 0.5999999999999996
+   },
+   {
+    "label": "healthy at the unfloored fit (0.78)",
+    "d_title": 0.3200000000000003
+   },
+   {
+    "label": "risk at the old 0.75",
+    "d_title": 0.11499999999999844
+   },
+   {
+    "label": "risk at the unfloored fit (0.56)",
+    "d_title": 0.4250000000000007
+   }
+  ],
+  "held": 4,
+  "holds": true,
+  "low": 0.11499999999999844,
+  "high": 0.5999999999999996
+ },
+ "notes": [],
+ "label": "Display only: the brief's ranking and the headline title share are unchanged. The return world rests on ESPN's dates and the room rule (the lowest-value active player leaves), which is itself FRAGILE.",
+ "inputs": {
+  "brief": "brief_2026-11-20.json",
+  "il_return": true,
+  "week_card": true,
+  "pool": "/home/user/fantasy-basketball-2026-27/data/season/pool_season.csv",
+  "state_as_of": "2026-11-20"
+ }
+}
