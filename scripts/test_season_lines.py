@@ -256,6 +256,40 @@ class AutoRows(unittest.TestCase):
             self.assertEqual(rec2["auto_rows"], []); self.assertIn("New Guy", rec2["unpooled_with_games"])
             self.assertNotIn("New Guy", {r["player"] for r in csv.DictReader(open(os.path.join(d, "pool_season.csv")))})
 
+    def rostered_state(self, d, names):
+        p = os.path.join(d, "state.json")
+        with open(p, "w") as f:
+            json.dump(dict(unpooled=[], teams=[dict(name="THEM", seat=3, players=[dict(player=n, slot="BN") for n in names], unpooled=[])]), f)
+        return p
+
+    def test_a_rostered_deck_row_with_no_kit_row_gets_a_kit_row_from_its_blended_line(self):
+        # owner 2026-11-20 (option 3, "Line from his games"): Landry Shamet was in the deck plane, not in the kit file,
+        # and the 5 AM deck halted on "no season-board row"; the kit plane now carries his blended deck line
+        with tempfile.TemporaryDirectory() as d:
+            kit, deck = self.plane(d)   # kit: Test Guard (gp 70); deck: Plane 0..2
+            st = self.rostered_state(d, ["Plane 1", "Test Guard"])
+            rows = [dict(r, name="Plane 1", pool_name="Plane 1") for r in box("x", 4, pts=30, min=20)]
+            rec = S.run(date="2026-11-20", actuals=[record("2026-11-19", rows)], kit_csv=kit, deck_csv=deck, out_dir=d, state_json=st)
+            kit_out = {r["name"]: r for r in csv.DictReader(open(os.path.join(d, "projections_season.csv")))}
+            deck_out = {r["player"]: r for r in csv.DictReader(open(os.path.join(d, "pool_season.csv")))}
+            self.assertIn("Plane 1", kit_out); k, p = kit_out["Plane 1"], deck_out["Plane 1"]
+            for kc, dc in (("fgp", "fg_pct"), ("ftp", "ft_pct"), ("fga", "fga"), ("fta", "fta"), ("tpm", "tpm"), ("pts", "pts"),
+                           ("reb", "reb"), ("ast", "ast"), ("stl", "stl"), ("blk", "blk"), ("tov", "tov")):
+                self.assertEqual(k[kc], p[dc], kc)
+            self.assertEqual(k["gp"], "70"); self.assertEqual(k["mpg"], "20.0")   # the kit file's median gp; his box minutes
+            self.assertEqual([x["player"] for x in rec["kit_rows"]], ["Plane 1"]); self.assertEqual(rec["kit_rows"][0]["gp_basis"], "kit median")
+            # not rostered, or already a kit row: nothing added
+            self.assertNotIn("Plane 0", kit_out); self.assertEqual(sum(1 for n in kit_out if n == "Test Guard"), 1)
+            # the blend file carries the same row (the minutes candidate reads it)
+            self.assertIn("Plane 1", {r["name"] for r in csv.DictReader(open(os.path.join(d, "projections_season_blend.csv")))})
+
+    def test_a_rostered_deck_row_with_no_games_still_gets_a_kit_row(self):
+        with tempfile.TemporaryDirectory() as d:
+            kit, deck = self.plane(d); st = self.rostered_state(d, ["Plane 2"])
+            rec = S.run(date="2026-11-20", actuals=[], kit_csv=kit, deck_csv=deck, out_dir=d, state_json=st)
+            k = {r["name"]: r for r in csv.DictReader(open(os.path.join(d, "projections_season.csv")))}["Plane 2"]
+            self.assertEqual(k["pts"], "10.0"); self.assertEqual(k["mpg"], "0.0"); self.assertEqual(rec["kit_rows"][0]["games"], 0)
+
     def test_a_name_already_on_the_plane_and_no_state_file_make_no_row(self):
         with tempfile.TemporaryDirectory() as d:
             kit, deck = self.plane(d); st = self.state(d, name="Plane 0")
