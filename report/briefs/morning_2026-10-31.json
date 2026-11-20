@@ -1,0 +1,280 @@
+{
+ "ran_at_utc": "2026-10-31T12:05:30Z",
+ "steps": [
+  {
+   "name": "preflight",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/independent_audit/preflight.py --spec /home/user/fantasy-basketball-2026-27/scripts/independent_audit/morning_preflight.json",
+   "exit": 0,
+   "pass_line": "PREFLIGHT: PASS — kit morning run: 4 checks",
+   "verdict": "PASS",
+   "wrote": [],
+   "tail": [
+    "PREFLIGHT: PASS — kit morning run: 4 checks"
+   ]
+  },
+  {
+   "name": "league live",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/league_live.py --as-of 2026-10-31 --since 2026-10-31T12:03:10Z",
+   "exit": 0,
+   "pass_line": "LEAGUE LIVE: PASS — rosters from Flaim (Yahoo), pinned data/source/flaim/pull_2026-10-31.json; 2 not in the pool, not simulated: Nolan Traore (ANONG NANGIANNIS?!, BN), Matisse Thybulle (MAXEY-MUM OVERDRIVE, F)",
+   "verdict": "PASS",
+   "wrote": [
+    "data/league_state.json",
+    "data/news/league_moves_2026-10-31.json",
+    "data/news/league_state_am_2026-10-31.json",
+    "data/source/flaim/pull_2026-10-31.json",
+    "data/source/flaim/rosters_2026-10-31.transcribed.csv",
+    "report/run-ledger.jsonl"
+   ],
+   "tail": [
+    "LEAGUE INTAKE: WARN — 2 name(s) not in the pool, carried as unpooled (no line, not simulated): Nolan Traore (ANONG NANGIANNIS?!, BN, BKN); Matisse Thybulle (MAXEY-MUM OVERDRIVE, F, LAL)",
+    "LEAGUE INTAKE: PASS — 12 teams, 175 players, 175 of 175 resolved; 2 unpooled; 0 NBA-team disagreement(s) with the pool; wrote data/league_state.json",
+    "LEAGUE MOVES: PASS — 7 team(s) changed, 16 move(s), 2026-10-30 to 2026-10-31 (am); wrote data/news/league_moves_2026-10-31.json",
+    "LEAGUE LIVE: PASS — rosters from Flaim (Yahoo), pinned data/source/flaim/pull_2026-10-31.json; 2 not in the pool, not simulated: Nolan Traore (ANONG NANGIANNIS?!, BN), Matisse Thybulle (MAXEY-MUM OVERDRIVE, F)"
+   ]
+  },
+  {
+   "name": "matchup live",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/matchup_live.py --date 2026-10-31 --since 2026-10-31T12:03:10Z",
+   "exit": 0,
+   "pass_line": "MATCHUP LIVE: PASS — week 2, games left 6 mine / 8 Looking Cool Joker!; wrote data/news/matchup_live_2026-10-31.json",
+   "verdict": "PASS",
+   "wrote": [
+    "data/news/matchup_live_2026-10-31.json",
+    "data/source/fantasybot/outlook_2026-10-31.json"
+   ],
+   "tail": [
+    "MATCHUP LIVE: PASS — week 2, games left 6 mine / 8 Looking Cool Joker!; wrote data/news/matchup_live_2026-10-31.json"
+   ]
+  },
+  {
+   "name": "box scores 2026-10-30",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/box_pull.py --date 2026-10-30",
+   "exit": 0,
+   "pass_line": "BOX PULL: PASS — 2026-10-30: 10 games, 273 player lines, 188 in the pool, 85 unpooled; two outlets: 262 matched, 10 cells differ, 1 ESPN-only, 0 bref-only; written data/actuals/2026-10-30.json",
+   "verdict": "PASS",
+   "wrote": [
+    "data/actuals/2026-10-30.json"
+   ],
+   "tail": [
+    "BOX PULL: PASS — 2026-10-30: 10 games, 273 player lines, 188 in the pool, 85 unpooled; two outlets: 262 matched, 10 cells differ, 1 ESPN-only, 0 bref-only; written data/actuals/2026-10-30.json"
+   ]
+  },
+  {
+   "name": "tag outcomes",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/tag_outcomes.py --date 2026-10-30",
+   "exit": 0,
+   "pass_line": "TAG OUTCOMES: PASS — 2026-10-30: 31 flagged player(s) 9 no game, 2 played, 19 sat, 1 unresolved; data/status/tag_outcomes.jsonl",
+   "verdict": "PASS",
+   "wrote": [
+    "data/status/tag_outcomes.jsonl"
+   ],
+   "tail": [
+    "TAG OUTCOMES: PASS — 2026-10-30: 31 flagged player(s) 9 no game, 2 played, 19 sat, 1 unresolved; data/status/tag_outcomes.jsonl"
+   ]
+  },
+  {
+   "name": "season lines",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/season_lines.py --date 2026-10-31",
+   "exit": 0,
+   "pass_line": "SEASON LINES: PASS — 2026-10-31: 13 box-score records, 294 pool players with regular-season games, 288 lines moved by 0.25+ (priors in games: FG% 26.0, FT% 37.5, 3PM 9.5, PTS 11.7, REB 12.4, AST 11.7, STL 21.7, BLK 14.5, TO 14.0); 129 unpooled players with games; 1 tag override(s)",
+   "verdict": "PASS",
+   "wrote": [
+    "data/season/pool_season.csv",
+    "data/season/projections_season.csv",
+    "data/season/season_lines_2026-10-31.json"
+   ],
+   "tail": [
+    "SEASON LINES: PASS — 2026-10-31: 13 box-score records, 294 pool players with regular-season games, 288 lines moved by 0.25+ (priors in games: FG% 26.0, FT% 37.5, 3PM 9.5, PTS 11.7, REB 12.4, AST 11.7, STL 21.7, BLK 14.5, TO 14.0); 129 unpooled players with games; 1 tag override(s)",
+    "/home/user/fantasy-basketball-2026-27/scripts/season_lines.py:76: DeprecationWarning: 'maxsplit' is passed as positional argument",
+    "  return re.split(r\"[\\s(]\", (note or \"\").lower(), 1)[0]"
+   ]
+  },
+  {
+   "name": "minutes line",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/minutes_line.py --date 2026-10-31",
+   "exit": 0,
+   "pass_line": "MINUTES LINE: PASS — 2026-10-31: 338 players, 285 with games; ratio >= 1.10 for 12, <= 0.90 for 29; 33 unscaled (no preseason mpg); candidate only, wrote pool_season_mt.csv, projections_season_mt.csv",
+   "verdict": "PASS",
+   "wrote": [
+    "data/season/minutes_line_2026-10-31.json",
+    "data/season/pool_season_mt.csv",
+    "data/season/projections_season_mt.csv"
+   ],
+   "tail": [
+    "MINUTES LINE: PASS — 2026-10-31: 338 players, 285 with games; ratio >= 1.10 for 12, <= 0.90 for 29; 33 unscaled (no preseason mpg); candidate only, wrote pool_season_mt.csv, projections_season_mt.csv"
+   ]
+  },
+  {
+   "name": "season board",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/season_board.py --date 2026-10-31",
+   "exit": 0,
+   "pass_line": "SEASON BOARD: PASS — 2026-10-31: report/season/board_2026-10-31.md (288 movers listed)",
+   "verdict": "PASS",
+   "wrote": [
+    "report/season/board_2026-10-31.json",
+    "report/season/board_2026-10-31.md"
+   ],
+   "tail": [
+    "SEASON BOARD: PASS — 2026-10-31: report/season/board_2026-10-31.md (288 movers listed)"
+   ]
+  },
+  {
+   "name": "status feed",
+   "cmd": "bash -c '/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/status_feed.py --date 2026-10-31 && /usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/status_feed.py --check /home/user/fantasy-basketball-2026-27/data/status/status_2026-10-31.json'",
+   "exit": 0,
+   "pass_line": "STATUS GATE: PASS — status_2026-10-31.json: 28 flagged row(s), each tiered with a dated receipt",
+   "verdict": "PASS",
+   "wrote": [
+    "data/status/espn_injuries_2026-10-31.json",
+    "data/status/status_2026-10-31.json"
+   ],
+   "tail": [
+    "status: 28 flagged row(s) league-wide; yours: Kawhi Leonard O→0.00, Ty Jerome Q→0.50, Tyrese Haliburton O→0.00",
+    "ESPN injuries: read",
+    "wrote data/status/status_2026-10-31.json",
+    "STATUS GATE: PASS — status_2026-10-31.json: 28 flagged row(s), each tiered with a dated receipt"
+   ]
+  },
+  {
+   "name": "transactions",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/transactions.py --date 2026-10-31",
+   "exit": 0,
+   "pass_line": "TRANSACTIONS: PASS — 2026-10-31: 0 feed item(s) 2026-10-29 to 2026-10-31; 0 name a pool player, 0 rostered; wrote data/news/transactions_2026-10-31.json",
+   "verdict": "PASS",
+   "wrote": [
+    "data/news/transactions_2026-10-31.json"
+   ],
+   "tail": [
+    "TRANSACTIONS: PASS — 2026-10-31: 0 feed item(s) 2026-10-29 to 2026-10-31; 0 name a pool player, 0 rostered; wrote data/news/transactions_2026-10-31.json"
+   ]
+  },
+  {
+   "name": "league pairings",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/league_pairings.py",
+   "exit": 0,
+   "pass_line": "LEAGUE PAIRINGS: PASS — 17 weeks of pairings for all 12 teams, owner opponents match, 1 week(s) played; wrote data/league_schedule.json",
+   "verdict": "PASS",
+   "wrote": [],
+   "tail": [
+    "LEAGUE PAIRINGS: PASS — 17 weeks of pairings for all 12 teams, owner opponents match, 1 week(s) played; wrote data/league_schedule.json"
+   ]
+  },
+  {
+   "name": "daily brief",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/daily_brief.py --date 2026-10-31 --seasons 10000",
+   "exit": 0,
+   "pass_line": "wrote report/briefs/brief_2026-10-31.md",
+   "verdict": "PASS",
+   "wrote": [
+    "report/briefs/brief_2026-10-31.json",
+    "report/briefs/brief_2026-10-31.md"
+   ],
+   "tail": [
+    "wrote report/briefs/brief_2026-10-31.md"
+   ]
+  },
+  {
+   "name": "decision log",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/decision_log.py --brief 2026-10-31 --moves",
+   "exit": 0,
+   "pass_line": "DECISION LOG: PASS R-2026-10-31-01 add_drop Julian Champagnie for Neemias Queta; M-2026-10-31-01 am +Cameron Johnson -Julian Champagnie -> add_match_drop_differs S-2026-10-30-01",
+   "verdict": "PASS",
+   "wrote": [
+    "data/decisions/moves.jsonl",
+    "data/decisions/recommendations.jsonl"
+   ],
+   "tail": [
+    "DECISION LOG: PASS R-2026-10-31-01 add_drop Julian Champagnie for Neemias Queta; M-2026-10-31-01 am +Cameron Johnson -Julian Champagnie -> add_match_drop_differs S-2026-10-30-01"
+   ]
+  },
+  {
+   "name": "week matchup",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/week_matchup.py --date 2026-10-31",
+   "exit": 0,
+   "pass_line": "WEEK MATCHUP: PASS — 2026-10-31: week 2 vs Looking Cool Joker!; to date from Yahoo (rebuild agrees); to date 5 day(s), 0 missing; projected 7-2-0; pickups ran (drop PJ Washington, 78 free agents scored from the Yahoo list); pool pool_season.csv; wrote report/briefs/week_matchup_2026-10-31.json",
+   "verdict": "PASS",
+   "wrote": [
+    "report/briefs/week_matchup_2026-10-31.json"
+   ],
+   "tail": [
+    "WEEK MATCHUP: PASS — 2026-10-31: week 2 vs Looking Cool Joker!; to date from Yahoo (rebuild agrees); to date 5 day(s), 0 missing; projected 7-2-0; pickups ran (drop PJ Washington, 78 free agents scored from the Yahoo list); pool pool_season.csv; wrote report/briefs/week_matchup_2026-10-31.json"
+   ]
+  },
+  {
+   "name": "league table",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/league_table.py --date 2026-10-31",
+   "exit": 0,
+   "pass_line": "LEAGUE TABLE: PASS — 2026-10-31: week 2; wk1 finished (rebuild), wk2 in_progress (yahoo); power #1 Splash Mountain (0.609), you #3 (0.598); standings pull_2026-10-31.json, Yahoo W-L-T matches the kit's finished weeks for 12 teams; wrote report/league/league_2026-10-31.json",
+   "verdict": "PASS",
+   "wrote": [
+    "report/league/league_2026-10-31.json"
+   ],
+   "tail": [
+    "LEAGUE TABLE: PASS — 2026-10-31: week 2; wk1 finished (rebuild), wk2 in_progress (yahoo); power #1 Splash Mountain (0.609), you #3 (0.598); standings pull_2026-10-31.json, Yahoo W-L-T matches the kit's finished weeks for 12 teams; wrote report/league/league_2026-10-31.json"
+   ]
+  },
+  {
+   "name": "form board",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/form_board.py --date 2026-10-31",
+   "exit": 0,
+   "pass_line": "FORM BOARD: PASS — 175 rostered + 100 free agents, 258 with games over 11 box days (2026-10-20 to 2026-10-30); (17 without a game yet); 0 Yahoo names in neither pool nor box scores; report/form/form_2026-10-31.json",
+   "verdict": "PASS",
+   "wrote": [
+    "report/form/form_2026-10-31.csv",
+    "report/form/form_2026-10-31.json"
+   ],
+   "tail": [
+    "FORM BOARD: PASS — 175 rostered + 100 free agents, 258 with games over 11 box days (2026-10-20 to 2026-10-30); (17 without a game yet); 0 Yahoo names in neither pool nor box scores; report/form/form_2026-10-31.json"
+   ]
+  },
+  {
+   "name": "season deck",
+   "cmd": "/usr/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/season_deck.py --date 2026-10-31",
+   "exit": 0,
+   "pass_line": "SEASON DECK: PASS — 2026-10-31: report/season/deck_2026-10-31.html (7 panes, 315 board rows, 28 status rows; record deck_record_2026-10-31.json pins 14 inputs; render: 7 tabs, 0 page errors)",
+   "verdict": "PASS",
+   "wrote": [
+    "report/season/deck_2026-10-31.html",
+    "report/season/deck_record_2026-10-31.json"
+   ],
+   "tail": [
+    "SEASON DECK: PASS — 2026-10-31: report/season/deck_2026-10-31.html (7 panes, 315 board rows, 28 status rows; record deck_record_2026-10-31.json pins 14 inputs; render: 7 tabs, 0 page errors)"
+   ]
+  }
+ ],
+ "verdict": "PASS",
+ "wrote": [
+  "data/actuals/2026-10-30.json",
+  "data/decisions/moves.jsonl",
+  "data/decisions/recommendations.jsonl",
+  "data/league_state.json",
+  "data/news/league_moves_2026-10-31.json",
+  "data/news/league_state_am_2026-10-31.json",
+  "data/news/matchup_live_2026-10-31.json",
+  "data/news/transactions_2026-10-31.json",
+  "data/season/minutes_line_2026-10-31.json",
+  "data/season/pool_season.csv",
+  "data/season/pool_season_mt.csv",
+  "data/season/projections_season.csv",
+  "data/season/projections_season_mt.csv",
+  "data/season/season_lines_2026-10-31.json",
+  "data/source/fantasybot/outlook_2026-10-31.json",
+  "data/source/flaim/pull_2026-10-31.json",
+  "data/source/flaim/rosters_2026-10-31.transcribed.csv",
+  "data/status/espn_injuries_2026-10-31.json",
+  "data/status/status_2026-10-31.json",
+  "data/status/tag_outcomes.jsonl",
+  "report/briefs/brief_2026-10-31.json",
+  "report/briefs/brief_2026-10-31.md",
+  "report/briefs/week_matchup_2026-10-31.json",
+  "report/form/form_2026-10-31.csv",
+  "report/form/form_2026-10-31.json",
+  "report/league/league_2026-10-31.json",
+  "report/run-ledger.jsonl",
+  "report/season/board_2026-10-31.json",
+  "report/season/board_2026-10-31.md",
+  "report/season/deck_2026-10-31.html",
+  "report/season/deck_record_2026-10-31.json"
+ ]
+}

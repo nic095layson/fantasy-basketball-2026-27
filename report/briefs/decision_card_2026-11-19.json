@@ -1,0 +1,145 @@
+{
+ "date": "2026-11-19",
+ "seasons": 10000,
+ "seeds": [
+  2026,
+  2027
+ ],
+ "base": {
+  "never": 13.605,
+  "on_time": 21.994999999999997
+ },
+ "pairs": [
+  {
+   "add": "Julian Champagnie",
+   "drop": "Andrew Wiggins",
+   "never": {
+    "title": 14.81,
+    "d_title": 1.21
+   },
+   "on_time": {
+    "title": 22.005,
+    "d_title": 0.010000000000001563,
+    "first_cut": {
+     "when": "Tyrese Haliburton",
+     "return_date": "2026-11-28",
+     "week": 6
+    }
+   },
+   "week": {
+    "d_exp": -0.00929562523318822,
+    "p_5plus": 0.9970499418611812,
+    "d_p_5plus": 0.00010815664215435561
+   }
+  },
+  {
+   "add": "Cameron Johnson",
+   "drop": "Andrew Wiggins",
+   "never": {
+    "title": 13.78,
+    "d_title": 0.17
+   },
+   "on_time": {
+    "title": 22.02,
+    "d_title": 0.02500000000000213,
+    "first_cut": {
+     "when": "Tyrese Haliburton",
+     "return_date": "2026-11-28",
+     "week": 6
+    }
+   },
+   "week": {
+    "d_exp": 0.20230717095698836,
+    "p_5plus": 0.9976000627337442,
+    "d_p_5plus": 0.0006582775147173647
+   }
+  },
+  {
+   "add": "Alex Caruso",
+   "drop": "Andrew Wiggins",
+   "never": {
+    "title": 13.61,
+    "d_title": 0.0
+   },
+   "on_time": {
+    "title": 22.055,
+    "d_title": 0.060000000000002274,
+    "first_cut": {
+     "when": "Tyrese Haliburton",
+     "return_date": "2026-11-28",
+     "week": 6
+    }
+   },
+   "week": null
+  }
+ ],
+ "order": {
+  "never": [
+   [
+    "Julian Champagnie",
+    "Andrew Wiggins"
+   ],
+   [
+    "Cameron Johnson",
+    "Andrew Wiggins"
+   ],
+   [
+    "Alex Caruso",
+    "Andrew Wiggins"
+   ]
+  ],
+  "on_time": [
+   [
+    "Alex Caruso",
+    "Andrew Wiggins"
+   ],
+   [
+    "Cameron Johnson",
+    "Andrew Wiggins"
+   ],
+   [
+    "Julian Champagnie",
+    "Andrew Wiggins"
+   ]
+  ]
+ },
+ "rank_flip": true,
+ "robust": {
+  "add": "Julian Champagnie",
+  "drop": "Andrew Wiggins",
+  "constant": "weekly_availability",
+  "variants": [
+   {
+    "label": "healthy at the old 0.88",
+    "d_title": 1.7100000000000009
+   },
+   {
+    "label": "healthy at the unfloored fit (0.78)",
+    "d_title": 0.6999999999999993
+   },
+   {
+    "label": "risk at the old 0.75",
+    "d_title": 0.8900000000000006
+   },
+   {
+    "label": "risk at the unfloored fit (0.56)",
+    "d_title": 1.2600000000000016
+   }
+  ],
+  "held": 4,
+  "holds": true,
+  "low": 0.6999999999999993,
+  "high": 1.7100000000000009
+ },
+ "notes": [
+  "Alex Caruso for Andrew Wiggins: this week is not shown (add not in today's free-agent pool)"
+ ],
+ "label": "Display only: the brief's ranking and the headline title share are unchanged. The return world rests on ESPN's dates and the room rule (the lowest-value active player leaves), which is itself FRAGILE.",
+ "inputs": {
+  "brief": "brief_2026-11-19.json",
+  "il_return": true,
+  "week_card": true,
+  "pool": "/home/user/fantasy-basketball-2026-27/data/season/pool_season.csv",
+  "state_as_of": "2026-11-19"
+ }
+}

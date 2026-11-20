@@ -1,0 +1,421 @@
+{
+ "date": "2026-11-06",
+ "week": 3,
+ "week_window": [
+  "2026-11-02",
+  "2026-11-08"
+ ],
+ "league_state_as_of": "2026-11-06",
+ "unpooled": [
+  {
+   "player": "Meleek Thomas",
+   "fantasy_team": "Looking Cool Joker!",
+   "seat": 1,
+   "slot": "G",
+   "nba_team": "CLE",
+   "status": null
+  },
+  {
+   "player": "Nolan Traore",
+   "fantasy_team": "ANONG NANGIANNIS?!",
+   "seat": 5,
+   "slot": "PG",
+   "nba_team": "BKN",
+   "status": null
+  },
+  {
+   "player": "Matisse Thybulle",
+   "fantasy_team": "MAXEY-MUM OVERDRIVE",
+   "seat": 11,
+   "slot": "F",
+   "nba_team": "LAL",
+   "status": null
+  },
+  {
+   "player": "Quenton Jackson",
+   "fantasy_team": "John's Cool Team",
+   "seat": 7,
+   "slot": "BN",
+   "nba_team": "IND",
+   "status": null
+  }
+ ],
+ "status_file": "status_2026-11-06.json",
+ "lines": "season pool",
+ "opponent": "Podz save the league",
+ "today": [
+  [
+   "Ty Jerome",
+   "MEM",
+   "vs OKC",
+   null,
+   1.0,
+   1
+  ],
+  [
+   "Derrick White",
+   "BOS",
+   "@ CHA",
+   null,
+   1.0,
+   2
+  ],
+  [
+   "Kyrie Irving",
+   "DAL",
+   "vs UTA",
+   null,
+   1.0,
+   2
+  ],
+  [
+   "Yaxel Lendeborg",
+   "GSW",
+   null,
+   null,
+   1.0,
+   1
+  ],
+  [
+   "Miles Bridges",
+   "PHX",
+   null,
+   null,
+   1.0,
+   1
+  ],
+  [
+   "Ziaire Williams",
+   "LAL",
+   "vs POR",
+   null,
+   1.0,
+   2
+  ],
+  [
+   "Neemias Queta",
+   "BOS",
+   "@ CHA",
+   null,
+   1.0,
+   2
+  ],
+  [
+   "Kel'el Ware",
+   "MIL",
+   "vs TOR",
+   null,
+   1.0,
+   2
+  ],
+  [
+   "Jaden McDaniels",
+   "MIN",
+   "@ NOP",
+   null,
+   1.0,
+   2
+  ],
+  [
+   "PJ Washington",
+   "DAL",
+   "vs UTA",
+   null,
+   1.0,
+   2
+  ],
+  [
+   "Collin Gillespie",
+   "PHX",
+   null,
+   null,
+   1.0,
+   1
+  ],
+  [
+   "Kevin Durant",
+   "HOU",
+   null,
+   null,
+   1.0,
+   1
+  ],
+  [
+   "Kris Dunn",
+   "LAC",
+   null,
+   null,
+   1.0,
+   1
+  ]
+ ],
+ "lineup": [
+  [
+   "PG",
+   "Ty Jerome"
+  ],
+  [
+   "SG",
+   "Ziaire Williams"
+  ],
+  [
+   "G",
+   "Derrick White"
+  ],
+  [
+   "SF",
+   "Jaden McDaniels"
+  ],
+  [
+   "PF",
+   "PJ Washington"
+  ],
+  [
+   "C",
+   "Neemias Queta"
+  ],
+  [
+   "C",
+   "Kel'el Ware"
+  ],
+  [
+   "Util",
+   "Kyrie Irving"
+  ]
+ ],
+ "bench": [],
+ "waiver_base_ecw": 4.8691,
+ "waiver_gate": {
+  "sources": {
+   "yahoo": true,
+   "espn": true
+  },
+  "set_aside": [
+   {
+    "player": "Jalen Williams",
+    "code": "Out",
+    "source": "espn",
+    "return_date": "2027-03-02",
+    "reason": "out"
+   },
+   {
+    "player": "Cason Wallace",
+    "code": "O",
+    "source": "yahoo",
+    "return_date": "2027-03-02",
+    "reason": "out"
+   },
+   {
+    "player": "Kevin Porter Jr.",
+    "code": "NA",
+    "source": "yahoo",
+    "return_date": null,
+    "reason": "out"
+   },
+   {
+    "player": "Justin Champagnie",
+    "code": "O",
+    "source": "yahoo",
+    "return_date": "2027-02-25",
+    "reason": "out"
+   }
+  ]
+ },
+ "waiver_positive_pairs": 43,
+ "waiver_pairs_scored": 520,
+ "waiver_top": [
+  {
+   "add": "Tobias Harris",
+   "add_team": "SAS",
+   "drop": "Ziaire Williams",
+   "d_ecw": 0.133,
+   "add_status": {
+    "code": "O",
+    "source": "yahoo",
+    "return_date": "2026-11-09",
+    "short_out": true
+   },
+   "title_by_seed": {
+    "2026": 12.6,
+    "2027": 12.68
+   },
+   "title": 12.64,
+   "d_title": 2.28,
+   "add_waiver_date": null,
+   "add_own_drop_date": null
+  },
+  {
+   "add": "Julian Champagnie",
+   "add_team": "SAS",
+   "drop": "Ziaire Williams",
+   "d_ecw": 0.1286,
+   "title_by_seed": {
+    "2026": 12.78,
+    "2027": 13.25
+   },
+   "title": 13.02,
+   "d_title": 2.66,
+   "add_waiver_date": null,
+   "add_own_drop_date": null
+  },
+  {
+   "add": "Cameron Johnson",
+   "add_team": "DEN",
+   "drop": "Ziaire Williams",
+   "d_ecw": 0.1113,
+   "title_by_seed": {
+    "2026": 12.0,
+    "2027": 12.3
+   },
+   "title": 12.15,
+   "d_title": 1.79,
+   "add_waiver_date": null,
+   "add_own_drop_date": null
+  }
+ ],
+ "streaming": [],
+ "waiver_notes": {
+  "read": true,
+  "window_days": 3,
+  "missing_days": [],
+  "by": {
+   "Andrew Wiggins": {
+    "waiver_date": "2026-11-08",
+    "own_drop_date": null
+   },
+   "Zaccharie Risacher": {
+    "waiver_date": "2026-11-07",
+    "own_drop_date": null
+   },
+   "Isaiah Jackson": {
+    "waiver_date": "2026-11-07",
+    "own_drop_date": null
+   },
+   "Karlo Matkovic": {
+    "waiver_date": null,
+    "own_drop_date": "2026-11-06"
+   }
+  }
+ },
+ "streaming_vs": {
+  "player": "Ziaire Williams",
+  "games_left": 2,
+  "value_per_game": -2.89
+ },
+ "title": {
+  "2026": 10.31,
+  "2027": 10.41
+ },
+ "playoffs": {
+  "2026": 98.01,
+  "2027": 97.92
+ },
+ "seasons": 10000,
+ "absent_from_sim": [],
+ "transactions": {
+  "window": [
+   "2026-11-04",
+   "2026-11-06"
+  ],
+  "ok": true,
+  "hits": []
+ },
+ "league_moves": [
+  {
+   "team": "ANONG NANGIANNIS?!",
+   "seat": 5,
+   "added": [
+    "Oso Ighodaro"
+   ],
+   "dropped": [
+    "Zaccharie Risacher"
+   ],
+   "to_il": [],
+   "from_il": []
+  },
+  {
+   "team": "Cade n em",
+   "seat": 6,
+   "added": [
+    "Kingston Flemings"
+   ],
+   "dropped": [
+    "Andrew Wiggins"
+   ],
+   "to_il": [],
+   "from_il": []
+  },
+  {
+   "team": "ROOKS FTW",
+   "seat": 2,
+   "added": [],
+   "dropped": [
+    "Isaiah Jackson"
+   ],
+   "to_il": [],
+   "from_il": [
+    "Anthony Black"
+   ]
+  },
+  {
+   "team": "MAXEY-MUM OVERDRIVE",
+   "seat": 11,
+   "added": [
+    "Jalen Green"
+   ],
+   "dropped": [],
+   "to_il": [
+    "Kon Knueppel"
+   ],
+   "from_il": []
+  },
+  {
+   "team": "KEL'EL YAXEL HALQUETA",
+   "seat": 10,
+   "added": [
+    "Ziaire Williams"
+   ],
+   "dropped": [
+    "Karlo Matkovic"
+   ],
+   "to_il": [],
+   "from_il": []
+  }
+ ],
+ "il_return": {
+  "espn_date": "2026-11-06",
+  "n_il": 21,
+  "room_rule": "lowest adj_value active player leaves from the return week",
+  "error": 0.42,
+  "seasons": 10000,
+  "label": "scenario range, not a forecast; never replaces or averages into the headline",
+  "room_band": {
+   "constant": "il_return.ROOM_RULE_ON",
+   "shift": 5.1,
+   "label": "rule off",
+   "tier": "FRAGILE"
+  },
+  "slip_range": [
+   27.6,
+   28.2
+  ],
+  "scenarios": {
+   "never": {
+    "title": 10.36,
+    "playoffs": 97.97
+   },
+   "on_time": {
+    "title": 28.19,
+    "playoffs": 99.96
+   },
+   "late_2": {
+    "title": 28.07,
+    "playoffs": 99.94
+   },
+   "late_4": {
+    "title": 27.59,
+    "playoffs": 99.77
+   }
+  }
+ }
+}

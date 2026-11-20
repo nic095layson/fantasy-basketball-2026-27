@@ -1,0 +1,189 @@
+{
+ "weeks_final": [
+  1,
+  2,
+  3,
+  4
+ ],
+ "methods": {
+  "flat": {
+   "weeks": [
+    3,
+    4
+   ],
+   "by_cat": {
+    "FG%": {
+     "n": 12,
+     "brier": 0.20246260166666663,
+     "calls": 12,
+     "hits": 8,
+     "hit_rate": 0.6666666666666666,
+     "confidence": 0.6754999999999999
+    },
+    "FT%": {
+     "n": 12,
+     "brier": 0.11120469625,
+     "calls": 12,
+     "hits": 10,
+     "hit_rate": 0.8333333333333334,
+     "confidence": 0.7026833333333333
+    },
+    "3PTM": {
+     "n": 12,
+     "brier": 0.21957849354166667,
+     "calls": 12,
+     "hits": 9,
+     "hit_rate": 0.75,
+     "confidence": 0.8032875000000002
+    },
+    "PTS": {
+     "n": 12,
+     "brier": 0.21008099375,
+     "calls": 12,
+     "hits": 8,
+     "hit_rate": 0.6666666666666666,
+     "confidence": 0.6769916666666668
+    },
+    "REB": {
+     "n": 12,
+     "brier": 0.23191665020833338,
+     "calls": 12,
+     "hits": 7,
+     "hit_rate": 0.5833333333333334,
+     "confidence": 0.7089541666666667
+    },
+    "AST": {
+     "n": 12,
+     "brier": 0.19238280500000002,
+     "calls": 12,
+     "hits": 8,
+     "hit_rate": 0.6666666666666666,
+     "confidence": 0.6880083333333333
+    },
+    "ST": {
+     "n": 12,
+     "brier": 0.22665233604166668,
+     "calls": 12,
+     "hits": 9,
+     "hit_rate": 0.75,
+     "confidence": 0.6850208333333333
+    },
+    "BLK": {
+     "n": 12,
+     "brier": 0.12983140791666667,
+     "calls": 12,
+     "hits": 11,
+     "hit_rate": 0.9166666666666666,
+     "confidence": 0.6665666666666668
+    },
+    "TO": {
+     "n": 12,
+     "brier": 0.27797376270833335,
+     "calls": 12,
+     "hits": 6,
+     "hit_rate": 0.5,
+     "confidence": 0.6683541666666667
+    }
+   },
+   "all": {
+    "n": 108,
+    "brier": 0.2002315274537038,
+    "calls": 108,
+    "hits": 76,
+    "hit_rate": 0.7037037037037037,
+    "confidence": 0.6972629629629629
+   },
+   "note": null
+  },
+  "real_games": {
+   "weeks": [
+    3,
+    4
+   ],
+   "by_cat": {
+    "FG%": {
+     "n": 12,
+     "brier": 0.20294296979166662,
+     "calls": 12,
+     "hits": 8,
+     "hit_rate": 0.6666666666666666,
+     "confidence": 0.6725458333333334
+    },
+    "FT%": {
+     "n": 12,
+     "brier": 0.11847445125000002,
+     "calls": 12,
+     "hits": 10,
+     "hit_rate": 0.8333333333333334,
+     "confidence": 0.6966
+    },
+    "3PTM": {
+     "n": 12,
+     "brier": 0.20459536333333328,
+     "calls": 12,
+     "hits": 9,
+     "hit_rate": 0.75,
+     "confidence": 0.8430416666666668
+    },
+    "PTS": {
+     "n": 12,
+     "brier": 0.14949294999999999,
+     "calls": 12,
+     "hits": 8,
+     "hit_rate": 0.6666666666666666,
+     "confidence": 0.7140166666666667
+    },
+    "REB": {
+     "n": 12,
+     "brier": 0.21071526062499998,
+     "calls": 12,
+     "hits": 9,
+     "hit_rate": 0.75,
+     "confidence": 0.7014041666666667
+    },
+    "AST": {
+     "n": 12,
+     "brier": 0.211956848125,
+     "calls": 12,
+     "hits": 7,
+     "hit_rate": 0.5833333333333334,
+     "confidence": 0.6702125
+    },
+    "ST": {
+     "n": 12,
+     "brier": 0.22025302333333333,
+     "calls": 12,
+     "hits": 9,
+     "hit_rate": 0.75,
+     "confidence": 0.7147749999999999
+    },
+    "BLK": {
+     "n": 12,
+     "brier": 0.11260023604166665,
+     "calls": 12,
+     "hits": 10,
+     "hit_rate": 0.8333333333333334,
+     "confidence": 0.7157625
+    },
+    "TO": {
+     "n": 12,
+     "brier": 0.20926486687499998,
+     "calls": 12,
+     "hits": 9,
+     "hit_rate": 0.75,
+     "confidence": 0.6515875
+    }
+   },
+   "all": {
+    "n": 108,
+    "brier": 0.18225510770833336,
+    "calls": 108,
+    "hits": 79,
+    "hit_rate": 0.7314814814814815,
+    "confidence": 0.7088828703703705
+   },
+   "note": null
+  }
+ },
+ "method": "p = recorded pre-week chance that seat a wins the category; outcome 1 / 0 / 0.5 (tie), TO low wins; Brier (p - outcome)^2, 0.25 = coin flip; calls exclude 50% forecasts and tied categories"
+}
