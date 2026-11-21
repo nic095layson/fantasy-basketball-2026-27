@@ -1,0 +1,142 @@
+{
+ "date": "2026-11-21",
+ "seasons": 10000,
+ "seeds": [
+  2026,
+  2027
+ ],
+ "base": {
+  "never": 13.89,
+  "on_time": 22.560000000000002
+ },
+ "pairs": [
+  {
+   "add": "Collin Gillespie",
+   "drop": "Andrew Wiggins",
+   "never": {
+    "title": 14.44,
+    "d_title": 0.55
+   },
+   "on_time": {
+    "title": 22.57,
+    "d_title": 0.00999999999999801
+   },
+   "week": {
+    "d_exp": -0.1590652331530787,
+    "p_5plus": 0.9995796954957356,
+    "d_p_5plus": -4.402164044847723e-05
+   }
+  },
+  {
+   "add": "Cameron Johnson",
+   "drop": "Andrew Wiggins",
+   "never": {
+    "title": 14.43,
+    "d_title": 0.54
+   },
+   "on_time": {
+    "title": 22.689999999999998,
+    "d_title": 0.12999999999999545,
+    "first_cut": {
+     "when": "Tyrese Haliburton",
+     "return_date": "2026-12-13",
+     "week": 7
+    }
+   },
+   "week": {
+    "d_exp": 0.028535526960080382,
+    "p_5plus": 0.999628002236016,
+    "d_p_5plus": 4.285099831968786e-06
+   }
+  },
+  {
+   "add": "Kevin Huerter",
+   "drop": "Andrew Wiggins",
+   "never": {
+    "title": 13.66,
+    "d_title": -0.23
+   },
+   "on_time": {
+    "title": 22.590000000000003,
+    "d_title": 0.030000000000001137,
+    "first_cut": {
+     "when": "Tyrese Haliburton",
+     "return_date": "2026-12-13",
+     "week": 7
+    }
+   },
+   "week": {
+    "d_exp": 0.04695650813540603,
+    "p_5plus": 0.9996607777065092,
+    "d_p_5plus": 3.706057032515364e-05
+   }
+  }
+ ],
+ "order": {
+  "never": [
+   [
+    "Collin Gillespie",
+    "Andrew Wiggins"
+   ],
+   [
+    "Cameron Johnson",
+    "Andrew Wiggins"
+   ],
+   [
+    "Kevin Huerter",
+    "Andrew Wiggins"
+   ]
+  ],
+  "on_time": [
+   [
+    "Cameron Johnson",
+    "Andrew Wiggins"
+   ],
+   [
+    "Kevin Huerter",
+    "Andrew Wiggins"
+   ],
+   [
+    "Collin Gillespie",
+    "Andrew Wiggins"
+   ]
+  ]
+ },
+ "rank_flip": true,
+ "robust": {
+  "add": "Collin Gillespie",
+  "drop": "Andrew Wiggins",
+  "constant": "weekly_availability",
+  "variants": [
+   {
+    "label": "healthy at the old 0.88",
+    "d_title": 1.0199999999999996
+   },
+   {
+    "label": "healthy at the unfloored fit (0.78)",
+    "d_title": 0.6799999999999997
+   },
+   {
+    "label": "risk at the old 0.75",
+    "d_title": 0.6850000000000005
+   },
+   {
+    "label": "risk at the unfloored fit (0.56)",
+    "d_title": 0.9800000000000022
+   }
+  ],
+  "held": 4,
+  "holds": true,
+  "low": 0.6799999999999997,
+  "high": 1.0199999999999996
+ },
+ "notes": [],
+ "label": "Display only: the brief's ranking and the headline title share are unchanged. The return world rests on ESPN's dates and the room rule (the lowest-value active player leaves), which is itself FRAGILE.",
+ "inputs": {
+  "brief": "brief_2026-11-21.json",
+  "il_return": true,
+  "week_card": true,
+  "pool": "/home/user/fantasy-basketball-2026-27/data/season/pool_season.csv",
+  "state_as_of": "2026-11-21"
+ }
+}
