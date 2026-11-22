@@ -5,9 +5,92 @@
   "uninterpreted": 1,
   "dropped_invalid_timestamp": 0,
   "warning": "Yahoo returned 1 entry Flaim could not interpret (an unrecognized transaction type or a malformed entry). This count covers the whole page Flaim fetched, before the date, team, and transaction-type filters, so it does not show that 1 matching move is missing.",
-  "read_for": "2026-11-20"
+  "read_for": "2026-11-21"
  },
  "rows": [
+  {
+   "transaction_id": "478.l.36464.tr.224",
+   "type": "add",
+   "status": "complete",
+   "timestamp": 1795303814000,
+   "date": "2026-11-21",
+   "week": null,
+   "team_ids": [
+    "478.l.36464.t.12"
+   ],
+   "players_added": [
+    {
+     "id": "6267",
+     "name": "Max Strus",
+     "position": "SF,PF",
+     "team": "LAC"
+    }
+   ],
+   "players_dropped": [],
+   "faab_bid": null,
+   "waiver_priority": null,
+   "draft_picks": null
+  },
+  {
+   "transaction_id": "478.l.36464.tr.223",
+   "type": "add",
+   "status": "complete",
+   "timestamp": 1795299356000,
+   "date": "2026-11-21",
+   "week": null,
+   "team_ids": [
+    "478.l.36464.t.3"
+   ],
+   "players_added": [
+    {
+     "id": "6499",
+     "name": "Naji Marshall",
+     "position": "SG,SF,PF",
+     "team": "DAL"
+    }
+   ],
+   "players_dropped": [
+    {
+     "id": "10312",
+     "name": "Pelle Larsson",
+     "position": "SG,SF",
+     "team": "MIA"
+    }
+   ],
+   "faab_bid": null,
+   "waiver_priority": null,
+   "draft_picks": null
+  },
+  {
+   "transaction_id": "478.l.36464.tr.222",
+   "type": "add",
+   "status": "complete",
+   "timestamp": 1795285357000,
+   "date": "2026-11-21",
+   "week": null,
+   "team_ids": [
+    "478.l.36464.t.7"
+   ],
+   "players_added": [
+    {
+     "id": "5636",
+     "name": "Kris Dunn",
+     "position": "PG,SG",
+     "team": "LAC"
+    }
+   ],
+   "players_dropped": [
+    {
+     "id": "10494",
+     "name": "Javon Small",
+     "position": "PG,SG",
+     "team": "MEM"
+    }
+   ],
+   "faab_bid": null,
+   "waiver_priority": null,
+   "draft_picks": null
+  },
   {
    "transaction_id": "478.l.36464.tr.221",
    "type": "drop",

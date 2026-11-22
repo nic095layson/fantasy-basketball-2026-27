@@ -9,3 +9,4 @@ Each week's prediction is recorded before the week starts and cannot be rewritte
 | 3 | Podz save the league (Kevin) | 2026-11-01T13:05:28Z | 0.847 | 6.10 | W | 7 | 0.151 | 0.023 |
 | 4 | Lauri’s Prime Rib (Will) | 2026-11-08T13:07:30Z | 0.410 | 4.22 | L | 4 | 0.206 | 0.168 |
 | 5 | Thompson Telepathy (Hegi) | 2026-11-15T12:45:45Z | 0.759 | 5.45 | pending | — | — | — |
+| 6 | Booker T Floppers (Robby) | 2026-11-22T12:43:27Z | 0.583 | 4.87 | pending | — | — | — |
