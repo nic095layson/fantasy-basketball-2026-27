@@ -268,3 +268,4 @@ A pull that is not pushed to main did not happen — see DATA-PULL.md §0.
 | 2026-11-23 | owner card: "invoke Council to deliberate and proceed with their vote" (Council 4-1: build); no pull: kit main 1c6eaa0; the Runner scheduled task read with get_trigger | 0 | 0 | 0 | after-report-2026-11-23-runner-copy-and-gates-rule.md |
 | 2026-11-23 | owner card: "invoke Council to deliberate and proceed with their vote" (Council 4-1: build); no pull: kit main 1c6eaa0, deck main 3551a15 | 0 | 0 | 0 | after-report-2026-11-23-deck-test-run-block.md |
 | 2026-11-23 | owner card pick "Register median-games rule"; no pull: kit main 1c6eaa0, deck main 3551a15, records branch season/daily at 0e053c4b, read only | 0 | 0 | 0 | after-report-2026-11-23-kit-row-gp-registered.md |
+| 2026-11-23 | owner: "Yes, add it to the playbook and lessons ledger"; no pull: kit main 8f4b0c8, records branch read only; documents only | 0 | 0 | 0 | after-report-2026-11-23-braun-lesson.md |

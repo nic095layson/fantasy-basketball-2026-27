@@ -48,6 +48,16 @@ struck through, so the history reads.
   see is slowly trending up and I am keeping an eye on him." (2026-11-17) *(session reading)* He reads Yahoo's Last
   Week / Last Two Weeks splits; the kit's minutes line is the same idea in one number.
 
+- Lesson, in his words: "I really messed up with dropping Braun. Cautious tale for moving forward. I personally
+  think Queta is a solid center, but the Kit and even Yahoo say otherwise (ranked ~180 player)" (2026-11-23).
+  *(session reading)* He dropped Christian Braun on 2026-10-24 (with Anthony Black, for Collin Gillespie); the kit's
+  own briefs had named Braun as the drop on 10-20 to 10-22, and all three were graded wrong (Braun ahead by 1.7 to 3.3
+  board points over 28 days). Braun is a quiet all-category player (#56 on the 11-23 board: steals, turnovers and FG%
+  above average, no big hole), which 9-cat values more than a box score suggests. Queta is the opposite case: #129 on
+  the board (strong in FG%, rebounds, blocks, turnovers; weak in five), but worth more to this roster than his rank,
+  because rebounds are its weak category (the 11-23 team-level scan valued keeping him over Andrew Wiggins). Before a
+  drop, read the player's category line and the team-level scan, not the rank alone.
+
 ## 4. Core players
 
 - "I am still in a holding mode for now for the top players on my roster. We can re-visit this later down the season."
