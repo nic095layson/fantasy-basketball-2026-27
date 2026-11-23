@@ -1,25 +1,25 @@
 {
- "ran_at_utc": "2026-11-23T18:35:52Z",
+ "ran_at_utc": "2026-11-23T18:39:22Z",
  "inputs": {
-  "report/after-reports/after-report-2026-11-23-runner-copy-and-gates-rule.md": "514295aaca255f99e9dd21072cb7006d05c14af6cb6fc4ca0780133b6aca2ccb"
+  "report/after-reports/after-report-2026-11-23-playbook.md": "5683b70ded745bb3961bf817859cd67e52a8a74ceb160f7c92a1a1ca79337bfb"
  },
  "gates": [
   {
    "name": "kit check_report",
-   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-23-runner-copy-and-gates-rule.md",
+   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-23-playbook.md",
    "cwd": ".",
    "pass_re": "^REPORT GATE: PASS",
    "exit": 0,
-   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-11-23-runner-copy-and-gates-rule.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)",
+   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-11-23-playbook.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "REPORT GATE: PASS \u2014 after-report-2026-11-23-runner-copy-and-gates-rule.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)"
+    "REPORT GATE: PASS \u2014 after-report-2026-11-23-playbook.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)"
    ]
   },
   {
    "name": "claim receipts",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/independent_audit/claim_receipts.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-23-runner-copy-and-gates-rule.md",
+   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/independent_audit/claim_receipts.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-23-playbook.md",
    "cwd": ".",
    "pass_re": "^CLAIM RECEIPTS: (PASS|ADVISORY)",
    "exit": 0,
@@ -41,7 +41,7 @@
    "why": "",
    "tail": [
     "----------------------------------------------------------------------",
-    "Ran 1348 tests in 196.814s",
+    "Ran 1348 tests in 193.882s",
     "OK (skipped=2)"
    ]
   },
@@ -61,5 +61,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "0b870af501debce243556ea27226d8e5e6fb8693"
+ "base_commit": "38e884369ac524fad20099f70d812f893c7f9965"
 }
