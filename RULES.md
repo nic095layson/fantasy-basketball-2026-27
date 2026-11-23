@@ -20,7 +20,8 @@ Adopted 2026-10-15 from the Co-GM self-audit (`report/plans/co-gm-self-audit-202
 7. **gates.json or no merge.** Every gate run goes through `scripts/gates.py` (kit), which
    writes each gate's PASS line and exit code to `gates.json`; a gate that exits 0 without
    its PASS line is a FAIL (the 10/15 empty-log near-miss). Every PR body quotes
-   `gates.json`; a merge whose head commit lacks a PASS `gates.json` is refused.
+   `gates.json`; a merge whose head commit lacks a PASS `gates.json` is refused. This holds for a change built in
+   the Runner's conversation as for any session's (owner 2026-11-23, Council 4-1, after kit #298 merged without one).
 8. **Disputed stays disputed.** A result the owner disputed is carried only as DISPUTED in
    `OPEN.md`. Re-read `OPEN.md` after every compaction; a summary may not promote an OPEN
    item to a finding. (I10/R6)
