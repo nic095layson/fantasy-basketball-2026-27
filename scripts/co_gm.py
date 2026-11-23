@@ -183,6 +183,9 @@ ESPN_TIERS = {"Out": ("out", 0.00), "Day-To-Day": ("day-to-day", 0.50)}
 # owner 2026-10-28 (item 5, "Use ESPN return date (Recommended)"): an Out that ESPN expects back at most this many days
 # after the brief's date stays in the waiver scan at full season value, flagged with the date; streaming counts its
 # games from that date. An Out with no ESPN return date stays set aside. 7 is a stated default, uncalibrated (D-WS-2).
+# owner 2026-11-17 (card: "Both fixes", after Tobias Harris passed this line on 13 mornings with a return date ESPN moved
+# five times): with the pinned feeds of the days before, the line measures the whole absence, from the first day of the
+# unbroken run of Out listings to the return date. Without those feeds it reads as before. The same 7, no new constant.
 SHORT_OUT_DAYS = 7
 
 
@@ -190,12 +193,52 @@ class StatusMissing(Exception):
     pass
 
 
-def fa_status(P, yahoo, espn, date=None):
+def espn_history(date, status_dir=None, days=None):
+    """{day: ESPN injury rows} for the `days` (SHORT_OUT_DAYS) days before `date`, from the pinned feeds in data/status:
+    a day's morning pin, else its afternoon one; a day with neither is absent, and fa_status stops its walk there."""
+    status_dir = status_dir or os.path.join(KIT, "data", "status")
+    d0, out = datetime.date.fromisoformat(date), {}
+    for k in range(1, (SHORT_OUT_DAYS if days is None else days) + 1):
+        day = (d0 - datetime.timedelta(days=k)).isoformat()
+        for name in (f"espn_injuries_{day}.json", f"espn_injuries_{day}_pm.json"):
+            path = os.path.join(status_dir, name)
+            if os.path.exists(path):
+                with open(path, encoding="utf-8") as f:
+                    out[day] = json.load(f)["rows"]
+                break
+    return out
+
+
+def out_since(P, history, date, names):
+    """For each of `names` (pool names that are Out on `date`): the first day of the unbroken run of days, ending the
+    day before `date`, on which the pinned ESPN feed listed him Out. A day with no feed, or one that does not list him
+    Out, ends his run. Walks back SHORT_OUT_DAYS days: a longer run cannot be a short absence."""
+    import league_intake as LI
+    live, first, d0 = set(names), {}, datetime.date.fromisoformat(date)
+    for k in range(1, SHORT_OUT_DAYS + 1):
+        day = (d0 - datetime.timedelta(days=k)).isoformat()
+        rows = (history or {}).get(day)
+        if rows is None or not live:
+            break
+        res, _ = LI.resolve([r["player"] for r in rows], P, {})
+        listed = {res[r["player"]] for r in rows
+                  if r["player"] in res and (ESPN_TIERS.get(r["status"]) or (None, None))[1] == 0}
+        live &= listed
+        for n in live:
+            first[n] = day
+    return first
+
+
+def fa_status(P, yahoo, espn, date=None, history=None):
     """yahoo: the pinned available-player entries ({name, status}) or None when the pull has no list; espn: the pinned
     feed rows ({player, status, return_date}) or None when it was not read. Returns {"by": {pool name: {code, source,
     availability, return_date, short_out}}, "sources": {...}}; availability None is a code the kit does not tier. Both
     None: StatusMissing. return_date is ESPN's expected return wherever ESPN lists the player (a Yahoo letter included);
-    short_out marks an Out back within SHORT_OUT_DAYS of `date` (never without the day's date)."""
+    short_out marks an Out back within SHORT_OUT_DAYS of `date` (never without the day's date). history (espn_history:
+    the pinned feeds of the days before) makes that a short ABSENCE: an Out the feed has listed since out_since is short
+    only when out_since to the return date is within SHORT_OUT_DAYS too; long_out marks the Out this rule alone set
+    aside, and out_capped a run that reached the walk's limit (he has been Out since that day or earlier). The three
+    keys are present only for a player with such a run."""
     if yahoo is None and espn is None:
         raise StatusMissing("no Yahoo available-player list and no ESPN injury feed for the day")
     import league_intake as LI
@@ -220,11 +263,19 @@ def fa_status(P, yahoo, espn, date=None):
             else:
                 by[n] = {"code": st, "source": "yahoo",
                          "availability": SF.TIERS[st][1] if st in SF.TIERS else None}
+    since = out_since(P, history, date, [n for n, s in by.items() if s["availability"] == 0]) if (date and history) else {}
     for n, s in by.items():
         s["return_date"] = ret.get(n)
-        s["short_out"] = bool(date and s["availability"] == 0 and s["return_date"] and
-                              (datetime.date.fromisoformat(s["return_date"][:10])
-                               - datetime.date.fromisoformat(date)).days <= SHORT_OUT_DAYS)
+        back = datetime.date.fromisoformat(s["return_date"][:10]) if s["return_date"] else None
+        near = bool(date and s["availability"] == 0 and back and
+                    (back - datetime.date.fromisoformat(date)).days <= SHORT_OUT_DAYS)
+        if n in since:
+            first = datetime.date.fromisoformat(since[n])
+            s["out_since"] = since[n]
+            # the walk stops at SHORT_OUT_DAYS: a run that reaches it began that day or earlier
+            s["out_capped"] = (datetime.date.fromisoformat(date) - first).days >= SHORT_OUT_DAYS
+            s["long_out"] = bool(near and (back - first).days > SHORT_OUT_DAYS)
+        s["short_out"] = near and not s.get("long_out", False)
     return {"by": by, "sources": {"yahoo": yahoo is not None, "espn": espn is not None}}
 
 
@@ -275,7 +326,8 @@ def free_agents(P, state, status, n=WAIVER_CANDIDATES):
             if len(fa) + len(aside) < n:
                 aside.append({"player": p["player"], "code": s["code"], "source": s["source"],
                               "return_date": s.get("return_date"),
-                              "reason": "out" if s["availability"] is not None else "unknown status code, not guessed"})
+                              "reason": "out" if s["availability"] is not None else "unknown status code, not guessed",
+                              **({k: s[k] for k in ("out_since", "out_capped", "long_out")} if "out_since" in s else {})})
             continue
         fa.append(p)
         if len(fa) == n:
