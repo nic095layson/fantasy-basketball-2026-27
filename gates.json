@@ -1,26 +1,26 @@
 {
- "ran_at_utc": "2026-11-23T16:21:06Z",
+ "ran_at_utc": "2026-11-23T17:47:55Z",
  "inputs": {
-  "report/after-reports/after-report-2026-11-17-scan-repeats-and-williams.md": "282a67dadf21e4b206a5194a8d748c8f5c96eef5f147961092525ad86ea50917",
-  "report/after-reports/shock-fit-2026-11-16/sweep.json": "52a897bd6283a50308f141107653b01e4cce9eff4e2a81b22d776003a1d531eb"
+  "report/after-reports/after-report-2026-11-23-kit-row-gp-registered.md": "ff6790626e0b2a9438119ac9f279589ced4f73ae2b0972ab73349ef04af510cd",
+  "report/after-reports/redteam-2026-11-17-season/sweep.json": "13dd355f9c22b85cbdc79140be471a2e1be61e49d32114fd8ae37c2ac800b8ea"
  },
  "gates": [
   {
    "name": "kit check_report",
-   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-17-scan-repeats-and-williams.md",
+   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-23-kit-row-gp-registered.md",
    "cwd": ".",
    "pass_re": "^REPORT GATE: PASS",
    "exit": 0,
-   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-11-17-scan-repeats-and-williams.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)",
+   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-11-23-kit-row-gp-registered.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "REPORT GATE: PASS \u2014 after-report-2026-11-17-scan-repeats-and-williams.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)"
+    "REPORT GATE: PASS \u2014 after-report-2026-11-23-kit-row-gp-registered.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)"
    ]
   },
   {
    "name": "claim receipts",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/independent_audit/claim_receipts.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-17-scan-repeats-and-williams.md",
+   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/independent_audit/claim_receipts.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-23-kit-row-gp-registered.md",
    "cwd": ".",
    "pass_re": "^CLAIM RECEIPTS: (PASS|ADVISORY)",
    "exit": 0,
@@ -32,8 +32,8 @@
    ]
   },
   {
-   "name": "waiver status",
-   "cmd": "python3 scripts/test_waiver_status.py",
+   "name": "season lines",
+   "cmd": "python3 -m unittest scripts.test_season_lines",
    "cwd": ".",
    "pass_re": "^OK",
    "exit": 0,
@@ -42,22 +42,7 @@
    "why": "",
    "tail": [
     "----------------------------------------------------------------------",
-    "Ran 38 tests in 0.415s",
-    "OK"
-   ]
-  },
-  {
-   "name": "daily brief",
-   "cmd": "python3 scripts/test_daily_brief.py",
-   "cwd": ".",
-   "pass_re": "^OK",
-   "exit": 0,
-   "pass_line": "OK",
-   "verdict": "PASS",
-   "why": "",
-   "tail": [
-    "----------------------------------------------------------------------",
-    "Ran 46 tests in 0.949s",
+    "Ran 22 tests in 0.234s",
     "OK"
    ]
   },
@@ -72,7 +57,7 @@
    "why": "",
    "tail": [
     "----------------------------------------------------------------------",
-    "Ran 1346 tests in 203.097s",
+    "Ran 1347 tests in 192.486s",
     "OK (skipped=2)"
    ]
   },
@@ -82,24 +67,24 @@
    "cwd": ".",
    "pass_re": "^CONSTANTS CHECK: PASS",
    "exit": 0,
-   "pass_line": "CONSTANTS CHECK: PASS \u2014 53 registered = 53 live on deck 3551a15; declared_band 5, measured 10, settings 8, structural 6, uncalibrated 24",
+   "pass_line": "CONSTANTS CHECK: PASS \u2014 54 registered = 54 live on deck 3551a15; declared_band 5, measured 10, settings 8, structural 6, uncalibrated 25",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "CONSTANTS CHECK: PASS \u2014 53 registered = 53 live on deck 3551a15; declared_band 5, measured 10, settings 8, structural 6, uncalibrated 24"
+    "CONSTANTS CHECK: PASS \u2014 54 registered = 54 live on deck 3551a15; declared_band 5, measured 10, settings 8, structural 6, uncalibrated 25"
    ]
   },
   {
    "name": "redteam bands",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/redteam/check_bands.py --report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-17-scan-repeats-and-williams.md --sweep /home/user/fantasy-basketball-2026-27/report/after-reports/shock-fit-2026-11-16/sweep.json",
+   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/redteam/check_bands.py --report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-23-kit-row-gp-registered.md --sweep /home/user/fantasy-basketball-2026-27/report/after-reports/redteam-2026-11-17-season/sweep.json",
    "cwd": ".",
    "pass_re": "^BANDS CHECK: PASS",
    "exit": 0,
-   "pass_line": "BANDS CHECK: PASS \u2014 1 FRAGILE band(s) quoted (arena.weekly_availability); engine 56230e9",
+   "pass_line": "BANDS CHECK: PASS \u2014 the report quotes no title share and names no FRAGILE constant; bands not owed; engine 3551a15",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "BANDS CHECK: PASS \u2014 1 FRAGILE band(s) quoted (arena.weekly_availability); engine 56230e9"
+    "BANDS CHECK: PASS \u2014 the report quotes no title share and names no FRAGILE constant; bands not owed; engine 3551a15"
    ]
   },
   {
@@ -131,5 +116,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "7a13433bd721b72e5dcdb409ecb1afafb055d164"
+ "base_commit": "1c6eaa0b30f4b247569803271c8de5e314e851e0"
 }
