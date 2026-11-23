@@ -426,7 +426,12 @@ def scan_this_week(me_now, opp_now, opp_rem, roster, drops, fas, sched, today, a
     game): "after tonight" = the drop plays today and the add counts from tomorrow; when the add's team plays today,
     "same day" = drop and add before tip, the add counting from today and the drop losing today's game. Each row keeps
     the better timing for its drop, names it (timing), gives the starts under it (games), and carries the other
-    timing's figures (other_timing) when both were priced."""
+    timing's figures (other_timing) when both were priced.
+    Waivers (owner 2026-11-18, "Fix the Caruso waiver timing"; the 11-18 card offered Alex Caruso "same day" while he
+    was on waivers until 11-19): a free agent with a waiver_date (Yahoo's, from the morning pull) is never priced
+    before it. No "same day" unless the date is today or earlier; when it falls after tomorrow, the timing is
+    "after waivers": the drop keeps playing until that day and the add counts from it. Assumed: a claim processes the
+    morning of the waiver date, in time for that day's games (the league's waiver period is one day)."""
     now_s, rest = _split(sched, today)
     r_today = remaining(roster, now_s, avail, lines)
     base = cat_chances(me_now, _both(r_today, remaining(roster, rest, avail, lines)), opp_now, opp_rem)
@@ -443,13 +448,23 @@ def scan_this_week(me_now, opp_now, opp_rem, roster, drops, fas, sched, today, a
     out = []
     for fa in fas:
         best = None
+        wd = fa.get("waiver_date")
+        hold = {d: t for d, t in rest.items() if wd and d < wd}          # days the drop still plays: the add is on waivers
+        swap_days = {d: t for d, t in rest.items() if d not in hold}
+        r_held = _both(r_today, remaining(roster, hold, avail, lines)) if hold else r_today
         for d in drops:
             keep = [r for r in roster if r["player"] != d] + [fa]
-            rr = remaining(keep, rest, avail, lines)
-            p = cat_chances(me_now, _both(r_today, rr), opp_now, opp_rem)
-            priced = [("after tonight", p, rr["games"].get(fa["player"], 0), alone[d],
-                       sum(1 for x in rest if fa["team"] in rest[x]))]
-            if fa["team"] in playing_today:
+            rr = remaining(keep, swap_days, avail, lines)
+            p = cat_chances(me_now, _both(r_held, rr), opp_now, opp_rem)
+            if hold:
+                pd = cat_chances(me_now, _both(r_held, remaining([r for r in roster if r["player"] != d], swap_days, avail, lines)),
+                                 opp_now, opp_rem)
+                d_alone = sum(pd[c] - base[c] for c in CATS)
+            else:
+                d_alone = alone[d]
+            priced = [("after waivers" if hold else "after tonight", p, rr["games"].get(fa["player"], 0), d_alone,
+                       sum(1 for x in swap_days if fa["team"] in swap_days[x]))]
+            if fa["team"] in playing_today and not (wd and wd > today):
                 rs = remaining(keep, sched, avail, lines)
                 priced.append(("same day", cat_chances(me_now, rs, opp_now, opp_rem), rs["games"].get(fa["player"], 0),
                                same_day_alone(d), sum(1 for x in sched if fa["team"] in sched[x])))
@@ -457,7 +472,7 @@ def scan_this_week(me_now, opp_now, opp_rem, roster, drops, fas, sched, today, a
             for timing, pp, games, drop_alone, left in priced:
                 dc = {c: pp[c] - base[c] for c in CATS}
                 de = sum(dc[c] for c in CATS)
-                rows.append(dict(add=fa["player"], team=fa["team"], drop=d, timing=timing, d_exp=de, d_cat=dc,
+                rows.append(dict(add=fa["player"], team=fa["team"], drop=d, timing=timing, waiver_date=wd, d_exp=de, d_cat=dc,
                                  d_exp_drop=drop_alone, d_exp_add=de - drop_alone, games=games, games_left=left,
                                  value=round(fa.get("adj", fa["value"]), 2), status=fa.get("status"), missed=fa.get("missed")))
             rows.sort(key=lambda r: (-r["d_exp"], r["timing"] != "after tonight"))   # a tie keeps tonight's game
@@ -719,8 +734,11 @@ def yahoo_free_agents(entries, pool):
         elif e["name"] not in res:
             notp.append(item)
         else:
+            # owner 2026-11-18 ("Fix the Caruso waiver timing"): Yahoo's waiver date rides along; a waiver player is
+            # never priced as playing before it (scan_this_week)
             scored.append(dict(item, player=res[e["name"]], availability=status_feed.TIERS[st][1],
-                               positions=[x.strip() for x in (e.get("position") or "").split(",") if x.strip()]))
+                               positions=[x.strip() for x in (e.get("position") or "").split(",") if x.strip()],
+                               waiver_date=(e.get("waiverDate") or None) if e.get("acquisitionState") == "waivers" else None))
     return scored, out, unknown, notp
 
 
@@ -948,7 +966,8 @@ def build(date, paths, capture=None):
                 pool["skipped"].append(dict(name=y["name"], team=y["team"], status=y["status"], reason=why_skip)); continue
             team, missed = _last_team_game(n, y["team"], recent)
             fas.append(dict(player=n, team=team, positions=y["positions"] or [x.strip() for x in p["pos"].split(",")],
-                            value=zsum(n), adj=CG.hoops.adj_value(p, ()), missed=missed, status=y["status"]))
+                            value=zsum(n), adj=CG.hoops.adj_value(p, ()), missed=missed, status=y["status"],
+                            waiver_date=y.get("waiver_date")))
             fa_avail[n] = y["availability"]
         listed = {f["player"] for f in fas} | {y["player"] for y in scored}
         pool["kit_pool_not_listed"] = sum(1 for p in kit_free if p["player"] not in listed)

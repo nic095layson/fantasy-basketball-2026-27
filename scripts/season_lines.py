@@ -325,6 +325,53 @@ def minutes_switch(out_kit, out_deck, records, pre_kit_csv):
     return ratios
 
 
+def kit_rows_for_rostered(out_kit, out_deck, kit_fields, tot, find, state):
+    """Owner 2026-11-20 (option 3, "Line from his games"): a rostered player the deck plane carries but the kit file
+    does not (Landry Shamet: pooled, so league_live does not call him unpooled and auto_rows skips him) has no
+    season-board row, and the 5 AM deck halts. He gets a kit-plane row copied from his blended deck row — the same
+    prior-plus-games line the simulator already uses — with gp the kit file's median (a stated judgment rule, not
+    fitted) and mpg his box-score minutes per game (0.0 with no games). Only players on state["teams"][*]["players"]
+    qualify; a name the kit plane already carries (exact, folded, aliased or suffix-free) gets nothing. Returns
+    (rows, record)."""
+    rostered = [p["player"] for t in ((state or {}).get("teams") or []) for p in (t.get("players") or [])]
+    if not rostered:
+        return [], []
+    aliases = BP.load_aliases()
+    alias = {}
+    for canon, variants in (aliases or {}).items():
+        for v in variants:
+            alias.setdefault(fold(v), canon); alias.setdefault(fold(canon), v)
+    kit_fold = {fold(r["name"]) for r in out_kit}
+    kit_key = {BP.name_key(r["name"]) for r in out_kit}
+
+    def on_kit(n):
+        return fold(n) in kit_fold or fold(alias.get(fold(n), "")) in kit_fold or BP.name_key(n) in kit_key
+    deck_by_fold = {}
+    for r in out_deck:
+        deck_by_fold.setdefault(fold(r["player"]), r)
+    gps = sorted(float(r["gp"]) for r in out_kit if r.get("gp") not in (None, ""))
+    if not gps:
+        return [], []
+    mid = len(gps) // 2
+    gp = gps[mid] if len(gps) % 2 else (gps[mid - 1] + gps[mid]) / 2
+    rows, rec, seen = [], [], set()
+    for n in rostered:
+        if on_kit(n):
+            continue
+        d = deck_by_fold.get(fold(n))
+        if d is None or fold(d["player"]) in seen:
+            continue
+        t = find(d["player"]) or {}
+        games = t.get("games", 0)
+        row = {f: "" for f in kit_fields}
+        row.update(name=d["player"], team=d["team"], pos=d["pos"], gp=f"{gp:g}",
+                   mpg=f"{(t.get('min', 0) / games) if games else 0.0:.1f}", fgp=d["fg_pct"], ftp=d["ft_pct"],
+                   **{c: d[c] for c in ("fga", "fta", "tpm", "pts", "reb", "ast", "stl", "blk", "tov")})
+        rows.append(row); seen.add(fold(d["player"])); kit_fold.add(fold(d["player"]))
+        rec.append(dict(player=d["player"], team=d["team"], games=games, gp=row["gp"], gp_basis="kit median"))
+    return rows, rec
+
+
 def run(date, actuals, kit_csv=KIT_CSV, deck_csv=DECK_CSV, out_dir=OUT, threshold=0.25, additions_csv=None,
         overrides_csv=None, state_json=None, team_ledger=None, pre_kit_csv=None):
     """team_ledger (owner 2026-11-11, D3): the team-changes ledger. A player it names carries the ledger's club in the
@@ -353,6 +400,8 @@ def run(date, actuals, kit_csv=KIT_CSV, deck_csv=DECK_CSV, out_dir=OUT, threshol
             if big:
                 movers.append(dict(name=r["name"], games=t["games"], moved={c: moved[c] for c in big}))
     out_deck = [blend_deck(r, find(r["player"])) for r in deck_rows]
+    kit_add, kit_add_rec = kit_rows_for_rostered(out_kit, out_deck, kit_fields, tot, find, state)
+    out_kit = out_kit + kit_add
     moved_team = team_updates.current(team_updates.read(team_ledger)) if team_ledger else {}
     applied = {}
     for rows_, key in ((out_kit, "name"), (out_deck, "player")):
@@ -371,7 +420,7 @@ def run(date, actuals, kit_csv=KIT_CSV, deck_csv=DECK_CSV, out_dir=OUT, threshol
     rec = dict(date=date, records=len(actuals), players_with_games=n_games, prior_games=PRIOR_GAMES, season_games=SEASON_GAMES,
                threshold=threshold, movers=sorted(movers, key=lambda m: -m["games"]),
                unpooled_with_games=sorted(k for k, v in tot.items() if v["unpooled"] and fold(k) not in auto_names),
-               auto_rows=auto_rec, auto_rule=dict(min_games=AUTO_MIN_GAMES, prior_band=[AUTO_PRIOR_LO, AUTO_PRIOR_HI]),
+               auto_rows=auto_rec, kit_rows=kit_add_rec, auto_rule=dict(min_games=AUTO_MIN_GAMES, prior_band=[AUTO_PRIOR_LO, AUTO_PRIOR_HI]),
                tag_overrides=overridden, team_updates=[dict(player=n, team=t) for n, t in sorted(applied.items())],
                line_switch=dict(cats=list(SWITCH_CATS), rule="blend x minutes_line forecast/implicit minutes (owner 2026-11-16)",
                                 ratios={n: round(x, 4) for n, x in sorted(ratios.items())}),

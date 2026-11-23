@@ -1480,9 +1480,9 @@ class AfternoonRefresh(unittest.TestCase):
         self.assertEqual(SD.gone_since_morning(brief, None, roster + [dict(player="PJ Washington")]), [])
         self.assertEqual(SD.gone_since_morning({}, {}, []), [])
 
-    def add_rostered(self, name):
+    def add_rostered(self, name, **more):
         lg = json.load(open(self.fx["league_state"]))
-        lg["teams"][0]["players"].append(dict(player=name, slot="BN", status=None, positions=["C"]))
+        lg["teams"][0]["players"].append(dict(player=name, slot="BN", status=None, positions=["C"], **more))
         json.dump(lg, open(self.fx["league_state"], "w"))
 
     def test_a_pickup_missing_from_the_mornings_board_is_named_not_a_halt_in_the_afternoon(self):
@@ -1493,10 +1493,30 @@ class AfternoonRefresh(unittest.TestCase):
         self.assertIn("New Guy", data["league"]["rosters"]["MY TEAM"]["off_board"])
         self.assertEqual(rec["join"]["not_on_board"], ["New Guy"])
 
-    def test_the_morning_build_still_halts_on_it(self):
+    def test_the_morning_build_names_him_too_and_does_not_halt(self):
+        # owner 2026-11-20 (card "Build anyway, name him"): the 5 AM deck step failed because a rival had added Landry
+        # Shamet, who has no board row; the morning build now carries and names him as the afternoon one does, when the
+        # league intake matched him to a pool row (pool_team). A name with no pool row still halts the morning.
+        self.add_rostered("New Guy", pool_team="DEN")
+        html, data, rec = SD.build(self.fx, date="2026-10-21")
+        self.assertNotIn("refresh", data)
+        self.assertEqual(data["not_on_board"], [dict(player="New Guy", team="MY TEAM")])
+        self.assertIn("New Guy", data["league"]["rosters"]["MY TEAM"]["off_board"])
+        self.assertEqual(rec["join"]["not_on_board"], ["New Guy"])
+        p = os.path.join(self.d, "am_off.html"); open(p, "w", encoding="utf-8").write(html)
+        self.assertEqual(DRC.check(p)["status"], "PASS")
+        self.assertIn("Rostered with no row on the board (no season line on this page): New Guy, on MY TEAM (you).",
+                      visible_dom(p, "Today", "pane-today")["text"])
+
+    def test_the_morning_still_halts_on_a_name_with_no_pool_row(self):
         self.add_rostered("New Guy")
         with self.assertRaises(SD.DeckError):
             SD.build(self.fx, date="2026-10-21")
+
+    def test_a_morning_with_everyone_on_the_board_says_nothing(self):
+        html, data, rec = SD.build(self.fx, date="2026-10-21")
+        self.assertEqual(data["not_on_board"], []); self.assertEqual(rec["join"]["not_on_board"], [])
+        self.assertNotIn("Rostered with no row on the board", html.split("<script")[0])
 
     @unittest.skipUnless(RENDER_OK, RENDER_WHY)
     def test_the_afternoon_note_names_the_players_added_since_the_morning_board(self):
@@ -2025,6 +2045,28 @@ class SwapGrid(unittest.TestCase):
         self.assertEqual(SD.swap_grid(self.today, self.me, {}, None), []); self.assertEqual(SD.swap_grid(None, self.me, {}, self.repl), [])
         self.assertEqual(len(SD.swap_grid(self.today, self.me, {}, self.repl, top=1)), 1)
 
+    def test_only_swaps_that_help_once_per_bench_player_at_most_three_and_keep_otherwise(self):
+        """Owner 2026-11-18 ("dialed down to top 1-3 player suggestions ... more concise with its decision"): the card
+        had listed six PJ Washington pairs, every one costing categories."""
+        g = SD.swap_grid(self.today, self.me, {}, self.repl)
+        self.assertEqual([(r["start"], r["small"]) for r in g], [("Big Two", False), ("Wing One", True)])   # 0.02 < 0.05
+        self.assertIsNone(SD.swap_keep(self.today, self.me, {}, self.repl))
+        today = self.today + [["Guard Three", "DAL", "vs SAC", None, 1.0, 4], ["Wing Four", "SAS", "vs UTA", None, 1.0, 4],
+                              ["Big Five", "DAL", "vs SAC", None, 1.0, 4], ["Bench Six", "DAL", "vs SAC", None, 1.0, 4]]
+        me = self.me + [dict(player=n, slot="BN", positions=["PG"]) for n in ("Wing Four", "Big Five", "Bench Six")] \
+            + [dict(player="Guard Three", slot="PG", positions=["PG"])]
+        repl = {"Star Guard": dict(slot="UTIL", candidates=[dict(player="Big Two", d_exp=0.09, cats={}), dict(player="Wing Four", d_exp=0.07, cats={}),
+                                                            dict(player="Big Five", d_exp=0.03, cats={}), dict(player="Bench Six", d_exp=0.01, cats={})]),
+                "Guard Three": dict(slot="PG", candidates=[dict(player="Big Two", d_exp=0.08, cats={}), dict(player="Wing One", d_exp=-0.02, cats={})])}
+        self.assertEqual([(r["start"], r["sit"]) for r in SD.swap_grid(today, me, {}, repl)],
+                         [("Big Two", "Star Guard"), ("Wing Four", "Star Guard"), ("Big Five", "Star Guard")])   # Big Two once; three at most
+        # every swap costs categories: none suggested, and the closest is named for the keep line
+        bad = {"Star Guard": dict(slot="UTIL", candidates=[dict(player="Big Two", d_exp=-0.026, cats={}), dict(player="Wing One", d_exp=-0.010, cats={})])}
+        self.assertEqual(SD.swap_grid(self.today, self.me, {}, bad), [])
+        k = SD.swap_keep(self.today, self.me, {}, bad)
+        self.assertEqual((k["start"], k["sit"], k["d_exp"]), ("Wing One", "Star Guard", -0.010))
+        self.assertIsNone(SD.swap_keep(self.today, self.me, {}, None))
+
     def test_the_card_renders_the_heat_map_from_the_record_and_a_pending_line_without_one(self):
         j = lambda name, obj: (json.dump(obj, open(os.path.join(self.d, name), "w")), os.path.join(self.d, name))[1]
         b = json.load(open(self.fx["brief"])); b["today"] = self.today; b["lineup"] = [["PG", "Alpha Man"], ["Util", "Star Guard"]]; b["bench"] = ["Wing One", "Big Two"]
@@ -2050,7 +2092,24 @@ class SwapGrid(unittest.TestCase):
         dom = visible_dom(p, "Today", "pane-today")
         self.assertEqual(dom["errors"], [])
         t = dom["text"]
-        self.assertIn("Start/sit for today".upper(), t.upper()); self.assertIn("Big Two", t); self.assertIn("+4.0", t); self.assertIn("+0.060", t)
+        self.assertIn("Start/sit today".upper(), t.upper())
+        self.assertIn("1. Start Big Two for Star Guard (UTIL): +0.060 categories this week — helps REB +4.0, BLK +3.0 · costs PTS -1.0", t)
+        self.assertIn("2. Start Wing One for Star Guard (UTIL): +0.020 categories this week (small) — helps PTS +2.0", t)
+        self.assertNotIn("Each cell", t)                                    # the heat map is folded under "Category detail"
+        self.assertIn("Category detail", t)
+        # every swap costs categories (the owner's screenshot of 2026-11-18): one line, keep the lineup
+        wm2 = week_matchup_record(); wm2["lineup_today"] = dict(date="2026-10-21", games_today=True, moves=[], replacements={
+            "Star Guard": dict(slot="UTIL", candidates=[dict(player="Big Two", d_exp=-0.026, cats={"REB": -0.014}),
+                                                        dict(player="Wing One", d_exp=-0.010, cats={"AST": 0.015, "FG%": -0.023})])})
+        self.fx["week_matchup"] = j("wm_sg2.json", wm2)
+        html3, data3, _ = SD.build(self.fx, date="2026-10-21")
+        self.assertEqual(data3["swap_grid"], []); self.assertEqual(data3["swap_keep"]["start"], "Wing One")
+        with open(p, "w", encoding="utf-8") as f:
+            f.write(html3)
+        d3 = visible_dom(p, "Today", "pane-today")
+        self.assertEqual(d3["errors"], [])
+        self.assertIn("Keep your lineup. No bench swap adds categories this week; the closest, start Wing One for Star Guard, costs 0.010.", d3["text"])
+        self.assertNotIn("Big Two for", d3["text"])
         # no record: the card says so, nothing else changes
         self.fx.pop("week_matchup")
         html2, data2, _ = SD.build(self.fx, date="2026-10-21")
@@ -2616,7 +2675,9 @@ def board_lens_dom(html_path, clicks):
             pg.goto("file://" + os.path.abspath(html_path), wait_until="load")
             pg.click("nav.tabs button:has-text('Board')")
             for sel in clicks:
-                if sel.startswith("th:"):
+                if sel.startswith("pos:"):
+                    pg.select_option("#bd-pos", sel[4:])
+                elif sel.startswith("th:"):
                     lab = sel[3:]
                     pg.evaluate("(l) => [...document.querySelectorAll('#pane-board table tr:first-child th')].find(x=>x.textContent.replace(/[ ↑↓•▼]/g,'')===l).click()", lab)
                 else:
@@ -2625,7 +2686,11 @@ def board_lens_dom(html_path, clicks):
             rows = pg.evaluate("() => [...document.querySelectorAll('#pane-board table tr')].slice(1).map(r=>[...r.cells].map(c=>c.textContent))")
             return dict(errors=errs, head=head, names=[r[1].split(" · ")[0] for r in rows], rows=rows,
                         chips=pg.evaluate("() => [...document.querySelectorAll('#bd-cats .catchip')].map(x=>x.dataset.cat+(x.classList.contains('drilled')?'*':''))"),
-                        note=pg.evaluate("() => { const n=document.querySelector('#bd-cats .small'); return n? n.textContent : '' }"))
+                        note=pg.evaluate("() => { const n=document.querySelector('#bd-cats .small'); return n? n.textContent : '' }"),
+                        pos_tag=pg.evaluate("() => { const e=document.querySelector('#bd-pos'); return e? e.tagName : '' }"),
+                        pos_buttons=pg.evaluate("() => [...document.querySelectorAll('#bd-pos option')].map(x=>x.textContent)"),
+                        pos_on=pg.evaluate("() => [...document.querySelectorAll('#bd-pos option')].filter(x=>x.selected).map(x=>x.textContent)"),
+                        pos_note=pg.evaluate("() => { const n=document.querySelector('#bd-pos-n'); return n? n.textContent : '' }"))
         finally:
             b.close()
 
@@ -2923,4 +2988,121 @@ class RoleWatchCards(unittest.TestCase):
         self.assertIn("Not available today (KeyError: 'date').", d["starts"]["text"]); self.assertIn("Not available today", d["hold"]["text"])
         d = self.build(None)                                             # a brief written before role_watch existed
         self.assertEqual(d["errors"], []); self.assertIsNone(d["starts"]["text"]); self.assertIsNone(d["hold"]["text"])
+
+
+class BandStale(unittest.TestCase):
+    """Owner 2026-11-17 ("Flag it and re-sweep"): a band measured on another engine says STALE on the Today tab, and a
+    sweep with no FRAGILE constant says so instead of printing an empty band."""
+    def page(self, sweep, stale):
+        from unittest import mock
+        d = tempfile.mkdtemp(); fx = fixtures(d)
+        with open(fx["sweep"], "w") as f:
+            json.dump(sweep, f)
+        with mock.patch.object(SD.SR, "stale", return_value=stale):
+            html, data, rec = SD.build(fx, date="2026-10-21")
+        p = os.path.join(d, "deck.html")
+        with open(p, "w", encoding="utf-8") as f:
+            f.write(html)
+        return data, visible_dom(p, "Today", "pane-today")
+
+    def test_a_stale_band_is_marked_on_the_page(self):
+        sw = dict(engine_commit="c933f07", fragile=["arena.weekly_availability"], constants={"arena.weekly_availability": dict(
+            tier="FRAGILE", variants=[dict(label="risk at the old 0.75", shift_mean=-3.2), dict(label="harsher", shift_mean=2.8)])})
+        data, v = self.page(sw, dict(status="STALE", why="measured on engine 95ebade, the live engine is ecb60cb"))
+        self.assertEqual(v["errors"], [])
+        self.assertEqual(data["band_stale"]["status"], "STALE")
+        self.assertIn("Model bands: STALE, weekly_availability -3.2/+2.8 title pts", v["text"])
+        self.assertTrue(any("STALE: measured on engine 95ebade, the live engine is ecb60cb, so these shifts are not today's" in t
+                            for t in v["titles"]))
+
+    def test_no_fragile_constant_shows_the_largest_sensitive_band_and_a_current_band_carries_no_mark(self):
+        # owner 2026-11-17 ("Show the largest band anyway")
+        sw = dict(engine_commit="3551a15", fragile=[], constants={
+            "arena.weekly_availability": dict(tier="SENSITIVE", max_abs_shift=1.93, variants=[
+                dict(label="risk at the old 0.75", shift_mean=-1.93), dict(label="risk at the unfloored fit (0.56)", shift_mean=1.9)]),
+            "arena.TEAM_WEEK_SHOCK": dict(tier="SENSITIVE", max_abs_shift=1.52, variants=[dict(label="no shock", shift_mean=1.52)])})
+        data, v = self.page(sw, dict(status="CURRENT", why=""))
+        self.assertEqual(v["errors"], [])
+        self.assertIn("Model bands: weekly_availability (SENSITIVE, the largest) -1.9/+1.9 title pts", v["text"])
+        self.assertTrue(any("weekly_availability is SENSITIVE: -1.9 (risk at the old 0.75) / +1.9" in t for t in v["titles"]))
+        self.assertNotIn("TEAM_WEEK_SHOCK", v["text"])
+        self.assertNotIn("STALE", v["text"]); self.assertFalse(any("STALE" in t for t in v["titles"]))
+
+    def test_an_all_robust_sweep_says_no_fragile_constant(self):
+        sw = dict(engine_commit="3551a15", fragile=[], constants={"arena.BENCH_WEIGHT": dict(
+            tier="ROBUST", max_abs_shift=0.0, variants=[dict(label="bench", shift_mean=0.0)])})
+        data, v = self.page(sw, dict(status="CURRENT", why=""))
+        self.assertEqual(v["errors"], []); self.assertIn("Model bands: no FRAGILE constant", v["text"])
+
+
+class BoardPositionFilter(unittest.TestCase):
+    """Owner 2026-11-20 ("give me the option to also filter by POSITION ... PG, SG, G, SF, PF, F, C", card "Build it,
+    display-only"): one position at a time on the Board; G is PG or SG, F is SF or PF (the league's slots,
+    hoops.POSITIONAL_SLOTS); eligibility is the pos column. Display only: # and z adj keep their overall values.
+    Owner 2026-11-20, the same day ("can you make it a drop down select, like the Draft deck tool?"): one select with
+    the Draft deck's list, which adds G/F (eligible at a guard and a forward spot) and F/C (a forward spot and center)."""
+    CATS = PuntView.CATS
+
+    def setUp(self):
+        self.d = tempfile.mkdtemp(); fx = fixtures(self.d)
+        z = lambda **kw: {c: kw.get(c, 0.0) for c in self.CATS}
+        b = json.load(open(fx["board"]))
+        b["board"] = [dict(rank=1, name="Alpha Man", team="DEN", pos="PG", gp=82.0, z_adj=4.0, z_total=4.0, z=z(AST=3.0, PTS=1.0)),
+                      dict(rank=2, name="Free Agent", team="GSW", pos="C", gp=82.0, z_adj=3.0, z_total=3.0, z=z(REB=2.0, BLK=1.0)),
+                      dict(rank=3, name="Bench Guy", team="DAL", pos="SF", gp=82.0, z_adj=2.5, z_total=2.5, z=z(PTS=2.0, REB=0.5)),
+                      dict(rank=4, name="Steal Man", team="BOS", pos="SG", gp=82.0, z_adj=2.0, z_total=2.0, z=z(STL=2.0)),
+                      dict(rank=5, name="Big Wing", team="NYK", pos="PF,C", gp=82.0, z_adj=1.5, z_total=1.5, z=z(REB=1.5, PTS=3.0)),
+                      dict(rank=6, name="Combo Guard", team="LAL", pos="PG,SG", gp=82.0, z_adj=1.0, z_total=1.0, z=z(AST=1.0)),
+                      dict(rank=7, name="Swing Man", team="TOR", pos="SG,SF", gp=82.0, z_adj=0.5, z_total=0.5, z=z(STL=0.5))]
+        b["n_rows"] = 7
+        json.dump(b, open(fx["board"], "w"))
+        html, _, _ = SD.build(fx, date="2026-10-21")
+        self.p = os.path.join(self.d, "deck.html")
+        with open(self.p, "w", encoding="utf-8") as f:
+            f.write(html)
+
+    def pos(self, k):
+        return "pos:" + k
+
+    def test_it_is_one_select_with_the_draft_decks_list_and_all_is_on_by_default(self):
+        d = board_lens_dom(self.p, [])
+        self.assertEqual(d["errors"], []); self.assertEqual(d["pos_tag"], "SELECT")
+        self.assertEqual(d["pos_buttons"], ["All", "PG", "SG", "G", "SF", "PF", "F", "G/F", "F/C", "C"])
+        self.assertEqual(d["pos_on"], ["All"]); self.assertEqual(len(d["names"]), 7); self.assertEqual(d["pos_note"], "")
+
+    def test_g_f_and_f_c_are_the_dual_eligible_players(self):
+        gf = board_lens_dom(self.p, [self.pos("G+F")])
+        self.assertEqual(gf["errors"], []); self.assertEqual(gf["names"], ["Swing Man"]); self.assertEqual(gf["pos_on"], ["G/F"])
+        self.assertIn("a guard spot and a forward spot", gf["pos_note"])
+        fc = board_lens_dom(self.p, [self.pos("F+C")])
+        self.assertEqual(fc["names"], ["Big Wing"]); self.assertIn("a forward spot and center", fc["pos_note"])
+
+    def test_a_single_position_keeps_only_players_eligible_there_and_their_overall_rank(self):
+        d = board_lens_dom(self.p, [self.pos("PG")])
+        self.assertEqual(d["errors"], []); self.assertEqual(d["pos_on"], ["PG"])
+        self.assertEqual(d["names"], ["Alpha Man", "Combo Guard"])
+        self.assertEqual([r[0] for r in d["rows"]], ["1", "6"])          # the # column is the overall rank, not 1 and 2
+        self.assertIn("2 of 7", d["pos_note"])
+        c = board_lens_dom(self.p, [self.pos("C")])
+        self.assertEqual(c["names"], ["Free Agent", "Big Wing"])          # "PF,C" is eligible at C
+
+    def test_g_is_pg_or_sg_and_f_is_sf_or_pf(self):
+        g = board_lens_dom(self.p, [self.pos("G")])
+        self.assertEqual(g["names"], ["Alpha Man", "Steal Man", "Combo Guard", "Swing Man"]); self.assertIn("PG or SG", g["pos_note"])
+        f = board_lens_dom(self.p, [self.pos("F")])
+        self.assertEqual(f["names"], ["Bench Guy", "Big Wing", "Swing Man"]); self.assertIn("SF or PF", f["pos_note"])
+
+    def test_all_and_reset_each_clear_it(self):
+        for clicks in ([self.pos("SG"), self.pos("")], [self.pos("SG"), "#bd-reset"]):
+            d = board_lens_dom(self.p, clicks)
+            self.assertEqual(d["errors"], []); self.assertEqual(d["pos_on"], ["All"], clicks); self.assertEqual(len(d["names"]), 7)
+
+    def test_it_combines_with_the_free_agent_box_and_the_category_lens(self):
+        d = board_lens_dom(self.p, [self.pos("C"), "th:PTS"])
+        self.assertEqual(d["errors"], []); self.assertEqual(d["names"], ["Big Wing", "Free Agent"])   # PTS 3.0, then 0.0
+        self.assertEqual(d["pos_on"], ["C"]); self.assertEqual(d["chips"], ["PTS"])
+        fa = board_lens_dom(self.p, [self.pos("G"), "#bd-fa"])
+        every = board_lens_dom(self.p, ["#bd-fa"])
+        self.assertEqual(fa["names"], [n for n in every["names"] if n in ("Alpha Man", "Steal Man", "Combo Guard", "Swing Man")])
+        self.assertLess(len(fa["names"]), 4)                               # Alpha Man is rostered in the fixture
 

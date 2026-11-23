@@ -148,14 +148,17 @@ def gone_since_morning(brief, week_matchup, roster):
     return out
 
 
-def swap_grid(today_rows, me, avail, repl, moves=None, top=6):
+SWAP_SMALL = 0.05   # expected categories: a suggested swap under this is labelled "small"; week_matchup.LINEUP_D_EXP's bar
+
+
+def _swap_pairs(today_rows, me, avail, repl, moves=None):
     """Owner 2026-11-05 ("recommend roster moves for daily matchups ... dynamic based on the categorical needs of the
     matchup ... start (Player) for (player) to bench -> [stat category] projected gains, heat map"): every (bench
     player, starter) pair for today from week_matchup's replacement table (the 5 AM run: for each starter with a game
-    today, each bench player with a game who fits his slot, with the change in P(win) per category this week), kept
-    only where both still play by this build's own status file (the 3 PM one in the afternoon), ranked by the change
-    in expected categories, top `top`. A starter the status calls Out is the Out-today card's, not this grid's. `kit`
-    marks a pair the morning's lineup moves also named. Read-only: it ranks, it changes nothing."""
+    today, each bench player with a game who fits his slot, with the change in P(win) per category this week, both
+    teams' remaining games counted), kept only where both still play by this build's own status file (the 3 PM one in
+    the afternoon), ranked by the change in expected categories. A starter the status calls Out is the Out-today
+    card's. `kit` marks a pair the morning's lineup moves also named. swap_grid and swap_keep read it. Read-only."""
     today = {r[0]: r for r in today_rows or []}
     av = lambda n: avail.get(n, today[n][4] if n in today else 1.0)
     game = lambda n: bool(n in today and today[n][2])
@@ -173,7 +176,26 @@ def swap_grid(today_rows, me, avail, repl, moves=None, top=6):
             rows.append(dict(start=c["player"], sit=starter, slot=row.get("slot") or slot.get(starter),
                              d_exp=c["d_exp"], cats=c.get("cats") or {}, kit=(c["player"], starter) in named))
     rows.sort(key=lambda r: (-r["d_exp"], r["start"], r["sit"]))
+    return rows
+
+
+def swap_grid(today_rows, me, avail, repl, moves=None, top=3):
+    """Owner 2026-11-18 ("dialed down to top 1-3 player suggestions ... more concise with its decision"; the card had
+    listed six pairs that all cost categories): only swaps that add expected categories this week, each bench player
+    once (his best starter to sit), the best `top`. `small` marks a gain under SWAP_SMALL."""
+    rows, seen = [], set()
+    for r in _swap_pairs(today_rows, me, avail, repl, moves):
+        if r["d_exp"] <= 0 or r["start"] in seen:
+            continue
+        seen.add(r["start"]); rows.append(dict(r, small=r["d_exp"] < SWAP_SMALL))
     return rows[:top]
+
+
+def swap_keep(today_rows, me, avail, repl, moves=None):
+    """The closest swap when none adds categories (owner 2026-11-18): the card then says to keep the lineup and names
+    what the best swap would cost. None when a swap helps or no pair exists."""
+    rows = _swap_pairs(today_rows, me, avail, repl, moves)
+    return rows[0] if rows and rows[0]["d_exp"] <= 0 else None
 
 
 def out_today(today_rows, me, avail, values, repl=None):
@@ -225,7 +247,7 @@ def out_today(today_rows, me, avail, values, repl=None):
     return res
 
 
-def resolve_rostered(rostered, board_names, held_names, aliases, missing=None):
+def resolve_rostered(rostered, board_names, held_names, aliases, missing=None, carry=None):
     """Map each rostered name (the league paste's spelling) to its season-board row or held name (the kit's spelling).
     Owner audit 2026-10-19: Jaren Jackson Jr. / Cameron Johnson showed as free agents under an exact-string join.
     Order: exact; accent-and-punctuation fold; the kit alias table (report/market/build_market.py); suffix-dropped
@@ -253,8 +275,11 @@ def resolve_rostered(rostered, board_names, held_names, aliases, missing=None):
         (unresolved.append(n) if hit is None else out.__setitem__(n, hit))
     # owner 2026-10-28: the 3 PM rebuild passes a list; a player pooled after the 5 AM board is carried as off the board
     # and named, instead of halting the afternoon page (the morning build still halts)
+    # owner 2026-11-20 ("Build anyway, name him"): with carry, the set of names the intake matched to a pool row, only
+    # those are carried; a name found nowhere still halts (the 2026-10-19 join guard). carry None: every name, as before
     if unresolved and missing is not None:
-        missing.extend(sorted(unresolved)); out.update({n: n for n in unresolved}); unresolved = []
+        ok = sorted(n for n in unresolved if carry is None or n in carry)
+        missing.extend(ok); out.update({n: n for n in ok}); unresolved = [n for n in unresolved if n not in ok]
     if unresolved: raise DeckError(f"rostered player(s) with no season-board or held row: {sorted(unresolved)}")
     seen = {}
     for n, t in out.items():
@@ -358,8 +383,13 @@ def build(paths, date, phase=None):
     # mechanical join: each board row gains its fantasy owner
     board_names = [r["name"] for r in board["board"]]
     rostered = [p["player"] for t in league["teams"] for p in t["players"]]
-    not_on_board = [] if phase == "pm" else None
-    rmap = resolve_rostered(rostered, board_names, board.get("held") or [], BP.load_aliases(), not_on_board)
+    # owner 2026-11-20 (card "Build anyway, name him", after the 5 AM deck step failed on a rival's pickup with no board
+    # row, Landry Shamet): the morning build carries and names such a player too, as the 3 PM rebuild has since 2026-10-28
+    # The morning carries only a player the league intake matched to a pool row (league_state's pool_team): in the pool,
+    # no line on the kit's board. A rostered name with no pool row still halts the morning, as it has since 2026-10-19.
+    not_on_board = []
+    pooled = None if phase == "pm" else {p["player"] for t in league["teams"] for p in t["players"] if p.get("pool_team")}
+    rmap = resolve_rostered(rostered, board_names, board.get("held") or [], BP.load_aliases(), not_on_board, pooled)
     on_board = set(board_names)
     own = {}
     my_team = None
@@ -377,11 +407,13 @@ def build(paths, date, phase=None):
                         {p["player"]: zt[rmap[p["player"]]] for p in mine_l if zt.get(rmap[p["player"]]) is not None},
                         ((week_matchup or {}).get("lineup_today") or {}).get("replacements"))
     # owner 2026-11-05: today's bench->starter swaps ranked by this week's categorical need (swap_grid), same inputs
-    grid_now = swap_grid(brief.get("today"), [dict(player=p["player"], slot=p.get("slot") or "BN",
-                                                   positions=p.get("positions") or []) for p in mine_l],
-                         {r["player"]: r.get("availability") for r in status["rows"]},
-                         ((week_matchup or {}).get("lineup_today") or {}).get("replacements"),
-                         ((week_matchup or {}).get("lineup_today") or {}).get("moves"))
+    swap_args = (brief.get("today"), [dict(player=p["player"], slot=p.get("slot") or "BN",
+                                           positions=p.get("positions") or []) for p in mine_l],
+                 {r["player"]: r.get("availability") for r in status["rows"]},
+                 ((week_matchup or {}).get("lineup_today") or {}).get("replacements"),
+                 ((week_matchup or {}).get("lineup_today") or {}).get("moves"))
+    grid_now = swap_grid(*swap_args)
+    keep_now = swap_keep(*swap_args)   # owner 2026-11-18: no swap helps -> keep the lineup, naming the closest
     for r in board["board"]:
         o = own.get(r["name"])
         r["owner"] = o[0] if o else None; r["seat"] = o[1] if o else None
@@ -425,16 +457,22 @@ def build(paths, date, phase=None):
     respelled = sorted((n, m) for n, m in rmap.items() if n != m)
     # every constant the standing sweep tiers FRAGILE, as daily_brief.band_line quotes them (2026-10-21: two since
     # deck 80eecdf, TEAM_WEEK_SHOCK and weekly_availability); a record without the list falls back to the tiers
-    fragile = sweep.get("fragile") or [k for k, c in sweep["constants"].items() if c.get("tier") == "FRAGILE"]
+    # owner 2026-11-17 ("Show the largest band anyway"): with no FRAGILE constant, the largest SENSITIVE one
+    fragile = SR.shown_bands(sweep)
     bands = []
     for key in fragile:
         c = sweep["constants"][key]
         bands.append(dict(name=key, tier=c["tier"], variants=[
             dict(label=v.get("label"), shift=v.get("shift_mean_1dp", f"{v['shift_mean']:+.1f}")) for v in c["variants"]]))
-        if not bands[-1]["variants"]: raise DeckError(f"FRAGILE band {key} with no variants")
+        if not bands[-1]["variants"]: raise DeckError(f"{c['tier']} band {key} with no variants")
     band_engine = sweep.get("engine_commit") or sweep.get("engine")
     # owner 2026-10-26: which configuration and day the bands were measured on (sweep_record.describe, the brief's wording)
     band_config = SR.describe(sweep, paths["sweep"], as_of=date)   # audit F2 (2026-11-12): the sweep's age on the page
+    # owner 2026-11-17 ("Flag it and re-sweep"): a sweep measured on another engine says so on the page
+    band_stale = SR.stale(sweep, co_gm.DECK)
+    band_note = SR.stale_note(band_stale)
+    if band_note:
+        band_config += "; " + band_note
     # owner 2026-11-10: each board row's games in the fantasy playoff weeks, and the league's winning FAAB bids
     playoff = playoff_games(paths.get("games"), paths.get("league_schedule"), co_gm.TEAM_CODE)
     if playoff:
@@ -447,11 +485,12 @@ def build(paths, date, phase=None):
                 my_team=my_team, my_seat=my_seat, brief=brief, board=board, status=status,
                 league=dict(as_of=league["as_of"], rosters=rosters, managers={t["name"]: t.get("manager") for t in league["teams"]},
                             unpooled=league.get("unpooled") or [], my_positions=my_positions), season_lines=lines, matchup=wk,
-                ledger={k: dict(v, result_text=ledger_result(v)) for k, v in calib.get("weeks", {}).items()}, bands=bands, band_engine=band_engine, band_config=band_config, matchup_live=matchup_live,
+                ledger={k: dict(v, result_text=ledger_result(v)) for k, v in calib.get("weeks", {}).items()}, bands=bands, band_engine=band_engine, band_config=band_config, band_stale=band_stale, matchup_live=matchup_live,
                 week_matchup=week_matchup, league_table=league_rec, playoff=playoff, faab=faab,
                 # owner 2026-11-09 (runner pick B1): inputs named but absent, so an empty card can say why
                 absent_inputs=sorted(k for k, p in paths.items() if not (p and os.path.exists(p))),
-                punt=dict(stream_r=SB.RE.STREAM_R, weak_rank_from=PUNT_WEAK_FROM), form=form_rec, scores=scores, accuracy=accuracy, lineup_scorecard=lineup_sc, decision_card=dcard, draft_check=draft_chk, fa_status=fa_status, out_today=out_now, swap_grid=grid_now, waiver_notes=waiver_notes,
+                punt=dict(stream_r=SB.RE.STREAM_R, weak_rank_from=PUNT_WEAK_FROM), form=form_rec, scores=scores, accuracy=accuracy, lineup_scorecard=lineup_sc, decision_card=dcard, draft_check=draft_chk, fa_status=fa_status, out_today=out_now, swap_keep=keep_now, swap_small=SWAP_SMALL, swap_grid=grid_now, waiver_notes=waiver_notes,
+                not_on_board=[dict(player=n, team=own[n][0]) for n in not_on_board],
                 # owner 2026-10-28 ("Rebuild, flag morning parts"): the 3 PM run's rebuild says which parts are the 5 AM run's
                 **({"refresh": {"phase": phase, "not_on_board": not_on_board,
                                 # owner 2026-11-06 ("why does Today still show Matkovic?", "please build it"): the morning brief's
@@ -478,7 +517,7 @@ def build(paths, date, phase=None):
                   board_rows=len(board["board"]), status_rows=len(status["rows"]), panes=7,
                   join=dict(rostered=len(rostered), unresolved=0, on_board=sum(1 for n in rostered if rmap[n] in on_board),
                             off_board=sum(1 for n in rostered if rmap[n] not in on_board), respelled=respelled,
-                            **({"not_on_board": not_on_board} if not_on_board is not None else {}),
+                            not_on_board=not_on_board,
                             free_agents_on_board=sum(1 for r in board["board"] if r["fa"])))
     return html, data, record
 
@@ -704,7 +743,7 @@ function thisWeek(W){ const K=W.pickups, TW=K&&K.this_week; if(!TW) return null;
       h("tr",{},h("th",{},"move"),h("th",{class:"num",title:"Δ cats = the change in expected categories won this week (the sum of the nine changes in each category's chance); categories moved = those changes, largest first; season = the change in expected weekly categories over the season against the other eleven teams, the cost or gain beyond this week. Chances are normal approximations on the projected finals, with the variation of each remaining game (season per-game CV); the league allows 4 adds a week."},"Δ cats",more("Δ cats = the change in expected categories won this week (the sum of the nine changes in each category's chance); categories moved = those changes, largest first; season = the change in expected weekly categories over the season against the other eleven teams, the cost or gain beyond this week. Chances are normal approximations on the projected finals, with the variation of each remaining game (season per-game CV); the league allows 4 adds a week.")),h("th",{class:"num"},"games"),h("th",{class:"num"},"drop's part"),h("th",{class:"num"},"season"),h("th",{},"categories moved")),
       TW.rows.slice(0,8).map(r=>h("tr",{},h("td",{style:"white-space:normal;min-width:9em"},r.add+" ("+r.team+")"+(r.status?" · "+r.status:"")+(r.missed?" · sat out "+r.missed:""),waiverChip(r.add),
           h("div",{class:"note"},"for "+r.drop,goneChip(r.drop))),
-        h("td",{class:"num"},swk(r.d_exp,2)),h("td",{class:"num"},String(r.games)+(r.timing==="same day"?" · today":r.timing?" · from tomorrow":""),
+        h("td",{class:"num"},swk(r.d_exp,2)),h("td",{class:"num"},String(r.games)+(r.timing==="same day"?" · today":r.timing==="after waivers"?" · from "+(r.waiver_date||"waivers"):r.timing?" · from tomorrow":""),
           r.other_timing? h("div",{class:"note"},r.other_timing.games+" if "+r.other_timing.timing) : null),h("td",{class:"num"},swk(r.d_exp_drop,2)),
         h("td",{class:"num"},r.season_d_ecw==null?"—":swk(r.season_d_ecw,3)),h("td",{style:"white-space:normal;min-width:10em"},moved(r.d_cat)))))) : h("div",{class:"zero"},"No free agent has a playable game after today."),
     das.length? noteMore("Dropping with nobody added (from tomorrow): "+das.join("; "),
@@ -937,17 +976,29 @@ function matchupBoard(){ const W=D.week_matchup, B=W&&W.board; if(!B) return nul
     h("p",{class:"note"},"Status from "+(D.refresh&&D.refresh.phase==="pm"?"the 3 PM":"the 5 AM")+" status file. Ranked by the change in this week's expected categories won (the Week card's model, 5 AM run), else season value. Set it in Yahoo before lock.")));
   // owner 2026-11-05: today's start/sit swaps ranked by this week's categorical need, as a heat map (swap_grid:
   // week_matchup's replacement table from the 5 AM run, filtered by this build's status). Nothing here computes.
-  const swapCard=(function(){ const G=D.swap_grid||[], CATS=["FG%","FT%","3PTM","PTS","REB","AST","ST","BLK","TO"], pm=D.refresh&&D.refresh.phase==="pm";
-    const card=h("div",{class:"card",id:"swap-grid"},h("h2",{},"Start/sit for today — by this week's needs"),
-      noteMore("Each cell: the change in P(win) for that category this week, in points, if you start the bench player for the starter today. Blue = gain.",
-        "Pairs: every bench player with a game today who fits a starter's Yahoo slot, from week_matchup's replacement table (the Week card's model, 5 AM run); ranked by the change in expected categories won this week; kept only where both still play by "+(pm?"the 3 PM":"the 5 AM")+" status file. A starter the status calls Out is on the Out-today card instead. ★ = the morning's lineup move named this pair. Set it in Yahoo before lock."));
+  // owner 2026-11-18 ("dialed down to top 1-3 player suggestions ... more concise with its decision"): one line per
+  // swap that adds categories (swap_grid: at most three, one per bench player), or "keep your lineup" naming the
+  // closest swap and its cost (swap_keep); the category heat map sits under "Category detail". Nothing here computes.
+  const swapCard=(function(){ const G=D.swap_grid||[], K=D.swap_keep, CATS=["FG%","FT%","3PTM","PTS","REB","AST","ST","BLK","TO"], pm=D.refresh&&D.refresh.phase==="pm";
+    const card=h("div",{class:"card",id:"swap-grid"},h("h2",{},"Start/sit today"));
+    const why="Each swap is valued by this week's matchup: the change in categories you are expected to win this week if the bench player starts today in the starter's slot, with both teams' remaining games and the Week card's forecast counted (week_matchup's replacement table, 5 AM run). Only swaps that add categories are suggested, each bench player once, at most three; under "+(D.swap_small||0.05)+" categories is marked small. Kept only where both still play by "+(pm?"the 3 PM":"the 5 AM")+" status file; a starter the status calls Out is on the Out-today card. ★ = the morning's lineup move named this pair. Set it in Yahoo before lock.";
+    const sg=(v)=>(v>0?"+":"")+v.toFixed(3), pts=(v)=>(v>0?"+":"")+(v*100).toFixed(1);
+    const parts=(r)=>{ const cs=CATS.filter(c=>Math.abs(r.cats[c]||0)>=0.005), up=cs.filter(c=>r.cats[c]>0).sort((a,b)=>r.cats[b]-r.cats[a]).slice(0,2), dn=cs.filter(c=>r.cats[c]<0).sort((a,b)=>r.cats[a]-r.cats[b]).slice(0,1);
+      return [up.length?"helps "+up.map(c=>c+" "+pts(r.cats[c])).join(", "):null, dn.length?"costs "+dn.map(c=>c+" "+pts(r.cats[c])).join(", "):null].filter(Boolean).join(" · "); };
+    if(!G.length&&K){ card.append(h("p",{class:"decision"},h("b",{},"Keep your lineup."),
+        " No bench swap adds categories this week; the closest, start "+K.start+" for "+K.sit+", "+(K.d_exp<0?"costs "+Math.abs(K.d_exp).toFixed(3):"adds nothing")+"."),
+      noteMore("Valued on this week's matchup, both teams' remaining games counted.", why));
+      return {card:card,has:true}; }
     if(!G.length){ card.append(h("div",{class:"zero"},(D.week_matchup&&D.week_matchup.lineup_today&&D.week_matchup.lineup_today.games_today===false)?"No game for your players today.":"No bench player with a game today fits a starter's slot — nothing to swap.")); return {card:card,has:false}; }
+    G.forEach((r,i)=>card.append(h("p",{class:"decision"},(i+1)+". Start ",h("b",{},r.start),goneChip(r.start)," for "+r.sit+(r.kit?" ★":""),goneChip(r.sit)," ("+(r.slot||"")+"): ",
+      h("b",{},sg(r.d_exp)+" categories this week"),(r.small?" (small)":"")+(parts(r)?" — "+parts(r):""))));
+    card.append(noteMore("Valued on this week's matchup, both teams' remaining games counted; category changes in P(win) points.", why));
     const vmax=Math.max(0.001,...G.map(r=>Math.max(...CATS.map(c=>Math.abs(r.cats[c]||0)))));
     const cell=(v)=>{ v=v||0; const a=Math.abs(v)/vmax, pp=(v*100); const bg=v>0?"rgba(39,102,168,"+(0.12+0.78*a).toFixed(2)+")":(v<0?"rgba(193,63,46,"+(0.08+0.42*a).toFixed(2)+")":"transparent");
       return h("td",{class:"num heat",style:"background:"+bg+(v>0&&a>0.55?";color:#fff":"")},(pp>0?"+":"")+pp.toFixed(1)); };
     const t=h("table",{class:"lg heatmap"},h("tr",{},h("th",{},"start"),h("th",{},"for"),h("th",{},"slot"),...CATS.map(c=>h("th",{class:"num"},c)),h("th",{class:"num"},"Δ cats")));
-    G.forEach(r=>t.append(h("tr",{class:r.kit?"kit":""},h("td",{},h("b",{},r.start),goneChip(r.start)),h("td",{},r.sit+(r.kit?" ★":""),goneChip(r.sit)),h("td",{},r.slot||""),...CATS.map(c=>cell(r.cats[c])),h("td",{class:"num"},(r.d_exp>0?"+":"")+r.d_exp.toFixed(3)))));
-    card.append(h("div",{class:"tablebox"},t),h("p",{class:"note"},"Δ cats: change in expected categories won this week (sum of the cells ÷ 100). "+(D.refresh&&D.refresh.lineup_refreshed? "Recomputed by the 3 PM run from the afternoon roster and status." : "The figures are the 5 AM model's; "+(pm?"the 3 PM run refreshes who plays and who is Out.":"the 3 PM page refreshes who plays and who is Out."))));
+    G.forEach(r=>t.append(h("tr",{class:r.kit?"kit":""},h("td",{},h("b",{},r.start)),h("td",{},r.sit+(r.kit?" ★":"")),h("td",{},r.slot||""),...CATS.map(c=>cell(r.cats[c])),h("td",{class:"num"},sg(r.d_exp)))));
+    card.append(h("details",{},h("summary",{},"Category detail"),h("div",{class:"tablebox"},t),h("p",{class:"note"},(D.refresh&&D.refresh.lineup_refreshed? "Recomputed by the 3 PM run from the afternoon roster and status." : "The figures are the 5 AM model's; "+(pm?"the 3 PM run refreshes who plays and who is Out.":"the 3 PM page refreshes who plays and who is Out.")))));
     return {card:card,has:true}; })();
   // a grid with rows leads the tab (after Out-today); the empty-state card sits under the Week card instead
   if(swapCard.has) p.append(swapCard.card);
@@ -960,6 +1011,9 @@ function matchupBoard(){ const W=D.week_matchup, B=W&&W.board; if(!B) return nul
   if(UN.length||UA.length) p.append(h("div",{class:"card"},h("p",{class:"note",id:"unpooled-note"},
     (UN.length? "Not in the pool, not simulated: "+unl(UN)+". Each needs a pool row before the simulator counts him." : "")
     +(UN.length&&UA.length? " " : "")+(UA.length? "Auto row (blended), simulated: "+unl(UA)+"." : ""))));
+  // owner 2026-11-20: the morning page names a rostered player with no board row (the 3 PM page says it in its own note)
+  if(!(D.refresh&&D.refresh.phase==="pm")&&(D.not_on_board||[]).length) p.append(h("div",{class:"card"},h("p",{class:"note",id:"off-board-note"},
+    "Rostered with no row on the board (no season line on this page): "+D.not_on_board.map(x=>x.player+", on "+T(x.team)).join("; ")+".")));
   if(D.refresh&&D.refresh.phase==="pm") p.append(h("div",{class:"card"},h("p",{class:"note",id:"pm-note"},
     (D.refresh.lineup_refreshed? "Afternoon refresh: rosters, injury status, today's lineup, the start/sit pairs and this week's adds are from the 3 PM run; the waiver pairs and title odds are the 5 AM run's."
       : "Afternoon refresh: rosters, ownership and injury status are from the 3 PM run; the lineup, waiver pairs and title odds are from the 5 AM run (they can be out of date after a roster move or a new injury).")
@@ -994,7 +1048,7 @@ function matchupBoard(){ const W=D.week_matchup, B=W&&W.board; if(!B) return nul
   if(!swapCard.has) p.append(swapCard.card);
   p.append(
     h("div",{class:"cols"},
-      h("div",{class:"card span2"},h("h2",{},"Odds"),tiles,ilReturn(b.il_return),(b.method&&b.method.line)?h("p",{class:"note"},b.method.line):null,noteMore("Model bands: "+(D.bands||[]).map(b=>b.name.split(".").pop()+" "+b.variants.map(v=>v.shift).join("/")).join(" · ")+" title pts",
+      h("div",{class:"card span2"},h("h2",{},"Odds"),tiles,ilReturn(b.il_return),(b.method&&b.method.line)?h("p",{class:"note"},b.method.line):null,noteMore("Model bands: "+((D.band_stale||{}).status==="STALE"?"STALE, ":"")+((D.bands||[]).length?(D.bands||[]).map(b=>b.name.split(".").pop()+(b.tier!=="FRAGILE"?" ("+b.tier+", the largest)":"")+" "+b.variants.map(v=>v.shift).join("/")).join(" · ")+" title pts":"no FRAGILE constant"),
         "Structural band ("+D.band_config+"): "+bandLine())),
       h("div",{class:"card"},h("h2",{},"Lineup"),h("div",{class:"tablebox"},h("table",{},
         lineupRows().map(([slot,name])=>h("tr",{},h("td",{},h("span",{class:"chip"},slot)),h("td",{},name,goneChip(name)))))),
@@ -1240,7 +1294,7 @@ function holdCheckCard(){ const W=D.brief.role_watch; if(!W) return null;
 
 // ---- Board ----
 (function(){ const p=$("#pane-board"); const rows=D.board.board.slice();
-  let key="rank", asc=true, q="", fa=false;
+  let key="rank", asc=true, q="", fa=false, pos="";
   let ca=null, cb=null;
   // owner 2026-11-13 ("add the multi-category filter ability like on the Draft Deck tool"): a category header click
   // stacks it into a lens of up to 3, ranked by the selected categories' combined z (the plain sum of the z shown in
@@ -1279,11 +1333,31 @@ function holdCheckCard(){ const W=D.brief.role_watch; if(!W) return null;
   const inp=h("input",{type:"search",id:"bd-q",placeholder:"Search player or team",oninput:(e)=>{q=e.target.value;render();}});
   const faBox=h("input",{type:"checkbox",id:"bd-fa",onchange:(e)=>{fa=e.target.checked;render();}});
   const tbl=h("div",{});
+  // owner 2026-11-20 ("give me the option to also filter by POSITION ... PG, SG, G, SF, PF, F, C"; card "Build it,
+  // display-only"), then the same day "can you make it a drop down select, like the Draft deck tool?": one select with
+  // the Draft deck's list (deck docs/draft-deck.html #bestPos). G is PG or SG and F is SF or PF, the league's slots
+  // (hoops.POSITIONAL_SLOTS); G/F and F/C are the dual-eligible players (a guard and a forward spot; a forward spot and
+  // center). Eligibility is the pos column (Yahoo's). Display only: # and z adj keep their overall values.
+  const POS=[["","All"],["PG","PG"],["SG","SG"],["G","G"],["SF","SF"],["PF","PF"],["F","F"],["G+F","G/F"],["F+C","F/C"],["C","C"]];
+  const POSMAP={G:["PG","SG"],F:["SF","PF"]}, POSDUAL={"G+F":["G","F"],"F+C":["F","C"]},
+    POSSAID={G:"G (PG or SG)",F:"F (SF or PF)","G+F":"G/F (a guard spot and a forward spot)","F+C":"F/C (a forward spot and center)"};
+  const posHas=(e,k)=>(POSMAP[k]||[k]).some(x=>e.includes(x));
+  const posOk=(r)=>{ if(!pos) return true; const e=String(r.pos||"").split(",").map(x=>x.trim());
+    return POSDUAL[pos]? POSDUAL[pos].every(k=>posHas(e,k)) : posHas(e,pos); };
+  const posSel=h("select",{id:"bd-pos",title:"Show only players eligible at one position. The # and z adj columns keep their overall values.",
+    onchange:(e)=>{ pos=e.target.value; posRender(); render(); }}, POS.map(([v,l])=>h("option",{value:v},l)));
+  const posNote=h("div",{class:"small note",id:"bd-pos-n",style:"margin:6px 0 10px"});
+  function posRender(){ posSel.value=pos;
+    posNote.textContent= pos? rows.filter(posOk).length+" of "+rows.length+" players are eligible at "+(POSSAID[pos]||pos) : "";
+    posNote.style.display= pos? "" : "none"; }
   box.append(h("div",{class:"h2row"},h("h2",{},"Season board — "+rows.length+" ranked players"),
-      h("button",{id:"bd-reset",class:"resetbtn",onclick:()=>{q="";inp.value="";fa=false;faBox.checked=false;key="rank";asc=true;ca=null;cb=null;lens=[];drill=null;lensRender();puntSet(o=>o.clear());}},"Reset")),
+      h("button",{id:"bd-reset",class:"resetbtn",onclick:()=>{q="";inp.value="";fa=false;faBox.checked=false;pos="";posRender();key="rank";asc=true;ca=null;cb=null;lens=[];drill=null;lensRender();puntSet(o=>o.clear());}},"Reset")),
     noteMore("Season lines blended with games so far ("+D.season_lines.players_with_games+" players) · "+(D.board.held.length? D.board.held.length+" held off the board" : "none held off the board"),
       D.board.held.length? "Held off the board: "+D.board.held.join(", ")+"." : null),
-    h("div",{class:"pick"},inp,h("label",{style:"display:flex;align-items:center;gap:6px"},faBox,"free agents only")),
+    h("div",{class:"pick"},h("div",{style:"flex-direction:row;align-items:center;gap:10px"},
+        h("label",{class:"note",style:"display:flex;align-items:center;gap:6px;flex:0 0 auto"},"Pos",posSel),h("div",{style:"flex:1;min-width:0"},inp)),
+      h("label",{style:"display:flex;align-items:center;gap:6px"},faBox,"free agents only")),
+    posNote,
     noteMore("Fit for your build: switch a category off to leave it out of every player's value",
       "A category you are conceding should not count for or against a player. With one or more switched off, the table adds a fit column (the sum of the categories still on, with the board's own availability discount) and sorts by it. My build switches off the categories where your team ranks "+WEAK+"th or worse of "+NTEAMS+" today, with IL players counting nothing."+(ANY_IL?" Full health does the same with every team's IL players counted as active (those the board ranks), before any cuts to make room: use it to tell a category that is weak for good from one that is weak only while someone is hurt.":"")+" The # and z adj columns never change, and the simulator does not read this."),
     chips, catBox, tbl);
@@ -1305,7 +1379,7 @@ function holdCheckCard(){ const W=D.brief.role_watch; if(!W) return null;
   const poCell=(r)=>{ const g=PO.by_team[r.team];
     return h("td",{class:"num",title: g? r.team+" in fantasy playoff weeks "+PO.weeks.join(", ")+": "+g.join(" + ")+" games. The simulator does not use this: it plays every week at the same games per player."
       : "No game listed for "+r.team+" in the playoff weeks."}, g? String(r.po_games) : "–"); };
-  function render(){ let rs=rows.filter(r=>(!q||r.name.toLowerCase().includes(q.toLowerCase())||(r.owner||"FA").toLowerCase().includes(q.toLowerCase()))&&(!fa||r.fa));
+  function render(){ let rs=rows.filter(r=>(!q||r.name.toLowerCase().includes(q.toLowerCase())||(r.owner||"FA").toLowerCase().includes(q.toLowerCase()))&&(!fa||r.fa)&&posOk(r));
     const kv=(r)=>key==="fit"? fit(r) : key==="name"?r.name:(key==="owner"?(r.owner||"zzFA"):(key in r? r[key] : r.z[key]));
     if(lens.length) rs.sort((x,y)=> drill? (y.z[drill]-x.z[drill])||(lensSum(y)-lensSum(x)) : lensSum(y)-lensSum(x));
     else rs.sort((x,y)=>{ const a=kv(x), b=kv(y);
@@ -1322,7 +1396,7 @@ function holdCheckCard(){ const W=D.brief.role_watch; if(!W) return null;
       rs.length>200?h("p",{class:"note"},"Showing the first 200 of "+rs.length+" rows; narrow with search."):null));
     cmpRender();
   }
-  chipRender(); lensRender(); render();
+  chipRender(); lensRender(); posRender(); render();
 })();
 
 // ---- Draft Check (owner 2026-11-11: "include this on the season deck replacing the Movers tab") ----
@@ -1690,7 +1764,8 @@ def main():
           f"{record['status_rows']} status rows; record deck_record_{a.date}{sfx}.json pins {len(record['inputs'])} inputs; "
           f"render: {len(res['tabs'])} tabs, 0 page errors{refresh_note})"
           # owner 2026-11-09 (runner pick B1): an absent input is recorded (GAUNTLET decision 4) and named here, never silent
-          + "".join(f"; absent: {', '.join(ab)}" for ab in [sorted(k for k, v in record["inputs"].items() if not v["present"])] if ab))
+          + "".join(f"; absent: {', '.join(ab)}" for ab in [sorted(k for k, v in record["inputs"].items() if not v["present"])] if ab)
+          + "".join(f"; rostered with no board row: {', '.join(nb)}" for nb in [record["join"].get("not_on_board")] if nb))
 
 
 if __name__ == "__main__":

@@ -164,7 +164,7 @@
    "value": 0.11,
    "role": "shared games-played shock correlating the counting categories within a team-week",
    "status": "declared_band",
-   "record": "deck analysis_2026-08-09_findings_table.md F39 hand-set; band: postmortem rt_sensitivity.json shock 0 / 0.12 (FRAGILE: +3.0/+3.8 and -2.0/-2.7 title points); 0.06 -> 0.11 on 2026-11-16 (Council 4-1, owner: \"Have council deliberate the shock fit and proceed\"): the level-relative fit of weeks 1-4 (fit_constants on season/daily, 48 team-weeks), 0.107, SE 0.013 (weeks 2-4: 0.097, 0.112, 0.107), the same on the 0.88/0.75 and 0.80/0.65 tiers (0.1068 / 0.1067); the raw fit on the new tiers, 0.118, is the model's weekly level running 10% low (mean actual/model 1.103), not a larger shock. Band from the same day: no shock, the old value 0.06, and the fit + 2 SE (0.13)",
+   "record": "deck analysis_2026-08-09_findings_table.md F39 hand-set; band: postmortem rt_sensitivity.json shock 0 / 0.12 (FRAGILE: +3.0/+3.8 and -2.0/-2.7 title points); 0.06 -> 0.11 on 2026-11-16 (Council 4-1, owner: \"Have council deliberate the shock fit and proceed\"): the level-relative fit of weeks 1-4 (fit_constants on season/daily, 48 team-weeks), 0.107, SE 0.013 (weeks 2-4: 0.097, 0.112, 0.107), the same on the 0.88/0.75 and 0.80/0.65 tiers (0.1068 / 0.1067); the raw fit on the new tiers, 0.118, is the model's weekly level running 10% low (mean actual/model 1.103), not a larger shock. Band from the same day: no shock, the old value 0.06, and the fit + 2 SE (0.13). Season sweep of 2026-11-17 (report/after-reports/redteam-2026-11-17-season, engine files ecb60cb, 2026-11-17 rosters, season lines with the minutes switch, real schedule; owner 2026-11-17 \"Flag it and re-sweep\"): SENSITIVE, +1.5 (no shock) / +0.6 (old 0.06) / 0.0 (0.13). The post-mortem band above (FRAGILE, shock 0 / 0.12) was measured on the engine of 2026-10-19 and is history, not the current tier.",
    "decision": "D-PM-1 calibrate the shock",
    "band": [
     {
@@ -328,7 +328,7 @@
    },
    "role": "in-sim share of games played by tier (g = 3.5 a, Var[G] = 3.5 a (1-a))",
    "status": "declared_band",
-   "record": "deck analysis_2026-08-09_findings_table.md F39 hand-set; 0.79 derived 2026-10-13 as the mild share of the healthy-to-risk gap; band: postmortem rt_sensitivity.json healthy 0.95/0.80, risk 0.88/0.65 (no-discount SENSITIVE -1.3/-1.5); recovery 0.60 -> 0.0 on 2026-10-21 (owner \"build council's fixes\", Council 4-1 D-PM-4 recovery part): the board's exclusion (hoops.availability, owner ruling 2026-07-12), real 2025-26 recovery players ~9% of games (deck LESSONS item 5), returnees re-tagged -risk; in-season effect at the change: 0 rostered players (4 of 4 on IL, D-IS-8); draft-day effect measured 2026-10-21: seat 10 title 21.10/21.33 -> 23.27/24.07 on the 10k references (Nurkic seat 2, Butler seat 12; decomposed exactly by re-running at 0.60). out 0.0 on 2026-10-21 (owner \"proceed with all\", decision-sheet item 2): the branch hoops.availability already had; before it out-* fell through to the healthy 0.88 (A-9 pre-registered divergence); 0 rostered or drafted out-* players at the change; healthy 0.88 -> 0.80 and risk 0.75 -> 0.65 on 2026-11-16 (owner pick \"Fit with a floor\", floor \"Band edge: 0.80 / 0.65\"): report/fits/fit_week4.json on season/daily, weeks 1-4 of 2026-27, healthy measured 0.779 (n 3,694), risk 0.559 (n 438), each floored at the edge of the declared band; band redefined the same day as old value / unfloored fit per tier (healthy 0.88 / 0.78, risk 0.75 / 0.56), one tier moved at a time with the other at its live value; mild kept at 0.79 (owner); mild kept at 0.79 by the Council of 2026-11-16, 5-0 (owner: \"proceed with their vote\"): the only measurement, 0.885 (n 26, weeks 1-4), sits above both healthy and the old derivation; re-deriving on the new gap (about 0.70) would sit 2.9 SE below it and would cut the owner's Kyrie Irving's games (mild-tagged players on 2026-11-16: Kyrie Irving, Damian Lillard)",
+   "record": "deck analysis_2026-08-09_findings_table.md F39 hand-set; 0.79 derived 2026-10-13 as the mild share of the healthy-to-risk gap; band: postmortem rt_sensitivity.json healthy 0.95/0.80, risk 0.88/0.65 (no-discount SENSITIVE -1.3/-1.5); recovery 0.60 -> 0.0 on 2026-10-21 (owner \"build council's fixes\", Council 4-1 D-PM-4 recovery part): the board's exclusion (hoops.availability, owner ruling 2026-07-12), real 2025-26 recovery players ~9% of games (deck LESSONS item 5), returnees re-tagged -risk; in-season effect at the change: 0 rostered players (4 of 4 on IL, D-IS-8); draft-day effect measured 2026-10-21: seat 10 title 21.10/21.33 -> 23.27/24.07 on the 10k references (Nurkic seat 2, Butler seat 12; decomposed exactly by re-running at 0.60). out 0.0 on 2026-10-21 (owner \"proceed with all\", decision-sheet item 2): the branch hoops.availability already had; before it out-* fell through to the healthy 0.88 (A-9 pre-registered divergence); 0 rostered or drafted out-* players at the change; healthy 0.88 -> 0.80 and risk 0.75 -> 0.65 on 2026-11-16 (owner pick \"Fit with a floor\", floor \"Band edge: 0.80 / 0.65\"): report/fits/fit_week4.json on season/daily, weeks 1-4 of 2026-27, healthy measured 0.779 (n 3,694), risk 0.559 (n 438), each floored at the edge of the declared band; band redefined the same day as old value / unfloored fit per tier (healthy 0.88 / 0.78, risk 0.75 / 0.56), one tier moved at a time with the other at its live value; mild kept at 0.79 (owner); mild kept at 0.79 by the Council of 2026-11-16, 5-0 (owner: \"proceed with their vote\"): the only measurement, 0.885 (n 26, weeks 1-4), sits above both healthy and the old derivation; re-deriving on the new gap (about 0.70) would sit 2.9 SE below it and would cut the owner's Kyrie Irving's games (mild-tagged players on 2026-11-16: Kyrie Irving, Damian Lillard). Season sweep of 2026-11-17 (report/after-reports/redteam-2026-11-17-season, engine files ecb60cb, 2026-11-17 rosters, season lines with the minutes switch, real schedule; owner 2026-11-17 \"Flag it and re-sweep\"): SENSITIVE, -0.6 (healthy 0.88) / +0.2 (healthy 0.78) / -1.9 (risk 0.75) / +1.9 (risk 0.56): the risk variants sit just under the 2-point FRAGILE line (MC SE 0.54), and the same constant read FRAGILE (-2.6 / +1.4) on the live engine's sweep of 2026-11-16 made on the lines before the minutes switch. The \"no-discount SENSITIVE -1.3/-1.5\" above is the 2026-10-19 engine's.",
    "decision": "D-PM-4 reconcile with hoops.availability (recovery and out reconciled 2026-10-21; risk/mild after the composed per-player comparison)",
    "band": [
     {
@@ -453,7 +453,7 @@
    "role": "board haircut by injury tier (applies above the pool mean only)",
    "status": "uncalibrated",
    "record": "hoops.py docstring: 0.78 'arena-calibrated vs real 2025-26 games played'; deck LESSONS.md item 5 (2026-07-12): risk-flagged played 51% of games vs 75% assumed, 0.78 kept above the realized ratio for streaming; 0.85 from outside projections' games 0.84-0.87 (2026-10-13); not used by the simulator (weekly_availability is), so no title band",
-   "decision": "D-PM-4 reconcile with arena.weekly_availability (0.78 vs 0.75, 1.0 vs 0.88; recovery reconciled to 0.0 on both 2026-10-21); D-RN-4 review"
+   "decision": "D-PM-4 reconcile with arena.weekly_availability. As of 2026-11-16 the simulator's tiers are healthy 0.80 / risk 0.65 (a risk-to-healthy ratio of 0.81) against this board's 1.0 / 0.78 (ratio 0.78); weeks 1-4 measured the ratio at 0.718 (SE 0.031; report/fits.md on season/daily), so this board's risk discount sits 2.0 SE and the simulator's 3.0 SE above the measurement (the kit board, rank_engine.avail, 6.0 SE: assessment queued for the Monday review of 2026-11-23, owner pick 2026-11-17). Recovery reconciled to 0.0 on both 2026-10-21; D-RN-4 review"
   },
   {
    "module": "season_lines",
@@ -670,7 +670,7 @@
    "role": "the decision log's grading window in days from the move (or the recommendation): long enough that a 3-game start does not decide it, short enough that the role at the time still applies",
    "status": "uncalibrated",
    "record": "report/after-reports/after-report-2026-10-31-decision-log.md (red team 2026-10-31: per-game z noise sd 3.65, so the verdict reads the board's blended z_adj, not box sums)",
-   "decision": "D-DL-1: the owner picks the window, the line and the game minimum before the first grade (2026-11-30, the first elapsed window); re-decided at season end on the scorecard"
+   "decision": "D-DL-1: picked by the owner on 2026-11-17 before the first grade (card \"Keep 28 days, 0.5, 10 games (Recommended)\"); the first windows (recommendations of 2026-10-20 on) elapsed 2026-11-17, and the Monday step grades them first on 2026-11-23. Re-decided at season end on the scorecard"
   },
   {
    "module": "decision_grade",
@@ -679,7 +679,7 @@
    "role": "the verdict line on z_adj (add minus drop on the window-end board; owner's pair minus the kit's): inside it is TOO CLOSE",
    "status": "uncalibrated",
    "record": "report/after-reports/after-report-2026-10-31-decision-log.md (red team 2026-10-31: per-game z noise sd 3.65, so the verdict reads the board's blended z_adj, not box sums)",
-   "decision": "D-DL-1: the owner picks the window, the line and the game minimum before the first grade (2026-11-30, the first elapsed window); re-decided at season end on the scorecard"
+   "decision": "D-DL-1: picked by the owner on 2026-11-17 before the first grade (card \"Keep 28 days, 0.5, 10 games (Recommended)\"); the first windows (recommendations of 2026-10-20 on) elapsed 2026-11-17, and the Monday step grades them first on 2026-11-23. Re-decided at season end on the scorecard"
   },
   {
    "module": "decision_grade",
@@ -688,7 +688,7 @@
    "role": "fewer games than this for either player in the window keeps the row PENDING; never folded into the verdict",
    "status": "uncalibrated",
    "record": "report/after-reports/after-report-2026-10-31-decision-log.md (red team 2026-10-31: per-game z noise sd 3.65, so the verdict reads the board's blended z_adj, not box sums)",
-   "decision": "D-DL-1: the owner picks the window, the line and the game minimum before the first grade (2026-11-30, the first elapsed window); re-decided at season end on the scorecard"
+   "decision": "D-DL-1: picked by the owner on 2026-11-17 before the first grade (card \"Keep 28 days, 0.5, 10 games (Recommended)\"); the first windows (recommendations of 2026-10-20 on) elapsed 2026-11-17, and the Monday step grades them first on 2026-11-23. Re-decided at season end on the scorecard"
   },
   {
    "module": "il_return",
