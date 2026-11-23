@@ -1,39 +1,40 @@
 {
- "ran_at_utc": "2026-11-23T17:47:55Z",
+ "ran_at_utc": "2026-11-23T18:32:19Z",
  "inputs": {
-  "report/after-reports/after-report-2026-11-23-kit-row-gp-registered.md": "ff6790626e0b2a9438119ac9f279589ced4f73ae2b0972ab73349ef04af510cd",
-  "report/after-reports/redteam-2026-11-17-season/sweep.json": "13dd355f9c22b85cbdc79140be471a2e1be61e49d32114fd8ae37c2ac800b8ea"
+  "report/after-reports/after-report-2026-11-23-deck-test-run-block.md": "f6df5a9866e0856a03f26f4f704239e74f413541c2fcf485a07dc3d78ef088e4"
  },
  "gates": [
   {
    "name": "kit check_report",
-   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-23-kit-row-gp-registered.md",
+   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-23-deck-test-run-block.md",
    "cwd": ".",
    "pass_re": "^REPORT GATE: PASS",
    "exit": 0,
-   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-11-23-kit-row-gp-registered.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)",
+   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-11-23-deck-test-run-block.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "REPORT GATE: PASS \u2014 after-report-2026-11-23-kit-row-gp-registered.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)"
+    "REPORT GATE: PASS \u2014 after-report-2026-11-23-deck-test-run-block.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)"
    ]
   },
   {
    "name": "claim receipts",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/independent_audit/claim_receipts.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-23-kit-row-gp-registered.md",
+   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/independent_audit/claim_receipts.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-23-deck-test-run-block.md",
    "cwd": ".",
    "pass_re": "^CLAIM RECEIPTS: (PASS|ADVISORY)",
    "exit": 0,
-   "pass_line": "CLAIM RECEIPTS: PASS \u2014 1 file(s), every mechanism claim carries a receipt",
+   "pass_line": "CLAIM RECEIPTS: ADVISORY \u2014 2 unreceipted claim(s) in 1 file(s); show a receipt or mark the status",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "CLAIM RECEIPTS: PASS \u2014 1 file(s), every mechanism claim carries a receipt"
+    "  /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-23-deck-test-run-block.md:1: 'run on its own' \u2014 # The deck test file runs every test when run on its own (2026-11-23)",
+    "Pull window: 2026-11-23 \u2192 2026-11-23 (no pull: kit main 1c6eaa0, deck main 3551a15; no records read).",
+    "CLAIM RECEIPTS: ADVISORY \u2014 2 unreceipted claim(s) in 1 file(s); show a receipt or mark the status"
    ]
   },
   {
-   "name": "season lines",
-   "cmd": "python3 -m unittest scripts.test_season_lines",
+   "name": "deck tests as a script",
+   "cmd": "python3 scripts/test_season_deck.py",
    "cwd": ".",
    "pass_re": "^OK",
    "exit": 0,
@@ -42,7 +43,7 @@
    "why": "",
    "tail": [
     "----------------------------------------------------------------------",
-    "Ran 22 tests in 0.234s",
+    "Ran 255 tests in 139.757s",
     "OK"
    ]
   },
@@ -57,47 +58,8 @@
    "why": "",
    "tail": [
     "----------------------------------------------------------------------",
-    "Ran 1347 tests in 192.486s",
+    "Ran 1348 tests in 197.454s",
     "OK (skipped=2)"
-   ]
-  },
-  {
-   "name": "redteam constants",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/redteam/check_constants.py --deck /home/user/yahoo-fantasy-basketball",
-   "cwd": ".",
-   "pass_re": "^CONSTANTS CHECK: PASS",
-   "exit": 0,
-   "pass_line": "CONSTANTS CHECK: PASS \u2014 54 registered = 54 live on deck 3551a15; declared_band 5, measured 10, settings 8, structural 6, uncalibrated 25",
-   "verdict": "PASS",
-   "why": "",
-   "tail": [
-    "CONSTANTS CHECK: PASS \u2014 54 registered = 54 live on deck 3551a15; declared_band 5, measured 10, settings 8, structural 6, uncalibrated 25"
-   ]
-  },
-  {
-   "name": "redteam bands",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/redteam/check_bands.py --report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-23-kit-row-gp-registered.md --sweep /home/user/fantasy-basketball-2026-27/report/after-reports/redteam-2026-11-17-season/sweep.json",
-   "cwd": ".",
-   "pass_re": "^BANDS CHECK: PASS",
-   "exit": 0,
-   "pass_line": "BANDS CHECK: PASS \u2014 the report quotes no title share and names no FRAGILE constant; bands not owed; engine 3551a15",
-   "verdict": "PASS",
-   "why": "",
-   "tail": [
-    "BANDS CHECK: PASS \u2014 the report quotes no title share and names no FRAGILE constant; bands not owed; engine 3551a15"
-   ]
-  },
-  {
-   "name": "redteam attacks",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/redteam/run_attacks.py --check --deck /home/user/yahoo-fantasy-basketball",
-   "cwd": ".",
-   "pass_re": "^ATTACKS CHECK: PASS",
-   "exit": 0,
-   "pass_line": "ATTACKS CHECK: PASS \u2014 11 attacks on engine 3551a15 (engine files last changed ecb60cb), simulator aa470f8; CURRENT 11",
-   "verdict": "PASS",
-   "why": "",
-   "tail": [
-    "ATTACKS CHECK: PASS \u2014 11 attacks on engine 3551a15 (engine files last changed ecb60cb), simulator aa470f8; CURRENT 11"
    ]
   },
   {
@@ -116,5 +78,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "1c6eaa0b30f4b247569803271c8de5e314e851e0"
+ "base_commit": "5c7d52618677fa7bf5e9baec725b079689ec20b5"
 }
