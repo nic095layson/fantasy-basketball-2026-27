@@ -55,6 +55,8 @@ running session's own transcript, and only entries stamped at or after the run's
 
 Merging anything, archiving a session, and any change to a stored prompt (made from the Runner's own conversation).
 No session pushes to `season/daily` except the Runner, or another session on the owner's word.
+A code change built in the Runner's conversation ships as a pull request with its own `gates.json` and report, like
+any session's (RULES.md rule 7; owner 2026-11-23, after kit #298 merged without them).
 
 ## Cost and size, for the record
 

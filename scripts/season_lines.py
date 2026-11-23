@@ -60,6 +60,10 @@ SEASON_GAMES = 65  # the games a full season of the stability sample carries (25
 AUTO_MIN_GAMES = 3
 AUTO_PRIOR_LO = 146
 AUTO_PRIOR_HI = 166
+# Owner 2026-11-20 (option 3, "Line from his games", kit #298): a rostered deck-plane player with no kit row gets a kit
+# row whose games played is this quantile of the kit file's gp (0.5 = the median). A stated judgment rule, not fitted;
+# registered uncalibrated (owner pick 2026-11-23, "Register median-games rule", decision D-KR-1).
+KIT_ROW_GP_QUANTILE = 0.5
 STATE = os.path.join(KIT, "data", "league_state.json")
 
 
@@ -352,8 +356,9 @@ def kit_rows_for_rostered(out_kit, out_deck, kit_fields, tot, find, state):
     gps = sorted(float(r["gp"]) for r in out_kit if r.get("gp") not in (None, ""))
     if not gps:
         return [], []
-    mid = len(gps) // 2
-    gp = gps[mid] if len(gps) % 2 else (gps[mid - 1] + gps[mid]) / 2
+    pos = (len(gps) - 1) * KIT_ROW_GP_QUANTILE      # linear interpolation; 0.5 is the median, as before
+    lo = int(pos)
+    gp = gps[lo] + (gps[min(lo + 1, len(gps) - 1)] - gps[lo]) * (pos - lo)
     rows, rec, seen = [], [], set()
     for n in rostered:
         if on_kit(n):
