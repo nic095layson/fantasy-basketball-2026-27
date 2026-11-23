@@ -1,25 +1,26 @@
 {
- "ran_at_utc": "2026-11-23T19:28:20Z",
+ "ran_at_utc": "2026-11-23T19:46:47Z",
  "inputs": {
-  "report/after-reports/after-report-2026-11-23-braun-lesson.md": "8a1f71d589f35db728dad7298d1cc15064d47c95fea8d5ff530dc4f9160b8fbb"
+  "report/after-reports/after-report-2026-11-23-confidence.md": "d265a82a1f697199074e3739eae79165244faa49e3d7b7b3034f9e86a05f33af",
+  "report/after-reports/redteam-2026-11-23-season/sweep.json": "b14ef72d64a57334365f3f52d130f07badd33a0f86a9318860823794d934d8b9"
  },
  "gates": [
   {
    "name": "kit check_report",
-   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-23-braun-lesson.md",
+   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-23-confidence.md",
    "cwd": ".",
    "pass_re": "^REPORT GATE: PASS",
    "exit": 0,
-   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-11-23-braun-lesson.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)",
+   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-11-23-confidence.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "REPORT GATE: PASS \u2014 after-report-2026-11-23-braun-lesson.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)"
+    "REPORT GATE: PASS \u2014 after-report-2026-11-23-confidence.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)"
    ]
   },
   {
    "name": "claim receipts",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/independent_audit/claim_receipts.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-23-braun-lesson.md",
+   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/independent_audit/claim_receipts.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-23-confidence.md",
    "cwd": ".",
    "pass_re": "^CLAIM RECEIPTS: (PASS|ADVISORY)",
    "exit": 0,
@@ -28,6 +29,45 @@
    "why": "",
    "tail": [
     "CLAIM RECEIPTS: PASS \u2014 1 file(s), every mechanism claim carries a receipt"
+   ]
+  },
+  {
+   "name": "redteam constants",
+   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/redteam/check_constants.py --deck /home/user/yahoo-fantasy-basketball",
+   "cwd": ".",
+   "pass_re": "^CONSTANTS CHECK: PASS",
+   "exit": 0,
+   "pass_line": "CONSTANTS CHECK: PASS \u2014 54 registered = 54 live on deck 4fcd92b; declared_band 5, measured 10, settings 8, structural 6, uncalibrated 25",
+   "verdict": "PASS",
+   "why": "",
+   "tail": [
+    "CONSTANTS CHECK: PASS \u2014 54 registered = 54 live on deck 4fcd92b; declared_band 5, measured 10, settings 8, structural 6, uncalibrated 25"
+   ]
+  },
+  {
+   "name": "redteam bands",
+   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/redteam/check_bands.py --report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-23-confidence.md --sweep /home/user/fantasy-basketball-2026-27/report/after-reports/redteam-2026-11-23-season/sweep.json",
+   "cwd": ".",
+   "pass_re": "^BANDS CHECK: PASS",
+   "exit": 0,
+   "pass_line": "BANDS CHECK: PASS \u2014 0 FRAGILE band(s) quoted (none); engine 3551a15",
+   "verdict": "PASS",
+   "why": "",
+   "tail": [
+    "BANDS CHECK: PASS \u2014 0 FRAGILE band(s) quoted (none); engine 3551a15"
+   ]
+  },
+  {
+   "name": "redteam attacks",
+   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/redteam/run_attacks.py --check --deck /home/user/yahoo-fantasy-basketball",
+   "cwd": ".",
+   "pass_re": "^ATTACKS CHECK: PASS",
+   "exit": 0,
+   "pass_line": "ATTACKS CHECK: PASS \u2014 11 attacks on engine 4fcd92b (engine files last changed ecb60cb), simulator aa470f8; CURRENT 11",
+   "verdict": "PASS",
+   "why": "",
+   "tail": [
+    "ATTACKS CHECK: PASS \u2014 11 attacks on engine 4fcd92b (engine files last changed ecb60cb), simulator aa470f8; CURRENT 11"
    ]
   },
   {
@@ -46,5 +86,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "8f4b0c817d5ac59a9d1527096f0e9089b408029d"
+ "base_commit": "8944af657d3d89cebaca1c43007dae6c7c34c45e"
 }
