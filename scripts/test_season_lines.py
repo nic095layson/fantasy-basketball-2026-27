@@ -283,6 +283,27 @@ class AutoRows(unittest.TestCase):
             # the blend file carries the same row (the minutes candidate reads it)
             self.assertIn("Plane 1", {r["name"] for r in csv.DictReader(open(os.path.join(d, "projections_season_blend.csv")))})
 
+    def test_the_kit_row_gp_follows_the_registered_quantile(self):
+        # owner 2026-11-23 ("Register median-games rule", D-KR-1): the rule is a named constant the registry check sees
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("CC", os.path.join(os.path.dirname(os.path.abspath(__file__)), "redteam", "check_constants.py"))
+        CC = importlib.util.module_from_spec(spec); spec.loader.exec_module(CC)
+        reg = {(r["module"], r["name"]): r for r in CC.load_registry()["constants"]} if isinstance(CC.load_registry(), dict) else {(r["module"], r["name"]): r for r in CC.load_registry()}
+        self.assertEqual(reg[("season_lines", "KIT_ROW_GP_QUANTILE")]["value"], S.KIT_ROW_GP_QUANTILE)
+        self.assertEqual(reg[("season_lines", "KIT_ROW_GP_QUANTILE")]["status"], "uncalibrated")
+        kit_rows = [dict(name=f"K{i}", gp=str(g)) for i, g in enumerate([40, 60, 70, 80])]
+        deck = [dict(player="New One", team="NYK", pos="SG", fg_pct="0.45", ft_pct="0.8",
+                     **{c: "1.0" for c in ("fga", "fta", "tpm", "pts", "reb", "ast", "stl", "blk", "tov")})]
+        st = dict(teams=[dict(players=[dict(player="New One")])])
+        old = S.KIT_ROW_GP_QUANTILE
+        try:
+            for q, want in ((0.5, 65.0), (0.0, 40.0), (1.0, 80.0), (0.25, 55.0)):
+                S.KIT_ROW_GP_QUANTILE = q
+                rows, rec = S.kit_rows_for_rostered(kit_rows, deck, ["name", "team", "pos", "gp", "mpg"], None, lambda n: {}, st)
+                self.assertEqual(float(rows[0]["gp"]), want, q)
+        finally:
+            S.KIT_ROW_GP_QUANTILE = old
+
     def test_a_rostered_deck_row_with_no_games_still_gets_a_kit_row(self):
         with tempfile.TemporaryDirectory() as d:
             kit, deck = self.plane(d); st = self.rostered_state(d, ["Plane 2"])
