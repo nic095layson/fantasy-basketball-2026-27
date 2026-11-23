@@ -19,7 +19,7 @@ Pool rows touched: none
 | Engine math | 98% | **98%** | `run_attacks.py --check`: 11 attacks CURRENT on engine 4fcd92b; `check_constants.py`: 54 registered = 54 live (the kit-row games rule added, #300); full suite OK in each of today's gate runs |
 | Data pulls and records | 95% | **95%** | mornings 11-17 to 11-23 all PASS in their final records; 11-20 failed first at the season deck (a rival's pickup with no board row) and was re-run PASS the same day after #298 and #299 |
 | Roster and injury status | 94% | **95%** | #290 merged: the waiver scan treats a short Out as a short absence and no longer repeats names it cannot tell apart |
-| Process and integrity | 94% | **93%** | 2 corrections-log rows dated 2026-11-20; the stop gate caught two outward actions taken before a plan was shown (11-20, 11-23); #298 merged without its own gates, now a written rule (#302) |
+| Process and integrity | 94% | **93%** | 2 corrections-log rows dated 2026-11-20; the stop gate caught an outward action taken without its governor loaded in that turn three times (11-18, a scheduled-task change without adversarial-verify; 11-23, a commit and push without it; 11-23, merges before a plan was shown); #298 merged without its own gates, now a written rule (#302) |
 | The deck page | 90% | **91%** | Board position dropdown live (#296, #297); the morning build names a pooled player with no board row instead of stopping (#299); published daily (version 99 on 11-22) |
 
 Machinery, simple mean of five layers: **94.4%** (11-18: 94.2%).
