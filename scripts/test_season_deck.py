@@ -1747,8 +1747,6 @@ class MethodStampOnThePage(unittest.TestCase):
         self.assertNotIn("Method:", res["panes"]["today"])
 
 
-if __name__ == "__main__":
-    unittest.main()
 
 
 def accuracy_record():
@@ -3106,3 +3104,17 @@ class BoardPositionFilter(unittest.TestCase):
         self.assertEqual(fa["names"], [n for n in every["names"] if n in ("Alpha Man", "Steal Man", "Combo Guard", "Swing Man")])
         self.assertLess(len(fa["names"]), 4)                               # Alpha Man is rostered in the fixture
 
+
+class RunBlockLast(unittest.TestCase):
+    """Owner 2026-11-23: the file must run every class whether it is run as a script or as a module."""
+    def test_the_run_block_comes_after_every_class_and_function(self):
+        src = open(os.path.abspath(__file__), encoding="utf-8").read().splitlines()
+        run = [i for i, l in enumerate(src) if l.startswith('if __name__ == "__main__"')]
+        defs = [i for i, l in enumerate(src) if l.startswith(("class ", "def "))]
+        self.assertEqual(len(run), 1); self.assertGreater(run[0], max(defs))
+
+
+# owner 2026-11-23 (Monday list, Council 4-1): the run block sits at the end, so the file run as a script runs every
+# test class (at line 1750 it stopped before 24 classes and helpers: 178 tests with 5 errors, against 254 as a module)
+if __name__ == "__main__":
+    unittest.main()
