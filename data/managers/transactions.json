@@ -5,9 +5,108 @@
   "uninterpreted": 1,
   "dropped_invalid_timestamp": 0,
   "warning": "Yahoo returned 1 entry Flaim could not interpret (an unrecognized transaction type or a malformed entry). This count covers the whole page Flaim fetched, before the date, team, and transaction-type filters, so it does not show that 1 matching move is missing.",
-  "read_for": "2026-11-21"
+  "read_for": "2026-11-22"
  },
  "rows": [
+  {
+   "transaction_id": "478.l.36464.tr.228",
+   "type": "add",
+   "status": "complete",
+   "timestamp": 1795387086000,
+   "date": "2026-11-22",
+   "week": null,
+   "team_ids": [
+    "478.l.36464.t.8"
+   ],
+   "players_added": [
+    {
+     "id": "6275",
+     "name": "Caleb Martin",
+     "position": "SF,PF",
+     "team": "DAL"
+    }
+   ],
+   "players_dropped": [],
+   "faab_bid": null,
+   "waiver_priority": null,
+   "draft_picks": null
+  },
+  {
+   "transaction_id": "478.l.36464.tr.227",
+   "type": "add",
+   "status": "complete",
+   "timestamp": 1795387051000,
+   "date": "2026-11-22",
+   "week": null,
+   "team_ids": [
+    "478.l.36464.t.8"
+   ],
+   "players_added": [
+    {
+     "id": "6595",
+     "name": "Charles Bassey",
+     "position": "C",
+     "team": "GSW"
+    }
+   ],
+   "players_dropped": [],
+   "faab_bid": null,
+   "waiver_priority": null,
+   "draft_picks": null
+  },
+  {
+   "transaction_id": "478.l.36464.tr.226",
+   "type": "add",
+   "status": "complete",
+   "timestamp": 1795372131000,
+   "date": "2026-11-22",
+   "week": null,
+   "team_ids": [
+    "478.l.36464.t.12"
+   ],
+   "players_added": [
+    {
+     "id": "6619",
+     "name": "Sam Hauser",
+     "position": "SF,PF",
+     "team": "BOS"
+    }
+   ],
+   "players_dropped": [
+    {
+     "id": "10456",
+     "name": "Danny Wolf",
+     "position": "PF,C",
+     "team": "BKN"
+    }
+   ],
+   "faab_bid": null,
+   "waiver_priority": null,
+   "draft_picks": null
+  },
+  {
+   "transaction_id": "478.l.36464.tr.225",
+   "type": "drop",
+   "status": "complete",
+   "timestamp": 1795368407000,
+   "date": "2026-11-22",
+   "week": null,
+   "team_ids": [
+    "478.l.36464.t.12"
+   ],
+   "players_added": [],
+   "players_dropped": [
+    {
+     "id": "6267",
+     "name": "Max Strus",
+     "position": "SF,PF",
+     "team": "LAC"
+    }
+   ],
+   "faab_bid": null,
+   "waiver_priority": null,
+   "draft_picks": null
+  },
   {
    "transaction_id": "478.l.36464.tr.224",
    "type": "add",

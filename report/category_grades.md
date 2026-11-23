@@ -4,18 +4,18 @@ Each recorded chance that a team wins a category, scored on the week's final lin
 
 | category | flat: n | Brier | favourite right | stated | real games: n | Brier | favourite right | stated |
 |---|---|---|---|---|---|---|---|---|
-| FG% | 12 | 0.202 | 8 of 12 | 0.68 | 12 | 0.203 | 8 of 12 | 0.67 |
-| FT% | 12 | 0.111 | 10 of 12 | 0.70 | 12 | 0.118 | 10 of 12 | 0.70 |
-| 3PTM | 12 | 0.220 | 9 of 12 | 0.80 | 12 | 0.205 | 9 of 12 | 0.84 |
-| PTS | 12 | 0.210 | 8 of 12 | 0.68 | 12 | 0.149 | 8 of 12 | 0.71 |
-| REB | 12 | 0.232 | 7 of 12 | 0.71 | 12 | 0.211 | 9 of 12 | 0.70 |
-| AST | 12 | 0.192 | 8 of 12 | 0.69 | 12 | 0.212 | 7 of 12 | 0.67 |
-| ST | 12 | 0.227 | 9 of 12 | 0.69 | 12 | 0.220 | 9 of 12 | 0.71 |
-| BLK | 12 | 0.130 | 11 of 12 | 0.67 | 12 | 0.113 | 10 of 12 | 0.72 |
-| TO | 12 | 0.278 | 6 of 12 | 0.67 | 12 | 0.209 | 9 of 12 | 0.65 |
-| **all** | 108 | 0.200 | 76 of 108 | 0.70 | 108 | 0.182 | 79 of 108 | 0.71 |
+| FG% | 18 | 0.241 | 12 of 18 | 0.65 | 18 | 0.239 | 12 of 18 | 0.65 |
+| FT% | 18 | 0.153 | 13 of 18 | 0.71 | 18 | 0.150 | 13 of 18 | 0.70 |
+| 3PTM | 18 | 0.187 | 14 of 18 | 0.78 | 18 | 0.183 | 14 of 18 | 0.82 |
+| PTS | 18 | 0.190 | 14 of 18 | 0.66 | 18 | 0.143 | 13 of 18 | 0.71 |
+| REB | 18 | 0.231 | 11 of 18 | 0.69 | 18 | 0.218 | 13 of 18 | 0.68 |
+| AST | 18 | 0.203 | 11 of 18 | 0.70 | 18 | 0.182 | 13 of 18 | 0.68 |
+| ST | 18 | 0.202 | 14 of 18 | 0.68 | 18 | 0.209 | 13 of 18 | 0.71 |
+| BLK | 18 | 0.214 | 13 of 18 | 0.68 | 18 | 0.195 | 12 of 18 | 0.72 |
+| TO | 18 | 0.247 | 11 of 18 | 0.67 | 18 | 0.229 | 11 of 18 | 0.67 |
+| **all** | 162 | 0.208 | 113 of 162 | 0.69 | 162 | 0.194 | 114 of 162 | 0.70 |
 
-flat: weeks 3, 4.
-real games: weeks 3, 4.
+flat: weeks 3, 4, 5.
+real games: weeks 3, 4, 5.
 
 Small samples: one week is 54 forecasts, 6 per category. Read a category as weak only when it stays above the coin flip over several weeks.

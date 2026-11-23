@@ -10,6 +10,7 @@ Each Monday the finished weeks are fitted (`scripts/fit_constants.py`); a record
 | 2 | 1,2 | 24 | 0.06 | 0.0973 | 0.0134 | too few weeks to propose (2 of 4) |
 | 3 | 1,2,3 | 36 | 0.06 | 0.1117 | 0.0153 | too few weeks to propose (3 of 4) |
 | 4 | 1,2,3,4 | 48 | 0.06 | 0.1069 | 0.0132 | proposal |
+| 5 | 1,2,3,4,5 | 60 | 0.11 | 0.1166 | 0.0134 | proposal |
 
 ## weekly_availability (share of team games played, by assumed tier)
 
@@ -31,6 +32,10 @@ Each Monday the finished weeks are fitted (`scripts/fit_constants.py`); a record
 | 4 | 0.75 | 0.559 | 0.024 | 438 | no |
 | 4 | 0.79 | 0.885 | 0.063 | 26 | yes |
 | 4 | 0.88 | 0.779 | 0.007 | 3694 | no |
+| 5 | 0.00 | 0.068 | 0.022 | 132 | no |
+| 5 | 0.65 | 0.555 | 0.021 | 553 | no |
+| 5 | 0.79 | 0.909 | 0.050 | 33 | no |
+| 5 | 0.80 | 0.770 | 0.006 | 4646 | no |
 
 ## board comparison (realized ratio to healthy, beside each instrument's discount)
 
@@ -42,3 +47,5 @@ Each Monday the finished weeks are fitted (`scripts/fit_constants.py`); a record
 | 3 | risk | 0.707 | 0.035 | 326 | 0.78 | 0.852 | 0.904 | no / no / no |
 | 4 | mild | 1.136 | 0.081 | 26 | 0.85 | 0.898 | 0.825 | no / no / no |
 | 4 | risk | 0.718 | 0.031 | 438 | 0.78 | 0.852 | 0.904 | yes / no / no |
+| 5 | mild | 1.181 | 0.066 | 33 | 0.85 | 0.988 | 0.825 | no / no / no |
+| 5 | risk | 0.721 | 0.028 | 553 | 0.78 | 0.812 | 0.904 | no / no / no |

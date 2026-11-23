@@ -17,3 +17,5 @@ Structural band: P(win) 53.6% to 62.9% across the declared-band constants, one a
 | TO | 60.7 | 60.0 | 48% |
 
 _Rosters as of 2026-11-22; lines season pool; Q/O statuses not applied to the weekly model; a two-week matchup (weeks 7, 17) is modelled as one week._
+
+**Moves since these rosters (2026-11-22), through 2026-11-23:** none for either team.

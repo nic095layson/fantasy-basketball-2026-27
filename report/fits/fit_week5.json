@@ -1,0 +1,227 @@
+{
+ "week": 5,
+ "weeks_used": [
+  1,
+  2,
+  3,
+  4,
+  5
+ ],
+ "status": "proposal",
+ "notes": [
+  "week 1: 12 team-weeks",
+  "week 2: 12 team-weeks",
+  "week 3: 12 team-weeks",
+  "week 4: 12 team-weeks",
+  "week 5: 12 team-weeks"
+ ],
+ "team_week_shock": {
+  "live": 0.11,
+  "n": 60,
+  "var_factor": 0.017372296304637873,
+  "model_term": 0.0037763382086363545,
+  "excess": 0.013595958096001518,
+  "se_excess": 0.0031355290491249252,
+  "bootstrap": 500,
+  "shock": 0.11660170708871083,
+  "se": 0.013445468027065024,
+  "level_relative": 0.10487529221595183
+ },
+ "level": {
+  "n": 60,
+  "by_cat": {
+   "3PTM": 1.1335843638089818,
+   "PTS": 1.089709263900975,
+   "REB": 1.1048924148671273,
+   "AST": 1.1123318086201361,
+   "ST": 1.1152184868675685,
+   "BLK": 1.0618969584122309,
+   "TO": 1.1650572913145214
+  },
+  "overall": 1.1118129411130773
+ },
+ "in_week": {
+  "by_team": {
+   "3": [
+    0.9161471747031714,
+    0.9229939729953672,
+    0.82499216009181,
+    0.9555328150674054,
+    0.9460707052157952
+   ],
+   "2": [
+    1.05803502588037,
+    1.026414574726336,
+    1.1253459377775488,
+    1.047599750478412,
+    1.0240091618607803
+   ],
+   "4": [
+    1.0433505930342186,
+    1.1726480278080693,
+    0.9302411494148155,
+    1.0757832278859192,
+    1.0024630541871922
+   ],
+   "12": [
+    1.0822653518478946,
+    0.9991740285637241,
+    1.034131337468324,
+    1.1264626363021448,
+    1.0125306204383338
+   ],
+   "1": [
+    1.1196831780714203,
+    1.0906352733922928,
+    0.886819733037851,
+    1.061905924449762,
+    0.9904805626563967
+   ],
+   "6": [
+    1.0500574607370825,
+    0.9357291087333218,
+    0.9269527895188178,
+    1.0375289089452662,
+    1.035396538039125
+   ],
+   "8": [
+    1.0807088325758376,
+    1.020835500548021,
+    1.0887779423740123,
+    1.1156706708476585,
+    1.017202000698131
+   ],
+   "5": [
+    1.025559183390578,
+    1.1578979000220373,
+    0.9313830286657236,
+    1.1874715905212867,
+    1.1176788402816622
+   ],
+   "9": [
+    0.9965110605641884,
+    1.071530226511698,
+    0.997495074430001,
+    1.113416210882883,
+    1.036681925744128
+   ],
+   "7": [
+    1.1139212616865535,
+    1.1607338208162024,
+    0.9481605211905315,
+    0.9629811790228618,
+    0.9910480479641538
+   ],
+   "11": [
+    1.209540020206289,
+    0.9960665898405575,
+    0.9047341364258522,
+    1.0267479493820504,
+    1.0419886027159833
+   ],
+   "10": [
+    0.999963970390018,
+    1.0616831814549055,
+    0.9850064786040396,
+    1.0857987524893458,
+    1.0748010506239134
+   ]
+  },
+  "F": 1.6771053032325904,
+  "df_between": 11,
+  "df_within": 48,
+  "means": {
+   "3": 0.9131473656147099,
+   "2": 1.0562808901446894,
+   "4": 1.044897210466043,
+   "12": 1.0509127949240842,
+   "1": 1.0299049343215445,
+   "6": 0.9971329611947226,
+   "8": 1.064638989408732,
+   "5": 1.0839981085762576,
+   "9": 1.0431268996265797,
+   "7": 1.0353689661360606,
+   "11": 1.0358154597141465,
+   "10": 1.0414506867124445
+  },
+  "reopen": "Council 2026-11-16: re-open per-team streaming in the simulator when F clears its 95% line"
+ },
+ "weekly_availability": {
+  "0.80": {
+   "live": 0.8,
+   "measured": 0.7696943607404219,
+   "se": 0.006176917995603581,
+   "n": 4646,
+   "played": 3576,
+   "live_within_2se": false,
+   "pooled_from": {
+    "0.88": 3694,
+    "0.80": 952
+   }
+  },
+  "0.65": {
+   "live": 0.65,
+   "measured": 0.5551537070524413,
+   "se": 0.021132410792244608,
+   "n": 553,
+   "played": 307,
+   "live_within_2se": false,
+   "pooled_from": {
+    "0.75": 438,
+    "0.65": 115
+   }
+  },
+  "0.00": {
+   "live": 0.0,
+   "measured": 0.06818181818181818,
+   "se": 0.021938802253714154,
+   "n": 132,
+   "played": 9,
+   "live_within_2se": false
+  },
+  "0.79": {
+   "live": 0.79,
+   "measured": 0.9090909090909091,
+   "se": 0.05004380750574367,
+   "n": 33,
+   "played": 30,
+   "live_within_2se": false
+  }
+ },
+ "board_comparison": {
+  "risk": {
+   "measured": 0.7212651350575062,
+   "se": 0.028059103712369943,
+   "n": 553,
+   "deck": 0.78,
+   "simulator": 0.8125,
+   "kit": 0.9036,
+   "within_2se": {
+    "deck": false,
+    "simulator": false,
+    "kit": false
+   }
+  },
+  "mild": {
+   "measured": 1.181106365670124,
+   "se": 0.06570504556473507,
+   "n": 33,
+   "deck": 0.85,
+   "simulator": 0.9875,
+   "kit": 0.8249,
+   "within_2se": {
+    "deck": false,
+    "simulator": false,
+    "kit": false
+   }
+  }
+ },
+ "method": {
+  "shock": "f = mean over 7 counting cats of actual/mu per team-week; Var(f) = shock^2 + mean(mean_c var/mu^2)/7 (cats independent under no shock, A2); shock = sqrt(excess); bootstrap SE over team-weeks",
+  "availability": "pooled share of team games played per tier, binomial SE, keyed and judged by the tier's live value; weeks under an earlier value pool in (pooled_from, Council 2026-11-16); from report/accuracy.json",
+  "board_comparison": "realized tier/healthy ratio, delta-method SE, beside deck, simulator and kit-board ratios; frozen preseason tags",
+  "inputs": "data/weeks/week_N.json actuals; report/accuracy/lines_weekN.csv + state_weekN.json for the model",
+  "rosters": "co_gm.team_roster since 2026-11-10: active players plus the team's unpooled players the week's lines carry (auto season lines). Weeks 1-3 have no such player, so their rows are as first fitted"
+ },
+ "proposes_only": true
+}

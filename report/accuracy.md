@@ -10,6 +10,7 @@ Each finished week graded against the box scores and the final scores (`scripts/
 | 2 | 252 | 13.14 / 11.88 | 10.6% | 3.60 | 0.77 | 12.89 / 11.86 | 8.7% | 3.46 | 0.79 | 12.76 / 11.86 | 7.6% | 3.34 | 0.81 |
 | 3 | 255 | 13.06 / 11.63 | 12.3% | 3.77 | 0.73 | 12.61 / 11.55 | 9.1% | 3.39 | 0.79 | 12.50 / 11.55 | 8.2% | 3.30 | 0.80 |
 | 4 | 240 | 13.26 / 12.55 | 5.7% | 3.64 | 0.72 | 12.62 / 12.41 | 1.7% | 3.21 | 0.77 | 12.51 / 12.41 | 0.8% | 3.12 | 0.78 |
+| 5 | 242 | 12.82 / 12.18 | 5.2% | 3.68 | 0.74 | 12.17 / 12.06 | 0.9% | 3.18 | 0.81 | 12.09 / 12.06 | 0.3% | 3.10 | 0.82 |
 
 Switch rule (D-ML-1, pre-committed 2026-10-27): the minutes candidate replaces nothing until its MAE beats the in-season line's on PTS, REB and AST in 3 of 4 consecutive graded weeks, on the owner's word. Met in weeks 2, 3 and 4; switched on PTS, REB and AST on 2026-11-16 (owner: "Switch now"). From week 6 the in-season line carries it.
 
@@ -21,6 +22,7 @@ Switch rule (D-ML-1, pre-committed 2026-10-27): the minutes candidate replaces n
 | 2 | 252 | 1.42 / 1.37 | 3.3% | 0.67 | 0.68 | no snapshot | | |  |
 | 3 | 255 | 1.39 / 1.28 | 9.1% | 0.61 | 0.76 | no snapshot | | |  |
 | 4 | 240 | 1.39 / 1.46 | -4.6% | 0.61 | 0.74 | no snapshot | | |  |
+| 5 | 242 | 1.35 / 1.40 | -3.2% | 0.61 | 0.76 | 1.38 / 1.40 | -1.5% | 0.61 | 0.76 |
 
 Switch rule (D-TS-1, pre-committed 2026-11-12): the threes-split candidate replaces nothing until its MAE on threes made beats the in-season line's in 3 of 4 consecutive graded weeks, on the owner's word.
 
@@ -44,6 +46,10 @@ Switch rule (D-TS-1, pre-committed 2026-11-12): the threes-split candidate repla
 | 4 | 0.75 | 0.75 | 62 / 112 | 0.55 |
 | 4 | 0.79 | 0.79 | 6 / 7 | 0.86 |
 | 4 | 0.88 | 0.88 | 706 / 958 | 0.74 |
+| 5 | 0.00 | 0.00 | 3 / 29 | 0.10 |
+| 5 | 0.65 | 0.65 | 62 / 115 | 0.54 |
+| 5 | 0.79 | 0.79 | 7 / 7 | 1.00 |
+| 5 | 0.80 | 0.80 | 699 / 952 | 0.73 |
 
 ## Forecasts
 
@@ -53,5 +59,6 @@ Switch rule (D-TS-1, pre-committed 2026-11-12): the threes-split candidate repla
 | 2 | 0.576 | 7 cats | 0.145 vs 0.294 | 0 | – | – |
 | 3 | 0.847 | 7 cats | 0.124 vs 0.155 | 6 | 0.222 | 0.191 |
 | 4 | 0.410 | 4 cats | 0.134 vs 0.176 | 6 | 0.217 | 0.163 |
+| 5 | 0.759 | 6 cats | 0.123 vs 0.230 | 6 | 0.162 | 0.144 |
 
 Switch rule (D-RG-1, pre-committed 2026-10-27): the real-games forecast replaces the flat one only after a lower Brier over at least 4 consecutive graded weeks, on the owner's word.
