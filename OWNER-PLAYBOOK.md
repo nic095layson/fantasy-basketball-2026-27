@@ -43,6 +43,10 @@ struck through, so the history reads.
 - Matchup read: "Lendeborg shot awful because he played against Wembanyama on the Spurs. The same fate may away
   Jackson on Sunday." (2026-11-14) *(session reading)* He weighs the opponent's rim protection when judging a big's
   shooting night.
+- Reading a player's trend: "And for you to understand my logic, I like to look at how players are trending- Their
+  stat totals and averages over the last week, 2 weeks, to see if they are trending up. Andrew Wiggins, for example, I
+  see is slowly trending up and I am keeping an eye on him." (2026-11-17) *(session reading)* He reads Yahoo's Last
+  Week / Last Two Weeks splits; the kit's minutes line is the same idea in one number.
 
 ## 4. Core players
 
@@ -79,3 +83,25 @@ Other managers, as told to the owner:
 Each Monday a read-only review reads the week's grades, health checks and `report/corrections-log.md`, and reports to
 the owner: what was wrong, what it cost, and fixes as options. It changes nothing. New owner statements heard during
 the week are proposed as additions to this file in that report and enter it through a pull request he merges.
+
+## 8. Payout and how odds are quoted
+
+- Payout: the top three teams are paid (card pick 2026-11-23, "Open it, top 3 paid (Recommended)"; the 2026-11-17
+  card answer was "Top 2 or 3 paid").
+- Every odds answer quotes the title share and the reach-the-final share side by side: "Quote both (Recommended)"
+  (card pick 2026-11-17).
+- The repositories are public; the owner's card pick of 2026-11-17: "Accept it".
+
+## 9. Building the system: this is the measuring season
+
+- Card pick of 2026-11-18, "Fixes only until wk 8 (Recommended)": until Monday 2026-12-07, build only fixes for defects
+  found plus checks already scheduled.
+- "Thank you for holding me back - as you can tell, I get excited with new ideas but I completely agree with you, and
+  need you to hold me to it: We've built a very capable system, but need to wait for enough data to come in to verify
+  and test it. Building too much can alter the results - so please dial me back when I get too ambitious" (2026-11-18;
+  two edits on his word the same day: "altar" to "alter", and "data comes in" to "data to come in")
+- "We have to build this the right way - for future season feasibility. Please keep me in line and with this bigger
+  picture in mind." (2026-11-18)
+- *(session framing, adopted by the owner 2026-11-18)* This season is the measuring season: its graded weeks turn
+  hand-set constants into measured ones, which feed the season-end calibration (scheduled 2027-03-22) and the 2027-28
+  Draft Deck; every feature held back keeps that record clean.
