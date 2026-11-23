@@ -752,6 +752,15 @@
   },
   {
    "module": "season_lines",
+   "name": "KIT_ROW_GP_QUANTILE",
+   "value": 0.5,
+   "role": "games played given to a kit row copied for a rostered deck-plane player with no kit row (kit #298, kit_rows_for_rostered): this quantile of the kit file's gp; 0.5 = the median",
+   "status": "uncalibrated",
+   "record": "kit #298 (commit 9df4b1e6, 'a stated judgment rule, not fitted'); season_lines_<date>.json kit_rows (Landry Shamet only, 2026-11-20 to 2026-11-23)",
+   "decision": "D-KR-1: owner pick 2026-11-23 ('Register median-games rule'); compare the copied rows' gp with the games those players actually play at week 10, until then hand-set, named here"
+  },
+  {
+   "module": "season_lines",
    "name": "SWITCH_CATS",
    "value": [
     "pts",
