@@ -1,0 +1,152 @@
+{
+ "date": "2026-11-24",
+ "title": 14.844999999999999,
+ "seasons": 10000,
+ "prev_date": "2026-11-23",
+ "prev_title": 13.21,
+ "delta": 1.634999999999998,
+ "band": 0.6804647307171768,
+ "moved": true,
+ "gap_days": 1,
+ "merges": [
+  "Merge pull request #290 from nic095layson/claude/new-session-koi1jp",
+  "Merge pull request #300 from nic095layson/claude/register-kit-row-gp",
+  "Merge pull request #301 from nic095layson/claude/deck-test-run-block",
+  "Merge pull request #302 from nic095layson/claude/runner-copy-and-gates-rule",
+  "Merge pull request #303 from nic095layson/claude/playbook-2026-11-23",
+  "Merge pull request #304 from nic095layson/claude/playbook-braun-lesson",
+  "Merge pull request #305 from nic095layson/claude/confidence-2026-11-23"
+ ],
+ "method_changes": [
+  "constant season_lines.KIT_ROW_GP_QUANTILE added"
+ ],
+ "moves": [
+  {
+   "team": "Looking Cool Joker!",
+   "seat": 1,
+   "added": [
+    "Anfernee Simons"
+   ],
+   "dropped": [
+    "Aaron Nesmith"
+   ],
+   "to_il": [],
+   "from_il": [],
+   "owner": false
+  },
+  {
+   "team": "ANONG NANGIANNIS?!",
+   "seat": 5,
+   "added": [
+    "Terrence Shannon Jr"
+   ],
+   "dropped": [
+    "Nolan Traore"
+   ],
+   "to_il": [],
+   "from_il": [],
+   "owner": false
+  },
+  {
+   "team": "Thompson Telepathy",
+   "seat": 12,
+   "added": [
+    "De'Andre Hunter"
+   ],
+   "dropped": [
+    "Collin Sexton"
+   ],
+   "to_il": [],
+   "from_il": [],
+   "owner": false
+  },
+  {
+   "team": "Podz save the league",
+   "seat": 9,
+   "added": [
+    "Buddy Hield",
+    "Cameron Johnson"
+   ],
+   "dropped": [
+    "Caleb Martin",
+    "Ja'Kobe Walter",
+    "Keaton Wagler"
+   ],
+   "to_il": [],
+   "from_il": [
+    "Brandon Miller"
+   ],
+   "owner": false
+  },
+  {
+   "team": "ROOKS FTW",
+   "seat": 2,
+   "added": [
+    "Svi Mykhailiuk"
+   ],
+   "dropped": [
+    "Jaxson Hayes"
+   ],
+   "to_il": [],
+   "from_il": [],
+   "owner": false
+  },
+  {
+   "team": "KEL'EL YAXEL HALQUETA",
+   "seat": 10,
+   "added": [
+    "Collin Gillespie"
+   ],
+   "dropped": [
+    "Andrew Wiggins"
+   ],
+   "to_il": [],
+   "from_il": [],
+   "owner": true
+  },
+  {
+   "team": "John's Cool Team",
+   "seat": 7,
+   "added": [],
+   "dropped": [
+    "Sam Hauser"
+   ],
+   "to_il": [],
+   "from_il": [
+    "Jayson Tatum"
+   ],
+   "owner": false
+  }
+ ],
+ "walk": {
+  "rows": {
+   "prev_inputs": 13.21,
+   "rosters": 14.285,
+   "today": 14.844999999999999
+  },
+  "steps": [
+   {
+    "what": "the engine and its constants, on the earlier run's inputs",
+    "delta": 0.0,
+    "to": 13.21
+   },
+   {
+    "what": "rosters and results recorded since",
+    "delta": 1.0749999999999993,
+    "to": 14.285
+   },
+   {
+    "what": "the lines file (line method and the day's games)",
+    "delta": 0.5599999999999987,
+    "to": 14.844999999999999
+   }
+  ],
+  "reproduced": true,
+  "error": null
+ },
+ "inputs": {
+  "brief": "brief_2026-11-24.json",
+  "prev_brief": "brief_2026-11-23.json",
+  "prev_ran_at_utc": "2026-11-23T12:43:12Z"
+ }
+}
