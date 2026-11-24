@@ -404,7 +404,42 @@ def sim_pool_names(path=None):
         return {r["player"] for r in csv.DictReader(f)}
 
 
-def run_league_sim(ros, seed, seasons, workdir, tag="cur", windows=None, patch=None):
+class RosterLimitError(Exception):
+    pass
+
+
+def active_limit():
+    """Owner 2026-11-24 ("Fix the simulator first"): the players a team may carry outside IL, read from the league's
+    settings record (every roster position but IL; 13 in this league)."""
+    with open(os.path.join(KIT, "data", "league_settings.json"), encoding="utf-8") as f:
+        return sum(1 for x in json.load(f)["roster_positions"]["value"] if x != "IL")
+
+
+def over_active_limit(ros, windows, weeks, limit):
+    """Each (seat, week) where more than `limit` players are active: a player with a window counts only inside it."""
+    out = []
+    for s, r in sorted(ros.items()):
+        w = (windows or {}).get(s, {})
+        for wk in range(1, weeks + 1):
+            n = sum(1 for p in r if p["player"] not in w or w[p["player"]][0] <= wk <= w[p["player"]][1])
+            if n > limit:
+                out.append(dict(seat=s, week=wk, active=n))
+    return out
+
+
+def run_league_sim(ros, seed, seasons, workdir, tag="cur", windows=None, patch=None, active_limit=None):
+    # owner 2026-11-24 ("Fix the simulator first"): the simulator plays any roster it is handed, and one extra active
+    # player moved the owner's title share about 12 points on 2026-11-24, so a hand-built trade arm with 14 active read
+    # as a huge gain. With active_limit (co_gm.active_limit()), a roster over it in any week is refused before
+    # simulating. Off by default: the IL-return step's "room rule flipped" band plays 15 on purpose, for every team.
+    if active_limit is not None:
+        with open(SCHEDULE, encoding="utf-8") as f:
+            weeks = int(json.load(f)["regular_season_weeks"])
+        bad = over_active_limit(ros, windows, weeks, active_limit)
+        if bad:
+            b = bad[0]
+            raise RosterLimitError(f"seat {b['seat']} has {b['active']} active players in week {b['week']} "
+                                   f"(limit {active_limit}); {len(bad)} seat-week(s) over")
     # 2026-10-21 (owner option (b), data/pool_additions.csv): a rostered pickup the simulator's frozen pool lacks is left
     # out of the simulation, as an IL player is (D-IS-8), and named in the record's absent_from_sim
     # 2026-10-26 (owner, "use the season pool"): with SEASON_POOL set the simulator plays that pool (league_sim --pool),
