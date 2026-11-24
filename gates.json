@@ -1,7 +1,7 @@
 {
- "ran_at_utc": "2026-11-24T21:46:32Z",
+ "ran_at_utc": "2026-11-24T22:40:23Z",
  "inputs": {
-  "report/after-reports/after-report-2026-11-24-sim-active-limit.md": "df7a677b2232cf770f7030ec6b6d1a139df606f952383f7d4073fd9074fe02a2",
+  "report/after-reports/after-report-2026-11-24-sim-active-limit.md": "0edd937b957d06ad91f68a8f9c8658af241d4f9af0a4328fdb2986b43b941a0b",
   "report/after-reports/redteam-2026-11-23-season/sweep.json": "b14ef72d64a57334365f3f52d130f07badd33a0f86a9318860823794d934d8b9"
  },
  "gates": [
@@ -42,7 +42,7 @@
    "why": "",
    "tail": [
     "----------------------------------------------------------------------",
-    "Ran 4 tests in 0.006s",
+    "Ran 5 tests in 0.006s",
     "OK"
    ]
   },
@@ -72,7 +72,7 @@
    "why": "",
    "tail": [
     "----------------------------------------------------------------------",
-    "Ran 1352 tests in 182.522s",
+    "Ran 1353 tests in 176.902s",
     "OK (skipped=2)"
    ]
   },
@@ -131,5 +131,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "a42173c5bd849b0d739f71ee5efa7b74d41090fd"
+ "base_commit": "0a1598485ba32b03876312c3b2890e73bcc1aef4"
 }

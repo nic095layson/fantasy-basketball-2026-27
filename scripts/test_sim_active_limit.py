@@ -46,5 +46,24 @@ class ActiveLimit(unittest.TestCase):
             CG.subprocess.run, CG.sim_pool_names, CG.pool_guard = real
 
 
+    def test_a_player_on_two_rosters_is_refused(self):
+        # owner 2026-11-24: the session's trade arm put Cameron Johnson on the owner's roster while the day's records had
+        # him on Podz save the league; the limit alone could not see it
+        ros = {10: [P("Same Guy")] + [P(f"p{i}") for i in range(12)], 9: [P("Same Guy")] + [P(f"q{i}") for i in range(12)]}
+        self.assertEqual(CG.on_two_rosters(ros, None, 17), [dict(player="Same Guy", seats=[9, 10])])
+        win = {9: {"Same Guy": (1, 6)}, 10: {"Same Guy": (7, 17)}}      # a trade: never on both in one week
+        self.assertEqual(CG.on_two_rosters(ros, win, 17), [])
+        real = CG.subprocess.run, CG.sim_pool_names, CG.pool_guard
+        try:
+            CG.subprocess.run = lambda *a, **k: (_ for _ in ()).throw(AssertionError("must not simulate"))
+            CG.sim_pool_names = lambda pool=None: {p["player"] for r in ros.values() for p in r}
+            CG.pool_guard = lambda: None
+            with self.assertRaises(CG.RosterLimitError) as e:
+                CG.run_league_sim(ros, 2026, 10, "/tmp", active_limit=13)
+            self.assertIn("Same Guy", str(e.exception))
+        finally:
+            CG.subprocess.run, CG.sim_pool_names, CG.pool_guard = real
+
+
 if __name__ == "__main__":
     unittest.main()

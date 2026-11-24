@@ -427,6 +427,23 @@ def over_active_limit(ros, windows, weeks, limit):
     return out
 
 
+def on_two_rosters(ros, windows, weeks):
+    """Each player active on two seats' rosters in the same week (owner 2026-11-24: a hand-built arm put a player the
+    day's records had on another team on the owner's roster). A traded player, out of one window and into the other,
+    is never on both."""
+    seen = {}
+    for s, r in ros.items():
+        w = (windows or {}).get(s, {})
+        for p in r:
+            lo, hi = w.get(p["player"], (1, weeks))
+            seen.setdefault(p["player"], []).append((s, set(range(max(lo, 1), min(hi, weeks) + 1))))
+    out = []
+    for n, sl in sorted(seen.items()):
+        if len(sl) > 1 and any(a[1] & b[1] for i, a in enumerate(sl) for b in sl[i + 1:]):
+            out.append(dict(player=n, seats=sorted(s for s, _ in sl)))
+    return out
+
+
 def run_league_sim(ros, seed, seasons, workdir, tag="cur", windows=None, patch=None, active_limit=None):
     # owner 2026-11-24 ("Fix the simulator first"): the simulator plays any roster it is handed, and one extra active
     # player moved the owner's title share about 12 points on 2026-11-24, so a hand-built trade arm with 14 active read
@@ -435,6 +452,10 @@ def run_league_sim(ros, seed, seasons, workdir, tag="cur", windows=None, patch=N
     if active_limit is not None:
         with open(SCHEDULE, encoding="utf-8") as f:
             weeks = int(json.load(f)["regular_season_weeks"])
+        dup = on_two_rosters(ros, windows, weeks)
+        if dup:
+            raise RosterLimitError(f"{dup[0]['player']} is active on two rosters in the same week (seats "
+                                   f"{', '.join(str(x) for x in dup[0]['seats'])}); {len(dup)} player(s)")
         bad = over_active_limit(ros, windows, weeks, active_limit)
         if bad:
             b = bad[0]

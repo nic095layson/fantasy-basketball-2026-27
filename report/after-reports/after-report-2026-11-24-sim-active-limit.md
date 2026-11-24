@@ -24,20 +24,22 @@ Real records never exceed the limit: every seat peaks at exactly 13 active in th
 
 ## 2. The guard
 
-`co_gm.active_limit()` reads the league's settings record (every roster position but IL: 13). `co_gm.over_active_limit()` lists each seat-week over it (a windowed player counts only inside his window). `run_league_sim(..., active_limit=N)` raises `RosterLimitError` naming the seat and week before any simulation. Tests (`scripts/test_sim_active_limit.py`, 4) written first: 4 errors before, all pass after. On its first live use it caught a second error in the session's own trade arm: the partner, taking two for one, kept 14 (he now cuts his lowest-value player, Jaime Jaquez Jr.).
+`co_gm.active_limit()` reads the league's settings record (every roster position but IL: 13). `co_gm.over_active_limit()` lists each seat-week over it (a windowed player counts only inside his window). `run_league_sim(..., active_limit=N)` raises `RosterLimitError` naming the seat and week before any simulation, and also when one player is active on two rosters in the same week (`co_gm.on_two_rosters`; a traded player, out of one window and into the other, passes). Tests (`scripts/test_sim_active_limit.py`) written first: 4 errors before the limit, 1 before the two-rosters check; 5 pass after. On its first live use it caught a second error in the session's own trade arm: the partner, taking two for one, kept 14 (he now cuts his lowest-value player, Jaime Jaquez Jr.).
 
 ## 3. The owner's trade on legal rosters (6 seeds, 2026-2031)
 
 | arm | title vs no swap | final | partner's title |
 |---|---|---|---|
 | White + Lendeborg for Holmgren (Holmgren from week 12) | **+1.8** (seeds +1.2 to +2.3) | +1.5 | +0.9 |
-| the same, Johnson in the open spot weeks 7-11 | +2.3 (+1.4 to +3.1) | +2.6 | +0.9 |
 | Holmgren two weeks late (week 14), 4 seeds | +1.4 (+1.1 to +1.7) | +0.9 | |
 | Holmgren never back and held all season, 4 seeds | -13.6 | -18.9 | |
 
 Read: the trade costs regular-season categories while Holmgren is out (the session's phase model: about -0.9 categories over weeks 7 to 17) and gains in the playoffs, which the title share weighs; the verdict is conditional on his return (positive at week 12 or 14, sharply negative if he never plays and is held). Structural band (today's sweep): weekly_availability SENSITIVE, about -1.5 / +1.2 title points.
 
-## 4. Correction
+## 4. Corrections
+
+The owner, on the card of 2026-11-24: "not sure why you brought up Cameron Johnson as he is already rostered on another team". Podz save the league added him on 2026-11-24 (`data/news/league_moves_2026-11-24.json`); the session had carried him over from the 2026-11-23 scan without re-checking, and its "+2.3 with Johnson in the open spot" arm put him on two rosters at once. That arm is withdrawn, and the guard now refuses it.
+
 
 The session told the owner on 2026-11-24 "I wouldn't do White + Yaxel for Holmgren at this price", from a regular-season phase model, with no title figure. On legal rosters the title figure is +1.8, conditional on Holmgren's return. Logged in `report/corrections-log.md`.
 
