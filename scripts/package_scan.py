@@ -20,7 +20,7 @@ Display only: nothing here changes a line, a roster, a tag or a constant, and no
         --named "John Collins+Ziaire Williams/Kris Dunn+Alex Caruso" [--k 2] [--yahoo-pull FILE] [--seasons 10000]
 Prints 'PACKAGE SCAN: PASS — ...' or 'PACKAGE SCAN: HALT — <why>'. Exit 0 / 1.
 """
-import argparse
+import argparse, functools
 import itertools
 import json
 import os
@@ -200,7 +200,8 @@ def main(argv=None):
         ilp = os.path.join(CG.KIT, "report", "il_return", f"il_return_{a.date}.json")
         il = json.load(open(ilp, encoding="utf-8"))["il_players"] if os.path.exists(ilp) else []
         rec = scan(cap["mine"], cap["fas"], by, cap["avail"], rosters, a.k, a.must_add, a.drop_pool, a.shortlist, named, a.seasons,
-                   CG.run_league_sim, tempfile.mkdtemp(), week_fn, ecw_fn, il=il,
+                   functools.partial(CG.run_league_sim, active_limit=CG.active_limit()),   # owner 2026-11-24: no over-limit roster
+                   tempfile.mkdtemp(), week_fn, ecw_fn, il=il,
                    value=lambda p: CG.hoops.adj_value(p, ()), workers=a.workers)
     except (PackageError, FileNotFoundError, KeyError) as e:
         print(f"PACKAGE SCAN: HALT — {e}"); return 1

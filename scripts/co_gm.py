@@ -404,7 +404,63 @@ def sim_pool_names(path=None):
         return {r["player"] for r in csv.DictReader(f)}
 
 
-def run_league_sim(ros, seed, seasons, workdir, tag="cur", windows=None, patch=None):
+class RosterLimitError(Exception):
+    pass
+
+
+def active_limit():
+    """Owner 2026-11-24 ("Fix the simulator first"): the players a team may carry outside IL, read from the league's
+    settings record (every roster position but IL; 13 in this league)."""
+    with open(os.path.join(KIT, "data", "league_settings.json"), encoding="utf-8") as f:
+        return sum(1 for x in json.load(f)["roster_positions"]["value"] if x != "IL")
+
+
+def over_active_limit(ros, windows, weeks, limit):
+    """Each (seat, week) where more than `limit` players are active: a player with a window counts only inside it."""
+    out = []
+    for s, r in sorted(ros.items()):
+        w = (windows or {}).get(s, {})
+        for wk in range(1, weeks + 1):
+            n = sum(1 for p in r if p["player"] not in w or w[p["player"]][0] <= wk <= w[p["player"]][1])
+            if n > limit:
+                out.append(dict(seat=s, week=wk, active=n))
+    return out
+
+
+def on_two_rosters(ros, windows, weeks):
+    """Each player active on two seats' rosters in the same week (owner 2026-11-24: a hand-built arm put a player the
+    day's records had on another team on the owner's roster). A traded player, out of one window and into the other,
+    is never on both."""
+    seen = {}
+    for s, r in ros.items():
+        w = (windows or {}).get(s, {})
+        for p in r:
+            lo, hi = w.get(p["player"], (1, weeks))
+            seen.setdefault(p["player"], []).append((s, set(range(max(lo, 1), min(hi, weeks) + 1))))
+    out = []
+    for n, sl in sorted(seen.items()):
+        if len(sl) > 1 and any(a[1] & b[1] for i, a in enumerate(sl) for b in sl[i + 1:]):
+            out.append(dict(player=n, seats=sorted(s for s, _ in sl)))
+    return out
+
+
+def run_league_sim(ros, seed, seasons, workdir, tag="cur", windows=None, patch=None, active_limit=None):
+    # owner 2026-11-24 ("Fix the simulator first"): the simulator plays any roster it is handed, and one extra active
+    # player moved the owner's title share about 12 points on 2026-11-24, so a hand-built trade arm with 14 active read
+    # as a huge gain. With active_limit (co_gm.active_limit()), a roster over it in any week is refused before
+    # simulating. Off by default: the IL-return step's "room rule flipped" band plays 15 on purpose, for every team.
+    if active_limit is not None:
+        with open(SCHEDULE, encoding="utf-8") as f:
+            weeks = int(json.load(f)["regular_season_weeks"])
+        dup = on_two_rosters(ros, windows, weeks)
+        if dup:
+            raise RosterLimitError(f"{dup[0]['player']} is active on two rosters in the same week (seats "
+                                   f"{', '.join(str(x) for x in dup[0]['seats'])}); {len(dup)} player(s)")
+        bad = over_active_limit(ros, windows, weeks, active_limit)
+        if bad:
+            b = bad[0]
+            raise RosterLimitError(f"seat {b['seat']} has {b['active']} active players in week {b['week']} "
+                                   f"(limit {active_limit}); {len(bad)} seat-week(s) over")
     # 2026-10-21 (owner option (b), data/pool_additions.csv): a rostered pickup the simulator's frozen pool lacks is left
     # out of the simulation, as an IL player is (D-IS-8), and named in the record's absent_from_sim
     # 2026-10-26 (owner, "use the season pool"): with SEASON_POOL set the simulator plays that pool (league_sim --pool),

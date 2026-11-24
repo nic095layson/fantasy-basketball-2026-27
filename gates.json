@@ -1,26 +1,26 @@
 {
- "ran_at_utc": "2026-11-23T19:46:47Z",
+ "ran_at_utc": "2026-11-24T22:40:23Z",
  "inputs": {
-  "report/after-reports/after-report-2026-11-23-confidence.md": "d265a82a1f697199074e3739eae79165244faa49e3d7b7b3034f9e86a05f33af",
+  "report/after-reports/after-report-2026-11-24-sim-active-limit.md": "0edd937b957d06ad91f68a8f9c8658af241d4f9af0a4328fdb2986b43b941a0b",
   "report/after-reports/redteam-2026-11-23-season/sweep.json": "b14ef72d64a57334365f3f52d130f07badd33a0f86a9318860823794d934d8b9"
  },
  "gates": [
   {
    "name": "kit check_report",
-   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-23-confidence.md",
+   "cmd": "/usr/local/bin/python3 report/check_report.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-24-sim-active-limit.md",
    "cwd": ".",
    "pass_re": "^REPORT GATE: PASS",
    "exit": 0,
-   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-11-23-confidence.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)",
+   "pass_line": "REPORT GATE: PASS \u2014 after-report-2026-11-24-sim-active-limit.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "REPORT GATE: PASS \u2014 after-report-2026-11-23-confidence.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)"
+    "REPORT GATE: PASS \u2014 after-report-2026-11-24-sim-active-limit.md (structure, publication rule, pull-log row; no pool row touched, checked against main: tail sections not owed)"
    ]
   },
   {
    "name": "claim receipts",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/independent_audit/claim_receipts.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-23-confidence.md",
+   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/independent_audit/claim_receipts.py /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-24-sim-active-limit.md",
    "cwd": ".",
    "pass_re": "^CLAIM RECEIPTS: (PASS|ADVISORY)",
    "exit": 0,
@@ -29,6 +29,51 @@
    "why": "",
    "tail": [
     "CLAIM RECEIPTS: PASS \u2014 1 file(s), every mechanism claim carries a receipt"
+   ]
+  },
+  {
+   "name": "active limit",
+   "cmd": "python3 -m unittest scripts.test_sim_active_limit",
+   "cwd": ".",
+   "pass_re": "^OK",
+   "exit": 0,
+   "pass_line": "OK",
+   "verdict": "PASS",
+   "why": "",
+   "tail": [
+    "----------------------------------------------------------------------",
+    "Ran 5 tests in 0.006s",
+    "OK"
+   ]
+  },
+  {
+   "name": "package scan",
+   "cmd": "python3 -m unittest scripts.test_package_scan",
+   "cwd": ".",
+   "pass_re": "^OK",
+   "exit": 0,
+   "pass_line": "OK",
+   "verdict": "PASS",
+   "why": "",
+   "tail": [
+    "----------------------------------------------------------------------",
+    "Ran 9 tests in 0.003s",
+    "OK"
+   ]
+  },
+  {
+   "name": "kit suite",
+   "cmd": "python3 -m unittest discover -s scripts -p 'test_*.py'",
+   "cwd": ".",
+   "pass_re": "^OK",
+   "exit": 0,
+   "pass_line": "OK (skipped=2)",
+   "verdict": "PASS",
+   "why": "",
+   "tail": [
+    "----------------------------------------------------------------------",
+    "Ran 1353 tests in 176.902s",
+    "OK (skipped=2)"
    ]
   },
   {
@@ -46,15 +91,15 @@
   },
   {
    "name": "redteam bands",
-   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/redteam/check_bands.py --report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-23-confidence.md --sweep /home/user/fantasy-basketball-2026-27/report/after-reports/redteam-2026-11-23-season/sweep.json",
+   "cmd": "/usr/local/bin/python3 /home/user/fantasy-basketball-2026-27/scripts/redteam/check_bands.py --report /home/user/fantasy-basketball-2026-27/report/after-reports/after-report-2026-11-24-sim-active-limit.md --sweep /home/user/fantasy-basketball-2026-27/report/after-reports/redteam-2026-11-23-season/sweep.json",
    "cwd": ".",
    "pass_re": "^BANDS CHECK: PASS",
    "exit": 0,
-   "pass_line": "BANDS CHECK: PASS \u2014 0 FRAGILE band(s) quoted (none); engine 3551a15",
+   "pass_line": "BANDS CHECK: PASS \u2014 the report quotes no title share and names no FRAGILE constant; bands not owed; engine 3551a15",
    "verdict": "PASS",
    "why": "",
    "tail": [
-    "BANDS CHECK: PASS \u2014 0 FRAGILE band(s) quoted (none); engine 3551a15"
+    "BANDS CHECK: PASS \u2014 the report quotes no title share and names no FRAGILE constant; bands not owed; engine 3551a15"
    ]
   },
   {
@@ -86,5 +131,5 @@
   }
  ],
  "verdict": "PASS",
- "base_commit": "8944af657d3d89cebaca1c43007dae6c7c34c45e"
+ "base_commit": "0a1598485ba32b03876312c3b2890e73bcc1aef4"
 }
