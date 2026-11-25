@@ -1,0 +1,166 @@
+{
+ "date": "2026-11-25",
+ "out": "report/season/deck_2026-11-25.html",
+ "inputs": {
+  "brief": {
+   "path": "report/briefs/brief_2026-11-25.json",
+   "present": true,
+   "sha256": "2e1b7bb20d836fee2a4ca73f2df8788c0727833895fdbbb9ae2bb19b087f1ff1"
+  },
+  "board": {
+   "path": "report/season/board_2026-11-25.json",
+   "present": true,
+   "sha256": "dae0f86c10af70dafe4cd6d354d8bbfc17976951bd13fdcafeee94f9062b2339"
+  },
+  "status": {
+   "path": "data/status/status_2026-11-25.json",
+   "present": true,
+   "sha256": "27405e23dcb7a62cb7a34fb1cb37bba0f279fd5e391fc9ef9bab8cc7029d7def"
+  },
+  "league_state": {
+   "path": "data/news/league_state_am_2026-11-25.json",
+   "present": true,
+   "sha256": "3e732cba8a7d2676771fcc2c8a3befda2d2e7af62b1255603878b26675f2c56a"
+  },
+  "season_lines": {
+   "path": "data/season/season_lines_2026-11-25.json",
+   "present": true,
+   "sha256": "2245392dae977c27d8e36f008978c0e77443ad396754c6afdac6fd7c70abc600"
+  },
+  "sweep": {
+   "path": "report/after-reports/redteam-2026-11-23-season/sweep.json",
+   "present": true,
+   "sha256": "b14ef72d64a57334365f3f52d130f07badd33a0f86a9318860823794d934d8b9"
+  },
+  "calibration": {
+   "path": "report/calibration.json",
+   "present": true,
+   "sha256": "e76d619cbbd778940146eb1067d36230e04d1ed9b6564be4599a12956920c660"
+  },
+  "matchup_live": {
+   "path": "data/news/matchup_live_2026-11-25.json",
+   "present": true,
+   "sha256": "e4e4974b7328166599ff549654aa08e9be0afc4c4e56f73b59a4b4b6bfede1d6"
+  },
+  "week_matchup": {
+   "path": "report/briefs/week_matchup_2026-11-25.json",
+   "present": true,
+   "sha256": "c46b63acf31dfc5604d7d68f66c797fa141f8505d3a0ab15bd53215dc8e827c7"
+  },
+  "league": {
+   "path": "report/league/league_2026-11-25.json",
+   "present": true,
+   "sha256": "10eb84a08e294bfcdd17d2f6e3b875832702aa60410a8b97f5f1bb2d935abda0"
+  },
+  "form": {
+   "path": "report/form/form_2026-11-25.json",
+   "present": true,
+   "sha256": "6f220df167c62590f02a8e9dff6690a655cbf0e51224e75a112004072e23e13f"
+  },
+  "scores": {
+   "path": "report/calibration_daily.json",
+   "present": true,
+   "sha256": "0ee8ee62e73a52f620efb479189611a111b700b97c5f10bb6a5ccacd89147641"
+  },
+  "accuracy": {
+   "path": "report/accuracy.json",
+   "present": true,
+   "sha256": "365e5cd54153f0e3ac9cba88bfecd3e52a229ee1458134b760ed004e06922caa"
+  },
+  "lineup": {
+   "path": "report/decisions/lineup_scorecard.json",
+   "present": true,
+   "sha256": "ad38c95e70d48161899c77f9b90e31dcf3d9d4fe448f25cc58e4e666e220c6d9"
+  },
+  "decision_card": {
+   "path": "report/briefs/decision_card_2026-11-25.json",
+   "present": true,
+   "sha256": "a181e7d60dd11ccd4a3542bdddc57a2701de6da906cbc54b9502c5881ae4260e"
+  },
+  "draft_check": {
+   "path": "report/draft_check/draft_check_2026-11-23.json",
+   "present": true,
+   "sha256": "eda79a16b71d6fca1cd959194cca21f507367c39f3c3fb3dccfca39d26ba46ff"
+  },
+  "games": {
+   "path": "report/schedule/games-2026-27.csv",
+   "present": true,
+   "sha256": "7421f6cb9e69f4500df7cf2ff129dbe1718e91a2975f127e1996c96df9806687"
+  },
+  "league_schedule": {
+   "path": "data/league_schedule.json",
+   "present": true,
+   "sha256": "ce4fe887413a8bff30e777c9c36a425bceeaf03496c51e5cb1cc9521655c37ff"
+  },
+  "league_tx": {
+   "path": "data/managers/transactions.json",
+   "present": true,
+   "sha256": "961dc463de0358a5a8a6ac051c1d36a67fce3a288f2458e79700240819950c19"
+  },
+  "yahoo_pull": {
+   "path": "data/source/flaim/pull_2026-11-25.json",
+   "present": true,
+   "sha256": "dbe87547cc0a35176dce0000c375b2ef5916537e5a9aa9d596d5b9c5491a5716"
+  },
+  "espn_injuries": {
+   "path": "data/status/espn_injuries_2026-11-25.json",
+   "present": true,
+   "sha256": "3cadd033a6bb368b886f19a67043e837bed56473cc6d91f5cb4b6e659f900022"
+  }
+ },
+ "board_rows": 317,
+ "status_rows": 36,
+ "panes": 7,
+ "join": {
+  "rostered": 174,
+  "unresolved": 0,
+  "on_board": 172,
+  "off_board": 2,
+  "respelled": [
+   [
+    "Cameron Johnson",
+    "Cam Johnson"
+   ],
+   [
+    "Darius Acuff Jr.",
+    "Darius Acuff"
+   ],
+   [
+    "Jabari Smith Jr.",
+    "Jabari Smith Jr"
+   ],
+   [
+    "Jaime Jaquez Jr.",
+    "Jaime Jaquez Jr"
+   ],
+   [
+    "Jaren Jackson Jr.",
+    "Jaren Jackson Jr"
+   ],
+   [
+    "Michael Porter Jr.",
+    "Michael Porter Jr"
+   ],
+   [
+    "Wendell Carter Jr.",
+    "Wendell Carter Jr"
+   ]
+  ],
+  "not_on_board": [],
+  "free_agents_on_board": 145
+ },
+ "render": {
+  "status": "PASS",
+  "tabs": [
+   "Today",
+   "Trade Analyzer",
+   "Free Agents",
+   "Board",
+   "Draft Check",
+   "Week",
+   "League"
+  ],
+  "page_errors": 0,
+  "browser": "157.0.8103.78 (/opt/pw-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell)"
+ }
+}
