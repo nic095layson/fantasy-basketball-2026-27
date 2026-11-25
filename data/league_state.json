@@ -4,14 +4,14 @@
   "flaim": {
    "transcript": "f7b74300-8501-5e41-b8c5-d2c75dd06ce4.jsonl",
    "method": "mechanical json extraction of Flaim (Yahoo) tool results from the session transcript",
-   "since": "2026-11-25T12:41:00Z",
-   "pull_file": "data/source/flaim/pull_2026-11-25.json",
-   "pull_sha256": "dbe87547cc0a35176dce0000c375b2ef5916537e5a9aa9d596d5b9c5491a5716",
+   "since": "2026-11-25T23:04:09Z",
+   "pull_file": "data/source/flaim/pull_2026-11-25_pm.json",
+   "pull_sha256": "600d1d14934875ffc426e126ffb1b86d83b32106d3cc334f2c437c9bd1ba64a3",
    "view": "Flaim connector (Yahoo, read-only): get_roster per team (current), get_matchups, get_free_agents"
   },
   "transcription": {
-   "file": "data/source/flaim/rosters_2026-11-25.transcribed.csv",
-   "sha256": "38be6cae0ed8848457abec11bfc27c1c0048d850ea73d0573bbd00cca58fc02c",
+   "file": "data/source/flaim/rosters_2026-11-25_pm.transcribed.csv",
+   "sha256": "b65db4c52e8a1300f039e6c21718b706fe5440524df5f51131e28f4a0dfeb1f2",
    "method": "flaim_live.to_rows (mechanical; Yahoo slots and status letters for every team)"
   },
   "draft_board": "report/after-reports/draft-league-2026-10-14/recap.json",
@@ -73,17 +73,16 @@
       "SG",
       "SF"
      ],
-     "status": "Q"
+     "status": "P"
     },
     {
-     "player": "Luka Doncic",
-     "yahoo_name": "Luka Dončić",
+     "player": "Mikel Brown Jr.",
+     "yahoo_name": "Mikel Brown Jr.",
      "slot": "G",
-     "yahoo_nba_team": "LAL",
-     "pool_team": "LAL",
+     "yahoo_nba_team": "BKN",
+     "pool_team": "BKN",
      "positions": [
-      "PG",
-      "SG"
+      "PG"
      ],
      "status": null
     },
@@ -172,6 +171,18 @@
      "status": "O"
     },
     {
+     "player": "Luka Doncic",
+     "yahoo_name": "Luka Dončić",
+     "slot": "BN",
+     "yahoo_nba_team": "LAL",
+     "pool_team": "LAL",
+     "positions": [
+      "PG",
+      "SG"
+     ],
+     "status": null
+    },
+    {
      "player": "Jeremiah Fears",
      "yahoo_name": "Jeremiah Fears",
      "slot": "BN",
@@ -180,18 +191,6 @@
      "positions": [
       "PG",
       "SG"
-     ],
-     "status": null
-    },
-    {
-     "player": "Isaiah Joe",
-     "yahoo_name": "Isaiah Joe",
-     "slot": "BN",
-     "yahoo_nba_team": "DET",
-     "pool_team": "DET",
-     "positions": [
-      "SG",
-      "SF"
      ],
      "status": null
     },
@@ -239,10 +238,10 @@
    "manager": "Will",
    "draft_overlap": 11,
    "added_since_draft": [
-    "Isaiah Joe",
     "Jeremiah Fears",
     "Jrue Holiday",
-    "Julian Champagnie"
+    "Julian Champagnie",
+    "Mikel Brown Jr."
    ],
    "dropped_since_draft": [
     "Anthony Black",
@@ -746,7 +745,7 @@
       "PF",
       "C"
      ],
-     "status": "Q"
+     "status": "O"
     },
     {
      "player": "Jarrett Allen",
@@ -888,14 +887,14 @@
      "status": null
     },
     {
-     "player": "Zaccharie Risacher",
-     "yahoo_name": "Zaccharie Risacher",
+     "player": "Collin Murray-Boyles",
+     "yahoo_name": "Collin Murray-Boyles",
      "slot": "PF",
-     "yahoo_nba_team": "DAL",
-     "pool_team": "DAL",
+     "yahoo_nba_team": "TOR",
+     "pool_team": "TOR",
      "positions": [
-      "SF",
-      "PF"
+      "PF",
+      "C"
      ],
      "status": null
     },
@@ -912,23 +911,24 @@
      "status": null
     },
     {
-     "player": "Alex Sarr",
-     "yahoo_name": "Alex Sarr",
-     "slot": "C",
-     "yahoo_nba_team": "WAS",
-     "pool_team": "WAS",
-     "positions": [
-      "C"
-     ],
-     "status": null
-    },
-    {
      "player": "Rudy Gobert",
      "yahoo_name": "Rudy Gobert",
      "slot": "C",
      "yahoo_nba_team": "MIN",
      "pool_team": "MIN",
      "positions": [
+      "C"
+     ],
+     "status": null
+    },
+    {
+     "player": "Giannis Antetokounmpo",
+     "yahoo_name": "Giannis Antetokounmpo",
+     "slot": "C",
+     "yahoo_nba_team": "MIA",
+     "pool_team": "MIA",
+     "positions": [
+      "PF",
       "C"
      ],
      "status": null
@@ -946,16 +946,26 @@
      "status": null
     },
     {
-     "player": "Giannis Antetokounmpo",
-     "yahoo_name": "Giannis Antetokounmpo",
+     "player": "De'Aaron Fox",
+     "yahoo_name": "De'Aaron Fox",
      "slot": "UTIL",
-     "yahoo_nba_team": "MIA",
-     "pool_team": "MIA",
+     "yahoo_nba_team": "SAS",
+     "pool_team": "SAS",
      "positions": [
-      "PF",
-      "C"
+      "PG"
      ],
      "status": "Q"
+    },
+    {
+     "player": "Alex Sarr",
+     "yahoo_name": "Alex Sarr",
+     "slot": "BN",
+     "yahoo_nba_team": "WAS",
+     "pool_team": "WAS",
+     "positions": [
+      "C"
+     ],
+     "status": null
     },
     {
      "player": "Jalen Suggs",
@@ -982,29 +992,6 @@
      "status": null
     },
     {
-     "player": "Collin Murray-Boyles",
-     "yahoo_name": "Collin Murray-Boyles",
-     "slot": "BN",
-     "yahoo_nba_team": "TOR",
-     "pool_team": "TOR",
-     "positions": [
-      "PF",
-      "C"
-     ],
-     "status": null
-    },
-    {
-     "player": "De'Aaron Fox",
-     "yahoo_name": "De'Aaron Fox",
-     "slot": "IL",
-     "yahoo_nba_team": "SAS",
-     "pool_team": "SAS",
-     "positions": [
-      "PG"
-     ],
-     "status": "Q"
-    },
-    {
      "player": "OG Anunoby",
      "yahoo_name": "OG Anunoby",
      "slot": "IL",
@@ -1025,8 +1012,7 @@
    "draft_overlap": 12,
    "added_since_draft": [
     "Landry Shamet",
-    "Terrence Shannon Jr",
-    "Zaccharie Risacher"
+    "Terrence Shannon Jr"
    ],
    "dropped_since_draft": [
     "Collin Gillespie"
@@ -1163,7 +1149,7 @@
       "PG",
       "SG"
      ],
-     "status": "O"
+     "status": "Q"
     },
     {
      "player": "Kyshawn George",
@@ -1351,17 +1337,6 @@
      "status": null
     },
     {
-     "player": "Mike Conley",
-     "yahoo_name": "Mike Conley",
-     "slot": "BN",
-     "yahoo_nba_team": "BOS",
-     "pool_team": "BOS",
-     "positions": [
-      "PG"
-     ],
-     "status": null
-    },
-    {
      "player": "Ausar Thompson",
      "yahoo_name": "Ausar Thompson",
      "slot": "BN",
@@ -1382,6 +1357,18 @@
      "pool_team": "ORL",
      "positions": [
       "C"
+     ],
+     "status": null
+    },
+    {
+     "player": "Kevin Porter Jr.",
+     "yahoo_name": "Kevin Porter Jr.",
+     "slot": "BN",
+     "yahoo_nba_team": "ORL",
+     "pool_team": "MIL",
+     "positions": [
+      "PG",
+      "SG"
      ],
      "status": null
     },
@@ -1419,7 +1406,7 @@
    "draft_overlap": 11,
    "added_since_draft": [
     "De'Andre Hunter",
-    "Mike Conley",
+    "Kevin Porter Jr.",
     "Myles Turner",
     "Wendell Carter Jr."
    ],
@@ -1873,7 +1860,7 @@
       "PF",
       "C"
      ],
-     "status": "Q"
+     "status": "P"
     },
     {
      "player": "Peyton Watson",
@@ -1896,7 +1883,7 @@
      "positions": [
       "C"
      ],
-     "status": "D"
+     "status": "O"
     },
     {
      "player": "Paul Reed",
@@ -2274,7 +2261,7 @@
       "SG",
       "SF"
      ],
-     "status": null
+     "status": "O"
     },
     {
      "player": "Aaron Gordon",
@@ -2385,6 +2372,12 @@
    ]
   }
  ],
- "nba_team_disagreements": [],
+ "nba_team_disagreements": [
+  {
+   "player": "Kevin Porter Jr.",
+   "yahoo": "ORL",
+   "pool": "MIL"
+  }
+ ],
  "team_updates": []
 }

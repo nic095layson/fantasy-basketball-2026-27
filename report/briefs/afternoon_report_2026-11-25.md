@@ -1,15 +1,31 @@
-# Afternoon check 2026-11-25 (pm)
+# Afternoon check 2026-11-25
 
-Runner: session model A. Clean-start container (after kit PR #307).
+- **T0:** 2026-11-25T23:04:09Z.
+- **Repo:** season/daily checked out at c8cde98 from origin (that commit is the 21:41Z clean-start test 2's afternoon record, whose LEAGUE LIVE and SEASON DECK lines were HALT; this run's files replace its `_pm` records). origin/main had nothing new (a15d12a already merged). Tree clean; no stash.
+- **Flaim:** 12 of 12 rosters returned, called one at a time, with no errors and no retries. FantasyBot was not needed.
 
-| Item | Result |
-|---|---|
-| T0 | 2026-11-25T21:39:51Z |
-| Flaim roster calls | 12 of 12 returned data (get_user_session: ANTI MARTIN MARTIN CLUB, 478.l.36464). No retries. FantasyBot not needed. |
-| LEAGUE LIVE | **HALT** — `scripts/league_live.py` crashes at import: `ModuleNotFoundError: No module named 'verify_rosters'` (league_live.py:40 → league_intake.py:44). `scripts/verify_rosters.py` is not tracked in git and is not on this container. `--phase` support could not be checked (`--help` crashes too). data/league_state.json NOT refreshed; no league_moves_2026-11-25_pm.json written. |
-| League moves since morning | **no record** (league_live HALT). Unrecorded observation, this afternoon's Flaim reads vs data/source/flaim/pull_2026-11-25.json: SNOWTIME WHITE WALKERS — Isaiah Joe gone, Mikel Brown Jr. added; ANONG NANGIANNIS?! — Zaccharie Risacher gone (14 players); Thompson Telepathy — Mike Conley gone, Kevin Porter Jr. added. No script verified these. |
-| Injury status (David + opponent Booker T Floppers) | **no injury-status change** in status_2026-11-25_pm.json vs status_2026-11-25.json (36 rows each, 0 changed). Caveat: the pm file's Yahoo tags cite the MORNING pull (league_live did not refresh), so only its ESPN read is fresh. This afternoon's Flaim tags for both teams match the morning pull: David — Lendeborg Q, Haliburton O, Leonard O; Booker T Floppers — Grayson Allen O, Banchero O, Dejounte Murray O. |
-| STATUS GATE | STATUS GATE: PASS — status_2026-11-25_pm.json: 36 flagged row(s), each tiered with a dated receipt (ESPN injuries read 21:40:56Z) |
-| SEASON DECK | **FAIL (crash, no SEASON DECK line)** — `season_deck.py --date 2026-11-25 --phase pm` → `ModuleNotFoundError: No module named 'hoops'` (season_deck.py:106 → week_matchup.py:70 → co_gm.py:20). `scripts/hoops.py` is not tracked in git. Not published; the morning deck page stands. |
+## Lines
 
-Both crashes come from modules (verify_rosters, hoops) that are not in the repo, so the afternoon pipeline cannot run in a clean clone. Nothing in the engine was changed. Decision for the owner: commit the two missing modules from wherever the earlier runs had them.
+- LEAGUE LIVE: PASS — rosters from Flaim (Yahoo), pinned data/source/flaim/pull_2026-11-25_pm.json; 3 not in the deck pool (simulated once the season lines give an auto row, 3+ games): Charles Bassey (Podz save the league, C), Kenrich Williams (ROOKS FTW, UTIL), Matisse Thybulle (John's Cool Team, SG)
+- STATUS GATE: PASS — status_2026-11-25_pm.json: 36 flagged row(s), each tiered with a dated receipt
+- SEASON DECK: PASS — 2026-11-25 (afternoon refresh): report/season/deck_2026-11-25_pm.html (7 panes, 317 board rows, 36 status rows; record deck_record_2026-11-25_pm.json pins 21 inputs; render: 7 tabs, 0 page errors; lineup side refreshed (week_matchup_2026-11-25_pm.json))
+
+## League moves since the morning state (league_moves_2026-11-25_pm.json)
+
+- **SNOWTIME WHITE WALKERS** — added Mikel Brown Jr.; dropped Isaiah Joe
+- **ANONG NANGIANNIS?!** — dropped Zaccharie Risacher; off IL: De'Aaron Fox
+- **Thompson Telepathy** — added Kevin Porter Jr.; dropped Mike Conley
+
+## Injury status (status_2026-11-25_pm.json vs the morning's status_2026-11-25.json)
+
+- **Yours:** no injury-status change.
+- **Booker T Floppers (your opponent):** no injury-status change.
+- Across the league, 7 players' status tiers differ from the morning file: Cade Cunningham O → Q; Jalen Smith Q → O; Joel Embiid D → O; Karl-Anthony Towns Q → P; Josh Hart Q → P; Zach LaVine newly O; Giannis Antetokounmpo no longer flagged.
+
+## Deck
+
+- Published to https://claude.ai/artifact/Az6vPGzG6TLWrPjdAWL2pe as Version 108 (1795647914-615e). Before: version 1795645316-a2da (the 22:21Z clean-start test 4 build, morning rosters).
+- The 783,799 built bytes are contained in the 784,345-byte live page, which renders 7 tabs with 0 page errors.
+- The page's waiver pairs and title odds are the morning run's.
+
+## Nothing failed
