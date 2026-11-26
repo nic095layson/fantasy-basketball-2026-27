@@ -4,14 +4,14 @@
   "flaim": {
    "transcript": "f7b74300-8501-5e41-b8c5-d2c75dd06ce4.jsonl",
    "method": "mechanical json extraction of Flaim (Yahoo) tool results from the session transcript",
-   "since": "2026-11-26T12:42:06Z",
-   "pull_file": "data/source/flaim/pull_2026-11-26.json",
-   "pull_sha256": "80941c69f2ac68bc16ae609c80469373aeb6c63db0b04c5248dd2fb39a637ae1",
+   "since": "2026-11-26T23:04:10Z",
+   "pull_file": "data/source/flaim/pull_2026-11-26_pm.json",
+   "pull_sha256": "b63b4e60252eba40bc1f59bff6bf804b2062dbf2a3b3a7aef0471e649c9d0d20",
    "view": "Flaim connector (Yahoo, read-only): get_roster per team (current), get_matchups, get_free_agents"
   },
   "transcription": {
-   "file": "data/source/flaim/rosters_2026-11-26.transcribed.csv",
-   "sha256": "85ec41e1db2dc52aa32ebafa9c88b3ede9f2b0f5e1fe44d6dbd8974044d12782",
+   "file": "data/source/flaim/rosters_2026-11-26_pm.transcribed.csv",
+   "sha256": "c1299d6a24e61448fb3df8dd5e2891eaf24e07a196e12dcaf901563c9645bd59",
    "method": "flaim_live.to_rows (mechanical; Yahoo slots and status letters for every team)"
   },
   "draft_board": "report/after-reports/draft-league-2026-10-14/recap.json",
@@ -72,6 +72,18 @@
      "positions": [
       "SG",
       "SF"
+     ],
+     "status": null
+    },
+    {
+     "player": "Luka Doncic",
+     "yahoo_name": "Luka Dončić",
+     "slot": "G",
+     "yahoo_nba_team": "LAL",
+     "pool_team": "LAL",
+     "positions": [
+      "PG",
+      "SG"
      ],
      "status": null
     },
@@ -158,18 +170,6 @@
       "PF"
      ],
      "status": "O"
-    },
-    {
-     "player": "Luka Doncic",
-     "yahoo_name": "Luka Dončić",
-     "slot": "BN",
-     "yahoo_nba_team": "LAL",
-     "pool_team": "LAL",
-     "positions": [
-      "PG",
-      "SG"
-     ],
-     "status": null
     },
     {
      "player": "Jeremiah Fears",
@@ -274,7 +274,7 @@
       "SF",
       "PF"
      ],
-     "status": "Q"
+     "status": "O"
     },
     {
      "player": "Shai Gilgeous-Alexander",
@@ -932,7 +932,7 @@
       "PF",
       "C"
      ],
-     "status": null
+     "status": "P"
     },
     {
      "player": "Reed Sheppard",
@@ -1150,7 +1150,7 @@
       "PG",
       "SG"
      ],
-     "status": "Q"
+     "status": "O"
     },
     {
      "player": "Kyshawn George",
