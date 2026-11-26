@@ -1,17 +1,17 @@
 {
- "as_of": "2026-11-25",
+ "as_of": "2026-11-26",
  "sources": {
   "flaim": {
    "transcript": "f7b74300-8501-5e41-b8c5-d2c75dd06ce4.jsonl",
    "method": "mechanical json extraction of Flaim (Yahoo) tool results from the session transcript",
-   "since": "2026-11-25T23:04:09Z",
-   "pull_file": "data/source/flaim/pull_2026-11-25_pm.json",
-   "pull_sha256": "600d1d14934875ffc426e126ffb1b86d83b32106d3cc334f2c437c9bd1ba64a3",
+   "since": "2026-11-26T12:42:06Z",
+   "pull_file": "data/source/flaim/pull_2026-11-26.json",
+   "pull_sha256": "80941c69f2ac68bc16ae609c80469373aeb6c63db0b04c5248dd2fb39a637ae1",
    "view": "Flaim connector (Yahoo, read-only): get_roster per team (current), get_matchups, get_free_agents"
   },
   "transcription": {
-   "file": "data/source/flaim/rosters_2026-11-25_pm.transcribed.csv",
-   "sha256": "b65db4c52e8a1300f039e6c21718b706fe5440524df5f51131e28f4a0dfeb1f2",
+   "file": "data/source/flaim/rosters_2026-11-26.transcribed.csv",
+   "sha256": "85ec41e1db2dc52aa32ebafa9c88b3ede9f2b0f5e1fe44d6dbd8974044d12782",
    "method": "flaim_live.to_rows (mechanical; Yahoo slots and status letters for every team)"
   },
   "draft_board": "report/after-reports/draft-league-2026-10-14/recap.json",
@@ -72,17 +72,6 @@
      "positions": [
       "SG",
       "SF"
-     ],
-     "status": "P"
-    },
-    {
-     "player": "Mikel Brown Jr.",
-     "yahoo_name": "Mikel Brown Jr.",
-     "slot": "G",
-     "yahoo_nba_team": "BKN",
-     "pool_team": "BKN",
-     "positions": [
-      "PG"
      ],
      "status": null
     },
@@ -206,6 +195,18 @@
      "status": null
     },
     {
+     "player": "Kelly Oubre Jr.",
+     "yahoo_name": "Kelly Oubre Jr.",
+     "slot": "BN",
+     "yahoo_nba_team": "IND",
+     "pool_team": "IND",
+     "positions": [
+      "SF",
+      "PF"
+     ],
+     "status": null
+    },
+    {
      "player": "Lauri Markkanen",
      "yahoo_name": "Lauri Markkanen",
      "slot": "IL",
@@ -241,7 +242,7 @@
     "Jeremiah Fears",
     "Jrue Holiday",
     "Julian Champagnie",
-    "Mikel Brown Jr."
+    "Kelly Oubre Jr."
    ],
    "dropped_since_draft": [
     "Anthony Black",
@@ -273,7 +274,7 @@
       "SF",
       "PF"
      ],
-     "status": null
+     "status": "Q"
     },
     {
      "player": "Shai Gilgeous-Alexander",
@@ -332,7 +333,7 @@
      "positions": [
       "C"
      ],
-     "status": null
+     "status": "Q"
     },
     {
      "player": "Bam Adebayo",
@@ -559,7 +560,7 @@
      "positions": [
       "PG"
      ],
-     "status": "O"
+     "status": null
     },
     {
      "player": "Payton Pritchard",
@@ -654,11 +655,11 @@
      "status": null
     },
     {
-     "player": "Ryan Rollins",
-     "yahoo_name": "Ryan Rollins",
+     "player": "Ja'Kobe Walter",
+     "yahoo_name": "Ja'Kobe Walter",
      "slot": "SG",
-     "yahoo_nba_team": "MIL",
-     "pool_team": "MIL",
+     "yahoo_nba_team": "TOR",
+     "pool_team": "TOR",
      "positions": [
       "PG",
       "SG"
@@ -745,7 +746,7 @@
       "PF",
       "C"
      ],
-     "status": "O"
+     "status": "Q"
     },
     {
      "player": "Jarrett Allen",
@@ -827,9 +828,9 @@
    "draft_overlap": 11,
    "added_since_draft": [
     "Ace Bailey",
+    "Ja'Kobe Walter",
     "Jalen Smith",
-    "Nic Claxton",
-    "Ryan Rollins"
+    "Nic Claxton"
    ],
    "dropped_since_draft": [
     "Collin Sexton",
@@ -1617,7 +1618,7 @@
      "positions": [
       "PG"
      ],
-     "status": null
+     "status": "Q"
     },
     {
      "player": "Jared McCain",
@@ -1625,6 +1626,18 @@
      "slot": "SG",
      "yahoo_nba_team": "OKC",
      "pool_team": "OKC",
+     "positions": [
+      "PG",
+      "SG"
+     ],
+     "status": null
+    },
+    {
+     "player": "Darryn Peterson",
+     "yahoo_name": "Darryn Peterson",
+     "slot": "G",
+     "yahoo_nba_team": "UTA",
+     "pool_team": "UTA",
      "positions": [
       "PG",
       "SG"
@@ -1688,7 +1701,7 @@
      "positions": [
       "C"
      ],
-     "status": "Q"
+     "status": null
     },
     {
      "player": "Paul George",
@@ -1735,18 +1748,6 @@
      "positions": [
       "SG",
       "SF"
-     ],
-     "status": null
-    },
-    {
-     "player": "Darryn Peterson",
-     "yahoo_name": "Darryn Peterson",
-     "slot": "BN",
-     "yahoo_nba_team": "UTA",
-     "pool_team": "UTA",
-     "positions": [
-      "PG",
-      "SG"
      ],
      "status": null
     },
@@ -1860,7 +1861,7 @@
       "PF",
       "C"
      ],
-     "status": "P"
+     "status": null
     },
     {
      "player": "Peyton Watson",
@@ -1883,7 +1884,7 @@
      "positions": [
       "C"
      ],
-     "status": "O"
+     "status": "Q"
     },
     {
      "player": "Paul Reed",
@@ -2061,7 +2062,7 @@
       "SF",
       "PF"
      ],
-     "status": "Q"
+     "status": null
     },
     {
      "player": "Miles Bridges",
@@ -2251,17 +2252,16 @@
      "status": null
     },
     {
-     "player": "Zach LaVine",
-     "yahoo_name": "Zach LaVine",
+     "player": "Jalen Green",
+     "yahoo_name": "Jalen Green",
      "slot": "F",
-     "yahoo_nba_team": "SAC",
-     "pool_team": "SAC",
+     "yahoo_nba_team": "PHX",
+     "pool_team": "PHX",
      "positions": [
-      "PG",
       "SG",
       "SF"
      ],
-     "status": "O"
+     "status": null
     },
     {
      "player": "Aaron Gordon",
@@ -2342,6 +2342,19 @@
       "PF"
      ],
      "status": null
+    },
+    {
+     "player": "Zach LaVine",
+     "yahoo_name": "Zach LaVine",
+     "slot": "IL",
+     "yahoo_nba_team": "SAC",
+     "pool_team": "SAC",
+     "positions": [
+      "PG",
+      "SG",
+      "SF"
+     ],
+     "status": "Q"
     }
    ],
    "empty_slots": [],
@@ -2363,7 +2376,8 @@
    "draft_overlap": 10,
    "added_since_draft": [
     "Brook Lopez",
-    "Christian Braun"
+    "Christian Braun",
+    "Jalen Green"
    ],
    "dropped_since_draft": [
     "Cameron Johnson",
