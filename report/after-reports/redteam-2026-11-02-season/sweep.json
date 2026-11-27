@@ -1,0 +1,311 @@
+{
+ "seasons": 6000,
+ "seeds": [
+  2026,
+  2027
+ ],
+ "workers": 4,
+ "mc_se_points": 0.535,
+ "engine_commit": "e14cc42",
+ "state": "/home/user/wtsd/report/after-reports/redteam-2026-11-02-season/state_season.json",
+ "pool": "/home/user/wtsd/report/after-reports/redteam-2026-11-02-season/pool_season.csv",
+ "owner_seat": 10,
+ "registry_sha256": "8b8189940f0c",
+ "reference_10k": {
+  "2026": 14.88,
+  "2027": 14.26
+ },
+ "baseline_within_3se": {
+  "2026": true,
+  "2027": true
+ },
+ "tier_rule": "mean shift over seeds: ROBUST < 1, SENSITIVE 1-2, FRAGILE >= 2 title points",
+ "variants": {
+  "baseline": {
+   "title": {
+    "2026": 14.52,
+    "2027": 14.08
+   },
+   "playoff": {
+    "2026": 98.3,
+    "2027": 98.6
+   }
+  },
+  "bench weight 0.50": {
+   "title": {
+    "2026": 14.52,
+    "2027": 14.08
+   },
+   "playoff": {
+    "2026": 98.3,
+    "2027": 98.6
+   }
+  },
+  "bench weight 1.00 (F07's flip)": {
+   "title": {
+    "2026": 14.52,
+    "2027": 14.08
+   },
+   "playoff": {
+    "2026": 98.3,
+    "2027": 98.6
+   }
+  },
+  "binomial floor only (1.0)": {
+   "title": {
+    "2026": 15.75,
+    "2027": 15.1
+   },
+   "playoff": {
+    "2026": 98.42,
+    "2027": 98.63
+   }
+  },
+  "inflation 1.30": {
+   "title": {
+    "2026": 14.03,
+    "2027": 13.9
+   },
+   "playoff": {
+    "2026": 98.27,
+    "2027": 98.47
+   }
+  },
+  "no shared games shock (0.0)": {
+   "title": {
+    "2026": 12.68,
+    "2027": 13.82
+   },
+   "playoff": {
+    "2026": 99.23,
+    "2027": 99.33
+   }
+  },
+  "shared games shock doubled (0.12)": {
+   "title": {
+    "2026": 14.5,
+    "2027": 15.25
+   },
+   "playoff": {
+    "2026": 96.38,
+    "2027": 96.6
+   }
+  },
+  "no in-sim injury discount (risk 0.88 like healthy)": {
+   "title": {
+    "2026": 11.73,
+    "2027": 11.67
+   },
+   "playoff": {
+    "2026": 96.35,
+    "2027": 96.58
+   }
+  },
+  "harsher risk tier (0.65)": {
+   "title": {
+    "2026": 16.35,
+    "2027": 16.68
+   },
+   "playoff": {
+    "2026": 99.33,
+    "2027": 99.45
+   }
+  },
+  "healthy players play 0.95 of games": {
+   "title": {
+    "2026": 14.23,
+    "2027": 13.95
+   },
+   "playoff": {
+    "2026": 98.93,
+    "2027": 99.08
+   }
+  },
+  "healthy players play 0.80 of games": {
+   "title": {
+    "2026": 14.7,
+    "2027": 13.98
+   },
+   "playoff": {
+    "2026": 97.8,
+    "2027": 97.67
+   }
+  },
+  "3.0 games per healthy week": {
+   "title": {
+    "2026": 14.25,
+    "2027": 14.2
+   },
+   "playoff": {
+    "2026": 98.28,
+    "2027": 98.25
+   }
+  },
+  "4.0 games per healthy week": {
+   "title": {
+    "2026": 14.72,
+    "2027": 14.37
+   },
+   "playoff": {
+    "2026": 98.8,
+    "2027": 98.92
+   }
+  }
+ },
+ "state_sha256": "77aff0b2299ea5c9ec5f5f278ae18dacc29cefed1807eaac78ed8172afbc4ac9",
+ "pool_sha256": "eb221cbc212ee9274498475293f3ad924caa0bba59169fbd6b33beb5c3c1c1b1",
+ "references": {
+  "2026": "/home/user/wtsd/report/after-reports/redteam-2026-11-02-season/reference_10k_s2026.json",
+  "2027": "/home/user/wtsd/report/after-reports/redteam-2026-11-02-season/reference_10k_s2027.json"
+ },
+ "schedule": "/home/user/wtsd/report/after-reports/redteam-2026-11-02-season/league_schedule.json",
+ "schedule_sha256": "b56a937fa33390da98da6dc6cc5342f43a64cfe26d2b701607f6a238100de8b7",
+ "simulator": "league_sim (real pairings, weeks already final)",
+ "constants": {
+  "arena.BENCH_WEIGHT": {
+   "variants": [
+    {
+     "label": "bench weight 0.50",
+     "shift": {
+      "2026": 0.0,
+      "2027": 0.0
+     },
+     "shift_mean": 0.0,
+     "tier": "ROBUST"
+    },
+    {
+     "label": "bench weight 1.00 (F07's flip)",
+     "shift": {
+      "2026": 0.0,
+      "2027": 0.0
+     },
+     "shift_mean": 0.0,
+     "tier": "ROBUST"
+    }
+   ],
+   "tier": "ROBUST",
+   "max_abs_shift": 0.0
+  },
+  "arena.PCT_MIX_INFL": {
+   "variants": [
+    {
+     "label": "binomial floor only (1.0)",
+     "shift": {
+      "2026": 1.23,
+      "2027": 1.02
+     },
+     "shift_mean": 1.12,
+     "tier": "SENSITIVE"
+    },
+    {
+     "label": "inflation 1.30",
+     "shift": {
+      "2026": -0.49,
+      "2027": -0.18
+     },
+     "shift_mean": -0.33,
+     "tier": "ROBUST"
+    }
+   ],
+   "tier": "SENSITIVE",
+   "max_abs_shift": 1.12
+  },
+  "arena.TEAM_WEEK_SHOCK": {
+   "variants": [
+    {
+     "label": "no shared games shock (0.0)",
+     "shift": {
+      "2026": -1.84,
+      "2027": -0.26
+     },
+     "shift_mean": -1.05,
+     "tier": "SENSITIVE"
+    },
+    {
+     "label": "shared games shock doubled (0.12)",
+     "shift": {
+      "2026": -0.02,
+      "2027": 1.17
+     },
+     "shift_mean": 0.57,
+     "tier": "ROBUST"
+    }
+   ],
+   "tier": "SENSITIVE",
+   "max_abs_shift": 1.05
+  },
+  "arena.weekly_availability": {
+   "variants": [
+    {
+     "label": "no in-sim injury discount (risk 0.88 like healthy)",
+     "shift": {
+      "2026": -2.79,
+      "2027": -2.41
+     },
+     "shift_mean": -2.6,
+     "tier": "FRAGILE"
+    },
+    {
+     "label": "harsher risk tier (0.65)",
+     "shift": {
+      "2026": 1.83,
+      "2027": 2.6
+     },
+     "shift_mean": 2.21,
+     "tier": "FRAGILE"
+    },
+    {
+     "label": "healthy players play 0.95 of games",
+     "shift": {
+      "2026": -0.29,
+      "2027": -0.13
+     },
+     "shift_mean": -0.21,
+     "tier": "ROBUST"
+    },
+    {
+     "label": "healthy players play 0.80 of games",
+     "shift": {
+      "2026": 0.18,
+      "2027": -0.1
+     },
+     "shift_mean": 0.04,
+     "tier": "ROBUST"
+    }
+   ],
+   "tier": "FRAGILE",
+   "max_abs_shift": 2.6
+  },
+  "arena.GAMES_PER_WEEK": {
+   "variants": [
+    {
+     "label": "3.0 games per healthy week",
+     "shift": {
+      "2026": -0.27,
+      "2027": 0.12
+     },
+     "shift_mean": -0.08,
+     "tier": "ROBUST"
+    },
+    {
+     "label": "4.0 games per healthy week",
+     "shift": {
+      "2026": 0.2,
+      "2027": 0.29
+     },
+     "shift_mean": 0.24,
+     "tier": "ROBUST"
+    }
+   ],
+   "tier": "ROBUST",
+   "max_abs_shift": 0.24
+  }
+ },
+ "fragile": [
+  "arena.weekly_availability"
+ ],
+ "sensitive": [
+  "arena.PCT_MIX_INFL",
+  "arena.TEAM_WEEK_SHOCK"
+ ]
+}

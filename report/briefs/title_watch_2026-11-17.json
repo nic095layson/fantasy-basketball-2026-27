@@ -1,0 +1,142 @@
+{
+ "date": "2026-11-17",
+ "title": 14.085,
+ "seasons": 10000,
+ "prev_date": "2026-11-16",
+ "prev_title": 14.605,
+ "delta": -0.5199999999999996,
+ "band": 0.6870221834409715,
+ "moved": false,
+ "gap_days": 1,
+ "merges": [
+  "Merge pull request #273: the waiver scan never offers a rostered player who sits outside the pool",
+  "Merge pull request #272: confidence by layer, week 5 re-run",
+  "Merge pull request #274: owner picks 2026-11-16 (week card, off-board grading, minutes line on PTS/REB/AST, records)",
+  "Merge pull request #275: pickup scan prices a same-day swap when the add's team plays today",
+  "Merge pull request #276: state of the system; title watch names method changes; A-6 fingerprinted",
+  "Merge pull request #278: the pickup scan never counts a rostered player outside the pool as free",
+  "Merge pull request #277: sync the governance hooks from the library (gate fixes of 2026-11-16)",
+  "Merge pull request #279: availability tiers 0.80 / 0.65 in the registry, band, labels; season sweep; standing attacks re-run",
+  "Merge pull request #280: council on the pending decisions (fit pools across the tier change; A-6 conditional; minor knock kept)",
+  "Merge pull request #281: TEAM_WEEK_SHOCK 0.11 in the registry and band; attacks re-run; season sweep (Council, 4-1)",
+  "Merge pull request #282: Council on the level gap and the card's shock term",
+  "Merge pull request #283: confidence, integrity and robustness after the session handoff"
+ ],
+ "method_changes": [
+  "line method: the minutes ratio now applies to PTS, REB, AST (before: none)",
+  "constant arena.TEAM_WEEK_SHOCK: 0.06 to 0.11",
+  "constant arena.weekly_availability: {'healthy': 0.88, 'mild': 0.79, 'risk': 0.75, 'recovery': 0.0, 'out': 0.0} to {'healthy': 0.8, 'mild': 0.79, 'risk': 0.65, 'recovery': 0.0, 'out': 0.0}",
+  "constant season_lines.SWITCH_CATS added"
+ ],
+ "moves": [
+  {
+   "team": "SNOWTIME WHITE WALKERS",
+   "seat": 3,
+   "added": [
+    "Kevin Huerter"
+   ],
+   "dropped": [
+    "Naji Marshall"
+   ],
+   "to_il": [
+    "Walker Kessler"
+   ],
+   "from_il": [
+    "James Harden"
+   ],
+   "owner": false
+  },
+  {
+   "team": "Thompson Telepathy",
+   "seat": 12,
+   "added": [
+    "Myles Turner"
+   ],
+   "dropped": [
+    "Devin Vassell",
+    "Peyton Watson"
+   ],
+   "to_il": [
+    "LeBron James"
+   ],
+   "from_il": [
+    "Austin Reaves"
+   ],
+   "owner": false
+  },
+  {
+   "team": "Podz save the league",
+   "seat": 9,
+   "added": [],
+   "dropped": [
+    "Nic Claxton"
+   ],
+   "to_il": [],
+   "from_il": [],
+   "owner": false
+  },
+  {
+   "team": "ROOKS FTW",
+   "seat": 2,
+   "added": [
+    "Mo Bamba"
+   ],
+   "dropped": [
+    "De'Anthony Melton"
+   ],
+   "to_il": [],
+   "from_il": [],
+   "owner": false
+  },
+  {
+   "team": "MISSI ELLIOTT",
+   "seat": 11,
+   "added": [
+    "Devin Vassell",
+    "Peyton Watson"
+   ],
+   "dropped": [
+    "Ja'Kobe Walter",
+    "Myles Turner"
+   ],
+   "to_il": [
+    "Duncan Robinson"
+   ],
+   "from_il": [
+    "Yves Missi"
+   ],
+   "owner": false
+  },
+  {
+   "team": "KEL'EL YAXEL HALQUETA",
+   "seat": 10,
+   "added": [
+    "Cam Spencer"
+   ],
+   "dropped": [
+    "Mario Hezonja"
+   ],
+   "to_il": [],
+   "from_il": [],
+   "owner": true
+  },
+  {
+   "team": "John's Cool Team",
+   "seat": 7,
+   "added": [
+    "Matisse Thybulle"
+   ],
+   "dropped": [
+    "De'Andre Hunter"
+   ],
+   "to_il": [],
+   "from_il": [],
+   "owner": false
+  }
+ ],
+ "inputs": {
+  "brief": "brief_2026-11-17.json",
+  "prev_brief": "brief_2026-11-16.json",
+  "prev_ran_at_utc": "2026-11-16T12:43:54Z"
+ }
+}

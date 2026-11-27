@@ -1,0 +1,80 @@
+{
+ "date": "2026-11-13",
+ "seasons": 10000,
+ "seeds": [
+  2026,
+  2027
+ ],
+ "base": {
+  "never": 20.585,
+  "on_time": 24.225
+ },
+ "pairs": [
+  {
+   "add": "Tobias Harris",
+   "drop": "Cameron Johnson",
+   "never": {
+    "title": 20.39,
+    "d_title": -0.2
+   },
+   "on_time": {
+    "title": 24.31,
+    "d_title": 0.0849999999999973
+   },
+   "week": null
+  }
+ ],
+ "order": {
+  "never": [
+   [
+    "Tobias Harris",
+    "Cameron Johnson"
+   ]
+  ],
+  "on_time": [
+   [
+    "Tobias Harris",
+    "Cameron Johnson"
+   ]
+  ]
+ },
+ "rank_flip": false,
+ "robust": {
+  "add": "Tobias Harris",
+  "drop": "Cameron Johnson",
+  "constant": "weekly_availability",
+  "variants": [
+   {
+    "label": "no in-sim injury discount (risk 0.88 like healthy)",
+    "d_title": -0.09999999999999964
+   },
+   {
+    "label": "harsher risk tier (0.65)",
+    "d_title": -0.5150000000000006
+   },
+   {
+    "label": "healthy players play 0.95 of games",
+    "d_title": 0.0849999999999973
+   },
+   {
+    "label": "healthy players play 0.80 of games",
+    "d_title": 0.2099999999999973
+   }
+  ],
+  "held": 2,
+  "holds": false,
+  "low": -0.5150000000000006,
+  "high": 0.2099999999999973
+ },
+ "notes": [
+  "Tobias Harris for Cameron Johnson: this week is not shown (add not in today's free-agent pool)"
+ ],
+ "label": "Display only: the brief's ranking and the headline title share are unchanged. The return world rests on ESPN's dates and the room rule (the lowest-value active player leaves), which is itself FRAGILE.",
+ "inputs": {
+  "brief": "brief_2026-11-13.json",
+  "il_return": true,
+  "week_card": true,
+  "pool": "/home/user/fantasy-basketball-2026-27/data/season/pool_season.csv",
+  "state_as_of": "2026-11-13"
+ }
+}

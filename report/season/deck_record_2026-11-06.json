@@ -1,0 +1,136 @@
+{
+ "date": "2026-11-06",
+ "out": "report/season/deck_2026-11-06.html",
+ "inputs": {
+  "brief": {
+   "path": "report/briefs/brief_2026-11-06.json",
+   "present": true,
+   "sha256": "35da5fc67e10fe55e41bf8879900522a92c988c0e58ee855c6eccf537c6a9f87"
+  },
+  "board": {
+   "path": "report/season/board_2026-11-06.json",
+   "present": true,
+   "sha256": "01109be440e9aea1aaee8e812ee3e11aeaa21b590b2d609c35d85c5098754cb3"
+  },
+  "status": {
+   "path": "data/status/status_2026-11-06.json",
+   "present": true,
+   "sha256": "c4155280275974daebac582fb601590fd3df82a4e1722d62d377700d20026a2d"
+  },
+  "league_state": {
+   "path": "data/news/league_state_am_2026-11-06.json",
+   "present": true,
+   "sha256": "a3eccdb61b8d2fdb2beacf795aa4be253f1dba6b1ab28b1467f90e9e65685bc3"
+  },
+  "season_lines": {
+   "path": "data/season/season_lines_2026-11-06.json",
+   "present": true,
+   "sha256": "07aefdddadd53f180ee8c2acdaafa099607f494b8837b2b0ba9a70ce5d1feb21"
+  },
+  "sweep": {
+   "path": "report/after-reports/redteam-2026-11-02-season/sweep.json",
+   "present": true,
+   "sha256": "1b8566531da1d0b666610a9383c063baa951d7879f045cb823faf3e0a384a87c"
+  },
+  "calibration": {
+   "path": "report/calibration.json",
+   "present": true,
+   "sha256": "2848d8a45b14063bd5d35896f4fbed867c8583ec20aca2c245a7713326a8aa56"
+  },
+  "matchup_live": {
+   "path": "data/news/matchup_live_2026-11-06.json",
+   "present": true,
+   "sha256": "6490a0b336d969ab8e4c1e2cefaa563634e4e24c3dc85f25d02ac1bdbfd47781"
+  },
+  "week_matchup": {
+   "path": "report/briefs/week_matchup_2026-11-06.json",
+   "present": true,
+   "sha256": "12e2ad3091efc9724cf709dd200b00a74774964a8606b5de789bc5cc510422ff"
+  },
+  "league": {
+   "path": "report/league/league_2026-11-06.json",
+   "present": true,
+   "sha256": "1fe6f8f46f821c03328246b8086183ba00f8d5a5f2d4d7fdef8a96220fd8bd3c"
+  },
+  "form": {
+   "path": "report/form/form_2026-11-06.json",
+   "present": true,
+   "sha256": "f23f048731c62e909ec8979f51a4a80a289aa3e3842bd62b569250be24eb745c"
+  },
+  "scores": {
+   "path": "report/calibration_daily.json",
+   "present": true,
+   "sha256": "37929a80094ebae722a2d9508468cb7f73bad1615d53c2fad76edb87a5d45d41"
+  },
+  "accuracy": {
+   "path": "report/accuracy.json",
+   "present": true,
+   "sha256": "a2bf635abc40779f9c151f2dbbade1d61e22bc335965f22cfd45ef49081ec429"
+  },
+  "lineup": {
+   "path": "report/decisions/lineup_scorecard.json",
+   "present": true,
+   "sha256": "4fb3c4f3144f76ed42e83fd24dc55f021ad2d1bfea1e60c14bf5602d52d38b7c"
+  },
+  "yahoo_pull": {
+   "path": "data/source/flaim/pull_2026-11-06.json",
+   "present": true,
+   "sha256": "5ef3f33e804860b4b57848b64acc0c1cf560d0e63e32587a26f738dc66afa6e5"
+  },
+  "espn_injuries": {
+   "path": "data/status/espn_injuries_2026-11-06.json",
+   "present": true,
+   "sha256": "2de8e068e2c18483c5b65feeec2604f1f0243cc53bfb0ed95390b373276f575d"
+  }
+ },
+ "board_rows": 315,
+ "status_rows": 29,
+ "panes": 7,
+ "join": {
+  "rostered": 172,
+  "unresolved": 0,
+  "on_board": 170,
+  "off_board": 2,
+  "respelled": [
+   [
+    "Darius Acuff Jr.",
+    "Darius Acuff"
+   ],
+   [
+    "Jabari Smith Jr.",
+    "Jabari Smith Jr"
+   ],
+   [
+    "Jaime Jaquez Jr.",
+    "Jaime Jaquez Jr"
+   ],
+   [
+    "Jaren Jackson Jr.",
+    "Jaren Jackson Jr"
+   ],
+   [
+    "Michael Porter Jr.",
+    "Michael Porter Jr"
+   ],
+   [
+    "Wendell Carter Jr.",
+    "Wendell Carter Jr"
+   ]
+  ],
+  "free_agents_on_board": 145
+ },
+ "render": {
+  "status": "PASS",
+  "tabs": [
+   "Today",
+   "Trade Analyzer",
+   "Free Agents",
+   "Board",
+   "Movers",
+   "Week",
+   "League"
+  ],
+  "page_errors": 0,
+  "browser": "141.0.7390.37 (playwright default)"
+ }
+}

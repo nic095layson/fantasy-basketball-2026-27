@@ -1,0 +1,514 @@
+{
+ "date": "2026-11-14",
+ "week": 4,
+ "weeks": 17,
+ "seasons": 10000,
+ "seeds": [
+  2026,
+  2027
+ ],
+ "state": "data/league_state.json",
+ "state_as_of": "2026-11-14",
+ "espn": "data/status/espn_injuries_2026-11-14.json",
+ "espn_date": "2026-11-14",
+ "pool": "/home/user/fantasy-basketball-2026-27/data/season/pool_season.csv",
+ "room_rule": "lowest adj_value active player leaves from the return week",
+ "slips": {
+  "on_time": 0
+ },
+ "n_il": 23,
+ "il_players": [
+  {
+   "seat": 3,
+   "team": "SNOWTIME WHITE WALKERS",
+   "player": "Luka Doncic",
+   "espn": "Luka Doncic",
+   "status": "Day-To-Day",
+   "return_date": "2026-11-15",
+   "week": 4
+  },
+  {
+   "seat": 3,
+   "team": "SNOWTIME WHITE WALKERS",
+   "player": "Lauri Markkanen",
+   "espn": "Lauri Markkanen",
+   "status": "Out",
+   "return_date": "2027-01-04",
+   "week": 11
+  },
+  {
+   "seat": 4,
+   "team": "Booker T Floppers",
+   "player": "Paolo Banchero",
+   "espn": "Paolo Banchero",
+   "status": "Out",
+   "return_date": "2026-11-22",
+   "week": 5
+  },
+  {
+   "seat": 4,
+   "team": "Booker T Floppers",
+   "player": "Dejounte Murray",
+   "espn": "Dejounte Murray",
+   "status": "Out",
+   "return_date": "2026-11-20",
+   "week": 5
+  },
+  {
+   "seat": 1,
+   "team": "Looking Cool Joker!",
+   "player": "Ja Morant",
+   "espn": "Ja Morant",
+   "status": "Out",
+   "return_date": "2026-12-01",
+   "week": 7
+  },
+  {
+   "seat": 1,
+   "team": "Looking Cool Joker!",
+   "player": "Jaren Jackson Jr.",
+   "espn": "Jaren Jackson Jr.",
+   "status": "Out",
+   "return_date": "2026-12-14",
+   "week": 8
+  },
+  {
+   "seat": 8,
+   "team": "Scottie’s Thotties",
+   "player": "Anthony Edwards",
+   "espn": "Anthony Edwards",
+   "status": "Out",
+   "return_date": "2026-12-21",
+   "week": 9
+  },
+  {
+   "seat": 8,
+   "team": "Scottie’s Thotties",
+   "player": "Stephen Curry",
+   "espn": "Stephen Curry",
+   "status": "Out",
+   "return_date": "2026-12-12",
+   "week": 7
+  },
+  {
+   "seat": 5,
+   "team": "ANONG NANGIANNIS?!",
+   "player": "Trey Murphy III",
+   "espn": "Trey Murphy III",
+   "status": "Out",
+   "return_date": "2026-11-14",
+   "week": 4
+  },
+  {
+   "seat": 5,
+   "team": "ANONG NANGIANNIS?!",
+   "player": "Nolan Traore",
+   "espn": "Nolan Traore",
+   "status": "Day-To-Day",
+   "return_date": "2026-11-14",
+   "week": 4
+  },
+  {
+   "seat": 6,
+   "team": "Cade n em",
+   "player": "Jalen Duren",
+   "espn": "Jalen Duren",
+   "status": "Out",
+   "return_date": "2026-11-24",
+   "week": 6
+  },
+  {
+   "seat": 6,
+   "team": "Cade n em",
+   "player": "Caleb Wilson",
+   "espn": "Caleb Wilson",
+   "status": "Out",
+   "return_date": "2026-12-13",
+   "week": 7
+  },
+  {
+   "seat": 12,
+   "team": "Thompson Telepathy",
+   "player": "LeBron James",
+   "espn": "LeBron James",
+   "status": "Day-To-Day",
+   "return_date": "2026-11-15",
+   "week": 4
+  },
+  {
+   "seat": 12,
+   "team": "Thompson Telepathy",
+   "player": "Jimmy Butler",
+   "espn": "Jimmy Butler III",
+   "status": "Out",
+   "return_date": "2027-01-02",
+   "week": 10
+  },
+  {
+   "seat": 9,
+   "team": "Podz save the league",
+   "player": "Brandon Miller",
+   "espn": "Brandon Miller",
+   "status": "Day-To-Day",
+   "return_date": "2026-11-15",
+   "week": 4
+  },
+  {
+   "seat": 9,
+   "team": "Podz save the league",
+   "player": "Klay Thompson",
+   "espn": "Klay Thompson",
+   "status": "Out",
+   "return_date": "2026-11-14",
+   "week": 4
+  },
+  {
+   "seat": 2,
+   "team": "ROOKS FTW",
+   "player": "Evan Mobley",
+   "espn": "Evan Mobley",
+   "status": "Out",
+   "return_date": "2026-11-14",
+   "week": 4
+  },
+  {
+   "seat": 2,
+   "team": "ROOKS FTW",
+   "player": "Jusuf Nurkic",
+   "espn": "Jusuf Nurkic",
+   "status": "Out",
+   "return_date": "2026-11-20",
+   "week": 5
+  },
+  {
+   "seat": 11,
+   "team": "MISSI ELLIOTT",
+   "player": "Kon Knueppel",
+   "espn": "Kon Knueppel",
+   "status": "Out",
+   "return_date": "2026-12-12",
+   "week": 7
+  },
+  {
+   "seat": 11,
+   "team": "MISSI ELLIOTT",
+   "player": "Yves Missi",
+   "espn": "Yves Missi",
+   "status": "Out",
+   "return_date": "2026-11-14",
+   "week": 4
+  },
+  {
+   "seat": 10,
+   "team": "KEL'EL YAXEL HALQUETA",
+   "player": "Tyrese Haliburton",
+   "espn": "Tyrese Haliburton",
+   "status": "Out",
+   "return_date": "2026-11-22",
+   "week": 5
+  },
+  {
+   "seat": 10,
+   "team": "KEL'EL YAXEL HALQUETA",
+   "player": "Kawhi Leonard",
+   "espn": "Kawhi Leonard",
+   "status": "Out",
+   "return_date": "2026-11-23",
+   "week": 6
+  },
+  {
+   "seat": 7,
+   "team": "John's Cool Team",
+   "player": "Brandon Ingram",
+   "espn": "Brandon Ingram",
+   "status": "Out",
+   "return_date": "2026-11-19",
+   "week": 5
+  }
+ ],
+ "scenarios": {
+  "never": {
+   "title_by_seed": {
+    "2026": 19.73,
+    "2027": 19.35
+   },
+   "title": 19.54,
+   "playoffs": 98.7,
+   "seed_spread": 0.38
+  },
+  "on_time": {
+   "title_by_seed": {
+    "2026": 22.78,
+    "2027": 21.58
+   },
+   "title": 22.18,
+   "playoffs": 99.77,
+   "seed_spread": 1.2,
+   "windows": {
+    "1": {
+     "Ja Morant": [
+      7,
+      17
+     ],
+     "Sidy Cissoko": [
+      1,
+      6
+     ],
+     "Jaren Jackson Jr.": [
+      8,
+      17
+     ],
+     "Aaron Nesmith": [
+      1,
+      7
+     ]
+    },
+    "2": {
+     "Evan Mobley": [
+      4,
+      17
+     ],
+     "Jared McCain": [
+      1,
+      3
+     ],
+     "Jusuf Nurkic": [
+      5,
+      17
+     ],
+     "Draymond Green": [
+      1,
+      4
+     ]
+    },
+    "3": {
+     "Luka Doncic": [
+      4,
+      17
+     ],
+     "Jonathan Kuminga": [
+      1,
+      3
+     ],
+     "Lauri Markkanen": [
+      11,
+      17
+     ],
+     "Naji Marshall": [
+      1,
+      10
+     ]
+    },
+    "4": {
+     "Dejounte Murray": [
+      5,
+      17
+     ],
+     "Tristan da Silva": [
+      1,
+      4
+     ],
+     "Paolo Banchero": [
+      5,
+      17
+     ],
+     "Tari Eason": [
+      1,
+      4
+     ]
+    },
+    "5": {
+     "Nolan Traore": [
+      4,
+      17
+     ],
+     "Jamal Shead": [
+      1,
+      3
+     ],
+     "Trey Murphy III": [
+      4,
+      17
+     ],
+     "Tre Jones": [
+      1,
+      3
+     ]
+    },
+    "6": {
+     "Jalen Duren": [
+      6,
+      17
+     ],
+     "Kingston Flemings": [
+      1,
+      5
+     ],
+     "Caleb Wilson": [
+      7,
+      17
+     ],
+     "Aaron Wiggins": [
+      1,
+      6
+     ]
+    },
+    "7": {
+     "Brandon Ingram": [
+      5,
+      17
+     ],
+     "Kyle Kuzma": [
+      1,
+      4
+     ]
+    },
+    "8": {
+     "Stephen Curry": [
+      7,
+      17
+     ],
+     "Precious Achiuwa": [
+      1,
+      6
+     ],
+     "Anthony Edwards": [
+      9,
+      17
+     ],
+     "Ryan Rollins": [
+      1,
+      8
+     ]
+    },
+    "9": {
+     "Brandon Miller": [
+      4,
+      17
+     ],
+     "Aday Mara": [
+      1,
+      3
+     ],
+     "Klay Thompson": [
+      4,
+      17
+     ],
+     "Keaton Wagler": [
+      1,
+      3
+     ]
+    },
+    "10": {
+     "Tyrese Haliburton": [
+      5,
+      17
+     ],
+     "Neemias Queta": [
+      1,
+      4
+     ],
+     "Kawhi Leonard": [
+      6,
+      17
+     ],
+     "PJ Washington": [
+      1,
+      5
+     ]
+    },
+    "11": {
+     "Yves Missi": [
+      4,
+      17
+     ],
+     "Brayden Burries": [
+      1,
+      3
+     ],
+     "Kon Knueppel": [
+      7,
+      17
+     ],
+     "Ja'Kobe Walter": [
+      1,
+      6
+     ]
+    },
+    "12": {
+     "LeBron James": [
+      4,
+      17
+     ],
+     "Jaylen Wells": [
+      1,
+      3
+     ],
+     "Jimmy Butler": [
+      10,
+      17
+     ],
+     "Khaman Maluach": [
+      1,
+      9
+     ]
+    }
+   }
+  },
+  "seat10_only_on_time": {
+   "title_by_seed": {
+    "2026": 37.86,
+    "2027": 37.3
+   },
+   "title": 37.58,
+   "playoffs": 99.97,
+   "seed_spread": 0.56
+  },
+  "on_time_rule_flipped": {
+   "title_by_seed": {
+    "2026": 29.6,
+    "2027": 28.97
+   },
+   "title": 29.29,
+   "playoffs": 99.97,
+   "seed_spread": 0.63
+  }
+ },
+ "error": 0.55,
+ "blend": {
+  "weights": {
+   "on_time": 0.4,
+   "late_2": 0.3,
+   "late_4": 0.2,
+   "never": 0.1
+  },
+  "title": null,
+  "status": "UNCALIBRATED; not shown in the brief; not computed since 2026-11-11 (its late worlds are no longer run)"
+ },
+ "room_band": {
+  "constant": "il_return.ROOM_RULE_ON",
+  "shift": 7.1,
+  "label": "rule off",
+  "tier": "FRAGILE"
+ },
+ "slip_range": [
+  22.2,
+  22.2
+ ],
+ "label": "scenario range, not a forecast; never replaces or averages into the headline",
+ "lines": [
+  "**If IL players return** (scenario range, not a forecast; ESPN's earliest-return dates of 2026-11-14, all 12 teams, 23 IL players): if they return on ESPN's dates ≈22.2% · never = headline 19.5%. Error ± 0.55 each (2 runs × 10,000 seasons). Returns are uncertain; the headline counts the current roster. Room rule (lowest adj_value active player leaves from the return week): **ROOM_RULE_ON is FRAGILE: +7.1 (rule off)**.",
+  "- KEL'EL YAXEL HALQUETA: Tyrese Haliburton (earliest 2026-11-22, wk 5); Kawhi Leonard (earliest 2026-11-23, wk 6)",
+  "- Looking Cool Joker!: Ja Morant (earliest 2026-12-01, wk 7); Jaren Jackson Jr. (earliest 2026-12-14, wk 8)",
+  "- ROOKS FTW: Evan Mobley (earliest 2026-11-14, wk 4); Jusuf Nurkic (earliest 2026-11-20, wk 5)",
+  "- SNOWTIME WHITE WALKERS: Luka Doncic (earliest 2026-11-15, wk 4); Lauri Markkanen (earliest 2027-01-04, wk 11)",
+  "- Booker T Floppers: Paolo Banchero (earliest 2026-11-22, wk 5); Dejounte Murray (earliest 2026-11-20, wk 5)",
+  "- ANONG NANGIANNIS?!: Trey Murphy III (earliest 2026-11-14, wk 4); Nolan Traore (earliest 2026-11-14, wk 4)",
+  "- Cade n em: Jalen Duren (earliest 2026-11-24, wk 6); Caleb Wilson (earliest 2026-12-13, wk 7)",
+  "- John's Cool Team: Brandon Ingram (earliest 2026-11-19, wk 5)",
+  "- Scottie’s Thotties: Anthony Edwards (earliest 2026-12-21, wk 9); Stephen Curry (earliest 2026-12-12, wk 7)",
+  "- Podz save the league: Brandon Miller (earliest 2026-11-15, wk 4); Klay Thompson (earliest 2026-11-14, wk 4)",
+  "- MISSI ELLIOTT: Kon Knueppel (earliest 2026-12-12, wk 7); Yves Missi (earliest 2026-11-14, wk 4)",
+  "- Thompson Telepathy: LeBron James (earliest 2026-11-15, wk 4); Jimmy Butler (earliest 2027-01-02, wk 10)"
+ ]
+}

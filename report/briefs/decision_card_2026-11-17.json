@@ -1,0 +1,142 @@
+{
+ "date": "2026-11-17",
+ "seasons": 10000,
+ "seeds": [
+  2026,
+  2027
+ ],
+ "base": {
+  "never": 14.085,
+  "on_time": 20.52
+ },
+ "pairs": [
+  {
+   "add": "Julian Champagnie",
+   "drop": "PJ Washington",
+   "never": {
+    "title": 14.31,
+    "d_title": 0.22
+   },
+   "on_time": {
+    "title": 20.93,
+    "d_title": 0.41000000000000014
+   },
+   "week": {
+    "d_exp": -0.012917084717806282,
+    "p_5plus": 0.9881553061637983,
+    "d_p_5plus": -0.0009562610327251697
+   }
+  },
+  {
+   "add": "Andrew Wiggins",
+   "drop": "PJ Washington",
+   "never": {
+    "title": 13.63,
+    "d_title": -0.46
+   },
+   "on_time": {
+    "title": 20.52,
+    "d_title": 0.0,
+    "first_cut": {
+     "when": "Tyrese Haliburton",
+     "return_date": "2026-11-22",
+     "week": 5
+    }
+   },
+   "week": {
+    "d_exp": -0.1266972315666563,
+    "p_5plus": 0.9840849429450409,
+    "d_p_5plus": -0.005026624251482592
+   }
+  },
+  {
+   "add": "Jordan Goodwin",
+   "drop": "PJ Washington",
+   "never": {
+    "title": 14.02,
+    "d_title": -0.07
+   },
+   "on_time": {
+    "title": 20.52,
+    "d_title": 0.0,
+    "first_cut": {
+     "when": "Tyrese Haliburton",
+     "return_date": "2026-11-22",
+     "week": 5
+    }
+   },
+   "week": {
+    "d_exp": -0.10931951840904797,
+    "p_5plus": 0.9841886388756241,
+    "d_p_5plus": -0.004922928320899356
+   }
+  }
+ ],
+ "order": {
+  "never": [
+   [
+    "Julian Champagnie",
+    "PJ Washington"
+   ],
+   [
+    "Jordan Goodwin",
+    "PJ Washington"
+   ],
+   [
+    "Andrew Wiggins",
+    "PJ Washington"
+   ]
+  ],
+  "on_time": [
+   [
+    "Julian Champagnie",
+    "PJ Washington"
+   ],
+   [
+    "Andrew Wiggins",
+    "PJ Washington"
+   ],
+   [
+    "Jordan Goodwin",
+    "PJ Washington"
+   ]
+  ]
+ },
+ "rank_flip": true,
+ "robust": {
+  "add": "Julian Champagnie",
+  "drop": "PJ Washington",
+  "constant": "weekly_availability",
+  "variants": [
+   {
+    "label": "healthy at the old 0.88",
+    "d_title": -0.005000000000000782
+   },
+   {
+    "label": "healthy at the unfloored fit (0.78)",
+    "d_title": 0.384999999999998
+   },
+   {
+    "label": "risk at the old 0.75",
+    "d_title": 0.10999999999999943
+   },
+   {
+    "label": "risk at the unfloored fit (0.56)",
+    "d_title": -0.030000000000001137
+   }
+  ],
+  "held": 2,
+  "holds": false,
+  "low": -0.030000000000001137,
+  "high": 0.384999999999998
+ },
+ "notes": [],
+ "label": "Display only: the brief's ranking and the headline title share are unchanged. The return world rests on ESPN's dates and the room rule (the lowest-value active player leaves), which is itself FRAGILE.",
+ "inputs": {
+  "brief": "brief_2026-11-17.json",
+  "il_return": true,
+  "week_card": true,
+  "pool": "/home/user/fantasy-basketball-2026-27/data/season/pool_season.csv",
+  "state_as_of": "2026-11-17"
+ }
+}

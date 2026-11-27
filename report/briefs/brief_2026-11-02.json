@@ -1,0 +1,367 @@
+{
+ "date": "2026-11-02",
+ "week": 3,
+ "week_window": [
+  "2026-11-02",
+  "2026-11-08"
+ ],
+ "league_state_as_of": "2026-11-02",
+ "unpooled": [
+  {
+   "player": "Nolan Traore",
+   "fantasy_team": "ANONG NANGIANNIS?!",
+   "seat": 5,
+   "slot": "UTIL",
+   "nba_team": "BKN",
+   "status": null
+  },
+  {
+   "player": "Matisse Thybulle",
+   "fantasy_team": "MAXEY-MUM OVERDRIVE",
+   "seat": 11,
+   "slot": "F",
+   "nba_team": "LAL",
+   "status": null
+  }
+ ],
+ "status_file": "status_2026-11-02.json",
+ "lines": "season pool",
+ "opponent": "Podz save the league",
+ "today": [
+  [
+   "Ty Jerome",
+   "MEM",
+   "vs NOP",
+   null,
+   1.0,
+   3
+  ],
+  [
+   "Derrick White",
+   "BOS",
+   "@ HOU",
+   null,
+   1.0,
+   4
+  ],
+  [
+   "Collin Gillespie",
+   "PHX",
+   "@ GSW",
+   null,
+   1.0,
+   4
+  ],
+  [
+   "Kevin Durant",
+   "HOU",
+   "vs BOS",
+   null,
+   1.0,
+   3
+  ],
+  [
+   "Miles Bridges",
+   "PHX",
+   "@ GSW",
+   null,
+   1.0,
+   4
+  ],
+  [
+   "Yaxel Lendeborg",
+   "GSW",
+   "vs PHX",
+   null,
+   1.0,
+   3
+  ],
+  [
+   "Neemias Queta",
+   "BOS",
+   "@ HOU",
+   null,
+   1.0,
+   4
+  ],
+  [
+   "Kel'el Ware",
+   "MIL",
+   "@ MIN",
+   null,
+   1.0,
+   4
+  ],
+  [
+   "Jaden McDaniels",
+   "MIN",
+   "vs MIL",
+   null,
+   1.0,
+   4
+  ],
+  [
+   "Kyrie Irving",
+   "DAL",
+   "vs SAC",
+   "Q",
+   0.5,
+   4
+  ],
+  [
+   "PJ Washington",
+   "DAL",
+   "vs SAC",
+   null,
+   1.0,
+   4
+  ],
+  [
+   "Cameron Johnson",
+   "DEN",
+   "vs POR",
+   null,
+   1.0,
+   3
+  ],
+  [
+   "Julian Champagnie",
+   "SAS",
+   "vs UTA",
+   null,
+   1.0,
+   4
+  ]
+ ],
+ "lineup": [
+  [
+   "PG",
+   "Collin Gillespie"
+  ],
+  [
+   "SG",
+   "Ty Jerome"
+  ],
+  [
+   "G",
+   "Kevin Durant"
+  ],
+  [
+   "SF",
+   "Yaxel Lendeborg"
+  ],
+  [
+   "PF",
+   "Miles Bridges"
+  ],
+  [
+   "F",
+   "Jaden McDaniels"
+  ],
+  [
+   "C",
+   "Neemias Queta"
+  ],
+  [
+   "C",
+   "Kel'el Ware"
+  ],
+  [
+   "Util",
+   "Derrick White"
+  ],
+  [
+   "Util",
+   "Kyrie Irving"
+  ]
+ ],
+ "bench": [
+  "Julian Champagnie",
+  "Cameron Johnson",
+  "PJ Washington"
+ ],
+ "waiver_base_ecw": 4.9833,
+ "waiver_gate": {
+  "sources": {
+   "yahoo": true,
+   "espn": true
+  },
+  "set_aside": [
+   {
+    "player": "Jalen Williams",
+    "code": "Out",
+    "source": "espn",
+    "return_date": "2027-03-02",
+    "reason": "out"
+   },
+   {
+    "player": "Cason Wallace",
+    "code": "O",
+    "source": "yahoo",
+    "return_date": "2027-03-02",
+    "reason": "out"
+   },
+   {
+    "player": "Kevin Porter Jr.",
+    "code": "NA",
+    "source": "yahoo",
+    "return_date": null,
+    "reason": "out"
+   },
+   {
+    "player": "Justin Champagnie",
+    "code": "O",
+    "source": "yahoo",
+    "return_date": "2027-02-25",
+    "reason": "out"
+   }
+  ]
+ },
+ "waiver_positive_pairs": 5,
+ "waiver_pairs_scored": 520,
+ "waiver_top": [
+  {
+   "add": "Bobby Portis",
+   "add_team": "MIA",
+   "drop": "Cameron Johnson",
+   "d_ecw": 0.0219,
+   "title_by_seed": {
+    "2026": 15.17,
+    "2027": 15.06
+   },
+   "title": 15.12,
+   "d_title": 0.55
+  }
+ ],
+ "streaming": [],
+ "streaming_vs": {
+  "player": "PJ Washington",
+  "games_left": 4,
+  "value_per_game": -2.42
+ },
+ "title": {
+  "2026": 14.88,
+  "2027": 14.26
+ },
+ "playoffs": {
+  "2026": 98.56,
+  "2027": 98.62
+ },
+ "seasons": 10000,
+ "absent_from_sim": [],
+ "transactions": {
+  "window": [
+   "2026-10-31",
+   "2026-11-02"
+  ],
+  "ok": true,
+  "hits": [
+   {
+    "date": "2026-11-01",
+    "nba_team": "CHA",
+    "description": "Exercised the third-year team options on Fs Kon Knueppel and Liam McNeeley.",
+    "player": "Kon Knueppel",
+    "fantasy_team": "MAXEY-MUM OVERDRIVE",
+    "seat": 11
+   }
+  ]
+ },
+ "league_moves": [
+  {
+   "team": "Scottie’s Thotties",
+   "seat": 8,
+   "added": [],
+   "dropped": [],
+   "to_il": [
+    "Ziaire Williams"
+   ],
+   "from_il": [
+    "Stephen Curry"
+   ]
+  },
+  {
+   "team": "Thompson Telepathy",
+   "seat": 12,
+   "added": [],
+   "dropped": [],
+   "to_il": [
+    "Jimmy Butler"
+   ],
+   "from_il": [
+    "Coby White"
+   ]
+  },
+  {
+   "team": "Podz save the league",
+   "seat": 9,
+   "added": [
+    "Anfernee Simons",
+    "De'Anthony Melton"
+   ],
+   "dropped": [
+    "Jaylen Wells",
+    "Terrence Shannon Jr"
+   ],
+   "to_il": [],
+   "from_il": []
+  },
+  {
+   "team": "ROOKS FTW",
+   "seat": 2,
+   "added": [
+    "Darryn Peterson"
+   ],
+   "dropped": [
+    "Jakob Poeltl"
+   ],
+   "to_il": [],
+   "from_il": []
+  },
+  {
+   "team": "John's Cool Team",
+   "seat": 7,
+   "added": [],
+   "dropped": [
+    "Jared McCain"
+   ],
+   "to_il": [],
+   "from_il": []
+  }
+ ],
+ "il_return": {
+  "espn_date": "2026-11-02",
+  "n_il": 21,
+  "room_rule": "lowest adj_value active player leaves from the return week",
+  "error": 0.49,
+  "seasons": 10000,
+  "label": "scenario range, not a forecast; never replaces or averages into the headline",
+  "room_band": {
+   "constant": "il_return.ROOM_RULE_ON",
+   "shift": 12.7,
+   "label": "rule off",
+   "tier": "FRAGILE"
+  },
+  "slip_range": [
+   30.5,
+   30.7
+  ],
+  "scenarios": {
+   "never": {
+    "title": 14.57,
+    "playoffs": 98.59
+   },
+   "on_time": {
+    "title": 30.59,
+    "playoffs": 99.9
+   },
+   "late_2": {
+    "title": 30.69,
+    "playoffs": 99.91
+   },
+   "late_4": {
+    "title": 30.48,
+    "playoffs": 99.8
+   }
+  }
+ }
+}

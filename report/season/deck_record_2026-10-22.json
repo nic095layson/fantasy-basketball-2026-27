@@ -1,0 +1,108 @@
+{
+ "date": "2026-10-22",
+ "out": "report/season/deck_2026-10-22.html",
+ "inputs": {
+  "brief": {
+   "path": "report/briefs/brief_2026-10-22.json",
+   "present": true,
+   "sha256": "7ac4b5088c04c02ba16b5110836b6b8dd3477f226d71a397d7203946d96989c8"
+  },
+  "board": {
+   "path": "report/season/board_2026-10-22.json",
+   "present": true,
+   "sha256": "4a2322d97c7b4a89c6d58f1c29f7a5ff90db6b91a5ab4a622a4097c5623061d1"
+  },
+  "status": {
+   "path": "data/status/status_2026-10-22.json",
+   "present": true,
+   "sha256": "463ce597c4c4f0613774731311ddc54be728388c004bf14712b1d16eba7cab15"
+  },
+  "league_state": {
+   "path": "data/league_state.json",
+   "present": true,
+   "sha256": "74b5e78c20369ea73c5109c026385a66e7c2a817367bb9019498034bed3b23a2"
+  },
+  "season_lines": {
+   "path": "data/season/season_lines_2026-10-22.json",
+   "present": true,
+   "sha256": "207adcdb31d717763dc249bed1981b086eff5872e22b08aab6eb2a4aa12f6af3"
+  },
+  "sweep": {
+   "path": "report/after-reports/redteam-2026-10-19/sweep.json",
+   "present": true,
+   "sha256": "e5e5bd86dcf85c0af0ecf4c00e1dc18e77a3b07ab43313eaacc109e5d7560c45"
+  },
+  "calibration": {
+   "path": "report/calibration.json",
+   "present": true,
+   "sha256": "1e9fcadfa000ffa43cba3b61f079cc50c4f70a0bb570cfbdb7089fa471c0fb7b"
+  },
+  "matchup_live": {
+   "path": "data/news/matchup_live_2026-10-22.json",
+   "present": true,
+   "sha256": "b5390d942b92070a3153ad0bf421487e5bab664ba443a4431ad012ecaa795966"
+  },
+  "week_matchup": {
+   "path": "report/briefs/week_matchup_2026-10-22.json",
+   "present": true,
+   "sha256": "0d54212359d68074ec6e268a71a88d4571e466e9e6777f54752c9889955def93"
+  }
+ },
+ "board_rows": 313,
+ "status_rows": 17,
+ "panes": 6,
+ "join": {
+  "rostered": 168,
+  "unresolved": 0,
+  "on_board": 165,
+  "off_board": 3,
+  "respelled": [
+   [
+    "Cameron Johnson",
+    "Cam Johnson"
+   ],
+   [
+    "Darius Acuff Jr.",
+    "Darius Acuff"
+   ],
+   [
+    "Jabari Smith Jr.",
+    "Jabari Smith Jr"
+   ],
+   [
+    "Jaime Jaquez Jr.",
+    "Jaime Jaquez Jr"
+   ],
+   [
+    "Jaren Jackson Jr.",
+    "Jaren Jackson Jr"
+   ],
+   [
+    "Michael Porter Jr.",
+    "Michael Porter Jr"
+   ],
+   [
+    "Mikel Brown Jr.",
+    "Mikel Brown"
+   ],
+   [
+    "Wendell Carter Jr.",
+    "Wendell Carter Jr"
+   ]
+  ],
+  "free_agents_on_board": 148
+ },
+ "render": {
+  "status": "PASS",
+  "tabs": [
+   "Today",
+   "Trade Analyzer",
+   "Free Agents",
+   "Board",
+   "Movers",
+   "Week"
+  ],
+  "page_errors": 0,
+  "browser": "141.0.7390.37 (playwright default)"
+ }
+}

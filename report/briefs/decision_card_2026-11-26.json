@@ -1,0 +1,82 @@
+{
+ "date": "2026-11-26",
+ "seasons": 10000,
+ "seeds": [
+  2026,
+  2027
+ ],
+ "base": {
+  "never": 14.735,
+  "on_time": 22.880000000000003
+ },
+ "pairs": [
+  {
+   "add": "Alex Caruso",
+   "drop": "Collin Gillespie",
+   "never": {
+    "title": 14.86,
+    "d_title": 0.12
+   },
+   "on_time": {
+    "title": 22.365000000000002,
+    "d_title": -0.5150000000000006
+   },
+   "week": {
+    "d_exp": -0.04419786581736984,
+    "p_5plus": 0.9362995762053336,
+    "d_p_5plus": -0.0036785233137889284
+   }
+  }
+ ],
+ "order": {
+  "never": [
+   [
+    "Alex Caruso",
+    "Collin Gillespie"
+   ]
+  ],
+  "on_time": [
+   [
+    "Alex Caruso",
+    "Collin Gillespie"
+   ]
+  ]
+ },
+ "rank_flip": false,
+ "robust": {
+  "add": "Alex Caruso",
+  "drop": "Collin Gillespie",
+  "constant": "weekly_availability",
+  "variants": [
+   {
+    "label": "healthy at the old 0.88",
+    "d_title": -0.34999999999999964
+   },
+   {
+    "label": "healthy at the unfloored fit (0.78)",
+    "d_title": 0.1850000000000005
+   },
+   {
+    "label": "risk at the old 0.75",
+    "d_title": 0.1349999999999998
+   },
+   {
+    "label": "risk at the unfloored fit (0.56)",
+    "d_title": -0.19500000000000028
+   }
+  ],
+  "held": 2,
+  "holds": false,
+  "low": -0.34999999999999964,
+  "high": 0.1850000000000005
+ },
+ "notes": [],
+ "label": "Display only: the brief's ranking and the headline title share are unchanged. The return world rests on ESPN's dates and the room rule (the lowest-value active player leaves), which is itself FRAGILE.",
+ "inputs": {
+  "brief": "brief_2026-11-26.json",
+  "il_return": true,
+  "week_card": true,
+  "pool": "/home/user/fantasy-basketball-2026-27/data/season/pool_season.csv",
+  "state_as_of": "2026-11-26"
+ }
+}

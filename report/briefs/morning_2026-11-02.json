@@ -1,0 +1,333 @@
+{
+ "ran_at_utc": "2026-11-02T17:03:13Z",
+ "steps": [
+  {
+   "name": "preflight",
+   "cmd": "/usr/local/bin/python3 /home/user/wtsd/scripts/independent_audit/preflight.py --spec /home/user/wtsd/scripts/independent_audit/morning_preflight.json",
+   "exit": 0,
+   "pass_line": "PREFLIGHT: PASS — kit morning run: 4 checks",
+   "verdict": "PASS",
+   "wrote": [],
+   "tail": [
+    "PREFLIGHT: PASS — kit morning run: 4 checks"
+   ]
+  },
+  {
+   "name": "league live",
+   "cmd": "/usr/local/bin/python3 /home/user/wtsd/scripts/league_live.py --as-of 2026-11-02 --since 2026-11-02T17:00:45Z",
+   "exit": 0,
+   "pass_line": "LEAGUE LIVE: PASS — rosters from Flaim (Yahoo), pinned data/source/flaim/pull_2026-11-02.json; 2 not in the pool, not simulated: Nolan Traore (ANONG NANGIANNIS?!, UTIL), Matisse Thybulle (MAXEY-MUM OVERDRIVE, F)",
+   "verdict": "PASS",
+   "wrote": [
+    "data/league_state.json",
+    "data/news/league_state_am_2026-11-02.json",
+    "data/source/flaim/pull_2026-11-02.json",
+    "data/source/flaim/rosters_2026-11-02.transcribed.csv",
+    "report/run-ledger.jsonl"
+   ],
+   "tail": [
+    "LEAGUE INTAKE: WARN — 2 name(s) not in the pool, carried as unpooled (no line, not simulated): Nolan Traore (ANONG NANGIANNIS?!, UTIL, BKN); Matisse Thybulle (MAXEY-MUM OVERDRIVE, F, LAL)",
+    "LEAGUE INTAKE: PASS — 12 teams, 173 players, 173 of 173 resolved; 2 unpooled; 0 NBA-team disagreement(s) with the pool; wrote data/league_state.json",
+    "LEAGUE MOVES: PASS — 5 team(s) changed, 11 move(s), 2026-11-01 to 2026-11-02 (am); wrote data/news/league_moves_2026-11-02.json",
+    "LEAGUE LIVE: PASS — rosters from Flaim (Yahoo), pinned data/source/flaim/pull_2026-11-02.json; 2 not in the pool, not simulated: Nolan Traore (ANONG NANGIANNIS?!, UTIL), Matisse Thybulle (MAXEY-MUM OVERDRIVE, F)"
+   ]
+  },
+  {
+   "name": "matchup live",
+   "cmd": "/usr/local/bin/python3 /home/user/wtsd/scripts/matchup_live.py --date 2026-11-02 --since 2026-11-02T17:00:45Z",
+   "exit": 0,
+   "pass_line": "MATCHUP LIVE: PASS — week 3, games left 40 mine / 38 Podz save the league; wrote data/news/matchup_live_2026-11-02.json",
+   "verdict": "PASS",
+   "wrote": [
+    "data/news/matchup_live_2026-11-02.json",
+    "data/source/fantasybot/outlook_2026-11-02.json"
+   ],
+   "tail": [
+    "MATCHUP LIVE: PASS — week 3, games left 40 mine / 38 Podz save the league; wrote data/news/matchup_live_2026-11-02.json"
+   ]
+  },
+  {
+   "name": "box scores 2026-11-01",
+   "cmd": "/usr/local/bin/python3 /home/user/wtsd/scripts/box_pull.py --date 2026-11-01",
+   "exit": 0,
+   "pass_line": "BOX PULL: PASS — 2026-11-01: 4 games, 104 player lines, 68 in the pool, 36 unpooled; two outlets: 104 matched, 0 cells differ, 0 ESPN-only, 0 bref-only; written data/actuals/2026-11-01.json",
+   "verdict": "PASS",
+   "wrote": [
+    "data/actuals/2026-11-01.json"
+   ],
+   "tail": [
+    "BOX PULL: PASS — 2026-11-01: 4 games, 104 player lines, 68 in the pool, 36 unpooled; two outlets: 104 matched, 0 cells differ, 0 ESPN-only, 0 bref-only; written data/actuals/2026-11-01.json"
+   ]
+  },
+  {
+   "name": "tag outcomes",
+   "cmd": "/usr/local/bin/python3 /home/user/wtsd/scripts/tag_outcomes.py --date 2026-11-01",
+   "exit": 1,
+   "pass_line": "",
+   "verdict": "FAIL (non-fatal)",
+   "wrote": [],
+   "tail": [
+    "TAG OUTCOMES: FAIL — 2026-11-01 is already in /home/user/wtsd/data/status/tag_outcomes.jsonl; the ledger is append-only"
+   ]
+  },
+  {
+   "name": "accuracy render",
+   "cmd": "/usr/local/bin/python3 /home/user/wtsd/scripts/accuracy_week.py --render",
+   "exit": 0,
+   "pass_line": "ACCURACY RENDER: PASS — report/accuracy.md (1856 chars)",
+   "verdict": "PASS",
+   "wrote": [
+    "report/accuracy.md"
+   ],
+   "tail": [
+    "ACCURACY RENDER: PASS — report/accuracy.md (1856 chars)"
+   ]
+  },
+  {
+   "name": "season lines",
+   "cmd": "/usr/local/bin/python3 /home/user/wtsd/scripts/season_lines.py --date 2026-11-02",
+   "exit": 0,
+   "pass_line": "SEASON LINES: PASS — 2026-11-02: 15 box-score records, 294 pool players with regular-season games, 290 lines moved by 0.25+ (priors in games: FG% 26.0, FT% 37.5, 3PM 9.5, PTS 11.7, REB 12.4, AST 11.7, STL 21.7, BLK 14.5, TO 14.0); 139 unpooled players with games; 1 tag override(s)",
+   "verdict": "PASS",
+   "wrote": [
+    "data/season/season_lines_2026-11-02.json"
+   ],
+   "tail": [
+    "SEASON LINES: PASS — 2026-11-02: 15 box-score records, 294 pool players with regular-season games, 290 lines moved by 0.25+ (priors in games: FG% 26.0, FT% 37.5, 3PM 9.5, PTS 11.7, REB 12.4, AST 11.7, STL 21.7, BLK 14.5, TO 14.0); 139 unpooled players with games; 1 tag override(s)"
+   ]
+  },
+  {
+   "name": "minutes line",
+   "cmd": "/usr/local/bin/python3 /home/user/wtsd/scripts/minutes_line.py --date 2026-11-02",
+   "exit": 0,
+   "pass_line": "MINUTES LINE: PASS — 2026-11-02: 338 players, 285 with games; ratio >= 1.10 for 12, <= 0.90 for 28; 33 unscaled (no preseason mpg); candidate only, wrote pool_season_mt.csv, projections_season_mt.csv",
+   "verdict": "PASS",
+   "wrote": [],
+   "tail": [
+    "MINUTES LINE: PASS — 2026-11-02: 338 players, 285 with games; ratio >= 1.10 for 12, <= 0.90 for 28; 33 unscaled (no preseason mpg); candidate only, wrote pool_season_mt.csv, projections_season_mt.csv"
+   ]
+  },
+  {
+   "name": "season board",
+   "cmd": "/usr/local/bin/python3 /home/user/wtsd/scripts/season_board.py --date 2026-11-02",
+   "exit": 0,
+   "pass_line": "SEASON BOARD: PASS — 2026-11-02: report/season/board_2026-11-02.md (290 movers listed)",
+   "verdict": "PASS",
+   "wrote": [],
+   "tail": [
+    "SEASON BOARD: PASS — 2026-11-02: report/season/board_2026-11-02.md (290 movers listed)"
+   ]
+  },
+  {
+   "name": "status feed",
+   "cmd": "bash -c '/usr/local/bin/python3 /home/user/wtsd/scripts/status_feed.py --date 2026-11-02 && /usr/local/bin/python3 /home/user/wtsd/scripts/status_feed.py --check /home/user/wtsd/data/status/status_2026-11-02.json'",
+   "exit": 0,
+   "pass_line": "STATUS GATE: PASS — status_2026-11-02.json: 34 flagged row(s), each tiered with a dated receipt",
+   "verdict": "PASS",
+   "wrote": [
+    "data/status/espn_injuries_2026-11-02.json",
+    "data/status/status_2026-11-02.json"
+   ],
+   "tail": [
+    "status: 34 flagged row(s) league-wide; yours: Kawhi Leonard O→0.00, Kyrie Irving Q→0.50, Tyrese Haliburton O→0.00",
+    "ESPN injuries: read",
+    "wrote data/status/status_2026-11-02.json",
+    "STATUS GATE: PASS — status_2026-11-02.json: 34 flagged row(s), each tiered with a dated receipt"
+   ]
+  },
+  {
+   "name": "transactions",
+   "cmd": "/usr/local/bin/python3 /home/user/wtsd/scripts/transactions.py --date 2026-11-02",
+   "exit": 0,
+   "pass_line": "TRANSACTIONS: PASS — 2026-11-02: 1 feed item(s) 2026-10-31 to 2026-11-02; 1 name a pool player, 1 rostered: Kon Knueppel (MAXEY-MUM OVERDRIVE): Exercised the third-year team options on Fs Kon Knueppel and Liam McNeeley.; wrote data/news/transactions_2026-11-02.json",
+   "verdict": "PASS",
+   "wrote": [
+    "data/news/transactions_2026-11-02.json"
+   ],
+   "tail": [
+    "TRANSACTIONS: PASS — 2026-11-02: 1 feed item(s) 2026-10-31 to 2026-11-02; 1 name a pool player, 1 rostered: Kon Knueppel (MAXEY-MUM OVERDRIVE): Exercised the third-year team options on Fs Kon Knueppel and Liam McNeeley.; wrote data/news/transactions_2026-11-02.json"
+   ]
+  },
+  {
+   "name": "league pairings",
+   "cmd": "/usr/local/bin/python3 /home/user/wtsd/scripts/league_pairings.py",
+   "exit": 0,
+   "pass_line": "LEAGUE PAIRINGS: PASS — 17 weeks of pairings for all 12 teams, owner opponents match, 2 week(s) played; wrote data/league_schedule.json",
+   "verdict": "PASS",
+   "wrote": [
+    "data/league_schedule.json"
+   ],
+   "tail": [
+    "LEAGUE PAIRINGS: PASS — 17 weeks of pairings for all 12 teams, owner opponents match, 2 week(s) played; wrote data/league_schedule.json"
+   ]
+  },
+  {
+   "name": "season sweep",
+   "cmd": "/usr/local/bin/python3 /home/user/wtsd/scripts/redteam/sweep.py --season /home/user/wtsd/data/league_state.json /home/user/wtsd/data/season/pool_season.csv --real-schedule /home/user/wtsd/data/league_schedule.json --out /home/user/wtsd/report/after-reports/redteam-2026-11-02-season/sweep.json",
+   "exit": 0,
+   "pass_line": "SWEEP: 6,000 seasons x seeds [2026, 2027] on deck e14cc42; MC SE 0.54; baseline within 3 SE of the 10k reference: {'2026': True, '2027': True}",
+   "verdict": "PASS",
+   "wrote": [
+    "report/after-reports/redteam-2026-11-02-season/league_schedule.json",
+    "report/after-reports/redteam-2026-11-02-season/league_state.json",
+    "report/after-reports/redteam-2026-11-02-season/reference_10k_s2026.json",
+    "report/after-reports/redteam-2026-11-02-season/reference_10k_s2027.json",
+    "report/after-reports/redteam-2026-11-02-season/state_season.json",
+    "report/after-reports/redteam-2026-11-02-season/sweep.json"
+   ],
+   "tail": [
+    "harsher risk tier (0.65)                              16.35 /  16.68   shift +2.21  FRAGILE   [arena.weekly_availability]",
+    "healthy players play 0.95 of games                    14.23 /  13.95   shift -0.21  ROBUST    [arena.weekly_availability]",
+    "healthy players play 0.80 of games                    14.70 /  13.98   shift +0.04  ROBUST    [arena.weekly_availability]",
+    "3.0 games per healthy week                            14.25 /  14.20   shift -0.08  ROBUST    [arena.GAMES_PER_WEEK]",
+    "4.0 games per healthy week                            14.72 /  14.37   shift +0.24  ROBUST    [arena.GAMES_PER_WEEK]",
+    "FRAGILE: ['arena.weekly_availability']   SENSITIVE: ['arena.PCT_MIX_INFL', 'arena.TEAM_WEEK_SHOCK']"
+   ]
+  },
+  {
+   "name": "il return",
+   "cmd": "/usr/local/bin/python3 /home/user/wtsd/scripts/il_return.py --date 2026-11-02 --seasons 10000",
+   "exit": 0,
+   "pass_line": "IL RETURN: PASS wrote report/il_return/il_return_2026-11-02.json",
+   "verdict": "PASS",
+   "wrote": [
+    "report/il_return/il_return_2026-11-02.json"
+   ],
+   "tail": [
+    "- John's Cool Team: Brandon Ingram (2026-11-08, wk 3); Ivica Zubac (2026-11-02, wk 3)",
+    "- Scottie’s Thotties: Ziaire Williams (2026-11-02, wk 3); Anthony Edwards (2026-12-21, wk 9)",
+    "- Podz save the league: Nic Claxton (2026-11-02, wk 3)",
+    "- MAXEY-MUM OVERDRIVE: Kon Knueppel (2026-11-09, wk 4); Bradley Beal (2026-11-08, wk 3)",
+    "- Thompson Telepathy: Egor Demin (2026-11-07, wk 3); Jimmy Butler (2027-01-02, wk 10)",
+    "IL RETURN: PASS wrote report/il_return/il_return_2026-11-02.json"
+   ]
+  },
+  {
+   "name": "daily brief",
+   "cmd": "/usr/local/bin/python3 /home/user/wtsd/scripts/daily_brief.py --date 2026-11-02 --seasons 10000",
+   "exit": 0,
+   "pass_line": "wrote report/briefs/brief_2026-11-02.md",
+   "verdict": "PASS",
+   "wrote": [
+    "report/briefs/brief_2026-11-02.json",
+    "report/briefs/brief_2026-11-02.md"
+   ],
+   "tail": [
+    "wrote report/briefs/brief_2026-11-02.md"
+   ]
+  },
+  {
+   "name": "decision log",
+   "cmd": "/usr/local/bin/python3 /home/user/wtsd/scripts/decision_log.py --brief 2026-11-02 --moves",
+   "exit": 2,
+   "pass_line": "",
+   "verdict": "FAIL (non-fatal)",
+   "wrote": [],
+   "tail": [
+    "DECISION LOG: HALT brief 2026-11-02 is already logged; the ledger is append-only"
+   ]
+  },
+  {
+   "name": "decision grades",
+   "cmd": "/usr/local/bin/python3 /home/user/wtsd/scripts/decision_grade.py --as-of 2026-11-02",
+   "exit": 0,
+   "pass_line": "DECISION GRADE: PASS 16 rows, 0 new final, 13 pending; wrote report/decisions/scorecard.md",
+   "verdict": "PASS",
+   "wrote": [],
+   "tail": [
+    "  R-2026-10-30-01    PENDING      Cameron Johnson for Collin Gillespie  gap -0.583  window open until 2026-11-27; as of 2026-11-02 the gap is -0.58",
+    "  S-2026-10-30-01    PENDING      Cameron Johnson for Collin Gillespie  gap -0.583  window open until 2026-11-28; as of 2026-11-02 the gap is -0.58",
+    "  R-2026-10-31-01    PENDING      Julian Champagnie for Neemias Queta  gap 0.495  window open until 2026-11-29; as of 2026-11-02 the gap is +0.49",
+    "  R-2026-11-01-01    PENDING      Bobby Portis for Cameron Johnson  gap 0.113  window open until 2026-11-29; as of 2026-11-02 the gap is +0.11",
+    "  R-2026-11-02-01    PENDING      Bobby Portis for Cameron Johnson  gap 0.113  window open until 2026-11-30; as of 2026-11-02 the gap is +0.11",
+    "DECISION GRADE: PASS 16 rows, 0 new final, 13 pending; wrote report/decisions/scorecard.md"
+   ]
+  },
+  {
+   "name": "week matchup",
+   "cmd": "/usr/local/bin/python3 /home/user/wtsd/scripts/week_matchup.py --date 2026-11-02",
+   "exit": 0,
+   "pass_line": "WEEK MATCHUP: PASS — 2026-11-02: week 3 vs Podz save the league; to date from Yahoo (rebuild agrees); to date 0 day(s), 0 missing; projected 6-3-0; pickups: no finished low-value player; pool pool_season.csv; wrote report/briefs/week_matchup_2026-11-02.json",
+   "verdict": "PASS",
+   "wrote": [
+    "report/briefs/week_matchup_2026-11-02.json"
+   ],
+   "tail": [
+    "WEEK MATCHUP: PASS — 2026-11-02: week 3 vs Podz save the league; to date from Yahoo (rebuild agrees); to date 0 day(s), 0 missing; projected 6-3-0; pickups: no finished low-value player; pool pool_season.csv; wrote report/briefs/week_matchup_2026-11-02.json"
+   ]
+  },
+  {
+   "name": "league table",
+   "cmd": "/usr/local/bin/python3 /home/user/wtsd/scripts/league_table.py --date 2026-11-02",
+   "exit": 0,
+   "pass_line": "LEAGUE TABLE: PASS — 2026-11-02: week 3; wk1 finished (rebuild), wk2 finished (yahoo), wk3 not started (Yahoo shows no stats yet); power #1 Lauri’s Prime Rib (0.677), you #7 (0.545); standings pull_2026-11-02.json, Yahoo W-L-T matches the kit's finished weeks for 12 teams; wrote report/league/league_2026-11-02.json",
+   "verdict": "PASS",
+   "wrote": [
+    "report/league/league_2026-11-02.json"
+   ],
+   "tail": [
+    "LEAGUE TABLE: PASS — 2026-11-02: week 3; wk1 finished (rebuild), wk2 finished (yahoo), wk3 not started (Yahoo shows no stats yet); power #1 Lauri’s Prime Rib (0.677), you #7 (0.545); standings pull_2026-11-02.json, Yahoo W-L-T matches the kit's finished weeks for 12 teams; wrote report/league/league_2026-11-02.json"
+   ]
+  },
+  {
+   "name": "form board",
+   "cmd": "/usr/local/bin/python3 /home/user/wtsd/scripts/form_board.py --date 2026-11-02",
+   "exit": 0,
+   "pass_line": "FORM BOARD: PASS — 173 rostered + 100 free agents, 257 with games over 13 box days (2026-10-20 to 2026-11-01); (16 without a game yet); 0 Yahoo names in neither pool nor box scores; report/form/form_2026-11-02.json",
+   "verdict": "PASS",
+   "wrote": [
+    "report/form/form_2026-11-02.csv",
+    "report/form/form_2026-11-02.json"
+   ],
+   "tail": [
+    "FORM BOARD: PASS — 173 rostered + 100 free agents, 257 with games over 13 box days (2026-10-20 to 2026-11-01); (16 without a game yet); 0 Yahoo names in neither pool nor box scores; report/form/form_2026-11-02.json"
+   ]
+  },
+  {
+   "name": "season deck",
+   "cmd": "/usr/local/bin/python3 /home/user/wtsd/scripts/season_deck.py --date 2026-11-02",
+   "exit": 0,
+   "pass_line": "SEASON DECK: PASS — 2026-11-02: report/season/deck_2026-11-02.html (7 panes, 315 board rows, 34 status rows; record deck_record_2026-11-02.json pins 14 inputs; render: 7 tabs, 0 page errors)",
+   "verdict": "PASS",
+   "wrote": [
+    "report/season/deck_2026-11-02.html",
+    "report/season/deck_record_2026-11-02.json"
+   ],
+   "tail": [
+    "SEASON DECK: PASS — 2026-11-02: report/season/deck_2026-11-02.html (7 panes, 315 board rows, 34 status rows; record deck_record_2026-11-02.json pins 14 inputs; render: 7 tabs, 0 page errors)"
+   ]
+  }
+ ],
+ "verdict": "PASS",
+ "wrote": [
+  "data/actuals/2026-11-01.json",
+  "data/league_schedule.json",
+  "data/league_state.json",
+  "data/news/league_state_am_2026-11-02.json",
+  "data/news/matchup_live_2026-11-02.json",
+  "data/news/transactions_2026-11-02.json",
+  "data/season/season_lines_2026-11-02.json",
+  "data/source/fantasybot/outlook_2026-11-02.json",
+  "data/source/flaim/pull_2026-11-02.json",
+  "data/source/flaim/rosters_2026-11-02.transcribed.csv",
+  "data/status/espn_injuries_2026-11-02.json",
+  "data/status/status_2026-11-02.json",
+  "report/accuracy.md",
+  "report/after-reports/redteam-2026-11-02-season/league_schedule.json",
+  "report/after-reports/redteam-2026-11-02-season/league_state.json",
+  "report/after-reports/redteam-2026-11-02-season/reference_10k_s2026.json",
+  "report/after-reports/redteam-2026-11-02-season/reference_10k_s2027.json",
+  "report/after-reports/redteam-2026-11-02-season/state_season.json",
+  "report/after-reports/redteam-2026-11-02-season/sweep.json",
+  "report/briefs/brief_2026-11-02.json",
+  "report/briefs/brief_2026-11-02.md",
+  "report/briefs/week_matchup_2026-11-02.json",
+  "report/form/form_2026-11-02.csv",
+  "report/form/form_2026-11-02.json",
+  "report/il_return/il_return_2026-11-02.json",
+  "report/league/league_2026-11-02.json",
+  "report/run-ledger.jsonl",
+  "report/season/deck_2026-11-02.html",
+  "report/season/deck_record_2026-11-02.json"
+ ]
+}

@@ -1,0 +1,3715 @@
+{
+ "date": "2026-11-20",
+ "week": 5,
+ "window": [
+  "2026-11-16",
+  "2026-11-22"
+ ],
+ "me": {
+  "name": "KEL'EL YAXEL HALQUETA",
+  "seat": 10
+ },
+ "opponent": {
+  "name": "Thompson Telepathy",
+  "seat": 12
+ },
+ "league_state_as_of": "2026-11-20",
+ "to_date_days": [
+  "2026-11-16",
+  "2026-11-17",
+  "2026-11-18",
+  "2026-11-19"
+ ],
+ "missing_days": [],
+ "to_date_source": {
+  "source": "yahoo",
+  "reason": null,
+  "rebuild_agrees": false,
+  "differences": [
+   {
+    "side": "me",
+    "stat": "reb",
+    "yahoo": 107,
+    "rebuild": 106
+   },
+   {
+    "side": "me",
+    "stat": "stl",
+    "yahoo": 25,
+    "rebuild": 26
+   }
+  ],
+  "yahoo_games_remaining": {
+   "me": 17,
+   "opp": 16
+  },
+  "yahoo_names": {
+   "me": "KEL'EL YAXEL HALQUETA",
+   "opp": "Thompson Telepathy"
+  }
+ },
+ "remaining_days": [
+  "2026-11-20",
+  "2026-11-21",
+  "2026-11-22"
+ ],
+ "status_file": "status_2026-11-20_pm.json",
+ "return_dates": {
+  "file": "espn_injuries_2026-11-20_pm.json",
+  "players": {
+   "PJ Washington": "2026-11-21",
+   "Ty Jerome": "2026-11-21"
+  }
+ },
+ "cats": [
+  {
+   "cat": "FG%",
+   "me_to_date": 0.489,
+   "opp_to_date": 0.46,
+   "me_final": 0.487,
+   "opp_final": 0.477,
+   "leader_to_date": "me",
+   "leader": "me",
+   "p_win": 0.6394,
+   "margin": 0.009
+  },
+  {
+   "cat": "FT%",
+   "me_to_date": 0.907,
+   "opp_to_date": 0.673,
+   "me_final": 0.864,
+   "opp_final": 0.719,
+   "leader_to_date": "me",
+   "leader": "me",
+   "p_win": 0.9993,
+   "margin": 0.145
+  },
+  {
+   "cat": "3PTM",
+   "me_to_date": 40,
+   "opp_to_date": 23,
+   "me_final": 71.1,
+   "opp_final": 39.3,
+   "leader_to_date": "me",
+   "leader": "me",
+   "p_win": 1.0,
+   "margin": 31.8
+  },
+  {
+   "cat": "PTS",
+   "me_to_date": 361,
+   "opp_to_date": 250,
+   "me_final": 632.7,
+   "opp_final": 459.9,
+   "leader_to_date": "me",
+   "leader": "me",
+   "p_win": 1.0,
+   "margin": 172.8
+  },
+  {
+   "cat": "REB",
+   "me_to_date": 107,
+   "opp_to_date": 116,
+   "me_final": 203.8,
+   "opp_final": 222.5,
+   "leader_to_date": "opp",
+   "leader": "opp",
+   "p_win": 0.1314,
+   "margin": -18.7
+  },
+  {
+   "cat": "AST",
+   "me_to_date": 87,
+   "opp_to_date": 80,
+   "me_final": 142.0,
+   "opp_final": 139.4,
+   "leader_to_date": "me",
+   "leader": "me",
+   "p_win": 0.595,
+   "margin": 2.6
+  },
+  {
+   "cat": "ST",
+   "me_to_date": 25,
+   "opp_to_date": 23,
+   "me_final": 41.0,
+   "opp_final": 38.5,
+   "leader_to_date": "me",
+   "leader": "me",
+   "p_win": 0.6779,
+   "margin": 2.5
+  },
+  {
+   "cat": "BLK",
+   "me_to_date": 19,
+   "opp_to_date": 8,
+   "me_final": 33.4,
+   "opp_final": 18.4,
+   "leader_to_date": "me",
+   "leader": "me",
+   "p_win": 0.998,
+   "margin": 15.0
+  },
+  {
+   "cat": "TO",
+   "me_to_date": 33,
+   "opp_to_date": 44,
+   "me_final": 62.5,
+   "opp_final": 76.4,
+   "leader_to_date": "me",
+   "leader": "me",
+   "p_win": 0.9697,
+   "margin": 13.9
+  }
+ ],
+ "projected": {
+  "wins": 8,
+  "losses": 1,
+  "ties": 0
+ },
+ "exp_cats": 7.010678993193533,
+ "p_5plus": 0.9986372533935302,
+ "status_range": {
+  "players": [
+   {
+    "player": "PJ Washington",
+    "availability": 0.5
+   }
+  ],
+  "plays": {
+   "p_5plus": 0.9986372533935302,
+   "exp_cats": 7.010678993193533
+  },
+  "sits": {
+   "p_5plus": 0.9986372533935302,
+   "exp_cats": 7.010678993193533
+  }
+ },
+ "adds_this_week": {
+  "used": 3,
+  "limit": 4,
+  "left": 1,
+  "players": [
+   "Cam Spencer",
+   "Ziaire Williams",
+   "Andrew Wiggins"
+  ],
+  "week_start": "2026-11-16",
+  "note": null
+ },
+ "pair_checks": [
+  {
+   "add": "Cameron Johnson",
+   "drop": "Andrew Wiggins",
+   "d_exp": 0.016354465578477972,
+   "p_5plus": 0.998710852103141,
+   "d_p_5plus": 7.359870961087811e-05,
+   "games": 1
+  },
+  {
+   "add": "Kevin Huerter",
+   "drop": "Andrew Wiggins",
+   "d_exp": 0.030546811714775246,
+   "p_5plus": 0.9987848372878824,
+   "d_p_5plus": 0.0001475838943522101,
+   "games": 1
+  },
+  {
+   "add": "Alex Caruso",
+   "drop": "Andrew Wiggins",
+   "d_exp": 0.050074161969722364,
+   "p_5plus": 0.998863942938122,
+   "d_p_5plus": 0.00022668954459181823,
+   "games": 1
+  }
+ ],
+ "lineup_gap": null,
+ "totals": {
+  "me": {
+   "to_date": {
+    "fgm": 136,
+    "fga": 278,
+    "ftm": 49,
+    "fta": 54,
+    "tpm": 40,
+    "pts": 361,
+    "reb": 107,
+    "ast": 87,
+    "stl": 25,
+    "blk": 19,
+    "tov": 33
+   },
+   "rebuild_to_date": {
+    "fgm": 136,
+    "fga": 278,
+    "ftm": 49,
+    "fta": 54,
+    "tpm": 40,
+    "pts": 361,
+    "reb": 106,
+    "ast": 87,
+    "stl": 26,
+    "blk": 19,
+    "tov": 33
+   },
+   "remaining": {
+    "fgm": 101.15,
+    "fga": 209.3,
+    "ftm": 42.41,
+    "fta": 51.8,
+    "tpm": 31.1,
+    "pts": 271.7,
+    "reb": 96.8,
+    "ast": 55.0,
+    "stl": 16.0,
+    "blk": 14.4,
+    "tov": 29.5
+   }
+  },
+  "opp": {
+   "to_date": {
+    "fgm": 97,
+    "fga": 211,
+    "ftm": 33,
+    "fta": 49,
+    "tpm": 23,
+    "pts": 250,
+    "reb": 116,
+    "ast": 80,
+    "stl": 23,
+    "blk": 8,
+    "tov": 44
+   },
+   "rebuild_to_date": {
+    "fgm": 97,
+    "fga": 211,
+    "ftm": 33,
+    "fta": 49,
+    "tpm": 23,
+    "pts": 250,
+    "reb": 116,
+    "ast": 80,
+    "stl": 23,
+    "blk": 8,
+    "tov": 44
+   },
+   "remaining": {
+    "fgm": 80.85,
+    "fga": 161.5,
+    "ftm": 39.6,
+    "fta": 52.0,
+    "tpm": 16.3,
+    "pts": 209.9,
+    "reb": 106.5,
+    "ast": 59.4,
+    "stl": 15.5,
+    "blk": 10.4,
+    "tov": 32.4
+   }
+  }
+ },
+ "games": {
+  "me": {
+   "to_date_counted": 24,
+   "to_date_benched": [
+    [
+     "2026-11-18",
+     "Andrew Wiggins"
+    ]
+   ],
+   "remaining_uncapped": 18,
+   "remaining_started": 18,
+   "remaining_by_player": {
+    "Kevin Durant": 1,
+    "John Collins": 2,
+    "Miles Bridges": 1,
+    "Cam Spencer": 1,
+    "Derrick White": 2,
+    "Ty Jerome": 1,
+    "Jaden McDaniels": 1,
+    "PJ Washington": 2,
+    "Kel'el Ware": 1,
+    "Neemias Queta": 2,
+    "Kyrie Irving": 2,
+    "Andrew Wiggins": 1,
+    "Yaxel Lendeborg": 1
+   }
+  },
+  "opp": {
+   "to_date_counted": 22,
+   "to_date_benched": [
+    [
+     "2026-11-18",
+     "Collin Sexton"
+    ]
+   ],
+   "remaining_uncapped": 16,
+   "remaining_started": 16,
+   "remaining_by_player": {
+    "Collin Sexton": 1,
+    "Coby White": 1,
+    "Egor Demin": 1,
+    "Ausar Thompson": 2,
+    "Domantas Sabonis": 2,
+    "Wendell Carter Jr.": 2,
+    "Khaman Maluach": 1,
+    "Amen Thompson": 1,
+    "Day'Ron Sharpe": 1,
+    "Javon Small": 1,
+    "Tyler Herro": 1,
+    "LeBron James": 1,
+    "Myles Turner": 1
+   }
+  }
+ },
+ "rebuild_rosters": {
+  "me": {
+   "2026-11-16": "yahoo",
+   "2026-11-17": "yahoo",
+   "2026-11-18": "yahoo",
+   "2026-11-19": "yahoo"
+  },
+  "opp": {
+   "2026-11-16": "yahoo",
+   "2026-11-17": "yahoo",
+   "2026-11-18": "yahoo",
+   "2026-11-19": "yahoo"
+  }
+ },
+ "pickups": {
+  "status": "no finished low-value player",
+  "drop_candidates": [],
+  "next_finish": [
+   {
+    "player": "Kel'el Ware",
+    "team": "MIL",
+    "last_game": "2026-11-21",
+    "value": -2.14
+   },
+   {
+    "player": "Cam Spencer",
+    "team": "MEM",
+    "last_game": "2026-11-21",
+    "value": -1.35
+   },
+   {
+    "player": "PJ Washington",
+    "team": "DAL",
+    "last_game": "2026-11-22",
+    "value": -2.74
+   },
+   {
+    "player": "Andrew Wiggins",
+    "team": "MIA",
+    "last_game": "2026-11-22",
+    "value": -2.72
+   },
+   {
+    "player": "Neemias Queta",
+    "team": "BOS",
+    "last_game": "2026-11-22",
+    "value": -1.82
+   },
+   {
+    "player": "John Collins",
+    "team": "DET",
+    "last_game": "2026-11-22",
+    "value": -1.38
+   }
+  ],
+  "top": [],
+  "pool_size": 0,
+  "drop": null,
+  "pool": {
+   "source": "yahoo",
+   "reason": null,
+   "listed": 100,
+   "ordering": "platform_rostered_rate_desc",
+   "out": [
+    {
+     "name": "Cason Wallace",
+     "team": "OKC",
+     "status": "O"
+    },
+    {
+     "name": "Maxime Raynaud",
+     "team": "SAC",
+     "status": "O"
+    },
+    {
+     "name": "Tobias Harris",
+     "team": "SAS",
+     "status": "O"
+    },
+    {
+     "name": "Kristaps Porziņģis",
+     "team": "GSW",
+     "status": "O"
+    },
+    {
+     "name": "Kevin Porter Jr.",
+     "team": "MIL",
+     "status": "NA"
+    },
+    {
+     "name": "Mark Williams",
+     "team": "PHX",
+     "status": "O"
+    },
+    {
+     "name": "Dennis Schröder",
+     "team": "CHA",
+     "status": "O"
+    },
+    {
+     "name": "Jaylon Tyson",
+     "team": "CLE",
+     "status": "O"
+    },
+    {
+     "name": "Bennedict Mathurin",
+     "team": "NOP",
+     "status": "O"
+    },
+    {
+     "name": "Scotty Pippen Jr.",
+     "team": "MEM",
+     "status": "O"
+    },
+    {
+     "name": "Donte DiVincenzo",
+     "team": "MIN",
+     "status": "O"
+    },
+    {
+     "name": "Justin Champagnie",
+     "team": "WAS",
+     "status": "O"
+    },
+    {
+     "name": "Adem Bona",
+     "team": "PHI",
+     "status": "O"
+    },
+    {
+     "name": "GG Jackson",
+     "team": "MEM",
+     "status": "O"
+    }
+   ],
+   "unknown_status": [],
+   "not_projected": [
+    {
+     "name": "Brice Sensabaugh",
+     "team": "UTA",
+     "status": null
+    },
+    {
+     "name": "Morez Johnson Jr.",
+     "team": "DAL",
+     "status": null
+    },
+    {
+     "name": "Bennett Stirtz",
+     "team": "OKC",
+     "status": null
+    },
+    {
+     "name": "Hugo González",
+     "team": "BOS",
+     "status": null
+    },
+    {
+     "name": "Jase Richardson",
+     "team": "ORL",
+     "status": null
+    },
+    {
+     "name": "Leonard Miller",
+     "team": "CHI",
+     "status": null
+    },
+    {
+     "name": "Daeqwon Plowden",
+     "team": "SAC",
+     "status": null
+    }
+   ],
+   "skipped": [
+    {
+     "name": "Ja'Kobe Walter",
+     "team": "TOR",
+     "status": null,
+     "reason": "rostered in the league state"
+    },
+    {
+     "name": "Max Strus",
+     "team": "LAC",
+     "status": null,
+     "reason": "out in the kit pool"
+    }
+   ],
+   "kit_pool_not_listed": 72
+  },
+  "this_week": {
+   "status": "ran",
+   "drops": [
+    "PJ Washington",
+    "Andrew Wiggins",
+    "Kel'el Ware",
+    "Neemias Queta",
+    "John Collins",
+    "Cam Spencer"
+   ],
+   "rows": [
+    {
+     "add": "Mitchell Robinson",
+     "team": "BOS",
+     "drop": "Andrew Wiggins",
+     "timing": "after tonight",
+     "waiver_date": null,
+     "d_exp": 0.27246695020984346,
+     "d_cat": {
+      "FG%": 0.052670168725752475,
+      "FT%": -0.0012845550774892578,
+      "3PTM": -2.3063455999450255e-06,
+      "PTS": -1.411691652464242e-08,
+      "REB": 0.176902650253824,
+      "AST": -0.010539586510426968,
+      "ST": 0.06007951331036088,
+      "BLK": 0.0007397147615910704,
+      "TO": -0.006098634791252278
+     },
+     "d_exp_drop": -0.1529706235966179,
+     "d_exp_add": 0.42543757380646136,
+     "games": 2,
+     "games_left": 2,
+     "value": -4.28,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.165
+    },
+    {
+     "add": "Naji Marshall",
+     "team": "DAL",
+     "drop": "Andrew Wiggins",
+     "timing": "after tonight",
+     "waiver_date": null,
+     "d_exp": 0.25971923044601697,
+     "d_cat": {
+      "FG%": 0.011142791597448687,
+      "FT%": -0.00030422473542190964,
+      "3PTM": 5.513457770334185e-07,
+      "PTS": 1.347019600306254e-07,
+      "REB": 0.047734871167178894,
+      "AST": 0.1510300854646699,
+      "ST": 0.08066277606481875,
+      "BLK": -0.0005498244628524551,
+      "TO": -0.02999793069756196
+     },
+     "d_exp_drop": -0.1529706235966179,
+     "d_exp_add": 0.41268985404263486,
+     "games": 2,
+     "games_left": 2,
+     "value": -3.74,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.0613
+    },
+    {
+     "add": "Dylan Cardwell",
+     "team": "SAC",
+     "drop": "Andrew Wiggins",
+     "timing": "same day",
+     "waiver_date": null,
+     "d_exp": 0.25198777967224106,
+     "d_cat": {
+      "FG%": 0.03351498708285483,
+      "FT%": -0.000657647234898473,
+      "3PTM": -2.3063455999450255e-06,
+      "PTS": -1.9238538095933677e-08,
+      "REB": 0.16421125505789957,
+      "AST": 0.024930395560822882,
+      "ST": 0.03767091648068166,
+      "BLK": 0.0008523385177205967,
+      "TO": -0.008532140208701966
+     },
+     "d_exp_drop": -0.15297062359661795,
+     "d_exp_add": 0.404958403268859,
+     "games": 2,
+     "games_left": 2,
+     "value": -3.99,
+     "status": null,
+     "missed": null,
+     "other_timing": {
+      "timing": "after tonight",
+      "d_exp": 0.03580545535529561,
+      "games": 1
+     },
+     "season_d_ecw": -0.1452
+    },
+    {
+     "add": "T.J. McConnell",
+     "team": "IND",
+     "drop": "Andrew Wiggins",
+     "timing": "same day",
+     "waiver_date": null,
+     "d_exp": 0.24793590077647631,
+     "d_cat": {
+      "FG%": 0.02819311411261627,
+      "FT%": 7.11062472569246e-05,
+      "3PTM": -1.8422276288898587e-06,
+      "PTS": 4.1741294642960725e-08,
+      "REB": 0.004241785523298236,
+      "AST": 0.17506927590571253,
+      "ST": 0.05607871030753098,
+      "BLK": -0.0003552663446722004,
+      "TO": -0.015361024488932173
+     },
+     "d_exp_drop": -0.15297062359661795,
+     "d_exp_add": 0.40090652437309426,
+     "games": 2,
+     "games_left": 2,
+     "value": -3.98,
+     "status": "P",
+     "missed": null,
+     "other_timing": {
+      "timing": "after tonight",
+      "d_exp": 0.09278019634370094,
+      "games": 1
+     },
+     "season_d_ecw": -0.0763
+    },
+    {
+     "add": "Isaiah Collier",
+     "team": "UTA",
+     "drop": "Andrew Wiggins",
+     "timing": "same day",
+     "waiver_date": null,
+     "d_exp": 0.2109551397491813,
+     "d_cat": {
+      "FG%": 0.0014099131997905578,
+      "FT%": -0.0007265032932530779,
+      "3PTM": -3.4579496799302945e-07,
+      "PTS": 5.35166883031124e-08,
+      "REB": 0.01721470110352502,
+      "AST": 0.2018496836612509,
+      "ST": 0.037670916480681216,
+      "BLK": -0.0002868513777667392,
+      "TO": -0.04617642774676689
+     },
+     "d_exp_drop": -0.15297062359661795,
+     "d_exp_add": 0.36392576334579924,
+     "games": 2,
+     "games_left": 2,
+     "value": -7.77,
+     "status": null,
+     "missed": null,
+     "other_timing": {
+      "timing": "after tonight",
+      "d_exp": 0.04938517270819648,
+      "games": 1
+     },
+     "season_d_ecw": -0.2317
+    },
+    {
+     "add": "Andre Drummond",
+     "team": "NYK",
+     "drop": "Andrew Wiggins",
+     "timing": "after tonight",
+     "waiver_date": null,
+     "d_exp": 0.19968236371712678,
+     "d_cat": {
+      "FG%": 0.0026130897160913102,
+      "FT%": -0.0002580106544887162,
+      "3PTM": -1.3299915304632037e-06,
+      "PTS": -7.28217728340752e-08,
+      "REB": 0.18546556786031732,
+      "AST": -0.010539586510426968,
+      "ST": 0.02580221597980248,
+      "BLK": 0.0004070879229447488,
+      "TO": -0.003806597783810095
+     },
+     "d_exp_drop": -0.1529706235966179,
+     "d_exp_add": 0.35265298731374467,
+     "games": 2,
+     "games_left": 2,
+     "value": -5.62,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.1384
+    },
+    {
+     "add": "Cameron Johnson",
+     "team": "DEN",
+     "drop": "Andrew Wiggins",
+     "timing": "same day",
+     "waiver_date": null,
+     "d_exp": 0.18554739625461764,
+     "d_cat": {
+      "FG%": -0.003035278497936944,
+      "FT%": 6.299001262344284e-05,
+      "3PTM": 1.1594132613979014e-06,
+      "PTS": 1.39942075372268e-07,
+      "REB": 0.060987702658783005,
+      "AST": 0.07885093657126385,
+      "ST": 0.06007951331036088,
+      "BLK": -0.0002868513777667392,
+      "TO": -0.011112915778046628
+     },
+     "d_exp_drop": -0.15297062359661795,
+     "d_exp_add": 0.3385180198512356,
+     "games": 2,
+     "games_left": 2,
+     "value": -2.37,
+     "status": null,
+     "missed": null,
+     "other_timing": {
+      "timing": "after tonight",
+      "d_exp": 0.016354465578477972,
+      "games": 1
+     },
+     "season_d_ecw": 0.0107
+    },
+    {
+     "add": "Herbert Jones",
+     "team": "NOP",
+     "drop": "Andrew Wiggins",
+     "timing": "same day",
+     "waiver_date": null,
+     "d_exp": 0.15786103989685313,
+     "d_cat": {
+      "FG%": -0.03541671168816718,
+      "FT%": 2.7354798403100844e-05,
+      "3PTM": 6.635954600264782e-07,
+      "PTS": 7.55347887571034e-08,
+      "REB": 0.035073684662492666,
+      "AST": 0.07233651424446041,
+      "ST": 0.09940953044290923,
+      "BLK": 0.0002765939617703772,
+      "TO": -0.013846665655264268
+     },
+     "d_exp_drop": -0.15297062359661795,
+     "d_exp_add": 0.3108316634934711,
+     "games": 2,
+     "games_left": 2,
+     "value": -4.06,
+     "status": null,
+     "missed": null,
+     "other_timing": {
+      "timing": "after tonight",
+      "d_exp": 0.00858166216161138,
+      "games": 1
+     },
+     "season_d_ecw": -0.0774
+    },
+    {
+     "add": "DeMar DeRozan",
+     "team": "DEN",
+     "drop": "Andrew Wiggins",
+     "timing": "same day",
+     "waiver_date": null,
+     "d_exp": 0.15278354660980503,
+     "d_cat": {
+      "FG%": -0.001488853014983027,
+      "FT%": 4.929067679104726e-05,
+      "3PTM": -6.234657901060814e-07,
+      "PTS": 1.3854135394453237e-07,
+      "REB": 0.011566865690254724,
+      "AST": 0.1163855788573106,
+      "ST": 0.037670916480681216,
+      "BLK": -0.0002868513777667392,
+      "TO": -0.011112915778046628
+     },
+     "d_exp_drop": -0.15297062359661795,
+     "d_exp_add": 0.305754170206423,
+     "games": 2,
+     "games_left": 2,
+     "value": -4.56,
+     "status": null,
+     "missed": null,
+     "other_timing": {
+      "timing": "after tonight",
+      "d_exp": 0.00516879234823453,
+      "games": 1
+     },
+     "season_d_ecw": -0.1057
+    },
+    {
+     "add": "Bilal Coulibaly",
+     "team": "WAS",
+     "drop": "Andrew Wiggins",
+     "timing": "same day",
+     "waiver_date": null,
+     "d_exp": 0.15113726670974215,
+     "d_cat": {
+      "FG%": -0.014115849633684507,
+      "FT%": -0.0003187993193937144,
+      "3PTM": -1.0816527618029426e-07,
+      "PTS": 8.480247459807799e-08,
+      "REB": 0.06783118587514159,
+      "AST": 0.024930395560822882,
+      "ST": 0.08066277606481842,
+      "BLK": 0.0006797217335410277,
+      "TO": -0.008532140208701966
+     },
+     "d_exp_drop": -0.15297062359661795,
+     "d_exp_add": 0.3041078903063601,
+     "games": 2,
+     "games_left": 2,
+     "value": -3.88,
+     "status": null,
+     "missed": null,
+     "other_timing": {
+      "timing": "after tonight",
+      "d_exp": -0.0017283759563884171,
+      "games": 1
+     },
+     "season_d_ecw": -0.0774
+    },
+    {
+     "add": "Alex Caruso",
+     "team": "OKC",
+     "drop": "Andrew Wiggins",
+     "timing": "same day",
+     "waiver_date": null,
+     "d_exp": 0.14420190626310936,
+     "d_cat": {
+      "FG%": -0.0038871683939708523,
+      "FT%": 7.320911713559752e-05,
+      "3PTM": 2.5677839399218527e-07,
+      "PTS": -4.594240432531649e-08,
+      "REB": 0.02026546551546904,
+      "AST": 0.06099324643846127,
+      "ST": 0.07174444322960238,
+      "BLK": 2.0667323572309826e-05,
+      "TO": -0.005008167803150054
+     },
+     "d_exp_drop": -0.15297062359661795,
+     "d_exp_add": 0.2971725298597273,
+     "games": 2,
+     "games_left": 2,
+     "value": -2.21,
+     "status": "Q",
+     "missed": null,
+     "other_timing": {
+      "timing": "after tonight",
+      "d_exp": 0.050074161969722364,
+      "games": 1
+     },
+     "season_d_ecw": 0.003
+    },
+    {
+     "add": "Malik Monk",
+     "team": "SAC",
+     "drop": "Andrew Wiggins",
+     "timing": "same day",
+     "waiver_date": null,
+     "d_exp": 0.14115917266755312,
+     "d_cat": {
+      "FG%": -0.02499502812628407,
+      "FT%": 0.00010569082595968116,
+      "3PTM": 9.176239583741364e-07,
+      "PTS": 1.2423455464372068e-07,
+      "REB": -0.0018834452180850891,
+      "AST": 0.17241347942297536,
+      "ST": 0.025802215979802923,
+      "BLK": -0.0002868513777667392,
+      "TO": -0.02999793069756196
+     },
+     "d_exp_drop": -0.15297062359661795,
+     "d_exp_add": 0.2941297962641711,
+     "games": 2,
+     "games_left": 2,
+     "value": -5.64,
+     "status": null,
+     "missed": null,
+     "other_timing": {
+      "timing": "after tonight",
+      "d_exp": 0.007839043864992845,
+      "games": 1
+     },
+     "season_d_ecw": -0.1179
+    },
+    {
+     "add": "Jaylin Williams",
+     "team": "OKC",
+     "drop": "Andrew Wiggins",
+     "timing": "same day",
+     "waiver_date": null,
+     "d_exp": 0.14047873731229205,
+     "d_cat": {
+      "FG%": -0.021282592428780056,
+      "FT%": -4.576714276283145e-05,
+      "3PTM": 7.606857785891208e-07,
+      "PTS": -9.14364495230302e-09,
+      "REB": 0.09287974011103634,
+      "AST": 0.05910295717210379,
+      "ST": 0.013509687501091383,
+      "BLK": 0.00012055834127988607,
+      "TO": -0.003806597783810095
+     },
+     "d_exp_drop": -0.15297062359661795,
+     "d_exp_add": 0.29344936090891,
+     "games": 2,
+     "games_left": 2,
+     "value": -5.67,
+     "status": null,
+     "missed": null,
+     "other_timing": {
+      "timing": "after tonight",
+      "d_exp": -0.01300025837144364,
+      "games": 1
+     },
+     "season_d_ecw": -0.1251
+    },
+    {
+     "add": "Jarace Walker",
+     "team": "IND",
+     "drop": "Andrew Wiggins",
+     "timing": "same day",
+     "waiver_date": null,
+     "d_exp": 0.12974192315228172,
+     "d_cat": {
+      "FG%": -0.034200673747188715,
+      "FT%": -0.00035616213813405295,
+      "3PTM": 8.447605294170657e-07,
+      "PTS": 7.55347887571034e-08,
+      "REB": 0.0855532532265264,
+      "AST": 0.05238813746640547,
+      "ST": 0.049100380963612245,
+      "BLK": 0.0002765939617703772,
+      "TO": -0.02302052687602818
+     },
+     "d_exp_drop": -0.15297062359661795,
+     "d_exp_add": 0.2827125467488997,
+     "games": 2,
+     "games_left": 2,
+     "value": -5.93,
+     "status": null,
+     "missed": null,
+     "other_timing": {
+      "timing": "after tonight",
+      "d_exp": -0.01411943617821182,
+      "games": 1
+     },
+     "season_d_ecw": -0.1416
+    },
+    {
+     "add": "Kelly Oubre Jr.",
+     "team": "IND",
+     "drop": "Andrew Wiggins",
+     "timing": "same day",
+     "waiver_date": null,
+     "d_exp": 0.12542984555154973,
+     "d_cat": {
+      "FG%": -0.0019690823953495418,
+      "FT%": -0.0002139856322399547,
+      "3PTM": 6.635954600264782e-07,
+      "PTS": 1.3301919143948737e-07,
+      "REB": 0.05761982027534446,
+      "AST": 0.01792914258954459,
+      "ST": 0.06007951331036088,
+      "BLK": 0.0005157809979398076,
+      "TO": -0.008532140208701966
+     },
+     "d_exp_drop": -0.15297062359661795,
+     "d_exp_add": 0.2784004691481677,
+     "games": 2,
+     "games_left": 2,
+     "value": -3.38,
+     "status": null,
+     "missed": null,
+     "other_timing": {
+      "timing": "after tonight",
+      "d_exp": -0.015332853942774949,
+      "games": 1
+     },
+     "season_d_ecw": -0.0457
+    },
+    {
+     "add": "Trevon Brazile",
+     "team": "DEN",
+     "drop": "Andrew Wiggins",
+     "timing": "same day",
+     "waiver_date": null,
+     "d_exp": 0.12341737926483565,
+     "d_cat": {
+      "FG%": -0.006879252513524281,
+      "FT%": -0.0007223645437749449,
+      "3PTM": 5.513457770334185e-07,
+      "PTS": 7.3049126525504e-08,
+      "REB": 0.18977544280006697,
+      "AST": -0.06166962359382022,
+      "ST": 0.013509687501091383,
+      "BLK": 0.0005157809979398076,
+      "TO": -0.011112915778046628
+     },
+     "d_exp_drop": -0.15297062359661795,
+     "d_exp_add": 0.2763880028614536,
+     "games": 2,
+     "games_left": 2,
+     "value": -5.8,
+     "status": null,
+     "missed": null,
+     "other_timing": {
+      "timing": "after tonight",
+      "d_exp": -0.03288432151251691,
+      "games": 1
+     },
+     "season_d_ecw": -0.1396
+    },
+    {
+     "add": "Baylor Scheierman",
+     "team": "BOS",
+     "drop": "Andrew Wiggins",
+     "timing": "after tonight",
+     "waiver_date": null,
+     "d_exp": 0.12229050244175677,
+     "d_cat": {
+      "FG%": -0.007613738602749609,
+      "FT%": 0.00013027016977984474,
+      "3PTM": 8.447605294170657e-07,
+      "PTS": 4.9301380755650825e-09,
+      "REB": 0.050993155466722784,
+      "AST": 0.031879575725706766,
+      "ST": 0.0491003809636118,
+      "BLK": -0.0005498244628524551,
+      "TO": -0.0016501665091298579
+     },
+     "d_exp_drop": -0.1529706235966179,
+     "d_exp_add": 0.27526112603837466,
+     "games": 2,
+     "games_left": 2,
+     "value": -5.05,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.1171
+    },
+    {
+     "add": "Deandre Ayton",
+     "team": "WAS",
+     "drop": "Andrew Wiggins",
+     "timing": "same day",
+     "waiver_date": null,
+     "d_exp": 0.1197680424378596,
+     "d_cat": {
+      "FG%": 0.056409195681000446,
+      "FT%": -0.00026827316728006423,
+      "3PTM": -2.3063455999450255e-06,
+      "PTS": 1.3649357422096386e-08,
+      "REB": 0.08919992197279508,
+      "AST": -0.025010090282349018,
+      "ST": 0.0008131534772951587,
+      "BLK": 0.0002765939617703772,
+      "TO": -0.0016501665091298579
+     },
+     "d_exp_drop": -0.15297062359661795,
+     "d_exp_add": 0.27273866603447755,
+     "games": 2,
+     "games_left": 2,
+     "value": -5.7,
+     "status": null,
+     "missed": null,
+     "other_timing": {
+      "timing": "after tonight",
+      "d_exp": -0.024189391104264657,
+      "games": 1
+     },
+     "season_d_ecw": -0.1654
+    },
+    {
+     "add": "Kingston Flemings",
+     "team": "ATL",
+     "drop": "Andrew Wiggins",
+     "timing": "same day",
+     "waiver_date": null,
+     "d_exp": 0.11189520933736785,
+     "d_cat": {
+      "FG%": -0.002131395061135577,
+      "FT%": -3.5565245282365154e-05,
+      "3PTM": -1.1455551507388861e-07,
+      "PTS": -1.924492898375263e-08,
+      "REB": 0.0029922943278387626,
+      "AST": 0.1069531706500868,
+      "ST": 0.02463345578385423,
+      "BLK": -0.00025077745082979774,
+      "TO": -0.020265839866720148
+     },
+     "d_exp_drop": -0.15297062359661795,
+     "d_exp_add": 0.2648658329339858,
+     "games": 2,
+     "games_left": 2,
+     "value": -5.8,
+     "status": "Q",
+     "missed": "2026-11-18",
+     "other_timing": {
+      "timing": "after tonight",
+      "d_exp": 0.03178898593293872,
+      "games": 1
+     },
+     "season_d_ecw": -0.141
+    },
+    {
+     "add": "Obi Toppin",
+     "team": "IND",
+     "drop": "Andrew Wiggins",
+     "timing": "same day",
+     "waiver_date": null,
+     "d_exp": 0.1103860491252962,
+     "d_cat": {
+      "FG%": 0.024213393935873184,
+      "FT%": -4.748355348560551e-05,
+      "3PTM": 9.176239583741364e-07,
+      "PTS": 1.2080218070309456e-07,
+      "REB": 0.05761982027534446,
+      "AST": 0.031879575725706766,
+      "ST": 0.0008131534772951587,
+      "BLK": -0.0002868513777667392,
+      "TO": -0.003806597783810095
+     },
+     "d_exp_drop": -0.15297062359661795,
+     "d_exp_add": 0.26335667272191415,
+     "games": 2,
+     "games_left": 2,
+     "value": -4.51,
+     "status": null,
+     "missed": null,
+     "other_timing": {
+      "timing": "after tonight",
+      "d_exp": -0.025301247576439923,
+      "games": 1
+     },
+     "season_d_ecw": -0.0869
+    },
+    {
+     "add": "Zach Collins",
+     "team": "CHI",
+     "drop": "Andrew Wiggins",
+     "timing": "same day",
+     "waiver_date": null,
+     "d_exp": 0.1024219918998292,
+     "d_cat": {
+      "FG%": 0.0043396878618390256,
+      "FT%": 8.230304786449594e-05,
+      "3PTM": -6.234657901060814e-07,
+      "PTS": -2.4513128193959233e-08,
+      "REB": 0.0643915893335763,
+      "AST": 0.03877398260814502,
+      "ST": 0.0008131534772951587,
+      "BLK": 0.00012055834127988607,
+      "TO": -0.006098634791252389
+     },
+     "d_exp_drop": -0.15297062359661795,
+     "d_exp_add": 0.25539261549644715,
+     "games": 2,
+     "games_left": 2,
+     "value": -6.41,
+     "status": null,
+     "missed": null,
+     "other_timing": {
+      "timing": "after tonight",
+      "d_exp": -0.02971333479457411,
+      "games": 1
+     },
+     "season_d_ecw": -0.179
+    },
+    {
+     "add": "Luguentz Dort",
+     "team": "ATL",
+     "drop": "Andrew Wiggins",
+     "timing": "same day",
+     "waiver_date": null,
+     "d_exp": 0.09980268924708652,
+     "d_cat": {
+      "FG%": -0.03312948246666236,
+      "FT%": -5.8219672762538366e-05,
+      "3PTM": 1.1240242130394762e-06,
+      "PTS": 1.0388803683980541e-07,
+      "REB": 0.04132950772999905,
+      "AST": 0.024930395560822882,
+      "ST": 0.07060134403300844,
+      "BLK": -6.548606575873528e-05,
+      "TO": -0.003806597783810095
+     },
+     "d_exp_drop": -0.15297062359661795,
+     "d_exp_add": 0.25277331284370447,
+     "games": 2,
+     "games_left": 2,
+     "value": -4.27,
+     "status": null,
+     "missed": null,
+     "other_timing": {
+      "timing": "after tonight",
+      "d_exp": -0.026366413606869643,
+      "games": 1
+     },
+     "season_d_ecw": -0.0766
+    },
+    {
+     "add": "Nikola Vucevic",
+     "team": "ORL",
+     "drop": "Andrew Wiggins",
+     "timing": "same day",
+     "waiver_date": null,
+     "d_exp": 0.09666647359950542,
+     "d_cat": {
+      "FG%": 0.007076698069391374,
+      "FT%": 4.06087651263487e-05,
+      "3PTM": 9.560393088303698e-08,
+      "PTS": 2.9634823039970115e-08,
+      "REB": 0.07130617980704279,
+      "AST": 0.031879575725706766,
+      "ST": -0.012263141459156301,
+      "BLK": 0.0002765939617703772,
+      "TO": -0.0016501665091298579
+     },
+     "d_exp_drop": -0.15297062359661795,
+     "d_exp_add": 0.24963709719612337,
+     "games": 2,
+     "games_left": 2,
+     "value": -5.77,
+     "status": null,
+     "missed": "2026-11-18",
+     "other_timing": {
+      "timing": "after tonight",
+      "d_exp": -0.034049923800559045,
+      "games": 1
+     },
+     "season_d_ecw": -0.139
+    },
+    {
+     "add": "Jamal Shead",
+     "team": "TOR",
+     "drop": "Andrew Wiggins",
+     "timing": "same day",
+     "waiver_date": null,
+     "d_exp": 0.09605024694876857,
+     "d_cat": {
+      "FG%": -0.010972754952136121,
+      "FT%": 3.543245394332928e-05,
+      "3PTM": -4.840258295280009e-07,
+      "PTS": -1.1325795812311412e-07,
+      "REB": -0.023573571734906096,
+      "AST": 0.12470582661500162,
+      "ST": 0.012176906458367331,
+      "BLK": -0.0005594081763721226,
+      "TO": -0.005761586431341725
+     },
+     "d_exp_drop": -0.15297062359661795,
+     "d_exp_add": 0.24902087054538652,
+     "games": 1,
+     "games_left": 1,
+     "value": -4.85,
+     "status": null,
+     "missed": null,
+     "other_timing": {
+      "timing": "after tonight",
+      "d_exp": -0.1529706235966179,
+      "games": 0
+     },
+     "season_d_ecw": -0.078
+    },
+    {
+     "add": "Kris Dunn",
+     "team": "LAC",
+     "drop": "Andrew Wiggins",
+     "timing": "after tonight",
+     "waiver_date": null,
+     "d_exp": 0.09534502373657239,
+     "d_cat": {
+      "FG%": 0.0067800287604836695,
+      "FT%": 5.166808519241339e-05,
+      "3PTM": -7.213506735270769e-07,
+      "PTS": -1.7337441160503175e-07,
+      "REB": -0.005272338092536355,
+      "AST": 0.04480237597296777,
+      "ST": 0.05037732146524476,
+      "BLK": -0.00032202102051792636,
+      "TO": -0.0010711167091768115
+     },
+     "d_exp_drop": -0.1529706235966179,
+     "d_exp_add": 0.24831564733319028,
+     "games": 1,
+     "games_left": 1,
+     "value": -1.94,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.0057
+    },
+    {
+     "add": "Kyle Filipowski",
+     "team": "UTA",
+     "drop": "Andrew Wiggins",
+     "timing": "same day",
+     "waiver_date": null,
+     "d_exp": 0.08400700105724768,
+     "d_cat": {
+      "FG%": 0.009317018402251853,
+      "FT%": -0.0003635950063636262,
+      "3PTM": -3.4579496799302945e-07,
+      "PTS": -4.31424784785861e-09,
+      "REB": 0.047734871167178894,
+      "AST": 0.0037816571557461875,
+      "ST": 0.037670916480681216,
+      "BLK": -0.0002868513777667392,
+      "TO": -0.013846665655264268
+     },
+     "d_exp_drop": -0.15297062359661795,
+     "d_exp_add": 0.23697762465386563,
+     "games": 2,
+     "games_left": 2,
+     "value": -7.35,
+     "status": null,
+     "missed": null,
+     "other_timing": {
+      "timing": "after tonight",
+      "d_exp": -0.03588292144512606,
+      "games": 1
+     },
+     "season_d_ecw": -0.235
+    },
+    {
+     "add": "Bub Carrington",
+     "team": "WAS",
+     "drop": "Andrew Wiggins",
+     "timing": "same day",
+     "waiver_date": null,
+     "d_exp": 0.08350866260109568,
+     "d_cat": {
+      "FG%": -0.019942137405404514,
+      "FT%": -3.32103206157619e-06,
+      "3PTM": 9.807963144981002e-07,
+      "PTS": 1.7821824793706753e-08,
+      "REB": 0.0033820601235357017,
+      "AST": 0.09796114195160877,
+      "ST": 0.013509687501091383,
+      "BLK": -0.0002868513777667392,
+      "TO": -0.011112915778046628
+     },
+     "d_exp_drop": -0.15297062359661795,
+     "d_exp_add": 0.23647928619771363,
+     "games": 2,
+     "games_left": 2,
+     "value": -6.83,
+     "status": null,
+     "missed": "2026-11-18",
+     "other_timing": {
+      "timing": "after tonight",
+      "d_exp": -0.03092852154996345,
+      "games": 1
+     },
+     "season_d_ecw": -0.186
+    },
+    {
+     "add": "Oso Ighodaro",
+     "team": "PHX",
+     "drop": "Andrew Wiggins",
+     "timing": "same day",
+     "waiver_date": null,
+     "d_exp": 0.07245442262892648,
+     "d_cat": {
+      "FG%": 0.029173350613081128,
+      "FT%": -0.00033364739703345414,
+      "3PTM": -2.3063455999450255e-06,
+      "PTS": -1.6892187093553446e-07,
+      "REB": 0.024260876364237516,
+      "AST": 0.027887072143894298,
+      "ST": -0.006284839555820154,
+      "BLK": -6.410438949977504e-05,
+      "TO": -0.0021818098824621934
+     },
+     "d_exp_drop": -0.15297062359661795,
+     "d_exp_add": 0.22542504622554443,
+     "games": 1,
+     "games_left": 1,
+     "value": -5.37,
+     "status": null,
+     "missed": null,
+     "other_timing": {
+      "timing": "after tonight",
+      "d_exp": -0.1529706235966179,
+      "games": 0
+     },
+     "season_d_ecw": -0.1344
+    },
+    {
+     "add": "Javonte Green",
+     "team": "DET",
+     "drop": "Andrew Wiggins",
+     "timing": "same day",
+     "waiver_date": null,
+     "d_exp": 0.07143773829890271,
+     "d_cat": {
+      "FG%": -0.001773637765567826,
+      "FT%": 7.643937143542168e-05,
+      "3PTM": 6.635954600264782e-07,
+      "PTS": 6.515355699399095e-08,
+      "REB": 0.028968669253088664,
+      "AST": -0.032293368339721185,
+      "ST": 0.07060134403300844,
+      "BLK": 0.00012055834127988607,
+      "TO": 0.005737004656362288
+     },
+     "d_exp_drop": -0.15297062359661795,
+     "d_exp_add": 0.22440836189552066,
+     "games": 2,
+     "games_left": 2,
+     "value": -3.74,
+     "status": null,
+     "missed": null,
+     "other_timing": {
+      "timing": "after tonight",
+      "d_exp": -0.04058555026219007,
+      "games": 1
+     },
+     "season_d_ecw": -0.077
+    },
+    {
+     "add": "Precious Achiuwa",
+     "team": "SAC",
+     "drop": "Andrew Wiggins",
+     "timing": "same day",
+     "waiver_date": null,
+     "d_exp": 0.06628890137724952,
+     "d_cat": {
+      "FG%": 0.019324368120358537,
+      "FT%": -0.00037020851308522396,
+      "3PTM": -1.4111210147049746e-06,
+      "PTS": -5.576165351683926e-08,
+      "REB": 0.05143287381089501,
+      "AST": -0.030553044159175813,
+      "ST": 0.026909025897669858,
+      "BLK": 0.0001349256552054534,
+      "TO": -0.0005875725519500774
+     },
+     "d_exp_drop": -0.15297062359661795,
+     "d_exp_add": 0.21925952497386747,
+     "games": 2,
+     "games_left": 2,
+     "value": -4.08,
+     "status": "D",
+     "missed": null,
+     "other_timing": {
+      "timing": "after tonight",
+      "d_exp": 0.01914342223216392,
+      "games": 1
+     },
+     "season_d_ecw": -0.0976
+    },
+    {
+     "add": "Sam Hauser",
+     "team": "BOS",
+     "drop": "Andrew Wiggins",
+     "timing": "after tonight",
+     "waiver_date": null,
+     "d_exp": 0.06486406323283611,
+     "d_cat": {
+      "FG%": -0.00641842018179839,
+      "FT%": 0.00011316686518836327,
+      "3PTM": 1.2714509342037772e-06,
+      "PTS": 9.109854137712148e-08,
+      "REB": 0.04132950772999944,
+      "AST": 0.010878605490284188,
+      "ST": 0.013509687501091383,
+      "BLK": -0.0002868513777667392,
+      "TO": 0.005737004656362288
+     },
+     "d_exp_drop": -0.1529706235966179,
+     "d_exp_add": 0.217834686829454,
+     "games": 2,
+     "games_left": 2,
+     "value": -3.88,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.0462
+    },
+    {
+     "add": "Miles McBride",
+     "team": "NYK",
+     "drop": "Andrew Wiggins",
+     "timing": "after tonight",
+     "waiver_date": null,
+     "d_exp": 0.06384286099277209,
+     "d_cat": {
+      "FG%": -0.021235707918937696,
+      "FT%": 2.513414009408521e-05,
+      "3PTM": 1.237805530074354e-06,
+      "PTS": 8.480247459807799e-08,
+      "REB": -0.006996673404648768,
+      "AST": 0.031879575725706766,
+      "ST": 0.06007951331036088,
+      "BLK": -0.0002868513777667392,
+      "TO": 0.00037654790995889087
+     },
+     "d_exp_drop": -0.1529706235966179,
+     "d_exp_add": 0.21681348458938998,
+     "games": 2,
+     "games_left": 2,
+     "value": -4.43,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.0989
+    },
+    {
+     "add": "Marvin Bagley III",
+     "team": "DEN",
+     "drop": "Andrew Wiggins",
+     "timing": "same day",
+     "waiver_date": null,
+     "d_exp": 0.04905979899325258,
+     "d_cat": {
+      "FG%": 0.03560189921045054,
+      "FT%": -0.0003872978268777416,
+      "3PTM": -1.7783345138688844e-06,
+      "PTS": 2.9634823039970115e-08,
+      "REB": 0.05761982027534446,
+      "AST": -0.032293368339721185,
+      "ST": -0.012263141459156301,
+      "BLK": 0.0004070879229447488,
+      "TO": 0.00037654790995889087
+     },
+     "d_exp_drop": -0.15297062359661795,
+     "d_exp_add": 0.20203042258987053,
+     "games": 2,
+     "games_left": 2,
+     "value": -6.7,
+     "status": null,
+     "missed": null,
+     "other_timing": {
+      "timing": "after tonight",
+      "d_exp": -0.057087413253973485,
+      "games": 1
+     },
+     "season_d_ecw": -0.2004
+    },
+    {
+     "add": "Jordan Goodwin",
+     "team": "PHX",
+     "drop": "Andrew Wiggins",
+     "timing": "same day",
+     "waiver_date": null,
+     "d_exp": 0.04841953803107957,
+     "d_cat": {
+      "FG%": -0.005063415230080248,
+      "FT%": 3.622506333422759e-05,
+      "3PTM": 1.0422826846046007e-07,
+      "PTS": -8.956729535825048e-08,
+      "REB": 0.011043674154395444,
+      "AST": 0.01056611206014546,
+      "ST": 0.029410144537933447,
+      "BLK": -0.0005594081763721226,
+      "TO": 0.002986190960750257
+     },
+     "d_exp_drop": -0.15297062359661795,
+     "d_exp_add": 0.20139016162769752,
+     "games": 1,
+     "games_left": 1,
+     "value": -2.38,
+     "status": null,
+     "missed": null,
+     "other_timing": {
+      "timing": "after tonight",
+      "d_exp": -0.1529706235966179,
+      "games": 0
+     },
+     "season_d_ecw": 0.0034
+    },
+    {
+     "add": "Nique Clifford",
+     "team": "OKC",
+     "drop": "Andrew Wiggins",
+     "timing": "same day",
+     "waiver_date": null,
+     "d_exp": 0.041234356624072876,
+     "d_cat": {
+      "FG%": -0.014924443991296887,
+      "FT%": -0.00012635173469544014,
+      "3PTM": -1.0816527618029426e-07,
+      "PTS": -1.411691652464242e-08,
+      "REB": 0.014371654678101253,
+      "AST": 0.024930395560822882,
+      "ST": 0.02580221597980248,
+      "BLK": -0.0002868513777667392,
+      "TO": -0.008532140208701966
+     },
+     "d_exp_drop": -0.15297062359661795,
+     "d_exp_add": 0.19420498022069083,
+     "games": 2,
+     "games_left": 2,
+     "value": -8.03,
+     "status": null,
+     "missed": null,
+     "other_timing": {
+      "timing": "after tonight",
+      "d_exp": -0.05534700442806917,
+      "games": 1
+     },
+     "season_d_ecw": -0.2552
+    },
+    {
+     "add": "Jake LaRavia",
+     "team": "LAL",
+     "drop": "Andrew Wiggins",
+     "timing": "same day",
+     "waiver_date": null,
+     "d_exp": 0.03949342893673624,
+     "d_cat": {
+      "FG%": 0.005509160500593913,
+      "FT%": -4.329037820349768e-05,
+      "3PTM": -4.840258295280009e-07,
+      "PTS": -1.43599521384985e-07,
+      "REB": 0.006824319453388794,
+      "AST": 0.0035354877132974805,
+      "ST": 0.02380688731558922,
+      "BLK": -0.0001385080425788665,
+      "TO": 1.1102230246251565e-16
+     },
+     "d_exp_drop": -0.15297062359661795,
+     "d_exp_add": 0.1924640525333542,
+     "games": 1,
+     "games_left": 1,
+     "value": -3.29,
+     "status": null,
+     "missed": null,
+     "other_timing": {
+      "timing": "after tonight",
+      "d_exp": -0.1529706235966179,
+      "games": 0
+     },
+     "season_d_ecw": -0.0439
+    },
+    {
+     "add": "De'Andre Hunter",
+     "team": "SAC",
+     "drop": "Andrew Wiggins",
+     "timing": "same day",
+     "waiver_date": null,
+     "d_exp": 0.03691640831964754,
+     "d_cat": {
+      "FG%": -0.01567787507841678,
+      "FT%": 9.055671708724233e-06,
+      "3PTM": 5.224877680509721e-07,
+      "PTS": 7.582059602384561e-08,
+      "REB": 0.04399796052262034,
+      "AST": 0.015715267704075386,
+      "ST": 0.006593949677145661,
+      "BLK": -0.0006258124963727241,
+      "TO": -0.013096735989477137
+     },
+     "d_exp_drop": -0.15297062359661795,
+     "d_exp_add": 0.1898870319162655,
+     "games": 2,
+     "games_left": 2,
+     "value": -4.23,
+     "status": "Q",
+     "missed": null,
+     "other_timing": {
+      "timing": "after tonight",
+      "d_exp": -0.028545400436715607,
+      "games": 1
+     },
+     "season_d_ecw": -0.0624
+    },
+    {
+     "add": "Kevin Huerter",
+     "team": "DET",
+     "drop": "Andrew Wiggins",
+     "timing": "after tonight",
+     "waiver_date": "2026-11-21",
+     "d_exp": 0.030546811714775246,
+     "d_cat": {
+      "FG%": -0.0005223958343886226,
+      "FT%": 2.8366273089996952e-05,
+      "3PTM": -6.138777797204398e-08,
+      "PTS": -2.2559288326284843e-08,
+      "REB": -0.003969829156826865,
+      "AST": 0.027887072143894298,
+      "ST": 0.006155216618668913,
+      "BLK": -6.410438949977504e-05,
+      "TO": 0.0010325700069035992
+     },
+     "d_exp_drop": -0.1529706235966179,
+     "d_exp_add": 0.18351743531139314,
+     "games": 1,
+     "games_left": 1,
+     "value": -2.64,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": 0.0099
+    },
+    {
+     "add": "Isaiah Jackson",
+     "team": "LAC",
+     "drop": "Andrew Wiggins",
+     "timing": "after tonight",
+     "waiver_date": null,
+     "d_exp": 0.029635784364357542,
+     "d_cat": {
+      "FG%": 0.02844441871648873,
+      "FT%": -0.00016074461126058814,
+      "3PTM": -2.0337668413805687e-06,
+      "PTS": -1.3566361745098732e-07,
+      "REB": 0.021251548890223848,
+      "AST": -0.02508183892545568,
+      "ST": 0.006155216618668913,
+      "BLK": 0.00010046981532796373,
+      "TO": -0.0010711167091768115
+     },
+     "d_exp_drop": -0.1529706235966179,
+     "d_exp_add": 0.18260640796097544,
+     "games": 1,
+     "games_left": 1,
+     "value": -3.67,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.0774
+    },
+    {
+     "add": "Max Christie",
+     "team": "DAL",
+     "drop": "Andrew Wiggins",
+     "timing": "after tonight",
+     "waiver_date": null,
+     "d_exp": 0.027970978676838676,
+     "d_cat": {
+      "FG%": -0.023316321192156653,
+      "FT%": 0.00014334548392613833,
+      "3PTM": 1.0355599538991456e-06,
+      "PTS": 5.039286943286925e-08,
+      "REB": 0.01721470110352502,
+      "AST": 0.024930395560821883,
+      "ST": 0.025802215979802923,
+      "BLK": -6.548606575873528e-05,
+      "TO": -0.016738958146145233
+     },
+     "d_exp_drop": -0.1529706235966179,
+     "d_exp_add": 0.18094160227345657,
+     "games": 2,
+     "games_left": 2,
+     "value": -6.23,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.1635
+    },
+    {
+     "add": "Keldon Johnson",
+     "team": "SAS",
+     "drop": "Andrew Wiggins",
+     "timing": "after tonight",
+     "waiver_date": null,
+     "d_exp": 0.026303686419550776,
+     "d_cat": {
+      "FG%": 0.01058528145178772,
+      "FT%": -3.418795233089966e-05,
+      "3PTM": -1.0098429918947716e-06,
+      "PTS": -3.646651713928861e-08,
+      "REB": 0.024260876364237516,
+      "AST": -0.0035483360164957345,
+      "ST": -0.00628483955581971,
+      "BLK": -0.0007016854588681731,
+      "TO": 0.002027623896549091
+     },
+     "d_exp_drop": -0.1529706235966179,
+     "d_exp_add": 0.17927431001616867,
+     "games": 1,
+     "games_left": 1,
+     "value": -4.51,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.0909
+    },
+    {
+     "add": "De'Anthony Melton",
+     "team": "GSW",
+     "drop": "Andrew Wiggins",
+     "timing": "after tonight",
+     "waiver_date": null,
+     "d_exp": 0.025733542461907066,
+     "d_cat": {
+      "FG%": -0.014609824365568014,
+      "FT%": 5.5776508077642895e-05,
+      "3PTM": 1.479466814613417e-07,
+      "PTS": -4.3891267398343814e-08,
+      "REB": -0.0026569410903405366,
+      "AST": 0.014060365487471027,
+      "ST": 0.03486978157776721,
+      "BLK": -0.00022413327957271356,
+      "TO": -0.005761586431341614
+     },
+     "d_exp_drop": -0.1529706235966179,
+     "d_exp_add": 0.17870416605852496,
+     "games": 1,
+     "games_left": 1,
+     "value": -2.62,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.0922
+    },
+    {
+     "add": "Jay Huff",
+     "team": "IND",
+     "drop": "Andrew Wiggins",
+     "timing": "same day",
+     "waiver_date": null,
+     "d_exp": 0.023442949987887485,
+     "d_cat": {
+      "FG%": 0.01201184455926907,
+      "FT%": 6.998398391278027e-05,
+      "3PTM": 5.513457770334185e-07,
+      "PTS": 6.515355699399095e-08,
+      "REB": 0.035073684662492666,
+      "AST": -0.010539586510425969,
+      "ST": -0.012263141459156301,
+      "BLK": 0.0007397147615910704,
+      "TO": -0.0016501665091298579
+     },
+     "d_exp_drop": -0.15297062359661795,
+     "d_exp_add": 0.17641357358450543,
+     "games": 2,
+     "games_left": 2,
+     "value": -4.79,
+     "status": null,
+     "missed": null,
+     "other_timing": {
+      "timing": "after tonight",
+      "d_exp": -0.06769855115127171,
+      "games": 1
+     },
+     "season_d_ecw": -0.0986
+    },
+    {
+     "add": "Mikel Brown Jr.",
+     "team": "BKN",
+     "drop": "Andrew Wiggins",
+     "timing": "same day",
+     "waiver_date": null,
+     "d_exp": 0.020479779807373588,
+     "d_cat": {
+      "FG%": -0.017244192987119655,
+      "FT%": 5.091770326703937e-06,
+      "3PTM": 1.0422826846046007e-07,
+      "PTS": -5.802766933626913e-09,
+      "REB": -0.016529736536427753,
+      "AST": 0.0612662922886561,
+      "ST": 0.006155216618668913,
+      "BLK": -0.0005594081763721226,
+      "TO": -0.012613581595860124
+     },
+     "d_exp_drop": -0.15297062359661795,
+     "d_exp_add": 0.17345040340399154,
+     "games": 1,
+     "games_left": 1,
+     "value": -5.37,
+     "status": null,
+     "missed": null,
+     "other_timing": {
+      "timing": "after tonight",
+      "d_exp": -0.1529706235966179,
+      "games": 0
+     },
+     "season_d_ecw": -0.1145
+    },
+    {
+     "add": "Tre Johnson",
+     "team": "WAS",
+     "drop": "Andrew Wiggins",
+     "timing": "same day",
+     "waiver_date": null,
+     "d_exp": 0.014698810892771197,
+     "d_cat": {
+      "FG%": -0.04335961564705182,
+      "FT%": 0.00013739803889700752,
+      "3PTM": 9.807963144981002e-07,
+      "PTS": 1.1835403201931882e-07,
+      "REB": 0.014371654678101253,
+      "AST": 0.031879575725706766,
+      "ST": 0.02580221597980248,
+      "BLK": -0.0002868513777667392,
+      "TO": -0.013846665655264268
+     },
+     "d_exp_drop": -0.15297062359661795,
+     "d_exp_add": 0.16766943448938915,
+     "games": 2,
+     "games_left": 2,
+     "value": -6.4,
+     "status": null,
+     "missed": null,
+     "other_timing": {
+      "timing": "after tonight",
+      "d_exp": -0.06806307513218934,
+      "games": 1
+     },
+     "season_d_ecw": -0.1653
+    },
+    {
+     "add": "Jalen Green",
+     "team": "PHX",
+     "drop": "Andrew Wiggins",
+     "timing": "same day",
+     "waiver_date": null,
+     "d_exp": 0.014482589181518735,
+     "d_cat": {
+      "FG%": -0.01947812951617356,
+      "FT%": -9.193234310889142e-05,
+      "3PTM": 1.0422826846046007e-07,
+      "PTS": 5.2323356980465974e-08,
+      "REB": 0.004063389918123661,
+      "AST": 0.04145404873339242,
+      "ST": 0.006155216618668913,
+      "BLK": -0.00032202102051792636,
+      "TO": -0.017298139760491327
+     },
+     "d_exp_drop": -0.15297062359661795,
+     "d_exp_add": 0.16745321277813668,
+     "games": 1,
+     "games_left": 1,
+     "value": -4.78,
+     "status": null,
+     "missed": null,
+     "other_timing": {
+      "timing": "after tonight",
+      "d_exp": -0.1529706235966179,
+      "games": 0
+     },
+     "season_d_ecw": -0.0753
+    },
+    {
+     "add": "Marcus Smart",
+     "team": "HOU",
+     "drop": "Andrew Wiggins",
+     "timing": "same day",
+     "waiver_date": null,
+     "d_exp": 0.012035321452300185,
+     "d_cat": {
+      "FG%": -0.008889354231942703,
+      "FT%": 3.501239848091586e-05,
+      "3PTM": 5.505045153064714e-08,
+      "PTS": -1.1325795812311412e-07,
+      "REB": -0.015320086915279585,
+      "AST": 0.01056611206014546,
+      "ST": 0.029410144537933447,
+      "BLK": -0.000433341941352694,
+      "TO": -0.0033331062481780638
+     },
+     "d_exp_drop": -0.15297062359661795,
+     "d_exp_add": 0.16500594504891813,
+     "games": 1,
+     "games_left": 1,
+     "value": -4.07,
+     "status": null,
+     "missed": null,
+     "other_timing": {
+      "timing": "after tonight",
+      "d_exp": -0.1529706235966179,
+      "games": 0
+     },
+     "season_d_ecw": -0.1411
+    },
+    {
+     "add": "Gui Santos",
+     "team": "GSW",
+     "drop": "Andrew Wiggins",
+     "timing": "after tonight",
+     "waiver_date": null,
+     "d_exp": 0.005176249066549898,
+     "d_cat": {
+      "FG%": 0.004566688624879189,
+      "FT%": -0.00011643315249443287,
+      "3PTM": -7.213506735270769e-07,
+      "PTS": -1.2796651915891744e-07,
+      "REB": 0.00962683429099287,
+      "AST": 0.0,
+      "ST": -0.006284839555820154,
+      "BLK": -0.000433341941352694,
+      "TO": -0.0021818098824621934
+     },
+     "d_exp_drop": -0.1529706235966179,
+     "d_exp_add": 0.1581468726631678,
+     "games": 1,
+     "games_left": 1,
+     "value": -6.18,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.1612
+    },
+    {
+     "add": "Bobby Portis",
+     "team": "MIA",
+     "drop": "Andrew Wiggins",
+     "timing": "after tonight",
+     "waiver_date": null,
+     "d_exp": 0.003625130564539447,
+     "d_cat": {
+      "FG%": -0.00018343382245122886,
+      "FT%": 4.415589761075367e-05,
+      "3PTM": -1.2963466655691036e-07,
+      "PTS": -6.537291663555322e-08,
+      "REB": 0.028851620179930204,
+      "AST": -0.021466347067379266,
+      "ST": -0.006284839555820154,
+      "BLK": -0.00032202102051792636,
+      "TO": 0.002986190960750257
+     },
+     "d_exp_drop": -0.1529706235966179,
+     "d_exp_add": 0.15659575416115734,
+     "games": 1,
+     "games_left": 1,
+     "value": -3.67,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.0459
+    },
+    {
+     "add": "Bones Hyland",
+     "team": "MIN",
+     "drop": "Andrew Wiggins",
+     "timing": "after tonight",
+     "waiver_date": null,
+     "d_exp": 0.001961149116762262,
+     "d_cat": {
+      "FG%": 0.0005673689543266303,
+      "FT%": 5.783942098736006e-05,
+      "3PTM": 5.505045153064714e-08,
+      "PTS": -6.254653905912733e-08,
+      "REB": -0.024712099340091775,
+      "AST": 0.02445376562243118,
+      "ST": 0.0,
+      "BLK": -0.000433341941352694,
+      "TO": 0.002027623896549091
+     },
+     "d_exp_drop": -0.1529706235966179,
+     "d_exp_add": 0.15493177271338016,
+     "games": 1,
+     "games_left": 1,
+     "value": -4.24,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.0779
+    },
+    {
+     "add": "Ryan Kalkbrenner",
+     "team": "CHA",
+     "drop": "Andrew Wiggins",
+     "timing": "same day",
+     "waiver_date": null,
+     "d_exp": -0.006833509535498716,
+     "d_cat": {
+      "FG%": 0.03302502469146751,
+      "FT%": 1.5564706598247824e-05,
+      "3PTM": -2.3063455999450255e-06,
+      "PTS": -2.1159063345876916e-07,
+      "REB": 0.01976230015858299,
+      "AST": -0.03598312339432208,
+      "ST": -0.025869664667775738,
+      "BLK": 0.0001912830096346685,
+      "TO": 0.002027623896549091
+     },
+     "d_exp_drop": -0.15297062359661795,
+     "d_exp_add": 0.14613711406111923,
+     "games": 1,
+     "games_left": 1,
+     "value": -3.72,
+     "status": null,
+     "missed": null,
+     "other_timing": {
+      "timing": "after tonight",
+      "d_exp": -0.1529706235966179,
+      "games": 0
+     },
+     "season_d_ecw": -0.0801
+    },
+    {
+     "add": "Ziaire Williams",
+     "team": "LAL",
+     "drop": "Andrew Wiggins",
+     "timing": "same day",
+     "waiver_date": null,
+     "d_exp": -0.007017848738782639,
+     "d_cat": {
+      "FG%": 0.004812794107306062,
+      "FT%": 8.207846181140788e-05,
+      "3PTM": 0.0,
+      "PTS": -6.254653905912733e-08,
+      "REB": -0.017729154249023327,
+      "AST": -0.021466347067379266,
+      "ST": 0.02380688731558922,
+      "BLK": -0.000433341941352694,
+      "TO": 0.003909297180805016
+     },
+     "d_exp_drop": -0.15297062359661795,
+     "d_exp_add": 0.1459527748578353,
+     "games": 1,
+     "games_left": 1,
+     "value": -2.7,
+     "status": null,
+     "missed": null,
+     "other_timing": {
+      "timing": "after tonight",
+      "d_exp": -0.1529706235966179,
+      "games": 0
+     },
+     "season_d_ecw": -0.0298
+    },
+    {
+     "add": "Will Riley",
+     "team": "WAS",
+     "drop": "Andrew Wiggins",
+     "timing": "same day",
+     "waiver_date": null,
+     "d_exp": -0.00867513395371583,
+     "d_cat": {
+      "FG%": -0.00742211548720606,
+      "FT%": -5.074825352213708e-05,
+      "3PTM": -1.0816527618029426e-07,
+      "PTS": -4.31424784785861e-09,
+      "REB": -0.006996673404648768,
+      "AST": -0.00335874958324367,
+      "ST": 0.013509687501091383,
+      "BLK": -0.0005498244628524551,
+      "TO": -0.003806597783810095
+     },
+     "d_exp_drop": -0.15297062359661795,
+     "d_exp_add": 0.14429548964290212,
+     "games": 2,
+     "games_left": 2,
+     "value": -8.21,
+     "status": null,
+     "missed": null,
+     "other_timing": {
+      "timing": "after tonight",
+      "d_exp": -0.0802037240613539,
+      "games": 1
+     },
+     "season_d_ecw": -0.2722
+    },
+    {
+     "add": "Robert Williams III",
+     "team": "POR",
+     "drop": "Andrew Wiggins",
+     "timing": "after tonight",
+     "waiver_date": null,
+     "d_exp": -0.010167077620132192,
+     "d_cat": {
+      "FG%": 0.027600533673090122,
+      "FT%": 3.323874276839334e-05,
+      "3PTM": -2.3063455999450255e-06,
+      "PTS": -2.987684897259868e-07,
+      "REB": 0.021685601969980206,
+      "AST": -0.04609820558700284,
+      "ST": -0.018033941824147304,
+      "BLK": -0.00013365353614114284,
+      "TO": 0.004781954055410043
+     },
+     "d_exp_drop": -0.1529706235966179,
+     "d_exp_add": 0.1428035459764857,
+     "games": 1,
+     "games_left": 1,
+     "value": -1.97,
+     "status": "P",
+     "missed": "2026-11-19",
+     "season_d_ecw": -0.0742
+    },
+    {
+     "add": "Joan Beringer",
+     "team": "MIN",
+     "drop": "Andrew Wiggins",
+     "timing": "after tonight",
+     "waiver_date": null,
+     "d_exp": -0.018059365614130796,
+     "d_cat": {
+      "FG%": 0.028168703938016293,
+      "FT%": -0.00012466711489445004,
+      "3PTM": -2.3063455999450255e-06,
+      "PTS": -1.7337441160503175e-07,
+      "REB": 0.03196299662155966,
+      "AST": -0.05798563609808305,
+      "ST": -0.025869664667775738,
+      "BLK": 0.0001381783429706962,
+      "TO": 0.005653203084087344
+     },
+     "d_exp_drop": -0.1529706235966179,
+     "d_exp_add": 0.1349112579824871,
+     "games": 1,
+     "games_left": 1,
+     "value": -4.39,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.0981
+    },
+    {
+     "add": "Luke Kornet",
+     "team": "SAS",
+     "drop": "Andrew Wiggins",
+     "timing": "after tonight",
+     "waiver_date": null,
+     "d_exp": -0.018222150554598804,
+     "d_cat": {
+      "FG%": 0.01963998087196439,
+      "FT%": 5.2191079622954106e-05,
+      "3PTM": -2.3063455999450255e-06,
+      "PTS": -2.7866227125805665e-07,
+      "REB": 0.01247089286229558,
+      "AST": -0.02508183892545568,
+      "ST": -0.03262282402332117,
+      "BLK": 5.461938176665182e-05,
+      "TO": 0.0072674132063996755
+     },
+     "d_exp_drop": -0.1529706235966179,
+     "d_exp_add": 0.1347484730420191,
+     "games": 1,
+     "games_left": 1,
+     "value": -4.91,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.1154
+    },
+    {
+     "add": "Kobe Sanders",
+     "team": "LAC",
+     "drop": "Andrew Wiggins",
+     "timing": "after tonight",
+     "waiver_date": null,
+     "d_exp": -0.020762832403896425,
+     "d_cat": {
+      "FG%": 0.002174349907539619,
+      "FT%": 0.00011344723372352927,
+      "3PTM": -2.0532588651533956e-07,
+      "PTS": -1.3178570901217768e-07,
+      "REB": -0.017729154249023327,
+      "AST": -0.0035483360164957345,
+      "ST": 0.0,
+      "BLK": -0.0007016854588681731,
+      "TO": -0.0010711167091768115
+     },
+     "d_exp_drop": -0.1529706235966179,
+     "d_exp_add": 0.13220779119272147,
+     "games": 1,
+     "games_left": 1,
+     "value": -5.66,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.1475
+    },
+    {
+     "add": "Royce O'Neale",
+     "team": "CHA",
+     "drop": "Andrew Wiggins",
+     "timing": "same day",
+     "waiver_date": null,
+     "d_exp": -0.021116397624264205,
+     "d_cat": {
+      "FG%": -0.004549126218316268,
+      "FT%": 7.909254513571717e-05,
+      "3PTM": 1.0422826846046007e-07,
+      "PTS": -1.3960122291489796e-07,
+      "REB": 0.0013440632497977445,
+      "AST": -0.021466347067379266,
+      "ST": 0.0,
+      "BLK": -0.000433341941352694,
+      "TO": 0.003909297180805016
+     },
+     "d_exp_drop": -0.15297062359661795,
+     "d_exp_add": 0.13185422597235374,
+     "games": 1,
+     "games_left": 1,
+     "value": -4.42,
+     "status": null,
+     "missed": null,
+     "other_timing": {
+      "timing": "after tonight",
+      "d_exp": -0.1529706235966179,
+      "games": 0
+     },
+     "season_d_ecw": -0.0766
+    },
+    {
+     "add": "Al Horford",
+     "team": "GSW",
+     "drop": "Andrew Wiggins",
+     "timing": "after tonight",
+     "waiver_date": null,
+     "d_exp": -0.022906664851408465,
+     "d_cat": {
+      "FG%": -0.0028587017586315655,
+      "FT%": 9.002739395103099e-05,
+      "3PTM": -3.817431815100747e-07,
+      "PTS": -2.2719404269011534e-07,
+      "REB": 0.0013440632497977445,
+      "AST": -0.00710905919319238,
+      "ST": -0.01922496830140219,
+      "BLK": 5.461938176665182e-05,
+      "TO": 0.004797963313526443
+     },
+     "d_exp_drop": -0.1529706235966179,
+     "d_exp_add": 0.13006395874520943,
+     "games": 1,
+     "games_left": 1,
+     "value": -4.7,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.0858
+    },
+    {
+     "add": "Scoot Henderson",
+     "team": "POR",
+     "drop": "Andrew Wiggins",
+     "timing": "after tonight",
+     "waiver_date": null,
+     "d_exp": -0.023705008967116636,
+     "d_cat": {
+      "FG%": -0.015631077664582382,
+      "FT%": -2.3429215834092076e-07,
+      "3PTM": -1.2963466655691036e-07,
+      "PTS": -1.3939163157061785e-08,
+      "REB": -0.015320086915279585,
+      "AST": 0.01754000462805161,
+      "ST": 0.0,
+      "BLK": -0.0005594081763721226,
+      "TO": -0.0097340629729461
+     },
+     "d_exp_drop": -0.1529706235966179,
+     "d_exp_add": 0.12926561462950126,
+     "games": 1,
+     "games_left": 1,
+     "value": -6.37,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.175
+    },
+    {
+     "add": "Luke Kennard",
+     "team": "PHX",
+     "drop": "Andrew Wiggins",
+     "timing": "same day",
+     "waiver_date": null,
+     "d_exp": -0.027077019412758863,
+     "d_cat": {
+      "FG%": 0.014329350290873455,
+      "FT%": 7.351794634136155e-05,
+      "3PTM": 1.0422826846046007e-07,
+      "PTS": -9.941487300046958e-08,
+      "REB": -0.02009738259399374,
+      "AST": -0.00710905919319238,
+      "ST": -0.01922496830140219,
+      "BLK": -0.0007016854588681731,
+      "TO": 0.005653203084087344
+     },
+     "d_exp_drop": -0.15297062359661795,
+     "d_exp_add": 0.1258936041838591,
+     "games": 1,
+     "games_left": 1,
+     "value": -4.68,
+     "status": null,
+     "missed": null,
+     "other_timing": {
+      "timing": "after tonight",
+      "d_exp": -0.1529706235966179,
+      "games": 0
+     },
+     "season_d_ecw": -0.093
+    },
+    {
+     "add": "Jaylen Wells",
+     "team": "MEM",
+     "drop": "Andrew Wiggins",
+     "timing": "after tonight",
+     "waiver_date": null,
+     "d_exp": -0.02852686812663574,
+     "d_cat": {
+      "FG%": 0.003355890760210478,
+      "FT%": 3.209186386987639e-05,
+      "3PTM": 1.865724537086777e-07,
+      "PTS": -2.03572084744863e-08,
+      "REB": -0.009117683542387733,
+      "AST": -0.02508183892545568,
+      "ST": 0.0,
+      "BLK": -0.0007016854588681731,
+      "TO": 0.002986190960750257
+     },
+     "d_exp_drop": -0.1529706235966179,
+     "d_exp_add": 0.12444375546998215,
+     "games": 1,
+     "games_left": 1,
+     "value": -3.88,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.1292
+    },
+    {
+     "add": "Keon Ellis",
+     "team": "BKN",
+     "drop": "Andrew Wiggins",
+     "timing": "same day",
+     "waiver_date": null,
+     "d_exp": -0.0286543683549626,
+     "d_cat": {
+      "FG%": 0.002207524363827873,
+      "FT%": 3.5285584071176324e-05,
+      "3PTM": -3.817431815100747e-07,
+      "PTS": -2.4354754402100554e-07,
+      "REB": -0.025840573206846185,
+      "AST": -0.02870680477429266,
+      "ST": 0.018061726274415157,
+      "BLK": -6.410438949977504e-05,
+      "TO": 0.005653203084087344
+     },
+     "d_exp_drop": -0.15297062359661795,
+     "d_exp_add": 0.12431625524165535,
+     "games": 1,
+     "games_left": 1,
+     "value": -4.39,
+     "status": null,
+     "missed": null,
+     "other_timing": {
+      "timing": "after tonight",
+      "d_exp": -0.1529706235966179,
+      "games": 0
+     },
+     "season_d_ecw": -0.1054
+    },
+    {
+     "add": "Terrence Shannon Jr",
+     "team": "MIN",
+     "drop": "Andrew Wiggins",
+     "timing": "after tonight",
+     "waiver_date": null,
+     "d_exp": -0.03262686390124786,
+     "d_cat": {
+      "FG%": 0.004683489761464821,
+      "FT%": 1.344878213371814e-05,
+      "3PTM": -3.817431815100747e-07,
+      "PTS": -4.13799424725525e-08,
+      "REB": -0.015320086915279585,
+      "AST": 0.0035354877132974805,
+      "ST": -0.025869664667775738,
+      "BLK": -0.0007016854588681731,
+      "TO": 0.0010325700069035992
+     },
+     "d_exp_drop": -0.1529706235966179,
+     "d_exp_add": 0.12034375969537003,
+     "games": 1,
+     "games_left": 1,
+     "value": -6.32,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.1629
+    },
+    {
+     "add": "Isaiah Stewart",
+     "team": "MEM",
+     "drop": "Andrew Wiggins",
+     "timing": "after tonight",
+     "waiver_date": null,
+     "d_exp": -0.038555526961619124,
+     "d_cat": {
+      "FG%": 0.024698867629091348,
+      "FT%": 1.2676938091038537e-05,
+      "3PTM": -8.585738306976509e-07,
+      "PTS": -6.537291663555322e-08,
+      "REB": 0.006824319453388794,
+      "AST": -0.039633445251641586,
+      "ST": -0.03262282402332117,
+      "BLK": 0.0001381783429706962,
+      "TO": 0.002027623896549091
+     },
+     "d_exp_drop": -0.1529706235966179,
+     "d_exp_add": 0.11441509663499877,
+     "games": 1,
+     "games_left": 1,
+     "value": -3.82,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.1348
+    },
+    {
+     "add": "Allen Graves",
+     "team": "TOR",
+     "drop": "Andrew Wiggins",
+     "timing": "same day",
+     "waiver_date": null,
+     "d_exp": -0.04532496614870363,
+     "d_cat": {
+      "FG%": 0.0033782705311647954,
+      "FT%": 3.1016079356849247e-05,
+      "3PTM": -7.213506735270769e-07,
+      "PTS": -1.967004730207833e-07,
+      "REB": -0.0026569410903405366,
+      "AST": -0.039633445251641586,
+      "ST": -0.012694836574851598,
+      "BLK": -0.00022413327957271356,
+      "TO": 0.00647602148832771
+     },
+     "d_exp_drop": -0.15297062359661795,
+     "d_exp_add": 0.10764565744791432,
+     "games": 1,
+     "games_left": 1,
+     "value": -5.61,
+     "status": null,
+     "missed": null,
+     "other_timing": {
+      "timing": "after tonight",
+      "d_exp": -0.1529706235966179,
+      "games": 0
+     },
+     "season_d_ecw": -0.1462
+    },
+    {
+     "add": "Anfernee Simons",
+     "team": "PHI",
+     "drop": "Andrew Wiggins",
+     "timing": "after tonight",
+     "waiver_date": null,
+     "d_exp": -0.04951139074017774,
+     "d_cat": {
+      "FG%": -0.0054869332800359105,
+      "FT%": 0.00012215103446533426,
+      "3PTM": 2.9609209906134026e-07,
+      "PTS": 0.0,
+      "REB": -0.02009738259399374,
+      "AST": -0.00710905919319238,
+      "ST": -0.01922496830140219,
+      "BLK": -0.0007016854588681731,
+      "TO": 0.002986190960750257
+     },
+     "d_exp_drop": -0.1529706235966179,
+     "d_exp_add": 0.10345923285644015,
+     "games": 1,
+     "games_left": 1,
+     "value": -4.45,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.0818
+    },
+    {
+     "add": "Noah Clowney",
+     "team": "BKN",
+     "drop": "Andrew Wiggins",
+     "timing": "same day",
+     "waiver_date": null,
+     "d_exp": -0.05094929434758255,
+     "d_cat": {
+      "FG%": -0.006849387338150215,
+      "FT%": -9.193601501200632e-06,
+      "3PTM": -2.891172448116208e-07,
+      "PTS": -1.0623175850099642e-07,
+      "REB": 0.0026985260562756297,
+      "AST": -0.03598312339432208,
+      "ST": -0.012694836574851598,
+      "BLK": -0.0001385080425788665,
+      "TO": 0.002027623896549091
+     },
+     "d_exp_drop": -0.15297062359661795,
+     "d_exp_add": 0.1020213292490354,
+     "games": 1,
+     "games_left": 1,
+     "value": -5.53,
+     "status": null,
+     "missed": null,
+     "other_timing": {
+      "timing": "after tonight",
+      "d_exp": -0.1529706235966179,
+      "games": 0
+     },
+     "season_d_ecw": -0.1359
+    },
+    {
+     "add": "Jerami Grant",
+     "team": "MEM",
+     "drop": "Andrew Wiggins",
+     "timing": "after tonight",
+     "waiver_date": null,
+     "d_exp": -0.05169539968730186,
+     "d_cat": {
+      "FG%": -0.002369337805453342,
+      "FT%": -2.228286969208071e-05,
+      "3PTM": 1.479466814613417e-07,
+      "PTS": -7.793172773773449e-09,
+      "REB": -0.020097382593993407,
+      "AST": -0.014265785724858149,
+      "ST": -0.012694836574851598,
+      "BLK": -6.410438949977504e-05,
+      "TO": -0.0021818098824621934
+     },
+     "d_exp_drop": -0.1529706235966179,
+     "d_exp_add": 0.10127522390931604,
+     "games": 1,
+     "games_left": 1,
+     "value": -4.37,
+     "status": "Q",
+     "missed": null,
+     "season_d_ecw": -0.0792
+    },
+    {
+     "add": "Nikola Jovic",
+     "team": "MIA",
+     "drop": "Andrew Wiggins",
+     "timing": "after tonight",
+     "waiver_date": null,
+     "d_exp": -0.05686596754618439,
+     "d_cat": {
+      "FG%": -0.009901752433853495,
+      "FT%": -8.256627868874489e-05,
+      "3PTM": -1.0098429918947716e-06,
+      "PTS": -2.491720512143303e-07,
+      "REB": -0.014100184778724378,
+      "AST": -0.014265785724858149,
+      "ST": -0.01922496830140219,
+      "BLK": -0.00032202102051792636,
+      "TO": 0.0010325700069035992
+     },
+     "d_exp_drop": -0.1529706235966179,
+     "d_exp_add": 0.0961046560504335,
+     "games": 1,
+     "games_left": 1,
+     "value": -8.55,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.2695
+    },
+    {
+     "add": "Kyle Kuzma",
+     "team": "MIL",
+     "drop": "Andrew Wiggins",
+     "timing": "after tonight",
+     "waiver_date": null,
+     "d_exp": -0.06485760576562571,
+     "d_cat": {
+      "FG%": 0.007886098536615593,
+      "FT%": -4.775188683758813e-05,
+      "3PTM": -1.3606553930234355e-06,
+      "PTS": -4.021101602802446e-07,
+      "REB": -0.012932720548649468,
+      "AST": -0.03105086483752484,
+      "ST": -0.029799132751123225,
+      "BLK": -0.0005954343221004077,
+      "TO": 0.0016839628095475234
+     },
+     "d_exp_drop": -0.1529706235966179,
+     "d_exp_add": 0.08811301783099218,
+     "games": 1,
+     "games_left": 1,
+     "value": -4.69,
+     "status": "Q",
+     "missed": "2026-11-19",
+     "season_d_ecw": -0.0802
+    },
+    {
+     "add": "Dean Wade",
+     "team": "PHI",
+     "drop": "Andrew Wiggins",
+     "timing": "after tonight",
+     "waiver_date": null,
+     "d_exp": -0.06822605319321884,
+     "d_cat": {
+      "FG%": 0.00708156236575308,
+      "FT%": 6.984577441593309e-05,
+      "3PTM": -1.4191927293349949e-06,
+      "PTS": -4.4836287882432657e-07,
+      "REB": -0.015095307296572158,
+      "AST": -0.045313834943415565,
+      "ST": -0.023500648203122254,
+      "BLK": -0.0005496652915644162,
+      "TO": 0.009083861956894701
+     },
+     "d_exp_drop": -0.1529706235966179,
+     "d_exp_add": 0.08474457040339906,
+     "games": 1,
+     "games_left": 1,
+     "value": -3.35,
+     "status": "Q",
+     "missed": "2026-11-18",
+     "season_d_ecw": -0.0364
+    },
+    {
+     "add": "AJ Green",
+     "team": "MIL",
+     "drop": "John Collins",
+     "timing": "after tonight",
+     "waiver_date": null,
+     "d_exp": -0.07448907831957197,
+     "d_cat": {
+      "FG%": -0.023651498075242805,
+      "FT%": 8.810404541204075e-05,
+      "3PTM": 3.546307576485219e-07,
+      "PTS": -1.9025221997814867e-07,
+      "REB": -0.05070711059910249,
+      "AST": 0.01415844337523553,
+      "ST": -0.01936362234370559,
+      "BLK": -0.0007784856396593209,
+      "TO": 0.005764926538952997
+     },
+     "d_exp_drop": -0.14840557766790718,
+     "d_exp_add": 0.07391649934833522,
+     "games": 1,
+     "games_left": 1,
+     "value": -6.35,
+     "status": null,
+     "missed": "2026-11-19",
+     "season_d_ecw": -0.2174
+    },
+    {
+     "add": "Harrison Barnes",
+     "team": "SAS",
+     "drop": "John Collins",
+     "timing": "after tonight",
+     "waiver_date": null,
+     "d_exp": -0.07627919305588199,
+     "d_cat": {
+      "FG%": -0.018300841341158613,
+      "FT%": 4.317507229356643e-05,
+      "3PTM": 0.0,
+      "PTS": -1.7656860040737854e-07,
+      "REB": -0.04976942167258219,
+      "AST": 0.0035577907333316228,
+      "ST": -0.01936362234370559,
+      "BLK": -0.0006319979548113919,
+      "TO": 0.008185901019351016
+     },
+     "d_exp_drop": -0.14840557766790718,
+     "d_exp_add": 0.0721263846120252,
+     "games": 1,
+     "games_left": 1,
+     "value": -6.46,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.2329
+    },
+    {
+     "add": "Gradey Dick",
+     "team": "LAC",
+     "drop": "Andrew Wiggins",
+     "timing": "after tonight",
+     "waiver_date": null,
+     "d_exp": -0.07682059921620521,
+     "d_cat": {
+      "FG%": 0.005381064094929222,
+      "FT%": 8.441450522078675e-05,
+      "3PTM": -7.213506735270769e-07,
+      "PTS": -1.5596879598955837e-07,
+      "REB": -0.016529736536427753,
+      "AST": -0.05062677351371403,
+      "ST": -0.01922496830140219,
+      "BLK": -0.0007016854588681731,
+      "TO": 0.004797963313526443
+     },
+     "d_exp_drop": -0.1529706235966179,
+     "d_exp_add": 0.07615002438041268,
+     "games": 1,
+     "games_left": 1,
+     "value": -7.04,
+     "status": null,
+     "missed": null,
+     "season_d_ecw": -0.2157
+    },
+    {
+     "add": "Tim Hardaway Jr.",
+     "team": "MIA",
+     "drop": "John Collins",
+     "timing": "after tonight",
+     "waiver_date": null,
+     "d_exp": -0.09833130580132127,
+     "d_cat": {
+      "FG%": -0.03242656346183537,
+      "FT%": 1.90638817112454e-05,
+      "3PTM": 1.2114288261422246e-07,
+      "PTS": -1.5927403462789869e-07,
+      "REB": -0.04976942167258219,
+      "AST": -0.0035691187574899974,
+      "ST": -0.01936362234370559,
+      "BLK": -0.0006319979548113919,
+      "TO": 0.007410392638544039
+     },
+     "d_exp_drop": -0.14840557766790718,
+     "d_exp_add": 0.05007427186658592,
+     "games": 1,
+     "games_left": 1,
+     "value": -7.2,
+     "status": null,
+     "missed": "2026-11-18",
+     "season_d_ecw": -0.2608
+    }
+   ],
+   "no_games": [
+    "Kasparas Jakucionis"
+   ],
+   "pool_size": 77,
+   "drop_alone": {
+    "PJ Washington": -0.2728,
+    "Andrew Wiggins": -0.153,
+    "Kel'el Ware": -0.1464,
+    "Neemias Queta": -0.3594,
+    "John Collins": -0.1484,
+    "Cam Spencer": -0.2879
+   }
+  }
+ },
+ "lineup_today": {
+  "date": "2026-11-20",
+  "games_today": true,
+  "moves": [],
+  "alerts": [],
+  "d_exp": 0.05,
+  "replacements": {
+   "Kevin Durant": {
+    "slot": "G",
+    "candidates": []
+   },
+   "John Collins": {
+    "slot": "PF",
+    "candidates": []
+   },
+   "Miles Bridges": {
+    "slot": "F",
+    "candidates": []
+   }
+  },
+  "slots": {
+   "Cam Spencer": "PG",
+   "Ty Jerome": "SG",
+   "Kevin Durant": "G",
+   "Yaxel Lendeborg": "SF",
+   "John Collins": "PF",
+   "Miles Bridges": "F",
+   "Kel'el Ware": "C",
+   "Neemias Queta": "C",
+   "Kyrie Irving": "UTIL",
+   "PJ Washington": "UTIL",
+   "Jaden McDaniels": "BN",
+   "Derrick White": "BN",
+   "Andrew Wiggins": "BN"
+  }
+ },
+ "fa_notice": {
+  "rows": [],
+  "this_week": {
+   "add": "Mitchell Robinson",
+   "team": "BOS",
+   "drop": "Andrew Wiggins",
+   "timing": "after tonight",
+   "waiver_date": null,
+   "d_exp": 0.27246695020984346,
+   "d_cat": {
+    "FG%": 0.052670168725752475,
+    "FT%": -0.0012845550774892578,
+    "3PTM": -2.3063455999450255e-06,
+    "PTS": -1.411691652464242e-08,
+    "REB": 0.176902650253824,
+    "AST": -0.010539586510426968,
+    "ST": 0.06007951331036088,
+    "BLK": 0.0007397147615910704,
+    "TO": -0.006098634791252278
+   },
+   "d_exp_drop": -0.1529706235966179,
+   "d_exp_add": 0.42543757380646136,
+   "games": 2,
+   "games_left": 2,
+   "value": -4.28,
+   "status": null,
+   "missed": null,
+   "season_d_ecw": -0.165
+  },
+  "gap": 1.0,
+  "d_exp": 0.1
+ },
+ "unpooled_active": [],
+ "board": {
+  "score": {
+   "me": 8,
+   "opp": 1,
+   "tie": 0
+  },
+  "me": {
+   "name": "KEL'EL YAXEL HALQUETA",
+   "seat": 10,
+   "manager": "Me",
+   "rows": [
+    {
+     "slot": "PG",
+     "player": "Cam Spencer",
+     "team": "MEM",
+     "positions": [
+      "PG",
+      "SG"
+     ],
+     "status": null,
+     "today": null,
+     "to_date": {
+      "fgm": 16,
+      "fga": 29,
+      "ftm": 8,
+      "fta": 9,
+      "tpm": 7,
+      "pts": 47,
+      "reb": 9,
+      "ast": 27,
+      "stl": 1,
+      "blk": 1,
+      "tov": 4
+     },
+     "games": 3
+    },
+    {
+     "slot": "SG",
+     "player": "Ty Jerome",
+     "team": "MEM",
+     "positions": [
+      "PG",
+      "SG"
+     ],
+     "status": "O",
+     "today": null,
+     "to_date": null,
+     "games": 0
+    },
+    {
+     "slot": "G",
+     "player": "Kevin Durant",
+     "team": "HOU",
+     "positions": [
+      "SG",
+      "SF",
+      "PF"
+     ],
+     "status": null,
+     "today": "@ DEN",
+     "to_date": {
+      "fgm": 15,
+      "fga": 28,
+      "ftm": 7,
+      "fta": 8,
+      "tpm": 6,
+      "pts": 43,
+      "reb": 4,
+      "ast": 6,
+      "stl": 0,
+      "blk": 1,
+      "tov": 3
+     },
+     "games": 2
+    },
+    {
+     "slot": "SF",
+     "player": "Yaxel Lendeborg",
+     "team": "GSW",
+     "positions": [
+      "SF",
+      "PF"
+     ],
+     "status": null,
+     "today": null,
+     "to_date": {
+      "fgm": 18,
+      "fga": 52,
+      "ftm": 13,
+      "fta": 14,
+      "tpm": 3,
+      "pts": 52,
+      "reb": 21,
+      "ast": 14,
+      "stl": 4,
+      "blk": 4,
+      "tov": 7
+     },
+     "games": 3
+    },
+    {
+     "slot": "PF",
+     "player": "John Collins",
+     "team": "DET",
+     "positions": [
+      "PF",
+      "C"
+     ],
+     "status": null,
+     "today": "vs TOR",
+     "to_date": {
+      "fgm": 9,
+      "fga": 15,
+      "ftm": 8,
+      "fta": 8,
+      "tpm": 5,
+      "pts": 31,
+      "reb": 8,
+      "ast": 2,
+      "stl": 1,
+      "blk": 2,
+      "tov": 2
+     },
+     "games": 2
+    },
+    {
+     "slot": "F",
+     "player": "Miles Bridges",
+     "team": "PHX",
+     "positions": [
+      "PF"
+     ],
+     "status": null,
+     "today": "@ UTA",
+     "to_date": {
+      "fgm": 13,
+      "fga": 23,
+      "ftm": 0,
+      "fta": 0,
+      "tpm": 3,
+      "pts": 29,
+      "reb": 14,
+      "ast": 7,
+      "stl": 2,
+      "blk": 2,
+      "tov": 1
+     },
+     "games": 2
+    },
+    {
+     "slot": "C",
+     "player": "Kel'el Ware",
+     "team": "MIL",
+     "positions": [
+      "C"
+     ],
+     "status": null,
+     "today": null,
+     "to_date": {
+      "fgm": 9,
+      "fga": 15,
+      "ftm": 1,
+      "fta": 2,
+      "tpm": 3,
+      "pts": 22,
+      "reb": 8,
+      "ast": 1,
+      "stl": 3,
+      "blk": 0,
+      "tov": 4
+     },
+     "games": 2
+    },
+    {
+     "slot": "C",
+     "player": "Neemias Queta",
+     "team": "BOS",
+     "positions": [
+      "C"
+     ],
+     "status": null,
+     "today": null,
+     "to_date": {
+      "fgm": 8,
+      "fga": 14,
+      "ftm": 1,
+      "fta": 1,
+      "tpm": 0,
+      "pts": 17,
+      "reb": 10,
+      "ast": 3,
+      "stl": 2,
+      "blk": 0,
+      "tov": 2
+     },
+     "games": 1
+    },
+    {
+     "slot": "UTIL",
+     "player": "Kyrie Irving",
+     "team": "DAL",
+     "positions": [
+      "PG",
+      "SG"
+     ],
+     "status": null,
+     "today": null,
+     "to_date": {
+      "fgm": 7,
+      "fga": 15,
+      "ftm": 2,
+      "fta": 2,
+      "tpm": 1,
+      "pts": 17,
+      "reb": 6,
+      "ast": 5,
+      "stl": 3,
+      "blk": 0,
+      "tov": 1
+     },
+     "games": 1
+    },
+    {
+     "slot": "UTIL",
+     "player": "PJ Washington",
+     "team": "DAL",
+     "positions": [
+      "PF",
+      "C"
+     ],
+     "status": "Q",
+     "today": null,
+     "to_date": {
+      "fgm": 7,
+      "fga": 10,
+      "ftm": 2,
+      "fta": 2,
+      "tpm": 5,
+      "pts": 21,
+      "reb": 5,
+      "ast": 2,
+      "stl": 1,
+      "blk": 3,
+      "tov": 0
+     },
+     "games": 1
+    },
+    {
+     "slot": "BN",
+     "player": "Jaden McDaniels",
+     "team": "MIN",
+     "positions": [
+      "SF"
+     ],
+     "status": null,
+     "today": null,
+     "to_date": {
+      "fgm": 21,
+      "fga": 37,
+      "ftm": 4,
+      "fta": 4,
+      "tpm": 6,
+      "pts": 52,
+      "reb": 14,
+      "ast": 8,
+      "stl": 7,
+      "blk": 5,
+      "tov": 7
+     },
+     "games": 3
+    },
+    {
+     "slot": "BN",
+     "player": "Derrick White",
+     "team": "BOS",
+     "positions": [
+      "PG",
+      "SG"
+     ],
+     "status": null,
+     "today": null,
+     "to_date": {
+      "fgm": 9,
+      "fga": 28,
+      "ftm": 2,
+      "fta": 3,
+      "tpm": 1,
+      "pts": 21,
+      "reb": 6,
+      "ast": 10,
+      "stl": 0,
+      "blk": 1,
+      "tov": 0
+     },
+     "games": 2
+    },
+    {
+     "slot": "BN",
+     "player": "Andrew Wiggins",
+     "team": "MIA",
+     "positions": [
+      "SG",
+      "SF",
+      "PF"
+     ],
+     "status": null,
+     "today": null,
+     "to_date": null,
+     "games": 0
+    },
+    {
+     "slot": "IL",
+     "player": "Tyrese Haliburton",
+     "team": "IND",
+     "positions": [
+      "PG",
+      "SG"
+     ],
+     "status": "O",
+     "today": "@ CLE",
+     "to_date": null,
+     "games": 0
+    },
+    {
+     "slot": "IL",
+     "player": "Kawhi Leonard",
+     "team": "TOR",
+     "positions": [
+      "SG",
+      "SF",
+      "PF"
+     ],
+     "status": "O",
+     "today": "@ DET",
+     "to_date": null,
+     "games": 0
+    }
+   ],
+   "departed": {
+    "names": [
+     "Cameron Johnson",
+     "Ziaire Williams"
+    ],
+    "to_date": {
+     "fgm": 4,
+     "fga": 12,
+     "ftm": 1,
+     "fta": 1,
+     "tpm": 0,
+     "pts": 9,
+     "reb": 1,
+     "ast": 2,
+     "stl": 2,
+     "blk": 0,
+     "tov": 2
+    },
+    "games": 2
+   },
+   "totals": {
+    "fgm": 136,
+    "fga": 278,
+    "ftm": 49,
+    "fta": 54,
+    "tpm": 40,
+    "pts": 361,
+    "reb": 107,
+    "ast": 87,
+    "stl": 25,
+    "blk": 19,
+    "tov": 33
+   },
+   "rows_match_totals": false
+  },
+  "opp": {
+   "name": "Thompson Telepathy",
+   "seat": 12,
+   "manager": "Hegi",
+   "rows": [
+    {
+     "slot": "PG",
+     "player": "Egor Demin",
+     "team": "BKN",
+     "positions": [
+      "PG",
+      "SG"
+     ],
+     "status": null,
+     "today": "vs ORL",
+     "to_date": {
+      "fgm": 12,
+      "fga": 32,
+      "ftm": 2,
+      "fta": 4,
+      "tpm": 5,
+      "pts": 31,
+      "reb": 7,
+      "ast": 8,
+      "stl": 3,
+      "blk": 1,
+      "tov": 7
+     },
+     "games": 2
+    },
+    {
+     "slot": "SG",
+     "player": "Coby White",
+     "team": "CHA",
+     "positions": [
+      "PG",
+      "SG"
+     ],
+     "status": null,
+     "today": "@ ATL",
+     "to_date": {
+      "fgm": 6,
+      "fga": 12,
+      "ftm": 5,
+      "fta": 7,
+      "tpm": 2,
+      "pts": 19,
+      "reb": 3,
+      "ast": 4,
+      "stl": 3,
+      "blk": 0,
+      "tov": 4
+     },
+     "games": 1
+    },
+    {
+     "slot": "G",
+     "player": "Amen Thompson",
+     "team": "HOU",
+     "positions": [
+      "PG",
+      "SG"
+     ],
+     "status": null,
+     "today": "@ DEN",
+     "to_date": {
+      "fgm": 6,
+      "fga": 11,
+      "ftm": 3,
+      "fta": 4,
+      "tpm": 0,
+      "pts": 15,
+      "reb": 9,
+      "ast": 3,
+      "stl": 1,
+      "blk": 1,
+      "tov": 3
+     },
+     "games": 1
+    },
+    {
+     "slot": "SF",
+     "player": "LeBron James",
+     "team": "PHI",
+     "positions": [
+      "SF",
+      "PF"
+     ],
+     "status": null,
+     "today": null,
+     "to_date": {
+      "fgm": 8,
+      "fga": 16,
+      "ftm": 5,
+      "fta": 6,
+      "tpm": 1,
+      "pts": 22,
+      "reb": 3,
+      "ast": 6,
+      "stl": 0,
+      "blk": 0,
+      "tov": 1
+     },
+     "games": 1
+    },
+    {
+     "slot": "PF",
+     "player": "Domantas Sabonis",
+     "team": "SAC",
+     "positions": [
+      "PF",
+      "C"
+     ],
+     "status": null,
+     "today": "@ LAL",
+     "to_date": {
+      "fgm": 4,
+      "fga": 7,
+      "ftm": 0,
+      "fta": 0,
+      "tpm": 0,
+      "pts": 8,
+      "reb": 13,
+      "ast": 8,
+      "stl": 1,
+      "blk": 0,
+      "tov": 3
+     },
+     "games": 1
+    },
+    {
+     "slot": "F",
+     "player": "Ausar Thompson",
+     "team": "DET",
+     "positions": [
+      "SG",
+      "SF",
+      "PF"
+     ],
+     "status": null,
+     "today": "vs TOR",
+     "to_date": {
+      "fgm": 11,
+      "fga": 19,
+      "ftm": 2,
+      "fta": 2,
+      "tpm": 0,
+      "pts": 24,
+      "reb": 16,
+      "ast": 16,
+      "stl": 7,
+      "blk": 0,
+      "tov": 6
+     },
+     "games": 2
+    },
+    {
+     "slot": "C",
+     "player": "Khaman Maluach",
+     "team": "PHX",
+     "positions": [
+      "C"
+     ],
+     "status": null,
+     "today": "@ UTA",
+     "to_date": {
+      "fgm": 6,
+      "fga": 9,
+      "ftm": 2,
+      "fta": 2,
+      "tpm": 0,
+      "pts": 14,
+      "reb": 8,
+      "ast": 0,
+      "stl": 0,
+      "blk": 0,
+      "tov": 3
+     },
+     "games": 2
+    },
+    {
+     "slot": "C",
+     "player": "Wendell Carter Jr.",
+     "team": "ORL",
+     "positions": [
+      "C"
+     ],
+     "status": null,
+     "today": "@ BKN",
+     "to_date": {
+      "fgm": 8,
+      "fga": 21,
+      "ftm": 6,
+      "fta": 7,
+      "tpm": 3,
+      "pts": 25,
+      "reb": 11,
+      "ast": 4,
+      "stl": 0,
+      "blk": 1,
+      "tov": 0
+     },
+     "games": 2
+    },
+    {
+     "slot": "UTIL",
+     "player": "Collin Sexton",
+     "team": "LAL",
+     "positions": [
+      "PG",
+      "SG"
+     ],
+     "status": null,
+     "today": "vs SAC",
+     "to_date": {
+      "fgm": 3,
+      "fga": 12,
+      "ftm": 3,
+      "fta": 4,
+      "tpm": 1,
+      "pts": 10,
+      "reb": 4,
+      "ast": 3,
+      "stl": 0,
+      "blk": 0,
+      "tov": 2
+     },
+     "games": 1
+    },
+    {
+     "slot": "UTIL",
+     "player": "Day'Ron Sharpe",
+     "team": "BKN",
+     "positions": [
+      "C"
+     ],
+     "status": null,
+     "today": "vs ORL",
+     "to_date": {
+      "fgm": 6,
+      "fga": 10,
+      "ftm": 0,
+      "fta": 3,
+      "tpm": 0,
+      "pts": 12,
+      "reb": 14,
+      "ast": 6,
+      "stl": 2,
+      "blk": 1,
+      "tov": 2
+     },
+     "games": 2
+    },
+    {
+     "slot": "BN",
+     "player": "Tyler Herro",
+     "team": "MIL",
+     "positions": [
+      "PG",
+      "SG"
+     ],
+     "status": null,
+     "today": null,
+     "to_date": {
+      "fgm": 11,
+      "fga": 24,
+      "ftm": 1,
+      "fta": 4,
+      "tpm": 4,
+      "pts": 27,
+      "reb": 6,
+      "ast": 7,
+      "stl": 2,
+      "blk": 0,
+      "tov": 4
+     },
+     "games": 2
+    },
+    {
+     "slot": "BN",
+     "player": "Myles Turner",
+     "team": "MIL",
+     "positions": [
+      "C"
+     ],
+     "status": null,
+     "today": null,
+     "to_date": {
+      "fgm": 2,
+      "fga": 5,
+      "ftm": 0,
+      "fta": 0,
+      "tpm": 0,
+      "pts": 4,
+      "reb": 5,
+      "ast": 4,
+      "stl": 0,
+      "blk": 3,
+      "tov": 1
+     },
+     "games": 1
+    },
+    {
+     "slot": "IL",
+     "player": "Austin Reaves",
+     "team": "LAL",
+     "positions": [
+      "PG",
+      "SG",
+      "SF"
+     ],
+     "status": "O",
+     "today": "vs SAC",
+     "to_date": null,
+     "games": 0
+    },
+    {
+     "slot": "IL",
+     "player": "Jimmy Butler",
+     "team": "GSW",
+     "positions": [
+      "SF",
+      "PF"
+     ],
+     "status": "O",
+     "today": null,
+     "to_date": null,
+     "games": 0
+    }
+   ],
+   "departed": {
+    "names": [
+     "Jaylen Wells",
+     "Peyton Watson",
+     "Max Strus",
+     "Javon Small"
+    ],
+    "to_date": {
+     "fgm": 14,
+     "fga": 33,
+     "ftm": 4,
+     "fta": 6,
+     "tpm": 7,
+     "pts": 39,
+     "reb": 17,
+     "ast": 11,
+     "stl": 4,
+     "blk": 1,
+     "tov": 8
+    },
+    "games": 4
+   },
+   "totals": {
+    "fgm": 97,
+    "fga": 211,
+    "ftm": 33,
+    "fta": 49,
+    "tpm": 23,
+    "pts": 250,
+    "reb": 116,
+    "ast": 80,
+    "stl": 23,
+    "blk": 8,
+    "tov": 44
+   },
+   "rows_match_totals": true
+  }
+ },
+ "method": {
+  "to_date": "Yahoo's week totals (get_matchups through Flaim, the morning pull); the box-score rebuild is the cross-check",
+  "rebuild": "a day with Yahoo's pinned lineup counts its active slots (not BN, IL or IL+); any other day counts every non-IL player on today's roster who played, ten per day by the daily-fill rule when more played; each day's source is in rebuild_rosters",
+  "projection": "season-pool per-game line x each remaining game x today's status availability (a later day: 1.0 from the ESPN return date on); ten-slot daily fill; IL counts 0; unpooled rows through their pool line",
+  "percentages": "total makes / total attempts, actual plus projected",
+  "drop": "no game left this week and board value below the active roster's median",
+  "chances": "P(win) per category: the normal approximation on the final totals; to date fixed, the remaining games' variance from the season per-game CV (FG%/FT%: binomial makes x PCT_MIX_INFL^2); the shared weekly shock left out",
+  "this_week": "each free agent in place of the below-median player whose drop helps most, after tonight or, when his team plays today, the same day if that is better (row 'timing'); ranked by the change in expected categories won (the sum of the nine changes in P(win)); season cost = the change in expected weekly categories against the other eleven teams",
+  "pickups": "Yahoo's available-player list (100 listed, Yahoo-wide ownership order), each from today on at his Yahoo letter's availability, ranked by projected category wins gained, then gap closed"
+ },
+ "inputs": {
+  "state": {
+   "path": "data/league_state.json",
+   "sha256": "3979851a3e94adb1c0ea8cafb543f1f16ab64536e1cbf700282e2cdb9b6357e8"
+  },
+  "schedule": {
+   "path": "data/league_schedule.json",
+   "sha256": "bfcb370bfce155125d4ea8fba4866f64b259c91698c15a159af5b4dcf33efcc9"
+  },
+  "games": {
+   "path": "report/schedule/games-2026-27.csv",
+   "sha256": "7421f6cb9e69f4500df7cf2ff129dbe1718e91a2975f127e1996c96df9806687"
+  },
+  "actuals": {
+   "path": "data/actuals",
+   "sha256": null
+  },
+  "status": {
+   "path": "data/status",
+   "sha256": null
+  },
+  "yahoo_pull": {
+   "path": "data/source/flaim/pull_2026-11-20_pm.json",
+   "sha256": "97f4b6ce9a4e0937c349db27549e305a4d1b804539e7fb9b832840c5708b179b"
+  },
+  "status_file": {
+   "path": "data/status/status_2026-11-20_pm.json",
+   "sha256": "9d0efee79ac9c1d0570ad70dfad413657ef6137556ad7d790abca88e5be8b77b"
+  },
+  "league_tx": {
+   "path": "data/managers/transactions.json",
+   "sha256": "af76898d1663ef25e64ee668b84ded1d56c9d375835661d03a7756097f723ca1"
+  },
+  "news_dir": {
+   "path": "data/news",
+   "sha256": null
+  },
+  "pool": {
+   "path": "data/season/pool_season.csv",
+   "sha256": "5a28f51efaf6bd1b7a4a996c4752c8b4a3af49ac5ecd2b9003d8a66411215f73"
+  }
+ },
+ "phase": "pm",
+ "refreshed_from": {
+  "status": "status_2026-11-20_pm.json",
+  "pull": "pull_2026-11-20_pm.json",
+  "state": "data/league_state.json"
+ }
+}
