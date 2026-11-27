@@ -1,0 +1,1241 @@
+{
+ "date": "2026-11-27",
+ "week": 6,
+ "method": {
+  "engine": "3551a15",
+  "line_switch": [
+   "PTS",
+   "REB",
+   "AST"
+  ],
+  "registry_sha256": "c876db22df09927ae780c1991809ed24351ba4b95ad4e93dd232b33a862aec40",
+  "line": "Method: deck engine 3551a15; line method: minutes ratio on PTS, REB, AST; constants registry c876db22df09"
+ },
+ "week_window": [
+  "2026-11-23",
+  "2026-11-29"
+ ],
+ "league_state_as_of": "2026-11-27",
+ "unpooled": [
+  {
+   "player": "Charles Bassey",
+   "fantasy_team": "Podz save the league",
+   "seat": 9,
+   "slot": "C",
+   "nba_team": "GSW",
+   "status": null
+  },
+  {
+   "player": "Kenrich Williams",
+   "fantasy_team": "ROOKS FTW",
+   "seat": 2,
+   "slot": "UTIL",
+   "nba_team": "OKC",
+   "status": null
+  },
+  {
+   "player": "Matisse Thybulle",
+   "fantasy_team": "John's Cool Team",
+   "seat": 7,
+   "slot": "SG",
+   "nba_team": "LAL",
+   "status": null
+  }
+ ],
+ "status_file": "status_2026-11-27.json",
+ "lines": "season pool",
+ "opponent": "Booker T Floppers",
+ "today": [
+  [
+   "Cam Spencer",
+   "MEM",
+   "@ MIN",
+   null,
+   1.0,
+   2
+  ],
+  [
+   "Ty Jerome",
+   "MEM",
+   "@ MIN",
+   null,
+   1.0,
+   2
+  ],
+  [
+   "Collin Gillespie",
+   "PHX",
+   "vs DAL",
+   null,
+   1.0,
+   2
+  ],
+  [
+   "Jaden McDaniels",
+   "MIN",
+   "vs MEM",
+   null,
+   1.0,
+   2
+  ],
+  [
+   "Yaxel Lendeborg",
+   "GSW",
+   "@ POR",
+   null,
+   1.0,
+   2
+  ],
+  [
+   "Miles Bridges",
+   "PHX",
+   "vs DAL",
+   null,
+   1.0,
+   2
+  ],
+  [
+   "Kel'el Ware",
+   "MIL",
+   "@ DET",
+   null,
+   1.0,
+   2
+  ],
+  [
+   "Neemias Queta",
+   "BOS",
+   "vs ATL",
+   null,
+   1.0,
+   2
+  ],
+  [
+   "PJ Washington",
+   "DAL",
+   "@ PHX",
+   null,
+   1.0,
+   1
+  ],
+  [
+   "Derrick White",
+   "BOS",
+   "vs ATL",
+   null,
+   1.0,
+   2
+  ],
+  [
+   "Kevin Durant",
+   "HOU",
+   null,
+   null,
+   1.0,
+   1
+  ],
+  [
+   "John Collins",
+   "DET",
+   "vs MIL",
+   null,
+   1.0,
+   2
+  ],
+  [
+   "Kyrie Irving",
+   "DAL",
+   "@ PHX",
+   null,
+   1.0,
+   1
+  ]
+ ],
+ "lineup": [
+  [
+   "PG",
+   "Kyrie Irving"
+  ],
+  [
+   "SG",
+   "Cam Spencer"
+  ],
+  [
+   "G",
+   "Derrick White"
+  ],
+  [
+   "SF",
+   "Jaden McDaniels"
+  ],
+  [
+   "PF",
+   "John Collins"
+  ],
+  [
+   "F",
+   "Miles Bridges"
+  ],
+  [
+   "C",
+   "Neemias Queta"
+  ],
+  [
+   "C",
+   "Kel'el Ware"
+  ],
+  [
+   "Util",
+   "Yaxel Lendeborg"
+  ],
+  [
+   "Util",
+   "Ty Jerome"
+  ]
+ ],
+ "bench": [
+  "Collin Gillespie",
+  "PJ Washington"
+ ],
+ "waiver_base_ecw": 4.8844,
+ "waiver_gate": {
+  "sources": {
+   "yahoo": true,
+   "espn": true
+  },
+  "set_aside": [
+   {
+    "player": "Jalen Williams",
+    "code": "Out",
+    "source": "espn",
+    "return_date": "2027-03-02",
+    "reason": "out",
+    "out_since": "2026-11-20",
+    "out_capped": true,
+    "long_out": false
+   },
+   {
+    "player": "Cason Wallace",
+    "code": "O",
+    "source": "yahoo",
+    "return_date": "2027-03-02",
+    "reason": "out",
+    "out_since": "2026-11-20",
+    "out_capped": true,
+    "long_out": false
+   },
+   {
+    "player": "Tobias Harris",
+    "code": "O",
+    "source": "yahoo",
+    "return_date": "2026-12-03",
+    "reason": "out",
+    "out_since": "2026-11-20",
+    "out_capped": true,
+    "long_out": true
+   },
+   {
+    "player": "Maxime Raynaud",
+    "code": "O",
+    "source": "yahoo",
+    "return_date": "2026-12-02",
+    "reason": "out",
+    "out_since": "2026-11-20",
+    "out_capped": true,
+    "long_out": true
+   },
+   {
+    "player": "Justin Champagnie",
+    "code": "O",
+    "source": "yahoo",
+    "return_date": "2027-02-25",
+    "reason": "out",
+    "out_since": "2026-11-20",
+    "out_capped": true,
+    "long_out": false
+   },
+   {
+    "player": "Bradley Beal",
+    "code": "Out",
+    "source": "espn",
+    "return_date": "2026-11-29",
+    "reason": "out",
+    "out_since": "2026-11-20",
+    "out_capped": true,
+    "long_out": true
+   }
+  ]
+ },
+ "waiver_positive_pairs": 1,
+ "waiver_pairs_scored": 520,
+ "waiver_top": [
+  {
+   "add": "Alex Caruso",
+   "add_team": "OKC",
+   "drop": "Collin Gillespie",
+   "d_ecw": 0.0066,
+   "title_by_seed": {
+    "2026": 15.07,
+    "2027": 14.64
+   },
+   "title": 14.86,
+   "d_title": 0.12,
+   "add_waiver_date": null,
+   "add_own_drop_date": null
+  }
+ ],
+ "waiver_read": {
+  "noise": 0.69,
+  "picks": [
+   {
+    "add": "Alex Caruso",
+    "read": "inside sampling error"
+   }
+  ],
+  "same_drop": null,
+  "tied": false,
+  "spread": [
+   0.12,
+   0.12
+  ]
+ },
+ "streaming": [
+  {
+   "player": "Robert Williams III",
+   "team": "POR",
+   "games_left": 2,
+   "value_per_game": -1.99,
+   "availability": 1.0,
+   "exp_games": 2.0,
+   "add_waiver_date": null,
+   "add_own_drop_date": null
+  },
+  {
+   "player": "Kris Dunn",
+   "team": "LAC",
+   "games_left": 2,
+   "value_per_game": -2.08,
+   "availability": 1.0,
+   "exp_games": 2.0,
+   "add_waiver_date": null,
+   "add_own_drop_date": null
+  },
+  {
+   "player": "De'Anthony Melton",
+   "team": "GSW",
+   "games_left": 2,
+   "value_per_game": -2.29,
+   "availability": 1.0,
+   "exp_games": 2.0,
+   "add_waiver_date": null,
+   "add_own_drop_date": null
+  },
+  {
+   "player": "Jordan Goodwin",
+   "team": "PHX",
+   "games_left": 2,
+   "value_per_game": -2.3,
+   "availability": 1.0,
+   "exp_games": 2.0,
+   "add_waiver_date": null,
+   "add_own_drop_date": null
+  },
+  {
+   "player": "Kevin Huerter",
+   "team": "DET",
+   "games_left": 2,
+   "value_per_game": -2.78,
+   "availability": 1.0,
+   "exp_games": 2.0,
+   "add_waiver_date": null,
+   "add_own_drop_date": null
+  }
+ ],
+ "waiver_notes": {
+  "read": true,
+  "window_days": 3,
+  "missing_days": [],
+  "by": {
+   "Ryan Rollins": {
+    "waiver_date": "2026-11-28",
+    "own_drop_date": null
+   },
+   "Mikel Brown Jr.": {
+    "waiver_date": "2026-11-28",
+    "own_drop_date": null
+   }
+  }
+ },
+ "streaming_vs": {
+  "player": "PJ Washington",
+  "games_left": 1,
+  "value_per_game": -2.52
+ },
+ "role_watch": {
+  "box_scores": [
+   "2026-10-20",
+   "2026-11-25"
+  ],
+  "rule": {
+   "start_run": 2,
+   "stale_days": 7,
+   "dropped_days": 3,
+   "hold_days": 7,
+   "shown": 8
+  },
+  "starts_watch": [
+   {
+    "player": "Allen Graves",
+    "team": "TOR",
+    "starts_in_a_row": 2,
+    "new": true,
+    "last_game": "2026-11-23",
+    "season_games": 17,
+    "pooled": true,
+    "status": null,
+    "dropped": null,
+    "games": 3,
+    "minutes": [
+     31,
+     33,
+     31
+    ],
+    "starts": 2,
+    "line": {
+     "pts": 12.0,
+     "reb": 5.3,
+     "ast": 0.3,
+     "stl": 1.3,
+     "blk": 0.7,
+     "tpm": 1.7,
+     "tov": 0.0
+    }
+   },
+   {
+    "player": "Zaccharie Risacher",
+    "team": "DAL",
+    "starts_in_a_row": 3,
+    "new": false,
+    "last_game": "2026-11-24",
+    "season_games": 18,
+    "pooled": true,
+    "status": null,
+    "dropped": {
+     "day": "2026-11-26",
+     "team": "ANONG NANGIANNIS?!"
+    },
+    "games": 3,
+    "minutes": [
+     29,
+     28,
+     21
+    ],
+    "starts": 3,
+    "line": {
+     "pts": 12.7,
+     "reb": 7.0,
+     "ast": 1.3,
+     "stl": 0.7,
+     "blk": 0.3,
+     "tpm": 0.7,
+     "tov": 0.7
+    }
+   },
+   {
+    "player": "Kris Murray",
+    "team": "MEM",
+    "starts_in_a_row": 2,
+    "new": true,
+    "last_game": "2026-11-25",
+    "season_games": 15,
+    "pooled": false,
+    "status": null,
+    "dropped": null,
+    "games": 3,
+    "minutes": [
+     12,
+     32,
+     32
+    ],
+    "starts": 2,
+    "line": {
+     "pts": 8.0,
+     "reb": 2.3,
+     "ast": 1.3,
+     "stl": 1.7,
+     "blk": 0.3,
+     "tpm": 0.7,
+     "tov": 0.3
+    }
+   },
+   {
+    "player": "Mikel Brown",
+    "team": "BKN",
+    "starts_in_a_row": 2,
+    "new": true,
+    "last_game": "2026-11-25",
+    "season_games": 13,
+    "pooled": true,
+    "status": null,
+    "dropped": null,
+    "games": 3,
+    "minutes": [
+     24,
+     29,
+     23
+    ],
+    "starts": 2,
+    "line": {
+     "pts": 13.7,
+     "reb": 2.7,
+     "ast": 3.0,
+     "stl": 0.7,
+     "blk": 0.0,
+     "tpm": 2.3,
+     "tov": 3.0
+    }
+   },
+   {
+    "player": "Sam Merrill",
+    "team": "CLE",
+    "starts_in_a_row": 2,
+    "new": true,
+    "last_game": "2026-11-25",
+    "season_games": 13,
+    "pooled": true,
+    "status": null,
+    "dropped": null,
+    "games": 3,
+    "minutes": [
+     25,
+     25,
+     24
+    ],
+    "starts": 2,
+    "line": {
+     "pts": 7.7,
+     "reb": 1.7,
+     "ast": 1.0,
+     "stl": 0.7,
+     "blk": 0.3,
+     "tpm": 1.7,
+     "tov": 0.7
+    }
+   },
+   {
+    "player": "Ryan Rollins",
+    "team": "MIL",
+    "starts_in_a_row": 3,
+    "new": false,
+    "last_game": "2026-11-25",
+    "season_games": 17,
+    "pooled": true,
+    "status": null,
+    "dropped": {
+     "day": "2026-11-26",
+     "team": "Scottie’s Thotties"
+    },
+    "games": 3,
+    "minutes": [
+     28,
+     22,
+     19
+    ],
+    "starts": 3,
+    "line": {
+     "pts": 5.3,
+     "reb": 3.3,
+     "ast": 2.3,
+     "stl": 0.3,
+     "blk": 0.7,
+     "tpm": 0.0,
+     "tov": 1.3
+    }
+   },
+   {
+    "player": "Jaxson Hayes",
+    "team": "UTA",
+    "starts_in_a_row": 2,
+    "new": true,
+    "last_game": "2026-11-22",
+    "season_games": 15,
+    "pooled": true,
+    "status": {
+     "status": "Day-To-Day",
+     "return_date": "2026-11-27"
+    },
+    "dropped": null,
+    "games": 3,
+    "minutes": [
+     25,
+     28,
+     12
+    ],
+    "starts": 2,
+    "line": {
+     "pts": 10.7,
+     "reb": 8.0,
+     "ast": 1.0,
+     "stl": 0.7,
+     "blk": 0.7,
+     "tpm": 0.0,
+     "tov": 1.3
+    }
+   },
+   {
+    "player": "Harrison Barnes",
+    "team": "SAS",
+    "starts_in_a_row": 2,
+    "new": true,
+    "last_game": "2026-11-25",
+    "season_games": 17,
+    "pooled": true,
+    "status": null,
+    "dropped": null,
+    "games": 3,
+    "minutes": [
+     21,
+     26,
+     15
+    ],
+    "starts": 2,
+    "line": {
+     "pts": 5.7,
+     "reb": 2.3,
+     "ast": 1.7,
+     "stl": 0.0,
+     "blk": 0.0,
+     "tpm": 0.7,
+     "tov": 0.3
+    }
+   },
+   {
+    "player": "Jabari Walker",
+    "team": "PHI",
+    "starts_in_a_row": 2,
+    "new": true,
+    "last_game": "2026-11-25",
+    "season_games": 15,
+    "pooled": false,
+    "status": null,
+    "dropped": null,
+    "games": 3,
+    "minutes": [
+     20,
+     20,
+     17
+    ],
+    "starts": 2,
+    "line": {
+     "pts": 8.7,
+     "reb": 4.7,
+     "ast": 2.3,
+     "stl": 0.7,
+     "blk": 0.0,
+     "tpm": 0.3,
+     "tov": 0.0
+    }
+   },
+   {
+    "player": "Isaac Okoro",
+    "team": "CHI",
+    "starts_in_a_row": 10,
+    "new": false,
+    "last_game": "2026-11-25",
+    "season_games": 18,
+    "pooled": true,
+    "status": null,
+    "dropped": null,
+    "games": 3,
+    "minutes": [
+     42,
+     27,
+     31
+    ],
+    "starts": 3,
+    "line": {
+     "pts": 11.0,
+     "reb": 2.7,
+     "ast": 1.7,
+     "stl": 0.7,
+     "blk": 0.7,
+     "tpm": 2.0,
+     "tov": 1.0
+    }
+   },
+   {
+    "player": "Kevin Huerter",
+    "team": "DET",
+    "starts_in_a_row": 5,
+    "new": false,
+    "last_game": "2026-11-24",
+    "season_games": 17,
+    "pooled": true,
+    "status": null,
+    "dropped": null,
+    "games": 3,
+    "minutes": [
+     36,
+     30,
+     32
+    ],
+    "starts": 3,
+    "line": {
+     "pts": 11.7,
+     "reb": 4.0,
+     "ast": 3.0,
+     "stl": 1.0,
+     "blk": 0.0,
+     "tpm": 1.7,
+     "tov": 2.0
+    }
+   },
+   {
+    "player": "Kyle Kuzma",
+    "team": "MIL",
+    "starts_in_a_row": 18,
+    "new": false,
+    "last_game": "2026-11-25",
+    "season_games": 18,
+    "pooled": true,
+    "status": null,
+    "dropped": null,
+    "games": 3,
+    "minutes": [
+     33,
+     32,
+     31
+    ],
+    "starts": 3,
+    "line": {
+     "pts": 14.3,
+     "reb": 4.3,
+     "ast": 2.0,
+     "stl": 0.0,
+     "blk": 0.0,
+     "tpm": 2.3,
+     "tov": 0.3
+    }
+   },
+   {
+    "player": "Aaron Nesmith",
+    "team": "IND",
+    "starts_in_a_row": 14,
+    "new": false,
+    "last_game": "2026-11-22",
+    "season_games": 15,
+    "pooled": true,
+    "status": null,
+    "dropped": null,
+    "games": 3,
+    "minutes": [
+     29,
+     29,
+     32
+    ],
+    "starts": 3,
+    "line": {
+     "pts": 4.3,
+     "reb": 5.0,
+     "ast": 4.0,
+     "stl": 0.7,
+     "blk": 1.0,
+     "tpm": 0.0,
+     "tov": 0.3
+    }
+   },
+   {
+    "player": "Sion James",
+    "team": "CHA",
+    "starts_in_a_row": 3,
+    "new": false,
+    "last_game": "2026-11-25",
+    "season_games": 17,
+    "pooled": true,
+    "status": null,
+    "dropped": null,
+    "games": 3,
+    "minutes": [
+     32,
+     28,
+     26
+    ],
+    "starts": 3,
+    "line": {
+     "pts": 6.3,
+     "reb": 3.3,
+     "ast": 2.7,
+     "stl": 1.0,
+     "blk": 0.0,
+     "tpm": 1.0,
+     "tov": 1.3
+    }
+   },
+   {
+    "player": "Micah Peavy",
+    "team": "OKC",
+    "starts_in_a_row": 3,
+    "new": false,
+    "last_game": "2026-11-25",
+    "season_games": 13,
+    "pooled": false,
+    "status": null,
+    "dropped": null,
+    "games": 3,
+    "minutes": [
+     31,
+     24,
+     25
+    ],
+    "starts": 3,
+    "line": {
+     "pts": 6.0,
+     "reb": 5.3,
+     "ast": 1.0,
+     "stl": 0.7,
+     "blk": 0.0,
+     "tpm": 0.7,
+     "tov": 1.0
+    }
+   },
+   {
+    "player": "Caleb Martin",
+    "team": "DAL",
+    "starts_in_a_row": 10,
+    "new": false,
+    "last_game": "2026-11-24",
+    "season_games": 14,
+    "pooled": false,
+    "status": null,
+    "dropped": null,
+    "games": 3,
+    "minutes": [
+     20,
+     29,
+     30
+    ],
+    "starts": 3,
+    "line": {
+     "pts": 8.7,
+     "reb": 4.7,
+     "ast": 3.7,
+     "stl": 3.0,
+     "blk": 0.7,
+     "tpm": 2.0,
+     "tov": 1.0
+    }
+   },
+   {
+    "player": "De'Anthony Melton",
+    "team": "GSW",
+    "starts_in_a_row": 3,
+    "new": false,
+    "last_game": "2026-11-25",
+    "season_games": 18,
+    "pooled": true,
+    "status": null,
+    "dropped": null,
+    "games": 3,
+    "minutes": [
+     25,
+     27,
+     27
+    ],
+    "starts": 3,
+    "line": {
+     "pts": 11.7,
+     "reb": 2.7,
+     "ast": 6.3,
+     "stl": 1.7,
+     "blk": 1.0,
+     "tpm": 3.0,
+     "tov": 2.7
+    }
+   },
+   {
+    "player": "Herb Jones",
+    "team": "NOP",
+    "starts_in_a_row": 9,
+    "new": false,
+    "last_game": "2026-11-23",
+    "season_games": 19,
+    "pooled": true,
+    "status": null,
+    "dropped": null,
+    "games": 3,
+    "minutes": [
+     33,
+     25,
+     21
+    ],
+    "starts": 3,
+    "line": {
+     "pts": 7.7,
+     "reb": 3.0,
+     "ast": 3.0,
+     "stl": 2.3,
+     "blk": 0.0,
+     "tpm": 1.7,
+     "tov": 1.7
+    }
+   },
+   {
+    "player": "Oso Ighodaro",
+    "team": "PHX",
+    "starts_in_a_row": 11,
+    "new": false,
+    "last_game": "2026-11-25",
+    "season_games": 15,
+    "pooled": true,
+    "status": null,
+    "dropped": null,
+    "games": 3,
+    "minutes": [
+     27,
+     30,
+     20
+    ],
+    "starts": 3,
+    "line": {
+     "pts": 7.7,
+     "reb": 4.3,
+     "ast": 2.0,
+     "stl": 1.7,
+     "blk": 1.0,
+     "tpm": 0.0,
+     "tov": 0.7
+    }
+   },
+   {
+    "player": "Sidy Cissoko",
+    "team": "POR",
+    "starts_in_a_row": 9,
+    "new": false,
+    "last_game": "2026-11-25",
+    "season_games": 18,
+    "pooled": false,
+    "status": null,
+    "dropped": null,
+    "games": 3,
+    "minutes": [
+     23,
+     24,
+     30
+    ],
+    "starts": 3,
+    "line": {
+     "pts": 10.7,
+     "reb": 3.3,
+     "ast": 1.0,
+     "stl": 1.3,
+     "blk": 0.7,
+     "tpm": 2.7,
+     "tov": 0.7
+    }
+   },
+   {
+    "player": "Sam Hauser",
+    "team": "BOS",
+    "starts_in_a_row": 3,
+    "new": false,
+    "last_game": "2026-11-24",
+    "season_games": 18,
+    "pooled": true,
+    "status": null,
+    "dropped": null,
+    "games": 3,
+    "minutes": [
+     31,
+     22,
+     22
+    ],
+    "starts": 3,
+    "line": {
+     "pts": 7.0,
+     "reb": 3.3,
+     "ast": 1.7,
+     "stl": 0.3,
+     "blk": 0.3,
+     "tpm": 2.0,
+     "tov": 0.0
+    }
+   },
+   {
+    "player": "Pelle Larsson",
+    "team": "MIA",
+    "starts_in_a_row": 5,
+    "new": false,
+    "last_game": "2026-11-25",
+    "season_games": 14,
+    "pooled": true,
+    "status": null,
+    "dropped": null,
+    "games": 3,
+    "minutes": [
+     15,
+     30,
+     28
+    ],
+    "starts": 3,
+    "line": {
+     "pts": 11.0,
+     "reb": 3.0,
+     "ast": 2.7,
+     "stl": 1.3,
+     "blk": 0.0,
+     "tpm": 1.7,
+     "tov": 2.0
+    }
+   },
+   {
+    "player": "Jaylen Wells",
+    "team": "MEM",
+    "starts_in_a_row": 19,
+    "new": false,
+    "last_game": "2026-11-25",
+    "season_games": 19,
+    "pooled": true,
+    "status": null,
+    "dropped": null,
+    "games": 3,
+    "minutes": [
+     25,
+     20,
+     27
+    ],
+    "starts": 3,
+    "line": {
+     "pts": 11.7,
+     "reb": 3.0,
+     "ast": 0.3,
+     "stl": 0.7,
+     "blk": 0.3,
+     "tpm": 1.7,
+     "tov": 0.3
+    }
+   },
+   {
+    "player": "Josh Green",
+    "team": "UTA",
+    "starts_in_a_row": 6,
+    "new": false,
+    "last_game": "2026-11-23",
+    "season_games": 17,
+    "pooled": false,
+    "status": null,
+    "dropped": null,
+    "games": 3,
+    "minutes": [
+     29,
+     23,
+     19
+    ],
+    "starts": 3,
+    "line": {
+     "pts": 5.3,
+     "reb": 2.3,
+     "ast": 0.3,
+     "stl": 1.0,
+     "blk": 0.3,
+     "tpm": 1.3,
+     "tov": 0.3
+    }
+   },
+   {
+    "player": "Nolan Traore",
+    "team": "BKN",
+    "starts_in_a_row": 3,
+    "new": false,
+    "last_game": "2026-11-20",
+    "season_games": 14,
+    "pooled": false,
+    "status": {
+     "status": "Out",
+     "return_date": "2027-01-27"
+    },
+    "dropped": null,
+    "games": 3,
+    "minutes": [
+     30,
+     23,
+     18
+    ],
+    "starts": 3,
+    "line": {
+     "pts": 13.3,
+     "reb": 0.7,
+     "ast": 3.3,
+     "stl": 0.7,
+     "blk": 0.0,
+     "tpm": 1.0,
+     "tov": 1.0
+    }
+   },
+   {
+    "player": "Danny Wolf",
+    "team": "BKN",
+    "starts_in_a_row": 3,
+    "new": false,
+    "last_game": "2026-11-25",
+    "season_games": 12,
+    "pooled": false,
+    "status": null,
+    "dropped": null,
+    "games": 3,
+    "minutes": [
+     26,
+     25,
+     19
+    ],
+    "starts": 3,
+    "line": {
+     "pts": 12.0,
+     "reb": 3.3,
+     "ast": 2.3,
+     "stl": 0.3,
+     "blk": 0.3,
+     "tpm": 2.7,
+     "tov": 1.3
+    }
+   },
+   {
+    "player": "Kingston Flemings",
+    "team": "ATL",
+    "starts_in_a_row": 6,
+    "new": false,
+    "last_game": "2026-11-22",
+    "season_games": 13,
+    "pooled": true,
+    "status": null,
+    "dropped": null,
+    "games": 3,
+    "minutes": [
+     24,
+     17,
+     27
+    ],
+    "starts": 3,
+    "line": {
+     "pts": 6.0,
+     "reb": 3.0,
+     "ast": 3.7,
+     "stl": 1.0,
+     "blk": 0.0,
+     "tpm": 0.7,
+     "tov": 2.3
+    }
+   }
+  ],
+  "hold_check": [
+   {
+    "player": "Collin Gillespie",
+    "why": [
+     "added 2026-11-23",
+     "named as a drop today"
+    ],
+    "added": "2026-11-23",
+    "games_since_add": 2,
+    "unjudged": false,
+    "starts_in_a_row": 0,
+    "hold": false,
+    "season_games": 17,
+    "games": 3,
+    "minutes": [
+     27,
+     30,
+     22
+    ],
+    "starts": 0,
+    "line": {
+     "pts": 13.0,
+     "reb": 3.7,
+     "ast": 3.3,
+     "stl": 0.7,
+     "blk": 0.0,
+     "tpm": 2.0,
+     "tov": 1.7
+    }
+   },
+   {
+    "player": "PJ Washington",
+    "why": [
+     "named as a drop today"
+    ],
+    "added": null,
+    "games_since_add": null,
+    "unjudged": false,
+    "starts_in_a_row": 0,
+    "hold": false,
+    "season_games": 16,
+    "games": 3,
+    "minutes": [
+     25,
+     25,
+     25
+    ],
+    "starts": 2,
+    "line": {
+     "pts": 14.3,
+     "reb": 5.3,
+     "ast": 2.0,
+     "stl": 1.0,
+     "blk": 1.7,
+     "tpm": 2.0,
+     "tov": 1.0
+    }
+   }
+  ]
+ },
+ "band_check": {
+  "sweep": "report/after-reports/redteam-2026-11-23-season/sweep.json",
+  "status": "CURRENT",
+  "why": ""
+ },
+ "title": {
+  "2026": 15.05,
+  "2027": 14.42
+ },
+ "playoffs": {
+  "2026": 98.9,
+  "2027": 98.85
+ },
+ "seasons": 10000,
+ "absent_from_sim": [],
+ "transactions": {
+  "window": [
+   "2026-11-25",
+   "2026-11-27"
+  ],
+  "ok": true,
+  "hits": []
+ },
+ "league_moves": [],
+ "il_return": {
+  "espn_date": "2026-11-27",
+  "n_il": 21,
+  "room_rule": "lowest adj_value active player leaves from the return week",
+  "error": 0.49,
+  "seasons": 10000,
+  "label": "scenario range, not a forecast; never replaces or averages into the headline",
+  "room_band": {
+   "constant": "il_return.ROOM_RULE_ON",
+   "shift": 2.3,
+   "label": "rule off",
+   "tier": "FRAGILE"
+  },
+  "slip_range": [
+   23.0,
+   23.0
+  ],
+  "scenarios": {
+   "never": {
+    "title": 14.73,
+    "playoffs": 98.88
+   },
+   "on_time": {
+    "title": 23.02,
+    "playoffs": 99.86
+   }
+  }
+ }
+}
