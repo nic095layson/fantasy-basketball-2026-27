@@ -5,9 +5,92 @@
   "uninterpreted": 1,
   "dropped_invalid_timestamp": 0,
   "warning": "Yahoo returned 1 entry Flaim could not interpret (an unrecognized transaction type or a malformed entry). This count covers the whole page Flaim fetched, before the date, team, and transaction-type filters, so it does not show that 1 matching move is missing.",
-  "read_for": "2026-11-26"
+  "read_for": "2026-11-27"
  },
  "rows": [
+  {
+   "transaction_id": "478.l.36464.tr.251",
+   "type": "add",
+   "status": "complete",
+   "timestamp": 1795859198000,
+   "date": "2026-11-28",
+   "week": null,
+   "team_ids": [
+    "478.l.36464.t.6"
+   ],
+   "players_added": [
+    {
+     "id": "10588",
+     "name": "Mikel Brown Jr.",
+     "position": "PG",
+     "team": "BKN"
+    }
+   ],
+   "players_dropped": [
+    {
+     "id": "6596",
+     "name": "Sandro Mamukelashvili",
+     "position": "PF,C",
+     "team": "LAL"
+    }
+   ],
+   "faab_bid": null,
+   "waiver_priority": null,
+   "draft_picks": null
+  },
+  {
+   "transaction_id": "478.l.36464.tr.250",
+   "type": "add",
+   "status": "complete",
+   "timestamp": 1795848676000,
+   "date": "2026-11-28",
+   "week": null,
+   "team_ids": [
+    "478.l.36464.t.1"
+   ],
+   "players_added": [
+    {
+     "id": "5754",
+     "name": "Alex Caruso",
+     "position": "SG,SF",
+     "team": "OKC"
+    }
+   ],
+   "players_dropped": [
+    {
+     "id": "6754",
+     "name": "Julian Champagnie",
+     "position": "SF,PF",
+     "team": "SAS"
+    }
+   ],
+   "faab_bid": null,
+   "waiver_priority": null,
+   "draft_picks": null
+  },
+  {
+   "transaction_id": "478.l.36464.tr.249",
+   "type": "drop",
+   "status": "complete",
+   "timestamp": 1795813062000,
+   "date": "2026-11-27",
+   "week": null,
+   "team_ids": [
+    "478.l.36464.t.7"
+   ],
+   "players_added": [],
+   "players_dropped": [
+    {
+     "id": "6218",
+     "name": "Kevin Porter Jr.",
+     "position": "PG,SG",
+     "team": "ORL"
+    }
+   ],
+   "faab_bid": null,
+   "waiver_priority": null,
+   "draft_picks": null
+  },
   {
    "transaction_id": "478.l.36464.tr.248",
    "type": "add",

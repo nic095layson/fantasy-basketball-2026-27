@@ -1,0 +1,115 @@
+{
+ "date": "2026-11-28",
+ "seasons": 10000,
+ "seeds": [
+  2026,
+  2027
+ ],
+ "base": {
+  "never": 19.045,
+  "on_time": 22.735
+ },
+ "pairs": [
+  {
+   "add": "Julian Champagnie",
+   "drop": "PJ Washington",
+   "never": {
+    "title": 20.34,
+    "d_title": 1.29
+   },
+   "on_time": {
+    "title": 22.695,
+    "d_title": -0.03999999999999915,
+    "first_cut": {
+     "when": "Tyrese Haliburton",
+     "return_date": "2026-12-13",
+     "week": 7
+    }
+   },
+   "week": {
+    "d_exp": 0.09608758499959663,
+    "p_5plus": 0.9997990364182281,
+    "d_p_5plus": 0.0004769087187108667
+   }
+  },
+  {
+   "add": "Kevin Porter Jr.",
+   "drop": "PJ Washington",
+   "never": {
+    "title": 18.79,
+    "d_title": -0.26
+   },
+   "on_time": {
+    "title": 22.755,
+    "d_title": 0.019999999999999574,
+    "first_cut": {
+     "when": "Tyrese Haliburton",
+     "return_date": "2026-12-13",
+     "week": 7
+    }
+   },
+   "week": null
+  }
+ ],
+ "order": {
+  "never": [
+   [
+    "Julian Champagnie",
+    "PJ Washington"
+   ],
+   [
+    "Kevin Porter Jr.",
+    "PJ Washington"
+   ]
+  ],
+  "on_time": [
+   [
+    "Kevin Porter Jr.",
+    "PJ Washington"
+   ],
+   [
+    "Julian Champagnie",
+    "PJ Washington"
+   ]
+  ]
+ },
+ "rank_flip": true,
+ "robust": {
+  "add": "Julian Champagnie",
+  "drop": "PJ Washington",
+  "constant": "weekly_availability",
+  "variants": [
+   {
+    "label": "healthy at the old 0.88",
+    "d_title": 0.514999999999997
+   },
+   {
+    "label": "healthy at the unfloored fit (0.78)",
+    "d_title": 1.3499999999999943
+   },
+   {
+    "label": "risk at the old 0.75",
+    "d_title": 1.0500000000000007
+   },
+   {
+    "label": "risk at the unfloored fit (0.56)",
+    "d_title": 0.8449999999999989
+   }
+  ],
+  "held": 4,
+  "holds": true,
+  "low": 0.514999999999997,
+  "high": 1.3499999999999943
+ },
+ "notes": [
+  "Kevin Porter Jr. for PJ Washington: this week is not shown (add not in today's free-agent pool)"
+ ],
+ "label": "Display only: the brief's ranking and the headline title share are unchanged. The return world rests on ESPN's dates and the room rule (the lowest-value active player leaves), which is itself FRAGILE.",
+ "inputs": {
+  "brief": "brief_2026-11-28.json",
+  "il_return": true,
+  "week_card": true,
+  "pool": "/home/user/fantasy-basketball-2026-27/data/season/pool_season.csv",
+  "state_as_of": "2026-11-28"
+ }
+}

@@ -1,20 +1,20 @@
 {
- "as_of": "2026-11-26",
- "days": 21,
+ "as_of": "2026-11-27",
+ "days": 22,
  "days_agreed": 20,
- "days_graded": 1,
+ "days_graded": 2,
  "days_no_brief": 0,
- "pairs": 1,
- "pairs_with_lineup": 1,
+ "pairs": 3,
+ "pairs_with_lineup": 3,
  "start_followed": 1,
  "sit_followed": 0,
  "both_followed": 0,
  "night_kit": 0,
- "night_against": 0,
- "night_no_grade": 1,
+ "night_against": 1,
+ "night_no_grade": 2,
  "night_no_box": 0,
  "gap_sum_followed": 0,
- "gap_sum_ignored": 0,
+ "gap_sum_ignored": 6.29,
  "rows": [
   {
    "date": "2026-11-05",
@@ -152,6 +152,33 @@
    "status": "agreed",
    "lineup_record": true,
    "pairs": []
+  },
+  {
+   "date": "2026-11-27",
+   "status": "graded",
+   "lineup_record": true,
+   "pairs": [
+    {
+     "start": "Kyrie Irving",
+     "sit": "PJ Washington",
+     "kind": "better",
+     "gap": 5.7,
+     "start_followed": false,
+     "sit_followed": false,
+     "night": "no grade",
+     "z_gap": null
+    },
+    {
+     "start": "John Collins",
+     "sit": "Collin Gillespie",
+     "kind": "better",
+     "gap": 0.59,
+     "start_followed": false,
+     "sit_followed": false,
+     "night": "against",
+     "z_gap": -3.02
+    }
+   ]
   }
  ],
  "method": {
@@ -160,6 +187,6 @@
   "night": "start's box-line z minus the sit's, hoops.zscores over the day's box lines (engine rule)",
   "caveat": "the night is the outcome, not a verdict: per-game z noise sd 3.65 vs a 0.5 line (red team, decision_grade.py)"
  },
- "start_followed_rate": 1.0,
+ "start_followed_rate": 0.333,
  "sit_followed_rate": 0.0
 }
